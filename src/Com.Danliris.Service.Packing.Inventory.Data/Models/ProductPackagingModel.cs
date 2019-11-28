@@ -2,28 +2,29 @@ using Com.Moonlay.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 {
-    public class ProductSKUModel : StandardEntity
+    public class ProductPackagingModel : StandardEntity
     {
-        public ProductSKUModel()
+        public ProductPackagingModel()
         {
 
         }
 
-        public ProductSKUModel(
+        public ProductPackagingModel(
             string code,
             string composition,
             string construction,
-            string currency,
             int currencyId,
+            string currency,
             string description,
             string design,
             string grade,
             string lot,
             string name,
+            string packagingCode,
             decimal price,
             string productType,
-            string skuCode,
             string skuId,
+            string sku,
             string tags,
             int uomId,
             string uom,
@@ -43,9 +44,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Grade = grade;
             Lot = lot;
             Name = name;
+            PackagingCode = packagingCode;
             Price = price;
             ProductType = productType;
-            SKUCode = skuCode;
+            SKU = sku;
             SKUId = skuId;
             Tags = tags;
             UOM = uom;
@@ -59,17 +61,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string Code { get; set; }
         public string Composition { get; set; }
         public string Construction { get; set; }
-        public int CurrencyId { get; set; }
         public string Currency { get; set; }
+        public int CurrencyId { get; set; }
         public string Description { get; set; }
         public string Design { get; set; }
         public string Grade { get; set; }
         public string Lot { get; set; }
         public string Name { get; set; }
+        public string PackagingCode { get; set; }
         public decimal Price { get; set; }
         public string ProductType { get; set; }
+        public string SKU { get; set; }
         public string SKUId { get; set; }
-        public string SKUCode { get; set; }
         public string Tags { get; set; }
         public string UOM { get; set; }
         public int UOMId { get; set; }

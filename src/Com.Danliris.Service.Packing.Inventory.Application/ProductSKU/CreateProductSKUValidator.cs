@@ -1,7 +1,4 @@
-using System;
-using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using FluentValidation;
-using Microsoft.Extensions.Logging;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ProductSKU
 {

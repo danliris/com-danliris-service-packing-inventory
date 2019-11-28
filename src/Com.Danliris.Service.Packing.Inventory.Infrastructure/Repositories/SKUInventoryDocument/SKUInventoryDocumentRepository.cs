@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 
-namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU
+namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.SKUInventoryDocument
 {
-    public class ProductSKURepository : IProductSKURepository
+    public class SKUInventoryDocumentRepository : ISKUInventoryDocumentRepository
     {
-        public ProductSKURepository(PackingInventoryDbContext dbContext)
+        public SKUInventoryDocumentRepository(PackingInventoryDbContext dbContext)
         {
 
         }
@@ -17,22 +16,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
             throw new System.NotImplementedException();
         }
 
-        public Task<int> InsertAsync(ProductSKUModel model)
+        public Task<int> InsertAsync(SKUInventoryDocumentModel model)
         {
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<ProductSKUModel> ReadAll()
+        public Task<IEnumerable<SKUInventoryDocumentModel>> ReadAllAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<ProductSKUModel> ReadByIdAsync(int id)
+        public Task<SKUInventoryDocumentModel> ReadByIdAsync(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<int> UpdateAsync(int id, ProductSKUModel model)
+        public Task<int> UpdateAsync(int id, SKUInventoryDocumentModel model)
         {
             throw new System.NotImplementedException();
         }

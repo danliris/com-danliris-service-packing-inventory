@@ -1,11 +1,10 @@
-using Com.Danliris.Service.Packing.Inventory.Data;
-using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ProductSKU
 {
-    public class ProductSKUService
+    public class ProductSKUService : IProductSKUService
     {
-        public ProductSKUService(IRepository<ProductSKUModel> repository)
+        public ProductSKUService(IProductSKURepository repository)
         {
             
         }

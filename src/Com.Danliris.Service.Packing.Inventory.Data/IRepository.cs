@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data
@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
     {
         Task<int> DeleteAsync(int id);
         Task<int> InsertAsync(TModel model);
-        Task<IEnumerable<TModel>> ReadAllAsync();
+        IQueryable<TModel> ReadAll();
         Task<TModel> ReadByIdAsync(int id);
         Task<int> UpdateAsync(int id, TModel model);
     }
