@@ -34,8 +34,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
         public Task<int> InsertAsync(ProductPackagingModel model)
         {
             EntityExtension.FlagForCreate(model, _identityProvider.Username, USER_AGENT);
-             _productPackagingDbSet.Add(model);
-             return _dbContext.SaveChangesAsync();
+            _productPackagingDbSet.Add(model);
+            return _dbContext.SaveChangesAsync();
         }
 
         public IQueryable<ProductPackagingModel> ReadAll()
@@ -46,7 +46,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
         public Task<ProductPackagingModel> ReadByIdAsync(int id)
         {
             return _productPackagingDbSet.Where(entity => entity.Id == id).FirstAsync();
-            throw new System.NotImplementedException();
         }
 
         public Task<int> UpdateAsync(int id, ProductPackagingModel model)
