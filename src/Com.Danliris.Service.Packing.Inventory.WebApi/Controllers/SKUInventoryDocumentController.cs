@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/product-skus")]
+    [Route("v1/sku-inventory-documents")]
     public class SKUInventoryDocumentController : Controller
     {
         public SKUInventoryDocumentController(IProductSKUService service)

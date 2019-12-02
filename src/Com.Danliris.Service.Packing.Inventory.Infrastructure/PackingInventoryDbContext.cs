@@ -27,6 +27,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new SKUInventoryDocumentEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SKUInventoryDocumentItemEntityTypeConfiguration());
 
+            modelBuilder.Entity<PackagingInventoryDocumentModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<PackagingInventoryDocumentItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<ProductPackagingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<SKUInventoryDocumentModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<SKUInventoryDocumentItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            
             base.OnModelCreating(modelBuilder);
         }
     }

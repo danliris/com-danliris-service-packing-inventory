@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
 
         public Task<int> InsertAsync(ProductSKUModel model)
         {
+            do
+            {
+                model.Code = CodeGenerator.Generate(6);
+            } while (_productSKUDbSet.Any(entity => entity.Code == model.Code));
             EntityExtension.FlagForCreate(model, _identityProvider.Username, USER_AGENT);
             _productSKUDbSet.Add(model);
             return _dbContext.SaveChangesAsync();
@@ -40,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
 
         public IQueryable<ProductSKUModel> ReadAll()
         {
-            return _productSKUDbSet;
+            return _productSKUDbSet.AsNoTracking();
         }
 
         public Task<ProductSKUModel> ReadByIdAsync(int id)

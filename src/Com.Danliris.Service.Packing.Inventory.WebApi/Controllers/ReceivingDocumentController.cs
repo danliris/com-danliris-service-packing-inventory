@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
+using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,14 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/product-skus")]
+    [Route("v1/receiving-documents")]
     [Authorize]
-    public class ProductSKUController : Controller
+    public class ReceivingDocumentController : Controller
     {
         private readonly IProductSKUService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public ProductSKUController(IProductSKUService service, IIdentityProvider identityProvider)
+        public ReceivingDocumentController(IProductSKUService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -57,20 +58,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateProductSKUViewModel viewModel)
+        [HttpPost("in")]
+        public IActionResult PostIn([FromBody] CreateReceivingDocumentViewModel viewModel)
         {
             VerifyUser();
-            if (!ModelState.IsValid)
-            {
-                var result = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(result);
-            }
 
-            await _service.Create(viewModel);
+            return Created("/", new { });
+        }
+
+        [HttpPost("out")]
+        public IActionResult PostOut([FromBody] CreateReceivingDocumentViewModel viewModel)
+        {
+            VerifyUser();
 
             return Created("/", new { });
         }
