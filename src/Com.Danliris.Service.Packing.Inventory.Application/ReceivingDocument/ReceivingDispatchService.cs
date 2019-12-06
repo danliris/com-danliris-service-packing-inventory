@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
                 null,
                 JsonConvert.SerializeObject(viewModel.Storage),
                 viewModel.Storage.Id.GetValueOrDefault(),
-                "IN"
+                "OUT"
                 );
 
             await _inventoryDocumentSKURepository.InsertAsync(inventorySKUModel);
@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
                 null,
                 JsonConvert.SerializeObject(viewModel.Storage),
                 viewModel.Storage.Id.GetValueOrDefault(),
-                "IN"
+                "OUT"
                 );
 
             await _inventoryDocumentPackingRepository.InsertAsync(inventoryPackingModel);
@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
                 null,
                 JsonConvert.SerializeObject(viewModel.Storage),
                 viewModel.Storage.Id.GetValueOrDefault(),
-                "OUT"
+                "IN"
                 );
 
             await _inventoryDocumentSKURepository.InsertAsync(inventorySKUModel);
@@ -117,7 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
                 null,
                 JsonConvert.SerializeObject(viewModel.Storage),
                 viewModel.Storage.Id.GetValueOrDefault(),
-                "OUT"
+                "IN"
                 );
 
             await _inventoryDocumentPackingRepository.InsertAsync(inventoryPackingModel);

@@ -24,8 +24,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         }
 
         public string Code { get; set; }
-        public string PackType { get; set; }
-        public decimal Quantity { get; private set; }
+        public string PackType { get; private set; }
+        public decimal Quantity { get; set; }
         public int SKUId { get; private set; }
     }
 }

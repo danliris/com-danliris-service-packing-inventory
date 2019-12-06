@@ -55,7 +55,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
 
         public Task<int> UpdateAsync(int id, ProductPackingModel model)
         {
-            throw new NotImplementedException();
+            var modelToUpdate = _productPackingDbSet.FirstOrDefault(entity => entity.Id == id);
+
+            var isModified = false;
+            if (modelToUpdate.Quantity != model.Quantity)
+            {
+                modelToUpdate.Quantity = model.Quantity;
+                isModified = true;
+            }
+
+            if (isModified)
+            {
+                EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
+                _productPackingDbSet.Update(model);
+            }
+            return _dbContext.SaveChangesAsync();
         }
     }
 }

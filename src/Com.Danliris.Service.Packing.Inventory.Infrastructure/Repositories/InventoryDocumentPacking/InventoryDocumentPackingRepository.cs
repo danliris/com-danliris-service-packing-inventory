@@ -30,21 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Inv
 
         public Task<int> DeleteAsync(int id)
         {
-            var model = _inventoryDocumentDbSet.First(entity => entity.Id == id);
-            EntityExtension.FlagForDelete(model, _identityProvider.Username, UserAgent);
-
-            var items = _inventoryDocumentItemDbSet.Where(entity => entity.InventoryDocumentSKUId == id).ToList();
-            items = items.Select(entity => 
-            {
-                EntityExtension.FlagForDelete(entity, _identityProvider.Username, UserAgent);
-
-                return entity;
-            }).ToList();
-
-            _inventoryDocumentDbSet.Update(model);
-            _inventoryDocumentItemDbSet.UpdateRange(items);
-
-            return _dbContext.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public Task<int> InsertAsync(InventoryDocumentPackingModel model)
@@ -69,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Inv
 
         public IQueryable<InventoryDocumentPackingModel> ReadAll()
         {
-            return _inventoryDocumentDbSet;
+            return _inventoryDocumentDbSet.AsNoTracking();
         }
 
         public Task<InventoryDocumentPackingModel> ReadByIdAsync(int id)
@@ -79,8 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Inv
 
         public Task<int> UpdateAsync(int id, InventoryDocumentPackingModel model)
         {
-            // do nothing
-            return _dbContext.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }

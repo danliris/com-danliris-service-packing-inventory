@@ -55,7 +55,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
 
         public Task<int> UpdateAsync(int id, ProductSKUModel model)
         {
-            throw new NotImplementedException();
+            var modelToUpdate = _productSKUDbSet.FirstOrDefault(entity => entity.Id == id);
+
+            var isModified = false;
+            if (modelToUpdate.Composition != model.Composition)
+            {
+                modelToUpdate.Composition = model.Composition;
+                isModified = true;
+            }
+
+            if (modelToUpdate.Construction != model.Construction)
+            {
+                modelToUpdate.Construction = model.Construction;
+                isModified = true;
+            }
+
+            if (modelToUpdate.Design != model.Design)
+            {
+                modelToUpdate.Design = model.Design;
+                isModified = true;
+            }
+
+            if (modelToUpdate.Grade != model.Grade)
+            {
+                modelToUpdate.Grade = model.Grade;
+                isModified = true;
+            }
+
+            if (modelToUpdate.LotNo != model.LotNo)
+            {
+                modelToUpdate.LotNo = model.LotNo;
+                isModified = true;
+            }
+
+            if (modelToUpdate.Width != model.Width)
+            {
+                modelToUpdate.Width = model.Width;
+                isModified = true;
+            }
+
+            if (modelToUpdate.WovenType != model.WovenType)
+            {
+                modelToUpdate.WovenType = model.WovenType;
+                isModified = true;
+            }
+
+            if (modelToUpdate.YarnType1 != model.YarnType1)
+            {
+                modelToUpdate.YarnType1 = model.YarnType1;
+                isModified = true;
+            }
+
+            if (modelToUpdate.YarnType2 != model.YarnType2)
+            {
+                modelToUpdate.YarnType2 = model.YarnType2;
+                isModified = true;
+            }
+
+            if (isModified)
+            {
+                EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
+            }
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }
