@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
+using Com.Danliris.Service.Packing.Inventory.Application.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -37,11 +38,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Register Validator
-            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
+            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
 
             // Register Middleware
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
-            services.AddTransient<IProductSKUService, ProductSKUService>();
+            services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
+
+            services.AddTransient<IProductService, ProductService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
