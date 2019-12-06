@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
             SKUId = skuId;
             Quantity = quantity;
             UOMUnit = uomUnit;
-            PackType = packType;
+            PackingType = packType;
             PackingId = packingId;
         }
 
@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
         public int SKUId { get; set; }
         public decimal Quantity { get; set; }
         public string UOMUnit { get; set; }
-        public string PackType { get; set; }
+        public string PackingType { get; set; }
         public int PackingId { get; set; }
     }
 }
