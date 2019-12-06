@@ -60,8 +60,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
             }
         }
 
-        
-
         private bool IsSKUAlreadyExist(ProductSKUModel productSKU)
         {
             return _productSKURepository.ReadAll().Any(entity => entity.Name.ToUpper() == productSKU.Name.ToUpper());
