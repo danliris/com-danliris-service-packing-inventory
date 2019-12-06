@@ -1,3 +1,4 @@
+using System;
 using Com.Moonlay.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models
@@ -13,20 +14,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             string code,
             string composition,
             string construction,
-            string currency,
-            int currencyId,
-            string description,
             string design,
             string grade,
-            string lot,
-            string name,
-            decimal price,
+            string lotNo,
             string productType,
-            string skuCode,
-            string skuId,
-            string tags,
-            int uomId,
-            string uom,
+            string uomUnit,
             string width,
             string wovenType,
             string yarnType1,
@@ -36,43 +28,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Code = code;
             Composition = composition;
             Construction = construction;
-            Currency = currency;
-            CurrencyId = currencyId;
-            Description = description;
             Design = design;
             Grade = grade;
-            Lot = lot;
-            Name = name;
-            Price = price;
+            LotNo = lotNo;
             ProductType = productType;
-            SKUCode = skuCode;
-            SKUId = skuId;
-            Tags = tags;
-            UOM = uom;
-            UOMId = uomId;
+            UOMUnit = uomUnit;
             Width = width;
             WovenType = wovenType;
             YarnType1 = yarnType1;
             YarnType2 = yarnType2;
+
+            Name = SetName();
+        }
+
+        private string SetName()
+        {
+            var name = "";
+
+            switch (ProductType)
+            {
+                case "FABRIC":
+                    name = Composition + " " + Construction + " " + Width + " " + Design + " " + Grade;
+                    break;
+                case "GREIGE":
+                    name = WovenType + " " + Construction + " " + Width + " " + YarnType1 + " " + YarnType2 + " " + Grade;
+                    break;
+                case "YARN":
+                    name = YarnType1 + " " + LotNo;
+                    break;
+                default:
+                    break;
+            }
+
+            return name;
         }
 
         public string Code { get; set; }
         public string Composition { get; set; }
         public string Construction { get; set; }
-        public int CurrencyId { get; set; }
-        public string Currency { get; set; }
-        public string Description { get; set; }
         public string Design { get; set; }
         public string Grade { get; set; }
-        public string Lot { get; set; }
+        public string LotNo { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
         public string ProductType { get; set; }
-        public string SKUId { get; set; }
-        public string SKUCode { get; set; }
-        public string Tags { get; set; }
-        public string UOM { get; set; }
-        public int UOMId { get; set; }
+        public string UOMUnit { get; set; }
         public string Width { get; set; }
         public string WovenType { get; set; }
         public string YarnType1 { get; set; }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
@@ -8,52 +8,52 @@ using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU
+namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking
 {
-    public class ProductSKURepository : IProductSKURepository
+    public class ProductPackingRepository : IProductPackingRepository
     {
         private const string USER_AGENT = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
-        private readonly DbSet<ProductSKUModel> _productSKUDbSet;
+        private readonly DbSet<ProductPackingModel> _productPackingDbSet;
         private readonly IIdentityProvider _identityProvider;
 
-        public ProductSKURepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
+        public ProductPackingRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
-            _productSKUDbSet = dbContext.Set<ProductSKUModel>();
+            _productPackingDbSet = dbContext.Set<ProductPackingModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         public Task<int> DeleteAsync(int id)
         {
-            var model = _productSKUDbSet.FirstOrDefault(entity => entity.Id == id);
+            var model = _productPackingDbSet.FirstOrDefault(entity => entity.Id == id);
             EntityExtension.FlagForDelete(model, _identityProvider.Username, USER_AGENT);
-            _productSKUDbSet.Update(model);
+            _productPackingDbSet.Update(model);
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> InsertAsync(ProductSKUModel model)
+        public Task<int> InsertAsync(ProductPackingModel model)
         {
             do
             {
                 model.Code = CodeGenerator.Generate(6);
-            } while (_productSKUDbSet.Any(entity => entity.Code == model.Code));
+            } while (_productPackingDbSet.Any(entity => entity.Code == model.Code));
             EntityExtension.FlagForCreate(model, _identityProvider.Username, USER_AGENT);
-            _productSKUDbSet.Add(model);
+            _productPackingDbSet.Add(model);
             return _dbContext.SaveChangesAsync();
         }
 
-        public IQueryable<ProductSKUModel> ReadAll()
+        public IQueryable<ProductPackingModel> ReadAll()
         {
-            return _productSKUDbSet.AsNoTracking();
+            return _productPackingDbSet.AsNoTracking();
         }
 
-        public Task<ProductSKUModel> ReadByIdAsync(int id)
+        public Task<ProductPackingModel> ReadByIdAsync(int id)
         {
-            return _productSKUDbSet.Where(entity => entity.Id == id).FirstAsync();
+            return _productPackingDbSet.Where(entity => entity.Id == id).FirstAsync();
         }
 
-        public Task<int> UpdateAsync(int id, ProductSKUModel model)
+        public Task<int> UpdateAsync(int id, ProductPackingModel model)
         {
             throw new NotImplementedException();
         }

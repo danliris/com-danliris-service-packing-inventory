@@ -21,14 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             productSKUConfiguration
-                .Property(productSKU => productSKU.Currency)
-                .HasMaxLength(1024);
-
-            productSKUConfiguration
-                .Property(productSKU => productSKU.Description)
-                .HasMaxLength(1024);
-
-            productSKUConfiguration
                 .Property(productSKU => productSKU.Design)
                 .HasMaxLength(128);
 
@@ -37,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(32);
 
             productSKUConfiguration
-                .Property(productSKU => productSKU.Lot)
+                .Property(productSKU => productSKU.LotNo)
                 .HasMaxLength(128);
 
             productSKUConfiguration
@@ -49,20 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(32);
 
             productSKUConfiguration
-                .Property(productSKU => productSKU.SKUCode)
-                .HasMaxLength(32);
-
-            productSKUConfiguration
-                .Property(productSKU => productSKU.SKUId)
-                .HasMaxLength(128);
-
-            productSKUConfiguration
-                .Property(productSKU => productSKU.Tags)
-                .HasMaxLength(512);
-
-            productSKUConfiguration
-                .Property(productSKU => productSKU.UOM)
-                .HasMaxLength(1024);
+                .Property(productSKU => productSKU.UOMUnit)
+                .HasMaxLength(64);
 
             productSKUConfiguration
                 .Property(productSKU => productSKU.Width)
