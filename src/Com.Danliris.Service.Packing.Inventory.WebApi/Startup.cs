@@ -3,8 +3,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.Product;
+using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using FluentValidation;
@@ -39,12 +42,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
         {
             // Register Validator
             services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
+            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
 
             // Register Middleware
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
             services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
-
             services.AddTransient<IProductService, ProductService>();
+
+            services.AddTransient<IInventoryDocumentSKURepository, InventoryDocumentSKURepository>();
+            services.AddTransient<IInventoryDocumentPackingRepository, InventoryDocumentPackingRepository>();
+            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
