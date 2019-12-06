@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
                 var productPackingModel = new ProductPackingModel(null, viewModel.PackType, viewModel.Quantity.GetValueOrDefault(), skuId);
                 await _productPackingRepository.InsertAsync(productPackingModel);
 
-                var result = new ProductPackingBarcodeInfo(productPackingModel.Code, productPackingModel.SKUId, productPackingModel.Quantity, productSKUToCheck.UOMUnit, productPackingModel.PackType);
+                var result = new ProductPackingBarcodeInfo(productPackingModel.Code, productPackingModel.SKUId, productPackingModel.Quantity, productSKUToCheck.UOMUnit, productPackingModel.PackType, productPackingModel.Id);
                 return result;
             }
             else
@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
 
                 await _productPackingRepository.InsertAsync(productPackingModel);
 
-                var result = new ProductPackingBarcodeInfo(productPackingModel.Code, productPackingModel.SKUId, productPackingModel.Quantity, productSKUToCheck.UOMUnit, productPackingModel.PackType);
+                var result = new ProductPackingBarcodeInfo(productPackingModel.Code, productPackingModel.SKUId, productPackingModel.Quantity, productSKUToCheck.UOMUnit, productPackingModel.PackType, productPackingModel.Id);
 
                 return result;
             }
