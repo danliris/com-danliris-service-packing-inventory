@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 {
                     error = ResultFormatter.FormatErrorMessage(ModelState)
                 };
-                return new BadRequestObjectResult(result);
+                return new BadRequestObjectResult(ModelState);
             }
 
             await _service.Create(viewModel);

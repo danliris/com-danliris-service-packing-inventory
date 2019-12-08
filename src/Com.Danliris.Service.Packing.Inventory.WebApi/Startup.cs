@@ -153,6 +153,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 context.Database.Migrate();
             }
 
+            app.UseCors(PACKING_INVENTORY_POLICY);
+
             app.UseSwagger();
             app.UseSwaggerUI(swagger =>
             {

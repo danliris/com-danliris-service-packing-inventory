@@ -9,12 +9,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Utilities
             Data = data;
             Page = page;
             Size = size;
-            TotalRow = totalRow;
+            Total = totalRow;
         }
 
         public List<T> Data { get; set; }
         public int Page { get; set; }
         public int Size { get; set; }
-        public int TotalRow { get; set; }
+        public int Total { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("v1/product-skus")]
+    //[ApiVersion("")]
     [Authorize]
     public class ProductSKUController : Controller
     {
