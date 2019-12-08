@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Inv
 
         public Task<InventoryDocumentSKUModel> ReadByIdAsync(int id)
         {
-            return _inventoryDocumentDbSet.FirstOrDefaultAsync(entity => entity.Id == id);
+            return _inventoryDocumentDbSet.Include(entity => entity.Items).FirstOrDefaultAsync(entity => entity.Id == id);
         }
 
         public Task<int> UpdateAsync(int id, InventoryDocumentSKUModel model)

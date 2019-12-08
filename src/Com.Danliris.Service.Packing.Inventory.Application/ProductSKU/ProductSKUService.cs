@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductSKU
                 query = query.Where(entity => entity.Name.Contains(keyword) || entity.ProductType.Contains(keyword));
             }
 
-            var data = query.Skip((page - 1) * size).Take(size).Select(entity => new IndexViewModel()
+            var data = query.OrderByDescending(entity => entity.LastModifiedUtc).Skip((page - 1) * size).Take(size).Select(entity => new IndexViewModel()
             {
                 Code = entity.Code,
                 Id = entity.Id,
