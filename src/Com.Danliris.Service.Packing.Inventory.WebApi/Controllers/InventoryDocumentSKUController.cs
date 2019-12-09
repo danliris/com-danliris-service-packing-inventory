@@ -1,25 +1,23 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/product-skus")]
-    //[ApiVersion("")]
+    [Route("v1/inventory-document-skus")]
     [Authorize]
-    public class ProductSKUController : Controller
+    public class InventoryDocumentSKUController : Controller
     {
-        private readonly IProductSKUService _service;
+        private readonly IInventoryDocumentSKUService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public ProductSKUController(IProductSKUService service, IIdentityProvider identityProvider)
+        public InventoryDocumentSKUController(IInventoryDocumentSKUService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -33,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateProductSKUViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] CreateInventoryDocumentSKUViewModel viewModel)
         {
             VerifyUser();
             if (!ModelState.IsValid)
@@ -50,32 +48,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             return Created("/", new
             {
             });
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] UpdateProductSKUViewModel viewModel)
-        {
-            VerifyUser();
-            if (!ModelState.IsValid)
-            {
-                var result = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(result);
-            }
-
-            await _service.Update(id, viewModel);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
-        {
-            await _service.Delete(id);
-
-            return NoContent();
         }
 
         [HttpGet("{id}")]

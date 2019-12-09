@@ -47,6 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
                             {
                                 Code = productPacking.Code,
                                 Id = productPacking.Id,
+                                LastModifiedUtc = productPacking.LastModifiedUtc,
                                 Name = product.Name,
                                 PackingType = productPacking.PackType,
                                 Quantity = productPacking.Quantity
@@ -57,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
                 joinQuery = joinQuery.Where(entity => entity.Name.Contains(keyword));
             }
 
-            var data = joinQuery.Skip((page - 1) * size).Take(size).ToList();
+            var data = joinQuery.OrderByDescending(entity => entity.LastModifiedUtc).Skip((page - 1) * size).Take(size).ToList();
             var totalRow = joinQuery.Select(entity => entity.Id).Count();
 
             return new ListResult<IndexViewModel>(data, page, size, totalRow);
