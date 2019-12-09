@@ -10,6 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
         Task Update(int id, ProductPackingFormViewModel viewModel);
         Task Delete(int id);
         Task<ProductPackingModel> ReadById(int id);
-        ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size);
+        ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size);
     }
 }

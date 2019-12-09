@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSK
     public interface IInventoryDocumentSKUService
     {
         Task Create(CreateInventoryDocumentSKUViewModel viewModel);
-        ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size);
+        ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size);
         Task<InventoryDocumentSKUModel> ReadById(int id);
     }
 }

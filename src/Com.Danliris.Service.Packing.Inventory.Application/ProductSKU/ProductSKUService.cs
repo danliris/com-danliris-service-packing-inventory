@@ -1,7 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductSKU
             return _productSKURepository.ReadByIdAsync(id);
         }
 
-        public ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size)
+        public ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size)
         {
             var query = _productSKURepository.ReadAll();
 
@@ -58,7 +60,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductSKU
                 query = query.Where(entity => entity.Name.Contains(keyword) || entity.ProductType.Contains(keyword));
             }
 
-            var data = query.OrderByDescending(entity => entity.LastModifiedUtc).Skip((page - 1) * size).Take(size).Select(entity => new IndexViewModel()
+            if (string.IsNullOrWhiteSpace(order))
+            {
+                order = "{}";
+            }
+            var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<ProductSKUModel>.Order(query, orderDictionary);
+
+            var data = query.Skip((page - 1) * size).Take(size).Select(entity => new IndexViewModel()
             {
                 Code = entity.Code,
                 Id = entity.Id,

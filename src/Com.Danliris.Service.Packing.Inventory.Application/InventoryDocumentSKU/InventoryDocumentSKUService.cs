@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
 using System.Linq;
@@ -9,6 +7,8 @@ using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU
 {
@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSK
             return _inventoryDocumentSKURepository.ReadByIdAsync(id);
         }
 
-        public ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size)
+        public ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size)
         {
             var query = _inventoryDocumentSKURepository.ReadAll();
 
@@ -59,6 +59,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSK
             {
                 query = query.Where(entity => entity.Storage.Contains(keyword) || entity.Code.Contains(keyword));
             }
+
+            if (string.IsNullOrWhiteSpace(order))
+            {
+                order = "{}";
+            }
+            var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<InventoryDocumentSKUModel>.Order(query, orderDictionary);
 
             var queryData = query.Skip((page - 1) * size).Take(size).Select(entity => new 
             {
@@ -80,7 +87,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSK
                 Id = entity.Id,
                 ReferenceNo = entity.ReferenceNo,
                 ReferenceType = entity.ReferenceType,
-                Storage = JsonConvert.DeserializeObject<Storage>(entity.Storage)
+                Storage = JsonConvert.DeserializeObject<Storage>(entity.Storage),
+                Type = entity.Type
             }).ToList();
 
             return new ListResult<IndexViewModel>(data, page, size, totalRow);

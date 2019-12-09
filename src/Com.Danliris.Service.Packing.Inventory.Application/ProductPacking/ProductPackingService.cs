@@ -6,6 +6,9 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
 {
@@ -35,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
             return _productPackingRepository.ReadByIdAsync(id);
         }
 
-        public ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size)
+        public ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size)
         {
             var productPackingQuery = _productPackingRepository.ReadAll();
             var productSKUQuery = _productSKURepository.ReadAll();
@@ -58,7 +61,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
                 joinQuery = joinQuery.Where(entity => entity.Name.Contains(keyword));
             }
 
-            var data = joinQuery.OrderByDescending(entity => entity.LastModifiedUtc).Skip((page - 1) * size).Take(size).ToList();
+            if (string.IsNullOrWhiteSpace(order))
+            {
+                order = "{}";
+            }
+            var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            joinQuery = QueryHelper<IndexViewModel>.Order(joinQuery, orderDictionary);
+
+            var data = joinQuery.Skip((page - 1) * size).Take(size).ToList();
             var totalRow = joinQuery.Select(entity => entity.Id).Count();
 
             return new ListResult<IndexViewModel>(data, page, size, totalRow);

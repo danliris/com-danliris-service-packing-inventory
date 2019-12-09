@@ -7,6 +7,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectPr
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
+using System.Collections.Generic;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking
 {
@@ -49,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPa
             return _inventoryDocumentPackingRepository.ReadByIdAsync(id);
         }
 
-        public ListResult<IndexViewModel> ReadByKeyword(string keyword, int page, int size)
+        public ListResult<IndexViewModel> ReadByKeyword(string keyword, string order, int page, int size)
         {
             var query = _inventoryDocumentPackingRepository.ReadAll();
 
@@ -57,6 +59,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPa
             {
                 query = query.Where(entity => entity.Storage.Contains(keyword) || entity.Code.Contains(keyword));
             }
+
+            if (string.IsNullOrWhiteSpace(order))
+            {
+                order = "{}";
+            }
+            var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<InventoryDocumentPackingModel>.Order(query, orderDictionary);
 
             var queryData = query.Skip((page - 1) * size).Take(size).Select(entity => new 
             {
@@ -78,7 +87,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPa
                 Id = entity.Id,
                 ReferenceNo = entity.ReferenceNo,
                 ReferenceType = entity.ReferenceType,
-                Storage = JsonConvert.DeserializeObject<Storage>(entity.Storage)
+                Storage = JsonConvert.DeserializeObject<Storage>(entity.Storage),
+                Type = entity.Type
             }).ToList();
 
             return new ListResult<IndexViewModel>(data, page, size, totalRow);
