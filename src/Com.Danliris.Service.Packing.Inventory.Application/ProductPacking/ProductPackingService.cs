@@ -52,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ProductPacking
                                 Id = productPacking.Id,
                                 LastModifiedUtc = productPacking.LastModifiedUtc,
                                 Name = product.Name,
-                                PackingType = productPacking.PackType,
+                                PackingType = productPacking.PackingType,
                                 Quantity = productPacking.Quantity
                             };
 
