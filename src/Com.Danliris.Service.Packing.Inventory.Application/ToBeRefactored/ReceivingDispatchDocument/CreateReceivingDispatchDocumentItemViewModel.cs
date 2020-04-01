@@ -1,4 +1,4 @@
-﻿namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
+﻿namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument
 {
     public class CreateReceivingDispatchDocumentItemViewModel
     {

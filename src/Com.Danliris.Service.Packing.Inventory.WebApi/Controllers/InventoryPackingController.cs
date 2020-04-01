@@ -1,23 +1,24 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/receiving-and-dispatch-documents")]
+    [Route("v1/inventory-packings")]
     [Authorize]
-    public class ReceivingDispatchController : Controller
+    public class InventoryPackingController : Controller
     {
-        private readonly IReceivingDispatchService _service;
+        private readonly IInventoryDocumentPackingService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public ReceivingDispatchController(IReceivingDispatchService service, IIdentityProvider identityProvider)
+        public InventoryPackingController(IInventoryDocumentPackingService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -30,8 +31,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
         }
 
-        [HttpPost("receive")]
-        public async Task<IActionResult> Receive([FromBody] CreateReceivingDispatchDocumentViewModel viewModel)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateInventoryDocumentPackingViewModel viewModel)
         {
             VerifyUser();
             if (!ModelState.IsValid)
@@ -40,34 +41,31 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 {
                     error = ResultFormatter.FormatErrorMessage(ModelState)
                 };
-                return new BadRequestObjectResult(result);
+                return new BadRequestObjectResult(ModelState);
             }
 
-            await _service.Receive(viewModel);
+            await _service.Create(viewModel);
 
             return Created("/", new
             {
             });
         }
 
-        [HttpPost("dispatch")]
-        public async Task<IActionResult> Dispatch([FromBody] CreateReceivingDispatchDocumentViewModel viewModel)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            VerifyUser();
-            if (!ModelState.IsValid)
+            var data = await _service.ReadById(id);
+            return Ok(new
             {
-                var result = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(result);
-            }
-
-            await _service.Dispatch(viewModel);
-
-            return Created("/", new
-            {
+                data
             });
+        }
+
+        [HttpGet]
+        public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] string order, [FromQuery] int page = 1, [FromQuery] int size = 25)
+        {
+            var data = _service.ReadByKeyword(keyword, order, page, size);
+            return Ok(data);
         }
     }
 }

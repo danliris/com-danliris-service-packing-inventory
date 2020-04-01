@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
+namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument
 {
     public class CreateReceivingDispatchDocumentValidator : AbstractValidator<CreateReceivingDispatchDocumentViewModel>
     {

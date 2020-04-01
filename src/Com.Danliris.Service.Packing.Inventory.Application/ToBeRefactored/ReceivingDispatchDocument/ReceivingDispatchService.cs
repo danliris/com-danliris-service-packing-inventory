@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
+namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument
 {
     public class ReceivingDispatchService : IReceivingDispatchService
     {
@@ -32,7 +32,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
                 DateTimeOffset.UtcNow,
                 viewModel.Items.Select(item =>
                 {
-
                     return new InventoryDocumentSKUItemModel(
                         item.Quantity.GetValueOrDefault(),
                         item.SKUId.GetValueOrDefault(),

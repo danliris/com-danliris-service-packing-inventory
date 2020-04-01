@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument
+namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument
 {
     public interface IReceivingDispatchService
     {
