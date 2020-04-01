@@ -1,5 +1,4 @@
-﻿using System;
-using Com.Moonlay.Models;
+﻿using Com.Moonlay.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 {
@@ -12,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public ProductPackingModel(
             string code,
-            string packType,
+            string packingType,
             decimal quantity,
             int skuId
         )
@@ -20,11 +19,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Code = code;
             Quantity = quantity;
             SKUId = skuId;
-            PackType = packType;
+            PackingType = packingType;
         }
 
         public string Code { get; set; }
-        public string PackType { get; private set; }
+        public string PackingType { get; private set; }
         public decimal Quantity { get; set; }
         public int SKUId { get; private set; }
     }

@@ -7,7 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.Product;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument;
+using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddSwaggerGen(swagger =>
             {
-                swagger.SwaggerDoc("v1", new Info() { Title = "Packing Inventory API", Version = "v1" });
+                swagger.SwaggerDoc("v1", new Info() { Title = "Packing Inventory API", Version = "1" });
                 swagger.AddSecurityDefinition("Bearer", new ApiKeyScheme()
                 {
                     In = "header",

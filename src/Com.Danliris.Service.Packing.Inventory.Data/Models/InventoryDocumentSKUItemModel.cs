@@ -16,6 +16,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             UOMUnit = uomUnit;
         }
 
+        public decimal BeforeQuantity { get; set; }
+        public decimal CurrentQuantity { get; set; }
         public int InventoryDocumentSKUId { get; set; }
         public decimal Quantity { get; set; }
         public int SKUId { get; set; }

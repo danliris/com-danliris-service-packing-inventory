@@ -27,15 +27,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CreatedAgent");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<string>("DeletedAgent");
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
 
@@ -45,9 +49,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent");
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
 
@@ -78,25 +84,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(32);
 
-                    b.Property<string>("CreatedAgent");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
 
                     b.Property<DateTimeOffset>("Date");
 
-                    b.Property<string>("DeletedAgent");
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent");
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
 
@@ -129,15 +141,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CreatedAgent");
+                    b.Property<decimal>("BeforeQuantity");
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<string>("DeletedAgent");
+                    b.Property<decimal>("CurrentQuantity");
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
 
@@ -145,9 +165,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent");
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
 
@@ -176,25 +198,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(32);
 
-                    b.Property<string>("CreatedAgent");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
 
                     b.Property<DateTimeOffset>("Date");
 
-                    b.Property<string>("DeletedAgent");
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent");
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
 
@@ -230,27 +258,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(32);
 
-                    b.Property<string>("CreatedAgent");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("CreatedBy");
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<string>("DeletedAgent");
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("DeletedBy");
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent");
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("LastModifiedBy");
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<string>("PackType")
+                    b.Property<string>("PackingType")
                         .HasMaxLength(32);
 
                     b.Property<decimal>("Quantity");

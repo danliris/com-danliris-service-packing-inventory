@@ -44,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Inv
 
             model.Items = model.Items.Select(entity =>
             {
+                
                 EntityExtension.FlagForCreate(entity, _identityProvider.Username, UserAgent);
                 return entity;
             }).ToList();
