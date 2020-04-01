@@ -8,7 +8,6 @@ using System.Linq.Dynamic.Core;
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 {
     public static class QueryHelper<TModel>
-        where TModel : StandardEntity
     {
         public static IQueryable<TModel> Filter(IQueryable<TModel> query, Dictionary<string, object> filterDictionary)
         {
@@ -31,9 +30,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
             /* Default Order */
             if (orderDictionary.Count.Equals(0))
             {
-                orderDictionary.Add("LastModifiedUtc", "desc");
-
-                query = query.OrderByDescending(b => b.LastModifiedUtc);
+                string key = "LastModifiedUtc";
+                string orderType = "desc";
+                query = query.OrderBy(string.Concat(key, " ", orderType));
             }
             /* Custom Order */
             else
