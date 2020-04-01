@@ -288,7 +288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Success_Get()
+        public void Should_Success_Get()
         {
             //v
             var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
@@ -307,7 +307,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Exception_Exception()
+        public void Should_Exception_Exception()
         {
             var dataUtil = ViewModel;
             //v
