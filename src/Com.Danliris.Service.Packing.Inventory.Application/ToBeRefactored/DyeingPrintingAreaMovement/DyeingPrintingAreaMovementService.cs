@@ -114,6 +114,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public async Task<DyeingPrintingAreaMovementViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
+            if (model == null)
+                return null;
+            
             DyeingPrintingAreaMovementViewModel vm = MapToViewModel(model);
 
             return vm;

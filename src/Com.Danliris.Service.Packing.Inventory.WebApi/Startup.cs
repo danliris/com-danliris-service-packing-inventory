@@ -47,15 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Register Validator
-            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
-            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
-            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
-            services.AddSingleton<IValidator<UpdateProductSKUViewModel>, UpdateProductSKUValidator>();
-            services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
-            services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
+            
 
             // Register Middleware
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
@@ -148,14 +140,27 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 });
                 swagger.CustomSchemaIds(i => i.FullName);
             });
-
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true;
+            });
             services
                 .AddMvcCore()
                 .AddJsonFormatters()
                 .AddApiExplorer()
                 .AddAuthorization()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation();
+                .AddFluentValidation(fv => { });
+
+            // Register Validator
+            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
+            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
+            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
+            services.AddSingleton<IValidator<UpdateProductSKUViewModel>, UpdateProductSKUValidator>();
+            services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
+            services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
+            services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
+            services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
