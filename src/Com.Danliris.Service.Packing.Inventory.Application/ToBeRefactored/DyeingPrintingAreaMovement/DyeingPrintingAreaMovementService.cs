@@ -69,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                     Code = model.ProductionOrderCode,
                     No = model.ProductionOrderNo
                 },
+                ProductionOrderQuantity = model.ProductionOrderQuantity,
                 Shift = model.Shift,
                 Status = model.Status,
                 Unit = new Unit()
@@ -98,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
 
             string bonNo = GenerateBonNo(totalCurrentYearData++);
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, bonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
-                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
+                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance);
@@ -126,7 +127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public Task<int> Update(int id, DyeingPrintingAreaMovementViewModel viewModel)
         {
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
-                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
+                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance);
@@ -163,6 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             MeterLength = s.MeterLength,
                             Mutation = s.Mutation,
                             ProductionOrderNo = s.ProductionOrderNo,
+                            ProductionOrderQuantity = s.ProductionOrderQuantity,
                             Shift = s.Shift,
                             Status = s.Status,
                             UnitName = s.UnitName,

@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         }
 
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
-            string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
+            double productionOrderQuantity, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string mutation,
             double length, string uomUnit, decimal balance)
         {
@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             ProductionOrderId = productionOrderId;
             ProductionOrderCode = productionOrderCode;
             ProductionOrderNo = productionOrderNo;
+            ProductionOrderQuantity = productionOrderQuantity;
             CartNo = cartNo;
             MaterialId = materialId;
             MaterialCode = materialCode;
@@ -81,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public long ProductionOrderId { get; private set; }
         public string ProductionOrderCode { get; private set; }
         public string ProductionOrderNo { get; private set; }
+        public double ProductionOrderQuantity { get; private set; }
         public string CartNo { get; private set; }
         public string Construction { get; private set; }
         public int MaterialId { get; private set; }
@@ -137,6 +139,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newProductionOrderNo != ProductionOrderNo)
             {
                 ProductionOrderNo = newProductionOrderNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
+        {
+            if(newProductionOrderQuantity != ProductionOrderQuantity)
+            {
+                ProductionOrderQuantity = newProductionOrderQuantity;
                 this.FlagForUpdate(user, agent);
             }
         }

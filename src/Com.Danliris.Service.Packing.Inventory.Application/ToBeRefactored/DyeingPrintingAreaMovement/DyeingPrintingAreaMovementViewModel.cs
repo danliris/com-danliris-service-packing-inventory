@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
+        public double ProductionOrderQuantity { get; set; }
         public string CartNo { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }

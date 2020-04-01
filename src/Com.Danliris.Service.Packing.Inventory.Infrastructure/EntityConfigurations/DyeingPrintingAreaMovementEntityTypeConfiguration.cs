@@ -15,6 +15,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(s => s.Area)
                 .HasMaxLength(64);
 
+            builder.HasIndex(s => s.BonNo)
+                .IsUnique()
+                .HasFilter("[IsDeleted]=(0)");
+
             builder
                 .Property(s => s.BonNo)
                 .HasMaxLength(64);
@@ -82,6 +86,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.Status)
               .HasMaxLength(32);
+
+            builder
+                .Property(s => s.Balance)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }
