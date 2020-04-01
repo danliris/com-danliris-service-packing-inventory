@@ -9,6 +9,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
         public void Configure(EntityTypeBuilder<ProductSKUModel> productSKUConfiguration)
         {
             productSKUConfiguration
+                .HasKey(inventoryDocument => inventoryDocument.Id);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.CreatedAgent)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.CreatedBy)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.LastModifiedAgent)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.LastModifiedBy)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.DeletedAgent)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
+                .Property(inventoryDocument => inventoryDocument.DeletedBy)
+                .HasMaxLength(128);
+
+            productSKUConfiguration
                 .Property(productSKU => productSKU.Code)
                 .HasMaxLength(32);
 
