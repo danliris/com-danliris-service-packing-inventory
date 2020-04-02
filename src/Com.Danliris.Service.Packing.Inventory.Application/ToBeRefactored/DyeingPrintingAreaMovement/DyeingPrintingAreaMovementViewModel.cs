@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public string MaterialWidth { get; set; }
         public Unit Unit { get; set; }
         public string Color { get; set; }
+        public string Motif { get; set; }
         public string Mutation { get; set; }
         public double Length { get; set; }
         public string UOMUnit { get; set; }

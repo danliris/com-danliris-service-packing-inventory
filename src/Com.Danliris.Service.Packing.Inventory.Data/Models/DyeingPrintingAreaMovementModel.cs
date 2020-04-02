@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
             double productionOrderQuantity, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
-            string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string mutation,
+            string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
             double length, string uomUnit, decimal balance)
         {
             Area = area;
@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             UnitCode = unitCode;
             UnitName = unitName;
             Color = color;
+            Motif = motif;
             Mutation = mutation;
 
             ConvertLength(length, uomUnit);
@@ -96,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string UnitCode { get; private set; }
         public string UnitName { get; private set; }
         public string Color { get; private set; }
+        public string Motif { get; private set; }
         public string Mutation { get; private set; }
         public double MeterLength { get; private set; }
         public double YardsLength { get; private set; }
@@ -243,6 +245,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newColor != Color)
             {
                 Color = newColor;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetMotif(string newMotif, string user, string agent)
+        {
+            if (newMotif != Motif)
+            {
+                Motif = newMotif;
                 this.FlagForUpdate(user, agent);
             }
         }

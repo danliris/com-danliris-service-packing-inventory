@@ -22,9 +22,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
         }
 
-        private string GenerateBonNo(int totalPreviousData)
+        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
         {
-            return string.Format("IM.{0}.{1}", DateTime.UtcNow.Year.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            return string.Format("IM.{0}.{1}", date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
         }
 
         private DyeingPrintingAreaMovementViewModel MapToViewModel(DyeingPrintingAreaMovementModel model)
@@ -63,6 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                 },
                 MaterialWidth = model.MaterialWidth,
                 Mutation = model.Mutation,
+                Motif = model.Motif,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = model.ProductionOrderId,
@@ -95,13 +96,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
 
         public Task<int> Create(DyeingPrintingAreaMovementViewModel viewModel)
         {
-            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.CreatedUtc.Year == DateTime.UtcNow.Year);
+            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.CreatedUtc.Year == viewModel.Date.Year);
 
-            string bonNo = GenerateBonNo(totalCurrentYearData++);
+            string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, bonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
-                            viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Mutation, viewModel.Length,
+                            viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance);
 
             return _repository.InsertAsync(model);
@@ -129,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
-                            viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Mutation, viewModel.Length,
+                            viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance);
             return _repository.UpdateAsync(id, model);
         }
@@ -168,6 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             Shift = s.Shift,
                             Status = s.Status,
                             UnitName = s.UnitName,
+                            Motif = s.Motif,
                             YardsLength = s.YardsLength
                         }).Skip((page - 1) * size).Take(size);
 

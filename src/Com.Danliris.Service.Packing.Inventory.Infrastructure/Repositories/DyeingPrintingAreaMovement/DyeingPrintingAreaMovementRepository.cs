@@ -66,11 +66,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 model.MaterialConstructionCode, model.MaterialConstructionName, model.MaterialWidth, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUnit(model.UnitId, model.UnitCode, model.UnitName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetColor(model.Color, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetMotif(model.Motif, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMutation(model.Mutation, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLength(model.MeterLength, model.YardsLength, model.UOMUnit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
-
             return _dbContext.SaveChangesAsync();
         }
     }
