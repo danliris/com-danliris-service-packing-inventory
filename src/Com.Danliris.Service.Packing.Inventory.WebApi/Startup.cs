@@ -140,10 +140,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 });
                 swagger.CustomSchemaIds(i => i.FullName);
             });
-            services.Configure<ApiBehaviorOptions>(opt =>
-            {
-                opt.SuppressModelStateInvalidFilter = true;
-            });
             services
                 .AddMvcCore()
                 .AddJsonFormatters()

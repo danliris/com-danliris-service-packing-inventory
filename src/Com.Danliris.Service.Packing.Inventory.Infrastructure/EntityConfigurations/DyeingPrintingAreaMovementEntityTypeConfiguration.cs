@@ -76,6 +76,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
               .HasMaxLength(4096);
 
             builder
+              .Property(s => s.Motif)
+              .HasMaxLength(4096);
+
+            builder
               .Property(s => s.Mutation)
               .HasMaxLength(64);
 
