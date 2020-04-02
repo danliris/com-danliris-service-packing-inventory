@@ -79,7 +79,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                     Id = model.UnitId,
                     Name = model.UnitName
                 },
-                UOMUnit = model.UOMUnit
+                UOMUnit = model.UOMUnit,
+                Grade = model.Grade,
+                SourceArea = model.SourceArea
             };
 
             if (vm.UOMUnit == model.METER)
@@ -103,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance);
+                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
 
             return _repository.InsertAsync(model);
         }
@@ -131,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance);
+                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
             return _repository.UpdateAsync(id, model);
         }
 

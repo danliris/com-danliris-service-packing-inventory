@@ -71,6 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetLength(model.MeterLength, model.YardsLength, model.UOMUnit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSourceArea(model.SourceArea, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
     }
