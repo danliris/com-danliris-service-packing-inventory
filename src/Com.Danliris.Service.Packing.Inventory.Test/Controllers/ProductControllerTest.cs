@@ -25,12 +25,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new ProductController(service, identityProvider);
-            controller.ControllerContext = new ControllerContext()
+            var controller = new ProductController(service, identityProvider)
             {
-                HttpContext = new DefaultHttpContext()
+                ControllerContext = new ControllerContext()
                 {
-                    User = claimPrincipal.Object
+                    HttpContext = new DefaultHttpContext()
+                    {
+                        User = claimPrincipal.Object
+                    }
                 }
             };
             controller.ControllerContext.HttpContext.Request.Headers["Authorization"] = "Bearer unittesttoken";
@@ -45,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = new CreateProductPackAndSKUViewModel();
             //v
             var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service => service.CreateProductPackAndSKU(It.IsAny<CreateProductPackAndSKUViewModel>())).ReturnsAsync(new ProductPackingBarcodeInfo("", 1, 1, "", "", 1, ""));
+            serviceMock.Setup(s => s.CreateProductPackAndSKU(It.IsAny<CreateProductPackAndSKUViewModel>())).ReturnsAsync(new ProductPackingBarcodeInfo("", 1, 1, "", "", 1, ""));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

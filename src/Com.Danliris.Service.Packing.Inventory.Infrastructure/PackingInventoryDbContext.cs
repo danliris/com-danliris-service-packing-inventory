@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<InventoryDocumentSKUModel> InventoryDocumentSKUs { get; set; }
         public DbSet<ProductSKUModel> ProductSKUs { get; set; }
         public DbSet<ProductPackingModel> ProductPackings { get; set; }
+        public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new InventoryDocumentSKUItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -33,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             
             base.OnModelCreating(modelBuilder);
         }
