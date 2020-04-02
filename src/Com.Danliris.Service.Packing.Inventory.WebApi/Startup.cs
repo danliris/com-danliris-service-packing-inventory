@@ -2,14 +2,16 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.Product;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDocument;
+using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
@@ -24,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -44,14 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Register Validator
-            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
-            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
-            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
-            services.AddSingleton<IValidator<UpdateProductSKUViewModel>, UpdateProductSKUValidator>();
-            services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
+            
 
             // Register Middleware
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
@@ -65,6 +61,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
             services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
             services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
+            services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
+            services.AddTransient<IDyeingPrintingAreaMovementService, DyeingPrintingAreaMovementService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -107,31 +105,58 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddSwaggerGen(swagger =>
             {
-                swagger.SwaggerDoc("v1", new Info() { Title = "Packing Inventory API", Version = "v1" });
-                swagger.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                swagger.SwaggerDoc("v1", new OpenApiInfo() { Title = "Packing Inventory API", Version = "v1" });
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    In = "header",
+                    In = ParameterLocation.Header,
                     Description = "Please enter into field the word 'Bearer' following by space and JWT",
                     Name = "Authorization",
-                    Type = "apiKey",
+                    Type = SecuritySchemeType.ApiKey,
                 });
-                swagger.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
+                //swagger.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>()
+                //{
+                //    {
+                //        "Bearer",
+                //        Enumerable.Empty<string>()
+                //    }
+                //});
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
-                        "Bearer",
-                        Enumerable.Empty<string>()
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
                     }
                 });
                 swagger.CustomSchemaIds(i => i.FullName);
             });
-
             services
                 .AddMvcCore()
                 .AddJsonFormatters()
                 .AddApiExplorer()
                 .AddAuthorization()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation();
+                .AddFluentValidation(fv => { });
+
+            // Register Validator
+            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
+            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
+            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
+            services.AddSingleton<IValidator<UpdateProductSKUViewModel>, UpdateProductSKUValidator>();
+            services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
+            services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
+            services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
+            services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

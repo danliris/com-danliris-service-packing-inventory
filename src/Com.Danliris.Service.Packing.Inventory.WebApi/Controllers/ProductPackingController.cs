@@ -87,9 +87,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] int page = 1, [FromQuery] int size = 25)
+        public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] string order, [FromQuery] int page = 1, [FromQuery] int size = 25)
         {
-            var data = _service.ReadByKeyword(keyword, page, size);
+            var data = _service.ReadByKeyword(keyword, order, page, size);
             return Ok(data);
         }
     }
