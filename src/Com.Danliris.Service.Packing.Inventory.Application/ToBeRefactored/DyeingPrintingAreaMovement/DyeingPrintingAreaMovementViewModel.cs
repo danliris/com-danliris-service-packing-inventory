@@ -26,5 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public string UOMUnit { get; set; }
         public decimal Balance { get; set; }
         public string Status { get; set; }
+        public string Grade { get; set; }
+        public string SourceArea { get; set; }
     }
 }
