@@ -9,6 +9,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.Product;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Transit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -63,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             services.AddTransient<IDyeingPrintingAreaMovementService, DyeingPrintingAreaMovementService>();
+            services.AddTransient<ITransitAreaNoteService, TransitAreaNoteService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();

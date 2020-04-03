@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
             double productionOrderQuantity, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
-            double length, string uomUnit, decimal balance)
+            double length, string uomUnit, decimal balance, string status, string grade, string sourceArea)
         {
             Area = area;
             BonNo = bonNo;
@@ -52,8 +52,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
             UOMUnit = uomUnit;
             Balance = balance;
-
-            Status = OK;
+            Status = status;
+            Grade = grade;
+            SourceArea = sourceArea;
         }
 
         public string GenerateConstruction(string materialName, string materialConstructionName, string materialWidth)
@@ -104,6 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string UOMUnit { get; private set; }
         public decimal Balance { get; private set; }
         public string Status { get; private set; }
+        public string Grade { get; private set; }
+        public string SourceArea { get; private set; }
 
 
         public void SetDate(DateTimeOffset newDate, string user, string agent)
@@ -302,6 +305,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if(newStatus != Status)
             {
                 Status = newStatus;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetGrade(string newGrade, string user, string agent)
+        {
+            if(newGrade != Grade)
+            {
+                Grade = newGrade;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetSourceArea(string newSourceArea, string user, string agent)
+        {
+            if (newSourceArea != SourceArea)
+            {
+                SourceArea = newSourceArea;
                 this.FlagForUpdate(user, agent);
             }
         }
