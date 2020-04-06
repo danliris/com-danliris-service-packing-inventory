@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
@@ -67,6 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaMovementService, DyeingPrintingAreaMovementService>();
             services.AddTransient<ITransitAreaNoteService, TransitAreaNoteService>();
             services.AddTransient<IInspectionDocumentReportService, InspectionDocumentReportService>();
+            services.AddTransient<IInspectionBalanceIMService, InspectionBalanceIMService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -161,6 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
             services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
             services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
+            //services.AddSingleton<IValidator<FilterInspectionDocumentReport>, FilterInspectionDocumentReportValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

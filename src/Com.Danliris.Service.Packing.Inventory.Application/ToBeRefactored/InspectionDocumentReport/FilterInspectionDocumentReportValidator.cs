@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.InspectionDocumentReport
+namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport
 {
     public class FilterInspectionDocumentReportValidator : AbstractValidator<FilterInspectionDocumentReport>
     {

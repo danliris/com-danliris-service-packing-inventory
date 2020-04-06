@@ -34,18 +34,57 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery]DateTimeOffset dateReport, [FromQuery] string group, [FromQuery] string mutasi, [FromQuery] string zona,[FromQuery] string keterangan)
+        public IActionResult GetAll(
+            [FromQuery]DateTimeOffset? dateReport,
+            [FromQuery] string group="",
+            [FromQuery] string mutasi="",
+            [FromQuery] string zona="",
+            [FromQuery] string keterangan="")
         {
             try
             {
                 VerifyUser();
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var Result = _service.GetReport(dateReport,group,mutasi,zona,keterangan,clientTimeZoneOffset);
+                //if (Result == null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.NoContent, "{'Message' : 'Null Result Occured'}");
+                //}
+
+                //if (Result.Count == 0)
+                //{
+                    //return StatusCode((int)HttpStatusCode.NoContent, "{'Message': 'Report Data Not Found for the filter'}");
+                //}
 
                 return Ok(new
                 {
                     data = Result
                 });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("xls")]
+        public IActionResult GetDataByExcel(
+            [FromQuery]DateTimeOffset? dateReport,
+            [FromQuery] string group = "",
+            [FromQuery] string mutasi = "",
+            [FromQuery] string zona = "",
+            [FromQuery] string keterangan = "")
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcel(dateReport,group,mutasi,zona,keterangan,clientTimeZoneOffset);
+                string filename = "BON IM.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
             }
             catch (Exception ex)
             {
