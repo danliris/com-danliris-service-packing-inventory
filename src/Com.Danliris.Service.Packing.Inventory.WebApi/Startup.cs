@@ -12,9 +12,11 @@ using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
@@ -69,6 +71,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<ITransitAreaNoteService, TransitAreaNoteService>();
             services.AddTransient<IInspectionDocumentReportService, InspectionDocumentReportService>();
             services.AddTransient<IInspectionBalanceIMService, InspectionBalanceIMService>();
+            services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
+            services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
+            services.AddTransient<ICriteriaRepository, CriteriaRepository>();
+            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
+
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -163,7 +170,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
             services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
             services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
-            //services.AddSingleton<IValidator<FilterInspectionDocumentReport>, FilterInspectionDocumentReportValidator>();
+            services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

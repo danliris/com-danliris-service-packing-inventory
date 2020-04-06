@@ -1,4 +1,5 @@
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<ProductSKUModel> ProductSKUs { get; set; }
         public DbSet<ProductPackingModel> ProductPackings { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
+        public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
+        public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
+        public DbSet<CriteriaModel> NewCriterias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +32,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FabricGradeTestEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CriteriaEntityTypeConfiguration());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -36,7 +43,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            
+            modelBuilder.Entity<FabricQualityControlModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<FabricGradeTestModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
             base.OnModelCreating(modelBuilder);
         }
     }

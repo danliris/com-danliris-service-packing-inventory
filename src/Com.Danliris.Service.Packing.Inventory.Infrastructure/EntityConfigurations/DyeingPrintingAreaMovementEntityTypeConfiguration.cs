@@ -12,6 +12,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
         public void Configure(EntityTypeBuilder<DyeingPrintingAreaMovementModel> builder)
         {
             builder
+                .HasKey(s => s.Id);
+
+            builder
+                .Property(s => s.CreatedAgent)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.CreatedBy)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.LastModifiedAgent)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.LastModifiedBy)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.DeletedAgent)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.DeletedBy)
+                .HasMaxLength(128);
+
+            builder
                 .Property(s => s.Area)
                 .HasMaxLength(64);
 
@@ -34,6 +61,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.ProductionOrderNo)
                 .HasMaxLength(128);
+
+            builder
+                .Property(s => s.Buyer)
+                .HasMaxLength(4096);
+
+            builder
+                .Property(s => s.PackingInstruction)
+                .HasMaxLength(4096);
+
+            builder
+                .Property(s => s.ProductionOrderType)
+                .HasMaxLength(4096);
 
             builder
                .Property(s => s.CartNo)

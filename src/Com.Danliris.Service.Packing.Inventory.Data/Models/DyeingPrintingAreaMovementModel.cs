@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         }
 
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
-            double productionOrderQuantity, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
+            double productionOrderQuantity, string productionOrderType, string buyer, string packingInstruction, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
             double length, string uomUnit, decimal balance, string status, string grade, string sourceArea)
         {
@@ -31,6 +31,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             ProductionOrderCode = productionOrderCode;
             ProductionOrderNo = productionOrderNo;
             ProductionOrderQuantity = productionOrderQuantity;
+            Buyer = buyer;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
             CartNo = cartNo;
             MaterialId = materialId;
             MaterialCode = materialCode;
@@ -85,6 +88,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string ProductionOrderCode { get; private set; }
         public string ProductionOrderNo { get; private set; }
         public double ProductionOrderQuantity { get; private set; }
+        public string Buyer { get; private set; }
+        public string PackingInstruction { get; private set; }
+        public string ProductionOrderType { get; private set; }
         public string CartNo { get; private set; }
         public string Construction { get; private set; }
         public int MaterialId { get; private set; }
@@ -127,7 +133,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderCode, string newProductionOrderNo, string user, string agent)
+        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderCode, string newProductionOrderNo,
+            string newProductionOrderType, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)
             {
@@ -146,11 +153,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
                 ProductionOrderNo = newProductionOrderNo;
                 this.FlagForUpdate(user, agent);
             }
+
+            if (newProductionOrderType != ProductionOrderType)
+            {
+                ProductionOrderType = newProductionOrderType;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetBuyer(string newBuyer, string user, string agent)
+        {
+            if (newBuyer != Buyer)
+            {
+                Buyer = newBuyer;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingInstruction(string newPackingInstruction, string user, string agent)
+        {
+            if (newPackingInstruction != PackingInstruction)
+            {
+                PackingInstruction = newPackingInstruction;
+                this.FlagForUpdate(user, agent);
+            }
         }
 
         public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
         {
-            if(newProductionOrderQuantity != ProductionOrderQuantity)
+            if (newProductionOrderQuantity != ProductionOrderQuantity)
             {
                 ProductionOrderQuantity = newProductionOrderQuantity;
                 this.FlagForUpdate(user, agent);
@@ -272,13 +303,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public void SetLength(double newMeterLength, double newYardsLength, string newUomUnit, string user, string agent)
         {
-            if(newMeterLength != MeterLength)
+            if (newMeterLength != MeterLength)
             {
                 MeterLength = newMeterLength;
                 this.FlagForUpdate(user, agent);
             }
 
-            if(newYardsLength != YardsLength)
+            if (newYardsLength != YardsLength)
             {
                 YardsLength = newYardsLength;
                 this.FlagForUpdate(user, agent);
@@ -293,7 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public void SetBalance(decimal newBalance, string user, string agent)
         {
-            if(newBalance != Balance)
+            if (newBalance != Balance)
             {
                 Balance = newBalance;
                 this.FlagForUpdate(user, agent);
@@ -302,7 +333,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public void SetStatus(string newStatus, string user, string agent)
         {
-            if(newStatus != Status)
+            if (newStatus != Status)
             {
                 Status = newStatus;
                 this.FlagForUpdate(user, agent);
@@ -311,7 +342,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public void SetGrade(string newGrade, string user, string agent)
         {
-            if(newGrade != Grade)
+            if (newGrade != Grade)
             {
                 Grade = newGrade;
                 this.FlagForUpdate(user, agent);

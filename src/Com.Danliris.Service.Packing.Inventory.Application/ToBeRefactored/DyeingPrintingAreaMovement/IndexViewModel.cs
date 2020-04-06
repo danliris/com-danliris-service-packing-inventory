@@ -12,6 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }
         public string ProductionOrderNo { get; set; }
+        public long ProductionOrderId { get; set; }
+        public string ProductionOrderType { get; set; }
         public double ProductionOrderQuantity { get; set; }
         public string CartNo { get; set; }
         public string MaterialName { get; set; }
@@ -25,5 +27,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public double YardsLength { get; set; }
         public decimal Balance { get; set; }
         public string Status { get; set; }
+        public string UomUnit { get; set; }
     }
 }
