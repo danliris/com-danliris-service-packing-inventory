@@ -177,7 +177,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             Status = s.Status,
                             UnitName = s.UnitName,
                             Motif = s.Motif,
-                            YardsLength = s.YardsLength
+                            UomUnit = s.UOMUnit,
+                            YardsLength = s.YardsLength,
+                            ProductionOrderId = s.ProductionOrderId,
+                            ProductionOrderType = s.ProductionOrderType
                         }).Skip((page - 1) * size).Take(size);
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());

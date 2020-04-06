@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 ShiftIm = dpModel?.Shift,
                 UId = model.UId,
                 Uom = dpModel?.UOMUnit,
+                ProductionOrderId = dpModel?.ProductionOrderId,
                 FabricGradeTests = model.FabricGradeTests.Select(s => new FabricGradeTestViewModel()
                 {
                     Active = s.Active,

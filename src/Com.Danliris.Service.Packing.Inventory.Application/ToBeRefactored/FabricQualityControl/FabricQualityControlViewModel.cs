@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public string PackingInstruction { get; set; }
         public double? PointLimit { get; set; }
         public double? PointSystem { get; set; }
+        public long? ProductionOrderId { get; set; }
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
         public string ShiftIm { get; set; }

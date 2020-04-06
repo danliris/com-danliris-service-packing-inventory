@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/finishing-printing/quality-control/defect")]
+    [Route("v1/quality-control/defect")]
     [Authorize]
     public class FabricQualityControlController : ControllerBase
     {
