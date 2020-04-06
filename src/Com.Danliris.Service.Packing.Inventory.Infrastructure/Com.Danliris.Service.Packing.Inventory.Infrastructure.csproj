@@ -3,6 +3,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200401094743_AddDyeingPrintingAreaMovement.cs" />
     <Compile Remove="Migrations\20200401094743_AddDyeingPrintingAreaMovement.Designer.cs" />
+    <Compile Remove="Migrations\20200406024119_AddFabricQualityControl.cs" />
+    <Compile Remove="Migrations\20200406024119_AddFabricQualityControl.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
