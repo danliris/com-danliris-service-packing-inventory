@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -33,11 +34,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery]DateTimeOffset dateReport, [FromQuery] string group, [FromQuery] string mutasi, [FromQuery] string zona,[FromQuery] string keterangan)
         {
-            var data = _service.GetAll();
-            return Ok(data);
+            try
+            {
+                VerifyUser();
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GetReport(dateReport,group,mutasi,zona,keterangan,clientTimeZoneOffset);
+
+                return Ok(new
+                {
+                    data = Result
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

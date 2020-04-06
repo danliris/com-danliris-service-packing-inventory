@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport
 {
-    public class InspectionDocumentReportItemViewModel
+    public class IndexViewModel
     {
         public int Index { get; set; }
-        public DateTime DateReport { get; set; }
+        public DateTimeOffset DateReport { get; set; }
         public string GroupText { get; set; }
         public string UnitText { get; set; }
         public string KeluarKe { get; set; }
