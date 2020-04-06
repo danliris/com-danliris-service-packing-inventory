@@ -307,7 +307,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Exception_Exception()
+        public void Should_Exception_Get()
         {
             var dataUtil = ViewModel;
             //v

@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 {
     public interface IDyeingPrintingAreaMovementRepository : IRepository<DyeingPrintingAreaMovementModel>
     {
+        IQueryable<DyeingPrintingAreaMovementModel> GetDbSet();
         IQueryable<DyeingPrintingAreaMovementModel> ReadAllIgnoreQueryFilter();
     }
 }

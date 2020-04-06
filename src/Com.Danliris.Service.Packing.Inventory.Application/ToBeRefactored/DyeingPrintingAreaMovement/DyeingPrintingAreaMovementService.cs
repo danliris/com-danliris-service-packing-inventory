@@ -68,9 +68,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                 {
                     Id = model.ProductionOrderId,
                     Code = model.ProductionOrderCode,
-                    No = model.ProductionOrderNo
+                    No = model.ProductionOrderNo,
+                    Type = model.ProductionOrderType
                 },
                 ProductionOrderQuantity = model.ProductionOrderQuantity,
+                PackingInstruction = model.PackingInstruction,
+                Buyer = model.Buyer,
                 Shift = model.Shift,
                 Status = model.Status,
                 Unit = new Unit()
@@ -102,7 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
 
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, bonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
-                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
+                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.ProductionOrder.Type,
+                            viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
@@ -130,7 +134,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public Task<int> Update(int id, DyeingPrintingAreaMovementViewModel viewModel)
         {
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
-                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
+                            viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.ProductionOrder.Type, 
+                            viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
                             viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
@@ -172,7 +177,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             Status = s.Status,
                             UnitName = s.UnitName,
                             Motif = s.Motif,
-                            YardsLength = s.YardsLength
+                            UomUnit = s.UOMUnit,
+                            YardsLength = s.YardsLength,
+                            ProductionOrderId = s.ProductionOrderId,
+                            ProductionOrderType = s.ProductionOrderType
                         }).Skip((page - 1) * size).Take(size);
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());

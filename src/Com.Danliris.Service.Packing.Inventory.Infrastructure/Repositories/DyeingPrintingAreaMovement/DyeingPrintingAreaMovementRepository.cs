@@ -33,6 +33,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
+        public IQueryable<DyeingPrintingAreaMovementModel> GetDbSet()
+        {
+            return _dyeingPrintingAreaMovementDbSet;
+        }
+
         public Task<int> InsertAsync(DyeingPrintingAreaMovementModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -60,7 +65,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderCode, model.ProductionOrderNo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderCode, model.ProductionOrderNo,
+                model.ProductionOrderType, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrderQuantity(model.ProductionOrderQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyer(model.Buyer, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackingInstruction(model.PackingInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCartNumber(model.CartNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetConstructionData(model.MaterialId, model.MaterialCode, model.MaterialName, model.MaterialConstructionId,
                 model.MaterialConstructionCode, model.MaterialConstructionName, model.MaterialWidth, _identityProvider.Username, UserAgent);
