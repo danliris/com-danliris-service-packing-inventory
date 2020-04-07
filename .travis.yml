@@ -3,9 +3,7 @@ dist: xenial
 language: csharp
 mono: none
 dotnet: 2.2
-solution: Com.DanLiris.Service.Packing.Inventory.sln
-services:
-    - docker
+solution: Com.Danliris.Service.Packing.Inventory.sln
 env:
     - ASPNETCORE_ENVIRONMENT=Test
 
@@ -14,15 +12,13 @@ before_install:
 install: true
 
 before_script:
-    - sudo apt-get install libgdiplus
-    - sleep 60
 
 script:
-    - dotnet restore src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj
-    - dotnet build src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj
-    - dotnet test src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - dotnet restore --verbosity normal
+    - dotnet build
+    - dotnet test src/Com.Danliris.Service.Packing.Inventory.Test/Com.Danliris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
 after_success:
     - curl -s https://codecov.io/bash > codecov
     - chmod +x codecov
-    - ./codecov -f "/home/travis/build/danliris/com-danliris-service-packing-inventory/src/Com.DanLiris.Service.Packing.Inventory.Test/coverage.info"
+    - ./codecov -f "/home/travis/build/danliris/com-danliris-service-packing-inventory/src/Com.Danliris.Service.Packing.Inventory.Test/coverage.info"
