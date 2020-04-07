@@ -1,0 +1,4 @@
+ignore:
+  - "src/Com.Danliris.Service.Packing.Inventory.Infrastructure/Migrations"
+  - "src/Com.Danliris.Service.Packing.Inventory.WebApi/Program.cs"
+  - "src/Com.Danliris.Service.Packing.Inventory.WebApi/Startup.cs"
