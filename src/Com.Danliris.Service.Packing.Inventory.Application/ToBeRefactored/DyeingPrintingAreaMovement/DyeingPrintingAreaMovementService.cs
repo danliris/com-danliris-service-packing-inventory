@@ -10,16 +10,18 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.FabricQualityControl;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement
 {
     public class DyeingPrintingAreaMovementService : IDyeingPrintingAreaMovementService
     {
         private readonly IDyeingPrintingAreaMovementRepository _repository;
-
+        private readonly IFabricQualityControlRepository _fqRepository;
         public DyeingPrintingAreaMovementService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
+            _fqRepository = serviceProvider.GetService<IFabricQualityControlRepository>();
         }
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
@@ -157,7 +159,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DyeingPrintingAreaMovementModel>.Order(query, OrderDictionary);
-            var data = query.Select(s => new IndexViewModel()
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
                         {
                             Area = s.Area,
                             Balance = s.Balance,
@@ -180,8 +182,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
                             UomUnit = s.UOMUnit,
                             YardsLength = s.YardsLength,
                             ProductionOrderId = s.ProductionOrderId,
-                            ProductionOrderType = s.ProductionOrderType
-                        }).Skip((page - 1) * size).Take(size);
+                            ProductionOrderType = s.ProductionOrderType,
+                            Buyer = s.Buyer
+                        });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }

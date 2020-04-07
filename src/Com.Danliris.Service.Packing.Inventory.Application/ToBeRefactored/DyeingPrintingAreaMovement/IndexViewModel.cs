@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
     {
         public int Id { get; set; }
         public string Area { get; set; }
+        public string Buyer { get; set; }
         public string BonNo { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }

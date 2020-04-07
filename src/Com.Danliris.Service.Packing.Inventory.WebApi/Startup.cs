@@ -11,6 +11,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.Product;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Packing;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
@@ -75,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
             services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
+            services.AddTransient<IPackingAreaNoteService, PackingAreaNoteService>();
 
 
             // Register Provider
