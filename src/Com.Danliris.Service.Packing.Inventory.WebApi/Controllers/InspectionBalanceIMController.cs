@@ -66,6 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var Result = _service.GenerateExcel(dateReport, shift, unit, clientTimeZoneOffset);
+
                 string filename = "Saldo IM.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

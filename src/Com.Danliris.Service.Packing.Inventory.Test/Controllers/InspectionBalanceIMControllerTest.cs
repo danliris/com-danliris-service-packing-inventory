@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IInspectionBalanceIMService>();
             serviceMock.Setup(s => s.GetReport(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .Throws(new Exception("Unexpected Error"));
+                .Throws<Exception>();
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
 
-            var response = controller.GetAll(null, null, null);
+            var response = controller.GetAll(DateTimeOffset.Parse("2020-12-12"), "PAGI", "IM");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
