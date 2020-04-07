@@ -15,7 +15,6 @@ install: true
 
 before_script:
     - sudo apt-get install libgdiplus
-    - sleep 60
 
 script:
     - dotnet restore src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj
