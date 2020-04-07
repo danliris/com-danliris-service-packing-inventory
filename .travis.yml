@@ -2,7 +2,7 @@ sudo: false
 dist: xenial
 language: csharp
 mono: none
-dotnet: 2.0.0
+dotnet: 2.2
 solution: Com.DanLiris.Service.Packing.Inventory.sln
 services:
     - docker
