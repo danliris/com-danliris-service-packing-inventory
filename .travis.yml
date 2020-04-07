@@ -4,8 +4,6 @@ language: csharp
 mono: none
 dotnet: 2.2
 solution: Com.DanLiris.Service.Packing.Inventory.sln
-services:
-    - docker
 env:
     - ASPNETCORE_ENVIRONMENT=Test
 
@@ -14,11 +12,10 @@ before_install:
 install: true
 
 before_script:
-    - sudo apt-get install libgdiplus
 
 script:
-    - dotnet restore src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj --verbosity normal
-    - dotnet build src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj
+    - dotnet restore --verbosity normal
+    - dotnet build
     - dotnet test src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
 after_success:
