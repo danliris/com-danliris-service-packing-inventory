@@ -3,7 +3,7 @@ dist: xenial
 language: csharp
 mono: none
 dotnet: 2.2
-solution: Com.DanLiris.Service.Packing.Inventory.sln
+solution: Com.Danliris.Service.Packing.Inventory.sln
 env:
     - ASPNETCORE_ENVIRONMENT=Test
 
@@ -16,7 +16,7 @@ before_script:
 script:
     - dotnet restore --verbosity normal
     - dotnet build
-    - dotnet test src/Com.DanLiris.Service.Packing.Inventory.Test/Com.DanLiris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - dotnet test src/Com.Danliris.Service.Packing.Inventory.Test/Com.Danliris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
 after_success:
     - curl -s https://codecov.io/bash > codecov
