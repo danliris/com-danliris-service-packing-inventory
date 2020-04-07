@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.Product;
@@ -67,10 +69,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             services.AddTransient<IDyeingPrintingAreaMovementService, DyeingPrintingAreaMovementService>();
             services.AddTransient<ITransitAreaNoteService, TransitAreaNoteService>();
+            services.AddTransient<IInspectionDocumentReportService, InspectionDocumentReportService>();
+            services.AddTransient<IInspectionBalanceIMService, InspectionBalanceIMService>();
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
             services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
+
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();

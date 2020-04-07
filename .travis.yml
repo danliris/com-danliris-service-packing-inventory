@@ -14,7 +14,7 @@ install: true
 before_script:
 
 script:
-    - dotnet restore --verbosity normal
+    - dotnet restore
     - dotnet build
     - dotnet test src/Com.Danliris.Service.Packing.Inventory.Test/Com.Danliris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
 
