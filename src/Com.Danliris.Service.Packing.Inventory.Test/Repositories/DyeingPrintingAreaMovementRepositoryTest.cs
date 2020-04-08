@@ -10,6 +10,10 @@ using Xunit;
 using Moq;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using System.Linq;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
+using Com.Moonlay.Models;
+using System.Collections.Generic;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
 {
@@ -44,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
             return new DyeingPrintingAreaMovementRepository(dbContext, serviceProvider);
         }
 
-        private DyeingPrintingAreaMovementModel Model
+        public DyeingPrintingAreaMovementModel Model
         {
             get
             {
@@ -75,18 +79,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
             Assert.NotEqual(0, result);
         }
 
-        //[Fact]
-        //public async Task Should_Success_Delete()
-        //{
-        //    string testName = GetCurrentMethod();
-        //    var dbContext = GetDbContext(testName);
+        private async Task<DyeingPrintingAreaMovementModel> CreateHelper(DyeingPrintingAreaMovementRepository repo)
+        {
+            await repo.InsertAsync(Model);
 
-        //    var repo = GetRepository(dbContext, GetServiceProvider().Object);
-        //    await repo.InsertAsync(Model);
+            var data = repo.ReadAll().FirstOrDefault();
+            return data;
+        }
 
-        //    var result = await repo.DeleteAsync(Model.Id);
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = GetDbContext(testName);
 
-        //    Assert.NotEqual(0, result);
-        //}
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            var data = await CreateHelper(repo);
+            var result = await repo.DeleteAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Exception_Delete()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = GetDbContext(testName);
+
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            var data = await CreateHelper(repo);
+
+            var fqcModel = new FabricQualityControlModel("code", DateTimeOffset.UtcNow, "area",false,data.Id, data.BonNo, data.ProductionOrderNo, "machine", 
+                "op", 1,1,new List<FabricGradeTestModel>());
+            fqcModel.FlagForCreate("test", "test");
+            var datafqc = dbContext.Add(fqcModel);
+            await dbContext.SaveChangesAsync();
+
+            await Assert.ThrowsAnyAsync<Exception>(() => repo.DeleteAsync(data.Id));
+        }
     }
 }
