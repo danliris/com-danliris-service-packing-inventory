@@ -11,6 +11,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse
 {
     public class GoodsWarehouseDocumentsService : IGoodsWarehouseDocumentsService
     {
+        public GoodsWarehouseDocumentsService(IServiceProvider serviceProvider)
+        {
+
+        }
+        public GoodsWarehouseDocumentsService()
+        {
+
+        }
         public MemoryStream GetExcel(DateTimeOffset? date, string group, string zona, int timeOffSet)
         {
             var query = GetQuery(date, group, zona, timeOffSet);
