@@ -58,6 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Status = status;
             Grade = grade;
             SourceArea = sourceArea;
+
+            //MassKg = massKg;
         }
 
         public string GenerateConstruction(string materialName, string materialConstructionName, string materialWidth)
@@ -113,6 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string Status { get; private set; }
         public string Grade { get; private set; }
         public string SourceArea { get; private set; }
+        //public double MassKg { get; private set; }
 
 
         public void SetDate(DateTimeOffset newDate, string user, string agent)
