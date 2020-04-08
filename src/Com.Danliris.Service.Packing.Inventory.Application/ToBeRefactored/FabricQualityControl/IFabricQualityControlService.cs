@@ -19,6 +19,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
         MemoryStream GenerateExcel(string code, int kanbanId, string productionOrderType, string productionOrderNo, string shiftIm, DateTime? dateFrom, DateTime? dateTo, int offSet);
 
-        Task<List<FabricQCGradeTestsViewModel>> GetForSPP(string no);
+        List<FabricQCGradeTestsViewModel> GetForSPP(string no);
     }
 }

@@ -197,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Pemeriksaan Kain") }, true);
         }
 
-        public Task<List<FabricQCGradeTestsViewModel>> GetForSPP(string no)
+        public List<FabricQCGradeTestsViewModel> GetForSPP(string no)
         {
             IQueryable<FabricQCGradeTestsViewModel> data;
             
@@ -230,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
 
             }
-            return data.AsNoTracking().ToListAsync();
+            return data.AsNoTracking().ToList();
         }
 
         public ListResult<FabricQualityControlViewModel> GetReport(int page, int size, string code, int dyeingPrintintMovementId, string productionOrderType, 
@@ -309,7 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         private List<FabricQualityControlViewModel> GetReport(string code, int dyeingPrintingMovementId, string productionOrderType, string productionOrderNo, string shiftIm, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
 
-            IQueryable<FabricQualityControlModel> query = _repository.GetDbSet().Include(s => s.FabricGradeTests).AsNoTracking();
+            IQueryable<FabricQualityControlModel> query = _repository.ReadAll();
             IQueryable<DyeingPrintingAreaMovementModel> dpQuery = _dpRepository.ReadAll();
             IEnumerable<FabricQualityControlViewModel> fabricQCs;
 
