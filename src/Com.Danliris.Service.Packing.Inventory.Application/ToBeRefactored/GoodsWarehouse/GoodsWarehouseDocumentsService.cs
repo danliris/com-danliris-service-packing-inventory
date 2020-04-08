@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -87,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse
             sheet.Cells[5, startHeaderColumn, 6, endHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
             sheet.Cells[5, startHeaderColumn, 6, endHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
             sheet.Cells[5, startHeaderColumn, 6, endHeaderColumn].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-            sheet.Cells[5, startHeaderColumn, 6, endHeaderColumn].Style.Fill.BackgroundColor.SetColor(Color.Aqua);
+            sheet.Cells[5, startHeaderColumn, 6, endHeaderColumn].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
 
             foreach(DataColumn column in dt.Columns)
             {

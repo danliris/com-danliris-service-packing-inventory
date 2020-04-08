@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM
             int tableColStart = 1;
 
             sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
-            sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+            //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
 
             MemoryStream stream = new MemoryStream();
             package.SaveAs(stream);
