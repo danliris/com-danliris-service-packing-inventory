@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
@@ -75,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
             services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
+            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
 
 
             // Register Provider

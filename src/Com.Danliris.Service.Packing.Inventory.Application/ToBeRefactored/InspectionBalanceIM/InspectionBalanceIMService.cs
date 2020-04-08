@@ -58,7 +58,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM
             sheet.Cells[3, 1].Value = "UNIT";
             sheet.Cells[3, 2].Value = unit;
 
-            #endregion
             sheet.Cells[1, 1, 6, 6].Style.Font.Bold = true;
 
             
@@ -100,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM
             sheet.Cells[6, 6].Value = "Sum of Akhir";
             sheet.Cells[6, 6].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
             sheet.Cells[6, 6].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-
+            #endregion
 
             int tableRowStart = 7;
             int tableColStart = 1;
@@ -157,8 +156,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM
             {
                 query = query.Where(s => s.UnitName == unit);
             }
-
-            var groupresult = query.GroupBy(x => new { x.MaterialId, x.ProductionOrderId });
 
             var result = query.GroupBy(x => new { x.MaterialId, x.ProductionOrderId }).Select(s => new IndexViewModel()
             {
