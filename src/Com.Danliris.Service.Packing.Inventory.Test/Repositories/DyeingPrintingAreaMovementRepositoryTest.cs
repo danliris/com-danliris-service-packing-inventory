@@ -109,13 +109,68 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
             var repo = GetRepository(dbContext, GetServiceProvider().Object);
             var data = await CreateHelper(repo);
 
-            var fqcModel = new FabricQualityControlModel("code", DateTimeOffset.UtcNow, "area",false,data.Id, data.BonNo, data.ProductionOrderNo, "machine", 
-                "op", 1,1,new List<FabricGradeTestModel>());
+            var fqcModel = new FabricQualityControlModel("code", DateTimeOffset.UtcNow, "area", false, data.Id, data.BonNo, data.ProductionOrderNo, "machine",
+                "op", 1, 1, new List<FabricGradeTestModel>());
             fqcModel.FlagForCreate("test", "test");
             var datafqc = dbContext.Add(fqcModel);
             await dbContext.SaveChangesAsync();
 
             await Assert.ThrowsAnyAsync<Exception>(() => repo.DeleteAsync(data.Id));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetDbSet()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = GetDbContext(testName);
+
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            await CreateHelper(repo);
+            var result = repo.GetDbSet();
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadAllIgnoreQueryFilter()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = GetDbContext(testName);
+
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            await CreateHelper(repo);
+            var result = repo.ReadAllIgnoreQueryFilter();
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadById()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = GetDbContext(testName);
+
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            var data = await CreateHelper(repo);
+            var result = await repo.ReadByIdAsync(data.Id);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            string testName = GetCurrentMethod() + "UPdate";
+            var dbContext = GetDbContext(testName);
+
+            var repo = GetRepository(dbContext, GetServiceProvider().Object);
+            var repo2 = GetRepository(dbContext, GetServiceProvider().Object);
+            await repo.InsertAsync(new DyeingPrintingAreaMovementModel());
+
+            var data = repo.ReadAll().FirstOrDefault();
+            var result = await repo2.UpdateAsync(data.Id, Model);
+
+            Assert.NotEqual(0, result);
         }
     }
 }
