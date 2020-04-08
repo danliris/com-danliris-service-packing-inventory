@@ -30,5 +30,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
         public string SourceArea { get; set; }
         public string Buyer { get; set; }
         public string PackingInstruction { get; set; }
+        //public double MassKg { get; set; }
     }
 }
