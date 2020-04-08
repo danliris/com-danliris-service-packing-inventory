@@ -12,6 +12,8 @@ before_install:
 install: true
 
 before_script:
+    - sudo apt-get install libgdiplus
+    - sleep 60
 
 script:
     - dotnet restore
