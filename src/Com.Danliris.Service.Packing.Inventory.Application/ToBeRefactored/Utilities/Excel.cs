@@ -5,7 +5,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
+namespace Com.Danliris.Service.Packing.Inventory.Application.Utilities
 {
     public static class Excel
     {

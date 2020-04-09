@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public async Task Should_Success_Insert()
+        public virtual async Task Should_Success_Insert()
         {
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public async Task Should_Success_Delete()
+        public virtual async Task Should_Success_Delete()
         {
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public async Task Should_Success_ReadAll()
+        public virtual async Task Should_Success_ReadAll()
         {
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public async Task Should_Success_ReadById()
+        public virtual async Task Should_Success_ReadById()
         {
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public async Task Should_Success_Update()
+        public virtual async Task Should_Success_Update()
         {
             string testName = GetCurrentMethod() + "Update";
             var dbContext = DbContext(testName);

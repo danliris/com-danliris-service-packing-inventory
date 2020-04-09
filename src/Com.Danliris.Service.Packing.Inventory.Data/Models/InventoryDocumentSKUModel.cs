@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
     {
         public InventoryDocumentSKUModel()
         {
-
+            Items = new HashSet<InventoryDocumentSKUItemModel>();
         }
 
         public InventoryDocumentSKUModel(
