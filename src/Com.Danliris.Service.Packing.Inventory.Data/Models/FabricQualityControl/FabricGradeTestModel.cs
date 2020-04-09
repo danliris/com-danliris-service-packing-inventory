@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
     {
         public FabricGradeTestModel()
         {
-
+            Criteria = new HashSet<CriteriaModel>();
         }
 
         public FabricGradeTestModel(double avalLength, double fabricGradeTest, double finalArea, double finalGradeTest, double finalLength, double finalScore,

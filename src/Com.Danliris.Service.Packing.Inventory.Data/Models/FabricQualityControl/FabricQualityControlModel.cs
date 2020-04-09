@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
     {
         public FabricQualityControlModel()
         {
-
+            FabricGradeTests = new HashSet<FabricGradeTestModel>();
         }
 
         public FabricQualityControlModel(string code, DateTimeOffset dateIm, string group, bool isUsed, int dyeingPrintingAreaMovementId, string dyeingPrintingAreaMovementBonNo,
