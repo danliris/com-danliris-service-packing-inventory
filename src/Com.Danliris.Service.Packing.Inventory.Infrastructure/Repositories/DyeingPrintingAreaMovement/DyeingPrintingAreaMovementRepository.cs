@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -17,17 +18,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly PackingInventoryDbContext _dbContext;
         private readonly DbSet<DyeingPrintingAreaMovementModel> _dyeingPrintingAreaMovementDbSet;
         private readonly IIdentityProvider _identityProvider;
+        private readonly DbSet<FabricQualityControlModel> _fqcDbSet;
 
         public DyeingPrintingAreaMovementRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dyeingPrintingAreaMovementDbSet = dbContext.Set<DyeingPrintingAreaMovementModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _fqcDbSet = dbContext.Set<FabricQualityControlModel>();
         }
 
         public Task<int> DeleteAsync(int id)
         {
             var model = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
+
+            var fqcData = _fqcDbSet.FirstOrDefault(s => s.DyeingPrintingAreaMovementId == id);
+
+            if (fqcData != null)
+                throw new Exception("Masih ada data di Pemeriksaan Kain");
+
             model.FlagForDelete(_identityProvider.Username, UserAgent);
             _dyeingPrintingAreaMovementDbSet.Update(model);
             return _dbContext.SaveChangesAsync();

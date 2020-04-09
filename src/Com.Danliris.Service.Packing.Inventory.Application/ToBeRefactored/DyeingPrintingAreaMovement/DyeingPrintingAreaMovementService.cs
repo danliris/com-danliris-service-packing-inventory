@@ -17,11 +17,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
     public class DyeingPrintingAreaMovementService : IDyeingPrintingAreaMovementService
     {
         private readonly IDyeingPrintingAreaMovementRepository _repository;
-        private readonly IFabricQualityControlRepository _fqRepository;
         public DyeingPrintingAreaMovementService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
-            _fqRepository = serviceProvider.GetService<IFabricQualityControlRepository>();
         }
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)

@@ -88,10 +88,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Mtr", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Yds", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, "");
             }
             else
             {
@@ -99,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
                 {
                     var stringDate = item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
                     dt.Rows.Add(stringDate, item.Group, item.UnitName, item.SourceArea, item.ProductionOrderNo, item.CartNo, item.MaterialName, item.MaterialConstructionName,
-                        item.MaterialWidth, item.Status, item.Grade, item.Motif, item.Color, item.MeterLength, item.YardsLength);
+                        item.MaterialWidth, item.Status, item.Grade, item.Motif, item.Color, item.MeterLength, item.YardsLength, "");
                 }
             }
 

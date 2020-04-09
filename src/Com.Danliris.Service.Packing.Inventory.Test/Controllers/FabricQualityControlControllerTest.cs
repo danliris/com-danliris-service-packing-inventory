@@ -524,12 +524,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Success_GetForSPP()
+        public void Should_Success_GetForSPP()
         {
             //v
             var serviceMock = new Mock<IFabricQualityControlService>();
             serviceMock.Setup(s => s.GetForSPP(It.IsAny<string>()))
-                .ReturnsAsync(new List<FabricQCGradeTestsViewModel>());
+                .Returns(new List<FabricQCGradeTestsViewModel>());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -537,18 +537,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetForSPP(It.IsAny<string>());
+            var response = controller.GetForSPP(It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Should_Exception_GetForSPP()
+        public void Should_Exception_GetForSPP()
         {
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IFabricQualityControlService>();
-            serviceMock.Setup(s => s.GetForSPP(It.IsAny<string>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.GetForSPP(It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -556,7 +556,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetForSPP(It.IsAny<string>());
+            var response = controller.GetForSPP(It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

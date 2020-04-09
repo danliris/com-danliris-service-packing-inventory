@@ -221,11 +221,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet("production-order-report")]
-        public async Task<IActionResult> GetForSPP(string no)
+        public IActionResult GetForSPP(string no)
         {
             try
             {
-                var data = await _service.GetForSPP(no);
+                var data = _service.GetForSPP(no);
                 return Ok(new
                 {
                     data,

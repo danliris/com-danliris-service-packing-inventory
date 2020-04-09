@@ -80,10 +80,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Saldo", DataType = typeof(decimal) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, "", 0, "", 0);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, "", 0, "", 0, "");
             }
             else
             {
@@ -91,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
                 {
                     var stringDate = item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
                     dt.Rows.Add(stringDate, item.Grade, item.Activity, item.Mutation, item.ProductionOrderNo, item.CartNo, item.Construction, item.Motif, item.Color,
-                        item.Grade, item.QtyPackaging, item.Packaging, item.ProductionOrderQuantity, item.UomUnit, item.Balance);
+                        item.Grade, item.QtyPackaging, item.Packaging, item.ProductionOrderQuantity, item.UomUnit, item.Balance, "");
                 }
             }
 
