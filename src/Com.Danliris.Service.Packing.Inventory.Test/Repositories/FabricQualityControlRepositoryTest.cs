@@ -11,6 +11,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var result = repo.ReadAllIgnoreQueryFilter();
 
             Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_Update_2()
+        {
+            string testName = GetCurrentMethod() + "Update2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new FabricQualityControlRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new FabricQualityControlRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var model = DataUtil(repo, dbContext).GetModel();
+
+            int index = 0;
+            foreach (var item in model.FabricGradeTests)
+            {
+                var fgt = data.FabricGradeTests.ElementAtOrDefault(index++);
+                item.FabricQualityControlId = data.Id;
+                item.Id = fgt.Id;
+                int cIndex = 0;
+                foreach (var cri in item.Criteria)
+                {
+                    var crit = fgt.Criteria.ElementAtOrDefault(cIndex);
+                    cri.FabricGradeTestId = fgt.Id;
+                    cri.Id = crit.Id;
+                }
+            }
+
+            var result = await repo2.UpdateAsync(data.Id, model);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_Update_3()
+        {
+            string testName = GetCurrentMethod() + "Update3";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new FabricQualityControlRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new FabricQualityControlRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var model = DataUtil(repo, dbContext).GetModel();
+
+            int index = 0;
+            foreach (var item in model.FabricGradeTests)
+            {
+                var fgt = data.FabricGradeTests.ElementAtOrDefault(index++);
+                item.FabricQualityControlId = data.Id;
+                item.Id = fgt.Id;
+            }
+
+            var result = await repo2.UpdateAsync(data.Id, model);
+
+            Assert.NotEqual(0, result);
         }
     }
 }

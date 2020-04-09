@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.FabricQ
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,5 +44,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEmpty(result);
         }
+
+        [Fact]
+        public async Task Should_Success_Update_2()
+        {
+            string testName = GetCurrentMethod() + "Update2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new FabricGradeTestRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new FabricGradeTestRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var model = DataUtil(repo, dbContext).GetModel();
+            int index = 0;
+            foreach (var item in model.Criteria)
+            {
+                var criteria = data.Criteria.ElementAtOrDefault(index++);
+                item.FabricGradeTestId = data.Id;
+                item.Id = criteria.Id;
+            }
+            var result = await repo2.UpdateAsync(data.Id, model);
+
+            Assert.NotEqual(0, result);
+        }
+
     }
 }

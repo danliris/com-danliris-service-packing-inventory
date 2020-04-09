@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
     public class FabricQualityControlDataUtil : BaseDataUtil<FabricQualityControlRepository, FabricQualityControlModel>
     {
         DyeingPrintingAreaMovementDataUtil _dpDataUtil;
-        public FabricQualityControlDataUtil(FabricQualityControlRepository repository, DyeingPrintingAreaMovementDataUtil dyeingPrintingAreaMovementDataUtil) 
+        public FabricQualityControlDataUtil(FabricQualityControlRepository repository, DyeingPrintingAreaMovementDataUtil dyeingPrintingAreaMovementDataUtil)
             : base(repository)
         {
             _dpDataUtil = dyeingPrintingAreaMovementDataUtil;
@@ -26,6 +26,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                         new CriteriaModel("code", "grp",1,"name",1,1,1,1)
                     })
                 });
+        }
+
+        public override FabricQualityControlModel GetEmptyModel()
+        {
+            return new FabricQualityControlModel("a", DateTimeOffset.UtcNow.AddSeconds(3), null, false, 0, null, null, null, null, 0, 0, new List<FabricGradeTestModel>()
+            {
+                new FabricGradeTestModel(0,0,0,0,0,0,null,0,null,0,0,0,0,null,0,0,new List<CriteriaModel>()
+                {
+                    new CriteriaModel(null,null,0,null,0,0,0,0)
+                })
+            });
         }
     }
 }
