@@ -14,89 +14,29 @@ using System.Linq;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Moonlay.Models;
 using System.Collections.Generic;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
+namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 {
     public class DyeingPrintingAreaMovementRepositoryTest
+        : BaseRepositoryTest<PackingInventoryDbContext, DyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementModel, DyeingPrintingAreaMovementDataUtil>
     {
         private const string ENTITY = "DyeingPrintintAreaMovement";
 
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public string GetCurrentMethod()
+        public DyeingPrintingAreaMovementRepositoryTest() : base(ENTITY)
         {
-            var st = new StackTrace();
-            var sf = st.GetFrame(1);
 
-            return string.Concat(sf.GetMethod().Name, "_", ENTITY);
-        }
-
-        private PackingInventoryDbContext GetDbContext(string testName)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<PackingInventoryDbContext>();
-            optionsBuilder
-                .UseInMemoryDatabase(testName)
-                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-
-            var dbContext = new PackingInventoryDbContext(optionsBuilder.Options);
-
-            return dbContext;
-        }
-
-        private DyeingPrintingAreaMovementRepository GetRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
-        {
-            return new DyeingPrintingAreaMovementRepository(dbContext, serviceProvider);
-        }
-
-        public DyeingPrintingAreaMovementModel Model
-        {
-            get
-            {
-                return new DyeingPrintingAreaMovementModel("area", "no", DateTimeOffset.UtcNow, "shift", 1, "code", "no", 1, "type", "buyer", "inst", "1-2",
-                    1, "code", "name", 1, "code", "name", "1", 1, "code", "name", "color", "mtf", "awal", 1, "MTR", 1, "OK", "A", "area");
-            }
-            set { }
-        }
-
-        private Mock<IServiceProvider> GetServiceProvider()
-        {
-            Mock<IServiceProvider> sp = new Mock<IServiceProvider>();
-            sp.Setup(s => s.GetService(typeof(IIdentityProvider)))
-                .Returns(new IdentityProvider() { TimezoneOffset = 7, Token = "token", Username = "username" });
-
-            return sp;
         }
 
         [Fact]
-        public async Task Should_Success_Insert()
+        public async Task Should_Success_InsertYard()
         {
             string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
-
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-
-            var result = await repo.InsertAsync(Model);
-            Assert.NotEqual(0, result);
-        }
-
-        private async Task<DyeingPrintingAreaMovementModel> CreateHelper(DyeingPrintingAreaMovementRepository repo)
-        {
-            await repo.InsertAsync(Model);
-
-            var data = repo.ReadAll().FirstOrDefault();
-            return data;
-        }
-
-        [Fact]
-        public async Task Should_Success_Delete()
-        {
-            string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
-
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            var data = await CreateHelper(repo);
-            var result = await repo.DeleteAsync(data.Id);
-
+            var dbContext = DbContext(testName);
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = DataUtil(repo, dbContext).GetYardModel();
+            var result = await repo.InsertAsync(data);
             Assert.NotEqual(0, result);
         }
 
@@ -104,10 +44,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
         public async Task Should_Exception_Delete()
         {
             string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
+            var dbContext = DbContext(testName);
 
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            var data = await CreateHelper(repo);
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
 
             var fqcModel = new FabricQualityControlModel("code", DateTimeOffset.UtcNow, "area", false, data.Id, data.BonNo, data.ProductionOrderNo, "machine",
                 "op", 1, 1, new List<FabricGradeTestModel>());
@@ -122,10 +62,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
         public async Task Should_Success_GetDbSet()
         {
             string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
+            var dbContext = DbContext(testName);
 
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            await CreateHelper(repo);
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
             var result = repo.GetDbSet();
 
             Assert.NotEmpty(result);
@@ -135,42 +75,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
         public async Task Should_Success_ReadAllIgnoreQueryFilter()
         {
             string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
+            var dbContext = DbContext(testName);
 
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            await CreateHelper(repo);
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
             var result = repo.ReadAllIgnoreQueryFilter();
 
             Assert.NotEmpty(result);
         }
 
-        [Fact]
-        public async Task Should_Success_ReadById()
-        {
-            string testName = GetCurrentMethod();
-            var dbContext = GetDbContext(testName);
-
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            var data = await CreateHelper(repo);
-            var result = await repo.ReadByIdAsync(data.Id);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task Should_Success_Update()
-        {
-            string testName = GetCurrentMethod() + "UPdate";
-            var dbContext = GetDbContext(testName);
-
-            var repo = GetRepository(dbContext, GetServiceProvider().Object);
-            var repo2 = GetRepository(dbContext, GetServiceProvider().Object);
-            await repo.InsertAsync(new DyeingPrintingAreaMovementModel());
-
-            var data = repo.ReadAll().FirstOrDefault();
-            var result = await repo2.UpdateAsync(data.Id, Model);
-
-            Assert.NotEqual(0, result);
-        }
+        
     }
 }
