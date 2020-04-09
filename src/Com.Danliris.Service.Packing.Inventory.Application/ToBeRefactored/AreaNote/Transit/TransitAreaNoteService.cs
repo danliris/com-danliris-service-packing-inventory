@@ -8,6 +8,7 @@ using System.Linq;
 using System.Data;
 using System.Globalization;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Transit
 {
