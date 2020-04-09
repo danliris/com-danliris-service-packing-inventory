@@ -32,6 +32,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             }
         }
 
+        private DyeingPrintingAreaMovementModel ModelYard
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(ViewModel.Area, ViewModel.BonNo, ViewModel.Date, ViewModel.Shift, ViewModel.ProductionOrder.Id,
+                    ViewModel.ProductionOrder.Code, ViewModel.ProductionOrder.No, ViewModel.ProductionOrderQuantity, ViewModel.ProductionOrder.Type,
+                    ViewModel.Buyer, ViewModel.PackingInstruction, ViewModel.CartNo, ViewModel.Material.Id, ViewModel.Material.Code, ViewModel.Material.Name,
+                    ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Code, ViewModel.MaterialConstruction.Name, ViewModel.MaterialWidth,
+                    ViewModel.Unit.Id, ViewModel.Unit.Code, ViewModel.Unit.Name, ViewModel.Color, ViewModel.Motif, ViewModel.Mutation, ViewModel.Length,
+                    "YDS", ViewModel.Balance, ViewModel.Status, ViewModel.Grade, ViewModel.SourceArea);
+            }
+        }
+
         private DyeingPrintingAreaMovementViewModel ViewModel
         {
             get
@@ -119,6 +132,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadByIdYDS()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(ModelYard);
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 

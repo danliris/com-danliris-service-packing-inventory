@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 {
-    class ProductSKUEntityTypeConfiguration : IEntityTypeConfiguration<ProductSKUModel>
+    public class ProductSKUEntityTypeConfiguration : IEntityTypeConfiguration<ProductSKUModel>
     {
         public void Configure(EntityTypeBuilder<ProductSKUModel> productSKUConfiguration)
         {
