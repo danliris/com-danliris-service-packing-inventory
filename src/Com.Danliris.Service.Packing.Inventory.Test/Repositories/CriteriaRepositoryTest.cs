@@ -132,5 +132,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_GetDbSet()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new CriteriaRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await CreateHelper(repo);
+            var result = repo.GetDbSet();
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadAllIgnoreQueryFilter()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new CriteriaRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await CreateHelper(repo);
+            var result = repo.ReadAllIgnoreQueryFilter();
+
+            Assert.NotEmpty(result);
+        }
     }
 }

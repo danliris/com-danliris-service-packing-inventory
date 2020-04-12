@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new InventoryDocumentSKUEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new InventoryDocumentSKUItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductSKUEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FabricGradeTestEntityTypeConfiguration());
