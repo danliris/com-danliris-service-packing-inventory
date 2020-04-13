@@ -108,9 +108,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         [Fact]
         public void Should_Success_Read()
         {
+            var model = Model;
             var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<DyeingPrintingAreaMovementModel>() { Model }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaMovementModel>() { model }.AsQueryable());
 
             var historyRepo = new Mock<IDyeingPrintingAreaMovementHistoryRepository>();
             var service = GetService(GetServiceProvider(repoMock.Object, historyRepo.Object).Object);
@@ -118,6 +119,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.Read(1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
+
+            var data = result.Data.First();
+            Assert.Equal(model.Area, data.Area);
+            Assert.Equal(model.Balance, data.Balance);
+            Assert.Equal(model.BonNo, data.BonNo);
+            Assert.Equal(model.CartNo, data.CartNo);
+            Assert.Equal(model.Color, data.Color);
+            Assert.Equal(model.Date, data.Date);
+            Assert.Equal(model.Id, data.Id);
+            Assert.Equal(model.MaterialConstructionName, data.MaterialConstructionName);
+            Assert.Equal(model.MaterialName, data.MaterialName);
+            Assert.Equal(model.MaterialWidth, data.MaterialWidth);
+            Assert.Equal(model.MeterLength, data.MeterLength);
+            Assert.Equal(model.Motif, data.Motif);
+            Assert.Equal(model.ProductionOrderId, data.ProductionOrderId);
+            Assert.Equal(model.ProductionOrderNo, data.ProductionOrderNo);
+            Assert.Equal(model.Remark, data.Remark);
+            Assert.Equal(model.Shift, data.Shift);
+            Assert.Equal(model.UnitName, data.UnitName);
+            Assert.Equal(model.YardsLength, data.YardsLength);
         }
 
         [Fact]

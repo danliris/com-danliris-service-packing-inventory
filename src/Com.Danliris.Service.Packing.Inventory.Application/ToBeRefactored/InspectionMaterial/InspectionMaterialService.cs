@@ -77,16 +77,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
                 PackingInstruction = model.PackingInstruction,
                 Buyer = model.Buyer,
                 Shift = model.Shift,
-                Status = model.Status,
                 Unit = new Unit()
                 {
                     Code = model.UnitCode,
                     Id = model.UnitId,
                     Name = model.UnitName
                 },
-                UOMUnit = model.UOMUnit,
-                Grade = model.Grade,
-                SourceArea = model.SourceArea
+                UOMUnit = model.UOMUnit
             };
 
             if (vm.UOMUnit == model.METER)

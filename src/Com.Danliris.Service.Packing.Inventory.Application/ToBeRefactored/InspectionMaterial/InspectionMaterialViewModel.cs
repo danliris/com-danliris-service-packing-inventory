@@ -25,9 +25,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
         public double Length { get; set; }
         public string UOMUnit { get; set; }
         public decimal Balance { get; set; }
-        public string Status { get; set; }
-        public string Grade { get; set; }
-        public string SourceArea { get; set; }
         public string Buyer { get; set; }
         public string PackingInstruction { get; set; }
         //public double MassKg { get; set; }
