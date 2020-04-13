@@ -63,14 +63,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Tran
 
         public Task<int> Create(TransitInputViewModel viewModel)
         {
-            List<DyeingPrintingAreaMovementHistoryModel> histories = new List<DyeingPrintingAreaMovementHistoryModel>();
             DyeingPrintingAreaMovementHistoryModel history = new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, viewModel.Area, viewModel.Shift, AreaEnum.TRANSIT);
-            histories.Add(history);
-            var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, DateTimeOffset.UtcNow, viewModel.Shift,
-                0, null, viewModel.ProductionOrderNo, 0, null, null, null, viewModel.CartNo, 0, null, viewModel.Material, 0, null, viewModel.MaterialConstruction, viewModel.MaterialWidth,
-                0, null, viewModel.Unit, viewModel.Color, viewModel.Motif, null, 0, viewModel.UOMUnit, viewModel.Balance, null, null, null, viewModel.Remark, histories);
-            model.Id = viewModel.InspectionAreaId;
-            return _repository.InsertFromTransitAsync(model);
+
+            return _repository.InsertFromTransitAsync(viewModel.InspectionAreaId, viewModel.Shift, DateTimeOffset.UtcNow, viewModel.Area, viewModel.Remark, history);
         }
 
         public Task<int> Delete(int id)

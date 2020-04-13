@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     DPViewModel.Buyer, DPViewModel.PackingInstruction, DPViewModel.CartNo, DPViewModel.Material.Id, DPViewModel.Material.Code, DPViewModel.Material.Name,
                     DPViewModel.MaterialConstruction.Id, DPViewModel.MaterialConstruction.Code, DPViewModel.MaterialConstruction.Name, DPViewModel.MaterialWidth,
                     DPViewModel.Unit.Id, DPViewModel.Unit.Code, DPViewModel.Unit.Name, DPViewModel.Color, DPViewModel.Motif, DPViewModel.Mutation, DPViewModel.Length,
-                    DPViewModel.UOMUnit, DPViewModel.Balance, DPViewModel.Status, DPViewModel.Grade, DPViewModel.SourceArea, null,
+                    DPViewModel.UOMUnit, DPViewModel.Balance, 
                     new List<DyeingPrintingAreaMovementHistoryModel>()
                     {
                         new DyeingPrintingAreaMovementHistoryModel(DPViewModel.Date, DPViewModel.Area, DPViewModel.Shift, AreaEnum.IM)

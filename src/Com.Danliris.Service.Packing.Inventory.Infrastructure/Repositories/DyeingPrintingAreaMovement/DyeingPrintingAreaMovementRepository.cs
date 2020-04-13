@@ -81,16 +81,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> InsertFromTransitAsync(DyeingPrintingAreaMovementModel model)
+        public Task<int> InsertFromTransitAsync(int dyeingPrintingAreaMovementId, string shift, DateTimeOffset date, string area, string remark, DyeingPrintingAreaMovementHistoryModel history)
         {
-            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == model.Id);
-            modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == dyeingPrintingAreaMovementId);
+            modelToUpdate.SetShift(shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDate(date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSourceArea(modelToUpdate.Area, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
-            var historyTransit = model.DyeingPrintingAreaMovementHistories.FirstOrDefault();
-            historyTransit.FlagForCreate(_identityProvider.Username, UserAgent);
-            modelToUpdate.DyeingPrintingAreaMovementHistories.Add(historyTransit);
+            modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(remark, _identityProvider.Username, UserAgent);
+           
+            history.FlagForCreate(_identityProvider.Username, UserAgent);
+            modelToUpdate.DyeingPrintingAreaMovementHistories.Add(history);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -128,9 +129,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetMutation(model.Mutation, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLength(model.MeterLength, model.YardsLength, model.UOMUnit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetSourceArea(model.SourceArea, _identityProvider.Username, UserAgent);
+            //modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
+            //modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
+            //modelToUpdate.SetSourceArea(model.SourceArea, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 

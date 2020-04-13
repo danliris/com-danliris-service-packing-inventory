@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     ViewModel.Buyer, ViewModel.PackingInstruction, ViewModel.CartNo, ViewModel.Material.Id, ViewModel.Material.Code, ViewModel.Material.Name,
                     ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Code, ViewModel.MaterialConstruction.Name, ViewModel.MaterialWidth,
                     ViewModel.Unit.Id, ViewModel.Unit.Code, ViewModel.Unit.Name, ViewModel.Color, ViewModel.Motif, ViewModel.Mutation, ViewModel.Length,
-                    ViewModel.UOMUnit, ViewModel.Balance, ViewModel.Status, ViewModel.Grade, ViewModel.SourceArea,null, new List<DyeingPrintingAreaMovementHistoryModel>()
+                    ViewModel.UOMUnit, ViewModel.Balance,  new List<DyeingPrintingAreaMovementHistoryModel>()
                     {
                         new DyeingPrintingAreaMovementHistoryModel(ViewModel.Date, ViewModel.Area,"shift", AreaEnum.PACK)
                     });

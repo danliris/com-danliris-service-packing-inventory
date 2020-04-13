@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
                             viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea, null, histories);
+                            viewModel.UOMUnit, viewModel.Balance, histories);
 
             return _repository.InsertAsync(model);
         }
@@ -143,7 +143,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
                             viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea, null, new List<DyeingPrintingAreaMovementHistoryModel>());
+                            viewModel.UOMUnit, viewModel.Balance, new List<DyeingPrintingAreaMovementHistoryModel>());
             int result = await _repository.UpdateAsync(id, model);
             result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.IM, viewModel.Date, viewModel.Shift);
             return result;

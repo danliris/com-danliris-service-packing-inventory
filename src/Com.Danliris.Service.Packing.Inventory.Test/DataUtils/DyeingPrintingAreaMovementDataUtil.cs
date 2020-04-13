@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         public override DyeingPrintingAreaMovementModel GetModel()
         {
             return new DyeingPrintingAreaMovementModel("area", "no", DateTimeOffset.UtcNow, "shift", 1, "code", "no", 1, "type", "buyer", "inst", "1-2",
-                1, "code", "name", 1, "code", "name", "1", 1, "code", "name", "color", "mtf", "awal", 1, "MTR", 1, "OK", "A", "area", "re", new List<DyeingPrintingAreaMovementHistoryModel>()
+                1, "code", "name", 1, "code", "name", "1", 1, "code", "name", "color", "mtf", "awal", 1, "MTR", 1, new List<DyeingPrintingAreaMovementHistoryModel>()
                 {
                     new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, "area", "shift", AreaEnum.IM)
                 });
@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         public DyeingPrintingAreaMovementModel GetYardModel()
         {
             return new DyeingPrintingAreaMovementModel("area", "no", DateTimeOffset.UtcNow, "shift", 1, "code", "no", 1, "type", "buyer", "inst", "1-2",
-                1, "code", "name", 1, "code", "name", "1", 1, "code", "name", "color", "mtf", "awal", 1, "YDS", 1, "OK", "A", "area", "re", new List<DyeingPrintingAreaMovementHistoryModel>()
+                1, "code", "name", 1, "code", "name", "1", 1, "code", "name", "color", "mtf", "awal", 1, "YDS", 1, new List<DyeingPrintingAreaMovementHistoryModel>()
                 {
                     new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, "area","shift", AreaEnum.IM)
                 });

@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
             double productionOrderQuantity, string productionOrderType, string buyer, string packingInstruction, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
-            double length, string uomUnit, decimal balance, string status, string grade, string sourceArea, string remark, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
+            double length, string uomUnit, decimal balance,  ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
         {
             Area = area;
             BonNo = bonNo;
@@ -55,10 +55,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
             UOMUnit = uomUnit;
             Balance = balance;
-            Status = status;
-            Grade = grade;
-            SourceArea = sourceArea;
-            Remark = remark;
+            //Status = status;
+            //Grade = grade;
+            //SourceArea = sourceArea;
+            //Remark = remark;
             DyeingPrintingAreaMovementHistories = histories;
 
             //MassKg = massKg;
