@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 {
     public interface IDyeingPrintingAreaMovementHistoryRepository : IRepository<DyeingPrintingAreaMovementHistoryModel>
     {
-        IQueryable<DyeingPrintingAreaMovementHistoryModel> ReadByDyeingPrintintAreaMovement(int dyeingPrintingAreaMovementId);
+        IQueryable<DyeingPrintingAreaMovementHistoryModel> ReadByDyeingPrintingAreaMovement(int dyeingPrintingAreaMovementId);
         Task<int> UpdateAsyncFromParent(int dyeingPrintingAreaMovementId, AreaEnum index, DateTimeOffset newDate, string shift);
     }
 }

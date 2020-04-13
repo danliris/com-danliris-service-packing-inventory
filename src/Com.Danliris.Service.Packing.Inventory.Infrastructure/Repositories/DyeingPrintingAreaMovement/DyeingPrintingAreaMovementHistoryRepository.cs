@@ -36,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> InsertAsync(DyeingPrintingAreaMovementHistoryModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
+            _dyeingPrintingAreaMovementHistoryDbSet.Add(model);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -44,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dyeingPrintingAreaMovementHistoryDbSet.AsNoTracking();
         }
 
-        public IQueryable<DyeingPrintingAreaMovementHistoryModel> ReadByDyeingPrintintAreaMovement(int dyeingPrintingAreaMovementId)
+        public IQueryable<DyeingPrintingAreaMovementHistoryModel> ReadByDyeingPrintingAreaMovement(int dyeingPrintingAreaMovementId)
         {
             return _dyeingPrintingAreaMovementHistoryDbSet.AsNoTracking().Where(s => s.DyeingPrintingAreaMovementId == dyeingPrintingAreaMovementId);
         }

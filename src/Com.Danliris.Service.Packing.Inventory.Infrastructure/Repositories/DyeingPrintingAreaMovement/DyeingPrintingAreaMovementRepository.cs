@@ -73,11 +73,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> InsertAsync(DyeingPrintingAreaMovementModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
-            _dyeingPrintingAreaMovementDbSet.Add(model);
             foreach (var item in model.DyeingPrintingAreaMovementHistories)
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
             }
+            _dyeingPrintingAreaMovementDbSet.Add(model);
+            
             return _dbContext.SaveChangesAsync();
         }
 
