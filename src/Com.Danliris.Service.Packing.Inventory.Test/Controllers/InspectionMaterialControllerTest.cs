@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers;
@@ -16,9 +16,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class DyeingPrintingAreaMovementControllerTest
+    public class InspectionMaterialControllerTest
     {
-        private DyeingPrintingAreaMovementController GetController(IDyeingPrintingAreaMovementService service, IIdentityProvider identityProvider)
+        private InspectionMaterialController GetController(IInspectionMaterialService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new DyeingPrintingAreaMovementController(service, identityProvider)
+            var controller = new InspectionMaterialController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -47,11 +47,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
-        private DyeingPrintingAreaMovementViewModel ViewModel
+        private InspectionMaterialViewModel ViewModel
         {
             get
             {
-                return new DyeingPrintingAreaMovementViewModel()
+                return new InspectionMaterialViewModel()
                 {
                     Area = "area",
                     Date = DateTimeOffset.UtcNow,
@@ -88,8 +88,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new DyeingPrintingAreaMovementViewModel();
-            var validator = new DyeingPrintingAreaMovementValidator();
+            var dataUtil = new InspectionMaterialViewModel();
+            var validator = new InspectionMaterialValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
@@ -99,8 +99,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<DyeingPrintingAreaMovementViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<InspectionMaterialViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -116,10 +116,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new DyeingPrintingAreaMovementViewModel();
+            var dataUtil = new InspectionMaterialViewModel();
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<DyeingPrintingAreaMovementViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<InspectionMaterialViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -139,8 +139,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<DyeingPrintingAreaMovementViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<InspectionMaterialViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -159,8 +159,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaMovementViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InspectionMaterialViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -176,10 +176,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Put()
         {
-            var dataUtil = new DyeingPrintingAreaMovementViewModel();
+            var dataUtil = new InspectionMaterialViewModel();
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaMovementViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InspectionMaterialViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -199,8 +199,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaMovementViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IInspectionMaterialService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InspectionMaterialViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -217,7 +217,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async Task Should_Success_Delete()
         {
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
@@ -236,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -273,7 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -291,7 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
@@ -311,7 +311,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IDyeingPrintingAreaMovementService>();
+            var serviceMock = new Mock<IInspectionMaterialService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 

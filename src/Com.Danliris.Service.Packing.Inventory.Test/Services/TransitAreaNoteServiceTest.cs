@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Transit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -29,15 +29,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     ViewModel.Buyer, ViewModel.PackingInstruction, ViewModel.CartNo, ViewModel.Material.Id, ViewModel.Material.Code, ViewModel.Material.Name,
                     ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Code, ViewModel.MaterialConstruction.Name, ViewModel.MaterialWidth,
                     ViewModel.Unit.Id, ViewModel.Unit.Code, ViewModel.Unit.Name, ViewModel.Color, ViewModel.Motif, ViewModel.Mutation, ViewModel.Length,
-                    ViewModel.UOMUnit, ViewModel.Balance, ViewModel.Status, ViewModel.Grade, ViewModel.SourceArea);
+                    ViewModel.UOMUnit, ViewModel.Balance, ViewModel.Status, ViewModel.Grade, ViewModel.SourceArea, null, new List<DyeingPrintingAreaMovementHistoryModel>()
+                    {
+                        new DyeingPrintingAreaMovementHistoryModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, AreaEnum.TRANSIT)
+                    });
             }
         }
 
-        private DyeingPrintingAreaMovementViewModel ViewModel
+        private InspectionMaterialViewModel ViewModel
         {
             get
             {
-                return new DyeingPrintingAreaMovementViewModel()
+                return new InspectionMaterialViewModel()
                 {
                     Id = 1,
                     Area = "area",

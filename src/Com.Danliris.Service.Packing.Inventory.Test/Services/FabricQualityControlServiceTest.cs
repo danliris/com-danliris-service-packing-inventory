@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
@@ -105,11 +105,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
             }
         }
-        private DyeingPrintingAreaMovementViewModel DPViewModel
+        private InspectionMaterialViewModel DPViewModel
         {
             get
             {
-                return new DyeingPrintingAreaMovementViewModel()
+                return new InspectionMaterialViewModel()
                 {
                     Id = 1,
                     Area = "area",
@@ -154,7 +154,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     DPViewModel.Buyer, DPViewModel.PackingInstruction, DPViewModel.CartNo, DPViewModel.Material.Id, DPViewModel.Material.Code, DPViewModel.Material.Name,
                     DPViewModel.MaterialConstruction.Id, DPViewModel.MaterialConstruction.Code, DPViewModel.MaterialConstruction.Name, DPViewModel.MaterialWidth,
                     DPViewModel.Unit.Id, DPViewModel.Unit.Code, DPViewModel.Unit.Name, DPViewModel.Color, DPViewModel.Motif, DPViewModel.Mutation, DPViewModel.Length,
-                    DPViewModel.UOMUnit, DPViewModel.Balance, DPViewModel.Status, DPViewModel.Grade, DPViewModel.SourceArea);
+                    DPViewModel.UOMUnit, DPViewModel.Balance, DPViewModel.Status, DPViewModel.Grade, DPViewModel.SourceArea, null,
+                    new List<DyeingPrintingAreaMovementHistoryModel>()
+                    {
+                        new DyeingPrintingAreaMovementHistoryModel(DPViewModel.Date, DPViewModel.Area, DPViewModel.Shift, AreaEnum.IM)
+                    });
             }
         }
 
@@ -197,7 +201,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             var repoMock = new Mock<IFabricQualityControlRepository>();
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
             var dpMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            dpMock.Setup(s => s.UpdateFromFabricQualityControlAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
             var fgtMock = new Mock<IFabricGradeTestRepository>();
             var service = GetService(GetServiceProvider(repoMock.Object, dpMock.Object, fgtMock.Object).Object);
 

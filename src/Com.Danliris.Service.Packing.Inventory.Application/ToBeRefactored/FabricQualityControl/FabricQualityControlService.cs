@@ -118,8 +118,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             return vm;
         }
 
-        public Task<int> Create(FabricQualityControlViewModel viewModel)
+        public async Task<int> Create(FabricQualityControlViewModel viewModel)
         {
+            int result = 0;
             do
             {
                 viewModel.Code = CodeGenerator.Generate(8);
@@ -136,12 +137,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         s.Criteria.Select((d, cInd) => new CriteriaModel(d.Code, d.Group, cInd, d.Name, d.Score.A.GetValueOrDefault(), d.Score.B.GetValueOrDefault(),
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
-            return _repository.InsertAsync(model);
+            result = await  _repository.InsertAsync(model);
+
+            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaMovementId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+
+            return result;
         }
 
-        public Task<int> Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            return _repository.DeleteAsync(id);
+            var data = await _repository.ReadByIdAsync(id);
+            int result = await _dpRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaMovementId, "", false);
+            result += await _repository.DeleteAsync(id);
+            
+            return result;
         }
 
         public MemoryStream GenerateExcel(string code, int kanbanId, string productionOrderType, string productionOrderNo, string shiftIm, DateTime? dateFrom, DateTime? dateTo, int offSet)
@@ -290,7 +299,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             return vm;
         }
 
-        public Task<int> Update(int id, FabricQualityControlViewModel viewModel)
+        public async Task<int> Update(int id, FabricQualityControlViewModel viewModel)
         {
             var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.DyeingPrintingAreaMovementId,
                 viewModel.DyeingPrintingAreaMovementBonNo, viewModel.ProductionOrderNo,
@@ -303,7 +312,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         s.Criteria.Select((d, cInd) => new CriteriaModel(d.Code, d.Group, cInd, d.Name, d.Score.A.GetValueOrDefault(), d.Score.B.GetValueOrDefault(),
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
-            return _repository.UpdateAsync(id, model);
+            int result = await _repository.UpdateAsync(id, model);
+            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaMovementId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            return result;
         }
 
         private List<FabricQualityControlViewModel> GetReport(string code, int dyeingPrintingMovementId, string productionOrderType, string productionOrderNo, string shiftIm, DateTime? dateFrom, DateTime? dateTo, int offSet)

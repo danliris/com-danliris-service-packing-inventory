@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement
+namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
 {
-    public class DyeingPrintingAreaMovementViewModel : BaseViewModel
+    public class InspectionMaterialViewModel : BaseViewModel
     {
         public string Area { get; set; }
         public string BonNo { get; set; }

@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private const string UserAgent = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly DbSet<DyeingPrintingAreaMovementModel> _dyeingPrintingAreaMovementDbSet;
+        private readonly DbSet<DyeingPrintingAreaMovementHistoryModel> _historyDbSet;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<FabricQualityControlModel> _fqcDbSet;
 
@@ -24,13 +25,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             _dbContext = dbContext;
             _dyeingPrintingAreaMovementDbSet = dbContext.Set<DyeingPrintingAreaMovementModel>();
+            _historyDbSet = dbContext.Set<DyeingPrintingAreaMovementHistoryModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _fqcDbSet = dbContext.Set<FabricQualityControlModel>();
         }
 
         public Task<int> DeleteAsync(int id)
         {
-            var model = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
+            var model = _dyeingPrintingAreaMovementDbSet.Include(s => s.DyeingPrintingAreaMovementHistories).FirstOrDefault(entity => entity.Id == id);
 
             var fqcData = _fqcDbSet.FirstOrDefault(s => s.DyeingPrintingAreaMovementId == id);
 
@@ -38,7 +40,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 throw new Exception("Masih ada data di Pemeriksaan Kain");
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
+            foreach(var item in model.DyeingPrintingAreaMovementHistories)
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+            }
             _dyeingPrintingAreaMovementDbSet.Update(model);
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteFromTransitAsync(int id)
+        {
+            var histories = _historyDbSet.Where(s => s.DyeingPrintingAreaMovementId == id);
+            var previousHistory = histories.FirstOrDefault(s => s.Index == AreaEnum.IM);
+            var model = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == id);
+            model.SetShift(previousHistory.Shift, _identityProvider.Username, UserAgent);
+            model.SetSourceArea(null, _identityProvider.Username, UserAgent);
+            model.SetArea(previousHistory.Area, _identityProvider.Username, UserAgent);
+            model.SetRemark(null, _identityProvider.Username, UserAgent);
+
+            model.FlagForUpdate(_identityProvider.Username, UserAgent);
+            var currentHistory = histories.FirstOrDefault(s => s.Index == AreaEnum.TRANSIT);
+            currentHistory.FlagForDelete(_identityProvider.Username, UserAgent);
+
             return _dbContext.SaveChangesAsync();
         }
 
@@ -51,12 +74,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
             _dyeingPrintingAreaMovementDbSet.Add(model);
+            foreach (var item in model.DyeingPrintingAreaMovementHistories)
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+            }
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> InsertFromTransitAsync(DyeingPrintingAreaMovementModel model)
+        {
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == model.Id);
+            modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSourceArea(modelToUpdate.Area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+            var historyTransit = model.DyeingPrintingAreaMovementHistories.FirstOrDefault();
+            historyTransit.FlagForCreate(_identityProvider.Username, UserAgent);
+            modelToUpdate.DyeingPrintingAreaMovementHistories.Add(historyTransit);
             return _dbContext.SaveChangesAsync();
         }
 
         public IQueryable<DyeingPrintingAreaMovementModel> ReadAll()
         {
-            return _dyeingPrintingAreaMovementDbSet.AsNoTracking();
+            return _dyeingPrintingAreaMovementDbSet.Include(s => s.DyeingPrintingAreaMovementHistories).AsNoTracking();
         }
 
         public IQueryable<DyeingPrintingAreaMovementModel> ReadAllIgnoreQueryFilter()
@@ -91,6 +131,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSourceArea(model.SourceArea, _identityProvider.Username, UserAgent);
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked)
+        {
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
+            modelToUpdate.SetGrade(grade, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsChecked(isChecked, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromTransitAsync(int id, string shift, string remark)
+        {
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
+            modelToUpdate.SetShift(shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(remark, _identityProvider.Username, UserAgent);
+
             return _dbContext.SaveChangesAsync();
         }
     }

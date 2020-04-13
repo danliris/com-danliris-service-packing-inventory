@@ -15,13 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public DyeingPrintingAreaMovementModel()
         {
-
+            DyeingPrintingAreaMovementHistories = new HashSet<DyeingPrintingAreaMovementHistoryModel>();
         }
 
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
             double productionOrderQuantity, string productionOrderType, string buyer, string packingInstruction, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
-            double length, string uomUnit, decimal balance, string status, string grade, string sourceArea)
+            double length, string uomUnit, decimal balance, string status, string grade, string sourceArea, string remark, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
         {
             Area = area;
             BonNo = bonNo;
@@ -58,6 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Status = status;
             Grade = grade;
             SourceArea = sourceArea;
+            Remark = remark;
+            DyeingPrintingAreaMovementHistories = histories;
 
             //MassKg = massKg;
         }
@@ -115,8 +117,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string Status { get; private set; }
         public string Grade { get; private set; }
         public string SourceArea { get; private set; }
+        public string Remark { get; private set; }
+        public bool IsChecked { get; private set; }
         //public double MassKg { get; private set; }
+        public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
+
+        public void SetArea(string newArea, string user, string agent)
+        {
+            if (newArea != Area)
+            {
+                Area = newArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
 
         public void SetDate(DateTimeOffset newDate, string user, string agent)
         {
@@ -357,6 +371,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newSourceArea != SourceArea)
             {
                 SourceArea = newSourceArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetIsChecked(bool newIsChecked, string user, string agent)
+        {
+            if (newIsChecked != IsChecked)
+            {
+                IsChecked = newIsChecked;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetRemark(string newRemark, string user, string agent)
+        {
+            if (newRemark != Remark)
+            {
+                Remark = newRemark;
                 this.FlagForUpdate(user, agent);
             }
         }

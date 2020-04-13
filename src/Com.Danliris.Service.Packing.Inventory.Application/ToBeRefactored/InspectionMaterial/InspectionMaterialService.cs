@@ -12,14 +12,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.FabricQualityControl;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement
+namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
 {
-    public class DyeingPrintingAreaMovementService : IDyeingPrintingAreaMovementService
+    public class InspectionMaterialService : IInspectionMaterialService
     {
         private readonly IDyeingPrintingAreaMovementRepository _repository;
-        public DyeingPrintingAreaMovementService(IServiceProvider serviceProvider)
+        private readonly IDyeingPrintingAreaMovementHistoryRepository _historyRepository;
+        public InspectionMaterialService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
+            _historyRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementHistoryRepository>();
         }
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
@@ -27,9 +29,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
             return string.Format("IM.{0}.{1}", date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
         }
 
-        private DyeingPrintingAreaMovementViewModel MapToViewModel(DyeingPrintingAreaMovementModel model)
+        private InspectionMaterialViewModel MapToViewModel(DyeingPrintingAreaMovementModel model)
         {
-            var vm = new DyeingPrintingAreaMovementViewModel()
+            var vm = new InspectionMaterialViewModel()
             {
                 Active = model.Active,
                 Area = model.Area,
@@ -99,17 +101,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
             return vm;
         }
 
-        public Task<int> Create(DyeingPrintingAreaMovementViewModel viewModel)
+        public Task<int> Create(InspectionMaterialViewModel viewModel)
         {
             int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.CreatedUtc.Year == viewModel.Date.Year);
-
+            List<DyeingPrintingAreaMovementHistoryModel> histories = new List<DyeingPrintingAreaMovementHistoryModel>();
+            DyeingPrintingAreaMovementHistoryModel historyModel = new DyeingPrintingAreaMovementHistoryModel(viewModel.Date, viewModel.Area, viewModel.Shift, AreaEnum.IM);
+            histories.Add(historyModel);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, bonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.ProductionOrder.Type,
                             viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
+                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea, null, histories);
 
             return _repository.InsertAsync(model);
         }
@@ -119,32 +123,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaM
             return  _repository.DeleteAsync(id);
         }
 
-        public async Task<DyeingPrintingAreaMovementViewModel> ReadById(int id)
+        public async Task<InspectionMaterialViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
             if (model == null)
                 return null;
-            
-            DyeingPrintingAreaMovementViewModel vm = MapToViewModel(model);
+
+            InspectionMaterialViewModel vm = MapToViewModel(model);
 
             return vm;
         }
 
 
-        public Task<int> Update(int id, DyeingPrintingAreaMovementViewModel viewModel)
+        public async Task<int> Update(int id, InspectionMaterialViewModel viewModel)
         {
+            
             var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Date, viewModel.Shift, viewModel.ProductionOrder.Id,
                             viewModel.ProductionOrder.Code, viewModel.ProductionOrder.No, viewModel.ProductionOrderQuantity, viewModel.ProductionOrder.Type, 
                             viewModel.Buyer, viewModel.PackingInstruction, viewModel.CartNo, viewModel.Material.Id, viewModel.Material.Code,
                             viewModel.Material.Name, viewModel.MaterialConstruction.Id, viewModel.MaterialConstruction.Code, viewModel.MaterialConstruction.Name,
                             viewModel.MaterialWidth, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Unit.Name, viewModel.Color, viewModel.Motif, viewModel.Mutation, viewModel.Length,
-                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea);
-            return _repository.UpdateAsync(id, model);
+                            viewModel.UOMUnit, viewModel.Balance, viewModel.Status, viewModel.Grade, viewModel.SourceArea, null, new List<DyeingPrintingAreaMovementHistoryModel>());
+            int result = await _repository.UpdateAsync(id, model);
+            result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.IM, viewModel.Date, viewModel.Shift);
+            return result;
         }
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll();
+            var query = _repository.ReadAll().Where(s => s.DyeingPrintingAreaMovementHistories.OrderByDescending(d => d.Index).FirstOrDefault().Index == AreaEnum.IM);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo", "ProductionOrderNo"
