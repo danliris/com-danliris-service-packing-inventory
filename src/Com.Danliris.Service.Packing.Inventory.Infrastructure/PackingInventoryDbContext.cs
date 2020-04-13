@@ -1,6 +1,8 @@
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
         public DbSet<CriteriaModel> NewCriterias { get; set; }
 
+        public DbSet<ProductModel> IPProducts { get; set; }
+        public DbSet<CategoryModel> IPCategories { get; set; }
+        public DbSet<PackingModel> IPPackings { get; set; }
+        public DbSet<UnitOfMeasurementModel> IPUnitOfMeasurements { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InventoryDocumentPackingEntityTypeConfiguration());
@@ -35,6 +42,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FabricGradeTestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CriteriaEntityTypeConfiguration());
+            
+            modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UOMEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PackingEntityTypeConfiguration());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -45,6 +57,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricQualityControlModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricGradeTestModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<PackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<UnitOfMeasurementModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }
