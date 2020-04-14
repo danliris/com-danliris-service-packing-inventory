@@ -64,6 +64,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             //MassKg = massKg;
         }
 
+        public DyeingPrintingAreaMovementModel(string area, string bonNo, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
+        {
+            Area = area;
+            BonNo = bonNo;
+            Shift = shift;
+            UOMUnit = uomUnit;
+            ProductionOrderQuantity = productionOrderQuantity;
+            QtyKg = qtyKg;
+            DyeingPrintingAreaMovementHistories = histories;
+        }
+
         public string GenerateConstruction(string materialName, string materialConstructionName, string materialWidth)
         {
             return string.Format("{0} / {1} / {2}", materialName, materialConstructionName, materialWidth);
@@ -119,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string SourceArea { get; private set; }
         public string Remark { get; private set; }
         public bool IsChecked { get; private set; }
-        //public double MassKg { get; private set; }
+        public double QtyKg { get; private set; }
         public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
 

@@ -27,6 +27,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
         public decimal Balance { get; set; }
         public string Buyer { get; set; }
         public string PackingInstruction { get; set; }
-        //public double MassKg { get; set; }
     }
 }
