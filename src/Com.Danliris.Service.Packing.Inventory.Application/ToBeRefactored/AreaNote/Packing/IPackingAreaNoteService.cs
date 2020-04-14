@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
 {
     public interface IPackingAreaNoteService
     {
-        List<IndexViewModel> GetReport(DateTimeOffset? date, string zone, string group, int offSet);
-        MemoryStream GenerateExcel(DateTimeOffset? date, string zone, string group, int offSet);
+        List<IndexViewModel> GetReport(DateTimeOffset? date, string zone, string group, string mutation, int offSet);
+        MemoryStream GenerateExcel(DateTimeOffset? date, string zone, string group, string mutation, int offSet);
     }
 }

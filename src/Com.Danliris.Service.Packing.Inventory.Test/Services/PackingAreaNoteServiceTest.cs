@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     ViewModel.Buyer, ViewModel.PackingInstruction, ViewModel.CartNo, ViewModel.Material.Id, ViewModel.Material.Code, ViewModel.Material.Name,
                     ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Code, ViewModel.MaterialConstruction.Name, ViewModel.MaterialWidth,
                     ViewModel.Unit.Id, ViewModel.Unit.Code, ViewModel.Unit.Name, ViewModel.Color, ViewModel.Motif, ViewModel.Mutation, ViewModel.Length,
-                    ViewModel.UOMUnit, ViewModel.Balance,  new List<DyeingPrintingAreaMovementHistoryModel>()
+                    ViewModel.UOMUnit, ViewModel.Balance, new List<DyeingPrintingAreaMovementHistoryModel>()
                     {
                         new DyeingPrintingAreaMovementHistoryModel(ViewModel.Date, ViewModel.Area,"shift", AreaEnum.PACK)
                     });
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetReport(Model.Date.ToOffset(new TimeSpan(7, 0, 0)), Model.Area, Model.Shift, 7);
+            var result = service.GetReport(Model.Date.ToOffset(new TimeSpan(7, 0, 0)), Model.Area, Model.Shift, Model.Mutation, 7);
 
             Assert.NotEmpty(result);
         }
@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(Model.Date.ToOffset(new TimeSpan(7, 0, 0)), Model.Area, Model.Shift, 7);
+            var result = service.GenerateExcel(Model.Date.ToOffset(new TimeSpan(7, 0, 0)), Model.Area, Model.Shift, Model.Mutation, 7);
 
             Assert.NotNull(result);
         }
@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(Model.Date.ToOffset(new TimeSpan(7, 0, 0)).AddDays(3), Model.Area, Model.Shift, 7);
+            var result = service.GenerateExcel(Model.Date.ToOffset(new TimeSpan(7, 0, 0)).AddDays(3), Model.Area, Model.Shift, Model.Mutation, 7);
 
             Assert.NotNull(result);
         }

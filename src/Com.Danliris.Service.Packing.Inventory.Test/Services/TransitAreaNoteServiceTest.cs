@@ -97,6 +97,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             var result = service.GetReport(Model.Date.ToOffset(new TimeSpan(7, 0, 0)), Model.Area, Model.Shift, Model.Mutation, 7);
 
             Assert.NotEmpty(result);
+            var data = result.FirstOrDefault();
+            Assert.NotNull(data.Area);
+            Assert.Equal(0, data.Id);
         }
 
         [Fact]

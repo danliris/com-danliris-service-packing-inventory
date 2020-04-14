@@ -9,6 +9,7 @@ using System.Data;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System.Globalization;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Packing
 {
@@ -20,9 +21,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
         }
 
-        private IQueryable<IndexViewModel> GetQuery(DateTimeOffset? date, string zone, string group, int offset)
+        private IQueryable<IndexViewModel> GetQuery(DateTimeOffset? date, string zone, string group, string mutation, int offset)
         {
-            var query = _repository.ReadAll();
+            var query = _repository.ReadAll().Where(s => s.DyeingPrintingAreaMovementHistories.OrderByDescending(d => d.Index).FirstOrDefault().Index == AreaEnum.PACK);
 
             if (date.HasValue)
             {
@@ -37,6 +38,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             if (!string.IsNullOrEmpty(group))
             {
                 query = query.Where(s => s.Shift == group);
+            }
+
+            if (!string.IsNullOrEmpty(mutation))
+            {
+                query = query.Where(s => s.Mutation == mutation);
             }
 
             var result = query.OrderByDescending(s => s.LastModifiedUtc).Select(s => new IndexViewModel()
@@ -60,9 +66,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             return result;
         }
 
-        public MemoryStream GenerateExcel(DateTimeOffset? date, string zone, string group, int offSet)
+        public MemoryStream GenerateExcel(DateTimeOffset? date, string zone, string group, string mutation, int offSet)
         {
-            var query = GetQuery(date, zone, group, offSet);
+            var query = GetQuery(date, zone, group, mutation, offSet);
 
             DataTable dt = new DataTable();
 
@@ -100,9 +106,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon Packing Area Dyeing Printing") }, true);
         }
 
-        public List<IndexViewModel> GetReport(DateTimeOffset? date, string zone, string group, int offSet)
+        public List<IndexViewModel> GetReport(DateTimeOffset? date, string zone, string group, string mutation, int offSet)
         {
-            var query = GetQuery(date, zone, group, offSet);
+            var query = GetQuery(date, zone, group, mutation, offSet);
 
             return query.ToList();
         }
