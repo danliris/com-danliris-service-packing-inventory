@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
 
         private IQueryable<IndexViewModel> GetQuery(DateTimeOffset? date, string zone, string group, string mutation, int offset)
         {
-            var query = _repository.ReadAll().Where(s => s.DyeingPrintingAreaMovementHistories.OrderByDescending(d => d.Index).FirstOrDefault().Index == AreaEnum.TRANSIT); ;
+            var query = _repository.ReadAll().Where(s => s.DyeingPrintingAreaMovementHistories.OrderByDescending(d => d.Index).FirstOrDefault().Index == AreaEnum.TRANSIT);
 
             if (date.HasValue)
             {
@@ -54,7 +54,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
                 Date = s.Date,
                 Grade = s.Grade,
                 Group = s.Shift,
-                Status = s.Status,
                 Id = s.Id,
                 MaterialConstructionName = s.MaterialConstructionName,
                 MaterialName = s.MaterialName,
@@ -103,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
                 {
                     var stringDate = item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
                     dt.Rows.Add(stringDate, item.Group, item.UnitName, item.SourceArea, item.ProductionOrderNo, item.CartNo, item.MaterialName, item.MaterialConstructionName,
-                        item.MaterialWidth, item.Status, item.Grade, item.Motif, item.Color, item.MeterLength, item.YardsLength, "");
+                        item.MaterialWidth, item.Remark, item.Grade, item.Motif, item.Color, item.MeterLength, item.YardsLength, "");
                 }
             }
 
