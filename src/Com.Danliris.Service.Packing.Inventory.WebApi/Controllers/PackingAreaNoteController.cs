@@ -32,13 +32,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPackingAreaNote(DateTimeOffset? searchDate, string zone, string group)
+        public IActionResult GetPackingAreaNote(DateTimeOffset? searchDate, string zone, string group, string mutation)
         {
             try
             {
                 VerifyUser();
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = _service.GetReport(searchDate, zone, group, clientTimeZoneOffset);
+                var Result = _service.GetReport(searchDate, zone, group, mutation, clientTimeZoneOffset);
 
                 return Ok(new
                 {
@@ -52,14 +52,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet("xls")]
-        public IActionResult GetPackingAreaNoteExcel(DateTimeOffset? searchDate, string zone, string group)
+        public IActionResult GetPackingAreaNoteExcel(DateTimeOffset? searchDate, string zone, string group, string mutation)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = _service.GenerateExcel(searchDate, zone, group, clientTimeZoneOffset);
+                var Result = _service.GenerateExcel(searchDate, zone, group, mutation, clientTimeZoneOffset);
                 string filename = "Packing Area Note Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

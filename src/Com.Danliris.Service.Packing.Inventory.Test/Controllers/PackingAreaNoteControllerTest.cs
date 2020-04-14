@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IPackingAreaNoteService>();
-            serviceMock.Setup(s => s.GetReport(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GetReport(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new List<IndexViewModel>());
             var service = serviceMock.Object;
 
@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPackingAreaNote(null, null, null);
+            var response = controller.GetPackingAreaNote(null, null, null,null);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IPackingAreaNoteService>();
-            serviceMock.Setup(s => s.GetReport(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GetReport(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPackingAreaNote(null, null, null);
+            var response = controller.GetPackingAreaNote(null, null, null,null);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IPackingAreaNoteService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPackingAreaNoteExcel(null, null, null);
+            var response = controller.GetPackingAreaNoteExcel(null, null, null,null);
 
             Assert.NotNull(response);
         }
@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IPackingAreaNoteService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -117,7 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPackingAreaNoteExcel(null, null, null);
+            var response = controller.GetPackingAreaNoteExcel(null, null, null,null);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
