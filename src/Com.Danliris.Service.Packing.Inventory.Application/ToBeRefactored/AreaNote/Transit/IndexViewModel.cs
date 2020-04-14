@@ -23,5 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
         public string Color { get; set; }
         public double MeterLength { get; set; }
         public double YardsLength { get; set; }
+        public string Remark { get; set; }
     }
 }
