@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionDocumentReport;
@@ -36,6 +36,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -70,7 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
             services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
-            services.AddTransient<IDyeingPrintingAreaMovementService, DyeingPrintingAreaMovementService>();
+            services.AddTransient<IDyeingPrintingAreaMovementHistoryRepository, DyeingPrintingAreaMovementHistoryRepository>();
+            services.AddTransient<IInspectionMaterialService, InspectionMaterialService>();
             services.AddTransient<ITransitAreaNoteService, TransitAreaNoteService>();
             services.AddTransient<IInspectionDocumentReportService, InspectionDocumentReportService>();
             services.AddTransient<IInspectionBalanceIMService, InspectionBalanceIMService>();
@@ -81,6 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
             services.AddTransient<IPackingAreaNoteService, PackingAreaNoteService>();
             services.AddTransient<IAvalAreaNoteService, AvalAreaNoteService>();
+            services.AddTransient<ITransitInputService, TransitInputService>();
 
 
             // Register Provider
@@ -175,8 +178,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
             services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
             services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
-            services.AddSingleton<IValidator<DyeingPrintingAreaMovementViewModel>, DyeingPrintingAreaMovementValidator>();
+            services.AddSingleton<IValidator<InspectionMaterialViewModel>, InspectionMaterialValidator>();
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
+            services.AddSingleton<IValidator<TransitInputViewModel>, TransitInputValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

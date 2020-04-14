@@ -141,6 +141,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.SourceArea)
               .HasMaxLength(64);
+
+            builder
+              .Property(s => s.Remark)
+              .HasMaxLength(1024);
         }
     }
 }

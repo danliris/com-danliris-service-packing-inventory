@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
 
         public int ItemIndex { get; private set; }
 
-        public ICollection<CriteriaModel> Criteria { get; set; }
+        public ICollection<CriteriaModel> Criteria { get; private set; }
 
         public int FabricQualityControlId { get; set; }
         public virtual FabricQualityControlModel FabricQualityControl { get; set; }

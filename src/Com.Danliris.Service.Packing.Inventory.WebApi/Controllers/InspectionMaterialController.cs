@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/dyeing-printing-area-movement")]
+    [Route("v1/inspection-material")]
     [Authorize]
-    public class DyeingPrintingAreaMovementController : ControllerBase
+    public class InspectionMaterialController : ControllerBase
     {
-        private readonly IDyeingPrintingAreaMovementService _service;
+        private readonly IInspectionMaterialService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public DyeingPrintingAreaMovementController(IDyeingPrintingAreaMovementService service, IIdentityProvider identityProvider)
+        public InspectionMaterialController(IInspectionMaterialService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] DyeingPrintingAreaMovementViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] InspectionMaterialViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] DyeingPrintingAreaMovementViewModel viewModel)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] InspectionMaterialViewModel viewModel)
         {
             VerifyUser();
             if (!ModelState.IsValid)
@@ -89,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         {
             try
             {
+                VerifyUser();
                 await _service.Delete(id);
 
                 return NoContent();

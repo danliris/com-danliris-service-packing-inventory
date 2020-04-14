@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement
+namespace Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial
 {
-    public class DyeingPrintingAreaMovementValidator : AbstractValidator<DyeingPrintingAreaMovementViewModel>
+    public class InspectionMaterialValidator : AbstractValidator<InspectionMaterialViewModel>
     {
-        public DyeingPrintingAreaMovementValidator()
+        public InspectionMaterialValidator()
         {
             RuleFor(data => data.Area).NotNull().WithMessage("Harus Memiliki Area!");
             RuleFor(data => data.Date).Must(s => s != default(DateTimeOffset)).WithMessage("Tanggal Harus Diisi!");

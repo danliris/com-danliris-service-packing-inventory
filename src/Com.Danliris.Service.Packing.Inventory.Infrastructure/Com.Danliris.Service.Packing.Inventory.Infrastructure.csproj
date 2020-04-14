@@ -7,6 +7,12 @@
     <Compile Remove="Migrations\20200406024119_AddFabricQualityControl.Designer.cs" />
     <Compile Remove="Migrations\20200409045247_testr.cs" />
     <Compile Remove="Migrations\20200409045247_testr.Designer.cs" />
+    <Compile Remove="Migrations\20200413042725_AddHistoryForDPAreaMovement.cs" />
+    <Compile Remove="Migrations\20200413042725_AddHistoryForDPAreaMovement.Designer.cs" />
+    <Compile Remove="Migrations\20200413073356_EnhanceDPAreaMovement.cs" />
+    <Compile Remove="Migrations\20200413073356_EnhanceDPAreaMovement.Designer.cs" />
+    <Compile Remove="Migrations\20200413095931_EnhanceHistory.cs" />
+    <Compile Remove="Migrations\20200413095931_EnhanceHistory.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

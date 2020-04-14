@@ -90,6 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         {
             try
             {
+                VerifyUser();
                 await _service.Delete(id);
 
                 return NoContent();
