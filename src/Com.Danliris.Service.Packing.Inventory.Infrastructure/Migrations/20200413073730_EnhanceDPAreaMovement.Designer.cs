@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200413073730_EnhanceDPAreaMovement")]
+    partial class EnhanceDPAreaMovement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -619,168 +621,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InventoryDocumentSKUs");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Product.CategoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPCategories");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Product.PackingModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
-
-                    b.Property<double>("Size");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPPackings");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Product.ProductModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("PackingId");
-
-                    b.Property<int>("UOMId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPProducts");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Product.UnitOfMeasurementModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(32);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPUnitOfMeasurements");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.ProductPackingModel", b =>
