@@ -84,6 +84,63 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             Assert.NotEmpty(result);
         }
 
-        
+        [Fact]
+        public virtual async Task Should_Success_InsertFromTransit()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.InsertFromTransitAsync(data.Id, data.Shift, data.Date, "Transit", "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", data.Shift, AreaEnum.TRANSIT));
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_DeleteFromTransit()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromTransitAsync(data.Id, data.Shift, data.Date, "Transit", "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", data.Shift, AreaEnum.TRANSIT));
+            var result = await repo.DeleteFromTransitAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromTransit()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromTransit";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromTransitAsync(data.Id, null, data.Date, "Transit", null, new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", null, AreaEnum.TRANSIT));
+            var result = await repo.UpdateFromTransitAsync(data.Id, data.Shift, "rem");
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromFQC()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromTransit";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            data.SetStatus("ok", "user", "agent");
+            var result = await repo.UpdateFromFabricQualityControlAsync(data.Id, "grade", true);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
