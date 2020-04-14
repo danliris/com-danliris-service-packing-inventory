@@ -53,8 +53,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new InventoryDocumentAvalViewModel()
                 {
-                    Date = DateTimeOffset.UtcNow,
-                    BonNo = "IM.20.0002",
+                    //Date = DateTimeOffset.UtcNow,
+                    //BonNo = "IM.20.0002",
                     Shift = "PAGI",
                     UOMUnit = "MTR",
                     ProductionOrderQuantity = 2500,

@@ -64,10 +64,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             //MassKg = massKg;
         }
 
-        public DyeingPrintingAreaMovementModel(string area, string bonNo, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
+        public DyeingPrintingAreaMovementModel(string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
         {
             Area = area;
-            BonNo = bonNo;
+            //BonNo = bonNo;
             Shift = shift;
             UOMUnit = uomUnit;
             ProductionOrderQuantity = productionOrderQuantity;

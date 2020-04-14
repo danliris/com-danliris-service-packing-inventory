@@ -31,6 +31,41 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
         }
 
+        [HttpGet]
+        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.Read(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            try
+            {
+                var data = await _service.ReadById(id);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost("{id}")]
         public async Task<IActionResult> Post([FromRoute] int id, [FromBody] InventoryDocumentAvalViewModel viewModel)
         {
@@ -80,40 +115,5 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         //    }
         //}
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
-        {
-            try
-            {
-                var data = await _service.ReadById(id);
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
-        {
-            try
-            {
-
-                var data = _service.Read(page, size, filter, order, keyword);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
-            }
-        }
     }
 }

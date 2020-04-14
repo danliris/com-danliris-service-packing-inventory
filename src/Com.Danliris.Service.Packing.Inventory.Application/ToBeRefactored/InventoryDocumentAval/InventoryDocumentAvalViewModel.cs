@@ -7,8 +7,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAv
     {
         //public int Id { get; set; }
         public string Area { get; set; }
-        public DateTimeOffset Date { get; set; }
-        public string BonNo { get; set; }
         public string Shift { get; set; }
         public string UOMUnit { get; set; }
         public double ProductionOrderQuantity { get; set; }

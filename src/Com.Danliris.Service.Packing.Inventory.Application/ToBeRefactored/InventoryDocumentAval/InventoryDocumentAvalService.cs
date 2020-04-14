@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAv
             var vm = new InventoryDocumentAvalViewModel()
             {
                 Id = model.Id,
-                BonNo = model.BonNo,
+                //BonNo = model.BonNo,
                 Shift = model.Shift,
                 UOMUnit = model.UOMUnit,
                 ProductionOrderQuantity = model.ProductionOrderQuantity,
@@ -40,10 +40,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAv
         public async Task<int> Create(int id, InventoryDocumentAvalViewModel viewModel)
         {
 
-            var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>());
+            var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>());
 
             int result = await _repository.UpdateAsync(id, model);
-            result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.AVAL, viewModel.Date, viewModel.Shift);
+            result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.AVAL, DateTimeOffset.UtcNow, viewModel.Shift);
 
             return result;
         }

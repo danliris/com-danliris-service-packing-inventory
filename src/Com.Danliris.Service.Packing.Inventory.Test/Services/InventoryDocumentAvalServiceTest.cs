@@ -22,9 +22,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(ViewModel.Area, ViewModel.BonNo, ViewModel.Shift, ViewModel.UOMUnit, ViewModel.ProductionOrderQuantity, ViewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>()
+                return new DyeingPrintingAreaMovementModel(ViewModel.Area, ViewModel.Shift, ViewModel.UOMUnit, ViewModel.ProductionOrderQuantity, ViewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>()
                     {
-                        new DyeingPrintingAreaMovementHistoryModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, AreaEnum.AVAL)
+                        new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, ViewModel.Area, ViewModel.Shift, AreaEnum.AVAL)
                     }
                 );
             }
@@ -38,8 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     Id = 1,
                     Area = "AVAL",
-                    Date = DateTimeOffset.UtcNow,
-                    BonNo = "IM.20.0002",
+                    //Date = DateTimeOffset.UtcNow,
+                    //BonNo = "IM.20.0002",
                     Shift = "PAGI",
                     UOMUnit = "MTR",
                     ProductionOrderQuantity = 2500,
