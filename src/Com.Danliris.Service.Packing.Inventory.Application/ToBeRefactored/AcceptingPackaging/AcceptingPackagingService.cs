@@ -6,24 +6,42 @@ using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AcceptingPackaging;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.AcceptingPackaging;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
 {
     public class AcceptingPackagingService : IAcceptingPackagingService
     {
-        private readonly IDyeingPrintingAreaMovementRepository _repository;
+        private readonly IAcceptingPackagingRepository _repository;
+        private readonly IDyeingPrintingAreaMovementRepository _dyeingRepository;
+
+        public AcceptingPackagingService(IServiceProvider serviceProvider)
+        {
+            _repository = serviceProvider.GetService<IAcceptingPackagingRepository>();
+            _dyeingRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
+        }
 
         public Task<int> Create(AcceptingPackagingViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var data = MappingIndexViewModelToRepo(viewModel);
+            if (data != null)
+            {
+                return _repository.InsertAsync(viewModel.NoBon, data);
+            }
+            else
+            {
+                return Task.FromResult(0);
+            }
         }
 
         public Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            return _repository.DeleteAsync(id);
         }
 
         private IQueryable<AcceptingPackagingViewModel> MappingListAsQueryable(List<DyeingPrintingAreaMovementModel> indexModel)
@@ -35,6 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             }
             return result.AsQueryable();
         }
+
         private IQueryable<IndexViewModel> MappingIndexViewModelAsQueryable(List<AcceptingPackagingViewModel> indexModel)
         {
             List<IndexViewModel> result = new List<IndexViewModel>();
@@ -44,6 +63,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             }
             return result.AsQueryable();
         }
+
+        private IQueryable<IndexViewModel> MappingIndexViewModelAsQueryable(List<AcceptingPackagingModel> indexModel)
+        {
+            List<IndexViewModel> result = new List<IndexViewModel>();
+            foreach (var item in indexModel)
+            {
+                result.Add(new IndexViewModel(item));
+            }
+            return result.AsQueryable();
+        }
+
         private IQueryable<IndexViewModel> MappingIndexViewModelAsQueryable(List<DyeingPrintingAreaMovementModel> indexModel)
         {
             List<IndexViewModel> result = new List<IndexViewModel>();
@@ -53,10 +83,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             }
             return result.AsQueryable();
         }
-               
+        
+        private AcceptingPackagingModel MappingIndexViewModelToRepo(AcceptingPackagingViewModel indexModel)
+        {
+            var result = new AcceptingPackagingModel
+            {
+                Active = indexModel.Active,
+                BonNo = indexModel.NoBon,
+                Satuan = indexModel.Satuan,
+                CreatedBy = indexModel.CreatedBy,
+                CreatedAgent = indexModel.CreatedAgent,
+                CreatedUtc = indexModel.CreatedUtc,
+                DeletedAgent = indexModel.DeletedAgent,
+                DeletedBy = indexModel.DeletedBy,
+                DeletedUtc = indexModel.DeletedUtc,
+                Grade = indexModel.Grade,
+                IdDyeingPrintingMovement = indexModel.Id,
+                Id = indexModel.Id,
+                IsDeleted = indexModel.IsDeleted,
+                Date = new DateTimeOffset(DateTime.Now),
+                LastModifiedAgent = indexModel.LastModifiedAgent,
+                LastModifiedBy = indexModel.LastModifiedBy,
+                LastModifiedUtc = indexModel.LastModifiedUtc,
+                MaterialObject = indexModel.MaterialObject.Name,
+                Motif = indexModel.Motif,
+                Mtr = indexModel.Mtr,
+                OrderNo = indexModel.NoBon,
+                Saldo = indexModel.Saldo,
+                Shift = indexModel.Shift,
+                Unit = indexModel.Unit.Name,
+                Warna = indexModel.Warna,
+                Yds = indexModel.Yds
+            };
+            return result;
+        }
+
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = MappingIndexViewModelAsQueryable(_repository.ReadAll().ToList());
+            var query = MappingIndexViewModelAsQueryable(_dyeingRepository.ReadAll().ToList());
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -78,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
 
         public async Task<AcceptingPackagingViewModel> ReadById(int id)
         {
-            var model = await _repository.ReadByIdAsync(id);
+            var model = await _dyeingRepository.ReadByIdAsync(id);
             if (model == null)
                 return null;
 
@@ -89,7 +153,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
 
         public Task<int> Update(int id, AcceptingPackagingViewModel viewModel)
         {
-            throw new NotImplementedException();
+            return _repository.UpdateAsync(viewModel.NoBon, MappingIndexViewModelToRepo(viewModel));
+        }
+
+        public AcceptingPackagingViewModel ReadByBonNo(string bonNo)
+        {
+            return new AcceptingPackagingViewModel(_dyeingRepository.ReadAll().Where(s=>s.BonNo == bonNo).FirstOrDefault());
+        }
+
+        public List<string> ReadAllBonNo()
+        {
+            return _dyeingRepository.ReadAll().GroupBy(x => x.BonNo).Select(x => x.Key).ToList();
         }
     }
 }

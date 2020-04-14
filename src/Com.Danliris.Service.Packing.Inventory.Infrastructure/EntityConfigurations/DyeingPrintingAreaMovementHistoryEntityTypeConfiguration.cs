@@ -45,6 +45,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.Shift)
               .HasMaxLength(64);
+
+            builder
+              .Property(s => s.Balance)
+              .HasColumnType("decimal(18,2)");
+
+            builder
+              .Property(s => s.Grade)
+              .HasMaxLength(64);
         }
     }
 }

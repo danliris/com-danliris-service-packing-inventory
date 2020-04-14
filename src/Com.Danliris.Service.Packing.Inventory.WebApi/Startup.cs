@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging;
-using Com.Danliris.Service.Packing.Inventory.Application.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.InspectionBalanceIM;
@@ -39,6 +38,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.AcceptingPackaging;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -87,7 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalAreaNoteService, AvalAreaNoteService>();
             services.AddTransient<IAcceptingPackagingService, AcceptingPackagingService>();
             services.AddTransient<ITransitInputService, TransitInputService>();
-
+            services.AddTransient<IAcceptingPackagingRepository, AcceptingPackagingRepository>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
