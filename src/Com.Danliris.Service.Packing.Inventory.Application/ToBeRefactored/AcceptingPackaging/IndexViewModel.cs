@@ -23,7 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         public string Mtr { get; set; }
         public string Yds { get; set; }
         public decimal Saldo { get; set; }
-
+        public DateTimeOffset LastModifiedUtc { get; set; }
+        public string Satuan { get; set; }
         public IndexViewModel()
         {
 
@@ -42,6 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             NoBon = source.NoBon;
             Unit = source.Unit.Name;
             Warna = source.Warna;
+            LastModifiedUtc = source.LastModifiedUtc;
+            Satuan = source.Satuan;
         }
         public IndexViewModel(AcceptingPackagingModel source)
         {
@@ -57,6 +60,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             NoBon = source.BonNo;
             Unit = source.Unit;
             Warna = source.Warna;
+            LastModifiedUtc = source.LastModifiedUtc;
+            Satuan = source.Satuan;
         }
         public IndexViewModel(DyeingPrintingAreaMovementModel source)
         {
@@ -72,6 +77,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             NoBon = source.BonNo;
             Unit = source.UnitName;
             Warna = source.Color;
+            LastModifiedUtc = source.LastModifiedUtc;
+            Satuan = source.UOMUnit;
         }
     }
 }

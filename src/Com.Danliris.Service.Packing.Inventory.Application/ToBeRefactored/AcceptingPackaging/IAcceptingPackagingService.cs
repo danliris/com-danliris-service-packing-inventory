@@ -15,6 +15,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         Task<AcceptingPackagingViewModel> ReadById(int id);
         AcceptingPackagingViewModel ReadByBonNo(string bonNo);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
+        ListResult<AcceptingPackagingViewModel> ReadDetails(int page, int size, string filter, string order, string keyword);
         List<string> ReadAllBonNo();
+        List<string> ReadContainBonNo(string bonNo);
     }
 }

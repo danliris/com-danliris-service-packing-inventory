@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/accepting-packaging")]
+    [Route("v1/dyeing-printing-accepting-packaging")]
     [Authorize]
     public class AcceptingPackagingController : ControllerBase
     {
@@ -123,6 +123,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             {
 
                 var data = _service.Read(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+        [HttpGet("details")]
+        public IActionResult GetDetails([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.ReadDetails(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

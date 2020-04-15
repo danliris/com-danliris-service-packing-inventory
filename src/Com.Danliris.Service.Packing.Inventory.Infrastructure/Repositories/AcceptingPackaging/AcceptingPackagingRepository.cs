@@ -96,9 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Acc
 
         public IQueryable<AcceptingPackagingModel> ReadAll() => MappingListDyeingToAccepting(_dyeingPrintingAreaMovementDbSet.Where(x => x.Area == Enum.GetName(typeof(AreaEnum), Area)).AsNoTracking());
 
-
         public AcceptingPackagingModel ReadByDyeingPrintingAreaMovement(int dyeingPrintingAreaMovementId) => MappingDyeingToAccepting(_dyeingPrintingAreaMovementDbSet.Where(x => x.Id == dyeingPrintingAreaMovementId).FirstOrDefault());
-
 
         public Task<int> UpdateAsync(int dyeingPrintingAreaMovementId, AcceptingPackagingModel data)
         {
@@ -172,7 +170,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Acc
                     OrderNo = item.ProductionOrderNo,
                     Unit = item.UnitName,
                     Warna = item.Color,
-                    Yds = item.YardsLength
+                    Yds = item.YardsLength,
+                    Date = item.Date
                 };
             }
             else

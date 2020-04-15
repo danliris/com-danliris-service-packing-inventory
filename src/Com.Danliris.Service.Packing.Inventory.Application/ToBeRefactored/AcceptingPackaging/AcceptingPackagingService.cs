@@ -120,11 +120,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = MappingIndexViewModelAsQueryable(_dyeingRepository.ReadAll().ToList());
+            var query = MappingIndexViewModelAsQueryable(_repository.ReadAll().ToList());
+
 
             List<string> SearchAttributes = new List<string>()
             {
-                "BonNo", "NoSpp"
+                "NoBon", "NoSpp"
             };
 
             query = QueryHelper<IndexViewModel>.Search(query, SearchAttributes, keyword);
@@ -164,6 +165,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         public List<string> ReadAllBonNo()
         {
             return _dyeingRepository.ReadAll().GroupBy(x => x.BonNo).Select(x => x.Key).ToList();
+        }
+
+        public List<string> ReadContainBonNo(string bonNo)
+        {
+            //return _dyeingRepository.ReadAll().(new AcceptingPackagingViewModel { NoBon = bonNo })
+            return (from x in _dyeingRepository.ReadAll()
+                    where x.BonNo.Contains(bonNo)
+                    group x by x.BonNo).Select(x => x.Key).ToList();
+        }
+
+        public ListResult<AcceptingPackagingViewModel> ReadDetails(int page, int size, string filter, string order, string keyword)
+        {
+            var query = MappingListAsQueryable(_dyeingRepository.ReadAll().ToList());
+
+            List<string> SearchAttributes = new List<string>()
+            {
+                "NoBon"
+            };
+
+            query = QueryHelper<AcceptingPackagingViewModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<AcceptingPackagingViewModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<AcceptingPackagingViewModel>.Order(query, OrderDictionary);
+
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => s);
+
+            return new ListResult<AcceptingPackagingViewModel>(data.ToList(), page, size, query.Count());
         }
     }
 }
