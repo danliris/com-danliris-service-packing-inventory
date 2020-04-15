@@ -78,31 +78,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetUOMUnit(string newUOMUnit, string user, string agent)
-        {
-            if (newUOMUnit != UOMUnit)
-            {
-                UOMUnit = newUOMUnit;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetUOMUnit(string newUOMUnit, string user, string agent)
+        //{
+        //    if (newUOMUnit != UOMUnit)
+        //    {
+        //        UOMUnit = newUOMUnit;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
 
-        public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
-        {
-            if (newProductionOrderQuantity != ProductionOrderQuantity)
-            {
-                ProductionOrderQuantity = newProductionOrderQuantity;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
+        //{
+        //    if (newProductionOrderQuantity != ProductionOrderQuantity)
+        //    {
+        //        ProductionOrderQuantity = newProductionOrderQuantity;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
 
-        public void SetQtyKg(double newQtyKg, string user, string agent)
-        {
-            if (newQtyKg != QtyKg)
-            {
-                QtyKg = newQtyKg;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetQtyKg(double newQtyKg, string user, string agent)
+        //{
+        //    if (newQtyKg != QtyKg)
+        //    {
+        //        QtyKg = newQtyKg;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
     }
 }
