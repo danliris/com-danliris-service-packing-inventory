@@ -64,17 +64,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             //MassKg = massKg;
         }
 
-        public DyeingPrintingAreaMovementModel(string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
-        {
-            Area = area;
-            //BonNo = bonNo;
-            Shift = shift;
-            UOMUnit = uomUnit;
-            ProductionOrderQuantity = productionOrderQuantity;
-            QtyKg = qtyKg;
-            DyeingPrintingAreaMovementHistories = histories;
-        }
-
         public string GenerateConstruction(string materialName, string materialConstructionName, string materialWidth)
         {
             return string.Format("{0} / {1} / {2}", materialName, materialConstructionName, materialWidth);
@@ -350,6 +339,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
+        public void SetUomUnit(string uomUnit, string user, string agent)
+        {
+            if (uomUnit != UOMUnit)
+            {
+                UOMUnit = uomUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetBalance(decimal newBalance, string user, string agent)
         {
             if (newBalance != Balance)
@@ -400,6 +398,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newRemark != Remark)
             {
                 Remark = newRemark;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetQtyKg(double qtyKg, string user, string agent)
+        {
+            if (qtyKg != QtyKg)
+            {
+                QtyKg = qtyKg;
                 this.FlagForUpdate(user, agent);
             }
         }

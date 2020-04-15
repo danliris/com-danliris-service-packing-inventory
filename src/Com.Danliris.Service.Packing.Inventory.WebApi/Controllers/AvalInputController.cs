@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +13,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
     [Produces("application/json")]
     [Route("v1/inventory-document-aval")]
     [Authorize]
-    public class InventoryDocumentAvalController : ControllerBase
+    public class AvalInputController : ControllerBase
     {
-        private readonly IInventoryDocumentAvalService _service;
+        private readonly IAvalInputService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public InventoryDocumentAvalController(IInventoryDocumentAvalService service, IIdentityProvider identityProvider)
+        public AvalInputController(IAvalInputService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -66,8 +66,33 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> Post([FromRoute] int id, [FromBody] InventoryDocumentAvalViewModel viewModel)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] AvalInputViewModel viewModel)
+        {
+            VerifyUser();
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+            try
+            {
+                VerifyUser();
+                await _service.Create(viewModel);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] AvalInputViewModel viewModel)
         {
             VerifyUser();
             if (!ModelState.IsValid)
@@ -81,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 
             try
             {
-                await _service.Create(id, viewModel);
+                await _service.Update(id, viewModel);
 
                 return NoContent();
             }
@@ -91,29 +116,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put([FromRoute] int id, [FromBody] InventoryDocumentAvalViewModel viewModel)
-        //{
-        //    VerifyUser();
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var exception = new
-        //        {
-        //            error = ResultFormatter.FormatErrorMessage(ModelState)
-        //        };
-        //        return new BadRequestObjectResult(exception);
-        //    }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.Delete(id);
 
-        //    try
-        //    {
-        //        await _service.Update(id, viewModel);
-
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-        //    }
-        //}
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

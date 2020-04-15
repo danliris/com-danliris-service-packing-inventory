@@ -9,25 +9,29 @@ using System.Collections.Generic;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput
 {
-    public class InventoryDocumentAvalService : IInventoryDocumentAvalService
+    public class AvalInputService : IAvalInputService
     {
         private readonly IDyeingPrintingAreaMovementRepository _repository;
         private readonly IDyeingPrintingAreaMovementHistoryRepository _historyRepository;
 
-        public InventoryDocumentAvalService(IServiceProvider serviceProvider)
+        public AvalInputService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _historyRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementHistoryRepository>();
         }
 
-        private InventoryDocumentAvalViewModel MapToViewModel(DyeingPrintingAreaMovementModel model)
+        private AvalInputViewModel MapToViewModel(DyeingPrintingAreaMovementModel model)
         {
-            var vm = new InventoryDocumentAvalViewModel()
+            var vm = new AvalInputViewModel()
             {
                 Id = model.Id,
-                //BonNo = model.BonNo,
+                BonNo = model.BonNo,
+                CartNo = model.CartNo,
+                Unit = model.UnitName,
+                Area = model.Area,
+                ProductionOrderType = model.ProductionOrderType,
                 Shift = model.Shift,
                 UOMUnit = model.UOMUnit,
                 ProductionOrderQuantity = model.ProductionOrderQuantity,
@@ -37,35 +41,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAv
             return vm;
         }
 
-        public async Task<int> Create(int id, InventoryDocumentAvalViewModel viewModel)
+        public Task<int> Create(AvalInputViewModel viewModel)
         {
+            DyeingPrintingAreaMovementHistoryModel history = new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, viewModel.Area, viewModel.Shift, AreaEnum.AVAL);
 
-            var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>());
+            return _repository.InsertFromAvalAsync(viewModel.Id, viewModel.Area, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg, history);
+        }
 
-            int result = await _repository.UpdateAsync(id, model);
+        public async Task<int> Update(int id, AvalInputViewModel viewModel)
+        {
+            int result = await _repository.UpdateFromAvalAsync(id, viewModel.Area, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg);
             result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.AVAL, DateTimeOffset.UtcNow, viewModel.Shift);
 
             return result;
         }
 
-        //public async Task<int> Update(int id, InventoryDocumentAvalViewModel viewModel)
-        //{
+        public Task<int> Delete(int id)
+        {
+            return _repository.DeleteFromAvalAsync(id);
+        }
 
-        //    var model = new DyeingPrintingAreaMovementModel(viewModel.Area, viewModel.BonNo, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>());
-
-        //    int result = await _repository.UpdateAsync(id, model);
-        //    //result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.AVAL, viewModel.Date, viewModel.Shift);
-
-        //    return result;
-        //}
-
-        public async Task<InventoryDocumentAvalViewModel> ReadById(int id)
+        public async Task<AvalInputViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
             if (model == null)
                 return null;
 
-            InventoryDocumentAvalViewModel vm = MapToViewModel(model);
+            AvalInputViewModel vm = MapToViewModel(model);
 
             return vm;
         }

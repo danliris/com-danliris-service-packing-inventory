@@ -24,17 +24,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         }
 
-        public DyeingPrintingAreaMovementHistoryModel(DateTimeOffset date, string area, string shift, AreaEnum index)
+        public DyeingPrintingAreaMovementHistoryModel(DateTimeOffset date, 
+                                                      string area, 
+                                                      string shift, 
+                                                      //string uomUnit, 
+                                                      //double productionOrderQuantity, 
+                                                      AreaEnum index)
         {
             Date = date;
             Area = area;
             Index = index;
             Shift = shift;
+            //UOMUnit = uomUnit;
+            //ProductionOrderQuantity = productionOrderQuantity;
         }
 
         public DateTimeOffset Date { get; private set; }
         public string Area { get; private set; }
         public string Shift { get; private set; }
+        public string UOMUnit { get; private set; }
+        public double ProductionOrderQuantity { get; private set; }
+        public double QtyKg { get; private set; }
         public AreaEnum Index { get; private set; }
 
         public int DyeingPrintingAreaMovementId { get; set; }
@@ -61,12 +71,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 
         public void SetShift(string newShift, string user, string agent)
         {
-            if(newShift != Shift)
+            if (newShift != Shift)
             {
                 Shift = newShift;
                 this.FlagForUpdate(user, agent);
             }
         }
 
+        public void SetUOMUnit(string newUOMUnit, string user, string agent)
+        {
+            if (newUOMUnit != UOMUnit)
+            {
+                UOMUnit = newUOMUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
+        {
+            if (newProductionOrderQuantity != ProductionOrderQuantity)
+            {
+                ProductionOrderQuantity = newProductionOrderQuantity;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetQtyKg(double newQtyKg, string user, string agent)
+        {
+            if (newQtyKg != QtyKg)
+            {
+                QtyKg = newQtyKg;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 }

@@ -153,5 +153,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> InsertFromAvalAsync(int dyeingPrintingAreaMovementId, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, DyeingPrintingAreaMovementHistoryModel history)
+        {
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == dyeingPrintingAreaMovementId);
+            modelToUpdate.SetDate(DateTimeOffset.UtcNow, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSourceArea(modelToUpdate.Area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShift(shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetUomUnit(uomUnit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrderQuantity(productionOrderQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetQtyKg(qtyKg, _identityProvider.Username, UserAgent);
+
+            history.FlagForCreate(_identityProvider.Username, UserAgent);
+            modelToUpdate.DyeingPrintingAreaMovementHistories.Add(history);
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromAvalAsync(int id, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg)
+        {
+            var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
+            modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShift(shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetUomUnit(uomUnit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrderQuantity(productionOrderQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetQtyKg(qtyKg, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteFromAvalAsync(int id)
+        {
+            var histories = _historyDbSet.Where(s => s.DyeingPrintingAreaMovementId == id);
+            var previousHistory = histories.FirstOrDefault(s => s.Index == AreaEnum.IM);
+            var model = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(s => s.Id == id);
+            model.SetSourceArea(null, _identityProvider.Username, UserAgent);
+            model.SetArea(previousHistory.Area, _identityProvider.Username, UserAgent);
+            model.SetShift(previousHistory.Shift, _identityProvider.Username, UserAgent);
+            model.SetUomUnit(previousHistory.UOMUnit, _identityProvider.Username, UserAgent);
+            model.SetProductionOrderQuantity(previousHistory.ProductionOrderQuantity, _identityProvider.Username, UserAgent);
+            model.SetQtyKg(0, _identityProvider.Username, UserAgent);
+
+            model.FlagForUpdate(_identityProvider.Username, UserAgent);
+            var currentHistory = histories.FirstOrDefault(s => s.Index == AreaEnum.AVAL);
+            currentHistory.FlagForDelete(_identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

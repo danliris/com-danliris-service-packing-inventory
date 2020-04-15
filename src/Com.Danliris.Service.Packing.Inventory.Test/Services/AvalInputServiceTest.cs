@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -11,35 +11,37 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 {
-    public class InventoryDocumentAvalServiceTest
+    public class AvalInputServiceTest
     {
-        public InventoryDocumentAvalService GetService(IServiceProvider serviceProvider)
+        public AvalInputService GetService(IServiceProvider serviceProvider)
         {
-            return new InventoryDocumentAvalService(serviceProvider);
+            return new AvalInputService(serviceProvider);
         }
 
         private DyeingPrintingAreaMovementModel Model
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(ViewModel.Area, ViewModel.Shift, ViewModel.UOMUnit, ViewModel.ProductionOrderQuantity, ViewModel.QtyKg, new List<DyeingPrintingAreaMovementHistoryModel>()
+                return new DyeingPrintingAreaMovementModel(ViewModel.Area, null, DateTimeOffset.UtcNow, ViewModel.Shift, 0,
+                    null, null, ViewModel.ProductionOrderQuantity, null,
+                    null, null, null, 0, null, null,
+                    0, null, null, null,
+                    0, null, null, null, null, null,0,
+                    ViewModel.UOMUnit, 0, new List<DyeingPrintingAreaMovementHistoryModel>()
                     {
                         new DyeingPrintingAreaMovementHistoryModel(DateTimeOffset.UtcNow, ViewModel.Area, ViewModel.Shift, AreaEnum.AVAL)
-                    }
-                );
+                    });
             }
         }
 
-        private InventoryDocumentAvalViewModel ViewModel
+        private AvalInputViewModel ViewModel
         {
             get
             {
-                return new InventoryDocumentAvalViewModel()
+                return new AvalInputViewModel()
                 {
                     Id = 1,
                     Area = "AVAL",
-                    //Date = DateTimeOffset.UtcNow,
-                    //BonNo = "IM.20.0002",
                     Shift = "PAGI",
                     UOMUnit = "MTR",
                     ProductionOrderQuantity = 2500,
@@ -60,45 +62,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
-        public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaMovementRepository service)
-        {
-            var spMock = new Mock<IServiceProvider>();
-            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaMovementRepository)))
-                .Returns(service);
-
-            return spMock;
-        }
-
         [Fact]
         public async Task Should_Success_Create()
         {
             var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaMovementModel>()))
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                 .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.InsertFromAvalAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(),
+                It.IsAny<DyeingPrintingAreaMovementHistoryModel>())).ReturnsAsync(1);
+
+            var historyRepo = new Mock<IDyeingPrintingAreaMovementHistoryRepository>();
+            var service = GetService(GetServiceProvider(repoMock.Object, historyRepo.Object).Object);
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            repoMock.Setup(s => s.UpdateFromAvalAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
 
             var historyRepo = new Mock<IDyeingPrintingAreaMovementHistoryRepository>();
             historyRepo.Setup(s => s.UpdateAsyncFromParent(It.IsAny<int>(), It.IsAny<AreaEnum>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>()))
                 .ReturnsAsync(1);
             var service = GetService(GetServiceProvider(repoMock.Object, historyRepo.Object).Object);
 
-            var result = await service.Create(1, ViewModel);
+            var result = await service.Update(1, ViewModel);
 
             Assert.NotEqual(0, result);
         }
 
-        //[Fact]
-        //public async Task Should_Success_Update()
-        //{
-        //    var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-        //    repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaMovementModel>()))
-        //        .ReturnsAsync(1);
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            repoMock.Setup(s => s.DeleteFromAvalAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
 
-        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var historyRepo = new Mock<IDyeingPrintingAreaMovementHistoryRepository>();
+            var service = GetService(GetServiceProvider(repoMock.Object, historyRepo.Object).Object);
 
-        //    var result = await service.Update(1, ViewModel);
+            var result = await service.Delete(1);
 
-        //    Assert.NotEqual(0, result);
-        //}
+            Assert.NotEqual(0, result);
+        }
 
         [Fact]
         public async Task Should_Success_ReadById()

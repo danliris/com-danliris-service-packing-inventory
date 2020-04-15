@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput
 {
     public class IndexViewModel
     {

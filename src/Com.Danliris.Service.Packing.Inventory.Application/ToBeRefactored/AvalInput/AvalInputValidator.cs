@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput
 {
-    public class InventoryDocumentAvalValidator : AbstractValidator<InventoryDocumentAvalViewModel>
+    public class AvalInputValidator : AbstractValidator<AvalInputViewModel>
     {
-        public InventoryDocumentAvalValidator()
+        public AvalInputValidator()
         {
             RuleFor(inventoryDocument => inventoryDocument.Id).NotEmpty().WithMessage("Id Tidak Valid");
             //RuleFor(inventoryDocument => inventoryDocument.BonNo).NotNull().WithMessage("No. Bon Harus Diisi");

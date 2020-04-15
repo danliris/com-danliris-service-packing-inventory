@@ -12,9 +12,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         IQueryable<DyeingPrintingAreaMovementModel> GetDbSet();
         IQueryable<DyeingPrintingAreaMovementModel> ReadAllIgnoreQueryFilter();
+
         Task<int> InsertFromTransitAsync(int dyeingPrintingAreaMovementId, string shift, DateTimeOffset date, string area, string remark, DyeingPrintingAreaMovementHistoryModel history);
-        Task<int> DeleteFromTransitAsync(int id);
         Task<int> UpdateFromTransitAsync(int id, string shift, string remark);
+        Task<int> DeleteFromTransitAsync(int id);
+
+        Task<int> InsertFromAvalAsync(int dyeingPrintingAreaMovementId, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, DyeingPrintingAreaMovementHistoryModel history);
+        Task<int> UpdateFromAvalAsync(int id, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg);
+        Task<int> DeleteFromAvalAsync(int id);
+
         Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked);
     }
 }

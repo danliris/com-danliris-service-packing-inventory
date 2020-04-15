@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentAval;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers;
@@ -15,9 +15,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class InventoryDocumentAvalControllerTest
+    public class AvalInputControllerTest
     {
-        private InventoryDocumentAvalController GetController(IInventoryDocumentAvalService service, IIdentityProvider identityProvider)
+        private AvalInputController GetController(IAvalInputService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -26,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new InventoryDocumentAvalController(service, identityProvider)
+            var controller = new AvalInputController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -47,14 +47,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private InventoryDocumentAvalViewModel ViewModel
+        private AvalInputViewModel ViewModel
         {
             get
             {
-                return new InventoryDocumentAvalViewModel()
+                return new AvalInputViewModel()
                 {
-                    //Date = DateTimeOffset.UtcNow,
-                    //BonNo = "IM.20.0002",
+                    Area = "AVAL",
                     Shift = "PAGI",
                     UOMUnit = "MTR",
                     ProductionOrderQuantity = 2500,
@@ -66,8 +65,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new InventoryDocumentAvalViewModel();
-            var validator = new InventoryDocumentAvalValidator();
+            var dataUtil = new AvalInputViewModel();
+            var validator = new AvalInputValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
@@ -77,8 +76,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<AvalInputViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -86,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.Post(dataUtil.Id, dataUtil);
+            var response = await controller.Post(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
         }
@@ -94,10 +93,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new InventoryDocumentAvalViewModel();
+            var dataUtil = new AvalInputViewModel();
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<AvalInputViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -106,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
-            var response = await controller.Post(dataUtil.Id, dataUtil);
+            var response = await controller.Post(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
@@ -116,8 +115,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<AvalInputViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -125,74 +124,111 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.Post(dataUtil.Id, dataUtil);
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_Put()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<AvalInputViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Put(dataUtil.Id, dataUtil);
 
             Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
         }
 
-        //[Fact]
-        //public async Task Should_Success_Put()
-        //{
-        //    var dataUtil = ViewModel;
-        //    //v
-        //    var serviceMock = new Mock<IInventoryDocumentAvalService>();
-        //    serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ReturnsAsync(1);
-        //    var service = serviceMock.Object;
+        [Fact]
+        public async Task Should_NotValid_Put()
+        {
+            var dataUtil = new AvalInputViewModel();
+            //v
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<AvalInputViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
 
-        //    var identityProviderMock = new Mock<IIdentityProvider>();
-        //    var identityProvider = identityProviderMock.Object;
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
 
-        //    var controller = GetController(service, identityProvider);
-        //    //controller.ModelState.IsValid == false;
-        //    var response = await controller.Put(dataUtil.Id, dataUtil);
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Put(dataUtil.Id, dataUtil);
 
-        //    Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
-        //}
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
 
-        //[Fact]
-        //public async Task Should_NotValid_Put()
-        //{
-        //    var dataUtil = new InventoryDocumentAvalViewModel();
-        //    //v
-        //    var serviceMock = new Mock<IInventoryDocumentAvalService>();
-        //    serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ReturnsAsync(1);
-        //    var service = serviceMock.Object;
+        [Fact]
+        public async Task Should_Exception_Put()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<AvalInputViewModel>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
 
-        //    var identityProviderMock = new Mock<IIdentityProvider>();
-        //    var identityProvider = identityProviderMock.Object;
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
 
-        //    var controller = GetController(service, identityProvider);
-        //    controller.ModelState.AddModelError("test", "test");
-        //    //controller.ModelState.IsValid == false;
-        //    var response = await controller.Put(dataUtil.Id, dataUtil);
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Put(dataUtil.Id, dataUtil);
 
-        //    Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
-        //}
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
 
-        //[Fact]
-        //public async Task Should_Exception_Put()
-        //{
-        //    var dataUtil = ViewModel;
-        //    //v
-        //    var serviceMock = new Mock<IInventoryDocumentAvalService>();
-        //    serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InventoryDocumentAvalViewModel>())).ThrowsAsync(new Exception());
-        //    var service = serviceMock.Object;
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            //v
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
 
-        //    var identityProviderMock = new Mock<IIdentityProvider>();
-        //    var identityProvider = identityProviderMock.Object;
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
 
-        //    var controller = GetController(service, identityProvider);
-        //    //controller.ModelState.IsValid == false;
-        //    var response = await controller.Put(dataUtil.Id, dataUtil);
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Delete(1);
 
-        //    Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
-        //}
+            Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Exception_Delete()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IAvalInputService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
 
         [Fact]
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
+            var serviceMock = new Mock<IAvalInputService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -211,7 +247,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
+            var serviceMock = new Mock<IAvalInputService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -229,7 +265,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
+            var serviceMock = new Mock<IAvalInputService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
@@ -249,7 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInventoryDocumentAvalService>();
+            var serviceMock = new Mock<IAvalInputService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
