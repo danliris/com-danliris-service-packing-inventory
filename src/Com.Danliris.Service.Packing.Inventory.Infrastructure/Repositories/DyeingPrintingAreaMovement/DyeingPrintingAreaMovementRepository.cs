@@ -175,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShift(shift, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetUomUnit(uomUnit, _identityProvider.Username, UserAgent);
+            //modelToUpdate.SetUomUnit(uomUnit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetProductionOrderQuantity(productionOrderQuantity, _identityProvider.Username, UserAgent);
             modelToUpdate.SetQtyKg(qtyKg, _identityProvider.Username, UserAgent);
 
