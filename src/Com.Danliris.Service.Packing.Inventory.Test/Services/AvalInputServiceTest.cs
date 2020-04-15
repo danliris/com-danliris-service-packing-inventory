@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public async Task Should_Success_Update()
         {
             var repoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-            repoMock.Setup(s => s.UpdateFromAvalAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
+            repoMock.Setup(s => s.UpdateFromAvalAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), /*It.IsAny<string>(),*/ It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
 

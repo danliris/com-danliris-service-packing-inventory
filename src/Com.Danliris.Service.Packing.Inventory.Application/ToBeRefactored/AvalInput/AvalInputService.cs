@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 
         public async Task<int> Update(int id, AvalInputViewModel viewModel)
         {
-            int result = await _repository.UpdateFromAvalAsync(id, viewModel.Area, viewModel.Shift, viewModel.UOMUnit, viewModel.ProductionOrderQuantity, viewModel.QtyKg);
+            int result = await _repository.UpdateFromAvalAsync(id, viewModel.Area, viewModel.Shift, /*viewModel.UOMUnit,*/ viewModel.ProductionOrderQuantity, viewModel.QtyKg);
             result += await _historyRepository.UpdateAsyncFromParent(id, AreaEnum.AVAL, DateTimeOffset.UtcNow, viewModel.Shift);
 
             return result;

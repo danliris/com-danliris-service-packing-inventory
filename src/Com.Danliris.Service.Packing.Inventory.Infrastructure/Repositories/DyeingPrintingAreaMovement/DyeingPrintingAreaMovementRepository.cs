@@ -170,7 +170,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromAvalAsync(int id, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg)
+        public Task<int> UpdateFromAvalAsync(int id, string area, string shift, /*string uomUnit,*/ double productionOrderQuantity, double qtyKg)
         {
             var modelToUpdate = _dyeingPrintingAreaMovementDbSet.FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
