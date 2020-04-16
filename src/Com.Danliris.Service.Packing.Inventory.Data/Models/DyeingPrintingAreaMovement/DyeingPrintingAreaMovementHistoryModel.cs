@@ -12,8 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         TRANSIT,
         PACK,
         GUDANGJADI,
-        SHIP,
         AVAL,
+        SHIP,
         LAB
     }
 
