@@ -53,6 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Ship
                 LastModifiedUtc = model.LastModifiedUtc,
                 Motif = model.Motif,
                 PreShipmentAreaId = model.Id,
+                Shift = model.Shift,
                 ProductionOrderNo = model.ProductionOrderNo,
                 UomUnit = model.UOMUnit
             };
@@ -102,6 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Ship
                 Motif = s.Motif,
                 ProductionOrderNo = s.ProductionOrderNo,
                 Shift = s.Shift,
+                Unit = s.UnitName,
                 UomUnit = s.UOMUnit
             });
 

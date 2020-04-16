@@ -20,5 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Ship
         public string PackingUOM { get; set; }
         public decimal PackingBalance { get; set; }
         public string UomUnit { get; set; }
+
+        public string Unit { get; set; }
     }
 }
