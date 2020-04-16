@@ -190,7 +190,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             model.SetSourceArea(null, _identityProvider.Username, UserAgent);
             model.SetArea(previousHistory.Area, _identityProvider.Username, UserAgent);
             model.SetShift(previousHistory.Shift, _identityProvider.Username, UserAgent);
-            model.SetUomUnit(previousHistory.UOMUnit, _identityProvider.Username, UserAgent);
+            //model.SetUomUnit(previousHistory.UOMUnit, _identityProvider.Username, UserAgent);
             model.SetProductionOrderQuantity(previousHistory.ProductionOrderQuantity, _identityProvider.Username, UserAgent);
             model.SetQtyKg(0, _identityProvider.Username, UserAgent);
 

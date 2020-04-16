@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public DateTimeOffset Date { get; private set; }
         public string Area { get; private set; }
         public string Shift { get; private set; }
-        public string UOMUnit { get; private set; }
+        //public string UOMUnit { get; private set; }
         public double ProductionOrderQuantity { get; private set; }
         public double QtyKg { get; private set; }
         public AreaEnum Index { get; private set; }
