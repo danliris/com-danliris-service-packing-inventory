@@ -122,6 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
         //public double MassKg { get; private set; }
+        public double QtyKg { get; private set; }
         public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
 
@@ -341,6 +342,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
+        public void SetUomUnit(string uomUnit, string user, string agent)
+        {
+            if (uomUnit != UOMUnit)
+            {
+                UOMUnit = uomUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetBalance(decimal newBalance, string user, string agent)
         {
             if (newBalance != Balance)
@@ -406,6 +416,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newNo != DeliveryOrderSalesNo)
             {
                 DeliveryOrderSalesNo = newNo;
+            }
+        }
+        
+        public void SetQtyKg(double qtyKg, string user, string agent)
+        {
+            if (qtyKg != QtyKg)
+            {
+                QtyKg = qtyKg;
                 this.FlagForUpdate(user, agent);
             }
         }

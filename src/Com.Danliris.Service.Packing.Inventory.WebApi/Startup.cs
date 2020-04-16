@@ -38,6 +38,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.ShipmentInput;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -86,6 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalAreaNoteService, AvalAreaNoteService>();
             services.AddTransient<ITransitInputService, TransitInputService>();
             services.AddTransient<IShipmentInputService, ShipmentInputService>();
+            services.AddTransient<IAvalInputService, AvalInputService>();
 
 
             // Register Provider
@@ -184,6 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
             services.AddSingleton<IValidator<TransitInputViewModel>, TransitInputValidator>();
             services.AddSingleton<IValidator<ShipmentInputViewModel>, ShipmentInputValidator>();
+            services.AddSingleton<IValidator<AvalInputViewModel>, AvalInputValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
