@@ -2,14 +2,12 @@
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using System.Linq;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
-using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput
 {

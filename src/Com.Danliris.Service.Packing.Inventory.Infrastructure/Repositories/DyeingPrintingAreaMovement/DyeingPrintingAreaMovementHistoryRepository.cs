@@ -63,7 +63,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-
         public Task<int> UpdateAsyncFromParent(int dyeingPrintingAreaMovementId, AreaEnum index, DateTimeOffset newDate, string shift)
         {
             var modelToUpdate = _dyeingPrintingAreaMovementHistoryDbSet.FirstOrDefault(s => s.DyeingPrintingAreaMovementId == dyeingPrintingAreaMovementId && s.Index == index);

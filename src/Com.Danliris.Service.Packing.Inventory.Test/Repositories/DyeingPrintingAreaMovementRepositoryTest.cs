@@ -99,6 +99,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public virtual async Task Should_Success_InsertFromAval()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, data.UOMUnit, data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public virtual async Task Should_Success_DeleteFromTransit()
         {
             string testName = GetCurrentMethod();
@@ -114,6 +128,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public virtual async Task Should_Success_DeleteFromAval()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, data.UOMUnit, data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
+            var result = await repo.DeleteFromAvalAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public virtual async Task Should_Success_UpdateFromTransit()
         {
             string testName = GetCurrentMethod() + "UpdateFromTransit";
@@ -124,6 +153,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var data = await DataUtil(repo, dbContext).GetTestData();
             await repo.InsertFromTransitAsync(data.Id, null, data.Date, "Transit", null, new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", null, AreaEnum.TRANSIT));
             var result = await repo.UpdateFromTransitAsync(data.Id, data.Shift, "rem");
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromAval()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromAval";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, data.UOMUnit, data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
+            var result = await repo.UpdateFromAvalAsync(data.Id, data.Area, "Siang", /*data.UOMUnit,*/ 18, 9);
 
             Assert.NotEqual(0, result);
         }
