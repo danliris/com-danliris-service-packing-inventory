@@ -99,6 +99,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public virtual async Task Should_Success_InsertFromShipment()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.InsertFromShipmentAsync(data.Id, data.Area, data.Date, 1, "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "SHIPMENT", data.Shift, AreaEnum.SHIP));
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public virtual async Task Should_Success_InsertFromAval()
         {
             string testName = GetCurrentMethod();
@@ -107,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = await DataUtil(repo, dbContext).GetTestData();
-            var result = await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, data.UOMUnit, data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
+            var result = await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, "er", data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
 
             Assert.NotEqual(0, result);
         }
@@ -123,6 +137,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var data = await DataUtil(repo, dbContext).GetTestData();
             await repo.InsertFromTransitAsync(data.Id, data.Shift, data.Date, "Transit", "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", data.Shift, AreaEnum.TRANSIT));
             var result = await repo.DeleteFromTransitAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_DeleteFromShipment()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromTransitAsync(data.Id, data.Shift, data.Date, "Transit", "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", data.Shift, AreaEnum.TRANSIT));
+            await repo.InsertFromAvalAsync(data.Id, data.Area, data.Shift, data.UOMUnit, data.ProductionOrderQuantity, data.QtyKg, new DyeingPrintingAreaMovementHistoryModel(data.Date, "AVAL", data.Shift, AreaEnum.AVAL));
+            await repo.InsertFromShipmentAsync(data.Id, data.Area, data.Date,1, "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "SHIPMENT", data.Shift, AreaEnum.SHIP));
+            var result = await repo.DeleteFromShipmentAsync(data.Id);
 
             Assert.NotEqual(0, result);
         }
@@ -153,6 +184,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var data = await DataUtil(repo, dbContext).GetTestData();
             await repo.InsertFromTransitAsync(data.Id, null, data.Date, "Transit", null, new DyeingPrintingAreaMovementHistoryModel(data.Date, "Transit", null, AreaEnum.TRANSIT));
             var result = await repo.UpdateFromTransitAsync(data.Id, data.Shift, "rem");
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromShipment()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromShipment";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            await repo.InsertFromShipmentAsync(data.Id, data.Area, data.Date, 1, "rem", new DyeingPrintingAreaMovementHistoryModel(data.Date, "SHIPMENT", data.Shift, AreaEnum.SHIP));
+            var result = await repo.UpdateFromShipmentAsync(data.Id, 2, "sd");
 
             Assert.NotEqual(0, result);
         }
