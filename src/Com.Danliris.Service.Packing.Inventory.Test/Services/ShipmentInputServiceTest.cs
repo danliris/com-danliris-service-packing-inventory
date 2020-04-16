@@ -182,6 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(result.PackingUOM);
             Assert.Equal(0, result.PackingQTY);
             Assert.Equal(0, result.PackingBalance);
+            Assert.NotNull(result.Construction);
         }
 
         [Fact]
