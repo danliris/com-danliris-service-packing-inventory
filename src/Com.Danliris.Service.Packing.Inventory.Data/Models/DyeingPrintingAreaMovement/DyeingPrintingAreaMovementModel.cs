@@ -119,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string SourceArea { get; private set; }
         public string Remark { get; private set; }
         public bool IsChecked { get; private set; }
-        //public double MassKg { get; private set; }
+        public double QtyKg { get; private set; }
         public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
 
@@ -339,6 +339,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
+        public void SetUomUnit(string uomUnit, string user, string agent)
+        {
+            if (uomUnit != UOMUnit)
+            {
+                UOMUnit = uomUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetBalance(decimal newBalance, string user, string agent)
         {
             if (newBalance != Balance)
@@ -389,6 +398,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (newRemark != Remark)
             {
                 Remark = newRemark;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetQtyKg(double qtyKg, string user, string agent)
+        {
+            if (qtyKg != QtyKg)
+            {
+                QtyKg = qtyKg;
                 this.FlagForUpdate(user, agent);
             }
         }
