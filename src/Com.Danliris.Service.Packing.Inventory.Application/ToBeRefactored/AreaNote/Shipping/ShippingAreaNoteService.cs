@@ -1,0 +1,280 @@
+﻿using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Data;
+using System.Globalization;
+using OfficeOpenXml;
+
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Shipping
+{
+    public class ShippingAreaNoteService : IShippingAreaNoteService
+    {
+        private readonly IDyeingPrintingAreaMovementRepository _repository;
+        public ShippingAreaNoteService(IServiceProvider serviceProvider)
+        {
+            _repository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
+        }
+
+        private IQueryable<IndexViewModel> GetQuery(DateTimeOffset? date, string mutation, string zone, int offset)
+        {
+            var query = _repository.ReadAll();
+
+            if (date.HasValue)
+            {
+                query = query.Where(s => s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date == date.GetValueOrDefault().Date);
+            }
+
+            if (!string.IsNullOrEmpty(zone))
+            {
+                query = query.Where(s => s.Area == zone);
+            }
+
+            if (!string.IsNullOrEmpty(mutation))
+            {
+                query = query.Where(s => s.Mutation == mutation);
+            }
+
+            var result = query.OrderByDescending(s => s.LastModifiedUtc).Select(s => new IndexViewModel()
+            {
+                Id = s.Id,
+                Area = s.Area,
+                Date = s.Date,
+                //DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
+                BonNo = s.BonNo,
+                ProductionOrderNo = s.ProductionOrderNo,
+                Construction = s.Construction,
+                Motif = s.Motif,
+                Color = s.Color,
+                Grade = s.Grade,
+                //PackagingQty = s.PackagingQTY,
+                //PackagingUnit = s.PackagingUnit,
+                //MTRLength = s.MTRLength,
+                //YDSLength = s.YDSLength
+
+            });
+            return result;
+        }
+
+        //public MemoryStream GenerateExcel(DateTimeOffset? date, string mutation, string zone, int offSet)
+        //{
+        //    var query = GetQuery(date, mutation, zone, offSet);
+
+        //    var indexNumber = 1;
+        //    DataTable dt = new DataTable();
+
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Group", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Keluar Ke", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Kode Bon", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Kg", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Menyerahkan", DataType = typeof(string) });
+        //    dt.Columns.Add(new DataColumn() { ColumnName = "Menerima", DataType = typeof(string) });
+
+        //    if (query.Count() == 0)
+        //    {
+        //        dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
+        //    }
+        //    else
+        //    {
+        //        foreach (var item in query)
+        //        {
+        //            var stringDate = item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+        //            dt.Rows.Add(indexNumber,
+        //                        stringDate,
+        //                        item.Group,
+        //                        item.Unit,
+        //                        item.Mutation,
+        //                        item.CartNo,
+        //                        item.BonNo,
+        //                        item.ProductionOrderType,
+        //                        item.ProductionOrderQuantity,
+        //                        item.UomUnit,
+        //                        0,
+        //                        "",
+        //                        "");
+        //            indexNumber++;
+        //        }
+        //    }
+
+        //    ExcelPackage package = new ExcelPackage();
+        //    #region Header
+        //    var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
+        //    sheet.Cells[1, 1].Value = "DIVISI";
+        //    sheet.Cells[1, 2].Value = "DYEING PRINTING PT DANLIRIS";
+
+        //    sheet.Cells[2, 1].Value = "TANGGAL";
+        //    sheet.Cells[2, 2].Value = date.HasValue ? date.Value.ToString("dd MMM yyyy", new CultureInfo("id-ID")) : "";
+
+        //    //sheet.Cells[3, 1].Value = "GROUP";
+        //    //sheet.Cells[3, 2].Value = group;
+
+        //    sheet.Cells[4, 1].Value = "MUTASI";
+        //    sheet.Cells[4, 2].Value = mutation;
+
+        //    sheet.Cells[5, 1].Value = "ZONA";
+        //    sheet.Cells[5, 2].Value = zone;
+
+        //    sheet.Cells[6, 1].Value = "NO.";
+        //    sheet.Cells[6, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 1].AutoFitColumns();
+        //    sheet.Cells[6, 1, 7, 1].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 1, 7, 1].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 1, 7, 1].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 1, 7, 1].Merge = true;
+
+        //    sheet.Cells[6, 2].Value = "TANGGAL";
+        //    sheet.Cells[6, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 2].AutoFitColumns();
+        //    sheet.Cells[6, 2, 7, 2].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 2, 7, 2].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 2, 7, 2].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 2, 7, 2].Merge = true;
+
+        //    sheet.Cells[6, 3].Value = "GROUP";
+        //    sheet.Cells[6, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 3].AutoFitColumns();
+        //    sheet.Cells[6, 3, 7, 3].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 3, 7, 3].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 3, 7, 3].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 3, 7, 3].Merge = true;
+
+        //    sheet.Cells[6, 4].Value = "UNIT";
+        //    sheet.Cells[6, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 4].AutoFitColumns();
+        //    sheet.Cells[6, 4, 7, 4].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 4, 7, 4].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 4, 7, 4].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 4, 7, 4].Merge = true;
+
+        //    sheet.Cells[6, 5].Value = "KELUAR KE";
+        //    sheet.Cells[6, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 5].AutoFitColumns();
+        //    sheet.Cells[6, 5, 7, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 5, 7, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 5, 7, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 5, 7, 5].Merge = true;
+
+        //    sheet.Cells[6, 6].Value = "NO. KERETA";
+        //    sheet.Cells[6, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 6].AutoFitColumns();
+        //    sheet.Cells[6, 6, 7, 6].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 6, 7, 6].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 6, 7, 6].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 6, 7, 6].Merge = true;
+
+        //    sheet.Cells[6, 7].Value = "KODE BON";
+        //    sheet.Cells[6, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 7].AutoFitColumns();
+        //    sheet.Cells[6, 7, 7, 7].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 7, 7, 7].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 7, 7, 7].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 7, 7, 7].Merge = true;
+
+        //    sheet.Cells[6, 8].Value = "JENIS";
+        //    sheet.Cells[6, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 8].AutoFitColumns();
+        //    sheet.Cells[6, 8, 7, 8].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 8, 7, 8].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 8, 7, 8].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 8, 7, 8].Merge = true;
+
+        //    sheet.Cells[6, 9].Value = "SAT";
+        //    sheet.Cells[6, 9].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 9].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 9].AutoFitColumns();
+        //    sheet.Cells[6, 9, 6, 10].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 9, 7, 9].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 9, 7, 9].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 9, 6, 10].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 9, 6, 10].Merge = true;
+
+        //    sheet.Cells[7, 9].Value = "QTY";
+        //    sheet.Cells[7, 9].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[7, 9].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[7, 9].AutoFitColumns();
+
+        //    sheet.Cells[7, 10].Value = "KET";
+        //    sheet.Cells[7, 10].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[7, 10].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[7, 10].AutoFitColumns();
+
+        //    sheet.Cells[6, 11].Value = "KG";
+        //    sheet.Cells[6, 11].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 11].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 11].AutoFitColumns();
+        //    sheet.Cells[6, 11].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 11, 7, 11].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 11, 7, 11].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 11, 7, 11].Merge = true;
+
+        //    sheet.Cells[6, 12].Value = "NAMA & PARAF";
+        //    sheet.Cells[6, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[6, 12].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[6, 12].AutoFitColumns();
+        //    sheet.Cells[6, 12, 6, 13].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 12, 6, 13].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 12, 6, 12].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 12, 6, 12].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[6, 12, 6, 13].Merge = true;
+
+        //    sheet.Cells[7, 12].Value = "MENYERAHKAN";
+        //    sheet.Cells[7, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[7, 12].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[7, 12].AutoFitColumns();
+        //    sheet.Cells[7, 12].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 12].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 12].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 12].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+
+        //    sheet.Cells[7, 13].Value = "MENERIMA";
+        //    sheet.Cells[7, 13].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+        //    sheet.Cells[7, 13].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+        //    sheet.Cells[7, 13].AutoFitColumns();
+        //    sheet.Cells[7, 13].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 13].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 13].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[7, 13].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    #endregion
+
+        //    int tableRowStart = 8;
+        //    int tableColStart = 1;
+
+        //    sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+        //    sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
+        //    sheet.Cells[tableRowStart, tableColStart].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[tableRowStart, tableColStart].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[tableRowStart, tableColStart].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //    sheet.Cells[tableRowStart, tableColStart].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+
+        //    MemoryStream stream = new MemoryStream();
+        //    package.SaveAs(stream);
+
+        //    //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon Aval Area Dyeing Printing") }, true);
+        //    return stream;
+        //}
+
+        public List<IndexViewModel> GetReport(DateTimeOffset? date, string mutation, string zone, int offSet)
+        {
+            var query = GetQuery(date, mutation, zone, offSet);
+
+            return query.ToList();
+        }
+    }
+}

@@ -38,6 +38,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AreaNote.Shipping;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -86,6 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalAreaNoteService, AvalAreaNoteService>();
             services.AddTransient<ITransitInputService, TransitInputService>();
             services.AddTransient<IAvalInputService, AvalInputService>();
+            services.AddTransient<IShippingAreaNoteService, ShippingAreaNoteService>();
 
 
             // Register Provider

@@ -32,6 +32,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
                 query = query.Where(s => s.Area == zone);
             }
 
+            if (!string.IsNullOrEmpty(mutation))
+            {
+                query = query.Where(s => s.Mutation == mutation);
+            }
+
             if (!string.IsNullOrEmpty(group))
             {
                 query = query.Where(s => s.Shift == group);
