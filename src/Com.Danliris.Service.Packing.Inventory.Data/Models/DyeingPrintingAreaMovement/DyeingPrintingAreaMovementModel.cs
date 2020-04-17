@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
             double productionOrderQuantity, string productionOrderType, string buyer, string packingInstruction, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
             string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
-            double length, string uomUnit, decimal balance,  ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
+            double length, string uomUnit, decimal balance, ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
         {
             Area = area;
             BonNo = bonNo;
@@ -119,6 +119,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string SourceArea { get; private set; }
         public string Remark { get; private set; }
         public bool IsChecked { get; private set; }
+        public long DeliveryOrderSalesId { get; private set; }
+        public string DeliveryOrderSalesNo { get; private set; }
+        //public double MassKg { get; private set; }
         public double QtyKg { get; private set; }
         public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
@@ -402,6 +405,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
+        public void SetDeliveryOrderSales(long newId, string newNo, string user, string agent)
+        {
+            if (newId != DeliveryOrderSalesId)
+            {
+                DeliveryOrderSalesId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (newNo != DeliveryOrderSalesNo)
+            {
+                DeliveryOrderSalesNo = newNo;
+            }
+        }
+        
         public void SetQtyKg(double qtyKg, string user, string agent)
         {
             if (qtyKg != QtyKg)

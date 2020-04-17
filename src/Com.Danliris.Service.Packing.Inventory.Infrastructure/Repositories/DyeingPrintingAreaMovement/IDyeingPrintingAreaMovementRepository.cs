@@ -22,5 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> DeleteFromAvalAsync(int id);
 
         Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked);
+        Task<int> InsertFromShipmentAsync(int dyeingPrintingAreaMovementId, string area, DateTimeOffset date, long deliveryOrderSalesId, string deliveryOrderSalesNo, DyeingPrintingAreaMovementHistoryModel historyModel);
+        Task<int> DeleteFromShipmentAsync(int id);
+        Task<int> UpdateFromShipmentAsync(int id, long deliveryOrderSalesId, string deliveryOrderSalesNo);
     }
 }

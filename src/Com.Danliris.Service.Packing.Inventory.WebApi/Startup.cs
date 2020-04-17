@@ -37,6 +37,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.TransitInput;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.ShipmentInput;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalInput;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -85,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IPackingAreaNoteService, PackingAreaNoteService>();
             services.AddTransient<IAvalAreaNoteService, AvalAreaNoteService>();
             services.AddTransient<ITransitInputService, TransitInputService>();
+            services.AddTransient<IShipmentInputService, ShipmentInputService>();
             services.AddTransient<IAvalInputService, AvalInputService>();
 
 
@@ -183,6 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InspectionMaterialViewModel>, InspectionMaterialValidator>();
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
             services.AddSingleton<IValidator<TransitInputViewModel>, TransitInputValidator>();
+            services.AddSingleton<IValidator<ShipmentInputViewModel>, ShipmentInputValidator>();
             services.AddSingleton<IValidator<AvalInputViewModel>, AvalInputValidator>();
         }
 

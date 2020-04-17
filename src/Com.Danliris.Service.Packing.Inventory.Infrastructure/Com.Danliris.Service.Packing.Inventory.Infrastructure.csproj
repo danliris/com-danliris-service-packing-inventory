@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20200413073356_EnhanceDPAreaMovement.Designer.cs" />
     <Compile Remove="Migrations\20200413095931_EnhanceHistory.cs" />
     <Compile Remove="Migrations\20200413095931_EnhanceHistory.Designer.cs" />
+    <Compile Remove="Migrations\20200416155719_AddDeliveryOrderSalesInDyeingPrintingAreaMovement.cs" />
+    <Compile Remove="Migrations\20200416155719_AddDeliveryOrderSalesInDyeingPrintingAreaMovement.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
