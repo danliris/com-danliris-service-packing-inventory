@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         public string Shift { get; set; }
         public double Mtr { get; set; }
         public double Yds { get; set; }
+        public decimal PackagingQty { get; set; }
+        public string PackagingUnit { get; set; }
         public bool IsPrinting { get; set; }
         public AcceptingPackagingViewModel()
         {
@@ -69,6 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
             Mtr = source.MeterLength;
             Yds = source.YardsLength;
             IsPrinting = source.UnitName.ToLower().Equals("printing");
+            PackagingQty = source.PackagingQty;
+            PackagingUnit = source.PackagingUnit;
         }
 
     }

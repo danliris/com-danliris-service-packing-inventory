@@ -120,6 +120,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public string Remark { get; private set; }
         public bool IsChecked { get; private set; }
         public double QtyKg { get; private set; }
+        public decimal PackagingQty { get; private set; }
+        public string PackagingUnit { get; private set; }
         public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
 
 
@@ -407,6 +409,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if (qtyKg != QtyKg)
             {
                 QtyKg = qtyKg;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingQty(decimal packQty, string user, string agent)
+        {
+            if(packQty != PackagingQty)
+            {
+                PackagingQty = packQty;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingUnit(string packUnit, string user, string agent)
+        {
+            if (packUnit != PackagingUnit)
+            {
+                PackagingUnit = packUnit;
                 this.FlagForUpdate(user, agent);
             }
         }

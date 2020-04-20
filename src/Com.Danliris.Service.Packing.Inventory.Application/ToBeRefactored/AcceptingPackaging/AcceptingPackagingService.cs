@@ -113,7 +113,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
                 Shift = indexModel.Shift,
                 Unit = indexModel.Unit.Name,
                 Warna = indexModel.Warna,
-                Yds = indexModel.Yds
+                Yds = indexModel.Yds,
+                PackagingQTY = indexModel.PackagingQty,
+                PackagingUnit = indexModel.PackagingUnit,
             };
             return result;
         }

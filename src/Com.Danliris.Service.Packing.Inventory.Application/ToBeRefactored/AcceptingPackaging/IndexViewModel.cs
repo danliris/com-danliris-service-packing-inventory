@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
 {
     public class IndexViewModel
     {
+        public int ID { get; set; }
         public DateTimeOffset? Date { get; set; }
         public string NoBon { get; set; }
         public string Shift { get; set; }
@@ -31,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         }
         public IndexViewModel(AcceptingPackagingViewModel source)
         {
+            ID = source.Id;
             Date = source.LastModifiedUtc;
             Grade = source.Grade;
             Material = source.MaterialObject.Name;
@@ -48,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         }
         public IndexViewModel(AcceptingPackagingModel source)
         {
+            ID = source.Id;
             Date = source.Date;
             Grade = source.Grade;
             Material = source.MaterialObject;
@@ -65,6 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging
         }
         public IndexViewModel(DyeingPrintingAreaMovementModel source)
         {
+            ID = source.Id;
             Date = source.LastModifiedUtc;
             Grade = source.Grade;
             Material = source.MaterialName;

@@ -62,6 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Acc
                 masterData.SetBalance(data.Saldo, _identityProvider.Username, UserAgent);
                 masterData.SetGrade(data.Grade, _identityProvider.Username, UserAgent);
                 masterData.SetArea(Enum.GetName(typeof(AreaEnum), Area),_identityProvider.Username,UserAgent);
+                masterData.SetPackagingQty(data.PackagingQTY, _identityProvider.Username, UserAgent);
+                masterData.SetPackagingUnit(data.PackagingUnit, _identityProvider.Username, UserAgent);
                 //insert history
                 var newHistory = new DyeingPrintingAreaMovementHistoryModel
                 {
@@ -84,6 +86,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Acc
                 newHistory.SetShift(data.Shift, _identityProvider.Username, UserAgent);
                 newHistory.SetBalance(data.Saldo, _identityProvider.Username, UserAgent);
                 newHistory.SetGrade(data.Grade, _identityProvider.Username, UserAgent);
+                newHistory.SetPackagingQty(data.PackagingQTY, _identityProvider.Username, UserAgent);
+                newHistory.SetPackagingUnit(data.PackagingUnit, _identityProvider.Username, UserAgent);
                 masterData.DyeingPrintingAreaMovementHistories.Add(newHistory);
 
                 return _dbContext.SaveChangesAsync();
@@ -106,7 +110,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Acc
                 masterData.SetBalance(data.Saldo, _identityProvider.Username, UserAgent);
                 masterData.SetGrade(data.Grade, _identityProvider.Username, UserAgent);
                 masterData.SetArea(Enum.GetName(typeof(AreaEnum), Area), _identityProvider.Username, UserAgent);
-
+                masterData.SetPackagingQty(data.PackagingQTY, _identityProvider.Username, UserAgent);
+                masterData.SetPackagingUnit(data.PackagingUnit, _identityProvider.Username, UserAgent);
                 return _dbContext.SaveChangesAsync();
             }
             else

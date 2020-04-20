@@ -41,5 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.AcceptingPackaging
         public double Mtr { get; set; }
         public double Yds { get; set; }
         public int IdDyeingPrintingMovement { get; set; }
+        public decimal PackagingQTY { get; set; }
+        public string PackagingUnit { get; set; }
     }
 }

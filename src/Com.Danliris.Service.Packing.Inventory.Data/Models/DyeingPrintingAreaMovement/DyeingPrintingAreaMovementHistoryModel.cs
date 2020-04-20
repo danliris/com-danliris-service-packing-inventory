@@ -57,6 +57,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public AreaEnum Index { get; private set; }
         public decimal Balance { get; private set; }
         public string Grade { get; private set; }
+        public decimal PackagingQty { get; set; }
+        public string PackagingUnit { get; set; }
 
         public int DyeingPrintingAreaMovementId { get; set; }
         public virtual DyeingPrintingAreaMovementModel DyeingPrintingAreaMovement { get; set; }
@@ -111,6 +113,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             {
                 Area = Enum.GetName(typeof(AreaEnum), newArea);
                 Index = newArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingQty(decimal packQty, string user, string agent)
+        {
+            if(packQty != PackagingQty)
+            {
+                PackagingQty = packQty;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingUnit(string packUnit,string user, string agent)
+        {
+            if(packUnit != PackagingUnit)
+            {
+                PackagingUnit = packUnit;
                 this.FlagForUpdate(user, agent);
             }
         }

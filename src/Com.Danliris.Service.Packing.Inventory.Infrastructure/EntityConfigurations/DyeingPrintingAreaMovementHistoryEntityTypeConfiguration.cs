@@ -53,6 +53,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.Grade)
               .HasMaxLength(64);
+
+            builder
+                .Property(s => s.PackagingQty)
+                .HasColumnType("decimal(18,2)");
+
+            builder
+                .Property(s => s.PackagingUnit)
+                .HasMaxLength(32);
         }
     }
 }
