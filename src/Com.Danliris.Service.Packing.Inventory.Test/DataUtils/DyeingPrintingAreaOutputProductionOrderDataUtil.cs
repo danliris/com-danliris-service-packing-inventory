@@ -14,7 +14,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputProductionOrderModel GetModel()
         {
-            return new DyeingPrintingAreaOutputProductionOrderModel(1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1);
+            var model = new DyeingPrintingAreaOutputProductionOrderModel(1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1);
+            model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel();
+
+            return model;
+        }
+
+        public override DyeingPrintingAreaOutputProductionOrderModel GetEmptyModel()
+        {
+            var model = new DyeingPrintingAreaOutputProductionOrderModel(0, null, null, null, null, null, null, null, null, null, null, null, null, null, 0);
+            model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel();
+
+            return model;
         }
     }
 }

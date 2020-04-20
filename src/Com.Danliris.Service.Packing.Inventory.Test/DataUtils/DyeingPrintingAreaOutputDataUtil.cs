@@ -16,7 +16,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel(1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem","a","a",1)
+                new DyeingPrintingAreaOutputProductionOrderModel(1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2)
+            });
+        }
+
+        public override DyeingPrintingAreaOutputModel GetEmptyModel()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaOutputProductionOrderModel(0,null,null,null,null,null,null,null,null,null,null,null,null,null,1)
             });
         }
     }
