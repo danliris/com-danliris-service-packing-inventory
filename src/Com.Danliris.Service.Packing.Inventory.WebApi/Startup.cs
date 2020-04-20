@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
             services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
             
-            services.AddTransient<IDyeingPrintingAreaInputRepository, DyeingAreaInputRepository>();
+            services.AddTransient<IDyeingPrintingAreaInputRepository, DyeingPrintingAreaInputRepository>();
             services.AddTransient<IDyeingPrintingAreaInputProductionOrderRepository, DyeingPrintingAreaInputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();

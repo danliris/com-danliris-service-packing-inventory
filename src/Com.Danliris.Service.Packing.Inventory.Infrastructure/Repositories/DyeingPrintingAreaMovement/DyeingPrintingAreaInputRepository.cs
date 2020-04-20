@@ -11,14 +11,14 @@ using Com.Moonlay.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
-    public class DyeingAreaInputRepository : IDyeingPrintingAreaInputRepository
+    public class DyeingPrintingAreaInputRepository : IDyeingPrintingAreaInputRepository
     {
         private const string UserAgent = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaInputModel> _dbSet;
 
-        public DyeingAreaInputRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
+        public DyeingPrintingAreaInputRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<DyeingPrintingAreaInputModel>();

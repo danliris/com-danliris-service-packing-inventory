@@ -19,8 +19,8 @@
     <Compile Remove="Controllers\ShippingAreaNoteControllerTest.cs" />
     <Compile Remove="Controllers\TransitAreaNoteControllerTest.cs" />
     <Compile Remove="Controllers\TransitInputControllerTest.cs" />
-    <Compile Remove="DataUtils\DyeingPrintingAreaMovementDataUtil.cs" />
     <Compile Remove="DataUtils\DyeingPrintingAreaMovementHistoryDataUtil.cs" />
+    <Compile Remove="DataUtils\OldDyeingPrintingAreaMovementDataUtil.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovementHistoryRepositoryTest.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovementRepositoryTest.cs" />
     <Compile Remove="Services\AvalAreaNoteServiceTest.cs" />
