@@ -193,7 +193,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = d.ProductionOrderId,
-                        No = d.ProductionOrderNo
+                        No = d.ProductionOrderNo,
+                        Type = d.ProductionOrderType
                     },
                     Id = d.Id,
                     Unit = d.Unit,

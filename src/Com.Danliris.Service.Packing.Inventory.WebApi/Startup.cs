@@ -31,6 +31,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -81,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
+            services.AddTransient<IInputTransitService, InputTransitService>();
 
 
 
@@ -179,6 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
             services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
+            services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -117,5 +117,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument)
+        {
+            var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).FirstOrDefault(s => s.Id == id);
+            modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }
