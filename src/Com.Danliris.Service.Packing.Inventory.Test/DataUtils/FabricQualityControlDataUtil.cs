@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override FabricQualityControlModel GetEmptyModel()
         {
-            return new FabricQualityControlModel("a", DateTimeOffset.UtcNow.AddSeconds(3), null, false, 0, null,1, null, null, null, 0, 0, new List<FabricGradeTestModel>()
+            return new FabricQualityControlModel("a", DateTimeOffset.UtcNow.AddSeconds(3), null, false, 0, null,0, null, null, null, 0, 0, new List<FabricGradeTestModel>()
             {
                 new FabricGradeTestModel(0,0,0,0,0,0,null,0,null,0,0,0,0,null,0,0,new List<CriteriaModel>()
                 {
