@@ -240,7 +240,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", 0);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, "");
             }
             else
             {
