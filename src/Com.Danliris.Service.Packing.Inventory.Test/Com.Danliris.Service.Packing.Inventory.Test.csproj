@@ -22,7 +22,7 @@
     <Compile Remove="DataUtils\DyeingPrintingAreaMovementHistoryDataUtil.cs" />
     <Compile Remove="DataUtils\OldDyeingPrintingAreaMovementDataUtil.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovementHistoryRepositoryTest.cs" />
-    <Compile Remove="Repositories\DyeingPrintingAreaMovementRepositoryTest.cs" />
+    <Compile Remove="Repositories\OldDyeingPrintingAreaMovementRepositoryTest.cs" />
     <Compile Remove="Services\AvalAreaNoteServiceTest.cs" />
     <Compile Remove="Services\AvalInputServiceTest.cs" />
     <Compile Remove="Services\InspectionMaterialServiceTest.cs" />

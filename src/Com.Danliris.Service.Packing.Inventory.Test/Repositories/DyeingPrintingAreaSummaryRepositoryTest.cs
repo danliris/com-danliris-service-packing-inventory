@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 {
-    public class DyeingPrintingAreaMovementRepositoryTest
-         : BaseRepositoryTest<PackingInventoryDbContext, DyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementModel, DyeingPrintingAreaMovementDataUtil>
+    public class DyeingPrintingAreaSummaryRepositoryTest
+         : BaseRepositoryTest<PackingInventoryDbContext, DyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryModel, DyeingPrintingAreaSummaryDataUtil>
     {
-        private const string ENTITY = "DyeingPrintingAreaMovement";
-        public DyeingPrintingAreaMovementRepositoryTest() : base(ENTITY)
+        private const string ENTITY = "DyeingPrintingAreaSummary";
+        public DyeingPrintingAreaSummaryRepositoryTest() : base(ENTITY)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
 
-            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo = new DyeingPrintingAreaSummaryRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = await DataUtil(repo, dbContext).GetTestData();
             var result = repo.GetDbSet();
 
@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
 
-            var repo = new DyeingPrintingAreaMovementRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo = new DyeingPrintingAreaSummaryRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = await DataUtil(repo, dbContext).GetTestData();
             var result = repo.ReadAllIgnoreQueryFilter();
 
