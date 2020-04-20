@@ -32,6 +32,7 @@ using Microsoft.OpenApi.Models;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -83,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
-
+            services.AddTransient<IOutputTransitService, OutputTransitService>();
 
 
             // Register Provider
@@ -182,6 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
+            services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
