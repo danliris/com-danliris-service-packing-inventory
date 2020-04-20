@@ -1,4 +1,5 @@
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
@@ -20,8 +21,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<InventoryDocumentSKUModel> InventoryDocumentSKUs { get; set; }
         public DbSet<ProductSKUModel> ProductSKUs { get; set; }
         public DbSet<ProductPackingModel> ProductPackings { get; set; }
+        public DbSet<DyeingPrintingAreaInputModel> DyeingPrintingAreaInputs { get; set; }
+        public DbSet<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; set; }
+        public DbSet<DyeingPrintingAreaOutputModel> DyeingPrintingAreaOutputs { get; set; }
+        public DbSet<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
-        public DbSet<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; set; }
+        public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
         public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
         public DbSet<CriteriaModel> NewCriterias { get; set; }
@@ -39,12 +44,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new InventoryDocumentSKUItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductPackingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductSKUEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementHistoryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FabricGradeTestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CriteriaEntityTypeConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaInputEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaInputProductionOrderEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputProductionOrderEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
+
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UOMEntityTypeConfiguration());
@@ -56,10 +65,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricQualityControlModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricGradeTestModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<DyeingPrintingAreaMovementHistoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaInputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaInputProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaOutputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaOutputProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);

@@ -1,10 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data;
-using Com.Danliris.Service.Packing.Inventory.Data.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -12,18 +11,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         IQueryable<DyeingPrintingAreaMovementModel> GetDbSet();
         IQueryable<DyeingPrintingAreaMovementModel> ReadAllIgnoreQueryFilter();
-
-        Task<int> InsertFromTransitAsync(int dyeingPrintingAreaMovementId, string shift, DateTimeOffset date, string area, string remark, DyeingPrintingAreaMovementHistoryModel history);
-        Task<int> UpdateFromTransitAsync(int id, string shift, string remark);
-        Task<int> DeleteFromTransitAsync(int id);
-
-        Task<int> InsertFromAvalAsync(int dyeingPrintingAreaMovementId, string area, string shift, string uomUnit, double productionOrderQuantity, double qtyKg, DyeingPrintingAreaMovementHistoryModel history);
-        Task<int> UpdateFromAvalAsync(int id, string area, string shift, /*string uomUnit,*/ double productionOrderQuantity, double qtyKg);
-        Task<int> DeleteFromAvalAsync(int id);
-
-        Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked);
-        Task<int> InsertFromShipmentAsync(int dyeingPrintingAreaMovementId, string area, DateTimeOffset date, long deliveryOrderSalesId, string deliveryOrderSalesNo, DyeingPrintingAreaMovementHistoryModel historyModel);
-        Task<int> DeleteFromShipmentAsync(int id);
-        Task<int> UpdateFromShipmentAsync(int id, long deliveryOrderSalesId, string deliveryOrderSalesNo);
     }
 }

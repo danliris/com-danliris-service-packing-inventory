@@ -9,6 +9,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AvalAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\AvalInputControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionBalanceIMControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionDocumentControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionMaterialControllerTest.cs" />
+    <Compile Remove="Controllers\PackingAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\ShipmentInputControllerTest.cs" />
+    <Compile Remove="Controllers\ShippingAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\TransitAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\TransitInputControllerTest.cs" />
+    <Compile Remove="DataUtils\DyeingPrintingAreaMovementDataUtil.cs" />
+    <Compile Remove="DataUtils\DyeingPrintingAreaMovementHistoryDataUtil.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovementHistoryRepositoryTest.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovementRepositoryTest.cs" />
+    <Compile Remove="Services\AvalAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\AvalInputServiceTest.cs" />
+    <Compile Remove="Services\InspectionMaterialServiceTest.cs" />
+    <Compile Remove="Services\PackingAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\ShipmentInputServiceTest.cs" />
+    <Compile Remove="Services\ShippingAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\TransitAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\TransitInputServiceTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="2.8.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
