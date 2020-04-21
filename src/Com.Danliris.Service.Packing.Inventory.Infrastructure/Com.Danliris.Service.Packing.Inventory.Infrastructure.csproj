@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20200416155719_AddDeliveryOrderSalesInDyeingPrintingAreaMovement.Designer.cs" />
     <Compile Remove="Migrations\20200420033458_FixDyeingPrintingAreaMK3.cs" />
     <Compile Remove="Migrations\20200420033458_FixDyeingPrintingAreaMK3.Designer.cs" />
+    <Compile Remove="Migrations\20200421093109_AddDeliveryOrderSalesInDyeingPrintingInput.cs" />
+    <Compile Remove="Migrations\20200421093109_AddDeliveryOrderSalesInDyeingPrintingInput.Designer.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\OldDyeingPrintingAreaMovementRepository.cs" />

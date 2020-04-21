@@ -33,6 +33,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -85,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
             services.AddTransient<IOutputTransitService, OutputTransitService>();
-
+            services.AddTransient<IInputShippingService, InputShippingService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -184,6 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
             services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
+            services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
