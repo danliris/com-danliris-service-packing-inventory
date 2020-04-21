@@ -26,6 +26,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Grade { get; private set; }
         public string Status { get; private set; }
 
+        public string AvalType { get; private set; }
+        public double Quantity { get; private set; }
+        public double QuantityKg { get; private set; }
+
         public int DyeingPrintingAreaInputId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
@@ -71,6 +75,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Remark = remark;
             Grade = grade;
             Status = status;
+        }
+
+        public DyeingPrintingAreaInputProductionOrderModel(string avalType, 
+                                                           string cartNo, 
+                                                           string uomUnit, 
+                                                           double quantity, 
+                                                           double quantityKg,
+                                                           bool hasOutputDocument)
+        {
+            AvalType = avalType;
+            CartNo = cartNo;
+            UomUnit = uomUnit;
+            Quantity = quantity;
+            QuantityKg = quantityKg;
+            HasOutputDocument = hasOutputDocument;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)
