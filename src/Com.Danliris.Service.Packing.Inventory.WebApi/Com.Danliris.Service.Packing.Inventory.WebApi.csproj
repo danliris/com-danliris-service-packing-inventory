@@ -7,6 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AvalAreaNoteController.cs" />
+    <Compile Remove="Controllers\AvalInputController.cs" />
+    <Compile Remove="Controllers\InspectionBalanceIMController.cs" />
+    <Compile Remove="Controllers\InspectionDocumentController.cs" />
+    <Compile Remove="Controllers\InspectionMaterialController.cs" />
+    <Compile Remove="Controllers\PackingAreaNoteController.cs" />
+    <Compile Remove="Controllers\ShipmentInputController.cs" />
+    <Compile Remove="Controllers\ShippingAreaNoteController.cs" />
+    <Compile Remove="Controllers\TransitAreaNoteController.cs" />
+    <Compile Remove="Controllers\TransitInputController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Com.Moonlay.Data.EntityFrameworkCore" Version="1.1.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

@@ -16,6 +16,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
         public string ShiftIm { get; set; }
-        public string DyeingPrintingAreaMovementBonNo { get; set; }
+        public string InspectionMaterialBonNo { get; set; }
     }
 }

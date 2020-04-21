@@ -9,10 +9,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
     {
         public FabricQualityControlValidator()
         {
-            RuleFor(data => data.DyeingPrintingAreaMovementId).NotEmpty().WithMessage("Bon No Harus Diisi!");
-            When(data => data.DyeingPrintingAreaMovementId > 0, () =>
+            RuleFor(data => data.InspectionMaterialId).NotEmpty().WithMessage("Bon No Harus Diisi!");
+            When(data => data.InspectionMaterialId > 0, () =>
             {
-                RuleFor(s => s.DyeingPrintingAreaMovementBonNo).NotNull().WithMessage("Bon No Tidak Valid!");
+                RuleFor(s => s.InspectionMaterialBonNo).NotNull().WithMessage("Bon No Tidak Valid!");
             });
             RuleFor(data => data.PointSystem).Must(s => s == 10 || s == 4).WithMessage("Point System harus diisi");
             When(data => data.PointSystem == 4, () =>

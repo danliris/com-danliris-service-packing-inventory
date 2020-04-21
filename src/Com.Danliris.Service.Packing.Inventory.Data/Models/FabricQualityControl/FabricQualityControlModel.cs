@@ -12,15 +12,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
             FabricGradeTests = new HashSet<FabricGradeTestModel>();
         }
 
-        public FabricQualityControlModel(string code, DateTimeOffset dateIm, string group, bool isUsed, int dyeingPrintingAreaMovementId, string dyeingPrintingAreaMovementBonNo,
-            string productionOrderNo, string machineNoIm, string operatorIm, double pointLimit, double pointSystem, ICollection<FabricGradeTestModel> fabricGradeTests)
+        public FabricQualityControlModel(string code, DateTimeOffset dateIm, string group, bool isUsed, int dyeingPrintingAreaInputId, string dyeingPrintingAreaInputBonNo,
+            int dyeingPrintingAreaInputProductionOrderId, string productionOrderNo, string machineNoIm, string operatorIm, double pointLimit, double pointSystem, ICollection<FabricGradeTestModel> fabricGradeTests)
         {
             Code = code;
             DateIm = dateIm;
             Group = group;
             IsUsed = isUsed;
-            DyeingPrintingAreaMovementId = dyeingPrintingAreaMovementId;
-            DyeingPrintingAreaMovementBonNo = dyeingPrintingAreaMovementBonNo;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
+            DyeingPrintingAreaInputBonNo = dyeingPrintingAreaInputBonNo;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
             ProductionOrderNo = productionOrderNo;
             MachineNoIm = machineNoIm;
             OperatorIm = operatorIm;
@@ -35,8 +36,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
         public ICollection<FabricGradeTestModel> FabricGradeTests { get; private set; }
         public string Group { get; private set; }
         public bool IsUsed { get; private set; }
-        public int DyeingPrintingAreaMovementId { get; private set; }
-        public string DyeingPrintingAreaMovementBonNo { get; private set; }
+        public int DyeingPrintingAreaInputId { get; private set; }
+        public string DyeingPrintingAreaInputBonNo { get; private set; }
+        public int DyeingPrintingAreaInputProductionOrderId { get; private set; }
         public string ProductionOrderNo { get; private set; }
         public string MachineNoIm { get; private set; }
         public string OperatorIm { get; private set; }
@@ -70,18 +72,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
             }
         }
 
-        public void SetDyeingPrintingAreaMovement(int newDyeingPrintingAreaMovementId, string newDyeingPrintingAreaMovementBonNo, 
+        public void SetDyeingPrintingAreaInput(int newDyeingPrintingAreaInputId, string newDyeingPrintingAreaInputBonNo,
+            int newDyeingPrintingAreaInputProductionOrderId,
             string newProductionOrderNo, string user, string agent)
         {
-            if(newDyeingPrintingAreaMovementId != DyeingPrintingAreaMovementId)
+            if(newDyeingPrintingAreaInputId != DyeingPrintingAreaInputId)
             {
-                DyeingPrintingAreaMovementId = newDyeingPrintingAreaMovementId;
+                DyeingPrintingAreaInputId = newDyeingPrintingAreaInputId;
                 this.FlagForUpdate(user, agent);
             }
 
-            if(newDyeingPrintingAreaMovementBonNo!= DyeingPrintingAreaMovementBonNo)
+            if(newDyeingPrintingAreaInputBonNo != DyeingPrintingAreaInputBonNo)
             {
-                DyeingPrintingAreaMovementBonNo = newDyeingPrintingAreaMovementBonNo;
+                DyeingPrintingAreaInputBonNo = newDyeingPrintingAreaInputBonNo;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (newDyeingPrintingAreaInputProductionOrderId != DyeingPrintingAreaInputProductionOrderId)
+            {
+                DyeingPrintingAreaInputProductionOrderId = newDyeingPrintingAreaInputProductionOrderId;
                 this.FlagForUpdate(user, agent);
             }
 
