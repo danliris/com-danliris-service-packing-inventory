@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Com.Danliris.Service.Packing.Inventory.Application.AcceptingPackaging;
-using Com.Danliris.Service.Packing.Inventory.Application.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
