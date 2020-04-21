@@ -47,11 +47,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.InventoryDocumentSKUs);
             Assert.Empty(dbContext.ProductSKUs);
             Assert.Empty(dbContext.ProductPackings);
-            Assert.Empty(dbContext.DyeingPrintingAreaMovements);
-            Assert.Empty(dbContext.DyeingPrintingAreaMovementHistories);
             Assert.Empty(dbContext.NewFabricQualityControls);
             Assert.Empty(dbContext.NewFabricGradeTests);
             Assert.Empty(dbContext.NewCriterias);
+            Assert.Empty(dbContext.DyeingPrintingAreaInputProductionOrders);
+            Assert.Empty(dbContext.DyeingPrintingAreaInputs);
+            Assert.Empty(dbContext.DyeingPrintingAreaMovements);
+            Assert.Empty(dbContext.DyeingPrintingAreaOutputProductionOrders);
+            Assert.Empty(dbContext.DyeingPrintingAreaOutputs);
+            Assert.Empty(dbContext.DyeingPrintingAreaSummaries);
         }
     }
 }

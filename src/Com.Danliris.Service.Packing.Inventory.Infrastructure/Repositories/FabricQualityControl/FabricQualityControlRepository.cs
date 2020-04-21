@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Fab
         {
             var modelToUpdate = _fabricQCDbSet.Include(s => s.FabricGradeTests).ThenInclude(s => s.Criteria).FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetDateIm(model.DateIm, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetDyeingPrintingAreaMovement(model.DyeingPrintingAreaMovementId, model.DyeingPrintingAreaMovementBonNo, 
+            modelToUpdate.SetDyeingPrintingAreaInput(model.DyeingPrintingAreaInputId, model.DyeingPrintingAreaInputBonNo, model.DyeingPrintingAreaInputProductionOrderId, 
                 model.ProductionOrderNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIsUsed(model.IsUsed, _identityProvider.Username, UserAgent);

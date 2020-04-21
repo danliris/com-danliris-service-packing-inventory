@@ -14,27 +14,28 @@ using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl
 {
     public class FabricQualityControlService : IFabricQualityControlService
     {
         private readonly IFabricQualityControlRepository _repository;
-        private readonly IDyeingPrintingAreaMovementRepository _dpRepository;
+        private readonly IDyeingPrintingAreaInputProductionOrderRepository _dpRepository;
         private readonly IFabricGradeTestRepository _fgtRepository;
 
         public FabricQualityControlService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IFabricQualityControlRepository>();
-            _dpRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
+            _dpRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _fgtRepository = serviceProvider.GetService<IFabricGradeTestRepository>();
         }
 
-        private FabricQualityControlViewModel MapToViewModel(FabricQualityControlModel model, DyeingPrintingAreaMovementModel dpModel)
+        private FabricQualityControlViewModel MapToViewModel(FabricQualityControlModel model, DyeingPrintingAreaInputProductionOrderModel dpModel)
         {
             FabricQualityControlViewModel vm = new FabricQualityControlViewModel()
             {
-                DyeingPrintingAreaMovementId = model.DyeingPrintingAreaMovementId,
+                InspectionMaterialId = model.DyeingPrintingAreaInputId,
                 Active = model.Active,
                 Buyer = dpModel?.Buyer,
                 CartNo = dpModel?.CartNo,
@@ -48,7 +49,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 DeletedAgent = model.DeletedAgent,
                 DeletedBy = model.DeletedBy,
                 DeletedUtc = model.DeletedUtc,
-                DyeingPrintingAreaMovementBonNo = model.DyeingPrintingAreaMovementBonNo,
+                InspectionMaterialBonNo = model.DyeingPrintingAreaInputBonNo,
+                InspectionMaterialProductionOrderId = model.DyeingPrintingAreaInputProductionOrderId,
                 Group = model.Group,
                 Id = model.Id,
                 IsDeleted = model.IsDeleted,
@@ -58,15 +60,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 LastModifiedUtc = model.LastModifiedUtc,
                 MachineNoIm = model.MachineNoIm,
                 OperatorIm = model.OperatorIm,
-                OrderQuantity = dpModel?.ProductionOrderQuantity,
+                OrderQuantity = dpModel?.Balance,
                 PackingInstruction = dpModel?.PackingInstruction,
                 PointLimit = model.PointLimit,
                 PointSystem = model.PointSystem,
                 ProductionOrderNo = model.ProductionOrderNo,
                 ProductionOrderType = dpModel?.ProductionOrderType,
-                ShiftIm = dpModel?.Shift,
+                ShiftIm = dpModel?.DyeingPrintingAreaInput.Shift,
                 UId = model.UId,
-                Uom = dpModel?.UOMUnit,
+                Uom = dpModel?.UomUnit,
                 ProductionOrderId = dpModel?.ProductionOrderId,
                 FabricGradeTests = model.FabricGradeTests.Select(s => new FabricGradeTestViewModel()
                 {
@@ -126,20 +128,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 viewModel.Code = CodeGenerator.Generate(8);
             } while (_repository.GetDbSet().Any(entity => entity.Code == viewModel.Code));
 
-            var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.DyeingPrintingAreaMovementId,
-                viewModel.DyeingPrintingAreaMovementBonNo, viewModel.ProductionOrderNo,
+            var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.InspectionMaterialId,
+                viewModel.InspectionMaterialBonNo, viewModel.InspectionMaterialProductionOrderId, viewModel.ProductionOrderNo,
                 viewModel.MachineNoIm, viewModel.OperatorIm, viewModel.PointLimit.GetValueOrDefault(), viewModel.PointSystem.GetValueOrDefault(),
-                viewModel.FabricGradeTests.Select((s, i) => 
-                    new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(), 
-                    s.FinalGradeTest.GetValueOrDefault(),s.FinalLength.GetValueOrDefault(), s.FinalScore.GetValueOrDefault(), s.Grade, s.InitLength.GetValueOrDefault(),
+                viewModel.FabricGradeTests.Select((s, i) =>
+                    new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
+                    s.FinalGradeTest.GetValueOrDefault(), s.FinalLength.GetValueOrDefault(), s.FinalScore.GetValueOrDefault(), s.Grade, s.InitLength.GetValueOrDefault(),
                     s.PcsNo, s.PointLimit.GetValueOrDefault(), s.PointSystem.GetValueOrDefault(), s.SampleLength.GetValueOrDefault(), s.Score.GetValueOrDefault(),
-                    s.Type, s.Width.GetValueOrDefault(), i, 
+                    s.Type, s.Width.GetValueOrDefault(), i,
                         s.Criteria.Select((d, cInd) => new CriteriaModel(d.Code, d.Group, cInd, d.Name, d.Score.A.GetValueOrDefault(), d.Score.B.GetValueOrDefault(),
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
-            result = await  _repository.InsertAsync(model);
+            result = await _repository.InsertAsync(model);
 
-            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaMovementId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
 
             return result;
         }
@@ -147,9 +149,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public async Task<int> Delete(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
-            int result = await _dpRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaMovementId, "", false);
+            int result = await _dpRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false);
             result += await _repository.DeleteAsync(id);
-            
+
             return result;
         }
 
@@ -195,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 {
                     foreach (var detail in item.FabricGradeTests)
                     {
-                        dt.Rows.Add(index++, item.Code, item.DyeingPrintingAreaMovementBonNo, item.CartNo, item.ProductionOrderType, item.ProductionOrderNo,
+                        dt.Rows.Add(index++, item.Code, item.InspectionMaterialBonNo, item.CartNo, item.ProductionOrderType, item.ProductionOrderNo,
                             item.DateIm.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"), item.ShiftIm, item.OperatorIm, item.MachineNoIm,
                             item.Construction, item.Buyer, item.Color, item.OrderQuantity.GetValueOrDefault().ToString(), item.PackingInstruction,
                             detail.PcsNo, detail.InitLength, detail.Width, detail.FinalScore, detail.Grade, detail.AvalLength, detail.SampleLength);
@@ -209,16 +211,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public List<FabricQCGradeTestsViewModel> GetForSPP(string no)
         {
             IQueryable<FabricQCGradeTestsViewModel> data;
-            
+
             if (string.IsNullOrEmpty(no))
             {
                 data = from qc in _repository.GetDbSet().AsNoTracking()
                        join dp in _dpRepository.ReadAll()
-                       on qc.DyeingPrintingAreaMovementId equals dp.Id
+                       on qc.DyeingPrintingAreaInputId equals dp.Id
                        select new FabricQCGradeTestsViewModel
                        {
                            OrderNo = qc.ProductionOrderNo,
-                           OrderQuantity = dp.ProductionOrderQuantity
+                           OrderQuantity = dp.Balance
                        };
 
 
@@ -228,12 +230,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 data = from fabricqc in _repository.GetDbSet().AsNoTracking()
                        join fabricgt in _fgtRepository.GetDbSet().AsNoTracking() on fabricqc.Id equals fabricgt.FabricQualityControlId
                        join dp in _dpRepository.ReadAll()
-                       on fabricqc.DyeingPrintingAreaMovementId equals dp.Id
+                       on fabricqc.DyeingPrintingAreaInputId equals dp.Id
                        where fabricqc.ProductionOrderNo == no
                        select new FabricQCGradeTestsViewModel
                        {
                            OrderNo = fabricqc.ProductionOrderNo,
-                           OrderQuantity = dp.ProductionOrderQuantity,
+                           OrderQuantity = dp.Balance,
                            Grade = fabricgt.Grade
                        };
 
@@ -242,7 +244,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             return data.AsNoTracking().ToList();
         }
 
-        public ListResult<FabricQualityControlViewModel> GetReport(int page, int size, string code, int dyeingPrintintMovementId, string productionOrderType, 
+        public ListResult<FabricQualityControlViewModel> GetReport(int page, int size, string code, int dyeingPrintintMovementId, string productionOrderType,
             string productionOrderNo, string shiftIm, DateTime? dateFrom, DateTime? dateTo, int offSet)
         {
             var queries = GetReport(code, dyeingPrintintMovementId, productionOrderType, productionOrderNo, shiftIm, dateFrom, dateTo, offSet);
@@ -266,7 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             var data = (from qcData in query.Skip((page - 1) * size).Take(size)
                         join dpData in _dpRepository.ReadAll()
-                        on qcData.DyeingPrintingAreaMovementId equals dpData.Id into indexData
+                        on qcData.DyeingPrintingAreaInputId equals dpData.Id into indexData
                         from dpData in indexData.DefaultIfEmpty()
                         select new IndexViewModel()
                         {
@@ -274,13 +276,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                             CartNo = dpData.CartNo,
                             Code = qcData.Code,
                             DateIm = qcData.DateIm,
-                            DyeingPrintingAreaMovementBonNo = qcData.DyeingPrintingAreaMovementBonNo,
+                            InspectionMaterialBonNo = qcData.DyeingPrintingAreaInputBonNo,
                             IsUsed = qcData.IsUsed,
                             MachineNoIm = qcData.MachineNoIm,
                             OperatorIm = qcData.OperatorIm,
                             ProductionOrderNo = qcData.ProductionOrderNo,
                             ProductionOrderType = dpData.ProductionOrderType,
-                            ShiftIm = dpData.Shift
+                            ShiftIm = dpData.DyeingPrintingAreaInput.Shift
                         });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
@@ -292,7 +294,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             if (model == null)
                 return null;
 
-            var dpData = await _dpRepository.ReadByIdAsync(model.DyeingPrintingAreaMovementId);
+            var dpData = await _dpRepository.ReadByIdAsync(model.DyeingPrintingAreaInputId);
 
             FabricQualityControlViewModel vm = MapToViewModel(model, dpData);
 
@@ -301,8 +303,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
         public async Task<int> Update(int id, FabricQualityControlViewModel viewModel)
         {
-            var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.DyeingPrintingAreaMovementId,
-                viewModel.DyeingPrintingAreaMovementBonNo, viewModel.ProductionOrderNo,
+            var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.InspectionMaterialId,
+                viewModel.InspectionMaterialBonNo, viewModel.InspectionMaterialProductionOrderId, viewModel.ProductionOrderNo,
                 viewModel.MachineNoIm, viewModel.OperatorIm, viewModel.PointLimit.GetValueOrDefault(), viewModel.PointSystem.GetValueOrDefault(),
                 viewModel.FabricGradeTests.Select((s, i) =>
                     new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
@@ -313,7 +315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
             int result = await _repository.UpdateAsync(id, model);
-            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaMovementId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
             return result;
         }
 
@@ -321,14 +323,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         {
 
             IQueryable<FabricQualityControlModel> query = _repository.ReadAll();
-            IQueryable<DyeingPrintingAreaMovementModel> dpQuery = _dpRepository.ReadAll();
+            IQueryable<DyeingPrintingAreaInputProductionOrderModel> dpQuery = _dpRepository.ReadAll();
             IEnumerable<FabricQualityControlViewModel> fabricQCs;
 
             if (!string.IsNullOrEmpty(code))
                 query = query.Where(x => x.Code == code);
 
             if (dyeingPrintingMovementId != -1)
-                query = query.Where(x => x.DyeingPrintingAreaMovementId == dyeingPrintingMovementId);
+                query = query.Where(x => x.DyeingPrintingAreaInputId == dyeingPrintingMovementId);
 
             if (!string.IsNullOrEmpty(productionOrderType))
                 dpQuery = dpQuery.Where(x => x.ProductionOrderType == productionOrderType);
@@ -337,7 +339,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 query = query.Where(x => x.ProductionOrderNo == productionOrderNo);
 
             if (!string.IsNullOrEmpty(shiftIm))
-                dpQuery = dpQuery.Where(x => x.Shift == shiftIm);
+                dpQuery = dpQuery.Where(x => x.DyeingPrintingAreaInput.Shift == shiftIm);
 
             if (dateFrom == null && dateTo == null)
             {
@@ -366,22 +368,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             fabricQCs = (from qc in query
                          join dp in dpQuery
-                         on qc.DyeingPrintingAreaMovementId equals dp.Id
+                         on qc.DyeingPrintingAreaInputId equals dp.Id
                          select new FabricQualityControlViewModel()
                          {
                              Code = qc.Code,
-                             DyeingPrintingAreaMovementBonNo = qc.DyeingPrintingAreaMovementBonNo,
+                             InspectionMaterialBonNo = qc.DyeingPrintingAreaInputBonNo,
                              CartNo = dp.CartNo,
                              ProductionOrderType = dp.ProductionOrderType,
                              ProductionOrderNo = qc.ProductionOrderNo,
                              DateIm = qc.DateIm,
-                             ShiftIm = dp.Shift,
+                             ShiftIm = dp.DyeingPrintingAreaInput.Shift,
                              OperatorIm = qc.OperatorIm,
                              MachineNoIm = qc.MachineNoIm,
                              Construction = dp.Construction,
                              Buyer = dp.Buyer,
                              Color = dp.Color,
-                             OrderQuantity = dp.ProductionOrderQuantity,
+                             OrderQuantity = dp.Balance,
                              PackingInstruction = dp.PackingInstruction,
                              FabricGradeTests = qc.FabricGradeTests.Select(y => new FabricGradeTestViewModel()
                              {
@@ -397,7 +399,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
                          });
 
-            
+
 
             return fabricQCs.ToList();
         }

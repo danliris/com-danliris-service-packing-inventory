@@ -3,127 +3,53 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Data.Models
+namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement
 {
     public class DyeingPrintingAreaMovementModel : StandardEntity
     {
-        public readonly string METER = "MTR";
-        public readonly string YARDS = "YDS";
+        public DateTimeOffset Date { get; private set; }
+        public string Area { get; private set; }
+        public string Type { get; private set; }
+        public int DyeingPrintingAreaDocumentId { get; private set; }
+        public string DyeingPrintingAreaDocumentBonNo { get; private set; }
 
-        public readonly string OK = "OK";
-        public readonly string NOT_OK = "NOT OK";
+
+        public long ProductionOrderId { get; private set; }
+        public string ProductionOrderNo { get; private set; }
+        public string CartNo { get; private set; }
+        public string Buyer { get; private set; }
+        public string Construction { get; private set; }
+        public string Unit { get; private set; }
+        public string Color { get; private set; }
+        public string Motif { get; private set; }
+        public string UomUnit { get; private set; }
+        public double Balance { get; private set; }
 
         public DyeingPrintingAreaMovementModel()
         {
-            DyeingPrintingAreaMovementHistories = new HashSet<DyeingPrintingAreaMovementHistoryModel>();
+             
         }
 
-        public DyeingPrintingAreaMovementModel(string area, string bonNo, DateTimeOffset date, string shift, long productionOrderId, string productionOrderCode, string productionOrderNo,
-            double productionOrderQuantity, string productionOrderType, string buyer, string packingInstruction, string cartNo, int materialId, string materialCode, string materialName, int materialConstructionId, string materialConstructionCode,
-            string materialConstructionName, string materialWidth, int unitId, string unitCode, string unitName, string color, string motif, string mutation,
-            double length, string uomUnit, decimal balance,  ICollection<DyeingPrintingAreaMovementHistoryModel> histories)
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color, 
+            string motif, string uomUnit, double balance)
         {
-            Area = area;
-            BonNo = bonNo;
             Date = date;
-            Shift = shift;
+            Area = area;
+            Type = type;
+            DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
+            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
             ProductionOrderId = productionOrderId;
-            ProductionOrderCode = productionOrderCode;
             ProductionOrderNo = productionOrderNo;
-            ProductionOrderQuantity = productionOrderQuantity;
-            Buyer = buyer;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
             CartNo = cartNo;
-            MaterialId = materialId;
-            MaterialCode = materialCode;
-            MaterialName = materialName;
-            MaterialConstructionId = materialConstructionId;
-            MaterialConstructionCode = materialConstructionCode;
-            MaterialConstructionName = materialConstructionName;
-            MaterialWidth = materialWidth;
-            UnitId = unitId;
-            UnitCode = unitCode;
-            UnitName = unitName;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
             Color = color;
             Motif = motif;
-            Mutation = mutation;
-
-            ConvertLength(length, uomUnit);
-
-            Construction = GenerateConstruction(materialName, materialConstructionName, materialWidth);
-
-            UOMUnit = uomUnit;
+            UomUnit = uomUnit;
             Balance = balance;
-            //Status = status;
-            //Grade = grade;
-            //SourceArea = sourceArea;
-            //Remark = remark;
-            DyeingPrintingAreaMovementHistories = histories;
-
-            //MassKg = massKg;
         }
-
-        public string GenerateConstruction(string materialName, string materialConstructionName, string materialWidth)
-        {
-            return string.Format("{0} / {1} / {2}", materialName, materialConstructionName, materialWidth);
-        }
-
-        public void ConvertLength(double length, string uomUnit)
-        {
-            if (uomUnit == METER)
-            {
-                MeterLength = length;
-                YardsLength = length * 1.093613;
-            }
-            else if (uomUnit == YARDS)
-            {
-                YardsLength = length;
-                MeterLength = length * 0.9144000;
-            }
-        }
-
-
-        public string Area { get; private set; }
-        public string BonNo { get; private set; }
-        public DateTimeOffset Date { get; private set; }
-        public string Shift { get; private set; }
-        public long ProductionOrderId { get; private set; }
-        public string ProductionOrderCode { get; private set; }
-        public string ProductionOrderNo { get; private set; }
-        public double ProductionOrderQuantity { get; private set; }
-        public string Buyer { get; private set; }
-        public string PackingInstruction { get; private set; }
-        public string ProductionOrderType { get; private set; }
-        public string CartNo { get; private set; }
-        public string Construction { get; private set; }
-        public int MaterialId { get; private set; }
-        public string MaterialCode { get; private set; }
-        public string MaterialName { get; private set; }
-        public int MaterialConstructionId { get; private set; }
-        public string MaterialConstructionCode { get; private set; }
-        public string MaterialConstructionName { get; private set; }
-        public string MaterialWidth { get; private set; }
-        public int UnitId { get; private set; }
-        public string UnitCode { get; private set; }
-        public string UnitName { get; private set; }
-        public string Color { get; private set; }
-        public string Motif { get; private set; }
-        public string Mutation { get; private set; }
-        public double MeterLength { get; private set; }
-        public double YardsLength { get; private set; }
-        public string UOMUnit { get; private set; }
-        public decimal Balance { get; private set; }
-        public string Status { get; private set; }
-        public string Grade { get; private set; }
-        public string SourceArea { get; private set; }
-        public string Remark { get; private set; }
-        public bool IsChecked { get; private set; }
-        public double QtyKg { get; private set; }
-        public decimal PackagingQty { get; private set; }
-        public string PackagingUnit { get; private set; }
-        public ICollection<DyeingPrintingAreaMovementHistoryModel> DyeingPrintingAreaMovementHistories { get; private set; }
-
 
         public void SetArea(string newArea, string user, string agent)
         {
@@ -143,27 +69,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetShift(string newShift, string user, string agent)
+        public void SetType(string newType, string user, string agent)
         {
-            if (newShift != Shift)
+            if (newType != Type)
             {
-                Shift = newShift;
+                Type = newType;
                 this.FlagForUpdate(user, agent);
             }
         }
 
-        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderCode, string newProductionOrderNo,
-            string newProductionOrderType, string user, string agent)
+        public void SetDyeingPrintingAreaDocument(int newId, string newBonNo, string user, string agent)
+        {
+            if(newId != DyeingPrintingAreaDocumentId)
+            {
+                DyeingPrintingAreaDocumentId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (newBonNo != DyeingPrintingAreaDocumentBonNo)
+            {
+                DyeingPrintingAreaDocumentBonNo = newBonNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)
             {
                 ProductionOrderId = newProductionOrderId;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newProductionOrderCode != ProductionOrderCode)
-            {
-                ProductionOrderCode = newProductionOrderCode;
                 this.FlagForUpdate(user, agent);
             }
 
@@ -173,11 +107,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
                 this.FlagForUpdate(user, agent);
             }
 
-            if (newProductionOrderType != ProductionOrderType)
-            {
-                ProductionOrderType = newProductionOrderType;
-                this.FlagForUpdate(user, agent);
-            }
         }
 
         public void SetBuyer(string newBuyer, string user, string agent)
@@ -189,81 +118,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetPackingInstruction(string newPackingInstruction, string user, string agent)
+        public void SetCartNo(string newCartNo, string user, string agent)
         {
-            if (newPackingInstruction != PackingInstruction)
+            if (newCartNo != CartNo)
             {
-                PackingInstruction = newPackingInstruction;
+                CartNo = newCartNo;
                 this.FlagForUpdate(user, agent);
             }
         }
 
-        public void SetProductionOrderQuantity(double newProductionOrderQuantity, string user, string agent)
+        public void SetConstruction(string newConstruction, string user, string agent)
         {
-            if (newProductionOrderQuantity != ProductionOrderQuantity)
-            {
-                ProductionOrderQuantity = newProductionOrderQuantity;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetCartNumber(string newCartNumber, string user, string agent)
-        {
-            if (newCartNumber != CartNo)
-            {
-                CartNo = newCartNumber;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetConstructionData(int newMaterialId, string newMaterialCode, string newMaterialName,
-            int newMaterialConstructionId, string newMaterialConstructionCode, string newMaterialConstructionName,
-            string newMaterialWidth, string user, string agent)
-        {
-            string newConstruction = GenerateConstruction(newMaterialName, newMaterialConstructionName, newMaterialWidth);
-
-            if (newMaterialId != MaterialId)
-            {
-                MaterialId = newMaterialId;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialCode != MaterialCode)
-            {
-                MaterialCode = newMaterialCode;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialName != MaterialName)
-            {
-                MaterialName = newMaterialName;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialConstructionId != MaterialConstructionId)
-            {
-                MaterialConstructionId = newMaterialConstructionId;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialConstructionCode != MaterialConstructionCode)
-            {
-                MaterialConstructionCode = newMaterialConstructionCode;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialConstructionName != MaterialConstructionName)
-            {
-                MaterialConstructionName = newMaterialConstructionName;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newMaterialWidth != MaterialWidth)
-            {
-                MaterialWidth = newMaterialWidth;
-                this.FlagForUpdate(user, agent);
-            }
-
             if (newConstruction != Construction)
             {
                 Construction = newConstruction;
@@ -271,23 +136,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetUnit(int newUnitId, string newUnitCode, string newUnitName, string user, string agent)
+        public void SetUnit( string newUnit, string user, string agent)
         {
-            if (newUnitId != UnitId)
-            {
-                UnitId = newUnitId;
-                this.FlagForUpdate(user, agent);
-            }
 
-            if (newUnitCode != UnitCode)
+            if (newUnit != Unit)
             {
-                UnitCode = newUnitCode;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newUnitName != UnitName)
-            {
-                UnitName = newUnitName;
+                Unit = newUnit;
                 this.FlagForUpdate(user, agent);
             }
 
@@ -311,122 +165,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
-        public void SetMutation(string newMutation, string user, string agent)
+        public void SetUomUnit(string newUomUnit, string user, string agent)
         {
-            if (newMutation != Mutation)
+            if (newUomUnit != UomUnit)
             {
-                Mutation = newMutation;
+                UomUnit = newUomUnit;
                 this.FlagForUpdate(user, agent);
             }
         }
 
-        public void SetLength(double newMeterLength, double newYardsLength, string newUomUnit, string user, string agent)
-        {
-            if (newMeterLength != MeterLength)
-            {
-                MeterLength = newMeterLength;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newYardsLength != YardsLength)
-            {
-                YardsLength = newYardsLength;
-                this.FlagForUpdate(user, agent);
-            }
-
-            if (newUomUnit != UOMUnit)
-            {
-                UOMUnit = newUomUnit;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetUomUnit(string uomUnit, string user, string agent)
-        {
-            if (uomUnit != UOMUnit)
-            {
-                UOMUnit = uomUnit;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetBalance(decimal newBalance, string user, string agent)
+        public void SetBalance(double newBalance, string user, string agent)
         {
             if (newBalance != Balance)
             {
                 Balance = newBalance;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetStatus(string newStatus, string user, string agent)
-        {
-            if (newStatus != Status)
-            {
-                Status = newStatus;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetGrade(string newGrade, string user, string agent)
-        {
-            if (newGrade != Grade)
-            {
-                Grade = newGrade;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetSourceArea(string newSourceArea, string user, string agent)
-        {
-            if (newSourceArea != SourceArea)
-            {
-                SourceArea = newSourceArea;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetIsChecked(bool newIsChecked, string user, string agent)
-        {
-            if (newIsChecked != IsChecked)
-            {
-                IsChecked = newIsChecked;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetRemark(string newRemark, string user, string agent)
-        {
-            if (newRemark != Remark)
-            {
-                Remark = newRemark;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetQtyKg(double qtyKg, string user, string agent)
-        {
-            if (qtyKg != QtyKg)
-            {
-                QtyKg = qtyKg;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetPackagingQty(decimal packQty, string user, string agent)
-        {
-            if(packQty != PackagingQty)
-            {
-                PackagingQty = packQty;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetPackagingUnit(string packUnit, string user, string agent)
-        {
-            if (packUnit != PackagingUnit)
-            {
-                PackagingUnit = packUnit;
                 this.FlagForUpdate(user, agent);
             }
         }

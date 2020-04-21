@@ -17,8 +17,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public List<FabricGradeTestViewModel> FabricGradeTests { get; set; }
         public string Group { get; set; }
         public bool? IsUsed { get; set; }
-        public int DyeingPrintingAreaMovementId { get; set; }
-        public string DyeingPrintingAreaMovementBonNo { get; set; }
+        public int InspectionMaterialId { get; set; }
+        public string InspectionMaterialBonNo { get; set; }
+        public int InspectionMaterialProductionOrderId { get; set; }
         public string MachineNoIm { get; set; }
         public string OperatorIm { get; set; }
         public double? OrderQuantity { get; set; }

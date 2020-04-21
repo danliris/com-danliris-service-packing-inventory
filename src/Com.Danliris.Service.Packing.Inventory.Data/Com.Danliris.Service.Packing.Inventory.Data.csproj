@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryModel.cs" />
+    <Compile Remove="Models\DyeingPrintingAreaMovement\OldDyeingPrintingAreaMovementModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Com.Moonlay.Models" Version="1.1.0" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -40,23 +40,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder
                 .Property(s => s.Area)
-                .HasMaxLength(64);
-
-            builder.HasIndex(s => s.BonNo)
-                .IsUnique()
-                .HasFilter("[IsDeleted]=(0)");
+                .HasMaxLength(128);
 
             builder
-                .Property(s => s.BonNo)
-                .HasMaxLength(64);
-
-            builder
-                .Property(s => s.Shift)
-                .HasMaxLength(64);
-
-            builder
-                .Property(s => s.ProductionOrderCode)
+                .Property(s => s.Type)
                 .HasMaxLength(32);
+
+            builder
+                .Property(s => s.DyeingPrintingAreaDocumentBonNo)
+                .HasMaxLength(64);
 
             builder
                 .Property(s => s.ProductionOrderNo)
@@ -64,14 +56,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder
                 .Property(s => s.Buyer)
-                .HasMaxLength(4096);
-
-            builder
-                .Property(s => s.PackingInstruction)
-                .HasMaxLength(4096);
-
-            builder
-                .Property(s => s.ProductionOrderType)
                 .HasMaxLength(4096);
 
             builder
@@ -83,31 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .HasMaxLength(1024);
 
             builder
-               .Property(s => s.MaterialCode)
-               .HasMaxLength(32);
-
-            builder
-               .Property(s => s.MaterialName)
-               .HasMaxLength(4096);
-
-            builder
-              .Property(s => s.MaterialConstructionCode)
-              .HasMaxLength(32);
-
-            builder
-              .Property(s => s.MaterialConstructionName)
-              .HasMaxLength(4096);
-
-            builder
-              .Property(s => s.MaterialWidth)
-              .HasMaxLength(1024);
-
-            builder
-              .Property(s => s.UnitCode)
-              .HasMaxLength(1024);
-
-            builder
-              .Property(s => s.UnitName)
+              .Property(s => s.Unit)
               .HasMaxLength(4096);
 
             builder
@@ -119,40 +79,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
               .HasMaxLength(4096);
 
             builder
-              .Property(s => s.Mutation)
-              .HasMaxLength(64);
-
-            builder
-              .Property(s => s.UOMUnit)
+              .Property(s => s.UomUnit)
               .HasMaxLength(32);
-
-            builder
-              .Property(s => s.Status)
-              .HasMaxLength(32);
-
-            builder
-                .Property(s => s.Balance)
-                .HasColumnType("decimal(18,2)");
-
-            builder
-              .Property(s => s.Grade)
-              .HasMaxLength(4096);
-
-            builder
-              .Property(s => s.SourceArea)
-              .HasMaxLength(64);
-
-            builder
-              .Property(s => s.Remark)
-              .HasMaxLength(1024);
-
-            builder
-                .Property(s => s.PackagingQty)
-                .HasColumnType("decimal(18,2)");
-
-            builder
-                .Property(s => s.PackagingUnit)
-                .HasMaxLength(32);
         }
     }
 }

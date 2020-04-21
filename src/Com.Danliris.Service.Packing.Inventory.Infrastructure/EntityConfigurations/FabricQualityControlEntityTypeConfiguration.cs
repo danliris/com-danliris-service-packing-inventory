@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(4096);
 
             builder
-               .Property(s => s.DyeingPrintingAreaMovementBonNo)
+               .Property(s => s.DyeingPrintingAreaInputBonNo)
                .HasMaxLength(64);
 
             builder

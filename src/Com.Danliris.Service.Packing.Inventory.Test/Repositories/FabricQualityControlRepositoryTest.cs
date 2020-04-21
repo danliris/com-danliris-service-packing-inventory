@@ -34,8 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         {
             var serviceProvider = GetServiceProviderMock(dbContext);
             DyeingPrintingAreaMovementRepository dpRepo = new DyeingPrintingAreaMovementRepository(dbContext, serviceProvider.Object);
-            DyeingPrintingAreaMovementDataUtil dpDataUtil = new DyeingPrintingAreaMovementDataUtil(dpRepo);
-            FabricQualityControlDataUtil dataUtil = new FabricQualityControlDataUtil(repository, dpDataUtil);
+            FabricQualityControlDataUtil dataUtil = new FabricQualityControlDataUtil(repository);
             return dataUtil;
         }
 

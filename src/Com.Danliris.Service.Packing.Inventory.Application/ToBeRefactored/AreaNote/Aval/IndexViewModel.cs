@@ -8,7 +8,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Area
     {
         public int Id { get; set; }
         public string Area { get; set; }
-        public string Activity { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Group { get; set; }
         //Same as NoteNo?
