@@ -22,6 +22,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double Balance { get; private set; }
         public string PackingInstruction { get; private set; }
         public string ProductionOrderType { get; private set; }
+        public string PackagingType { get; private set; }
+        public decimal PackagingQty { get; private set; }
+        public string PackagingUnit { get; private set; }
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -61,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionOrderNo = productionOrderNo;
             Buyer = buyer;
             Construction = construction;
+            Unit = unit;
             Color = color;
             Motif = motif;
             UomUnit = uomUnit;
@@ -69,6 +73,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionOrderType = productionOrderType;
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
+        }
+        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
+            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, 
+            string packagingType, decimal packagingQty, string packagingUnit)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)
@@ -213,6 +234,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (deliveryOrderSalesNo != DeliveryOrderSalesNo)
             {
                 DeliveryOrderSalesNo = deliveryOrderSalesNo;
+                 this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingType(string newPackagingType, string user, string agent)
+        {
+            if (newPackagingType != PackagingType)
+            {
+                PackagingType = newPackagingType;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingQty(decimal newPackagingQty, string user, string agent)
+        {
+            if (newPackagingQty != PackagingQty)
+            {
+                PackagingQty = newPackagingQty;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+        
+        public void SetPackagingUnit(string newPackagingUnit, string user, string agent)
+        {
+            if (newPackagingUnit != PackagingUnit)
+            {
+                PackagingUnit = newPackagingUnit;
                 this.FlagForUpdate(user, agent);
             }
         }

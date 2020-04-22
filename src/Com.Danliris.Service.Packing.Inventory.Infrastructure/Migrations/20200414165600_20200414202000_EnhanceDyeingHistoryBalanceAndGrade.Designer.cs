@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200414165600_20200414202000_EnhanceDyeingHistoryBalanceAndGrade")]
+    partial class _20200414202000_EnhanceDyeingHistoryBalanceAndGrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaInputModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovementHistoryModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,8 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Area")
                         .HasMaxLength(64);
 
-                    b.Property<string>("BonNo")
-                        .HasMaxLength(64);
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
@@ -51,6 +53,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<int>("DyeingPrintingAreaMovementId");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(64);
+
+                    b.Property<int>("Index");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -66,14 +75,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BonNo")
-                        .IsUnique()
-                        .HasFilter("[IsDeleted]=(0)");
+                    b.HasIndex("DyeingPrintingAreaMovementId");
 
-                    b.ToTable("DyeingPrintingAreaInputs");
+                    b.ToTable("DyeingPrintingAreaMovementHistories");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaInputProductionOrderModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovementModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +88,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<double>("Balance");
+                    b.Property<string>("Area")
+                        .HasMaxLength(64);
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BonNo")
+                        .HasMaxLength(64);
 
                     b.Property<string>("Buyer")
                         .HasMaxLength(4096);
@@ -103,6 +117,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
+                    b.Property<DateTimeOffset>("Date");
+
                     b.Property<string>("DeletedAgent")
                         .HasMaxLength(128);
 
@@ -111,17 +127,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<long>("DeliveryOrderSalesId");
-
-                    b.Property<string>("DeliveryOrderSalesNo")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("DyeingPrintingAreaInputId");
-
                     b.Property<string>("Grade")
-                        .HasMaxLength(128);
-
-                    b.Property<bool>("HasOutputDocument");
+                        .HasMaxLength(4096);
 
                     b.Property<bool>("IsChecked");
 
@@ -135,168 +142,73 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<string>("MaterialCode")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("MaterialConstructionCode")
+                        .HasMaxLength(32);
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName")
+                        .HasMaxLength(4096);
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName")
+                        .HasMaxLength(4096);
+
+                    b.Property<string>("MaterialWidth")
+                        .HasMaxLength(1024);
+
+                    b.Property<double>("MeterLength");
+
                     b.Property<string>("Motif")
                         .HasMaxLength(4096);
+
+                    b.Property<string>("Mutation")
+                        .HasMaxLength(64);
 
                     b.Property<string>("PackingInstruction")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductionOrderCode")
+                        .HasMaxLength(32);
+
                     b.Property<long>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
                         .HasMaxLength(128);
+
+                    b.Property<double>("ProductionOrderQuantity");
 
                     b.Property<string>("ProductionOrderType")
-                        .HasMaxLength(512);
+                        .HasMaxLength(4096);
 
                     b.Property<string>("Remark")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(32);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DyeingPrintingAreaInputId");
-
-                    b.ToTable("DyeingPrintingAreaInputProductionOrders");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaMovementModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Area")
-                        .HasMaxLength(128);
-
-                    b.Property<double>("Balance");
-
-                    b.Property<string>("Buyer")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("CartNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("Construction")
                         .HasMaxLength(1024);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("DyeingPrintingAreaDocumentBonNo")
-                        .HasMaxLength(64);
-
-                    b.Property<int>("DyeingPrintingAreaDocumentId");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Motif")
-                        .HasMaxLength(4096);
-
-                    b.Property<long>("ProductionOrderId");
-
-                    b.Property<string>("ProductionOrderNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(32);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DyeingPrintingAreaMovements");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaOutputModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Area")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("BonNo")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("DestinationArea")
-                        .HasMaxLength(64);
-
-                    b.Property<bool>("HasNextAreaDocument");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
+
+                    b.Property<string>("SourceArea")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("UOMUnit")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(1024);
+
+                    b.Property<int>("UnitId");
+
+                    b.Property<string>("UnitName")
+                        .HasMaxLength(4096);
+
+                    b.Property<double>("YardsLength");
 
                     b.HasKey("Id");
 
@@ -304,187 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[IsDeleted]=(0)");
 
-                    b.ToTable("DyeingPrintingAreaOutputs");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaOutputProductionOrderModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<double>("Balance");
-
-                    b.Property<string>("Buyer")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("CartNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("Construction")
-                        .HasMaxLength(1024);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<long>("DeliveryOrderSalesId");
-
-                    b.Property<string>("DeliveryOrderSalesNo")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("DyeingPrintingAreaOutputId");
-
-                    b.Property<string>("Grade")
-                        .HasMaxLength(128);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Motif")
-                        .HasMaxLength(4096);
-
-                    b.Property<decimal>("PackagingQty")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PackagingType")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("PackagingUnit")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("PackingInstruction")
-                        .HasMaxLength(4096);
-
-                    b.Property<long>("ProductionOrderId");
-
-                    b.Property<string>("ProductionOrderNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("ProductionOrderType")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(32);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DyeingPrintingAreaOutputId");
-
-                    b.ToTable("DyeingPrintingAreaOutputProductionOrders");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaSummaryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Area")
-                        .HasMaxLength(128);
-
-                    b.Property<double>("Balance");
-
-                    b.Property<string>("Buyer")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("CartNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("Construction")
-                        .HasMaxLength(1024);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("DyeingPrintingAreaDocumentBonNo")
-                        .HasMaxLength(64);
-
-                    b.Property<int>("DyeingPrintingAreaDocumentId");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Motif")
-                        .HasMaxLength(4096);
-
-                    b.Property<long>("ProductionOrderId");
-
-                    b.Property<string>("ProductionOrderNo")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(4096);
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(32);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DyeingPrintingAreaSummaries");
+                    b.ToTable("DyeingPrintingAreaMovements");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl.CriteriaModel", b =>
@@ -628,12 +360,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("DyeingPrintingAreaInputBonNo")
+                    b.Property<string>("DyeingPrintingAreaMovementBonNo")
                         .HasMaxLength(64);
 
-                    b.Property<int>("DyeingPrintingAreaInputId");
-
-                    b.Property<int>("DyeingPrintingAreaInputProductionOrderId");
+                    b.Property<int>("DyeingPrintingAreaMovementId");
 
                     b.Property<string>("Group")
                         .HasMaxLength(4096);
@@ -1188,19 +918,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("ProductSKUs");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaInputProductionOrderModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovementHistoryModel", b =>
                 {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaInputModel", "DyeingPrintingAreaInput")
-                        .WithMany("DyeingPrintingAreaInputProductionOrders")
-                        .HasForeignKey("DyeingPrintingAreaInputId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaOutputProductionOrderModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaOutputModel", "DyeingPrintingAreaOutput")
-                        .WithMany("DyeingPrintingAreaOutputProductionOrders")
-                        .HasForeignKey("DyeingPrintingAreaOutputId")
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovementModel", "DyeingPrintingAreaMovement")
+                        .WithMany("DyeingPrintingAreaMovementHistories")
+                        .HasForeignKey("DyeingPrintingAreaMovementId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
