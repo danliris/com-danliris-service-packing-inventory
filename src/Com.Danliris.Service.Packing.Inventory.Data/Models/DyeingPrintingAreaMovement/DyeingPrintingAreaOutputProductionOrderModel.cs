@@ -64,7 +64,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionOrderNo = productionOrderNo;
             Buyer = buyer;
             Construction = construction;
-            Unit = unit;
             Color = color;
             Motif = motif;
             UomUnit = uomUnit;
@@ -74,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
         }
+
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
             string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, 
             string packagingType, decimal packagingQty, string packagingUnit)
@@ -83,6 +83,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             CartNo = cartNo;
             Buyer = buyer;
             Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
             Status = status;
             Balance = balance;
             PackingInstruction = packingInstruction;
