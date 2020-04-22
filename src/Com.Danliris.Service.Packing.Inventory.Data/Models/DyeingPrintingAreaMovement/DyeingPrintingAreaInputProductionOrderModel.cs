@@ -26,6 +26,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Grade { get; private set; }
         public string Status { get; private set; }
 
+        public long DeliveryOrderSalesId { get; private set; }
+        public string DeliveryOrderSalesNo { get; private set; }
+
         public int DyeingPrintingAreaInputId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
@@ -34,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction, 
+        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument)
         {
             ProductionOrderId = productionOrderId;
@@ -71,6 +74,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Remark = remark;
             Grade = grade;
             Status = status;
+        }
+
+        public DyeingPrintingAreaInputProductionOrderModel(long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
+            string color, string motif, string grade, string uomUnit, bool hasOutputDocument)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            Buyer = buyer;
+            Construction = construction;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            HasOutputDocument = hasOutputDocument;
+            ProductionOrderType = productionOrderType;
+
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            Grade = grade;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)
@@ -170,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetHasOutputDocument(bool newFlagHasOutputDocument, string user, string agent)
         {
-            if(newFlagHasOutputDocument != HasOutputDocument)
+            if (newFlagHasOutputDocument != HasOutputDocument)
             {
                 HasOutputDocument = newFlagHasOutputDocument;
                 this.FlagForUpdate(user, agent);
@@ -218,6 +239,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newPackingInstruction != PackingInstruction)
             {
                 PackingInstruction = newPackingInstruction;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetDeliveryOrderSales(long deliveryOrderSalesId, string deliveryOrderSalesNo, string user, string agent)
+        {
+            if (deliveryOrderSalesId != DeliveryOrderSalesId)
+            {
+                DeliveryOrderSalesId = deliveryOrderSalesId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (deliveryOrderSalesNo != DeliveryOrderSalesNo)
+            {
+                DeliveryOrderSalesNo = deliveryOrderSalesNo;
                 this.FlagForUpdate(user, agent);
             }
         }

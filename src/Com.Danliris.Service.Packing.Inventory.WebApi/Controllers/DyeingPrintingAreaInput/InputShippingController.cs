@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput
 {
     [Produces("application/json")]
-    [Route("v1/input-transit")]
+    [Route("v1/input-shipping")]
     [Authorize]
-    public class InputTransitController : ControllerBase
+    public class InputShippingController : ControllerBase
     {
-        private readonly IInputTransitService _service;
+        private readonly IInputShippingService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public InputTransitController(IInputTransitService service, IIdentityProvider identityProvider)
+        public InputShippingController(IInputShippingService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] InputTransitViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] InputShippingViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -92,14 +92,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        [HttpGet("pre-transit")]
-        public IActionResult GetPreTransit([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        [HttpGet("pre-shipping")]
+        public IActionResult GetPreShipping([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
             {
 
-                var data = _service.ReadOutputPreTransit(page, size, filter, order, keyword);
+                var data = _service.ReadOutputPreShipping(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

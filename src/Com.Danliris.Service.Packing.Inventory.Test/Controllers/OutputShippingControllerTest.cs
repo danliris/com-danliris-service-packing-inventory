@@ -1,13 +1,15 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
-using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaOutput;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
@@ -16,9 +18,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class InputTransitControllerTest
+    public class OutputShippingControllerTest
     {
-        private InputTransitController GetController(IInputTransitService service, IIdentityProvider identityProvider)
+        private OutputShippingController GetController(IOutputShippingService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -27,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new InputTransitController(service, identityProvider)
+            var controller = new OutputShippingController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -50,33 +52,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private InputTransitViewModel ViewModel
+        private OutputShippingViewModel ViewModel
         {
             get
             {
-                return new InputTransitViewModel()
+                return new OutputShippingViewModel()
                 {
-                    Area = "TRANSIT",
+                    Area = "SHIPPING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
-                    OutputInspectionMaterialId = 1,
-                    TransitProductionOrders = new List<InputTransitProductionOrderViewModel>()
+                    HasNextAreaDocument = false,
+                    DestinationArea = "SHIPPING",
+                    InputShippingId = 1,
+                    ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
                     {
-                        new InputTransitProductionOrderViewModel()
+                        new OutputShippingProductionOrderViewModel()
                         {
-                            Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
                             Construction = "sd",
                             Grade = "s",
-                            HasOutputDocument = false,
-                            IsChecked = false,
+                            Remark = "remar",
                             Motif = "sd",
-                            PackingInstruction = "d",
-                            Remark = "RE",
-                            Status = "s",
+                            DeliveryOrder = new DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "sd"
+                            },
+                            Packing ="s",
+                            QtyPacking = 1,
+                            Qty = 1,
+                            Id = 1,
+                            PackingType = "sd",
+
                             ProductionOrder = new ProductionOrder()
                             {
                                 Code = "sd",
@@ -95,8 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new InputTransitViewModel();
-            var validator = new InputTransitValidator();
+            var dataUtil = new OutputShippingViewModel();
+            var validator = new OutputShippingValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
@@ -106,8 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputTransitService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputTransitViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputShippingViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -123,10 +133,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new InputTransitViewModel();
+            var dataUtil = new OutputShippingViewModel();
             //v
-            var serviceMock = new Mock<IInputTransitService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputTransitViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputShippingViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -140,14 +150,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
-
         [Fact]
         public async Task Should_Exception_Post()
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputTransitService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputTransitViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputShippingViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -164,7 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IInputTransitService>();
+            var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -183,7 +192,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputTransitService>();
+            var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -201,7 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IInputTransitService>();
+            var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
@@ -221,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputTransitService>();
+            var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -236,12 +245,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Success_GetPreTransit()
+        public async Task Should_Success_GetTransitAreaNoteExcel()
         {
             //v
-            var serviceMock = new Mock<IInputTransitService>();
-            serviceMock.Setup(s => s.ReadOutputPreTransit(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<PreTransitIndexViewModel>(new List<PreTransitIndexViewModel>(), 1, 1, 1));
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStream());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -249,18 +258,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPreTransit();
+            var response = await controller.GetExcel(1);
 
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+            Assert.NotNull(response);
         }
 
         [Fact]
-        public void Should_Exception_GetPreTransit()
+        public async Task Should_Exception_GetTransitAreaNoteExcel()
         {
-            var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputTransitService>();
-            serviceMock.Setup(s => s.ReadOutputPreTransit(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+                .Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -268,7 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPreTransit();
+            var response = await controller.GetExcel(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

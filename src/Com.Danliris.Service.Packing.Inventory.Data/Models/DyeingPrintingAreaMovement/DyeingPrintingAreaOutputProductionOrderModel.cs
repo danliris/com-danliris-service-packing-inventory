@@ -26,6 +26,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public decimal PackagingQty { get; private set; }
         public string PackagingUnit { get; private set; }
 
+        public long DeliveryOrderSalesId { get; private set; }
+        public string DeliveryOrderSalesNo { get; private set; }
+
         public int DyeingPrintingAreaOutputId { get; set; }
         public DyeingPrintingAreaOutputModel DyeingPrintingAreaOutput { get; set; }
 
@@ -52,6 +55,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Grade = grade;
             ProductionOrderType = productionOrderType;
             PackingInstruction = packingInstruction;
+        }
+
+        public DyeingPrintingAreaOutputProductionOrderModel(long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
+            string color, string motif, string grade, string uomUnit, string remark)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            Buyer = buyer;
+            Construction = construction;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
@@ -208,6 +228,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        public void SetDeliveryOrderSales(long deliveryOrderSalesId, string deliveryOrderSalesNo, string user, string agent)
+        {
+            if (deliveryOrderSalesId != DeliveryOrderSalesId)
+            {
+                DeliveryOrderSalesId = deliveryOrderSalesId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (deliveryOrderSalesNo != DeliveryOrderSalesNo)
+            {
+                DeliveryOrderSalesNo = deliveryOrderSalesNo;
+                 this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetPackagingType(string newPackagingType, string user, string agent)
         {
             if (newPackagingType != PackagingType)
@@ -216,6 +252,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+
         public void SetPackagingQty(decimal newPackagingQty, string user, string agent)
         {
             if (newPackagingQty != PackagingQty)
@@ -224,6 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+        
         public void SetPackagingUnit(string newPackagingUnit, string user, string agent)
         {
             if (newPackagingUnit != PackagingUnit)

@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -9,17 +9,17 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput
+namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaOutput
 {
     [Produces("application/json")]
-    [Route("v1/input-transit")]
+    [Route("v1/output-shipping")]
     [Authorize]
-    public class InputTransitController : ControllerBase
+    public class OutputShippingController : ControllerBase
     {
-        private readonly IInputTransitService _service;
+        private readonly IOutputShippingService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public InputTransitController(IInputTransitService service, IIdentityProvider identityProvider)
+        public OutputShippingController(IOutputShippingService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] InputTransitViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] OutputShippingViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -92,20 +92,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        [HttpGet("pre-transit")]
-        public IActionResult GetPreTransit([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
+        [HttpGet("xls/{id}")]
+        public async Task<IActionResult> GetExcel(int id)
         {
             try
             {
-
-                var data = _service.ReadOutputPreTransit(page, size, filter, order, keyword);
-                return Ok(data);
+                VerifyUser();
+                byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = await _service.GenerateExcel(id);
+                string filename = "Shipping Area Note Dyeing/Printing.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
             }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
             }
         }
     }

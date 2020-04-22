@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIsChecked(model.IsChecked, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackingInstruction(model.PackingInstruction, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
