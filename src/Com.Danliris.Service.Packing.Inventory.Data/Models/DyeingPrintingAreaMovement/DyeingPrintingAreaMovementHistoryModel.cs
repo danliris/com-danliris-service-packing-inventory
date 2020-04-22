@@ -38,6 +38,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             //UOMUnit = uomUnit;
             //ProductionOrderQuantity = productionOrderQuantity;
         }
+        public DyeingPrintingAreaMovementHistoryModel(DateTimeOffset date, string area, string shift, AreaEnum index,decimal balance,string grade)
+        {
+            Date = date;
+            Area = area;
+            Index = index;
+            Shift = shift;
+            Balance = balance;
+            Grade = grade;
+        }
 
         public DateTimeOffset Date { get; private set; }
         public string Area { get; private set; }
@@ -46,6 +55,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         public double ProductionOrderQuantity { get; private set; }
         public double QtyKg { get; private set; }
         public AreaEnum Index { get; private set; }
+        public decimal Balance { get; private set; }
+        public string Grade { get; private set; }
+        public decimal PackagingQty { get; set; }
+        public string PackagingUnit { get; set; }
 
         public int DyeingPrintingAreaMovementId { get; set; }
         public virtual DyeingPrintingAreaMovementModel DyeingPrintingAreaMovement { get; set; }
@@ -78,6 +91,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             }
         }
 
+        public void SetBalance(decimal newBalance, string user,string agent)
+        {
+            if(newBalance != Balance)
+            {
+                Balance = newBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+        public void SetGrade(string newGrade, string user, string agent)
+        {
+            if (newGrade != Grade)
+            {
+                Grade = newGrade;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+        public void SetIndexArea(AreaEnum newArea,string user,string agent)
+        {
+            if(newArea!= Index)
+            {
+                Area = Enum.GetName(typeof(AreaEnum), newArea);
+                Index = newArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingQty(decimal packQty, string user, string agent)
+        {
+            if(packQty != PackagingQty)
+            {
+                PackagingQty = packQty;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingUnit(string packUnit,string user, string agent)
+        {
+            if(packUnit != PackagingUnit)
+            {
+                PackagingUnit = packUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         //public void SetUOMUnit(string newUOMUnit, string user, string agent)
         //{
         //    if (newUOMUnit != UOMUnit)
@@ -104,5 +161,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
         //        this.FlagForUpdate(user, agent);
         //    }
         //}
+
     }
 }
