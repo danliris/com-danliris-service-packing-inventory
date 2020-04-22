@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -12,11 +13,11 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 {
-    public class OutputTransitServiceTest
+    public class OutputShippingServiceTest
     {
-        public OutputTransitService GetService(IServiceProvider serviceProvider)
+        public OutputShippingService GetService(IServiceProvider serviceProvider)
         {
-            return new OutputTransitService(serviceProvider);
+            return new OutputShippingService(serviceProvider);
         }
 
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaOutputRepository repository, IDyeingPrintingAreaMovementRepository movementRepo,
@@ -36,33 +37,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
-        private OutputTransitViewModel ViewModel
+        private OutputShippingViewModel ViewModel
         {
             get
             {
-                return new OutputTransitViewModel()
+                return new OutputShippingViewModel()
                 {
-                    Area = "TRANSIT",
+                    Area = "SHIPPING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
                     HasNextAreaDocument = false,
-                    DestinationArea = "GUDANG JADI",
-                    InputTransitId = 1,
-                    TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+                    DestinationArea = "SHIPPING",
+                    InputShippingId = 1,
+                    ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
                     {
-                        new OutputTransitProductionOrderViewModel()
+                        new OutputShippingProductionOrderViewModel()
                         {
-                            Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
                             Construction = "sd",
                             Grade = "s",
                             Remark = "remar",
-                            Status = "Ok",
                             Motif = "sd",
-                            PackingInstruction = "d",
+                            DeliveryOrder = new DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "sd"
+                            },
+                            Packing ="s",
+                            QtyPacking = 1,
+                            Qty = 1,
+                            Id = 1,
+                            PackingType = "sd",
+
                             ProductionOrder = new ProductionOrder()
                             {
                                 Code = "sd",
@@ -77,69 +86,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 };
             }
         }
-
-        private OutputTransitViewModel ViewModelAval
-        {
-            get
-            {
-                return new OutputTransitViewModel()
-                {
-                    Area = "TRANSIT",
-                    BonNo = "s",
-                    Date = DateTimeOffset.UtcNow,
-                    Shift = "pas",
-                    HasNextAreaDocument = false,
-                    DestinationArea = "GUDANG AVAL",
-                    InputTransitId = 1,
-                    TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
-                    {
-                        new OutputTransitProductionOrderViewModel()
-                        {
-                            Balance = 1,
-                            Buyer = "s",
-                            CartNo = "1",
-                            Color = "red",
-                            Construction = "sd",
-                            Grade = "s",
-                            Remark = "remar",
-                            Status = "Ok",
-                            Motif = "sd",
-                            PackingInstruction = "d",
-                            ProductionOrder = new ProductionOrder()
-                            {
-                                Code = "sd",
-                                Id = 1,
-                                Type = "sd",
-                                No = "sd"
-                            },
-                            Unit = "s",
-                            UomUnit = "d"
-                        }
-                    }
-                };
-            }
-        }
-
 
         private DyeingPrintingAreaOutputModel Model
         {
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                    ViewModel.TransitProductionOrders.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
-            }
-        }
-
-        private DyeingPrintingAreaOutputModel ModelAval
-        {
-            get
-            {
-                return new DyeingPrintingAreaOutputModel(ViewModelAval.Date, ViewModelAval.Area, ViewModelAval.Shift, ViewModelAval.BonNo, ViewModelAval.HasNextAreaDocument, ViewModelAval.DestinationArea,
-                    ViewModelAval.TransitProductionOrders.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    ViewModel.ShippingProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.Buyer,
+                    s.Construction, s.Color, s.Motif, s.Grade,s.UomUnit, s.Remark)).ToList());
             }
         }
 
@@ -168,11 +123,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
-            var item = ViewModel.TransitProductionOrders.FirstOrDefault();
+            var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputTransitId, ViewModel.BonNo, item.ProductionOrder.Id,
-                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputShippingId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Qty)
                  }.AsQueryable());
 
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
@@ -184,42 +139,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-        }
-
-        [Fact]
-        public async Task Should_Success_CreateAVAL()
-        {
-            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
-            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
-            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
-                .ReturnsAsync(1);
-
-            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { ModelAval }.AsQueryable());
-
-            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
-                 .ReturnsAsync(1);
-            var item = ViewModelAval.TransitProductionOrders.FirstOrDefault();
-            summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModelAval.Date, ViewModelAval.Area, "IN", ViewModelAval.InputTransitId, ViewModelAval.BonNo, item.ProductionOrder.Id,
-                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
-                 }.AsQueryable());
-
-            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
-                 .ReturnsAsync(1);
-
-            sppRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
-                .ReturnsAsync(1);
-
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
-
-            var result = await service.Create(ViewModelAval);
 
             Assert.NotEqual(0, result);
         }

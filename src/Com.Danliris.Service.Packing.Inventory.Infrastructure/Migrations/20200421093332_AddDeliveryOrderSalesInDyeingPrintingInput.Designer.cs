@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200421093332_AddDeliveryOrderSalesInDyeingPrintingInput")]
+    partial class AddDeliveryOrderSalesInDyeingPrintingInput
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,11 +347,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<long>("DeliveryOrderSalesId");
-
-                    b.Property<string>("DeliveryOrderSalesNo")
-                        .HasMaxLength(128);
-
                     b.Property<int>("DyeingPrintingAreaOutputId");
 
                     b.Property<string>("Grade")
@@ -367,15 +364,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Motif")
                         .HasMaxLength(4096);
-
-                    b.Property<decimal>("PackagingQty")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PackagingType")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("PackagingUnit")
-                        .HasMaxLength(128);
 
                     b.Property<string>("PackingInstruction")
                         .HasMaxLength(4096);
