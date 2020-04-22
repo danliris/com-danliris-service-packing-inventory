@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUnit(model.Unit, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

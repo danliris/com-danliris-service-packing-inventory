@@ -34,6 +34,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -87,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputTransitService, InputTransitService>();
             services.AddTransient<IOutputTransitService, OutputTransitService>();
             services.AddTransient<IInputShippingService, InputShippingService>();
+            services.AddTransient<IOutputShippingService, OutputShippingService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -186,6 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
             services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
+            services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
