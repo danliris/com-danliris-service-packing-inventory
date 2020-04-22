@@ -105,6 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetUomUnit(localItem.UomUnit, _identityProvider.Username, UserAgent);
                     item.SetIsChecked(localItem.IsChecked, _identityProvider.Username, UserAgent);
                     item.SetPackingInstruction(localItem.PackingInstruction, _identityProvider.Username, UserAgent);
+                    item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
                 }
             }
 

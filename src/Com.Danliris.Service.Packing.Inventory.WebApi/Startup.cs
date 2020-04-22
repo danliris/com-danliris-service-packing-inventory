@@ -29,11 +29,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -68,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
             services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
-           
+            
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
@@ -89,6 +92,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputAvalService, InputAvalService>();
             //services.AddTransient<IOutputAvalService, OutputAvalService>();
 
+            services.AddTransient<IInputShippingService, InputShippingService>();
+            services.AddTransient<IOutputShippingService, OutputShippingService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -190,6 +195,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
             services.AddSingleton<IValidator<InputAvalProductionOrderViewModel>, InputAvalProductionOrderValidator>();
             //services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
+            services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
+            services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

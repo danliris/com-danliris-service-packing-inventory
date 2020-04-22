@@ -3,17 +3,18 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingP
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using System.Linq;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping
 {
-    public class InputTransitService : IInputTransitService
+    public class InputShippingService : IInputShippingService
     {
         private readonly IDyeingPrintingAreaInputRepository _repository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
@@ -36,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GUDANGAVAL = "GUDANG AVAL";
         private const string SHIPPING = "SHIPPING";
 
-        public InputTransitService(IServiceProvider serviceProvider)
+        public InputShippingService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
@@ -44,9 +45,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
         }
 
-        private InputTransitViewModel MapToViewModel(DyeingPrintingAreaInputModel model)
+        private InputShippingViewModel MapToViewModel(DyeingPrintingAreaInputModel model)
         {
-            var vm = new InputTransitViewModel()
+            var vm = new InputShippingViewModel()
             {
                 Active = model.Active,
                 Id = model.Id,
@@ -64,11 +65,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
-                TransitProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputTransitProductionOrderViewModel()
+                ShippingProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputShippingProductionOrderViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
-                    Balance = s.Balance,
                     Buyer = s.Buyer,
                     CartNo = s.CartNo,
                     Color = s.Color,
@@ -86,10 +86,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     LastModifiedBy = s.LastModifiedBy,
                     Motif = s.Motif,
                     Grade = s.Grade,
-                    IsChecked = s.IsChecked,
-                    PackingInstruction = s.PackingInstruction,
-                    Remark = s.Remark,
-                    Status = s.Status,
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = s.DeliveryOrderSalesId,
+                        No = s.DeliveryOrderSalesNo
+                    },
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = s.ProductionOrderId,
@@ -106,22 +107,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
         {
-            return string.Format("{0}.{1}.{2}", TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            return string.Format("{0}.{1}.{2}", SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
         }
 
-        public async Task<int> Create(InputTransitViewModel viewModel)
+        public async Task<int> Create(InputShippingViewModel viewModel)
         {
             int result = 0;
-            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == TRANSIT && s.CreatedUtc.Year == viewModel.Date.Year);
+            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
-            var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.TransitProductionOrders.Select(s =>
-                 new DyeingPrintingAreaInputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.Remark, s.Grade, s.Status)).ToList());
+            var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.ShippingProductionOrders.Select(s =>
+                 new DyeingPrintingAreaInputProductionOrderModel(s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.Buyer, s.Construction,
+                 s.Color, s.Motif, s.Grade, s.UomUnit, false)).ToList());
 
             result = await _repository.InsertAsync(model);
 
-            result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
+            result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputId, true);
 
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
             {
@@ -129,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId && s.ProductionOrderId == item.ProductionOrderId);
+                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputId && s.ProductionOrderId == item.ProductionOrderId);
 
                 var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
@@ -143,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == TRANSIT && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -163,28 +164,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
-                TransitProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputTransitProductionOrderViewModel()
+                ShippingProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputShippingProductionOrderViewModel()
                 {
-                    Balance = d.Balance,
                     Buyer = d.Buyer,
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
                     HasOutputDocument = d.HasOutputDocument,
+                    Id = d.Id,
                     Motif = d.Motif,
+                    Grade = d.Grade,
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = d.DeliveryOrderSalesId,
+                        No = d.DeliveryOrderSalesNo
+                    },
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = d.ProductionOrderId,
-                        No = d.ProductionOrderNo,
-                        Type = d.ProductionOrderType
+                        No = d.ProductionOrderNo
                     },
-                    Grade = d.Grade,
-                    Id = d.Id,
                     Unit = d.Unit,
-                    Remark = d.Remark,
-                    Status = d.Status,
-                    IsChecked = d.IsChecked,
-                    PackingInstruction = d.PackingInstruction,
                     UomUnit = d.UomUnit
                 }).ToList()
             });
@@ -192,7 +192,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public async Task<InputTransitViewModel> ReadById(int id)
+
+        public async Task<InputShippingViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
             if (model == null)
@@ -203,9 +204,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        public ListResult<PreTransitIndexViewModel> ReadOutputPreTransit(int page, int size, string filter, string order, string keyword)
+        public ListResult<PreShippingIndexViewModel> ReadOutputPreShipping(int page, int size, string filter, string order, string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.DestinationArea == TRANSIT && !s.HasNextAreaDocument);
+            var query = _outputRepository.ReadAll().Where(s => s.DestinationArea == SHIPPING && !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -218,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new PreTransitIndexViewModel()
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new PreShippingIndexViewModel()
             {
                 Area = s.Area,
                 BonNo = s.BonNo,
@@ -227,7 +228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Shift = s.Shift,
                 DestinationArea = s.DestinationArea,
                 HasNextAreaDocument = s.HasNextAreaDocument,
-                PreTransitProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputPreTransitProductionOrderViewModel()
+                PreShippingProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputPreShippingProductionOrderViewModel()
                 {
                     Buyer = d.Buyer,
                     CartNo = d.CartNo,
@@ -235,10 +236,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Construction = d.Construction,
                     Id = d.Id,
                     Motif = d.Motif,
-                    Balance = d.Balance,
-                    PackingInstruction = d.PackingInstruction,
-                    Remark = d.Remark,
-                    Status = d.Status,
                     Grade = d.Grade,
                     ProductionOrder = new ProductionOrder()
                     {
@@ -250,7 +247,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }).ToList()
             });
 
-            return new ListResult<PreTransitIndexViewModel>(data.ToList(), page, size, query.Count());
+            return new ListResult<PreShippingIndexViewModel>(data.ToList(), page, size, query.Count());
         }
     }
 }

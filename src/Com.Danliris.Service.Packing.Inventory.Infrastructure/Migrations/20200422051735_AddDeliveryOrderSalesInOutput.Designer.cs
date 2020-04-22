@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200422051735_AddDeliveryOrderSalesInOutput")]
+    partial class AddDeliveryOrderSalesInOutput
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,10 +83,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("AvalCartNo");
-
-                    b.Property<string>("AvalType");
-
                     b.Property<double>("Balance");
 
                     b.Property<string>("Buyer")
@@ -152,8 +150,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ProductionOrderType")
                         .HasMaxLength(512);
-
-                    b.Property<double>("QuantityKg");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(128);
@@ -373,15 +369,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Motif")
                         .HasMaxLength(4096);
-
-                    b.Property<decimal>("PackagingQty")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PackagingType")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("PackagingUnit")
-                        .HasMaxLength(128);
 
                     b.Property<string>("PackingInstruction")
                         .HasMaxLength(4096);
