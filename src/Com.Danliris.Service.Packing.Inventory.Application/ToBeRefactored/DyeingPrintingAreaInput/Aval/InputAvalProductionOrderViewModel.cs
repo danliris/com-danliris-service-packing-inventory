@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class InputAvalProductionOrderViewModel : BaseViewModel
     {
         public string AvalType { get; set; }
-        public string CartNo { get; set; }
+        public string AvalCartNo { get; set; }
         public string UomUnit { get; set; }
         public double Quantity { get; set; }
         public double QuantityKg { get; set; }

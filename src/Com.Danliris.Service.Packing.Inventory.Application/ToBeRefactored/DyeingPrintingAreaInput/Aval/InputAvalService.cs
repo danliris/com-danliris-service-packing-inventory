@@ -80,9 +80,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     Id = s.Id,
                     AvalType = s.AvalType,
-                    CartNo = s.CartNo,
+                    AvalCartNo = s.AvalCartNo,
                     UomUnit = s.UomUnit,
-                    Quantity = s.Quantity,
+                    Quantity = s.Balance,
                     QuantityKg = s.QuantityKg,
                     HasOutputDocument = s.HasOutputDocument,
                     IsChecked = s.IsChecked
@@ -95,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
         {
-            return string.Format("{0}.{1}.{2}", TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            return string.Format("{0}.{1}.{2}", GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
         }
 
@@ -109,15 +109,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          viewModel.Shift, 
                                                          bonNo, 
                                                          viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(s.AvalType,
-                                                                                                                                                    s.CartNo,
+                                                                                                                                                    s.AvalCartNo,
                                                                                                                                                     s.UomUnit,
                                                                                                                                                     s.Quantity,
                                                                                                                                                     s.QuantityKg,
                                                                                                                                                     false)).ToList());
-
-            result = await _repository.InsertAsync(model);
-
-            result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
 
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
             {
@@ -136,10 +132,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         item.Color, 
                                                                         item.Motif, 
                                                                         item.UomUnit, 
-                                                                        item.Quantity);
+                                                                        item.Balance);
 
                 var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId && 
-                                                                                       s.ProductionOrderId == item.ProductionOrderId);
+                                                                                       s.DyeingPrintingAreaDocumentBonNo == viewModel.BonNo);
 
                 var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, 
                                                                       viewModel.Area, 
@@ -155,8 +151,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                       item.Color, 
                                                                       item.Motif, 
                                                                       item.UomUnit, 
-                                                                      item.Quantity);
+                                                                      item.Balance);
 
+
+                result = await _repository.InsertAsync(model);
+                result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
                 result += await _movementRepository.InsertAsync(movementModel);
                 result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
             }
@@ -190,9 +189,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = d.Id,
                     AvalType = d.AvalType,
-                    CartNo = d.CartNo,
+                    AvalCartNo = d.AvalCartNo,
                     UomUnit = d.UomUnit,
-                    Quantity = d.Quantity,
+                    Quantity = d.Balance,
                     QuantityKg = d.QuantityKg,
                     HasOutputDocument = d.HasOutputDocument,
                     IsChecked = d.IsChecked
