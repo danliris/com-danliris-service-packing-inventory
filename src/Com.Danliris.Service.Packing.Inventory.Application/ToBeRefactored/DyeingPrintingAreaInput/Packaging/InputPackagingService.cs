@@ -19,6 +19,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _productionOrderRepository;
+        private readonly IDyeingPrintingAreaOutputRepository _repositoryAreaOutput;
+        private readonly IDyeingPrintingAreaOutputProductionOrderRepository _repositoryAreaProductionOrderOutput;
 
         private const string TYPE = "IN";
 
@@ -42,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _productionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
+            _repositoryAreaOutput = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
+            _repositoryAreaProductionOrderOutput = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
         public async Task<int> CreateAsync(InputPackagingViewModel viewModel)
@@ -54,6 +58,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                  s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false)).ToList());
 
             result = await _repository.InsertAsync(model);
+            var modelOutput = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.BonNo == viewModel.BonNo && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id)).FirstOrDefault();
+            modelOutput.SetHasNextAreaDocument(true, "REPOSITORY", "");
+            if (modelOutput != null) {
+                result += await _repositoryAreaOutput.UpdateAsync(modelOutput.Id, modelOutput);
+            };
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
             {
 
@@ -62,9 +71,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
-
+                var summaryModelRepo = _summaryRepository.ReadAll().Where(x => x.ProductionOrderNo == summaryModel.ProductionOrderNo).FirstOrDefault();
+                summaryModelRepo.SetArea(PACKING, "REPOSITORY", "");
+                summaryModelRepo.SetType(TYPE, "REPOSITORY", "");
+                summaryModelRepo.SetDyeingPrintingAreaDocument(model.Id,bonNo, "REPOSITORY", "");
                 result += await _movementRepository.InsertAsync(movementModel);
-                result += await _summaryRepository.InsertAsync(summaryModel);
+                //result += await _summaryRepository.InsertAsync(summaryModel);
+                result += await _summaryRepository.UpdateAsync(summaryModelRepo.Id, summaryModelRepo);
             }
 
             return result;
@@ -112,7 +125,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Unit = d.Unit,
                     IsChecked = d.IsChecked,
                     PackingInstruction = d.PackingInstruction,
-                    UomUnit = d.UomUnit
+                    UomUnit = d.UomUnit,
+                    Material = d.Construction
                 }).ToList()
             });
 
@@ -227,6 +241,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
             return vm;
+        }
+
+        public ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.HasNextAreaDocument == false && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id));
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
+            {
+                Area = s.Area,
+                BonNo = s.BonNo,
+                Date = s.Date,
+                Id = s.Id,
+                Shift = s.Shift,
+                PackagingProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new InputPackagingProductionOrdersViewModel()
+                {
+                    Balance = d.Balance,
+                    Buyer = d.Buyer,
+                    CartNo = d.CartNo,
+                    Color = d.Color,
+                    Construction = d.Construction,
+
+                    Motif = d.Motif,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = d.ProductionOrderId,
+                        No = d.ProductionOrderNo,
+                        Type = d.ProductionOrderType
+                    },
+                    Grade = d.Grade,
+                    Id = d.Id,
+                    Unit = d.Unit,
+                    Material = d.Construction,
+                    PackingInstruction = d.PackingInstruction,
+                    UomUnit = d.UomUnit,
+                    
+                }).ToList()
+            });
+
+            return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }
     }
 }

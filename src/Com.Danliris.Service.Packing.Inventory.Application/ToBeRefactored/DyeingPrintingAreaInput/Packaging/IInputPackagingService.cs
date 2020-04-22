@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<InputPackagingViewModel> ReadByIdAsync(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
+        ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword);
     }
 }

@@ -16,6 +16,8 @@ using System.Data;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using OfficeOpenXml;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging
 {
@@ -25,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
+        private readonly IDyeingPrintingAreaInputRepository _inputRepository;
 
         private const string TYPE = "OUT";
 
@@ -115,6 +118,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
+            _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
         }
 
         private OutputPackagingViewModel MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -212,7 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Create(OutputPackagingViewModel viewModel)
         {
             int result = 0;
-            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == INSPECTIONMATERIAL && s.DestinationArea == viewModel.DestinationArea
+            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == PACKING && s.DestinationArea == viewModel.DestinationArea
                 && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
             viewModel.PackagingProductionOrders = viewModel.PackagingProductionOrders.Where(s => s.Balance > 0).ToList();
@@ -244,7 +248,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == INSPECTIONMATERIAL && !s.HasNextAreaDocument);
+            var query = _repository.ReadAll().Where(s => s.Area == PACKING && !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -286,7 +290,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Remark = d.Remark,
                     Status = d.Status,
                     PackingInstruction = d.PackingInstruction,
-                    UomUnit = d.UomUnit
+                    UomUnit = d.UomUnit,
+                    PackagingQTY = d.PackagingQty,
+                    PackagingType = d.PackagingType,
+                    PackagingUnit = d.PackagingUnit,
+                    Material = d.Construction
                 }).ToList()
             });
 
@@ -308,36 +316,187 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var model = await _repository.ReadByIdAsync(id);
             var query = model.DyeingPrintingAreaOutputProductionOrders;
+            //var query = GetQuery(date, group, zona, timeOffSet);
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Saldo", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
-
-            if (query.Count() == 0)
+            #region Mapping Properties Class to Head excel
+            Dictionary<string, string> mappedClass = new Dictionary<string, string>
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, "");
+                {"ProductionOrderNo","No SPP" },
+                {"Buyer","Buyer" },
+                {"Unit","Unit"},
+                {"Construction","Material "},
+                {"Color","Warna"},
+                {"Motif","Motif"},
+                {"PackagingType","Jenis"},
+                {"Grade","Grade"},
+                {"PackagingQty","Qty Packaging"},
+                {"PackagingUnit","Packaging"},
+                {"UomUnit","Satuan"},
+                {"Balance","Saldo"},
+                {"Menyerahkan","Menyerahkan" },
+                {"Menerima","Menerima" },
+            };
+            var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
+            #endregion
+            #region Assign Column
+            foreach (var prop in mappedClass.Select((item, index) => new { Index = index, Items = item }))
+            {
+                string fieldName = prop.Items.Value;
+                dt.Columns.Add(new DataColumn() { ColumnName = fieldName, DataType = typeof(string) });
             }
-            else
+            #endregion
+            #region Assign Data
+            foreach (var item in query)
             {
-                foreach (var item in query)
+                List<string> data = new List<string>();
+                foreach (DataColumn column in dt.Columns)
                 {
-                    dt.Rows.Add(item.ProductionOrderNo, item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark, item.Grade, item.UomUnit, item.Balance,
-                        "");
+                    var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
+                    string valueClass = "";
+                    if (searchMappedClass != null&&searchMappedClass != null&& searchMappedClass.FirstOrDefault().Key != null)
+                    {
+                        var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
+                        var searchValue = searchProperty.GetValue(item, null);
+                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                    }
+                    else
+                    {
+                        valueClass = "";
+                    }
+                    data.Add(valueClass);
+                }
+                dt.Rows.Add(data.ToArray());
+            }
+            #endregion
+
+            #region Render Excel Header
+            ExcelPackage package = new ExcelPackage();
+            var sheet = package.Workbook.Worksheets.Add("BON PACKAGING");
+            sheet.Cells[1, 1].Value = "TANGGAL";
+            sheet.Cells[1, 2].Value = model.Date.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+
+            sheet.Cells[2, 1].Value = "SHIFT";
+            sheet.Cells[2, 2].Value = model.Shift;
+
+            sheet.Cells[3, 1].Value = "ZONA";
+            sheet.Cells[3, 2].Value = model.DestinationArea;
+
+            sheet.Cells[4, 1].Value = "NOMOR BON";
+            sheet.Cells[4, 2].Value = model.BonNo;
+
+            int startHeaderColumn = 1;
+            int endHeaderColumn = mappedClass.Count;
+
+            sheet.Cells[1, 1, 6, endHeaderColumn].Style.Font.Bold = true;
+
+
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            sheet.Cells[6, startHeaderColumn, 7, endHeaderColumn].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
+
+            foreach (DataColumn column in dt.Columns)
+            {
+                if (column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima")
+                {
+                    sheet.Cells[6, startHeaderColumn].Value = column.ColumnName;
+                    sheet.Cells[6, startHeaderColumn, 7, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[6, startHeaderColumn, 7, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[6, startHeaderColumn, 7, startHeaderColumn].Merge = true;
+                    startHeaderColumn++;
                 }
             }
 
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon IM Area Dyeing Printing") }, true);
+            sheet.Cells[6, startHeaderColumn].Value = "Paraf";
+            sheet.Cells[6, startHeaderColumn, 6, startHeaderColumn + 1].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 6, startHeaderColumn + 1].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[6, startHeaderColumn, 6, startHeaderColumn + 1].Merge = true;
+
+            sheet.Cells[7, startHeaderColumn].Value = "Menyerahkan";
+            sheet.Cells[7, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[7, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            startHeaderColumn++;
+
+            sheet.Cells[7, startHeaderColumn].Value = "Menerima";
+            sheet.Cells[7, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[7, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            #endregion
+
+            #region Insert Data To Excel
+            int tableRowStart = 8;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+            #endregion
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
         }
+
+        public ListResult<IndexViewModel> ReadBonOutFromPack(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _inputRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => d.DyeingPrintingAreaInputId == s.Id));
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
+            {
+                Area = s.Area,
+                BonNo = s.BonNo,
+                Date = s.Date,
+                Id = s.Id,
+                Shift = s.Shift,
+                PackagingProductionOrders = MapModeltoModelView(s.DyeingPrintingAreaInputProductionOrders.ToList())
+            });
+
+            return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
+        }
+        public ICollection<OutputPackagingProductionOrderViewModel> MapModeltoModelView(List<DyeingPrintingAreaInputProductionOrderModel> source)
+        {
+            List<OutputPackagingProductionOrderViewModel> result = new List<OutputPackagingProductionOrderViewModel>();
+            foreach(var d in source)
+            {
+                result.Add(new OutputPackagingProductionOrderViewModel
+                {
+                    Balance = d.Balance,
+                    Buyer = d.Buyer,
+                    CartNo = d.CartNo,
+                    Color = d.Color,
+                    Construction = d.Construction,
+
+                    Motif = d.Motif,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = d.ProductionOrderId,
+                        No = d.ProductionOrderNo,
+                        Type = d.ProductionOrderType
+                    },
+                    Grade = d.Grade,
+                    Id = d.Id,
+                    Unit = d.Unit,
+                    Material = d.Construction,
+                    PackingInstruction = d.PackingInstruction,
+                    UomUnit = d.UomUnit,
+                });
+            }
+            return result;
+        }
+
     }
     internal static class Extensions
     {

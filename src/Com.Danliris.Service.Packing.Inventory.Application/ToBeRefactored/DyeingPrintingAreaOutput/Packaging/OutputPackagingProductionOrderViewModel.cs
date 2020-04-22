@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Grade { get; set; }
         public string Status { get; set; }
         public double Balance { get; set; }
+        public string Material { get; set; }
         public string PackagingUnit { get; set; }
         public decimal PackagingQTY { get; set; }
         public string PackagingType { get; set; }
