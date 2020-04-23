@@ -33,6 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
+        public string PackagingUnit { get; set; }
+        public string PackagingType { get; set; }
+        public decimal PackagingQty { get; set; }
+
         public int DyeingPrintingAreaInputId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
@@ -57,6 +61,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasOutputDocument = hasOutputDocument;
             PackingInstruction = packingInstruction;
             ProductionOrderType = productionOrderType;
+        }
+
+        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,string packagingUnit, string packagingType,decimal packagingQty)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            PackagingUnit = packagingUnit;
+            PackagingQty = packagingQty;
+            PackagingType = packagingType;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
@@ -276,6 +301,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+        public void SetPackagingType(string newPackagingType, string user, string agent)
+        {
+            if (newPackagingType != PackagingType)
+            {
+                PackagingType = newPackagingType;
+                this.FlagForUpdate(user, agent);
+            }
+        }
 
+        public void SetPackagingQty(decimal newPackagingQty, string user, string agent)
+        {
+            if (newPackagingQty != PackagingQty)
+            {
+                PackagingQty = newPackagingQty;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingUnit(string newPackagingUnit, string user, string agent)
+        {
+            if (newPackagingUnit != PackagingUnit)
+            {
+                PackagingUnit = newPackagingUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 }

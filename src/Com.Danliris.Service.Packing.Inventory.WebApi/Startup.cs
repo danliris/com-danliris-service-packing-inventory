@@ -34,9 +34,12 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -89,11 +92,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
             services.AddTransient<IOutputTransitService, OutputTransitService>();
+            services.AddTransient<IInputPackagingService, InputPackagingService>();
+            services.AddTransient<IOutputPackagingService, OutputPackagingService>();
             services.AddTransient<IInputAvalService, InputAvalService>();
             //services.AddTransient<IOutputAvalService, OutputAvalService>();
-
             services.AddTransient<IInputShippingService, InputShippingService>();
             services.AddTransient<IOutputShippingService, OutputShippingService>();
+            services.AddTransient<IInputWarehousesService, InputWarehousesService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -192,11 +197,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
             services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
+            services.AddSingleton<IValidator<InputPackagingViewModel>, InputPackagingValidator>();
+            services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
             services.AddSingleton<IValidator<InputAvalProductionOrderViewModel>, InputAvalProductionOrderValidator>();
             //services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
+            services.AddSingleton<IValidator<InputWarehousesViewModel>, InputWarehousesValidator>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200423011436_AddingPackagingQtyUnitAndTypeForWarehouses")]
+    partial class AddingPackagingQtyUnitAndTypeForWarehouses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,10 +82,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
-
-                    b.Property<string>("AvalCartNo");
-
-                    b.Property<string>("AvalType");
 
                     b.Property<double>("Balance");
 
@@ -161,8 +159,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ProductionOrderType")
                         .HasMaxLength(512);
-
-                    b.Property<double>("QuantityKg");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(128);
