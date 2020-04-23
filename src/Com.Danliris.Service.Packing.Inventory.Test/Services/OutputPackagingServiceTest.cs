@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new OutputPackagingViewModel()
                 {
-                    Area = "INSPECTION MATERIAL",
+                    Area = "PACKING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
@@ -290,7 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(EmptyDetailModel);
+                .ReturnsAsync(Model);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
