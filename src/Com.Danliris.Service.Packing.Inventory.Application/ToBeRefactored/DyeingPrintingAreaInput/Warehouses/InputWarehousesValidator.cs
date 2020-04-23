@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses
 {
-    public class InputPackagingValidator : AbstractValidator<InputWarehousesViewModel>
+    public class InputWarehousesValidator : AbstractValidator<InputWarehousesViewModel>
     {
-        public InputPackagingValidator()
+        public InputWarehousesValidator()
         {
             RuleFor(data => data.Area).NotNull().WithMessage("Harus Memiliki Area!");
             RuleFor(data => data.Date).Must(s => s != default(DateTimeOffset)).WithMessage("Tanggal Harus Diisi!");

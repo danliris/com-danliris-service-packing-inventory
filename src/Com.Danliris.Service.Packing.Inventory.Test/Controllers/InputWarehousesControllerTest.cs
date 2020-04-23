@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Validator_Success()
         {
             var dataUtil = new InputWarehousesViewModel();
-            var validator = new InputPackagingValidator();
+            var validator = new InputWarehousesValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }

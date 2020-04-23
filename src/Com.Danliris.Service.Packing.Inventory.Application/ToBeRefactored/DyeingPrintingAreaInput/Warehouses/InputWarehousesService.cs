@@ -55,8 +55,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.WarehousesProductionOrders.Select(s =>
                  new DyeingPrintingAreaInputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false)).ToList());
-
+                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false,s.PackagingUnit,s.PackagingType,s.PackagingQty)).ToList());
+            
             result = await _repository.InsertAsync(model);
             var modelOutputs = _repositoryAreaOutput.ReadAll();
             var modelOutput = modelOutputs.Where(s => s.DestinationArea == GUDANGJADI && s.BonNo == viewModel.BonNo && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id)).FirstOrDefault();
@@ -127,7 +127,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     IsChecked = d.IsChecked,
                     PackingInstruction = d.PackingInstruction,
                     UomUnit = d.UomUnit,
-                    Material = d.Construction
+                    Material = d.Construction,
+                    PackagingQty = d.PackagingQty,
+                    PackagingType = d.PackagingType,
+                    PackagingUnit = d.PackagingUnit
                 }).ToList()
             });
 
@@ -179,7 +182,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Type = s.ProductionOrderType
                 },
                 Unit = s.Unit,
-                UomUnit = s.UomUnit
+                UomUnit = s.UomUnit,
+                PackagingUnit = s.PackagingUnit,
+                PackagingType = s.PackagingType,
+                PackagingQty = s.PackagingQty
             });
 
             return new ListResult<InputWarehousesProductionOrdersViewModel>(data.ToList(), page, size, query.Count());
@@ -236,7 +242,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = s.ProductionOrderNo
                     },
                     Unit = s.Unit,
-                    UomUnit = s.UomUnit
+                    UomUnit = s.UomUnit,
+                    PackagingQty = s.PackagingQty,
+                    PackagingType = s.PackagingType,
+                    PackagingUnit = s.PackagingUnit
                 }).ToList()
             };
 
@@ -287,7 +296,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Material = d.Construction,
                     PackingInstruction = d.PackingInstruction,
                     UomUnit = d.UomUnit,
-                    
+                    PackagingQty = d.PackagingQty,
+                    PackagingType = d.PackagingType,
+                    PackagingUnit = d.PackagingUnit
                 }).ToList()
             });
 
