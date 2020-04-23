@@ -86,7 +86,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "sd"
                             },
                             Unit = "s",
-                            UomUnit = "d"
+                            UomUnit = "d",
+                            PackagingUnit ="ROLL",
+                            PackagingQty =10,
+                            PackagingType ="WHITE"
                         }
                     }
                 };
@@ -99,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument,s.PackagingUnit,s.PackagingType,s.PackagingQty)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModel
@@ -108,7 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo,true, "GUDANG JADI",ViewModel.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade,s.Status,s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Balance,s.Status,s.ProductionOrder.Code,s.PackagingType,s.PackagingQty,s.PackagingUnit)).ToList());
             }
         }
 
@@ -116,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, 1,ViewModel.BonNo, 12, "s", "io1"
+                return new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, 1,ViewModel.BonNo, 12, "sd", "io1"
                     ,"rest","asdf","asdfas","dafsd","asdfsd","asdfsd",123);
             }
         }
