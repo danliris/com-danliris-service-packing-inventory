@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Grade { get; private set; }
         public string Status { get; private set; }
 
+        //public string AvalId { get; private set; }
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
         public double QuantityKg { get; private set; }
