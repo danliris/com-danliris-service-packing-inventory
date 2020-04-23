@@ -16,6 +16,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleFor(data => data.DestinationArea).NotNull().WithMessage("Tujuan Area Harus Diisi!");
             RuleFor(data => data.TransitProductionOrders).Must(s => s.Any(d => d.Balance > 0)).WithMessage("Minimal 1 SPP harus dikeluarkan Saldonya!");
             RuleFor(data => data.TransitProductionOrders).Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1)).WithMessage("SPP harus berbeda setiap detail!");
+            RuleForEach(s => s.TransitProductionOrders).ChildRules(d =>
+            {
+                d.RuleFor(data => data.Balance).LessThanOrEqualTo(e => e.PreviousBalance).WithMessage("Jumlah Saldo baru tidak boleh melebihi sebelumnya");
+            });
         }
     }
 }

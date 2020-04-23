@@ -257,7 +257,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "DyeingPrintingAreaMovementBonNo", "ProductionOrderNo"
+                "DyeingPrintingAreaInputBonNo", "ProductionOrderNo", "Code"
             };
             query = QueryHelper<FabricQualityControlModel>.Search(query, SearchAttributes, keyword);
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
@@ -268,7 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             var data = (from qcData in query.Skip((page - 1) * size).Take(size)
                         join dpData in _dpRepository.ReadAll()
-                        on qcData.DyeingPrintingAreaInputId equals dpData.Id into indexData
+                        on qcData.DyeingPrintingAreaInputProductionOrderId equals dpData.Id into indexData
                         from dpData in indexData.DefaultIfEmpty()
                         select new IndexViewModel()
                         {

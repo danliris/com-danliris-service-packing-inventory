@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string BonNo { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }
-        public int OutputInspectionMaterialId { get; set; }
+        public int OutputId { get; set; }
         public ICollection<InputTransitProductionOrderViewModel> TransitProductionOrders { get; set; }
     }
 }

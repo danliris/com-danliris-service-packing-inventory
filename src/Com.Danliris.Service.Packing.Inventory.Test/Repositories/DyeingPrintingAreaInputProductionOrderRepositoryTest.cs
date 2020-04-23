@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public virtual async Task Should_Success_UpdateFromFabricQualityControlAsync()
+        public async Task Should_Success_UpdateFromFabricQualityControlAsync()
         {
             string testName = GetCurrentMethod() + "UpdateFromFabricQualityControlAsync";
             var dbContext = DbContext(testName);
@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
-        public virtual async Task Should_Success_UpdateFromOutputAsync()
+        public async Task Should_Success_UpdateFromOutputAsync()
         {
             string testName = GetCurrentMethod() + "UpdateFromOutputAsync";
             var dbContext = DbContext(testName);
@@ -73,6 +73,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
             var result = await repo.UpdateFromOutputAsync(data.Id, true);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputAsyncBalance()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputAsyncBalance";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputAsync(data.Id, 1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputAsyncBalance2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputAsyncBalance2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputAsync(data.Id, 2);
 
             Assert.NotEqual(0, result);
         }
