@@ -21,13 +21,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
     public class FabricQualityControlService : IFabricQualityControlService
     {
         private readonly IFabricQualityControlRepository _repository;
-        private readonly IDyeingPrintingAreaInputProductionOrderRepository _dpRepository;
+        private readonly IDyeingPrintingAreaInputProductionOrderRepository _dpSPPRepository;
         private readonly IFabricGradeTestRepository _fgtRepository;
 
         public FabricQualityControlService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IFabricQualityControlRepository>();
-            _dpRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
+            _dpSPPRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _fgtRepository = serviceProvider.GetService<IFabricGradeTestRepository>();
         }
 
@@ -141,7 +141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             result = await _repository.InsertAsync(model);
 
-            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
 
             return result;
         }
@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public async Task<int> Delete(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
-            int result = await _dpRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false);
+            int result = await _dpSPPRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false);
             result += await _repository.DeleteAsync(id);
 
             return result;
@@ -215,8 +215,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             if (string.IsNullOrEmpty(no))
             {
                 data = from qc in _repository.GetDbSet().AsNoTracking()
-                       join dp in _dpRepository.ReadAll()
-                       on qc.DyeingPrintingAreaInputId equals dp.Id
+                       join dp in _dpSPPRepository.ReadAll()
+                       on qc.DyeingPrintingAreaInputProductionOrderId equals dp.Id
                        select new FabricQCGradeTestsViewModel
                        {
                            OrderNo = qc.ProductionOrderNo,
@@ -229,8 +229,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             {
                 data = from fabricqc in _repository.GetDbSet().AsNoTracking()
                        join fabricgt in _fgtRepository.GetDbSet().AsNoTracking() on fabricqc.Id equals fabricgt.FabricQualityControlId
-                       join dp in _dpRepository.ReadAll()
-                       on fabricqc.DyeingPrintingAreaInputId equals dp.Id
+                       join dp in _dpSPPRepository.ReadAll()
+                       on fabricqc.DyeingPrintingAreaInputProductionOrderId equals dp.Id
                        where fabricqc.ProductionOrderNo == no
                        select new FabricQCGradeTestsViewModel
                        {
@@ -267,7 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             query = QueryHelper<FabricQualityControlModel>.Order(query, OrderDictionary);
 
             var data = (from qcData in query.Skip((page - 1) * size).Take(size)
-                        join dpData in _dpRepository.ReadAll()
+                        join dpData in _dpSPPRepository.ReadAll()
                         on qcData.DyeingPrintingAreaInputProductionOrderId equals dpData.Id into indexData
                         from dpData in indexData.DefaultIfEmpty()
                         select new IndexViewModel()
@@ -294,7 +294,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             if (model == null)
                 return null;
 
-            var dpData = await _dpRepository.ReadByIdAsync(model.DyeingPrintingAreaInputId);
+            var dpData = await _dpSPPRepository.ReadByIdAsync(model.DyeingPrintingAreaInputProductionOrderId);
 
             FabricQualityControlViewModel vm = MapToViewModel(model, dpData);
 
@@ -315,7 +315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
             int result = await _repository.UpdateAsync(id, model);
-            result += await _dpRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
             return result;
         }
 
@@ -323,7 +323,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         {
 
             IQueryable<FabricQualityControlModel> query = _repository.ReadAll();
-            IQueryable<DyeingPrintingAreaInputProductionOrderModel> dpQuery = _dpRepository.ReadAll();
+            IQueryable<DyeingPrintingAreaInputProductionOrderModel> dpQuery = _dpSPPRepository.ReadAll();
             IEnumerable<FabricQualityControlViewModel> fabricQCs;
 
             if (!string.IsNullOrEmpty(code))
@@ -368,7 +368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             fabricQCs = (from qc in query
                          join dp in dpQuery
-                         on qc.DyeingPrintingAreaInputId equals dp.Id
+                         on qc.DyeingPrintingAreaInputProductionOrderId equals dp.Id
                          select new FabricQualityControlViewModel()
                          {
                              Code = qc.Code,
