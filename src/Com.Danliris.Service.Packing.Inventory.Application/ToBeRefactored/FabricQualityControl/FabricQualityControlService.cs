@@ -140,8 +140,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
             result = await _repository.InsertAsync(model);
-
-            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            var newBalance = model.FabricGradeTests.Sum(s => s.InitLength);
+            var avalBalance = model.FabricGradeTests.Sum(s => s.AvalLength);
+            result += await _dpSPPRepository
+                .UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalBalance);
 
             return result;
         }
@@ -149,7 +151,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         public async Task<int> Delete(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
-            int result = await _dpSPPRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false);
+            var oldInitLength = data.FabricGradeTests.Sum(s => s.InitLength);
+            var oldAvalBalance = data.FabricGradeTests.Sum(s => s.AvalLength);
+            var oldSampleLength = data.FabricGradeTests.Sum(s => s.SampleLength);
+            var oldBalance = oldInitLength + oldAvalBalance + oldSampleLength;
+            int result = await _dpSPPRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false, oldBalance, 0);
             result += await _repository.DeleteAsync(id);
 
             return result;
@@ -315,7 +321,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         d.Score.C.GetValueOrDefault(), d.Score.D.GetValueOrDefault())).ToList())).ToList());
 
             int result = await _repository.UpdateAsync(id, model);
-            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true);
+            var newBalance = model.FabricGradeTests.Sum(s => s.InitLength);
+            var avalBalance = model.FabricGradeTests.Sum(s => s.AvalLength);
+            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalBalance);
             return result;
         }
 

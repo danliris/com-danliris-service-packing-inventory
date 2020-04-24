@@ -12,8 +12,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         IQueryable<DyeingPrintingAreaInputProductionOrderModel> GetDbSet();
         IQueryable<DyeingPrintingAreaInputProductionOrderModel> ReadAllIgnoreQueryFilter();
-        Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked);
+        Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked, double newBalance, double avalBalance);
         Task<int> UpdateFromOutputAsync(int id, bool hasOutputDocument);
         Task<int> UpdateFromOutputAsync(int id, double balance);
+        Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalLength);
     }
 }

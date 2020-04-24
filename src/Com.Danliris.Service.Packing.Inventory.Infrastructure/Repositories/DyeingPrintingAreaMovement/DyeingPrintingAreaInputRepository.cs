@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetHasOutputDocument(localItem.HasOutputDocument, _identityProvider.Username, UserAgent);
                     item.SetMotif(localItem.Motif, _identityProvider.Username, UserAgent);
-                    item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, _identityProvider.Username, UserAgent);
+                    item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, localItem.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetStatus(localItem.Status, _identityProvider.Username, UserAgent);
                     item.SetUnit(localItem.Unit, _identityProvider.Username, UserAgent);

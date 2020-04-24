@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
-            var result = await repo.UpdateFromFabricQualityControlAsync(data.Id, "sss", true);
+            var result = await repo.UpdateFromFabricQualityControlAsync(data.Id, "sss", true, 100,100);
 
             Assert.NotEqual(0, result);
         }
