@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
-                    OutputInspectionMaterialId = 1,
+                    OutputId = 1,
                     TransitProductionOrders = new List<InputTransitProductionOrderViewModel>()
                     {
                         new InputTransitProductionOrderViewModel()
@@ -111,7 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.OutputInspectionMaterialId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.OutputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 

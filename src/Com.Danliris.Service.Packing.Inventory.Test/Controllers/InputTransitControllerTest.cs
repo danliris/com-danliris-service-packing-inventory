@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
-                    OutputInspectionMaterialId = 1,
+                    OutputId = 1,
                     TransitProductionOrders = new List<InputTransitProductionOrderViewModel>()
                     {
                         new InputTransitProductionOrderViewModel()
