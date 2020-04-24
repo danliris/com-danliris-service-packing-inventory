@@ -104,5 +104,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputIMAsyncBalance()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMAsyncBalance";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 1,100,100);
+
+            Assert.NotEqual(0, result);
+        }
+
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputIMAsyncBalance2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMAsyncBalance2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 2,100,100);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
