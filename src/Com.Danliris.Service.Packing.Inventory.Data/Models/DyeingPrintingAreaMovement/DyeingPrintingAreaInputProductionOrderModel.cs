@@ -21,15 +21,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public bool IsChecked { get; private set; }
         public string PackingInstruction { get; private set; }
         public string ProductionOrderType { get; private set; }
+        public double ProductionOrderOrderQuantity { get; private set; }
 
         public string Remark { get; private set; }
         public string Grade { get; private set; }
         public string Status { get; private set; }
+        public double InitLength { get; private set; }
+        public double AvalLength { get; private set; }
+
 
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
         public double QuantityKg { get; private set; }
-        
+
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
@@ -43,6 +47,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel()
         {
 
+        }
+
+        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
@@ -138,7 +161,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Grade = grade;
         }
 
-        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)
+        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderOrderQuantity, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)
             {
@@ -155,6 +178,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newProductionOrderType != ProductionOrderType)
             {
                 ProductionOrderType = newProductionOrderType;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if(newProductionOrderOrderQuantity != ProductionOrderOrderQuantity)
+            {
+                ProductionOrderOrderQuantity = newProductionOrderOrderQuantity;
                 this.FlagForUpdate(user, agent);
             }
 
@@ -324,6 +353,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newPackagingUnit != PackagingUnit)
             {
                 PackagingUnit = newPackagingUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalLength(double newAvalBalance, string user, string agent)
+        {
+            if(newAvalBalance != AvalLength)
+            {
+                AvalLength = newAvalBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetInitLength(double newInitLength, string user, string agent)
+        {
+            if (newInitLength != InitLength)
+            {
+                InitLength = newInitLength;
                 this.FlagForUpdate(user, agent);
             }
         }

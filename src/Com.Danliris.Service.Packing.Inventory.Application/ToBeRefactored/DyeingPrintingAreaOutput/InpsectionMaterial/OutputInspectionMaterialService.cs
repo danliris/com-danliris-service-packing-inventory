@@ -142,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 var vmItem = viewModel.InspectionMaterialProductionOrders.FirstOrDefault(s => s.ProductionOrder.Id == item.ProductionOrderId);
 
-                result += await _inputProductionOrderRepository.UpdateFromOutputAsync(vmItem.Id, item.Balance);
+                result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, vmItem.InitLength, vmItem.AvalLength);
 
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);

@@ -201,7 +201,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
             var dpMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-            dpMock.Setup(s => s.UpdateFromFabricQualityControlAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>()))
+            dpMock.Setup(s => s.UpdateFromFabricQualityControlAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
             var fgtMock = new Mock<IFabricGradeTestRepository>();
             var service = GetService(GetServiceProvider(repoMock.Object, dpMock.Object, fgtMock.Object).Object);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -72,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasOutputDocument(model.HasOutputDocument, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMotif(model.Motif, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderNo, model.ProductionOrderType, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderNo, model.ProductionOrderType, model.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUnit(model.Unit, _identityProvider.Username, UserAgent);
@@ -83,12 +84,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked)
+        public Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked, double newBalance, double avalBalance)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetGrade(grade, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIsChecked(isChecked, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetInitLength(newBalance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalLength(avalBalance, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -105,6 +107,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+            if (newBalance == 0)
+            {
+                modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+            }
+            else
+            {
+                modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+            }
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalLength)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+            var newInitLength = modelToUpdate.InitLength - initLength;
+            var newAvalLength = modelToUpdate.AvalLength - avalLength;
+            var newBalance = modelToUpdate.Balance - balance;
+            modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalLength(newAvalLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetInitLength(newInitLength, _identityProvider.Username, UserAgent);
             if (newBalance == 0)
             {
                 modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);

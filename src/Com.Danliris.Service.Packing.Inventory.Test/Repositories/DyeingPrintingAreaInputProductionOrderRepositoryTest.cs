@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
-            var result = await repo.UpdateFromFabricQualityControlAsync(data.Id, "sss", true);
+            var result = await repo.UpdateFromFabricQualityControlAsync(data.Id, "sss", true, 100,100);
 
             Assert.NotEqual(0, result);
         }
@@ -101,6 +101,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
             var data = await DataUtil(repo, dbContext).GetTestData();
             var result = await repo.UpdateFromOutputAsync(data.Id, 2);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputIMAsyncBalance()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMAsyncBalance";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 1,100,100);
+
+            Assert.NotEqual(0, result);
+        }
+
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputIMAsyncBalance2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMAsyncBalance2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 2,100,100);
 
             Assert.NotEqual(0, result);
         }
