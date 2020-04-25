@@ -77,7 +77,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDyeingPrintingAreaDocument(model.DyeingPrintingAreaDocumentId, model.DyeingPrintingAreaDocumentBonNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetType(model.Type, _identityProvider.Username, UserAgent);
-            
+
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateToAvalAsync(DyeingPrintingAreaSummaryModel model, DateTimeOffset date, string area, string type)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == model.Id);
+            modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetType(model.Type, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

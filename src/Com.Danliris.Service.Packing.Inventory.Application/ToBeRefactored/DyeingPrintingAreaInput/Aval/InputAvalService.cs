@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class InputAvalService : IInputAvalService
     {
-        private readonly IDyeingPrintingAreaInputRepository _repository;
+        private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public InputAvalService(IServiceProvider serviceProvider)
         {
-            _repository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
+            _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -102,8 +102,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Create(InputAvalViewModel viewModel)
         {
             int result = 0;
-            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && s.CreatedUtc.Year == viewModel.Date.Year);
+
+            //Count Existing Document in Aval by Year
+            int totalCurrentYearData = _inputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && s.CreatedUtc.Year == viewModel.Date.Year);
+
+            //Generate Bon
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+
+            //Instantiate Input Model
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, 
                                                          viewModel.Area, 
                                                          viewModel.Shift, 
@@ -113,59 +119,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                     s.UomUnit,
                                                                                                                                                     s.Quantity,
                                                                                                                                                     s.QuantityKg,
-                                                                                                                                                    false)).ToList());
+                                                                                                                                                    false))
+                                                                                       .ToList());
+
+            //Summed Up Balance (or Quantity in Aval)
             var summedBalance = model.DyeingPrintingAreaInputProductionOrders.Sum(s => s.Balance);
-            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+
+            //Create New Row in Input and ProductionOrdersInput in Each Repository 
+            result = await _inputRepository.InsertAsync(model);
+
+            //Flag for Input
+            result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
+
+            //Instantiate Summary Model
+            var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
+                                                                  viewModel.Area,
+                                                                  TYPE,
+                                                                  model.Id,
+                                                                  model.BonNo,
+                                                                  summedBalance);
+
+            //Update Previous Summary
+            result += await _summaryRepository.InsertAsync(summaryModel);
+
+            foreach (var item in viewModel.AvalProductionIds)
             {
+                //Instantiate Movement Model
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
+                                                                        viewModel.Area,
+                                                                        TYPE,
+                                                                        model.Id,
+                                                                        model.BonNo,
+                                                                        summedBalance);
 
-                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, 
-                                                                        viewModel.Area, 
-                                                                        TYPE, 
-                                                                        model.Id, 
-                                                                        model.BonNo, 
-                                                                        item.ProductionOrderId, 
-                                                                        item.ProductionOrderNo,
-                                                                        item.CartNo, 
-                                                                        item.Buyer, 
-                                                                        item.Construction, 
-                                                                        item.Unit, 
-                                                                        item.Color, 
-                                                                        item.Motif, 
-                                                                        item.UomUnit, 
-                                                                        item.Balance);
-
+                //Get Previous Summary
                 var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId && 
+                                                                                       s.ProductionOrderId == item &&
                                                                                        s.DyeingPrintingAreaDocumentBonNo == viewModel.BonNo);
 
-                var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, 
-                                                                      viewModel.Area, 
-                                                                      TYPE, 
-                                                                      model.Id, 
-                                                                      model.BonNo, 
-                                                                      item.ProductionOrderId, 
-                                                                      item.ProductionOrderNo,
-                                                                      item.CartNo, 
-                                                                      item.Buyer, 
-                                                                      item.Construction, 
-                                                                      item.Unit, 
-                                                                      item.Color, 
-                                                                      item.Motif, 
-                                                                      item.UomUnit, 
-                                                                      item.Balance);
-
-
-                result = await _repository.InsertAsync(model);
-                result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
+                //Create New Row in Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
-                result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+
+                //Update Previous Summary
+                result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
             }
 
             return result;
         }
 
+        //Already INPUT AVAL (Repository INPUT) for List in Input Aval List
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -203,7 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public async Task<InputAvalViewModel> ReadById(int id)
         {
-            var model = await _repository.ReadByIdAsync(id);
+            var model = await _inputRepository.ReadByIdAsync(id);
             if (model == null)
                 return null;
 
@@ -212,9 +217,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
+        //OUT from IM, Not INPUT to AVAL yet (Repository OUTPUT) => for Loader in Aval Input
         public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(int page, int size, string filter, string order, string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.DestinationArea == TRANSIT && !s.HasNextAreaDocument);
+            var query = _outputRepository.ReadAll().Where(s => s.DestinationArea == GUDANGAVAL && !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -229,33 +235,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
             var data = query.Skip((page - 1) * size).Take(size).Select(s => new PreAvalIndexViewModel()
             {
-                Area = s.Area,
-                BonNo = s.BonNo,
-                Date = s.Date,
                 Id = s.Id,
+                Date = s.Date,
+                Area = s.Area,
                 Shift = s.Shift,
-                DestinationArea = s.DestinationArea,
+                BonNo = s.BonNo,
                 HasNextAreaDocument = s.HasNextAreaDocument,
+                DestinationArea = s.DestinationArea,
                 PreAvalProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputPreAvalProductionOrderViewModel()
                 {
-                    Buyer = d.Buyer,
-                    CartNo = d.CartNo,
-                    Color = d.Color,
-                    Construction = d.Construction,
                     Id = d.Id,
-                    Motif = d.Motif,
-                    Balance = d.Balance,
-                    PackingInstruction = d.PackingInstruction,
-                    Remark = d.Remark,
-                    Status = d.Status,
-                    Grade = d.Grade,
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = d.ProductionOrderId,
-                        No = d.ProductionOrderNo
+                        No = d.ProductionOrderNo,
+                        Type = d.ProductionOrderType
                     },
+                    CartNo = d.CartNo,
+                    Buyer = d.Buyer,
+                    Construction = d.Construction,
                     Unit = d.Unit,
-                    UomUnit = d.UomUnit
+                    Color = d.Color,
+                    Motif = d.Motif,
+                    UomUnit = d.UomUnit,
+                    Remark = d.Remark,
+                    Grade = d.Grade,
+                    Status = d.Status,
+                    Balance = d.Balance,
+                    PackingInstruction = d.PackingInstruction
                 }).ToList()
             });
 

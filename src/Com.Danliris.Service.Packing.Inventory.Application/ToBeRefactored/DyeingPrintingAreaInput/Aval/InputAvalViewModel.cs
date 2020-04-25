@@ -18,5 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string BonNo { get; set; }
         public int OutputInspectionMaterialId { get; set; }
         public ICollection<InputAvalProductionOrderViewModel> AvalProductionOrders { get; set; }
+        public List<int> AvalProductionIds { get; set; }
     }
 }
