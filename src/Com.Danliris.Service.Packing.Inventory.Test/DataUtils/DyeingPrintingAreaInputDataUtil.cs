@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                  new DyeingPrintingAreaInputProductionOrderModel(1,"a","e","rr","1","as","test","unit","color","motif","mtr",1,false,"s","s","s"),
                  new DyeingPrintingAreaInputProductionOrderModel(1,"a",1,"a","a","a","a","a","a","a","a",false),
                  new DyeingPrintingAreaInputProductionOrderModel("a", "e", "rr", 5, 1, false)
+                 new DyeingPrintingAreaInputProductionOrderModel(1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,false)
             });
         }
 
@@ -32,6 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                  new DyeingPrintingAreaInputProductionOrderModel(0,null,null,null,null,null,null,null,null,null,null,1,true,null,null,null),
                  new DyeingPrintingAreaInputProductionOrderModel(0,null,0,null,null,null,null,null,null,null,null,true),
                  new DyeingPrintingAreaInputProductionOrderModel(null, null, null, 0, 0, true)
+                 new DyeingPrintingAreaInputProductionOrderModel(0,null,null,0,null,null,null,null,null,null,null,null,1,true),
             });
         }
     }

@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging
 {
-    public class OutputInspectionMaterialProductionOrderViewModel : BaseViewModel
+    public class InputPackagingProductionOrdersViewModel :BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }
@@ -17,12 +17,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Color { get; set; }
         public string Motif { get; set; }
         public string UomUnit { get; set; }
-        public string Remark { get; set; }
-        public string Grade { get; set; }
-        public string Status { get; set; }
         public double Balance { get; set; }
-        public double PreviousBalance { get; set; }
-        public double InitLength { get; set; }
-        public double AvalLength { get; set; }
+        public bool HasOutputDocument { get; set; }
+        public bool IsChecked { get; set; }
+        public string Grade { get; set; }
+        public string Remark { get; set; }
+        public string Status { get; set; }
+        public string Material { get; set; }
+        public decimal MtrLength { get; set; }
+        public decimal YdsLength { get; set; }
     }
 }

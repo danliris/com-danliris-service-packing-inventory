@@ -10,5 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObje
         public string Code { get; set; }
         public string No { get; set; }
         public string Type { get; set; }
+        public double OrderQuantity { get; set; }
     }
 }
