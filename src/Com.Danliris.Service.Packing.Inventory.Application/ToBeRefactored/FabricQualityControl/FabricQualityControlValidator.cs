@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,10 +31,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 d.RuleFor(s => s.PcsNo).NotNull().WithMessage("Nomor Pcs harus diisi!");
                 d.RuleFor(s => s.InitLength).GreaterThan(0).WithMessage("Panjang harus diisi!");
                 d.RuleFor(s => s.Width).GreaterThan(0).WithMessage("Lebar kain harus lebih besar dari 0!");
-                d.RuleFor(s => s.AvalLength).Must((m, i) => i <= m.InitLength).WithMessage("Panjang Aval tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalALength).Must((m, i) => i <= m.InitLength).WithMessage("Panjang Aval A tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalBLength).Must((m, i) => i <= m.InitLength).WithMessage("Panjang Aval B tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalConnectionLength).Must((m, i) => i <= m.InitLength).WithMessage("Panjang Aval Sambungan tidak boleh lebih dari panjang kain!");
                 d.RuleFor(s => s.SampleLength).Must((m, i) => i <= m.InitLength).WithMessage("Panjang Sampel tidak boleh lebih dari panjang kain!");
-                d.RuleFor(s => s.AvalLength).Must((m, i) => i + m.SampleLength <= m.InitLength).WithMessage("Jumlah Panjang Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
-                d.RuleFor(s => s.SampleLength).Must((m, i) => i + m.AvalLength <= m.InitLength).WithMessage("Jumlah Panjang Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalALength).Must((m, i) => i + m.SampleLength + m.AvalBLength + m.AvalConnectionLength <= m.InitLength).WithMessage("Jumlah Panjang Seluruh Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalBLength).Must((m, i) => i + m.SampleLength + m.AvalALength + m.AvalConnectionLength <= m.InitLength).WithMessage("Jumlah Panjang Seluruh Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.AvalConnectionLength).Must((m, i) => i + m.SampleLength + m.AvalALength + m.AvalBLength <= m.InitLength).WithMessage("Jumlah Panjang Seluruh Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
+                d.RuleFor(s => s.SampleLength).Must((m, i) => i + m.AvalALength + m.AvalBLength + m.AvalConnectionLength <= m.InitLength).WithMessage("Jumlah Panjang Seluruh Aval dan Panjang Sampel tidak boleh lebih dari panjang kain!");
 
             });
         }

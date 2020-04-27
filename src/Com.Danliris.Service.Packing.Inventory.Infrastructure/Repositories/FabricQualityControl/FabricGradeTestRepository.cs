@@ -67,7 +67,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Fab
         public Task<int> UpdateAsync(int id, FabricGradeTestModel model)
         {
             var modelToUpdate = _fabricGradeTestDbSet.Include(s => s.Criteria).FirstOrDefault(entity => entity.Id == id);
-            modelToUpdate.SetAvalLength(model.AvalLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalALength(model.AvalALength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalBLength(model.AvalBLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalConnectionLength(model.AvalConnectionLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFabricGradeTest(model.FabricGradeTest, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFinalArea(model.FinalArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFinalGradeTest(model.FinalGradeTest, _identityProvider.Username, UserAgent);

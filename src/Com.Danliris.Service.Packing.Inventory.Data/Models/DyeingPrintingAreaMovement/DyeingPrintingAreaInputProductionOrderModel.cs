@@ -27,7 +27,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Grade { get; private set; }
         public string Status { get; private set; }
         public double InitLength { get; private set; }
-        public double AvalLength { get; private set; }
+        public double AvalALength { get; private set; }
+        public double AvalBLength { get; private set; }
+        public double AvalConnectionLength { get; private set; }
 
 
         //public string AvalId { get; private set; }
@@ -358,11 +360,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
-        public void SetAvalLength(double newAvalBalance, string user, string agent)
+        public void SetAvalALength(double newAvalABalance, string user, string agent)
         {
-            if(newAvalBalance != AvalLength)
+            if(newAvalABalance != AvalALength)
             {
-                AvalLength = newAvalBalance;
+                AvalALength = newAvalABalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalBLength(double newAvalBBalance, string user, string agent)
+        {
+            if (newAvalBBalance != AvalBLength)
+            {
+                AvalBLength = newAvalBBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalConnectionLength(double newAvalConnectionLength, string user, string agent)
+        {
+            if (newAvalConnectionLength != AvalConnectionLength)
+            {
+                AvalConnectionLength = newAvalConnectionLength;
                 this.FlagForUpdate(user, agent);
             }
         }
