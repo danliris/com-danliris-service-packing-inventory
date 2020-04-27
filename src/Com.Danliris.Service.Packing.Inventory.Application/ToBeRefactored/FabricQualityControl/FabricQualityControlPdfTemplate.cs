@@ -169,7 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             #region Body Table
 
-            PdfPTable bodyTable = new PdfPTable(7);
+            PdfPTable bodyTable = new PdfPTable(9);
             float[] bodyTableWidths = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
