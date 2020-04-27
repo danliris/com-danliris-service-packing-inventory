@@ -79,6 +79,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Color = s.Color,
                     Construction = s.Construction,
                     CreatedAgent = s.CreatedAgent,
+                    AvalALength = s.AvalALength,
+                    AvalBLength = s.AvalBLength,
+                    AvalConnectionLength = s.AvalConnectionLength,
 
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
@@ -143,8 +146,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 var vmItem = viewModel.InspectionMaterialProductionOrders.FirstOrDefault(s => s.ProductionOrder.Id == item.ProductionOrderId);
 
-                result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, vmItem.InitLength, vmItem.AvalALength, vmItem.AvalBLength, vmItem.AvalConnectionLength);
+                if (viewModel.DestinationArea == GUDANGAVAL)
+                {
 
+                    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, vmItem.AvalALength, vmItem.AvalBLength, vmItem.AvalConnectionLength);
+
+                }
+                else
+                {
+
+                    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, 0, 0, 0);
+
+                }
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 

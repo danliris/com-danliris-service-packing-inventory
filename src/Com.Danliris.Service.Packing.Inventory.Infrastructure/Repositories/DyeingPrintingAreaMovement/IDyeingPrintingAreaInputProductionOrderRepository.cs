@@ -15,6 +15,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked, double newBalance, double avalABalance, double avalBBalance, double avalConnectionBalance);
         Task<int> UpdateFromOutputAsync(int id, bool hasOutputDocument);
         Task<int> UpdateFromOutputAsync(int id, double balance);
-        Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalALength, double avalBLength, double avalConnectionLength);
+        Task<int> UpdateFromOutputIMAsync(int id, double balance, double avalALength, double avalBLength, double avalConnectionLength);
     }
 }
