@@ -130,6 +130,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).FirstOrDefault(s => s.Id == id);
             modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
 
+            foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+            }
+
             return _dbContext.SaveChangesAsync();
         }
     }
