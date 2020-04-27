@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override FabricGradeTestModel GetModel()
         {
-            return new FabricGradeTestModel(1, 1, 1, 1, 1, 1, "grade", 1, "pcs", 1, 1, 1, 1, "t", 1, 1,
+            return new FabricGradeTestModel(1, 1, 1, 1, 1, 1, 1, 1, "grade", 1, "pcs", 1, 1, 1, 1, "t", 1, 1,
                 new List<CriteriaModel>()
                     {
                         new CriteriaModel("code", "grp",1,"name",1,1,1,1)
@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override FabricGradeTestModel GetEmptyModel()
         {
-            return new FabricGradeTestModel(0, 0, 0, 0, 0, 0, null, 0, null, 0, 0, 0, 0, null, 0, 0, new List<CriteriaModel>()
+            return new FabricGradeTestModel(0, 0, 0, 0, 0, 0, 0, 0, null, 0, null, 0, 0, 0, 0, null, 0, 0, new List<CriteriaModel>()
                 {
                     new CriteriaModel(null,null,0,null,0,0,0,0)
                 });

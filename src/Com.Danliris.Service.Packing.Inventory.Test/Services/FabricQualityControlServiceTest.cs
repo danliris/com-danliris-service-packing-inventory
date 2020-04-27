@@ -52,7 +52,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                     {
                         new FabricGradeTestViewModel()
                         {
-                            AvalLength = 1,
+                            AvalALength = 1,
+                            AvalBLength = 1,
+                            AvalConnectionLength = 1,
                             PointSystem =10,
                             FabricGradeTest = 1,
                             FinalArea = 1,
@@ -98,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
                 ViewModel.InspectionMaterialBonNo, ViewModel.InspectionMaterialProductionOrderId, ViewModel.ProductionOrderNo,
                 ViewModel.MachineNoIm, ViewModel.OperatorIm, ViewModel.PointLimit.GetValueOrDefault(), ViewModel.PointSystem.GetValueOrDefault(),
                 ViewModel.FabricGradeTests.Select((s, i) =>
-                    new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
+                    new FabricGradeTestModel(s.AvalALength.GetValueOrDefault(), s.AvalBLength.GetValueOrDefault(), s.AvalConnectionLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
                     s.FinalGradeTest.GetValueOrDefault(), s.FinalLength.GetValueOrDefault(), s.FinalScore.GetValueOrDefault(), s.Grade, s.InitLength.GetValueOrDefault(),
                     s.PcsNo, s.PointLimit.GetValueOrDefault(), s.PointSystem.GetValueOrDefault(), s.SampleLength.GetValueOrDefault(), s.Score.GetValueOrDefault(),
                     s.Type, s.Width.GetValueOrDefault(), i,
@@ -201,7 +203,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
             var dpMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-            dpMock.Setup(s => s.UpdateFromFabricQualityControlAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<double>(), It.IsAny<double>()))
+            dpMock.Setup(s => s.UpdateFromFabricQualityControlAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
             var fgtMock = new Mock<IFabricGradeTestRepository>();
             var service = GetService(GetServiceProvider(repoMock.Object, dpMock.Object, fgtMock.Object).Object);

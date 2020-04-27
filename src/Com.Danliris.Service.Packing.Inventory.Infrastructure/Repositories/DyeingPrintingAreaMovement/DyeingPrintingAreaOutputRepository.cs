@@ -107,6 +107,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetUnit(localItem.Unit, _identityProvider.Username, UserAgent);
                     item.SetUomUnit(localItem.UomUnit, _identityProvider.Username, UserAgent);
                     item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
+                    item.SetAvalALength(localItem.AvalALength, _identityProvider.Username, UserAgent);
+                    item.SetAvalBLength(localItem.AvalBLength, _identityProvider.Username, UserAgent);
+                    item.SetAvalConnectionLength(localItem.AvalConnectionLength, _identityProvider.Username, UserAgent);
                 }
             }
 

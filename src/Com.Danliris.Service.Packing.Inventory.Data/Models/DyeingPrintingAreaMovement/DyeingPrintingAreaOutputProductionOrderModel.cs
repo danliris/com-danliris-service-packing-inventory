@@ -26,6 +26,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public decimal PackagingQty { get; private set; }
         public string PackagingUnit { get; private set; }
 
+        public double AvalALength { get; private set; }
+        public double AvalBLength { get; private set; }
+        public double AvalConnectionLength { get; private set; }
+
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
@@ -35,6 +39,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaOutputProductionOrderModel()
         {
 
+        }
+
+        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, double avalALength, double avalBLength, double avalConnectionLength)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            Remark = remark;
+            Status = status;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            PackingInstruction = packingInstruction;
+            AvalALength = avalALength;
+            AvalBLength = avalBLength;
+            AvalConnectionLength = avalConnectionLength;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
@@ -267,6 +294,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newPackagingUnit != PackagingUnit)
             {
                 PackagingUnit = newPackagingUnit;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalALength(double newAvalABalance, string user, string agent)
+        {
+            if (newAvalABalance != AvalALength)
+            {
+                AvalALength = newAvalABalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalBLength(double newAvalBBalance, string user, string agent)
+        {
+            if (newAvalBBalance != AvalBLength)
+            {
+                AvalBLength = newAvalBBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalConnectionLength(double newAvalConnectionLength, string user, string agent)
+        {
+            if (newAvalConnectionLength != AvalConnectionLength)
+            {
+                AvalConnectionLength = newAvalConnectionLength;
                 this.FlagForUpdate(user, agent);
             }
         }

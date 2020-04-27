@@ -81,7 +81,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetPackagingType(model.PackagingType, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackagingQty(model.PackagingQty, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackagingUnit(model.PackagingUnit, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetAvalALength(model.AvalALength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalBLength(model.AvalBLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalConnectionLength(model.AvalConnectionLength, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
     }

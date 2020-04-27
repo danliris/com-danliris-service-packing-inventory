@@ -81,7 +81,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     {
                         new FabricGradeTestViewModel()
                         {
-                            AvalLength = 1,
+                            AvalALength = 1,
+                            AvalBLength = 1,
+                            AvalConnectionLength = 1,
                             PointSystem =10,
                             FabricGradeTest = 1,
                             FinalArea = 1,
