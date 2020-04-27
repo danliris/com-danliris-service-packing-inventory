@@ -7,7 +7,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 {
     public class FabricGradeTestViewModel : BaseViewModel
     {
-        public double? AvalLength { get; set; }
+        public double? AvalALength { get; set; }
+        public double? AvalBLength { get; set; }
+        public double? AvalConnectionLength { get; set; }
         public List<CriteriaViewModel> Criteria { get; set; }
         public double? FabricGradeTest { get; set; }
         public double? FinalArea { get; set; }

@@ -174,7 +174,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = d.ProductionOrderOrderQuantity
                     },
                     Grade = d.Grade,
-                    AvalLength = d.AvalLength,
+                    AvalALength = d.AvalALength,
+                    AvalBLength = d.AvalBLength,
+                    AvalConnectionLength = d.AvalConnectionLength,
                     InitLength = d.InitLength,
                     Id = d.Id,
                     Unit = d.Unit,

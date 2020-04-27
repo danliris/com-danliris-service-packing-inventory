@@ -73,7 +73,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 FabricGradeTests = model.FabricGradeTests.Select(s => new FabricGradeTestViewModel()
                 {
                     Active = s.Active,
-                    AvalLength = s.AvalLength,
+                    AvalALength = s.AvalALength,
+                    AvalBLength = s.AvalBLength,
+                    AvalConnectionLength = s.AvalConnectionLength,
                     CreatedAgent = s.CreatedAgent,
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
@@ -132,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 viewModel.InspectionMaterialBonNo, viewModel.InspectionMaterialProductionOrderId, viewModel.ProductionOrderNo,
                 viewModel.MachineNoIm, viewModel.OperatorIm, viewModel.PointLimit.GetValueOrDefault(), viewModel.PointSystem.GetValueOrDefault(),
                 viewModel.FabricGradeTests.Select((s, i) =>
-                    new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
+                    new FabricGradeTestModel(s.AvalALength.GetValueOrDefault(), s.AvalBLength.GetValueOrDefault(), s.AvalConnectionLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
                     s.FinalGradeTest.GetValueOrDefault(), s.FinalLength.GetValueOrDefault(), s.FinalScore.GetValueOrDefault(), s.Grade, s.InitLength.GetValueOrDefault(),
                     s.PcsNo, s.PointLimit.GetValueOrDefault(), s.PointSystem.GetValueOrDefault(), s.SampleLength.GetValueOrDefault(), s.Score.GetValueOrDefault(),
                     s.Type, s.Width.GetValueOrDefault(), i,
@@ -141,9 +143,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             result = await _repository.InsertAsync(model);
             var newBalance = model.FabricGradeTests.Sum(s => s.InitLength);
-            var avalBalance = model.FabricGradeTests.Sum(s => s.AvalLength);
+            var avalABalance = model.FabricGradeTests.Sum(s => s.AvalALength);
+            var avalBBalance = model.FabricGradeTests.Sum(s => s.AvalBLength);
+            var avalConnectionBalance = model.FabricGradeTests.Sum(s => s.AvalConnectionLength);
             result += await _dpSPPRepository
-                .UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalBalance);
+                .UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalABalance, avalBBalance, avalConnectionBalance);
 
             return result;
         }
@@ -152,10 +156,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
         {
             var data = await _repository.ReadByIdAsync(id);
             var oldInitLength = data.FabricGradeTests.Sum(s => s.InitLength);
-            var oldAvalBalance = data.FabricGradeTests.Sum(s => s.AvalLength);
+            var oldAvalABalance = data.FabricGradeTests.Sum(s => s.AvalALength);
+            var oldAvalBBalance = data.FabricGradeTests.Sum(s => s.AvalBLength);
+            var oldAvalConnectionBalance = data.FabricGradeTests.Sum(s => s.AvalConnectionLength);
             var oldSampleLength = data.FabricGradeTests.Sum(s => s.SampleLength);
-            var oldBalance = oldInitLength + oldAvalBalance + oldSampleLength;
-            int result = await _dpSPPRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false, oldBalance, 0);
+            var oldBalance = oldInitLength + oldAvalABalance + oldAvalBBalance + oldAvalConnectionBalance + oldSampleLength;
+            int result = await _dpSPPRepository.UpdateFromFabricQualityControlAsync(data.DyeingPrintingAreaInputProductionOrderId, "", false, oldBalance, 0, 0, 0);
             result += await _repository.DeleteAsync(id);
 
             return result;
@@ -189,12 +195,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             dt.Columns.Add(new DataColumn() { ColumnName = "Lebar PCS (meter)", DataType = typeof(int) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Nilai", DataType = typeof(int) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Aval (meter)", DataType = typeof(int) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Aval A (meter)", DataType = typeof(int) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Aval B (meter)", DataType = typeof(int) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Aval Sambungan (meter)", DataType = typeof(int) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Sampel (meter)", DataType = typeof(int) });
 
             if (data.Count == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, "", 0, 0);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, "", 0, 0, 0, 0);
             }
             else
             {
@@ -206,7 +214,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                         dt.Rows.Add(index++, item.Code, item.InspectionMaterialBonNo, item.CartNo, item.ProductionOrderType, item.ProductionOrderNo,
                             item.DateIm.GetValueOrDefault().AddHours(offSet).ToString("dd/MM/yyyy"), item.ShiftIm, item.OperatorIm, item.MachineNoIm,
                             item.Construction, item.Buyer, item.Color, item.OrderQuantity.GetValueOrDefault().ToString(), item.PackingInstruction,
-                            detail.PcsNo, detail.InitLength, detail.Width, detail.FinalScore, detail.Grade, detail.AvalLength, detail.SampleLength);
+                            detail.PcsNo, detail.InitLength, detail.Width, detail.FinalScore, detail.Grade, detail.AvalALength, detail.AvalBLength, detail.AvalConnectionLength,
+                            detail.SampleLength);
                     }
                 }
             }
@@ -313,7 +322,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 viewModel.InspectionMaterialBonNo, viewModel.InspectionMaterialProductionOrderId, viewModel.ProductionOrderNo,
                 viewModel.MachineNoIm, viewModel.OperatorIm, viewModel.PointLimit.GetValueOrDefault(), viewModel.PointSystem.GetValueOrDefault(),
                 viewModel.FabricGradeTests.Select((s, i) =>
-                    new FabricGradeTestModel(s.AvalLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
+                    new FabricGradeTestModel(s.AvalALength.GetValueOrDefault(), s.AvalBLength.GetValueOrDefault(), s.AvalConnectionLength.GetValueOrDefault(), s.FabricGradeTest.GetValueOrDefault(), s.FinalArea.GetValueOrDefault(),
                     s.FinalGradeTest.GetValueOrDefault(), s.FinalLength.GetValueOrDefault(), s.FinalScore.GetValueOrDefault(), s.Grade, s.InitLength.GetValueOrDefault(),
                     s.PcsNo, s.PointLimit.GetValueOrDefault(), s.PointSystem.GetValueOrDefault(), s.SampleLength.GetValueOrDefault(), s.Score.GetValueOrDefault(),
                     s.Type, s.Width.GetValueOrDefault(), i,
@@ -322,8 +331,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             int result = await _repository.UpdateAsync(id, model);
             var newBalance = model.FabricGradeTests.Sum(s => s.InitLength);
-            var avalBalance = model.FabricGradeTests.Sum(s => s.AvalLength);
-            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalBalance);
+            var avalABalance = model.FabricGradeTests.Sum(s => s.AvalALength);
+            var avalBBalance = model.FabricGradeTests.Sum(s => s.AvalBLength);
+            var avalConnectionBalance = model.FabricGradeTests.Sum(s => s.AvalConnectionLength);
+            result += await _dpSPPRepository.UpdateFromFabricQualityControlAsync(model.DyeingPrintingAreaInputProductionOrderId, model.FabricGradeTests.FirstOrDefault().Grade, true, newBalance, avalABalance, avalBBalance, avalConnectionBalance);
             return result;
         }
 
@@ -400,7 +411,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                                  Width = y.Width,
                                  FinalScore = y.FinalScore,
                                  Grade = y.Grade,
-                                 AvalLength = y.AvalLength,
+                                 AvalALength = y.AvalALength,
+                                 AvalBLength = y.AvalBLength,
+                                 AvalConnectionLength = y.AvalConnectionLength,
                                  SampleLength = y.SampleLength
                              }).ToList(),
                              LastModifiedUtc = qc.LastModifiedUtc
