@@ -65,9 +65,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                         {
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",
-                            UomUnit = "MTR",
-                            Quantity = 5,
-                            QuantityKg = 1,
+                            AvalUomUnit = "MTR",
+                            AvalQuantity = 5,
+                            AvalQuantityKg = 1,
                             HasOutputDocument = false,
                             IsChecked = false
                         }

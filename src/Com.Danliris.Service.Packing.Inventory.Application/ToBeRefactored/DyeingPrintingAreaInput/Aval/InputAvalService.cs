@@ -81,9 +81,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.Id,
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
-                    UomUnit = s.UomUnit,
-                    Quantity = s.Balance,
-                    QuantityKg = s.QuantityKg,
+                    AvalUomUnit = s.UomUnit,
+                    AvalQuantity = s.Balance,
+                    AvalQuantityKg = s.AvalQuantityKg,
                     HasOutputDocument = s.HasOutputDocument,
                     IsChecked = s.IsChecked
                 }).ToList()
@@ -116,9 +116,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          bonNo, 
                                                          viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(s.AvalType,
                                                                                                                                                     s.AvalCartNo,
-                                                                                                                                                    s.UomUnit,
-                                                                                                                                                    s.Quantity,
-                                                                                                                                                    s.QuantityKg,
+                                                                                                                                                    s.AvalUomUnit,
+                                                                                                                                                    s.AvalQuantity,
+                                                                                                                                                    s.AvalQuantityKg,
                                                                                                                                                     false))
                                                                                        .ToList());
 
@@ -195,9 +195,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = d.Id,
                     AvalType = d.AvalType,
                     AvalCartNo = d.AvalCartNo,
-                    UomUnit = d.UomUnit,
-                    Quantity = d.Balance,
-                    QuantityKg = d.QuantityKg,
+                    AvalUomUnit = d.UomUnit,
+                    AvalQuantity = d.Balance,
+                    AvalQuantityKg = d.AvalQuantityKg,
                     HasOutputDocument = d.HasOutputDocument,
                     IsChecked = d.IsChecked
                 }).ToList()
@@ -262,7 +262,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Grade = d.Grade,
                     Status = d.Status,
                     Balance = d.Balance,
-                    PackingInstruction = d.PackingInstruction
+                    PackingInstruction = d.PackingInstruction,
+                    AvalALength = d.AvalALength,
+                    AvalBLength = d.AvalBLength,
+                    AvalConnectionLength = d.AvalConnectionLength
                 }).ToList()
             });
 

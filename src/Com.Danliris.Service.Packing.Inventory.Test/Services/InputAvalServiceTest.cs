@@ -53,9 +53,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         {
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",
-                            UomUnit = "MTR",
-                            Quantity = 5,
-                            QuantityKg = 1,
+                            AvalUomUnit = "MTR",
+                            AvalQuantity = 5,
+                            AvalQuantityKg = 1,
                             HasOutputDocument = false,
                             IsChecked = false
                         }
@@ -73,9 +73,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.BonNo, 
                                                         ViewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(s.AvalType,
                                                                                                                                                    s.AvalCartNo,
-                                                                                                                                                   s.UomUnit,
-                                                                                                                                                   s.Quantity,
-                                                                                                                                                   s.QuantityKg,
+                                                                                                                                                   s.AvalUomUnit,
+                                                                                                                                                   s.AvalQuantity,
+                                                                                                                                                   s.AvalQuantityKg,
                                                                                                                                                    s.HasOutputDocument))
                                                                                       .ToList());
             }
@@ -119,8 +119,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                            null, 
                                                            null,
                                                            null,
-                                                           item.UomUnit, 
-                                                           item.Quantity)
+                                                           item.AvalUomUnit, 
+                                                           item.AvalQuantity)
                  }.AsQueryable());
 
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))

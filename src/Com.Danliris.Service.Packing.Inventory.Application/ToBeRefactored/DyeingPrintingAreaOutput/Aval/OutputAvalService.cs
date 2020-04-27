@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalCartNo = s.AvalCartNo,
                     UomUnit = s.UomUnit,
                     Quantity = s.Balance,
-                    QuantityKg = s.QuantityKg,
+                    QuantityKg = s.AvalQuantityKg,
                     //HasOutputDocument = s.HasOutputDocument,
                     //IsChecked = s.IsChecked
                 }).ToList()
@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalCartNo = d.AvalCartNo,
                     UomUnit = d.UomUnit,
                     Quantity = d.Balance,
-                    QuantityKg = d.QuantityKg,
+                    QuantityKg = d.AvalQuantityKg,
                     //HasOutputDocument = d.HasOutputDocument,
                     //IsChecked = d.IsChecked
                 }).ToList()
