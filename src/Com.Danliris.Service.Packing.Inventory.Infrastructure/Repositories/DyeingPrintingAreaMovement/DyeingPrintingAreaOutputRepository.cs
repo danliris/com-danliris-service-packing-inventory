@@ -93,6 +93,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
                 else
                 {
+                    item.SetArea(localItem.Area, _identityProvider.Username, UserAgent);
+                    item.SetDestinationArea(localItem.DestinationArea, _identityProvider.Username, UserAgent);
+                    item.SetHasNextAreaDocument(localItem.HasNextAreaDocument, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetBuyer(localItem.Buyer, _identityProvider.Username, UserAgent);
                     item.SetCartNo(localItem.CartNo, _identityProvider.Username, UserAgent);

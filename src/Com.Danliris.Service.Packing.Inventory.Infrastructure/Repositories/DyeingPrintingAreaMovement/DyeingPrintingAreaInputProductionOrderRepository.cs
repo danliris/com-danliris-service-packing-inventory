@@ -65,6 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> UpdateAsync(int id, DyeingPrintingAreaInputProductionOrderModel model)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyer(model.Buyer, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
