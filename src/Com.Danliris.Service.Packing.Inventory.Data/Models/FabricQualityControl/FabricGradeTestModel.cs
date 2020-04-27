@@ -12,11 +12,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
             Criteria = new HashSet<CriteriaModel>();
         }
 
-        public FabricGradeTestModel(double avalLength, double fabricGradeTest, double finalArea, double finalGradeTest, double finalLength, double finalScore,
+        public FabricGradeTestModel(double avalALength, double avalBLength, double avalConnectionLength, double fabricGradeTest, double finalArea, double finalGradeTest, double finalLength, double finalScore,
             string grade, double initLength, string pcsNo, double pointLimit, double pointSystem, double sampleLength, double score, string type, double width, int itemIndex,
             ICollection<CriteriaModel> criteria)
         {
-            AvalLength = avalLength;
+            AvalALength = avalALength;
+            AvalBLength = avalBLength;
+            AvalConnectionLength = avalConnectionLength;
             FabricGradeTest = fabricGradeTest;
             FinalArea = finalArea;
             FinalGradeTest = finalGradeTest;
@@ -37,7 +39,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
 
         }
 
-        public double AvalLength { get; private set; }
+        public double AvalALength { get; private set; }
+        public double AvalBLength { get; private set; }
+        public double AvalConnectionLength { get; private set; }
         public double FabricGradeTest { get; private set; }
         public double FinalArea { get; private set; }
         public double FinalGradeTest { get; private set; }
@@ -60,11 +64,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityContro
         public int FabricQualityControlId { get; set; }
         public virtual FabricQualityControlModel FabricQualityControl { get; set; }
 
-        public void SetAvalLength(double newAvalLength, string user, string agent)
+        public void SetAvalALength(double newAvalALength, string user, string agent)
         {
-            if(newAvalLength != AvalLength)
+            if(newAvalALength != AvalALength)
             {
-                AvalLength = newAvalLength;
+                AvalALength = newAvalALength;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalBLength(double newAvalBLength, string user, string agent)
+        {
+            if (newAvalBLength != AvalBLength)
+            {
+                AvalBLength = newAvalBLength;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalConnectionLength(double newAvalConnectionLength, string user, string agent)
+        {
+            if (newAvalConnectionLength != AvalConnectionLength)
+            {
+                AvalBLength = newAvalConnectionLength;
                 this.FlagForUpdate(user, agent);
             }
         }

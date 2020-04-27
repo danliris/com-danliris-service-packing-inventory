@@ -98,7 +98,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Fab
                 }
                 else
                 {
-                    item.SetAvalLength(localModel.AvalLength, _identityProvider.Username, UserAgent);
+                    item.SetAvalALength(localModel.AvalALength, _identityProvider.Username, UserAgent);
+                    item.SetAvalBLength(localModel.AvalBLength, _identityProvider.Username, UserAgent);
+                    item.SetAvalConnectionLength(localModel.AvalConnectionLength, _identityProvider.Username, UserAgent);
                     item.SetFabricGradeTest(localModel.FabricGradeTest, _identityProvider.Username, UserAgent);
                     item.SetFinalArea(localModel.FinalArea, _identityProvider.Username, UserAgent);
                     item.SetFinalGradeTest(localModel.FinalGradeTest, _identityProvider.Username, UserAgent);

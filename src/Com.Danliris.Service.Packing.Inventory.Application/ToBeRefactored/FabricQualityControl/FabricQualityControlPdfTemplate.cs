@@ -169,8 +169,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
 
             #region Body Table
 
-            PdfPTable bodyTable = new PdfPTable(7);
-            float[] bodyTableWidths = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+            PdfPTable bodyTable = new PdfPTable(9);
+            float[] bodyTableWidths = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
@@ -193,7 +193,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase("Aval", body_bold_font);
+            bodyTableHeader.Phrase = new Phrase("Aval A", body_bold_font);
+            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableHeader);
+
+            bodyTableHeader.Phrase = new Phrase("Aval B", body_bold_font);
+            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableHeader);
+
+            bodyTableHeader.Phrase = new Phrase("Aval Sambungan", body_bold_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableHeader);
@@ -234,7 +244,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
                 bodyTableCell.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCell);
 
-                bodyTableCell.Phrase = new Phrase($"{fabricGradeTest.AvalLength}", body_font);
+                bodyTableCell.Phrase = new Phrase($"{fabricGradeTest.AvalALength}", body_font);
+                bodyTableCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                bodyTableCell.VerticalAlignment = Element.ALIGN_CENTER;
+                bodyTable.AddCell(bodyTableCell);
+
+                bodyTableCell.Phrase = new Phrase($"{fabricGradeTest.AvalBLength}", body_font);
+                bodyTableCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                bodyTableCell.VerticalAlignment = Element.ALIGN_CENTER;
+                bodyTable.AddCell(bodyTableCell);
+
+                bodyTableCell.Phrase = new Phrase($"{fabricGradeTest.AvalConnectionLength}", body_font);
                 bodyTableCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 bodyTableCell.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCell);

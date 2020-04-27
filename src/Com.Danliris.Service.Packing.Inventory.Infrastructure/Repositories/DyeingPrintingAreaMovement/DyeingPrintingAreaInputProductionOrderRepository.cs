@@ -84,13 +84,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked, double newBalance, double avalBalance)
+        public Task<int> UpdateFromFabricQualityControlAsync(int id, string grade, bool isChecked, double newBalance, double avalABalance, double avalBBalance, double avalConnectionBalance)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             modelToUpdate.SetGrade(grade, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIsChecked(isChecked, _identityProvider.Username, UserAgent);
             modelToUpdate.SetInitLength(newBalance, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetAvalLength(avalBalance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalALength(avalABalance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalBLength(avalBBalance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalConnectionLength(avalConnectionBalance, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -118,14 +120,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalLength)
+        public Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalALength, double avalBLength, double avalConnectionLength)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             var newInitLength = modelToUpdate.InitLength - initLength;
-            var newAvalLength = modelToUpdate.AvalLength - avalLength;
+            var newAvalALength = modelToUpdate.AvalALength - avalALength;
+            var newAvalBLength = modelToUpdate.AvalBLength - avalBLength;
+            var newAvalConnectionLength = modelToUpdate.AvalConnectionLength - avalConnectionLength;
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetAvalLength(newAvalLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalALength(newAvalALength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalBLength(newAvalBLength, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAvalConnectionLength(newAvalConnectionLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetInitLength(newInitLength, _identityProvider.Username, UserAgent);
             if (newBalance == 0)
             {

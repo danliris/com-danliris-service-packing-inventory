@@ -79,6 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Color = s.Color,
                     Construction = s.Construction,
                     CreatedAgent = s.CreatedAgent,
+
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
                     DeletedAgent = s.DeletedAgent,
@@ -135,14 +136,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             viewModel.InspectionMaterialProductionOrders = viewModel.InspectionMaterialProductionOrders.Where(s => s.Balance > 0).ToList();
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.InspectionMaterialProductionOrders.Select(s =>
                  new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.AvalALength, s.AvalBLength, s.AvalConnectionLength)).ToList());
 
             result = await _repository.InsertAsync(model);
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 var vmItem = viewModel.InspectionMaterialProductionOrders.FirstOrDefault(s => s.ProductionOrder.Id == item.ProductionOrderId);
 
-                result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, vmItem.InitLength, vmItem.AvalLength);
+                result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(vmItem.Id, item.Balance, vmItem.InitLength, vmItem.AvalALength, vmItem.AvalBLength, vmItem.AvalConnectionLength);
 
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
