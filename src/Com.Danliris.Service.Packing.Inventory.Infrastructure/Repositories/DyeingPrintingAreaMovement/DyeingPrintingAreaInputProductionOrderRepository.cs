@@ -120,10 +120,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromOutputIMAsync(int id, double balance, double initLength, double avalALength, double avalBLength, double avalConnectionLength)
+        public Task<int> UpdateFromOutputIMAsync(int id, double balance, double avalALength, double avalBLength, double avalConnectionLength)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
-            var newInitLength = modelToUpdate.InitLength - initLength;
+            var newInitLength = modelToUpdate.InitLength - balance;
             var newAvalALength = modelToUpdate.AvalALength - avalALength;
             var newAvalBLength = modelToUpdate.AvalBLength - avalBLength;
             var newAvalConnectionLength = modelToUpdate.AvalConnectionLength - avalConnectionLength;
