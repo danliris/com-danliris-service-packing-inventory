@@ -79,7 +79,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Color = s.Color,
                     Construction = s.Construction,
                     CreatedAgent = s.CreatedAgent,
-
+                    AvalALength = s.AvalALength,
+                    AvalBLength = s.AvalBLength,
+                    AvalConnectionLength = s.AvalConnectionLength,
+                    
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
                     DeletedAgent = s.DeletedAgent,
