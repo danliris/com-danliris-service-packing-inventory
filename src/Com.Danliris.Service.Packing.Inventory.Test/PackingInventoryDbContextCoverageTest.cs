@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.DyeingPrintingAreaOutputProductionOrders);
             Assert.Empty(dbContext.DyeingPrintingAreaOutputs);
             Assert.Empty(dbContext.DyeingPrintingAreaSummaries);
+            Assert.Empty(dbContext.PackagingStock);
         }
     }
 }
