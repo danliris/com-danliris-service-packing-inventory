@@ -218,9 +218,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         }
 
         //OUT from IM, Not INPUT to AVAL yet (Repository OUTPUT) => for Loader in Aval Input
-        public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(int page, int size, string filter, string order, string keyword)
+        public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, 
+                                                                   string shift, 
+                                                                   int page, 
+                                                                   int size, 
+                                                                   string filter, 
+                                                                   string order, 
+                                                                   string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.DestinationArea == GUDANGAVAL && !s.HasNextAreaDocument);
+            var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate && s.Shift == shift && s.DestinationArea == GUDANGAVAL && !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"

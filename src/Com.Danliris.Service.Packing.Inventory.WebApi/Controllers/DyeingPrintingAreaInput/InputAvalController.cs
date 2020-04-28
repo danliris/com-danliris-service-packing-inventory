@@ -4,7 +4,6 @@ using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -93,13 +92,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("pre-aval")]
-        public IActionResult GetPreAval([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
+        public IActionResult GetPreAval([FromQuery] DateTimeOffset searchDate,
+                                        [FromQuery] string searchShift, 
+                                        [FromQuery] string keyword = null,
+                                        [FromQuery] int page = 1,
+                                        [FromQuery] int size = 25,
+                                        [FromQuery] string order = "{}",
+                                        [FromQuery] string filter = "{}")
         {
             try
             {
 
-                var data = _service.ReadOutputPreAval(page, size, filter, order, keyword);
+                var data = _service.ReadOutputPreAval(searchDate, searchShift, page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)
