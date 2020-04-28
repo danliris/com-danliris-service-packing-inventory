@@ -54,15 +54,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaSummaryModel(DateTimeOffset date, 
                                               string area, 
                                               string type, 
-                                              int dyeingPrintingAreaDocumentId, 
-                                              string dyeingPrintingAreaDocumentBonNo, 
-                                              double balance)
+                                              int dyeingPrintingAreaDocumentId,
+                                               string cartNo,
+                                               string uomUnit,
+                                               double balance)
         {
             Date = date;
             Area = area;
             Type = type;
             DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
-            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
+            CartNo = cartNo;
+            UomUnit = uomUnit;
             Balance = balance;
         }
 

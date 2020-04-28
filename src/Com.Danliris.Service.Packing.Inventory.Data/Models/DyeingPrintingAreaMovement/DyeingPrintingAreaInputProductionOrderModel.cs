@@ -141,7 +141,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(string area, string avalType, 
+        public DyeingPrintingAreaInputProductionOrderModel(string area, 
+                                                           string avalType, 
                                                            string avalCartNo, 
                                                            string uomUnit,  
                                                            double quantity,

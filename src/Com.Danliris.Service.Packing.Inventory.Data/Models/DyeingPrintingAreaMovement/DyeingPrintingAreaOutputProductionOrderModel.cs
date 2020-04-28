@@ -159,8 +159,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
-            AvalUomUnit = avalUomUnit;
-            AvalQuantity = avalQuantity;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
         }
 
