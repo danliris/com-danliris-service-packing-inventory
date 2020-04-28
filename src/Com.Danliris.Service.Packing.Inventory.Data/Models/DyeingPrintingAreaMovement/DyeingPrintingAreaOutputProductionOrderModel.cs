@@ -1,6 +1,7 @@
 ﻿using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement
@@ -36,9 +37,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         //public string AvalId { get; private set; }
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-        public string AvalUomUnit { get; private set; }
-        public double AvalQuantity { get; private set; }
         public double AvalQuantityKg { get; private set; }
+
+        public bool HasNextAreaDocument { get; private set; }
+        public string Area { get; private set; }
+        public string DestinationArea { get; private set; }
 
         public int DyeingPrintingAreaOutputId { get; set; }
         public DyeingPrintingAreaOutputModel DyeingPrintingAreaOutput { get; set; }
@@ -48,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, double avalALength, double avalBLength, double avalConnectionLength)
         {
             ProductionOrderId = productionOrderId;
@@ -69,9 +72,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalALength = avalALength;
             AvalBLength = avalBLength;
             AvalConnectionLength = avalConnectionLength;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance)
         {
             ProductionOrderId = productionOrderId;
@@ -89,9 +96,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Grade = grade;
             ProductionOrderType = productionOrderType;
             PackingInstruction = packingInstruction;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
             string color, string motif, string grade, string uomUnit, string remark)
         {
             ProductionOrderId = productionOrderId;
@@ -106,9 +117,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionOrderType = productionOrderType;
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
             string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, 
             string packagingType, decimal packagingQty, string packagingUnit)
         {
@@ -130,6 +145,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingType = packagingType;
             PackagingQty = packagingQty;
             PackagingUnit = packagingUnit;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
@@ -341,6 +360,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newAvalConnectionLength != AvalConnectionLength)
             {
                 AvalConnectionLength = newAvalConnectionLength;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetArea(string newArea, string user, string agent)
+        {
+            if (newArea != Area)
+            {
+                Area = newArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetHasNextAreaDocument(bool newFlagNextAreaDocument, string user, string agent)
+        {
+            if (newFlagNextAreaDocument != HasNextAreaDocument)
+            {
+                HasNextAreaDocument = newFlagNextAreaDocument;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetDestinationArea(string newDestinationArea, string user, string agent)
+        {
+            if (newDestinationArea != DestinationArea)
+            {
+                DestinationArea = newDestinationArea;
                 this.FlagForUpdate(user, agent);
             }
         }

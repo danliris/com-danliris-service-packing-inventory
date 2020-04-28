@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class InputAvalService : IInputAvalService
     {
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
+        private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
@@ -39,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public InputAvalService(IServiceProvider serviceProvider)
         {
             _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
+            _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -51,7 +53,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Active = model.Active,
                 Id = model.Id,
                 Area = model.Area,
-                BonNo = model.BonNo,
                 CreatedAgent = model.CreatedAgent,
                 CreatedBy = model.CreatedBy,
                 CreatedUtc = model.CreatedUtc,
@@ -108,13 +109,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             //Generate Bon
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
-
-            //Instantiate Input Model
-            var model = new DyeingPrintingAreaInputModel(viewModel.Date, 
-                                                         viewModel.Area, 
-                                                         viewModel.Shift, 
-                                                         bonNo, 
-                                                         viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(s.AvalType,
+            var model = new DyeingPrintingAreaInputModel(viewModel.Date,
+                                                         viewModel.Area,
+                                                         viewModel.Shift,
+                                                         viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
+                                                                                                                                                    s.AvalType,
                                                                                                                                                     s.AvalCartNo,
                                                                                                                                                     s.AvalUomUnit,
                                                                                                                                                     s.AvalQuantity,
@@ -122,46 +121,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                     false))
                                                                                        .ToList());
 
-            //Summed Up Balance (or Quantity in Aval)
-            var summedBalance = model.DyeingPrintingAreaInputProductionOrders.Sum(s => s.Balance);
-
             //Create New Row in Input and ProductionOrdersInput in Each Repository 
             result = await _inputRepository.InsertAsync(model);
 
-            //Flag for Input
-            result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputInspectionMaterialId, true);
+            //Movement from Previous Area to Aval Area
+            foreach (var dyeingPrintingMovement in viewModel.DyeingPrintingMovementIds)
+            {
+                //Flag for Input on DyeingPrintingAreaOutputMovement
+                result += await _outputRepository.UpdateFromInputAsync(dyeingPrintingMovement.DyeingPrintingAreaMovementId, true);
 
-            //Instantiate Summary Model
-            var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
-                                                                  viewModel.Area,
-                                                                  TYPE,
-                                                                  model.Id,
-                                                                  model.BonNo,
-                                                                  summedBalance);
+                foreach (var productionOrderId in dyeingPrintingMovement.ProductionOrderIds)
+                {
+                    //Get Previous Summary
+                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == dyeingPrintingMovement.DyeingPrintingAreaMovementId &&
+                                                                                           s.ProductionOrderId == productionOrderId);
 
-            //Update Previous Summary
-            result += await _summaryRepository.InsertAsync(summaryModel);
+                    //Update Previous Summary
+                    result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
+                }
+            }
 
-            foreach (var item in viewModel.AvalProductionIds)
+            //Summed Up Balance (or Quantity in Aval)
+            var groupedProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy(o => new { o.AvalType, o.AvalCartNo, o.UomUnit })
+                                                                             .Select(i => new { i.Key.AvalType, i.Key.AvalCartNo, i.Key.UomUnit, Quantity = i.Sum(s => s.Balance) });
+
+            foreach (var productionOrder in groupedProductionOrders)
             {
                 //Instantiate Movement Model
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
                                                                         viewModel.Area,
                                                                         TYPE,
                                                                         model.Id,
-                                                                        model.BonNo,
-                                                                        summedBalance);
-
-                //Get Previous Summary
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId && 
-                                                                                       s.ProductionOrderId == item &&
-                                                                                       s.DyeingPrintingAreaDocumentBonNo == viewModel.BonNo);
+                                                                        productionOrder.AvalCartNo,
+                                                                        productionOrder.UomUnit,
+                                                                        productionOrder.Quantity);
 
                 //Create New Row in Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
 
-                //Update Previous Summary
-                result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
+                //Instantiate Summary Model
+                var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
+                                                                      viewModel.Area,
+                                                                      TYPE,
+                                                                      model.Id,
+                                                                      productionOrder.AvalCartNo,
+                                                                      productionOrder.UomUnit,
+                                                                      productionOrder.Quantity);
+
+                //Create New Row in Summary Repository
+                result += await _summaryRepository.InsertAsync(summaryModel);
             }
 
             return result;

@@ -36,6 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<PackingModel> IPPackings { get; set; }
         public DbSet<UnitOfMeasurementModel> IPUnitOfMeasurements { get; set; }
 
+        public DbSet<PackagingStockModel> PackagingStock { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InventoryDocumentPackingEntityTypeConfiguration());
@@ -59,6 +61,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new UOMEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackingEntityTypeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new PackagingStockEntityTypeConfiguration());
+
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -78,6 +82,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<PackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<UnitOfMeasurementModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<PackagingStockModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }

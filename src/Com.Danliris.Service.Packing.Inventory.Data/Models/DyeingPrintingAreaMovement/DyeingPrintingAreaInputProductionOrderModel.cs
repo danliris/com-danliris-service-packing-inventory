@@ -44,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
 
+        public string Area { get; private set; }
+
         public int DyeingPrintingAreaInputId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
@@ -52,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument)
         {
             ProductionOrderId = productionOrderId;
@@ -69,9 +71,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasOutputDocument = hasOutputDocument;
             PackingInstruction = packingInstruction;
             ProductionOrderType = productionOrderType;
+
+            Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument)
         {
             ProductionOrderId = productionOrderId;
@@ -87,9 +91,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasOutputDocument = hasOutputDocument;
             PackingInstruction = packingInstruction;
             ProductionOrderType = productionOrderType;
+            
+            Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,string packagingUnit, string packagingType,decimal packagingQty)
         {
             ProductionOrderId = productionOrderId;
@@ -108,9 +114,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingUnit = packagingUnit;
             PackagingQty = packagingQty;
             PackagingType = packagingType;
+
+            Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status)
         {
             ProductionOrderId = productionOrderId;
@@ -129,9 +137,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Remark = remark;
             Grade = grade;
             Status = status;
+
+            Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(string avalType, 
+        public DyeingPrintingAreaInputProductionOrderModel(string area, string avalType, 
                                                            string avalCartNo, 
                                                            string uomUnit,  
                                                            double quantity,
@@ -144,9 +154,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = quantity;
             AvalQuantityKg = avalQuantityKg;
             HasOutputDocument = hasOutputDocument;
+
+            Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
             string color, string motif, string grade, string uomUnit, bool hasOutputDocument)
         {
             ProductionOrderId = productionOrderId;
@@ -162,6 +174,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
             Grade = grade;
+
+            Area = area;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderOrderQuantity, string user, string agent)
@@ -392,6 +406,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newInitLength != InitLength)
             {
                 InitLength = newInitLength;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetArea(string newArea, string user, string agent)
+        {
+            if (newArea != Area)
+            {
+                Area = newArea;
                 this.FlagForUpdate(user, agent);
             }
         }
