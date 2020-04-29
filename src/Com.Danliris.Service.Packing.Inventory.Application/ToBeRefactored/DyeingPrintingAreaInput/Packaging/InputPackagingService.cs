@@ -292,5 +292,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }
+
+        public ListResult<InputPackagingProductionOrdersViewModel> ReadInProducionOrders(int page, int size, string filter, string order, string keyword)
+        {
+            //var query = _repositoryAreaProductionOrderOutput.ReadAll();
+            var query2 = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.HasNextAreaDocument == false &&s.DyeingPrintingAreaOutputProductionOrders.Any(item => item.DyeingPrintingAreaOutputId == s.Id));
+            var query = _repositoryAreaProductionOrderOutput.ReadAll().Join(query2,
+                                                                                s => s.Id,
+                                                                                s2 => s2.Id,
+                                                                                (s,s2)=> s);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ProductionOrderNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new InputPackagingProductionOrdersViewModel
+            {
+                Id = s.Id,
+                Balance = s.Balance,
+                Buyer = s.Buyer,
+                CartNo = s.CartNo,
+                Color = s.Color,
+                Construction = s.Construction,
+                //HasOutputDocument = s.HasOutputDocument,
+                //IsChecked = s.IsChecked,
+                Motif = s.Motif,
+                PackingInstruction = s.PackingInstruction,
+                ProductionOrder = new ProductionOrder()
+                {
+                    Id = s.ProductionOrderId,
+                    No = s.ProductionOrderNo,
+                    Type = s.ProductionOrderType
+                },
+                Unit = s.Unit,
+                UomUnit = s.UomUnit
+            });
+
+
+            return new ListResult<InputPackagingProductionOrdersViewModel>(data.ToList(), page, size, query.Count());
+        }
     }
 }

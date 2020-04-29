@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput
 {
     [Produces("application/json")]
-    [Route("v1/input-packaging")]
+    [Route("v2/input-packaging")]
     [Authorize]
-    public class InputPackagingController : ControllerBase
+    public class InputPackagingV2Controller : ControllerBase
     {
         private readonly IInputPackagingService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public InputPackagingController(IInputPackagingService service, IIdentityProvider identityProvider)
+        public InputPackagingV2Controller(IInputPackagingService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -112,27 +112,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         [HttpGet("list-bon-in")]
         public IActionResult GetBonInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}") {
-            try
-            {
-
-                var data = _service.ReadBonOutToPack(page, size, filter, order, keyword);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
-            }
-        }
-        [HttpGet("list-production-order-in")]
-        public IActionResult GetSppInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
             {
 
-                var data = _service.ReadInProducionOrders(page, size, filter, order, keyword);
+                var data = _service.ReadBonOutToPack(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

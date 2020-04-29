@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             Length = length;
             HasNextArea = hasNextArea;
         }
-
+        public string PackagingCode { get; set; }
         public int DyeingPrintingProductionOrderId { get; private set; }
         public string ProductionOrderNo { get; private set; }
         public string PackagingType { get; private set; }
@@ -83,6 +83,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             if(hasNextArea != HasNextArea)
             {
                 HasNextArea = hasNextArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+        public void SetPackagingCode(string newPackagingCode, string user, string agent)
+        {
+            if(newPackagingCode != PackagingCode)
+            {
+                PackagingCode = newPackagingCode;
                 this.FlagForUpdate(user, agent);
             }
         }
