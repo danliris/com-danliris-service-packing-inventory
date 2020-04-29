@@ -117,7 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.ShippingProductionOrders.Select(s =>
-                 new DyeingPrintingAreaInputProductionOrderModel(s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.Buyer, s.Construction,
+                 new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.Buyer, s.Construction,
                  s.Color, s.Motif, s.Grade, s.UomUnit, false)).ToList());
 
             result = await _repository.InsertAsync(model);

@@ -104,11 +104,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
-            var model = new DyeingPrintingAreaInputModel(viewModel.Date, 
-                                                         viewModel.Area, 
-                                                         viewModel.Shift, 
-                                                         bonNo, 
-                                                         viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(s.AvalType,
+            var model = new DyeingPrintingAreaInputModel(viewModel.Date,
+                                                         viewModel.Area,
+                                                         viewModel.Shift,
+                                                         bonNo,
+                                                         viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
+                                                                                                                                                    s.AvalType,
                                                                                                                                                     s.AvalCartNo,
                                                                                                                                                     s.UomUnit,
                                                                                                                                                     s.Quantity,
@@ -118,39 +119,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
             {
 
-                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, 
-                                                                        viewModel.Area, 
-                                                                        TYPE, 
-                                                                        model.Id, 
-                                                                        model.BonNo, 
-                                                                        item.ProductionOrderId, 
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
+                                                                        viewModel.Area,
+                                                                        TYPE,
+                                                                        model.Id,
+                                                                        model.BonNo,
+                                                                        item.ProductionOrderId,
                                                                         item.ProductionOrderNo,
-                                                                        item.CartNo, 
-                                                                        item.Buyer, 
-                                                                        item.Construction, 
-                                                                        item.Unit, 
-                                                                        item.Color, 
-                                                                        item.Motif, 
-                                                                        item.UomUnit, 
+                                                                        item.CartNo,
+                                                                        item.Buyer,
+                                                                        item.Construction,
+                                                                        item.Unit,
+                                                                        item.Color,
+                                                                        item.Motif,
+                                                                        item.UomUnit,
                                                                         item.Balance);
 
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId && 
+                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.OutputInspectionMaterialId &&
                                                                                        s.DyeingPrintingAreaDocumentBonNo == viewModel.BonNo);
 
-                var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, 
-                                                                      viewModel.Area, 
-                                                                      TYPE, 
-                                                                      model.Id, 
-                                                                      model.BonNo, 
-                                                                      item.ProductionOrderId, 
+                var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
+                                                                      viewModel.Area,
+                                                                      TYPE,
+                                                                      model.Id,
+                                                                      model.BonNo,
+                                                                      item.ProductionOrderId,
                                                                       item.ProductionOrderNo,
-                                                                      item.CartNo, 
-                                                                      item.Buyer, 
-                                                                      item.Construction, 
-                                                                      item.Unit, 
-                                                                      item.Color, 
-                                                                      item.Motif, 
-                                                                      item.UomUnit, 
+                                                                      item.CartNo,
+                                                                      item.Buyer,
+                                                                      item.Construction,
+                                                                      item.Unit,
+                                                                      item.Color,
+                                                                      item.Motif,
+                                                                      item.UomUnit,
                                                                       item.Balance);
 
 
