@@ -987,9 +987,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<decimal>("Length")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("PackagingCode")
-                        .HasMaxLength(128);
-
                     b.Property<decimal>("PackagingQty")
                         .HasColumnType("decimal(18,2)");
 

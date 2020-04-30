@@ -475,7 +475,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         s2 => s2.Id,
                                                                         (s, s2) => s);
             var query = query3.GroupBy(s => s.ProductionOrderNo).Select(s => new DyeingPrintingAreaInputProductionOrderModel
-             (s.First().ProductionOrderId,
+             (s.First().Area,
+             s.First().ProductionOrderId,
              s.First().ProductionOrderNo,
              s.First().ProductionOrderType,
              s.First().ProductionOrderOrderQuantity,
