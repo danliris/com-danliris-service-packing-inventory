@@ -31,8 +31,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double AvalBLength { get; private set; }
         public double AvalConnectionLength { get; private set; }
 
-
-        //public string AvalId { get; private set; }
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
         public double AvalQuantityKg { get; private set; }

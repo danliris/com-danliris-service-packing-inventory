@@ -28,14 +28,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 
-        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
-        {
-            Date = date;
-            Area = area;
-            Shift = shift;
-            DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
-        }
-
         public void SetArea(string newArea, string user, string agent)
         {
             if (newArea != Area)

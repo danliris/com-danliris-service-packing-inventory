@@ -2,7 +2,6 @@
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
@@ -16,7 +15,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class InputAvalService : IInputAvalService
     {
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
-        private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
@@ -40,7 +38,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public InputAvalService(IServiceProvider serviceProvider)
         {
             _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
-            _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -65,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
-                AvalProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalProductionOrderViewModel()
+                AvalItems = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalProductionOrderViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
@@ -97,7 +94,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
         {
             return string.Format("{0}.{1}.{2}", GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
-
         }
 
         public async Task<int> Create(InputAvalViewModel viewModel)
@@ -109,10 +105,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             //Generate Bon
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+
+            //Instantiate Input Model
             var model = new DyeingPrintingAreaInputModel(viewModel.Date,
                                                          viewModel.Area,
                                                          viewModel.Shift,
-                                                         viewModel.AvalProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
+                                                         bonNo,
+                                                         viewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
                                                                                                                                                     s.AvalType,
                                                                                                                                                     s.AvalCartNo,
                                                                                                                                                     s.AvalUomUnit,

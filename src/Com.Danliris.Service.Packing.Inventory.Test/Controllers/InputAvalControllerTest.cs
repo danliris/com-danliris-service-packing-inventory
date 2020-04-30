@@ -55,17 +55,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                 return new InputAvalViewModel()
                 {
                     Area = "GUDANG AVAL",
-                    BonNo = "GA.20.0001",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
-                    OutputInspectionMaterialId = 1,
-                    AvalProductionOrders = new List<InputAvalProductionOrderViewModel>()
+                    AvalItems = new List<InputAvalProductionOrderViewModel>()
                     {
                         new InputAvalProductionOrderViewModel()
                         {
                             AvalType = "KAIN KOTOR",
-                            AvalCartNo = "5",
-                            AvalUomUnit = "MTR",
+                            AvalCartNo = "5-11",
+                            AvalUomUnit = "KRG",
                             AvalQuantity = 5,
                             AvalQuantityKg = 1,
                             HasOutputDocument = false,
