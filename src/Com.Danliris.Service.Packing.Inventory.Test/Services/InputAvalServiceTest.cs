@@ -48,9 +48,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
                     BonNo = "GA.20.0001",
-                    AvalItems = new List<InputAvalProductionOrderViewModel>()
+                    AvalItems = new List<InputAvalItemViewModel>()
                     {
-                        new InputAvalProductionOrderViewModel()
+                        new InputAvalItemViewModel()
                         {
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",

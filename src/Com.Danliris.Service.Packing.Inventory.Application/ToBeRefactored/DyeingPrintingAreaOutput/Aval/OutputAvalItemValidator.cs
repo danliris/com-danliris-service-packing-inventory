@@ -2,9 +2,9 @@
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval
 {
-    public class OutputAvalProductionOrderValidator : AbstractValidator<OutputAvalProductionOrderViewModel>
+    public class OutputAvalItemValidator : AbstractValidator<OutputAvalItemViewModel>
     {
-        public OutputAvalProductionOrderValidator()
+        public OutputAvalItemValidator()
         {
             RuleFor(data => data.Quantity).NotEmpty().WithMessage("Harus Memiliki Qty Satuan!");
             RuleFor(data => data.QuantityKg).NotEmpty().WithMessage("Harus Memiliki Qty Kg!");

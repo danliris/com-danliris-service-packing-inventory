@@ -2,7 +2,7 @@
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval
 {
-    public class OutputAvalProductionOrderViewModel : BaseViewModel
+    public class OutputAvalItemViewModel : BaseViewModel
     {
         public string AvalType { get; set; }
         public string AvalCartNo { get; set; }

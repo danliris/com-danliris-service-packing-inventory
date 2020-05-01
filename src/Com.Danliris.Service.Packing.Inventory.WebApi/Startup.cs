@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputPackagingViewModel>, InputPackagingValidator>();
             services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
-            services.AddSingleton<IValidator<InputAvalProductionOrderViewModel>, InputAvalProductionOrderValidator>();
+            services.AddSingleton<IValidator<InputAvalItemViewModel>, InputAvalItemValidator>();
             //services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();

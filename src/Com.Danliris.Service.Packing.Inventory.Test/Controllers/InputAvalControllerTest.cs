@@ -57,9 +57,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     Area = "GUDANG AVAL",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
-                    AvalItems = new List<InputAvalProductionOrderViewModel>()
+                    AvalItems = new List<InputAvalItemViewModel>()
                     {
-                        new InputAvalProductionOrderViewModel()
+                        new InputAvalItemViewModel()
                         {
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5-11",

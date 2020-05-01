@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval
 {
-    public class InputAvalProductionOrderViewModel : BaseViewModel
+    public class InputAvalItemViewModel : BaseViewModel
     {
         public string AvalType { get; set; }
         public string AvalCartNo { get; set; }

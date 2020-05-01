@@ -9,14 +9,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public InputAvalViewModel()
         {
-            AvalItems = new HashSet<InputAvalProductionOrderViewModel>();
+            AvalItems = new HashSet<InputAvalItemViewModel>();
         }
 
         public string Area { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }
         public string BonNo { get; set; }
-        public ICollection<InputAvalProductionOrderViewModel> AvalItems { get; set; }
+        public ICollection<InputAvalItemViewModel> AvalItems { get; set; }
         public List<InputAvalDyeingPrintingAreaMovementIdsViewModel> DyeingPrintingMovementIds { get; set; }
         //public List<int> AvalProductionOrderIds { get; set; }
     }

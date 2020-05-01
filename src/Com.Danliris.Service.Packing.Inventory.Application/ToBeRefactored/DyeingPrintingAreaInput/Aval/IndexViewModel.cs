@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public IndexViewModel()
         {
-            AvalProductionOrders = new HashSet<InputAvalProductionOrderViewModel>();
+            AvalProductionOrders = new HashSet<InputAvalItemViewModel>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string UomUnit { get; set; }
         public string Qty { get; set; }
         public string QtyKg { get; set; }
-        public ICollection<InputAvalProductionOrderViewModel> AvalProductionOrders { get; set; }
+        public ICollection<InputAvalItemViewModel> AvalProductionOrders { get; set; }
     }
 }

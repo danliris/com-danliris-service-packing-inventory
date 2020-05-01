@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval
 {
-    public class InputAvalProductionOrderValidator : AbstractValidator<InputAvalProductionOrderViewModel>
+    public class InputAvalItemValidator : AbstractValidator<InputAvalItemViewModel>
     {
-        public InputAvalProductionOrderValidator()
+        public InputAvalItemValidator()
         {
             RuleFor(data => data.AvalType).NotEmpty().WithMessage("Harus Memiliki Jenis!");
             RuleFor(data => data.AvalUomUnit).NotEmpty().WithMessage("Harus Memiliki Satuan!");

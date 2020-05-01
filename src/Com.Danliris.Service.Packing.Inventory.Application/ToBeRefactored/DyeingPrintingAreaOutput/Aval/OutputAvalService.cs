@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 //Shift = model.Shift,
-                AvalProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputAvalProductionOrderViewModel()
+                AvalProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputAvalItemViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
@@ -193,7 +193,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
-                AvalProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputAvalProductionOrderViewModel()
+                AvalProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputAvalItemViewModel()
                 {
                     Id = d.Id,
                     AvalType = d.AvalType,
