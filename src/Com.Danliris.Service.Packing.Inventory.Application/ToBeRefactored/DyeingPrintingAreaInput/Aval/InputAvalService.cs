@@ -194,22 +194,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
             var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
             {
-                Area = s.Area,
+                //Area = s.Area,
                 BonNo = s.BonNo,
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
-                AvalProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputAvalItemViewModel()
-                {
-                    Id = d.Id,
-                    AvalType = d.AvalType,
-                    AvalCartNo = d.AvalCartNo,
-                    AvalUomUnit = d.UomUnit,
-                    AvalQuantity = d.Balance,
-                    AvalQuantityKg = d.AvalQuantityKg,
-                    HasOutputDocument = d.HasOutputDocument,
-                    IsChecked = d.IsChecked
-                }).ToList()
+                //AvalProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputAvalItemViewModel()
+                //{
+                //    Id = d.Id,
+                //    AvalType = d.AvalType,
+                //    AvalCartNo = d.AvalCartNo,
+                //    AvalUomUnit = d.UomUnit,
+                //    AvalQuantity = d.Balance,
+                //    AvalQuantityKg = d.AvalQuantityKg,
+                //    HasOutputDocument = d.HasOutputDocument,
+                //    IsChecked = d.IsChecked
+                //}).ToList()
             });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
