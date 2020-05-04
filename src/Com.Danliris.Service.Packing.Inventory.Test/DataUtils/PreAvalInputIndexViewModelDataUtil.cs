@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     {
                         new OutputPreAvalProductionOrderViewModel()
                         {
+                            Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
                                 Code = "sd",
