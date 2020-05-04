@@ -74,20 +74,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
-        //private IndexViewModel IndexViewModel
-        //{
-        //    get
-        //    {
-        //        return new IndexViewModel()
-        //        {
-        //            Id = 1,
-        //            Date = DateTimeOffset.UtcNow,
-        //            BonNo = "IM.GA.2001",
-        //            Shift = "PAGI",
-        //        };
-        //    }
-        //}
-
         [Fact]
         public void Should_Validator_Success()
         {
