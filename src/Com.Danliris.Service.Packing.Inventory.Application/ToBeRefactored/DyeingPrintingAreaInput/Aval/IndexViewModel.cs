@@ -13,10 +13,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //}
 
         public int Id { get; set; }
-        //public string Area { get; set; }
         public DateTimeOffset Date { get; set; }
         public string BonNo { get; set; }
         public string Shift { get; set; }
+        //public string Area { get; set; }
         //public string AvalType { get; set; }
         //public string CartNo { get; set; }
         //public string UomUnit { get; set; }
