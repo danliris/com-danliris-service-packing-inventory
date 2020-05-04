@@ -222,8 +222,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.ReadOutputPreAval(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<PreAvalIndexViewModel>(new List<PreAvalIndexViewModel>(), 1, 1, 1));
+            serviceMock.Setup(s => s.ReadOutputPreAval(It.IsAny<DateTimeOffset>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<int>(), 
+                                                       It.IsAny<int>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<string>()))
+                       .Returns(new ListResult<PreAvalIndexViewModel>(new List<PreAvalIndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -242,12 +248,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.ReadOutputPreAval(dataUtil.Date, 
-                                                       dataUtil.Shift, 
-                                                       It.IsAny<int>(), 
-                                                       It.IsAny<int>(), 
-                                                       It.IsAny<string>(), 
-                                                       It.IsAny<string>(), 
+            serviceMock.Setup(s => s.ReadOutputPreAval(dataUtil.Date,
+                                                       dataUtil.Shift,
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
                                                        It.IsAny<string>()))
                        .Throws(new Exception());
             var service = serviceMock.Object;

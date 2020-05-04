@@ -98,8 +98,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                                         [FromQuery] string order = "{}",
                                         [FromQuery] string filter = "{}")
         {
-            try
-            {
+            //try
+            //{
                 var data = _service.ReadOutputPreAval(searchDate, searchShift, page, size, filter, order, keyword);
                 if (data == null)
                 {
@@ -109,12 +109,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 {
                     return Ok(data);
                 }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-            }
+            //}
         }
     }
 }
