@@ -19,7 +19,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1,1),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,","s","s","s","s","d","d","e"),
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem",10,"a","test","PACK",10,"Pack")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem",10,"a","test","PACK",10,"Pack"),
+                new DyeingPrintingAreaOutputProductionOrderModel("SAMBUNGAN","5-11","KRG", 15, 10)
 
             });
         }
@@ -31,7 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,null,null,null,null,null,null,null,null,null,null,null,1),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,0,0,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,null,null,null,null,null,null,null),
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,1,null)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,null,null,null,null,null,null,null,null,null,1,null,null,null,1,null),
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,null, 0, 0)
 
             });
         }

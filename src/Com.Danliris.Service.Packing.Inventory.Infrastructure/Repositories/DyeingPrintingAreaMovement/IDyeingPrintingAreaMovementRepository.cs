@@ -12,6 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         IQueryable<DyeingPrintingAreaMovementModel> GetDbSet();
         IQueryable<DyeingPrintingAreaMovementModel> ReadAllIgnoreQueryFilter();
-        Task<int> UpdateToAvalAsync(DyeingPrintingAreaSummaryModel model, DateTimeOffset date, string area, string type);
+        //Task<int> UpdateToAvalAsync(DyeingPrintingAreaMovementModel model, DateTimeOffset date, string area, string type);
     }
 }

@@ -85,9 +85,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> UpdateToAvalAsync(DyeingPrintingAreaSummaryModel model, DateTimeOffset date, string area, string type)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == model.Id);
-            modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetType(model.Type, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDate(date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetArea(area, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetType(type, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

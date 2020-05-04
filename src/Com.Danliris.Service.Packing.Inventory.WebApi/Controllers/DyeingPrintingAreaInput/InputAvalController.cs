@@ -101,7 +101,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 var data = _service.ReadOutputPreAval(searchDate, searchShift, page, size, filter, order, keyword);
-                return Ok(data);
+                if (data == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    return Ok(data);
+                }
             }
             catch (Exception ex)
             {
