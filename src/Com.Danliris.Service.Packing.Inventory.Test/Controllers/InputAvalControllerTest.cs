@@ -81,16 +81,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         //        return new IndexViewModel()
         //        {
         //            Id = 1,
-        //            Area = "GUDANG AVAL",
         //            Date = DateTimeOffset.UtcNow,
         //            BonNo = "IM.GA.2001",
         //            Shift = "PAGI",
-        //            AvalType = "SAMBUNGAN",
-        //            CartNo = ,
-        //            UomUnit = ,
-        //            Qty = ,
-        //            QtyKg = ,
-        //            AvalProductionOrder = new ICollection<InputAvalItemViewModel>(new HashSet<InputAvalItemViewModel>())
         //        };
         //    }
         //}
