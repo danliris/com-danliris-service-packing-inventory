@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public AvailableAvalIndexViewModel()
         {
-            AvailableAvalProductionOrders = new HashSet<AvailableAvalProductionOrderViewModel>();
+            AvalItems = new HashSet<AvailableAvalItemViewModel>();
         }
 
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public string Shift { get; set; }
-        public ICollection<AvailableAvalProductionOrderViewModel> AvailableAvalProductionOrders { get; set; }
+        public ICollection<AvailableAvalItemViewModel> AvalItems { get; set; }
     }
 }

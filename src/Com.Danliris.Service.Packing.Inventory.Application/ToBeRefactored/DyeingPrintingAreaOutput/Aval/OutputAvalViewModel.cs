@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset Date { get; set; }
         public string DestinationArea { get; set; }
         public string Shift { get; set; }
-        //public string BonNo { get; set; }
+        public string BonNo { get; set; }
         public int InputAvalId { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public ICollection<OutputAvalItemViewModel> AvalItems { get; set; }

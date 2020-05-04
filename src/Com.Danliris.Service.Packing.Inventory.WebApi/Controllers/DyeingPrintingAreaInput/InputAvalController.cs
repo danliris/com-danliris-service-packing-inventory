@@ -61,7 +61,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
                 var data = await _service.ReadById(id);
                 return Ok(new
                 {
@@ -80,7 +79,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
                 var data = _service.Read(page, size, filter, order, keyword);
                 return Ok(data);
             }
@@ -102,7 +100,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
                 var data = _service.ReadOutputPreAval(searchDate, searchShift, page, size, filter, order, keyword);
                 return Ok(data);
             }

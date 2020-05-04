@@ -101,7 +101,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
 
             //Count Existing Document in Aval by Year
-            int totalCurrentYearData = _inputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && s.CreatedUtc.Year == viewModel.Date.Year);
+            int totalCurrentYearData = _inputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && 
+                                                                                              s.CreatedUtc.Year == viewModel.Date.Year);
 
             //Generate Bon
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
@@ -177,7 +178,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //Already INPUT AVAL (Repository INPUT) for List in Input Aval List
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && 
+                                                              s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -226,14 +228,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         //OUT from IM, Not INPUT to AVAL yet (Repository OUTPUT) => for Loader in Aval Input
         public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, 
-                                                                   string shift, 
+                                                                   string searchShift, 
                                                                    int page, 
                                                                    int size, 
                                                                    string filter, 
                                                                    string order, 
                                                                    string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate && s.Shift == shift && s.DestinationArea == GUDANGAVAL && !s.HasNextAreaDocument);
+            var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate && 
+                                                               s.Shift == searchShift && 
+                                                               s.DestinationArea == GUDANGAVAL && 
+                                                               !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
