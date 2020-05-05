@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "pas",
                     HasNextAreaDocument = false,
                     DestinationArea = "GUDANG JADI",
+                    Group = "A",
                     InputTransitId = 1,
                     TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
                     {

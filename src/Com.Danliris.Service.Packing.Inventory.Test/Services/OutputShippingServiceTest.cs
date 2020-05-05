@@ -49,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "pas",
                     HasNextAreaDocument = false,
                     DestinationArea = "SHIPPING",
+                    Group = "A",
                     InputShippingId = 1,
                     ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
                     {

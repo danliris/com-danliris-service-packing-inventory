@@ -47,6 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
+                    Group = "A",
                     OutputId = 1,
                     ShippingProductionOrders = new List<InputShippingProductionOrderViewModel>()
                     {

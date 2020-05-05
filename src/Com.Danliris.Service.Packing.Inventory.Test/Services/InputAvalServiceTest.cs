@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
                     BonNo = "GA.20.0001",
+                    Group = "A",
                     AvalItems = new List<InputAvalItemViewModel>()
                     {
                         new InputAvalItemViewModel()

@@ -46,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
+                    Group = "A",
                     HasNextAreaDocument = false,
                     DestinationArea = "TRANSIT",
                     InputInspectionMaterialId = 1,

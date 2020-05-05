@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Area = "INSPECTION MATERIAL",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
+                    Group = "A",
                     Shift = "pas",
                     InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
                     {
