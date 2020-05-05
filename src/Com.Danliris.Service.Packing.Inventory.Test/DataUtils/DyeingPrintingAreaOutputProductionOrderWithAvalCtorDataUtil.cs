@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputProductionOrderModel GetModel()
         {
-            var model = new DyeingPrintingAreaOutputProductionOrderModel("IM", "AVAL", false, 1,"test",1,"43124","asdf","asdf","asdfsad","asf","asdf","asdf","asdfa","asfas");
+            var model = new DyeingPrintingAreaOutputProductionOrderModel("IM", "AVAL", false, 1,"test",1,"43124","asdf",1,"asdf","asdfsad","asf","asdf","asdf","asdfa","asfas");
             model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel();
 
             return model;
@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputProductionOrderModel GetEmptyModel()
         {
-            var model = new DyeingPrintingAreaOutputProductionOrderModel(null, null, true, 0, null, 0, null, null, null, null, null, null, null, null, null);
+            var model = new DyeingPrintingAreaOutputProductionOrderModel(null, null, true, 0, null, 0, null, null,0, null, null, null, null, null, null, null);
             model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel();
 
             return model;

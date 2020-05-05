@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Area = "INSPECTION MATERIAL",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
+                    Group = "A",
                     Shift = "pas",
                     InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
                     {
@@ -79,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.InspectionMaterialProductionOrders.Select(s =>
+                return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.InspectionMaterialProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument)).ToList());
             }
