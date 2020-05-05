@@ -116,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status)
         {
             ProductionOrderId = productionOrderId;
@@ -132,6 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasOutputDocument = hasOutputDocument;
             PackingInstruction = packingInstruction;
             ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
             Remark = remark;
             Grade = grade;
             Status = status;

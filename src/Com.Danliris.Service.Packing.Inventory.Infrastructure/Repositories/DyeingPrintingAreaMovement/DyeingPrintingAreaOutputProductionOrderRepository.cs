@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetConstruction(model.Construction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGrade(model.Grade, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMotif(model.Motif, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderNo, model.ProductionOrderType, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetProductionOrder(model.ProductionOrderId, model.ProductionOrderNo, model.ProductionOrderType, model.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackingInstruction(model.PackingInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);

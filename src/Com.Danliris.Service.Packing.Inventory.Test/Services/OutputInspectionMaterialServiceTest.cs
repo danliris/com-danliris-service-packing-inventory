@@ -46,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
+                    Group = "A",
                     HasNextAreaDocument = false,
                     DestinationArea = "TRANSIT",
                     InputInspectionMaterialId = 1,
@@ -83,8 +84,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                    ViewModel.InspectionMaterialProductionOrders.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                   ViewModel.Group, ViewModel.InspectionMaterialProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
             }
         }
@@ -94,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   new List<DyeingPrintingAreaOutputProductionOrderModel>());
+                    ViewModel.Group, new List<DyeingPrintingAreaOutputProductionOrderModel>());
             }
         }
 

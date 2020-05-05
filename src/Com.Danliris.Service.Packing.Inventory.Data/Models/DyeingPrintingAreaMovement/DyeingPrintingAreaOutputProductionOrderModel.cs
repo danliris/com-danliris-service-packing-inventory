@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double Balance { get; private set; }
         public string PackingInstruction { get; private set; }
         public string ProductionOrderType { get; private set; }
+        public double ProductionOrderOrderQuantity { get; private set; }
+
         public string PackagingType { get; private set; }
         public decimal PackagingQty { get; private set; }
         public string PackagingUnit { get; private set; }
@@ -50,11 +52,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, double avalALength, double avalBLength, double avalConnectionLength)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
             CartNo = cartNo;
             Buyer = buyer;
             Construction = construction;
@@ -77,11 +80,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasNextAreaDocument = hasNextAreaDocument;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
             CartNo = cartNo;
             Buyer = buyer;
             Construction = construction;
@@ -101,11 +105,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasNextAreaDocument = hasNextAreaDocument;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, string buyer, string construction,
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
             string color, string motif, string grade, string uomUnit, string remark)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
             Buyer = buyer;
             Construction = construction;
             Color = color;
@@ -123,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 
-            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, 
+            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
             string packagingType, decimal packagingQty, string packagingUnit)
         {
             ProductionOrderId = productionOrderId;
@@ -141,6 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
             PackingInstruction = packingInstruction;
             ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
             PackagingType = packagingType;
             PackagingQty = packagingQty;
             PackagingUnit = packagingUnit;
@@ -163,7 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKg;
         }
 
-        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)
+        public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)
             {
@@ -180,6 +186,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newProductionOrderType != ProductionOrderType)
             {
                 ProductionOrderType = newProductionOrderType;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if(newProductionOrderQuantity != ProductionOrderOrderQuantity)
+            {
+                ProductionOrderOrderQuantity = newProductionOrderQuantity;
                 this.FlagForUpdate(user, agent);
             }
         }

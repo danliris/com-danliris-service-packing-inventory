@@ -15,10 +15,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaInputModel GetModel()
         {
-            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", new List<DyeingPrintingAreaInputProductionOrderModel>()
+            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", "A", new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
                 new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e","rr","1","as","test","unit","color","motif","mtr",1,false),
-                 new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e","rr","1","as","test","unit","color","motif","mtr",1,false,"s","s","s"),
+                 new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,false,"s","s","s"),
                  new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a",1,"a","a","a","a","a","a","a","a",false),
                  new DyeingPrintingAreaInputProductionOrderModel("IM", "AVAL A", "5-11", "KRG", 152, 10, false),
                  new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,false)
@@ -27,10 +27,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaInputModel GetEmptyModel()
         {
-            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, null, null, null, new List<DyeingPrintingAreaInputProductionOrderModel>()
+            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, null, null, null, null, new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,null,null,null,null,null,null,null,null,1,true),
-                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,null,null,null,null,null,null,null,null,1,true,null,null,null),
+                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,1,null,null,null,null,null,null,null,null,1,true,null,null,null),
                  new DyeingPrintingAreaInputProductionOrderModel(null,0,null,0,null,null,null,null,null,null,null,null,true),
                  new DyeingPrintingAreaInputProductionOrderModel(null, null, null, null, 0, 0, true),
                  new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,0,null,null,null,null,null,null,null,null,1,true),
