@@ -17,6 +17,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                   string filter,
                                                                   string order,
                                                                   string keyword);
-        Task<MemoryStream> GenerateExcel(int id);
+        //Task<MemoryStream> GenerateExcel(int id);
     }
 }
