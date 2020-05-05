@@ -84,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.Area,
                                                         ViewModel.Shift,
                                                         ViewModel.BonNo,
+                                                        ViewModel.Group,
                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
                                                                                                                                                    s.AvalType,
                                                                                                                                                    s.AvalCartNo,
@@ -184,6 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        "no",
                                                        false, 
                                                        "GUDANG AVAL", 
+                                                       "A",
                                                        new List<DyeingPrintingAreaOutputProductionOrderModel>()
                                                        {
                                                            new DyeingPrintingAreaOutputProductionOrderModel("IM",
@@ -192,6 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             1,
                                                                                                             "no",
                                                                                                             "t",
+                                                                                                            1,
                                                                                                             "1",
                                                                                                             "1",
                                                                                                             "sd",
