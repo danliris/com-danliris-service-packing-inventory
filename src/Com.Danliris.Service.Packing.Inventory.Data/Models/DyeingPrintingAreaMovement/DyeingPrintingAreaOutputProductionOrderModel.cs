@@ -33,6 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
+        
+        public string AvalType { get; private set; }
+        public string AvalCartNo { get; private set; }
+        public double AvalQuantityKg { get; private set; }
 
         public bool HasNextAreaDocument { get; private set; }
         public string Area { get; private set; }
@@ -144,6 +148,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DestinationArea = destinationArea;
             HasNextAreaDocument = hasNextAreaDocument;
+        }
+
+        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
+                                                            string avalCartNo,
+                                                            string avalUomUnit,
+                                                            double avalQuantity,
+                                                            double avalQuantityKg)
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantity;
+            AvalQuantityKg = avalQuantityKg;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, string user, string agent)

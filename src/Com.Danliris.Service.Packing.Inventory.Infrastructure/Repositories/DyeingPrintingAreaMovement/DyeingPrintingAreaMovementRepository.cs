@@ -81,5 +81,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        //public Task<int> UpdateToAvalAsync(DyeingPrintingAreaMovementModel model, DateTimeOffset date, string area, string type)
+        //{
+        //    var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == model.Id);
+        //    modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+        //    modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
+        //    modelToUpdate.SetType(model.Type, _identityProvider.Username, UserAgent);
+
+        //    return _dbContext.SaveChangesAsync();
+        //}
     }
 }

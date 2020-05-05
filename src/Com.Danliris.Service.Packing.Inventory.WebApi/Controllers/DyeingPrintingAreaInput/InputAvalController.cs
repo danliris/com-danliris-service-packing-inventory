@@ -4,7 +4,6 @@ using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -62,7 +61,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
                 var data = await _service.ReadById(id);
                 return Ok(new
                 {
@@ -81,7 +79,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
                 var data = _service.Read(page, size, filter, order, keyword);
                 return Ok(data);
             }
@@ -89,6 +86,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
+            }
+        }
+
+        [HttpGet("pre-aval")]
+        public IActionResult GetPreAval([FromQuery] DateTimeOffset searchDate,
+                                        [FromQuery] string searchShift,
+                                        [FromQuery] string keyword = null,
+                                        [FromQuery] int page = 1,
+                                        [FromQuery] int size = 25,
+                                        [FromQuery] string order = "{}",
+                                        [FromQuery] string filter = "{}")
+        {
+            var data = _service.ReadOutputPreAval(searchDate, searchShift, page, size, filter, order, keyword);
+            if (data == null)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return Ok(data);
             }
         }
     }

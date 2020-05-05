@@ -55,19 +55,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                 return new InputAvalViewModel()
                 {
                     Area = "GUDANG AVAL",
-                    BonNo = "GA.20.0001",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
-                    OutputInspectionMaterialId = 1,
-                    AvalProductionOrders = new List<InputAvalProductionOrderViewModel>()
+                    AvalItems = new List<InputAvalItemViewModel>()
                     {
-                        new InputAvalProductionOrderViewModel()
+                        new InputAvalItemViewModel()
                         {
                             AvalType = "KAIN KOTOR",
-                            AvalCartNo = "5",
-                            UomUnit = "MTR",
-                            Quantity = 5,
-                            QuantityKg = 1,
+                            AvalCartNo = "5-11",
+                            AvalUomUnit = "KRG",
+                            AvalQuantity = 5,
+                            AvalQuantityKg = 1,
                             HasOutputDocument = false,
                             IsChecked = false
                         }
@@ -215,6 +213,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.Get();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetPreAval()
+        {
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.ReadOutputPreAval(It.IsAny<DateTimeOffset>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<int>(), 
+                                                       It.IsAny<int>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<string>(), 
+                                                       It.IsAny<string>()))
+                       .Returns(new ListResult<PreAvalIndexViewModel>(new List<PreAvalIndexViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetPreAval(ViewModel.Date, ViewModel.Shift);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetPreAval()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.ReadOutputPreAval(dataUtil.Date,
+                                                       dataUtil.Shift,
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetPreAval(DateTimeOffset.UtcNow, "SIANG");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
