@@ -31,10 +31,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double AvalBLength { get; private set; }
         public double AvalConnectionLength { get; private set; }
 
-
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-        public double QuantityKg { get; private set; }
+        public double AvalQuantityKg { get; private set; }
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -140,18 +139,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(string area, string avalType, 
+        public DyeingPrintingAreaInputProductionOrderModel(string area, 
+                                                           string avalType, 
                                                            string avalCartNo, 
                                                            string uomUnit,  
                                                            double quantity,
-                                                           double quantityKg,
+                                                           double avalQuantityKg,
                                                            bool hasOutputDocument)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
             UomUnit = uomUnit;
             Balance = quantity;
-            QuantityKg = quantityKg;
+            AvalQuantityKg = avalQuantityKg;
             HasOutputDocument = hasOutputDocument;
 
             Area = area;
