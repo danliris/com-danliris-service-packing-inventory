@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class InputWarehousesProductionOrdersViewModel :BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
+        public string ProductionOrderNo { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }
@@ -30,5 +31,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string PackagingType { get; set; }
         public string PackagingUnit { get; set; }
         public decimal PackagingQty { get; set; }
+        public double QtyOrder { get; set; }
     }
 }

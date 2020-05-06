@@ -153,7 +153,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             Area = area;
         }
+        /// <summary>
+        /// construtor for Gudang barang jadi
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty,string grade,double productionOrderOrderQuantity)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            PackagingUnit = packagingUnit;
+            PackagingQty = packagingQty;
+            PackagingType = packagingType;
+            Grade = grade;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
 
+            Area = area;
+        }
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status)
         {
