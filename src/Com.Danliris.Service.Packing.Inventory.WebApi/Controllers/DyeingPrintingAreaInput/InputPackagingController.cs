@@ -142,19 +142,19 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         //    }
         //}
 
-        [HttpGet("production-order-by-bon")]
-        public IActionResult GetSppInPacking([FromQuery] string bonNo = null)
-        {
-            try
-            {
-                var data = _service.ReadProductionOrderByBon(bonNo);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //[HttpGet("production-order-by-bon")]
+        //public IActionResult GetSppInPacking([FromQuery] string bonNo = null)
+        //{
+        //    try
+        //    {
+        //        var data = _service.ReadProductionOrderByBon(bonNo);
+        //        return Ok(data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-            }
-        }
+        //    }
+        //}
     }
 }
