@@ -127,21 +127,21 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
-        [HttpGet("list-production-order-in")]
-        public IActionResult GetSppInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
-        {
-            try
-            {
+        //[HttpGet("list-production-order-in")]
+        //public IActionResult GetSppInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        //    [FromQuery] string filter = "{}")
+        //{
+        //    try
+        //    {
 
-                var data = _service.ReadSppInFromPack(page, size, filter, order, keyword);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //        var data = _service.ReadSppInFromPack(page, size, filter, order, keyword);
+        //        return Ok(data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-            }
-        }
+        //    }
+        //}
     }
 }
