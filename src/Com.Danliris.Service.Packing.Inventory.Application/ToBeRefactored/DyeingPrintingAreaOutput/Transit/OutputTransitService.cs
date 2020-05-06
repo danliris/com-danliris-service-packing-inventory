@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = model.Date,
                 DeletedAgent = model.DeletedAgent,
                 DeletedBy = model.DeletedBy,
+                Group = model.Group,
                 DeletedUtc = model.DeletedUtc,
                 IsDeleted = model.IsDeleted,
                 LastModifiedAgent = model.LastModifiedAgent,
@@ -96,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Id = s.ProductionOrderId,
                         No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
                         Type = s.ProductionOrderType
                     },
                     Unit = s.Unit,
@@ -222,6 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Id = s.Id,
                 Shift = s.Shift,
                 DestinationArea = s.DestinationArea,
+                Group = s.Group,
                 HasNextAreaDocument = s.HasNextAreaDocument,
                 TransitProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputTransitProductionOrderViewModel()
                 {
@@ -235,7 +238,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Id = d.ProductionOrderId,
                         No = d.ProductionOrderNo,
-                        Type = d.ProductionOrderType
+                        Type = d.ProductionOrderType,
+                        OrderQuantity = d.ProductionOrderOrderQuantity
                     },
                     Id = d.Id,
                     Unit = d.Unit,
