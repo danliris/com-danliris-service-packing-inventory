@@ -18,6 +18,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string BonNo { get; set; }
         public ICollection<InputAvalItemViewModel> AvalItems { get; set; }
         public List<InputAvalDyeingPrintingAreaMovementIdsViewModel> DyeingPrintingMovementIds { get; set; }
-        //public List<int> AvalProductionOrderIds { get; set; }
     }
 }

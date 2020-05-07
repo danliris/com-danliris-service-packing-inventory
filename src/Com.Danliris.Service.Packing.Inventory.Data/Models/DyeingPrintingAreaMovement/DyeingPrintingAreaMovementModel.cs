@@ -55,6 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                string area, 
                                                string type, 
                                                int dyeingPrintingAreaDocumentId, 
+                                               string dyeingPrintingAreaDocumentBonNo,
                                                string cartNo,
                                                string uomUnit,
                                                double balance)
@@ -63,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             Type = type;
             DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
+            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
             CartNo = cartNo;
             UomUnit = uomUnit;
             Balance = balance;

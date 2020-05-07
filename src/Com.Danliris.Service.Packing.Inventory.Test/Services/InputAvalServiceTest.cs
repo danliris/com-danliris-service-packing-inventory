@@ -85,12 +85,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.Shift,
                                                         ViewModel.BonNo,
                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
-                                                                                                                                                   s.AvalType,
-                                                                                                                                                   s.AvalCartNo,
-                                                                                                                                                   s.AvalUomUnit,
-                                                                                                                                                   s.AvalQuantity,
-                                                                                                                                                   s.AvalQuantityKg,
-                                                                                                                                                   s.HasOutputDocument))
+                                                                                                                                        s.AvalType,
+                                                                                                                                        s.AvalCartNo,
+                                                                                                                                        s.AvalUomUnit,
+                                                                                                                                        s.AvalQuantity,
+                                                                                                                                        s.AvalQuantityKg,
+                                                                                                                                        s.HasOutputDocument))
                                                                            .ToList());
             }
         }
@@ -123,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                            ViewModel.Area,
                                                            "IN",
                                                            areaMovement.DyeingPrintingAreaMovementId,
+                                                           ViewModel.BonNo,
                                                            avalItem.AvalCartNo,
                                                            avalItem.AvalUomUnit,
                                                            avalItem.AvalQuantity)

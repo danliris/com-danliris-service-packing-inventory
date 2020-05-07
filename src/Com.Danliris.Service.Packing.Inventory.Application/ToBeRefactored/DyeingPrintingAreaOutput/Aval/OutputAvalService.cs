@@ -16,10 +16,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class OutputAvalService : IOutputAvalService
     {
-        private readonly IDyeingPrintingAreaOutputRepository _repository;
+        private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
+        private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
+        private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
         private const string TYPE = "OUT";
 
@@ -39,10 +41,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public OutputAvalService(IServiceProvider serviceProvider)
         {
-            _repository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
+            _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
+            _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
+            _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
         private OutputAvalViewModel MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -52,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Active = model.Active,
                 Id = model.Id,
                 Area = model.Area,
-                BonNo = model.BonNo,
+                //BonNo = model.BonNo,
                 CreatedAgent = model.CreatedAgent,
                 CreatedBy = model.CreatedBy,
                 CreatedUtc = model.CreatedUtc,
@@ -65,6 +69,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
+                DestinationArea = model.DestinationArea,
+                HasNextAreaDocument = model.HasNextAreaDocument,
                 AvalItems = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputAvalItemViewModel()
                 {
                     Active = s.Active,
@@ -82,11 +88,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.Id,
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
-                    UomUnit = s.UomUnit,
-                    Quantity = s.Balance,
-                    QuantityKg = s.AvalQuantityKg,
-                    //HasOutputDocument = s.HasOutputDocument,
-                    //IsChecked = s.IsChecked
+                    AvalUomUnit = s.UomUnit,
+                    AvalQuantity = s.Balance,
+                    AvalQuantityKg = s.AvalQuantityKg
                 }).ToList()
             };
 
@@ -103,32 +107,61 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Create(OutputAvalViewModel viewModel)
         {
             int result = 0;
-            int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL &&
-                                                                                         s.DestinationArea == viewModel.DestinationArea &&
-                                                                                         s.CreatedUtc.Year == viewModel.Date.Year);
-            string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
-            viewModel.AvalItems = viewModel.AvalItems.Where(s => s.Quantity > 0).ToList();
 
+            //Count Existing Document in Aval Output (and Destination Area) by Year
+            int totalCurrentYearData = _outputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL &&
+                                                                                               s.DestinationArea == viewModel.DestinationArea &&
+                                                                                               s.CreatedUtc.Year == viewModel.Date.Year);
+
+            //Generate Bon Number
+            string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
+
+            //Filter only Item Has Quantity and Quantity KG can be Inserted
+            viewModel.AvalItems = viewModel.AvalItems.Where(s => s.AvalQuantity > 0 && s.AvalQuantityKg > 0).ToList();
+
+            //Instantiate Output Model
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date,
                                                           viewModel.Area,
                                                           viewModel.Shift,
                                                           bonNo,
                                                           false,
                                                           viewModel.DestinationArea,
-                                                          viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                                                                     s.AvalType,
-                                                                                                     s.AvalCartNo,
-                                                                                                     s.UomUnit,
-                                                                                                     s.Quantity,
-                                                                                                     s.QuantityKg))
+                                                          viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
+                                                                                                                                           s.AvalCartNo,
+                                                                                                                                           s.AvalUomUnit,
+                                                                                                                                           s.AvalQuantity,
+                                                                                                                                           s.AvalQuantityKg))
                                                                              .ToList());
 
-            result = await _repository.InsertAsync(model);
+            //Create New Row in Output and ProductionOrdersOutput in Each Repository 
+            result = await _outputRepository.InsertAsync(model);
+
+            //var productionOrderIds = _outputProductionOrderRepository.ReadAll().Where(o => o.DyeingPrintingAreaOutputId == model.Id).ToList();
+
+            ////Movement from Aval Input Area to Aval Output Area
+            //foreach (var DyeingPrintingMovement in viewModel.DyeingPrintingMovementIds)
+            //{
+            //    //Get Previous Summary
+            //    var previousSummary = _summaryRepository.ReadAll()
+            //                                            .FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == DyeingPrintingMovement.DyeingPrintingAreaMovementId);
+            //                                                                 //&& s.ProductionOrderId == DyeingPrintingMovement.AvalItemId);
+
+            //    //Update Previous Summary
+            //    result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
+            //}
+
+            //foreach (var item in viewModel.DyeingPrintingMovementIds)
+            //{
+            //    var vmItem = viewModel.AvalItems.FirstOrDefault(s => s.AvalItemId == item.AvalItemId);
+
+            //    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(vmItem.Id, true);
+            //}
+
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                var vmItem = viewModel.AvalItems.FirstOrDefault(s => s.AvalCartNo == item.AvalCartNo);
+                //var vmItem = viewModel.AvalItems.FirstOrDefault(s => s.AvalCartNo == item.AvalCartNo);
 
-                result += await _inputProductionOrderRepository.UpdateFromOutputAsync(vmItem.Id, true);
+                //result += await _inputProductionOrderRepository.UpdateFromOutputAsync(vmItem.Id, true);
 
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
                                                                         viewModel.Area,
@@ -146,8 +179,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         item.UomUnit,
                                                                         item.Balance);
 
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == viewModel.InputAvalId &&
-                                                                                       s.DyeingPrintingAreaDocumentBonNo == viewModel.BonNo);
+                result += await _movementRepository.InsertAsync(movementModel);
 
                 var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
                                                                       viewModel.Area,
@@ -164,9 +196,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                       item.Motif,
                                                                       item.UomUnit,
                                                                       item.Balance);
-
-                result += await _movementRepository.InsertAsync(movementModel);
-                result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                
+                    result += await _summaryRepository.InsertAsync(summaryModel);
             }
 
             return result;
@@ -178,8 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                string order,
                                                string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
-                                                         s.HasNextAreaDocument);
+            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -203,44 +233,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public ListResult<IndexViewModel> ReadAvailableAval(DateTimeOffset searchDate,
-                                                            string searchShift,
-                                                            int page,
-                                                            int size,
-                                                            string filter,
-                                                            string order,
-                                                            string keyword)
+        public ListResult<AvailableAvalIndexViewModel> ReadAvailableAval(DateTimeOffset searchDate,
+                                                                         string searchShift,
+                                                                         int page,
+                                                                         int size,
+                                                                         string filter,
+                                                                         string order,
+                                                                         string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Date <= searchDate &&
+            var query = _inputRepository.ReadAll().Where(s => s.Date <= searchDate &&
                                                          s.Shift == searchShift &&
                                                          s.Area == GUDANGAVAL &&
-                                                         !s.HasNextAreaDocument);
+                                                         s.DyeingPrintingAreaInputProductionOrders.Any(o=>!o.HasOutputDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
             };
 
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Search(query, SearchAttributes, keyword);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Filter(query, FilterDictionary);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Filter(query, FilterDictionary);
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
+            var data = new List<AvailableAvalIndexViewModel>();
+            foreach (var avalInput in query.Skip((page - 1) * size).Take(size))
             {
-                BonNo = s.BonNo,
-                Date = s.Date,
-                Id = s.Id,
-                Shift = s.Shift
-            });
+                foreach (var avalInputItem in avalInput.DyeingPrintingAreaInputProductionOrders)
+                {
+                    var avalItems = new AvailableAvalIndexViewModel()
+                    {
+                        AvalInputId = avalInput.Id,
+                        Date = avalInput.Date,
+                        Area = avalInput.Area,
+                        Shift = avalInput.Shift,
+                        BonNo = avalInput.BonNo,
+                        AvalItemId = avalInputItem.Id,
+                        AvalType = avalInputItem.AvalType,
+                        AvalCartNo = avalInputItem.AvalCartNo,
+                        AvalUomUnit = avalInputItem.UomUnit,
+                        AvalQuantity = avalInputItem.Balance,
+                        AvalQuantityKg = avalInputItem.AvalQuantityKg
+                    };
 
-            return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
+                    data.Add(avalItems);
+                }
+            }
+
+            return new ListResult<AvailableAvalIndexViewModel>(data, page, size, query.Count());
         }
 
         public async Task<OutputAvalViewModel> ReadById(int id)
         {
-            var model = await _repository.ReadByIdAsync(id);
+            var model = await _outputRepository.ReadByIdAsync(id);
             if (model == null)
                 return null;
 

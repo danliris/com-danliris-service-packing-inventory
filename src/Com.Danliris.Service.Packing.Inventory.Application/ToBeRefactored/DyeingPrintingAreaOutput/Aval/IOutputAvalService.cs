@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Create(OutputAvalViewModel viewModel);
         Task<OutputAvalViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
-        ListResult<IndexViewModel> ReadAvailableAval(DateTimeOffset searchDate,
+        ListResult<AvailableAvalIndexViewModel> ReadAvailableAval(DateTimeOffset searchDate,
                                                                   string searchShift,
                                                                   int page,
                                                                   int size,

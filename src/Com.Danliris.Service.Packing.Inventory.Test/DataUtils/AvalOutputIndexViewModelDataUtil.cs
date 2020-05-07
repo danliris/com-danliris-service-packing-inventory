@@ -16,12 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     Id = 1,
                     Date = DateTimeOffset.UtcNow,
                     BonNo = "IM.GA.20.001",
-                    Shift = "PAGI",
-                    CartNo = "5-11",
-                    AvalType = "SAMBUNGAN",
-                    UomUnit = "KRG",
-                    Qty = 15,
-                    QtyKg = 10,
+                    Shift = "PAGI"
                 };
             }
         }
@@ -52,41 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             var dataUtil = IndexViewModel;
             Assert.NotNull(dataUtil.Shift);
-        }
-
-        [Fact]
-        public void Should_ValidatorCartNo_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.CartNo);
-        }
-
-        [Fact]
-        public void Should_ValidatorAvalType_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.AvalType);
-        }
-
-        [Fact]
-        public void Should_ValidatorUomUnit_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.UomUnit);
-        }
-
-        [Fact]
-        public void Should_ValidatorQty_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotEqual(0, dataUtil.Qty);
-        }
-
-        [Fact]
-        public void Should_ValidatorQtyKg_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotEqual(0, dataUtil.QtyKg);
         }
     }
 }
