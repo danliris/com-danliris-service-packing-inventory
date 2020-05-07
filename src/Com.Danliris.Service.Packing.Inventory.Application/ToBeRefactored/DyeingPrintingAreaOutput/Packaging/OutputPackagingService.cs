@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackagingQTY = s.PackagingQty,
                     PackagingType = s.PackagingType,
                     PackagingUnit = s.PackagingUnit
-                    
+
                 }).ToList()
             };
             return vm;
@@ -220,9 +220,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
             viewModel.PackagingProductionOrders = viewModel.PackagingProductionOrders.Where(s => s.Balance > 0).ToList();
-            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.PackagingProductionOrders.Select(s =>
+            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.PackagingProductionOrders.Select(s =>
                  new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                 s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type,s.PackagingType,s.PackagingQTY,s.PackagingUnit)).ToList());
+                 s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit)).ToList());
 
             result = await _repository.InsertAsync(model);
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
@@ -354,7 +354,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
                     string valueClass = "";
-                    if (searchMappedClass != null&&searchMappedClass != null&& searchMappedClass.FirstOrDefault().Key != null)
+                    if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
                     {
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         var searchValue = searchProperty.GetValue(item, null);
@@ -469,7 +469,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ICollection<OutputPackagingProductionOrderViewModel> MapModeltoModelView(List<DyeingPrintingAreaInputProductionOrderModel> source)
         {
             List<OutputPackagingProductionOrderViewModel> result = new List<OutputPackagingProductionOrderViewModel>();
-            foreach(var d in source)
+            foreach (var d in source)
             {
                 result.Add(new OutputPackagingProductionOrderViewModel
                 {

@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Area { get; private set; }
         public string Shift { get; private set; }
         public string BonNo { get; private set; }
+        public string Group { get; private set; }
         public ICollection<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaInputModel()
@@ -18,13 +19,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrders = new HashSet<DyeingPrintingAreaInputProductionOrderModel>();
         }
 
-        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo,
+        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group,
             ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
         {
             Date = date;
             Area = area;
             Shift = shift;
             BonNo = bonNo;
+            Group = group;
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 
@@ -60,6 +62,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newBonNo != BonNo)
             {
                 BonNo = newBonNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetGroup(string newGroup, string user, string agent)
+        {
+            if(newGroup != Group)
+            {
+                Group = newGroup;
                 this.FlagForUpdate(user, agent);
             }
         }

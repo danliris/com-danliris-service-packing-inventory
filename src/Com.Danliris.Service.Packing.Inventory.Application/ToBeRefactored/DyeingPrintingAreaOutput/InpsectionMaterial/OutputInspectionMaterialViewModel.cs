@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasNextAreaDocument { get; set; }
         public string Shift { get; set; }
         public int InputInspectionMaterialId { get; set; }
+        public string Group { get; set; }
         public ICollection<OutputInspectionMaterialProductionOrderViewModel> InspectionMaterialProductionOrders { get; set; }
     }
 }

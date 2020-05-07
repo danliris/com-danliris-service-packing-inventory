@@ -82,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestinationArea(model.DestinationArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
 
             foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -103,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetConstruction(localItem.Construction, _identityProvider.Username, UserAgent);
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetMotif(localItem.Motif, _identityProvider.Username, UserAgent);
-                    item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, _identityProvider.Username, UserAgent);
+                    item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, localItem.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetPackingInstruction(localItem.PackingInstruction, _identityProvider.Username, UserAgent);
                     item.SetStatus(localItem.Status, _identityProvider.Username, UserAgent);

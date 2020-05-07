@@ -79,6 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetBonNo(model.BonNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
 
             foreach (var item in modelToUpdate.DyeingPrintingAreaInputProductionOrders)
             {

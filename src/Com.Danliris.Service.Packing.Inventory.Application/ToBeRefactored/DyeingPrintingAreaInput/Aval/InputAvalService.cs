@@ -115,6 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          viewModel.Area,
                                                          viewModel.Shift,
                                                          bonNo,
+                                                         viewModel.Group,
                                                          viewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
                                                                                                                                          s.AvalType,
                                                                                                                                          s.AvalCartNo,

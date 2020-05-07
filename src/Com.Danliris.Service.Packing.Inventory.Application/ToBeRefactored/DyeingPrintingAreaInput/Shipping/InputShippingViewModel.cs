@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset Date { get; set; }
         public string Shift { get; set; }
         public int OutputId { get; set; }
+        public string Group { get; set; }
         public ICollection<InputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
     }
 }

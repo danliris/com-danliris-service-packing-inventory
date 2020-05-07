@@ -151,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             {
                 var model = new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "np", "type", "ins", "Cartn", "biyer", "coms", "name", "col", "mot", "uni", 1, false);
                 model.DyeingPrintingAreaInputId = 1;
-                model.DyeingPrintingAreaInput = new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "INSPECTION MATERIAL", "pagi", "no", new List<DyeingPrintingAreaInputProductionOrderModel>()
+                model.DyeingPrintingAreaInput = new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "INSPECTION MATERIAL", "pagi", "no", "A", new List<DyeingPrintingAreaInputProductionOrderModel>()
                 {
                     model
                 });
