@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 d.RuleFor(item => item.PackagingQTY).NotNull().WithMessage("QTY Tidak Boleh Kosong!");
                 d.RuleFor(item => item.PackagingType).NotNull().WithMessage("Jenis Packaging Tidak Boleh Kosong !");
                 d.RuleFor(item => item.PackagingUnit).NotNull().WithMessage("Unit Packaging Tidak Boleh Kosong !");
+                d.RuleFor(item => item.QtyOut).NotNull().WithMessage("QTY Keluar Tidak Boleh Kosong !");
             });
 
         }

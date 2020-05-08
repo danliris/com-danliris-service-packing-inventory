@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.WarehousesProductionOrders.Select(s =>
                  new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false,s.PackagingUnit,s.PackagingType,s.PackagingQty)).ToList());
+                 s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false,s.PackagingUnit,s.PackagingType,s.PackagingQty,s.Grade,s.QtyOrder)).ToList());
             
             result = await _repository.InsertAsync(model);
             var modelOutputs = _repositoryAreaOutput.ReadAll();
@@ -86,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var query = _repository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument && d.Balance > 0));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -106,6 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
+                Group = s.Group,
                 WarehousesProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputWarehousesProductionOrdersViewModel()
                 {
                     Balance = d.Balance,
@@ -130,7 +131,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Material = d.Construction,
                     PackagingQty = d.PackagingQty,
                     PackagingType = d.PackagingType,
-                    PackagingUnit = d.PackagingUnit
+                    PackagingUnit = d.PackagingUnit,
+                    ProductionOrderNo = d.ProductionOrderNo,
+                    QtyOrder = d.ProductionOrderOrderQuantity
                 }).ToList()
             });
 
@@ -185,7 +188,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 UomUnit = s.UomUnit,
                 PackagingUnit = s.PackagingUnit,
                 PackagingType = s.PackagingType,
-                PackagingQty = s.PackagingQty
+                PackagingQty = s.PackagingQty,
+                ProductionOrderNo = s.ProductionOrderNo,
+                QtyOrder = s.ProductionOrderOrderQuantity
             });
 
             return new ListResult<InputWarehousesProductionOrdersViewModel>(data.ToList(), page, size, query.Count());
@@ -203,6 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Id = model.Id,
                 Area = model.Area,
                 BonNo = model.BonNo,
+                Group = model.Group,
                 CreatedAgent = model.CreatedAgent,
                 CreatedBy = model.CreatedBy,
                 CreatedUtc = model.CreatedUtc,
@@ -245,7 +251,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     UomUnit = s.UomUnit,
                     PackagingQty = s.PackagingQty,
                     PackagingType = s.PackagingType,
-                    PackagingUnit = s.PackagingUnit
+                    PackagingUnit = s.PackagingUnit,
+                    ProductionOrderNo = s.ProductionOrderNo,
+                    QtyOrder = s.ProductionOrderOrderQuantity
                 }).ToList()
             };
 
@@ -255,7 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == GUDANGJADI && s.HasNextAreaDocument == false && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id));
+            var query = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == GUDANGJADI && s.HasNextAreaDocument == false && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id && d.Balance > 0));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -275,6 +283,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
+                Group = s.Group,
                 WarehousesProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new InputWarehousesProductionOrdersViewModel()
                 {
                     Balance = d.Balance,
@@ -290,6 +299,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
                     },
+                    ProductionOrderNo = d.ProductionOrderNo,
                     Grade = d.Grade,
                     Id = d.Id,
                     Unit = d.Unit,
@@ -298,7 +308,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     UomUnit = d.UomUnit,
                     PackagingQty = d.PackagingQty,
                     PackagingType = d.PackagingType,
-                    PackagingUnit = d.PackagingUnit
+                    PackagingUnit = d.PackagingUnit,
+                    QtyOrder =d.ProductionOrderOrderQuantity
                 }).ToList()
             });
 
