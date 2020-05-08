@@ -241,7 +241,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Success_GetPreTransit()
+        public void Should_Success_GetPreShipping()
         {
             //v
             var serviceMock = new Mock<IInputShippingService>();
@@ -260,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Exception_GetPreTransit()
+        public void Should_Exception_GetPreShipping()
         {
             var dataUtil = ViewModel;
             //v
@@ -274,6 +274,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.GetPreShipping();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetPreShipping_SPP()
+        {
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.ReadProductionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<InputShippingProductionOrderViewModel>(new List<InputShippingProductionOrderViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetPreShipping_SPP()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.ReadProductionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetProductionOrders();
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
