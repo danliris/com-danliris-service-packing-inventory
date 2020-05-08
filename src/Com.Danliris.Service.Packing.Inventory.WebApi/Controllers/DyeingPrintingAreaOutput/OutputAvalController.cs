@@ -94,6 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         [HttpGet("available-aval")]
         public IActionResult GetPreAval([FromQuery] DateTimeOffset searchDate,
                                         [FromQuery] string searchShift,
+                                        [FromQuery] string searchGroup,
                                         [FromQuery] string keyword = null,
                                         [FromQuery] int page = 1,
                                         [FromQuery] int size = 25,
@@ -102,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-                var data = _service.ReadAvailableAval(searchDate, searchShift, page, size, filter, order, keyword);
+                var data = _service.ReadAvailableAval(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -112,24 +113,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpGet("xls/{id}")]
-        //public async Task<IActionResult> GetExcel(int id)
-        //{
-        //    try
-        //    {
-        //        VerifyUser();
-        //        byte[] xlsInBytes;
-        //        int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //        var Result = await _service.GenerateExcel(id);
-        //        string filename = "Bon Keluar Aval Dyeing/Printing.xlsx";
-        //        xlsInBytes = Result.ToArray();
-        //        var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-        //        return file;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-        //    }
-        //}
+        [HttpGet("xls/{id}")]
+        public async Task<IActionResult> GetExcel(int id)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = await _service.GenerateExcel(id);
+                string filename = "Bon Keluar Aval Dyeing/Printing.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

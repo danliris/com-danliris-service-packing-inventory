@@ -12,6 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Create(InputAvalViewModel viewModel);
         Task<InputAvalViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
-        ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, string searchShift, int page, int size, string filter, string order, string keyword);
+        ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, string searchShift, string searchGroup, int page, int size, string filter, string order, string keyword);
     }
 }

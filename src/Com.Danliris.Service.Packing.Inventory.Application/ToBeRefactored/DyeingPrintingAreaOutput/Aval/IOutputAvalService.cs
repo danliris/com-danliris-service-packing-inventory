@@ -12,11 +12,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<AvailableAvalIndexViewModel> ReadAvailableAval(DateTimeOffset searchDate,
                                                                   string searchShift,
+                                                                  string searchGroup,
                                                                   int page,
                                                                   int size,
                                                                   string filter,
                                                                   string order,
                                                                   string keyword);
-        //Task<MemoryStream> GenerateExcel(int id);
+        Task<MemoryStream> GenerateExcel(int id);
     }
 }

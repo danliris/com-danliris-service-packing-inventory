@@ -62,6 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
+                Group = model.Group,
                 AvalItems = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalItemViewModel()
                 {
                     Active = s.Active,
@@ -230,7 +231,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         //OUT from IM, Not INPUT to AVAL yet (Repository OUTPUT) => for Loader in Aval Input
         public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, 
-                                                                   string searchShift, 
+                                                                   string searchShift,
+                                                                   string searchGroup,
                                                                    int page, 
                                                                    int size, 
                                                                    string filter, 
@@ -238,7 +240,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                    string keyword)
         {
             var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate && 
-                                                               s.Shift == searchShift && 
+                                                               s.Shift == searchShift &&
+                                                               s.Group == searchGroup &&
                                                                s.DestinationArea == GUDANGAVAL && 
                                                                !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
