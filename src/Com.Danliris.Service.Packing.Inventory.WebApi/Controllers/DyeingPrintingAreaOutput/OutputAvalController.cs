@@ -92,24 +92,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("available-aval")]
-        public IActionResult GetPreAval([FromQuery] DateTimeOffset searchDate,
-                                        [FromQuery] string searchShift,
-                                        [FromQuery] string searchGroup,
-                                        [FromQuery] string keyword = null,
-                                        [FromQuery] int page = 1,
-                                        [FromQuery] int size = 25,
-                                        [FromQuery] string order = "{}",
-                                        [FromQuery] string filter = "{}")
+        public IActionResult GetAvailableAval([FromQuery] DateTimeOffset searchDate,
+                                              [FromQuery] string searchShift,
+                                              [FromQuery] string searchGroup,
+                                              [FromQuery] string keyword = null,
+                                              [FromQuery] int page = 1,
+                                              [FromQuery] int size = 25,
+                                              [FromQuery] string order = "{}",
+                                              [FromQuery] string filter = "{}")
         {
-            try
+            var data = _service.ReadAvailableAval(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
+            if (data == null)
             {
-                var data = _service.ReadAvailableAval(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
-                return Ok(data);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
+                return Ok(data);
             }
         }
 

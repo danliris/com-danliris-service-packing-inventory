@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Input
 {
     public class PreAvalInputIndexViewModelDataUtil
     {
@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     DestinationArea = "GUDANG AVAL",
                     HasNextAreaDocument = false,
                     Shift = "PAGI",
+                    Group = "A",
                     PreAvalProductionOrders = new List<OutputPreAvalProductionOrderViewModel>()
                     {
                         new OutputPreAvalProductionOrderViewModel()
@@ -103,6 +104,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             var dataUtil = PreAvalIndexViewModel;
             Assert.NotNull(dataUtil.Shift);
+        }
+
+        [Fact]
+        public void Should_ValidatorGroup_Success()
+        {
+            var dataUtil = PreAvalIndexViewModel;
+            Assert.NotNull(dataUtil.Group);
         }
 
         [Fact]

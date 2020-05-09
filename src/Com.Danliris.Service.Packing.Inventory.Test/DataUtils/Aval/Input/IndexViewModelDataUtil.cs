@@ -3,9 +3,9 @@ using System;
 using System.Diagnostics;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Input
 {
-    public class AvalInputIndexViewModelDataUtil
+    public class IndexViewModelDataUtil
     {
         private IndexViewModel IndexViewModel
         {
@@ -16,7 +16,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     Id = 1,
                     Date = DateTimeOffset.UtcNow,
                     BonNo = "IM.GA.20.001",
-                    Shift = "PAGI"
+                    Shift = "PAGI",
+                    Group = "A"
                 };
             }
         }
@@ -47,6 +48,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             var dataUtil = IndexViewModel;
             Assert.NotNull(dataUtil.Shift);
+        }
+
+        [Fact]
+        public void Should_ValidatorGroup_Success()
+        {
+            var dataUtil = IndexViewModel;
+            Assert.NotNull(dataUtil.Group);
         }
     }
 }

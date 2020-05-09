@@ -1,11 +1,13 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Output
 {
-    public class AvalOutputIndexViewModelDataUtil
+    public class IndexViewModelDataUtil
     {
         private IndexViewModel IndexViewModel
         {
@@ -16,7 +18,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     Id = 1,
                     Date = DateTimeOffset.UtcNow,
                     BonNo = "IM.GA.20.001",
-                    Shift = "PAGI"
+                    Shift = "PAGI",
+                    Group = "A"
                 };
             }
         }
@@ -32,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         public void Should_ValidatorDate_Success()
         {
             var dataUtil = IndexViewModel;
-            Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow)<TimeSpan.FromSeconds(2));
+            Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow) < TimeSpan.FromSeconds(2));
         }
 
         [Fact]
@@ -47,6 +50,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             var dataUtil = IndexViewModel;
             Assert.NotNull(dataUtil.Shift);
+        }
+
+        [Fact]
+        public void Should_ValidatorGroup_Success()
+        {
+            var dataUtil = IndexViewModel;
+            Assert.NotNull(dataUtil.Group);
         }
     }
 }

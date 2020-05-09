@@ -210,7 +210,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 BonNo = s.BonNo,
                 Date = s.Date,
                 Id = s.Id,
-                Shift = s.Shift
+                Shift = s.Shift,
+                Group = s.Group
             });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
@@ -262,6 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Area = s.Area,
                 Shift = s.Shift,
+                Group = s.Group,
                 BonNo = s.BonNo,
                 HasNextAreaDocument = s.HasNextAreaDocument,
                 DestinationArea = s.DestinationArea,

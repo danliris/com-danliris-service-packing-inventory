@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 };
             }
         }
+
         private DyeingPrintingAreaInputModel Model
         {
             get
@@ -214,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object).Object);
 
-            var result = service.ReadOutputPreAval(DateTimeOffset.UtcNow, "PAGI", 1, 25, "{}", "{}", null);
+            var result = service.ReadOutputPreAval(DateTimeOffset.UtcNow, "PAGI", "A", 1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
         }

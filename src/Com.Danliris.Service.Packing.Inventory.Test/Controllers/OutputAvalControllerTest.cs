@@ -1,7 +1,7 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
-using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaOutput;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -14,9 +14,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class InputAvalControllerTest
+    public class OutputAvalControllerTest
     {
-        private InputAvalController GetController(IInputAvalService service, IIdentityProvider identityProvider)
+        private OutputAvalController GetController(IOutputAvalService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new InputAvalController(service, identityProvider)
+            var controller = new OutputAvalController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -48,41 +48,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private InputAvalViewModel InputAvalViewModel
+        private OutputAvalViewModel OutputAvalViewModel
         {
             get
             {
-                return new InputAvalViewModel()
+                return new OutputAvalViewModel()
                 {
                     Id = 1,
                     Area = "GUDANG AVAL",
                     Date = DateTimeOffset.UtcNow,
-                    BonNo = "IM.GA.20.001",
+                    DestinationArea = "GUDANG AVAL",
                     Shift = "PAGI",
                     Group = "A",
-                    AvalItems = new List<InputAvalItemViewModel>()
+                    HasNextAreaDocument = true,
+                    AvalItems = new List<OutputAvalItemViewModel>()
                     {
-                        new InputAvalItemViewModel()
+                        new OutputAvalItemViewModel()
                         {
+                            AvalItemId = 12,
                             AvalType = "SAMBUNGAN",
                             AvalCartNo = "5-11",
                             AvalUomUnit = "KRG",
                             AvalQuantity = 5,
-                            AvalQuantityKg = 10,
-                            HasOutputDocument = false,
-                            IsChecked = false
+                            AvalQuantityKg = 10
                         }
                     },
-                    DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()
+                    DyeingPrintingMovementIds = new List<OutputAvalDyeingPrintingAreaMovementIdsViewModel>()
                     {
-                        new InputAvalDyeingPrintingAreaMovementIdsViewModel()
+                        new OutputAvalDyeingPrintingAreaMovementIdsViewModel()
                         {
                             DyeingPrintingAreaMovementId = 51,
-                            ProductionOrderIds = new List<int>()
-                            {
-                                123,
-                                124
-                            }
+                            AvalItemId = 22
                         }
                     }
                 };
@@ -92,8 +88,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = InputAvalViewModel;
-            var validator = new InputAvalValidator();
+            var dataUtil = OutputAvalViewModel;
+            var validator = new OutputAvalValidator();
             var result = validator.Validate(dataUtil);
             Assert.Equal(0, result.Errors.Count);
         }
@@ -101,10 +97,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_Success_Post()
         {
-            var dataUtil = InputAvalViewModel;
+            var dataUtil = OutputAvalViewModel;
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputAvalViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputAvalViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -120,10 +116,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new InputAvalViewModel();
+            var dataUtil = new OutputAvalViewModel();
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputAvalViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputAvalViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -141,10 +137,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_Exception_Post()
         {
-            var dataUtil = InputAvalViewModel;
+            var dataUtil = OutputAvalViewModel;
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputAvalViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputAvalViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -161,8 +157,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(InputAvalViewModel);
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(OutputAvalViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -178,9 +174,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_Exception_GetById()
         {
-            var dataUtil = InputAvalViewModel;
+            var dataUtil = OutputAvalViewModel;
             //v
-            var serviceMock = new Mock<IInputAvalService>();
+            var serviceMock = new Mock<IOutputAvalService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -198,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IInputAvalService>();
+            var serviceMock = new Mock<IOutputAvalService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
@@ -216,9 +212,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Exception_Get()
         {
-            var dataUtil = InputAvalViewModel;
+            var dataUtil = OutputAvalViewModel;
             //v
-            var serviceMock = new Mock<IInputAvalService>();
+            var serviceMock = new Mock<IOutputAvalService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -233,11 +229,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Success_GetPreAval()
+        public void Should_Success_GetAvailableAval()
         {
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.ReadOutputPreAval(It.IsAny<DateTimeOffset>(), 
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadAvailableAval(It.IsAny<DateTimeOffset>(), 
                                                        It.IsAny<string>(), 
                                                        It.IsAny<string>(),
                                                        It.IsAny<int>(), 
@@ -245,7 +241,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                                                        It.IsAny<string>(), 
                                                        It.IsAny<string>(), 
                                                        It.IsAny<string>()))
-                       .Returns(new ListResult<PreAvalIndexViewModel>(new List<PreAvalIndexViewModel>(), 1, 1, 1));
+                       .Returns(new ListResult<AvailableAvalIndexViewModel>(new List<AvailableAvalIndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -253,18 +249,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPreAval(InputAvalViewModel.Date, InputAvalViewModel.Shift, InputAvalViewModel.Group);
+            var response = controller.GetAvailableAval(OutputAvalViewModel.Date, OutputAvalViewModel.Shift, OutputAvalViewModel.Group);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public void Should_Exception_GetPreAval()
+        public void Should_Exception_GetAvailableAval()
         {
-            var dataUtil = InputAvalViewModel;
+            var dataUtil = OutputAvalViewModel;
             //v
-            var serviceMock = new Mock<IInputAvalService>();
-            serviceMock.Setup(s => s.ReadOutputPreAval(dataUtil.Date,
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadAvailableAval(dataUtil.Date,
                                                        dataUtil.Shift,
                                                        dataUtil.Group,
                                                        It.IsAny<int>(),
@@ -280,7 +276,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetPreAval(DateTimeOffset.UtcNow, "SIANG", "B");
+            var response = controller.GetAvailableAval(DateTimeOffset.UtcNow, "SIANG", "B");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
