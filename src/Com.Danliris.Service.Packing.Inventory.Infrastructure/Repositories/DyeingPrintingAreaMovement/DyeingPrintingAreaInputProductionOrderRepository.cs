@@ -39,6 +39,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbSet;
         }
 
+        public DyeingPrintingAreaInputProductionOrderModel GetInputProductionOrder(int id)
+        {
+            return _dbSet.FirstOrDefault(o => o.Id == id);
+        }
+
         public Task<int> InsertAsync(DyeingPrintingAreaInputProductionOrderModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);

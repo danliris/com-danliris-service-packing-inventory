@@ -6,6 +6,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,6 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(summaryRepo);
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
                 .Returns(inputProductionOrderRepo);
+            //spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+            //    .Returns(new DyeingPrintingAreaInputProductionOrderRepository());
 
             return spMock;
         }
@@ -155,18 +158,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             //var inputProductionOrder = InputModel.DyeingPrintingAreaInputProductionOrders.FirstOrDefault();
 
-            inputProductionOrdersRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
-                .Returns(
-                    new List<DyeingPrintingAreaInputProductionOrderModel>()
-                    {
-                        new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<int>(),
-                                                                        It.IsAny<int>(),
-                                                                        It.IsAny<bool>())
-                    }.AsQueryable());
+            inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<int>(),
+                                                                         It.IsAny<int>(),
+                                                                         It.IsAny<bool>()));
+            //.Returns(
+            //    new List<DyeingPrintingAreaInputProductionOrderModel>()
+            //    {
+            //        new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
+            //                                                        It.IsAny<string>(),
+            //                                                        It.IsAny<string>(),
+            //                                                        It.IsAny<string>(),
+            //                                                        It.IsAny<int>(),
+            //                                                        It.IsAny<int>(),
+            //                                                        It.IsAny<bool>())
+            //    }.AsQueryable());
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);

@@ -155,8 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in viewModel.DyeingPrintingMovementIds)
             {
-                //var vmItem = viewModel.AvalItems.FirstOrDefault(s => s.AvalItemId == item.AvalItemId);
-                var vmItem = _inputProductionOrderRepository.ReadAllIgnoreQueryFilter().FirstOrDefault(o => o.Id == item.AvalItemId);
+                var vmItem = _inputProductionOrderRepository.GetInputProductionOrder(item.AvalItemId);
 
                 result += await _inputProductionOrderRepository.UpdateFromOutputAsync(vmItem.Id, true);
             }
