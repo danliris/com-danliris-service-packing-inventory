@@ -62,6 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
+                Group = model.Group,
                 AvalItems = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalItemViewModel()
                 {
                     Active = s.Active,
@@ -100,12 +101,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            //Count Existing Document in Aval by Year
+            //Count Existing Document in Aval Input by Year
             int totalCurrentYearData = _inputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == GUDANGAVAL && 
                                                                                               s.CreatedUtc.Year == viewModel.Date.Year);
 
-            //Generate Bon
+            //Generate Bon Number
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+
+            //Filter only Item Has Quantity and Quantity KG can be Inserted
+            viewModel.AvalItems = viewModel.AvalItems.Where(s => s.AvalQuantity > 0 && s.AvalQuantityKg > 0).ToList();
 
             //Instantiate Input Model
             var model = new DyeingPrintingAreaInputModel(viewModel.Date,
@@ -114,13 +118,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          bonNo,
                                                          viewModel.Group,
                                                          viewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
-                                                                                                                                                    s.AvalType,
-                                                                                                                                                    s.AvalCartNo,
-                                                                                                                                                    s.AvalUomUnit,
-                                                                                                                                                    s.AvalQuantity,
-                                                                                                                                                    s.AvalQuantityKg,
-                                                                                                                                                    false))
-                                                                                       .ToList());
+                                                                                                                                         s.AvalType,
+                                                                                                                                         s.AvalCartNo,
+                                                                                                                                         s.AvalUomUnit,
+                                                                                                                                         s.AvalQuantity,
+                                                                                                                                         s.AvalQuantityKg,
+                                                                                                                                         false))
+                                                                            .ToList());
 
             //Create New Row in Input and ProductionOrdersInput in Each Repository 
             result = await _inputRepository.InsertAsync(model);
@@ -128,14 +132,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //Movement from Previous Area to Aval Area
             foreach (var dyeingPrintingMovement in viewModel.DyeingPrintingMovementIds)
             {
-                //Flag for Input on DyeingPrintingAreaOutputMovement
+                //Flag for already on Input DyeingPrintingAreaOutputMovement
                 result += await _outputRepository.UpdateFromInputAsync(dyeingPrintingMovement.DyeingPrintingAreaMovementId, true);
 
                 foreach (var productionOrderId in dyeingPrintingMovement.ProductionOrderIds)
                 {
                     //Get Previous Summary
-                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == dyeingPrintingMovement.DyeingPrintingAreaMovementId &&
-                                                                                           s.ProductionOrderId == productionOrderId);
+                    var previousSummary = _summaryRepository.ReadAll()
+                                                            .FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == dyeingPrintingMovement.DyeingPrintingAreaMovementId &&
+                                                                                 s.ProductionOrderId == productionOrderId);
 
                     //Update Previous Summary
                     result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
@@ -143,8 +148,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Summed Up Balance (or Quantity in Aval)
-            var groupedProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy(o => new { o.AvalType, o.AvalCartNo, o.UomUnit })
-                                                                             .Select(i => new { i.Key.AvalType, i.Key.AvalCartNo, i.Key.UomUnit, Quantity = i.Sum(s => s.Balance) });
+            var groupedProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy(o => new { o.AvalType,
+                                                                                                           o.AvalCartNo,
+                                                                                                           o.UomUnit })
+                                                                                       .Select(i => new { i.Key.AvalType,
+                                                                                                          i.Key.AvalCartNo,
+                                                                                                          i.Key.UomUnit,
+                                                                                                          Quantity = i.Sum(s => s.Balance) });
 
             foreach (var productionOrder in groupedProductionOrders)
             {
@@ -153,6 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         viewModel.Area,
                                                                         TYPE,
                                                                         model.Id,
+                                                                        bonNo,
                                                                         productionOrder.AvalCartNo,
                                                                         productionOrder.UomUnit,
                                                                         productionOrder.Quantity);
@@ -165,6 +176,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                       viewModel.Area,
                                                                       TYPE,
                                                                       model.Id,
+                                                                      bonNo,
                                                                       productionOrder.AvalCartNo,
                                                                       productionOrder.UomUnit,
                                                                       productionOrder.Quantity);
@@ -195,22 +207,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
             var data = query.Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
             {
-                //Area = s.Area,
                 BonNo = s.BonNo,
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
-                //AvalProductionOrders = s.DyeingPrintingAreaInputProductionOrders.Select(d => new InputAvalItemViewModel()
-                //{
-                //    Id = d.Id,
-                //    AvalType = d.AvalType,
-                //    AvalCartNo = d.AvalCartNo,
-                //    AvalUomUnit = d.UomUnit,
-                //    AvalQuantity = d.Balance,
-                //    AvalQuantityKg = d.AvalQuantityKg,
-                //    HasOutputDocument = d.HasOutputDocument,
-                //    IsChecked = d.IsChecked
-                //}).ToList()
+                Group = s.Group
             });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
@@ -220,7 +221,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var model = await _inputRepository.ReadByIdAsync(id);
             if (model == null)
+            {
                 return null;
+            }
 
             var vm = MapToViewModel(model);
 
@@ -229,7 +232,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         //OUT from IM, Not INPUT to AVAL yet (Repository OUTPUT) => for Loader in Aval Input
         public ListResult<PreAvalIndexViewModel> ReadOutputPreAval(DateTimeOffset searchDate, 
-                                                                   string searchShift, 
+                                                                   string searchShift,
+                                                                   string searchGroup,
                                                                    int page, 
                                                                    int size, 
                                                                    string filter, 
@@ -237,7 +241,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                    string keyword)
         {
             var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate && 
-                                                               s.Shift == searchShift && 
+                                                               s.Shift == searchShift &&
+                                                               s.Group == searchGroup &&
                                                                s.DestinationArea == GUDANGAVAL && 
                                                                !s.HasNextAreaDocument);
             List<string> SearchAttributes = new List<string>()
@@ -258,6 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Area = s.Area,
                 Shift = s.Shift,
+                Group = s.Group,
                 BonNo = s.BonNo,
                 HasNextAreaDocument = s.HasNextAreaDocument,
                 DestinationArea = s.DestinationArea,

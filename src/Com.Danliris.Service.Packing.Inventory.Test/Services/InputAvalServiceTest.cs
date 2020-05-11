@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 };
             }
         }
+
         private DyeingPrintingAreaInputModel Model
         {
             get
@@ -87,12 +88,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.BonNo,
                                                         ViewModel.Group,
                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
-                                                                                                                                                   s.AvalType,
-                                                                                                                                                   s.AvalCartNo,
-                                                                                                                                                   s.AvalUomUnit,
-                                                                                                                                                   s.AvalQuantity,
-                                                                                                                                                   s.AvalQuantityKg,
-                                                                                                                                                   s.HasOutputDocument))
+                                                                                                                                        s.AvalType,
+                                                                                                                                        s.AvalCartNo,
+                                                                                                                                        s.AvalUomUnit,
+                                                                                                                                        s.AvalQuantity,
+                                                                                                                                        s.AvalQuantityKg,
+                                                                                                                                        s.HasOutputDocument))
                                                                            .ToList());
             }
         }
@@ -125,6 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                            ViewModel.Area,
                                                            "IN",
                                                            areaMovement.DyeingPrintingAreaMovementId,
+                                                           ViewModel.BonNo,
                                                            avalItem.AvalCartNo,
                                                            avalItem.AvalUomUnit,
                                                            avalItem.AvalQuantity)
@@ -213,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object).Object);
 
-            var result = service.ReadOutputPreAval(DateTimeOffset.UtcNow, "PAGI", 1, 25, "{}", "{}", null);
+            var result = service.ReadOutputPreAval(DateTimeOffset.UtcNow, "PAGI", "A", 1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
         }

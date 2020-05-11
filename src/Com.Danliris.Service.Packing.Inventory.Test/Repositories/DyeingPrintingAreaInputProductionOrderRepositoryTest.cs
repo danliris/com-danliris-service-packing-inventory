@@ -33,6 +33,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public async Task Should_Success_GetProductionOrder()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = repo.GetInputProductionOrder(data.Id);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task Should_Success_ReadAllIgnoreQueryFilter()
         {
             string testName = GetCurrentMethod();

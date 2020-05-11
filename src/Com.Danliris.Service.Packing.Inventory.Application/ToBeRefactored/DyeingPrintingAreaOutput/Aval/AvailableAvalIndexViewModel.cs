@@ -6,18 +6,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class AvailableAvalIndexViewModel
     {
-        public AvailableAvalIndexViewModel()
-        {
-            AvalItems = new HashSet<AvailableAvalItemViewModel>();
-        }
-
-        public int Id { get; set; }
-        public string Area { get; set; }
-        public string BonNo { get; set; }
+        public int AvalInputId { get; set; }
         public DateTimeOffset Date { get; set; }
-        public string DestinationArea { get; set; }
-        public bool HasNextAreaDocument { get; set; }
+        public string Area { get; set; }
         public string Shift { get; set; }
-        public ICollection<AvailableAvalItemViewModel> AvalItems { get; set; }
+        public string Group { get; set; }
+        public string BonNo { get; set; }
+        public int AvalItemId { get; set; }
+        public string AvalType { get; set; }
+        public string AvalCartNo { get; set; }
+        public string AvalUomUnit { get; set; }
+        public double AvalQuantity { get; set; }
+        public double AvalQuantityKg { get; set; }
     }
 }

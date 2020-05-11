@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public InputAvalItemValidator()
         {
             RuleFor(data => data.AvalType).NotEmpty().WithMessage("Harus Memiliki Jenis!");
+            RuleFor(data => data.AvalCartNo).NotEmpty().WithMessage("Harus Memiliki No. Kereta!");
             RuleFor(data => data.AvalUomUnit).NotEmpty().WithMessage("Harus Memiliki Satuan!");
             RuleFor(data => data.AvalQuantity).NotEmpty().WithMessage("Harus Memiliki Qty Satuan!");
             RuleFor(data => data.AvalQuantityKg).NotEmpty().WithMessage("Harus Memiliki Qty Kg!");
