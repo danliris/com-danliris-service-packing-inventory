@@ -11,7 +11,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> CreateAsync(InputWarehousesViewModel viewModel);
         Task<InputWarehousesViewModel> ReadByIdAsync(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
-        ListResult<InputWarehousesProductionOrdersViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
+        //ListResult<InputWarehousesProductionOrdersViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
         ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword);
+        ListResult<PreWarehouseIndexViewModel> ReadOutputPreWarehouse(DateTimeOffset searchDate,
+                                                                      string searchShift,
+                                                                      string searchGroup,
+                                                                      int page,
+                                                                      int size,
+                                                                      string filter,
+                                                                      string order,
+                                                                      string keyword);
     }
 }

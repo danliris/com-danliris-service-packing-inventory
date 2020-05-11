@@ -93,22 +93,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
 
-        [HttpGet("production-orders")]
-        public IActionResult GetProductionOrders([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
-        {
-            try
-            {
+        //[HttpGet("production-orders")]
+        //public IActionResult GetProductionOrders([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        //    [FromQuery] string filter = "{}")
+        //{
+        //    try
+        //    {
 
-                var data = _service.ReadProductionOrders(page, size, filter, order, keyword);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //        var data = _service.ReadProductionOrders(page, size, filter, order, keyword);
+        //        return Ok(data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-            }
-        }
+        //    }
+        //}
 
         [HttpGet("list-bon-in")]
         public IActionResult GetBonInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
@@ -124,6 +124,27 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
+            }
+        }
+
+        [HttpGet("pre-warehouse")]
+        public IActionResult GetPreWarehouse([FromQuery] DateTimeOffset searchDate,
+                                             [FromQuery] string searchShift,
+                                             [FromQuery] string searchGroup,
+                                             [FromQuery] string keyword = null,
+                                             [FromQuery] int page = 1,
+                                             [FromQuery] int size = 25,
+                                             [FromQuery] string order = "{}",
+                                             [FromQuery] string filter = "{}")
+        {
+            var data = _service.ReadOutputPreWarehouse(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
+            if (data == null)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return Ok(data);
             }
         }
     }
