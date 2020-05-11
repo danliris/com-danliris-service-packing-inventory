@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleFor(data => data.Date).Must(s => s != default(DateTimeOffset)).WithMessage("Tanggal Harus Diisi!");
             RuleFor(data => data.Shift).NotNull().WithMessage("Shift Harus Diisi!");
             RuleFor(data => data.Group).NotNull().WithMessage("Group Harus Diisi!");
-            RuleFor(data => data.BonNo).NotNull().WithMessage("No. Bon Harus Diisi!");
+            //RuleFor(data => data.BonNo).NotNull().WithMessage("No. Bon Harus Diisi!");
         }
     }
 }
