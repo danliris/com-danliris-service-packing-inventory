@@ -1,11 +1,13 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Output
 {
-    public class AvalOutputIndexViewModelDataUtil
+    public class IndexViewModelDataUtil
     {
         private IndexViewModel IndexViewModel
         {
@@ -17,11 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                     Date = DateTimeOffset.UtcNow,
                     BonNo = "IM.GA.20.001",
                     Shift = "PAGI",
-                    CartNo = "5-11",
-                    AvalType = "SAMBUNGAN",
-                    UomUnit = "KRG",
-                    Qty = 15,
-                    QtyKg = 10,
+                    Group = "A"
                 };
             }
         }
@@ -37,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         public void Should_ValidatorDate_Success()
         {
             var dataUtil = IndexViewModel;
-            Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow)<TimeSpan.FromSeconds(2));
+            Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow) < TimeSpan.FromSeconds(2));
         }
 
         [Fact]
@@ -55,38 +53,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         }
 
         [Fact]
-        public void Should_ValidatorCartNo_Success()
+        public void Should_ValidatorGroup_Success()
         {
             var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.CartNo);
-        }
-
-        [Fact]
-        public void Should_ValidatorAvalType_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.AvalType);
-        }
-
-        [Fact]
-        public void Should_ValidatorUomUnit_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotNull(dataUtil.UomUnit);
-        }
-
-        [Fact]
-        public void Should_ValidatorQty_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotEqual(0, dataUtil.Qty);
-        }
-
-        [Fact]
-        public void Should_ValidatorQtyKg_Success()
-        {
-            var dataUtil = IndexViewModel;
-            Assert.NotEqual(0, dataUtil.QtyKg);
+            Assert.NotNull(dataUtil.Group);
         }
     }
 }

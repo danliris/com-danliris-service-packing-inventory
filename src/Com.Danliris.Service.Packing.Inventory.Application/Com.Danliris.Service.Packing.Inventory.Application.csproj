@@ -32,8 +32,6 @@
 
   <ItemGroup>
     <Compile Remove="ToBeRefactored\DyeingPrintingAreaInput\InspectionMaterial\ProductionOrderIndexViewModel.cs" />
-    <Compile Remove="ToBeRefactored\DyeingPrintingAreaOutput\Aval\AvailableAvalIndexViewModel.cs" />
-    <Compile Remove="ToBeRefactored\DyeingPrintingAreaOutput\Aval\AvailableAvalItemViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
