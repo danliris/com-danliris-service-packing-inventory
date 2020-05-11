@@ -8,6 +8,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class OutputInspectionMaterialProductionOrderViewModel : BaseViewModel
     {
+        public OutputInspectionMaterialProductionOrderViewModel()
+        {
+            AvalItems = new HashSet<AvalItem>();
+        }
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
@@ -26,5 +30,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalALength { get; set; }
         public double AvalBLength { get; set; }
         public double AvalConnectionLength { get; set; }
+
+        public ICollection<AvalItem> AvalItems { get; set; }
+    }
+
+    public class AvalItem
+    {
+        public string Type { get; set; }
+        public double Length { get; set; }
     }
 }

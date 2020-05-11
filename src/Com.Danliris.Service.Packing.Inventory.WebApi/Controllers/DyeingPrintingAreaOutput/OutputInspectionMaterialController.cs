@@ -111,5 +111,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("input-production-orders")]
+        public IActionResult GetProductionOrders()
+        {
+            try
+            {
+
+                var data = _service.GetInputInspectionMaterialProductionOrders();
+                return Ok(new { 
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
     }
 }
