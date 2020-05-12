@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
-                var result = await _service.CreateAsync(viewModel);
+                var result = await _service.Create(viewModel);
 
                 return Created("/", result);
             }
@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
 
-                var data = await _service.ReadByIdAsync(id);
+                var data = await _service.ReadById(id);
                 return Ok(new
                 {
                     data
@@ -110,22 +110,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         //    }
         //}
 
-        [HttpGet("list-bon-in")]
-        public IActionResult GetBonInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
-            [FromQuery] string filter = "{}")
-        {
-            try
-            {
+        //[HttpGet("list-bon-in")]
+        //public IActionResult GetBonInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        //    [FromQuery] string filter = "{}")
+        //{
+        //    try
+        //    {
 
-                var data = _service.ReadBonOutToPack(page, size, filter, order, keyword);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //        var data = _service.ReadBonOutToPack(page, size, filter, order, keyword);
+        //        return Ok(data);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-            }
-        }
+        //    }
+        //}
 
         [HttpGet("pre-warehouse")]
         public IActionResult GetPreWarehouse([FromQuery] DateTimeOffset searchDate,

@@ -104,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.CreateAsync(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = new InputWarehousesViewModel();
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.CreateAsync(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.CreateAsync(It.IsAny<InputWarehousesViewModel>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -162,7 +162,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -181,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

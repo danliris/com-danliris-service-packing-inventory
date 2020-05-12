@@ -162,7 +162,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object).Object);
 
-            var result = await service.CreateAsync(ViewModel);
+            var result = await service.Create(ViewModel);
 
             Assert.NotEqual(0, result);
         }
@@ -202,7 +202,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
-            var result = await service.ReadByIdAsync(1);
+            var result = await service.ReadById(1);
 
             Assert.NotNull(result);
         }
@@ -220,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
-            var result = await service.ReadByIdAsync(1);
+            var result = await service.ReadById(1);
 
             Assert.Null(result);
         }

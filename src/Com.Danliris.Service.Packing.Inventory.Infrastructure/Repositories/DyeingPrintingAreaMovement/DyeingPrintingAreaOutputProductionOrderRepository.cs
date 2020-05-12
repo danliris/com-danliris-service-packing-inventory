@@ -90,5 +90,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> UpdateFromInputNextAreaFlagAsync(int id, bool hasNextAreaDocument)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            
+            modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }
