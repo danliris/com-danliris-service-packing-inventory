@@ -25,5 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalALength { get; set; }
         public double AvalBLength { get; set; }
         public double AvalConnectionLength { get; set; }
+
+        public int InputId { get; set; }
     }
 }

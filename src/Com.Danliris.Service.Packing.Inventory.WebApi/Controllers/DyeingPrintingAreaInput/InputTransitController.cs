@@ -108,5 +108,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
+
+        [HttpGet("output-production-orders")]
+        public IActionResult GetProductionOrders()
+        {
+            try
+            {
+
+                var data = _service.GetOutputPreTransitProductionOrders();
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
     }
 }
