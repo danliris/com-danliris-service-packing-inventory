@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-            if (newBalance == 0)
+            if (newBalance <= 0)
             {
                 modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
             }
@@ -139,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetAvalBLength(newAvalBLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAvalConnectionLength(newAvalConnectionLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetInitLength(newInitLength, _identityProvider.Username, UserAgent);
-            if (newBalance == 0)
+            if (newBalance <= 0)
             {
                 modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
             }
