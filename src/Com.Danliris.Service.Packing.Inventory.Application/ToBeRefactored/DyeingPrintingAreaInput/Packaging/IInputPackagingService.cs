@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
         ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword);
-        //ListResult<InputPackagingProductionOrdersViewModel> ReadInProducionOrders(int page, int size, string filter, string order, string keyword);
+        ListResult<InputPackagingProductionOrdersViewModel> ReadInProducionOrders(int page, int size, string filter, string order, string keyword);
         //ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo);
 
     }
