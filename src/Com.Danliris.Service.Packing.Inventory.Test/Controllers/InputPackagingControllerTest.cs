@@ -307,5 +307,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Success_GetListSpp()
+        {
+            //v
+            var serviceMock = new Mock<IInputPackagingService>();
+            serviceMock.Setup(s => s.ReadInProducionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<InputPackagingProductionOrdersViewModel>(new List<InputPackagingProductionOrdersViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSppInPacking();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetLIstSpp()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputPackagingService>();
+            serviceMock.Setup(s => s.ReadInProducionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSppInPacking();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
     }
 }

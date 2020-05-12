@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -115,6 +116,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
                   ViewModel.Group, new List<DyeingPrintingAreaOutputProductionOrderModel>());
+            }
+        }
+        private InputPackagingViewModel InputViewModel
+        {
+            get
+            {
+                return new InputPackagingViewModel()
+                {
+                    Area = "PACKING",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    Group = "A",
+                    PackagingProductionOrders = new List<InputPackagingProductionOrdersViewModel>
+                    {
+                        new InputPackagingProductionOrdersViewModel()
+                        {
+                            Balance = 1,
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            HasOutputDocument = false,
+                            IsChecked = false,
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d",
+                            QtyOrder = 123,
+                            ProductionOrderNo ="sd"
+                        }
+                    }
+                };
+            }
+        }
+
+        private DyeingPrintingAreaInputModel InputModel
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
+                    new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, ViewModel.HasNextAreaDocument)).ToList());
             }
         }
 
@@ -285,6 +337,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
             var result = service.Read(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+        [Fact]
+        public void Should_Success_ReadBonOutFromPack()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var inputBonRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            inputBonRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object,inputBonRepoMock.Object).Object);
+
+            var result = service.ReadBonOutFromPack(1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
         }
