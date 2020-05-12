@@ -464,5 +464,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEmpty(result);
         }
+
+
+        [Fact]
+        public void Validate_VM()
+        {
+            var avalItem = new AvalItem()
+            {
+                Length = 1,
+                Type = "Aval A"
+            };
+
+            Assert.NotEqual(0, avalItem.Length);
+            Assert.NotNull(avalItem.Type);
+
+            var spp = new OutputInspectionMaterialProductionOrderViewModel()
+            {
+                PreviousBalance = 1,
+                InitLength = 1,
+                InputId = 1
+            };
+
+            Assert.NotEqual(0, spp.PreviousBalance);
+            Assert.NotEqual(0, spp.InitLength);
+            Assert.NotEqual(0, spp.InputId);
+            Assert.Equal(0, spp.AvalALength);
+            Assert.Equal(0, spp.AvalBLength);
+            Assert.Equal(0, spp.AvalConnectionLength);
+        }
     }
 }
