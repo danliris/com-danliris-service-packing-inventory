@@ -346,5 +346,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEmpty(result);
         }
+
+        [Fact]
+        public void Validate_VM()
+        {
+            var outputPreTransitSPP = new OutputPreTransitProductionOrderViewModel()
+            {
+                
+            };
+
+            Assert.NotNull(outputPreTransitSPP);
+            Assert.Null(outputPreTransitSPP.ProductionOrder);
+            Assert.Null(outputPreTransitSPP.CartNo);
+            Assert.Null(outputPreTransitSPP.PackingInstruction);
+            Assert.Null(outputPreTransitSPP.Construction);
+            Assert.Null(outputPreTransitSPP.Unit);
+            Assert.Null(outputPreTransitSPP.Buyer);
+            Assert.Null(outputPreTransitSPP.Color);
+            Assert.Null(outputPreTransitSPP.Motif);
+            Assert.Null(outputPreTransitSPP.UomUnit);
+            Assert.Null(outputPreTransitSPP.Remark);
+            Assert.Null(outputPreTransitSPP.Grade);
+            Assert.Null(outputPreTransitSPP.Status);
+            Assert.Equal(0,outputPreTransitSPP.Balance);
+            Assert.Equal(0,outputPreTransitSPP.OutputId);
+        }
     }
 }
