@@ -315,5 +315,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Success_GetProductionOrders()
+        {
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders())
+                .Returns(new List<OutputPreShippingProductionOrderViewModel>() { });
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetOutputProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetProductionOrders()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders()).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetOutputProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
