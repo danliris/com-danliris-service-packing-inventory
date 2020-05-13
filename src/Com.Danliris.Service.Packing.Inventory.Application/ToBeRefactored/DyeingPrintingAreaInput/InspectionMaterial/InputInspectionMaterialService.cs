@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Create(InputInspectionMaterialViewModel viewModel)
         {
             int result = 0;
-            var model = _repository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
+            var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == INSPECTIONMATERIAL && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
 
             if(model == null)

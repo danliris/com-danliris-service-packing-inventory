@@ -122,7 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            var model = _repository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
+            var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == TRANSIT && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
 
             if(model == null)
