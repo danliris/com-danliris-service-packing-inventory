@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument)).ToList());
+                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty)).ToList());
             }
         }
 
@@ -204,7 +204,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "GUDANG JADI","pagi","no",false,
                     "SHIPPING","A", new List<DyeingPrintingAreaOutputProductionOrderModel>(){
-                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","sd","sd",1)
+                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","sd","sd",1, 1)
                     }) }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object).Object);

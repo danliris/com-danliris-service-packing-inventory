@@ -131,7 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.TransitProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.Remark, s.Grade, s.Status)).ToList());
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
 
                 result = await _repository.InsertAsync(model);
 
@@ -140,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id), true);
                 foreach (var item in viewModel.TransitProductionOrders)
                 {
-
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 
@@ -168,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                     item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, false, item.Remark, item.Grade, item.Status);
+                     item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, false, item.Remark, item.Grade, item.Status, item.Balance);
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -178,8 +178,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
-
+                    
                     result += await _SPPRepository.InsertAsync(modelItem);
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                     result += await _movementRepository.InsertAsync(movementModel);
                     if (previousSummary == null)
                     {
@@ -343,7 +344,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 },
                 Unit = d.Unit,
                 UomUnit = d.UomUnit,
-                OutputId = d.DyeingPrintingAreaOutputId
+                OutputId = d.DyeingPrintingAreaOutputId,
+                DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
             });
 
             return data.ToList();

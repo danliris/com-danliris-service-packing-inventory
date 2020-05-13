@@ -215,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
                    ViewModel.Group, ViewModel.TransitProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
             }
         }
 
@@ -226,7 +226,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModelAval.Date, ViewModelAval.Area, ViewModelAval.Shift, ViewModelAval.BonNo, ViewModelAval.HasNextAreaDocument, ViewModelAval.DestinationArea,
                    ViewModelAval.Group, ViewModelAval.TransitProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
             }
         }
 
@@ -237,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModelPC.Date, ViewModelPC.Area, ViewModelPC.Shift, ViewModelPC.BonNo, ViewModelPC.HasNextAreaDocument, ViewModelPC.DestinationArea,
                    ViewModelPC.Group, ViewModelPC.TransitProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModelPC.Area, ViewModelPC.DestinationArea, ViewModelPC.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
             }
         }
 
@@ -248,7 +248,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModelIM.Date, ViewModelIM.Area, ViewModelIM.Shift, ViewModelIM.BonNo, ViewModelIM.HasNextAreaDocument, ViewModelIM.DestinationArea,
                    ViewModelIM.Group, ViewModelIM.TransitProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area, ViewModelIM.DestinationArea, ViewModelPC.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
             }
         }
 
