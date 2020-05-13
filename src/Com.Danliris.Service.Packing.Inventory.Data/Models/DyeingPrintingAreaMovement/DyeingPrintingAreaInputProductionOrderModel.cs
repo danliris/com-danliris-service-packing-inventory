@@ -44,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string Area { get; private set; }
 
+        public double BalanceRemains { get; private set; }
+
         public int DyeingPrintingAreaInputId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
@@ -171,6 +173,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
         }
+        
+        /// <summary>
+        /// Constructor Using By Packaging Area WIth BalanceRemain and Bon ID
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderQty"></param>
+        /// <param name="grade"></param>
+        /// <param name="dyeingPrintingAreaInputId"></param>
+        /// <param name="balanceRemains"></param>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId,double balanceRemains)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQty;
+            Grade = grade;
+
+            Area = area;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
+            BalanceRemains = balanceRemains;
+        }
+
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,string packagingUnit, string packagingType,decimal packagingQty)
         {
@@ -518,7 +566,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
-
+        public void SetBalanceRemains(double newBalanceRemains, string user, string agent)
+        {
+            if (newBalanceRemains != BalanceRemains)
+            {
+                BalanceRemains = newBalanceRemains;
+                this.FlagForUpdate(user, agent);
+            }
+        }
         public void SetArea(string newArea, string user, string agent)
         {
             if (newArea != Area)
