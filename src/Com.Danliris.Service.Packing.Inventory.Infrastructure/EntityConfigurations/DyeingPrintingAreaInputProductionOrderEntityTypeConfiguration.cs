@@ -109,6 +109,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                .Property(s => s.Area)
                .HasMaxLength(64);
+
+            builder
+                .Property(s => s.BalanceRemains)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }
