@@ -237,8 +237,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadProductionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<InputWarehousesProductionOrdersViewModel>(new List<InputWarehousesProductionOrdersViewModel>(), 1, 1, 1));
+            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrders())
+                .Returns(new List<OutputPreWarehouseIndexViewModel>() { });
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -257,7 +257,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadProductionOrders(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrders()).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -266,44 +266,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.GetProductionOrders();
-
-            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
-        }
-
-        [Fact]
-        public void Should_Success_GetListBonInput()
-        {
-            //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadBonOutToPack(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
-            var service = serviceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, identityProvider);
-            //controller.ModelState.IsValid == false;
-            var response = controller.GetBonInPacking();
-
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
-        }
-
-        [Fact]
-        public void Should_Exception_GetListBonInput()
-        {
-            var dataUtil = ViewModel;
-            //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.ReadBonOutToPack(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
-            var service = serviceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, identityProvider);
-            //controller.ModelState.IsValid == false;
-            var response = controller.GetBonInPacking();
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

@@ -58,4 +58,8 @@
     <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.WebApi\Com.Danliris.Service.Packing.Inventory.WebApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataUtils\Warehouse\Output\" />
+  </ItemGroup>
+
 </Project>
