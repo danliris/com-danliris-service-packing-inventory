@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string UomUnit { get; set; }
         public double Balance { get; set; }
         public bool HasOutputDocument { get; set; }
-        //public bool HasNextAreaDocument { get; set; }
+        public bool IsChecked { get; set; }
         public string Grade { get; set; }
         public string Remark { get; set; }
         public string Status { get; set; }
@@ -32,6 +32,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string PackagingUnit { get; set; }
         public decimal PackagingQty { get; set; }
         public double QtyOrder { get; set; }
-        public int DyeingPrintingAreaOutputId { get; set; }
+
+        public int OutputId { get; set; }
+
+        public int InputId { get; set; }
     }
 }

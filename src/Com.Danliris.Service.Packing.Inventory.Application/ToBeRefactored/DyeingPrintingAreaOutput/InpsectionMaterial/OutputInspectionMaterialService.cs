@@ -354,7 +354,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders()
         {
-            var productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+            var productionOrders = _inputProductionOrderRepository.ReadAll()
                 .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
             var data = productionOrders.Select(s => new InputInspectionMaterialProductionOrderViewModel()
             {

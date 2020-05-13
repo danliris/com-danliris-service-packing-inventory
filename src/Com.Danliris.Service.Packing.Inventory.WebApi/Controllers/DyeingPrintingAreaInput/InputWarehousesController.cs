@@ -127,25 +127,35 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         //    }
         //}
 
-        [HttpGet("pre-warehouse")]
-        public IActionResult GetPreWarehouse([FromQuery] DateTimeOffset searchDate,
-                                             [FromQuery] string searchShift,
-                                             [FromQuery] string searchGroup,
-                                             [FromQuery] string keyword = null,
-                                             [FromQuery] int page = 1,
-                                             [FromQuery] int size = 25,
-                                             [FromQuery] string order = "{}",
-                                             [FromQuery] string filter = "{}")
+        [HttpGet("output-production-orders")]
+        public IActionResult GetProductionOrders()
         {
-            var data = _service.ReadOutputPreWarehouse(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
-            if (data == null)
+            try
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
+
+                var data = _service.GetOutputPreWarehouseProductionOrders();
+                return Ok(new
+                {
+                    data
+                });
             }
-            else
+            catch (Exception ex)
             {
-                return Ok(data);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
             }
+            //var data = _service.GetOutputPreWarehouseProductionOrders();
+            //if (data == null)
+            //{
+            //    return StatusCode((int)HttpStatusCode.InternalServerError);
+            //}
+            //else
+            //{
+            //    return Ok(new
+            //    {
+            //        data
+            //    });
+            //}
         }
     }
 }

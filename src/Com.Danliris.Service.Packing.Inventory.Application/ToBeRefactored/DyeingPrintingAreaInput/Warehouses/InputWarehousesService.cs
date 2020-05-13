@@ -120,7 +120,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             bool hasBonNo = _inputRepository.ReadAll().Any(o => o.Date == viewModel.Date &&
                                                                 o.Shift == viewModel.Shift &&
-                                                                o.Group == viewModel.Group);
+                                                                o.Group == viewModel.Group &&
+                                                                o.Area == viewModel.Area);
 
             if(hasBonNo == true)
             {
@@ -187,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         productionOrderModel.Balance);
 
                 //Find Previous Summary by DyeingPrintingAreaDocumentId & ProductionOrderId
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == productionOrder.DyeingPrintingAreaOutputId &&
+                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == productionOrder.OutputId &&
                                                                                        s.ProductionOrderId == productionOrder.ProductionOrder.Id);
 
                 //Mapping to DyeingPrintingAreaSummaryModel
@@ -265,7 +266,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
 
-            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            foreach (var item in viewModel.WarehousesProductionOrders)
             {
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
@@ -273,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         TYPE,
                                                                         model.Id,
                                                                         model.BonNo,
-                                                                        item.ProductionOrderId,
+                                                                        item.ProductionOrder.Id,
                                                                         item.ProductionOrderNo,
                                                                         item.CartNo,
                                                                         item.Buyer,
@@ -285,8 +286,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         item.Balance);
 
                 //Find Previous Summary by DyeingPrintingAreaDocumentId & ProductionOrderId
-                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.DyeingPrintingAreaInputId && 
-                                                                                       s.ProductionOrderId == item.ProductionOrderId);
+                var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.OutputId && 
+                                                                                       s.ProductionOrderId == item.ProductionOrder.Id);
 
                 //Mapping to DyeingPrintingAreaSummaryModel
                 var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
@@ -294,7 +295,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                       TYPE,
                                                                       model.Id,
                                                                       model.BonNo,
-                                                                      item.ProductionOrderId,
+                                                                      item.ProductionOrder.Id,
                                                                       item.ProductionOrderNo,
                                                                       item.CartNo,
                                                                       item.Buyer,
@@ -313,7 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
-            List<int> listOfDyeingPrintingAreaIds = viewModel.WarehousesProductionOrders.Select(o => o.DyeingPrintingAreaOutputId).ToList();
+            List<int> listOfDyeingPrintingAreaIds = viewModel.WarehousesProductionOrders.Select(o => o.OutputId).ToList();
             foreach (var areaId in listOfDyeingPrintingAreaIds)
             {
                 result += await _outputRepository.UpdateFromInputNextAreaFlagParentOnlyAsync(areaId, true);
@@ -398,36 +399,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        public ListResult<PreWarehouseIndexViewModel> ReadOutputPreWarehouse(DateTimeOffset searchDate,
-                                                                             string searchShift,
-                                                                             string searchGroup,
-                                                                             int page,
-                                                                             int size,
-                                                                             string filter,
-                                                                             string order,
-                                                                             string keyword)
+        public List<OutputPreWarehouseIndexViewModel> GetOutputPreWarehouseProductionOrders()
         {
-            var query = _outputRepository.ReadAll().Where(s => s.Date <= searchDate &&
-                                                             s.Shift == searchShift &&
-                                                             s.Group == searchGroup &&
-                                                             s.DestinationArea == GUDANGJADI &&
-                                                             !s.HasNextAreaDocument)
-                                                   .SelectMany(o => o.DyeingPrintingAreaOutputProductionOrders);
+            var query = _outputProductionOrderRepository.ReadAll()
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.DestinationArea == GUDANGJADI &&
+                                                                    !s.HasNextAreaDocument);
 
-            List<string> SearchAttributes = new List<string>()
-            {
-                "ProductionOrderNo"
-            };
+            //List<string> SearchAttributes = new List<string>()
+            //{
+            //    "ProductionOrderNo"
+            //};
 
-            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+            //query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
 
-            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+            //Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            //query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
 
-            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
+            //Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            //query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
 
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new PreWarehouseIndexViewModel()
+            var data = query.Select(s => new OutputPreWarehouseIndexViewModel()
             {
                 Id = s.Id,
                 Balance = s.Balance,
@@ -435,7 +427,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 CartNo = s.CartNo,
                 Color = s.Color,
                 Construction = s.Construction,
-                HasNextAreaDocument = s.HasNextAreaDocument,
+                //HasNextAreaDocument = s.HasNextAreaDocument,
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
@@ -451,10 +443,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 PackagingQty = s.PackagingQty,
                 ProductionOrderNo = s.ProductionOrderNo,
                 QtyOrder = s.ProductionOrderOrderQuantity,
-                DyeingPrintingAreaOutputId = s.DyeingPrintingAreaOutputId
+                OutputId = s.DyeingPrintingAreaOutputId
             });
 
-            return new ListResult<PreWarehouseIndexViewModel>(data.ToList(), page, size, query.Count());
+            return data.ToList();
         }
 
         //public ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword)
