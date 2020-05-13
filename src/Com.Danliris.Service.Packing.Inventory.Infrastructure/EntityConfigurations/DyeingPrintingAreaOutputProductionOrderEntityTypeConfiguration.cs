@@ -117,6 +117,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.Description)
                 .HasMaxLength(4096);
+
+            builder
+                .Property(s => s.DyeingPrintingAreaInputProductionOrderId)
+                .HasMaxLength(128);
         }
     }
 }
