@@ -16,8 +16,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleFor(data => data.Shift).NotNull().WithMessage("Shift Harus Diisi!");
             RuleFor(data => data.Group).NotNull().WithMessage("Group Harus Diisi!");
             RuleFor(data => data.InspectionMaterialProductionOrders)
-                .Must(s => s.Count > 0).WithMessage("SPP harus Diisi")
-                .Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1)).WithMessage("SPP harus berbeda setiap detail!");
+                .Must(s => s.Count > 0).WithMessage("SPP harus Diisi");
+            //RuleFor(data => data.InspectionMaterialProductionOrders)
+            //    .Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1))
+            //    .WithMessage("SPP harus berbeda setiap detail!")
+            //    .When(s => s.InspectionMaterialProductionOrders.All(d => d.ProductionOrder != null));
             RuleForEach(s => s.InspectionMaterialProductionOrders).ChildRules(d =>
             {
                 d.RuleFor(data => data.ProductionOrder).NotNull().WithMessage("SPP Harus Diisi!");

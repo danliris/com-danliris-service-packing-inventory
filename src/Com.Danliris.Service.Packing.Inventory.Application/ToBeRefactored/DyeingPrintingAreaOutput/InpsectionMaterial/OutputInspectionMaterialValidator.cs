@@ -16,12 +16,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleFor(data => data.Shift).NotNull().WithMessage("Shift Harus Diisi!");
             RuleFor(data => data.Group).NotNull().WithMessage("Group Harus Diisi!");
             RuleFor(data => data.DestinationArea).NotNull().WithMessage("Tujuan Area Harus Diisi!");
-            RuleFor(data => data.InspectionMaterialProductionOrders).Must(s => s.All(d => d.Balance > 0)).WithMessage("Qty Keluar Harus Lebih Besar dari 0");
-            RuleFor(data => data.InspectionMaterialProductionOrders).Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1)).WithMessage("SPP harus berbeda setiap detail!");
-            //RuleForEach(s => s.InspectionMaterialProductionOrders).ChildRules(d =>
-            //{
-            //    d.RuleFor(data => data.Balance).LessThanOrEqualTo(e => e.PreviousBalance).WithMessage("Jumlah Saldo baru tidak boleh melebihi sebelumnya");
-            //});
+            //RuleFor(data => data.InspectionMaterialProductionOrders).Must(s => s.All(d => d.Balance > 0)).WithMessage("Qty Keluar Harus Lebih Besar dari 0");
+            RuleFor(data => data.InspectionMaterialProductionOrders)
+                .Must(s => s.Count > 0).WithMessage("SPP harus Diisi");
+            //RuleFor(data => data.InspectionMaterialProductionOrders)
+            //    .Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1))
+            //    .WithMessage("SPP harus berbeda setiap detail!")
+            //    .When(s => s.InspectionMaterialProductionOrders.All(d => d.ProductionOrder != null));
+            RuleForEach(s => s.InspectionMaterialProductionOrders).ChildRules(d =>
+            {
+                d.RuleFor(data => data.Balance).Must(e => e > 0).WithMessage("Qty Keluar Harus Lebih Besar dari 0");
+            });
         }
     }
 }
