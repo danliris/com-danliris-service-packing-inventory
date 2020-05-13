@@ -87,6 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetIsChecked(model.IsChecked, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackingInstruction(model.PackingInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBalanceRemains(model.BalanceRemains, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
