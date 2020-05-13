@@ -143,7 +143,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Create(OutputInspectionMaterialViewModel viewModel)
         {
             int result = 0;
-            var model = _repository.GetDbSet()
+            var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == INSPECTIONMATERIAL && s.DestinationArea == viewModel.DestinationArea
                 && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
 
@@ -164,21 +164,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
                 {
 
-                    if (viewModel.DestinationArea == GUDANGAVAL)
-                    {
-                        var avalA = item.AvalItems.FirstOrDefault(s => s.Type == AVALA)?.Length;
-                        var avalB = item.AvalItems.FirstOrDefault(s => s.Type == AVALB)?.Length;
-                        var avalConnection = item.AvalItems.FirstOrDefault(s => s.Type == AVALCONNECTION)?.Length;
-                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, avalA.GetValueOrDefault(), avalB.GetValueOrDefault(),
-                            avalConnection.GetValueOrDefault());
+                    //if (viewModel.DestinationArea == GUDANGAVAL)
+                    //{
+                    //    var avalA = item.AvalItems.FirstOrDefault(s => s.Type == AVALA)?.Length;
+                    //    var avalB = item.AvalItems.FirstOrDefault(s => s.Type == AVALB)?.Length;
+                    //    var avalConnection = item.AvalItems.FirstOrDefault(s => s.Type == AVALCONNECTION)?.Length;
+                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, avalA.GetValueOrDefault(), avalB.GetValueOrDefault(),
+                    //        avalConnection.GetValueOrDefault());
 
-                    }
-                    else
-                    {
+                    //}
+                    //else
+                    //{
 
-                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
+                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
 
-                    }
+                    //}
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 
@@ -213,18 +214,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
-                    if (viewModel.DestinationArea == GUDANGAVAL)
-                    {
+                    //if (viewModel.DestinationArea == GUDANGAVAL)
+                    //{
 
-                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, item.AvalALength, item.AvalBLength, item.AvalConnectionLength);
+                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, item.AvalALength, item.AvalBLength, item.AvalConnectionLength);
 
-                    }
-                    else
-                    {
+                    //}
+                    //else
+                    //{
 
-                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
+                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
 
-                    }
+                    //}
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 
