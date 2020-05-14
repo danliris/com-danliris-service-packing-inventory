@@ -190,8 +190,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //     .Returns(new List<DyeingPrintingAreaSummaryModel>() {
             //         new DyeingPrintingAreaSummaryModel()
             //     }.AsQueryable());
+            //summaryRepoMock.Setup(s => s.ReadAll())
+            //     .Returns<IQueryable<DyeingPrintingAreaSummaryModel>>(null);
+
+            //summaryRepoMock.Setup(s => s.ReadAll().FirstOrDefault())
+            //    .Returns<DyeingPrintingAreaSummaryModel>(null);
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns<IQueryable<DyeingPrintingAreaSummaryModel>>(null);
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                                 new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", 0, ViewModel.BonNo, item.ProductionOrder.Id,
+                                 item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Qty)
+                 }.AsQueryable());
 
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
