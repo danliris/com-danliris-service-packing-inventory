@@ -394,5 +394,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEmpty(result);
         }
+
+        [Fact]
+        public void ValidateVM()
+        {
+            var spp = new OutputShippingProductionOrderViewModel()
+            {
+                InputId = 1
+            };
+
+            Assert.NotEqual(0, spp.InputId);
+            Assert.Null(spp.Packing);
+            Assert.Equal(0, spp.QtyPacking);
+            Assert.Null(spp.PackingType);
+            Assert.Null(spp.Remark);
+            Assert.Equal(0, spp.DyeingPrintingAreaInputProductionOrderId);
+        }
     }
 }

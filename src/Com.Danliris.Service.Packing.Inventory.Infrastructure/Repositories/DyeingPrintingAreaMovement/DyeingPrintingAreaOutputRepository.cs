@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDestinationArea(model.DestinationArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
             foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
             {
                 var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
