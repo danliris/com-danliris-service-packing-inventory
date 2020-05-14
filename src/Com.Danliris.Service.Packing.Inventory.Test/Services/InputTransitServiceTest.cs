@@ -80,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Unit = "s",
                             UomUnit = "d",
                             OutputId = 0,
+                            DyeingPrintingAreaInputProductionOrderId =1
                         }
                     }
                 };
