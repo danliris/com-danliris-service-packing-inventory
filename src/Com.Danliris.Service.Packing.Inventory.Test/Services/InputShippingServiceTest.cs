@@ -186,10 +186,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
 
+            //summaryRepoMock.Setup(s => s.ReadAll())
+            //     .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+            //         new DyeingPrintingAreaSummaryModel()
+            //     }.AsQueryable());
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel()
-                 }.AsQueryable());
+                 .Returns<IQueryable<DyeingPrintingAreaSummaryModel>>(null);
 
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
