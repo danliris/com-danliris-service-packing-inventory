@@ -158,7 +158,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,
                      s.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
                      s.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
-                     s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length)).ToList());
+                     s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length, 
+                     s.Id)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
@@ -211,7 +212,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance,
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
-                         item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length);
+                         item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length,
+                         item.Id);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     //if (viewModel.DestinationArea == GUDANGAVAL)
@@ -258,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == INSPECTIONMATERIAL && !s.HasNextAreaDocument);
+            var query = _repository.ReadAll().Where(s => s.Area == INSPECTIONMATERIAL && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -356,7 +358,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders()
         {
-            var productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+            var productionOrders = _inputProductionOrderRepository.ReadAll()
                 .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
             var data = productionOrders.Select(s => new InputInspectionMaterialProductionOrderViewModel()
             {

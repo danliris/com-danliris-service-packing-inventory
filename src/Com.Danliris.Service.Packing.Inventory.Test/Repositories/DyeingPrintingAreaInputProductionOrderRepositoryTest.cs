@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
-            var result = await repo.UpdateFromOutputAsync(data.Id, true);
+            var result = await repo.UpdateFromOutputAsync(data.Id, false);
 
             Assert.NotEqual(0, result);
         }
@@ -146,5 +146,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromNextAreaInputAsync()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromNextAreaInputAsync";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data =await DataUtil(repo, dbContext).GetTestData();
+            
+            var result = await repo.UpdateFromNextAreaInputAsync(data.Id, 1);
+
+            Assert.NotEqual(0, result);
+        }
+
     }
 }

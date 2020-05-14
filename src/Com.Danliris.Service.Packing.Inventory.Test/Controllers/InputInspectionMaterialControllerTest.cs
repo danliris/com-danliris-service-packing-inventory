@@ -92,9 +92,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new InputInspectionMaterialViewModel();
+            var dataUtil = new InputInspectionMaterialViewModel()
+            {
+                Date = DateTimeOffset.UtcNow.AddHours(-5)
+            };
             var validator = new InputInspectionMaterialValidator();
             var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.Date = DateTimeOffset.UtcNow.AddDays(1);
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
+            {
+                new InputInspectionMaterialProductionOrderViewModel()
+            };
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
+            {
+                new InputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                }
+            };
+            result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
 

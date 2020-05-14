@@ -24,5 +24,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal QtyPacking { get; set; }
         public double Qty { get; set; }
         public string PackingType { get; set; }
+
+        public int OutputId { get; set; }
+
+        public int InputId { get; set; }
+
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
     }
 }

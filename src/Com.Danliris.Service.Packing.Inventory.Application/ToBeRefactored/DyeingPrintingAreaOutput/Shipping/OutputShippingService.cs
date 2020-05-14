@@ -187,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING && !s.HasNextAreaDocument);
+            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"

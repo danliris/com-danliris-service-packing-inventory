@@ -45,12 +45,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationArea { get; private set; }
         public string Description { get; set; }
 
-
-        public int DyeingPrintingAreaOutputId { get; set; }
         /// <summary>
         /// ID SPP Input
         /// </summary>
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+
+        public int DyeingPrintingAreaOutputId { get; set; }
         public DyeingPrintingAreaOutputModel DyeingPrintingAreaOutput { get; set; }
 
         public DyeingPrintingAreaOutputProductionOrderModel()
@@ -58,8 +58,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
+        //IM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, double avalALength, double avalBLength, double avalConnectionLength)
+            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, double avalALength, double avalBLength, double avalConnectionLength, int dyeingPrintingAreaInputProductionOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -84,10 +85,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DestinationArea = destinationArea;
             HasNextAreaDocument = hasNextAreaDocument;
+
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
         }
 
+        //Transit
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance)
+            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -109,8 +113,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DestinationArea = destinationArea;
             HasNextAreaDocument = hasNextAreaDocument;
+
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductonOrderId;
         }
 
+        //Shipping
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
             string color, string motif, string grade, string uomUnit, string remark)
         {

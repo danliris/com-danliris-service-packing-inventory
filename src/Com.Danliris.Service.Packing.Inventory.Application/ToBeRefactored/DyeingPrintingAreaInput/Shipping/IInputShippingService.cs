@@ -1,5 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
-using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +13,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<PreShippingIndexViewModel> ReadOutputPreShipping(int page, int size, string filter, string order, string keyword);
         ListResult<InputShippingProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
+        List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders();
     }
 }

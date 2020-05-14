@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses
 {
-    public class InputTransitProductionOrderViewModel : BaseViewModel
+    public class OutputPreWarehouseIndexViewModel : BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
+        public string ProductionOrderNo { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }
@@ -18,16 +19,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public double Balance { get; set; }
-        public bool HasOutputDocument { get; set; }
-        public bool IsChecked { get; set; }
+        //public bool HasNextAreaDocument { get; set; }
+        //public bool IsChecked { get; set; }
         public string Grade { get; set; }
         public string Remark { get; set; }
         public string Status { get; set; }
-
+        public string Material { get; set; }
+        public decimal MtrLength { get; set; }
+        public decimal YdsLength { get; set; }
+        public decimal Quantity { get; set; }
+        public string PackagingType { get; set; }
+        public string PackagingUnit { get; set; }
+        public decimal PackagingQty { get; set; }
+        public double QtyOrder { get; set; }
         public int OutputId { get; set; }
-
-        public int InputId { get; set; }
-
-        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
     }
 }

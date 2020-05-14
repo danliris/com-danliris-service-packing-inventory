@@ -152,7 +152,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.TransitProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.TransitProductionOrders)
@@ -186,7 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance);
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.Id);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
@@ -256,7 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == TRANSIT && !s.HasNextAreaDocument);
+            var query = _repository.ReadAll().Where(s => s.Area == TRANSIT && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
