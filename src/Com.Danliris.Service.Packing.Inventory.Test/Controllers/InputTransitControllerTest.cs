@@ -92,6 +92,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
+        private OutputPreTransitProductionOrderViewModel OutputPreModel
+        {
+            get
+            {
+                return new OutputPreTransitProductionOrderViewModel
+                {
+                    CartNo = "CartNO",
+                    PackingInstruction = "PakcingInstruction",
+                    Construction = "Construction",
+                    Unit = "Unit",
+                    Buyer = "Buyer",
+                    Color = "Color",
+                    Motif = "Motif",
+                    UomUnit = "UomUnit",
+                    Remark = "Remar",
+                    Grade = "Grade",
+                    Status = "Status",
+                    Balance = 1,
+                    OutputId = 1,
+                    DyeingPrintingAreaInputProductionOrderId = 1,
+                    ProductionOrder = new ProductionOrder
+                    {
+                        No = "ProdNO",
+                        Code = "Prodcode",
+                        OrderQuantity = 12,
+                        Type = "ProdType",
+                        Id = 1
+                    }
+                };
+            }
+        }
+
         [Fact]
         public void Should_Validator_Success()
         {
@@ -320,6 +352,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
+        [Fact]
+        public void Should_Success_GetProductionOrders_Assign_NewDataUtils()
+        {
+            //v
+            var serviceMock = new Mock<IInputTransitService>();
+            serviceMock.Setup(s => s.GetOutputPreTransitProductionOrders())
+                .Returns(new List<OutputPreTransitProductionOrderViewModel>() { OutputPreModel });
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
         [Fact]
         public void Should_Exception_GetProductionOrders()
         {
