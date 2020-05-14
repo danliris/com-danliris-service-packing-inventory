@@ -11,9 +11,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public InputWarehousesValidator()
         {
             RuleFor(data => data.Area).NotNull().WithMessage("Harus Memiliki Area!");
-            RuleFor(data => data.Date).Must(s => s != default(DateTimeOffset)).WithMessage("Tanggal Harus Diisi!");
+            RuleFor(data => data.Date).Must(s => s != default).WithMessage("Tanggal Harus Diisi!");
+                                      //.Must(s => s.Date >= DateTimeOffset.UtcNow).WithMessage("Tanggal Tidak Boleh Kurang Dari Hari Ini");
             RuleFor(data => data.Shift).NotNull().WithMessage("Shift Harus Diisi!");
-            RuleFor(data => data.BonNo).NotNull().WithMessage("No. Bon Harus Diisi!");
+            //RuleFor(data => data.BonNo).NotNull().WithMessage("No. Bon Harus Diisi!");
         }
     }
 }
