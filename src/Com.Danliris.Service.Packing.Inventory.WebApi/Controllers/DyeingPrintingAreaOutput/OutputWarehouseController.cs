@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput
+namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaOutput
 {
     [Produces("application/json")]
-    [Route("v1/input-warehouses")]
+    [Route("v1/output-warehouse")]
     [Authorize]
-    public class InputWarehousesController : ControllerBase
+    public class OutputWarehouseController : ControllerBase
     {
-        private readonly IInputWarehousesService _service;
+        private readonly IOutputWarehouseService _service;
         private readonly IIdentityProvider _identityProvider;
 
-        public InputWarehousesController(IInputWarehousesService service, IIdentityProvider identityProvider)
+        public OutputWarehouseController(IOutputWarehouseService service, IIdentityProvider identityProvider)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] InputWarehousesViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] OutputWarehouseViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -92,13 +92,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        [HttpGet("output-production-orders")]
+        [HttpGet("input-production-orders")]
         public IActionResult GetProductionOrders()
         {
             try
             {
 
-                var data = _service.GetOutputPreWarehouseProductionOrders();
+                var data = _service.GetInputWarehouseProductionOrders();
                 return Ok(new
                 {
                     data
@@ -108,6 +108,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
+            }
+        }
+
+        [HttpGet("xls/{id}")]
+        public async Task<IActionResult> GetExcel(int id)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = await _service.GenerateExcel(id);
+                string filename = "Bon Keluar Gudang Jadi Dyeing/Printing.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -12,11 +12,11 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 {
-    public class InputWarehousesServiceTest
+    public class InputWarehouseServiceTest
     {
-        public InputWarehousesService GetService(IServiceProvider serviceProvider)
+        public InputWarehouseService GetService(IServiceProvider serviceProvider)
         {
-            return new InputWarehousesService(serviceProvider);
+            return new InputWarehouseService(serviceProvider);
         }
 
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository inputRepository,
@@ -43,11 +43,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
-        private InputWarehousesViewModel ViewModel
+        private InputWarehouseViewModel ViewModel
         {
             get
             {
-                return new InputWarehousesViewModel()
+                return new InputWarehouseViewModel()
                 {
                     Area = "INSPECTION MATERIAL",
                     BonNo = "GJ.20.0001",
@@ -55,9 +55,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     OutputId = 195,
                     Group = "A",
-                    WarehousesProductionOrders = new List<InputWarehousesProductionOrdersViewModel>
+                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
                     {
-                        new InputWarehousesProductionOrdersViewModel()
+                        new InputWarehouseProductionOrderViewModel()
                         {
                             ProductionOrder = new ProductionOrder()
                             {
@@ -471,7 +471,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1)
+                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1)
             }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
