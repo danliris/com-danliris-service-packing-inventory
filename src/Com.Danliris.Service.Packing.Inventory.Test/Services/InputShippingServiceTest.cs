@@ -260,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             repoMock.Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingAreaInputModel>() { }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
             var modelModif = Model;
             modelModif.SetArea( "error","unittest","");
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
@@ -499,6 +499,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var packingTYpe = outPre.PackingType;
             var OuptuId = outPre.OutputId;
             var dyeingid = outPre.DyeingPrintingAreaInputProductionOrderId;
+            var act = outPre.Active;
+            var cre = outPre.CreatedAgent;
+            var creut = outPre.CreatedUtc;
+            var create = outPre.CreatedBy;
+            var lastMod = outPre.LastModifiedBy;
+            var lstt = outPre.LastModifiedAgent;
+            var dle = outPre.DeletedAgent;
+            var dleteis = outPre.IsDeleted;
+            var dlet = outPre.DeletedBy;
+            var delag = outPre.DeletedUtc;
             //var test = outPre.Grade;
             //var test2 = outPre.DeliveryOrder
             Assert.NotNull(test);
