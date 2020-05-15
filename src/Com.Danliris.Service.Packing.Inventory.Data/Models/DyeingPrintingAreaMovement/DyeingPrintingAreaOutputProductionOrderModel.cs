@@ -45,6 +45,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationArea { get; private set; }
         public string Description { get; set; }
 
+
+        public string DeliveryNote { get; private set; }
+
         /// <summary>
         /// ID SPP Input
         /// </summary>
@@ -119,7 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //Shipping
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
-            string color, string motif, string grade, string uomUnit, string remark)
+           string unit,  string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -129,15 +132,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Color = color;
             Motif = motif;
             UomUnit = uomUnit;
-            Remark = remark;
             Grade = grade;
             ProductionOrderType = productionOrderType;
             DeliveryOrderSalesId = deliveryOrderSalesId;
+            Balance = balance;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
-
+            DeliveryNote = deliveryNote;
+            Unit = unit;
             Area = area;
             DestinationArea = destinationArea;
             HasNextAreaDocument = hasNextAreaDocument;
+
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductonOrderId;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, 

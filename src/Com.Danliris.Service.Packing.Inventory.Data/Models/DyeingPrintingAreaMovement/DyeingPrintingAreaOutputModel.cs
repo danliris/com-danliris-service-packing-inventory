@@ -16,6 +16,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationArea { get; private set; }
         public string Group { get; private set; }
 
+        public long DeliveryOrderSalesId { get; private set; }
+        public string DeliveryOrderSalesNo { get; private set; }
+
+
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaOutputModel()
@@ -34,6 +38,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasNextAreaDocument = hasNextAreaDocument;
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
+        }
+
+        //Shipping
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            HasNextAreaDocument = hasNextAreaDocument;
+            DestinationArea = destinationArea;
+            DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
+
+            DeliveryOrderSalesId = deliveryOrderId;
+            DeliveryOrderSalesNo = deliveryOrderNo;
         }
 
         public void SetArea(string newArea, string user, string agent)
@@ -95,6 +116,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if(newGroup != Group)
             {
                 Group = newGroup;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetDeliveryOrderSales(long deliveryOrderSalesId, string deliveryOrderSalesNo, string user, string agent)
+        {
+            if (deliveryOrderSalesId != DeliveryOrderSalesId)
+            {
+                DeliveryOrderSalesId = deliveryOrderSalesId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (deliveryOrderSalesNo != DeliveryOrderSalesNo)
+            {
+                DeliveryOrderSalesNo = deliveryOrderSalesNo;
                 this.FlagForUpdate(user, agent);
             }
         }

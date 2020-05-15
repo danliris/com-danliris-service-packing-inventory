@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public string Shift { get; set; }
+        public DeliveryOrderSales DeliveryOrder { get; set; }
         public ICollection<OutputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
     }
 }

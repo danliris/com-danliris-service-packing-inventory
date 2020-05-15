@@ -21,16 +21,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    .Must(s => s.GroupBy(d => d.ProductionOrder.Id).All(e => e.Count() == 1))
             //    .WithMessage("SPP harus berbeda setiap detail!")
             //    .When(s => s.ShippingProductionOrders.All(d => d.ProductionOrder != null));
-            RuleForEach(s => s.ShippingProductionOrders).ChildRules(d =>
-            {
-                d.RuleFor(data => data.DeliveryOrder).NotNull().WithMessage("DO Harus Diisi!");
-                d.When(data => data.DeliveryOrder != null, () =>
-                {
-                    d.RuleFor(s => s.DeliveryOrder.Id).GreaterThan(0).WithMessage("DO Tidak Valid!");
-                    d.RuleFor(s => s.DeliveryOrder.No).NotNull().WithMessage("DO Tidak Valid!");
-                });
+            //RuleForEach(s => s.ShippingProductionOrders).ChildRules(d =>
+            //{
+            //    d.RuleFor(data => data.DeliveryOrder).NotNull().WithMessage("DO Harus Diisi!");
+            //    d.When(data => data.DeliveryOrder != null, () =>
+            //    {
+            //        d.RuleFor(s => s.DeliveryOrder.Id).GreaterThan(0).WithMessage("DO Tidak Valid!");
+            //        d.RuleFor(s => s.DeliveryOrder.No).NotNull().WithMessage("DO Tidak Valid!");
+            //    });
 
-            });
+            //});
         }
     }
 }

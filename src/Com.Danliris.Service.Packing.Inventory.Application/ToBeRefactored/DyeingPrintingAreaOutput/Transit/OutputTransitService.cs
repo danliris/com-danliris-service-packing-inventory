@@ -189,7 +189,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.Id);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
@@ -200,6 +199,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                     result += await _movementRepository.InsertAsync(movementModel);
                     if (previousSummary == null)
                     {

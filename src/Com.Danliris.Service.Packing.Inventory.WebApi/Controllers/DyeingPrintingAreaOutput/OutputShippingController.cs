@@ -111,5 +111,43 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("input-production-orders/{id}")]
+        public IActionResult GetProductionOrders(long id)
+        {
+            try
+            {
+
+                var data = _service.GetInputShippingProductionOrdersByDeliveryOrder(id);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        //[HttpGet("output-production-orders/{id}")]
+        //public IActionResult GetProductionOrdersByBon(int id)
+        //{
+        //    try
+        //    {
+
+        //        var data = _service.GetOutputShippingProductionOrdersByBon(id);
+        //        return Ok(new
+        //        {
+        //            data
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+        //    }
+        //}
     }
 }

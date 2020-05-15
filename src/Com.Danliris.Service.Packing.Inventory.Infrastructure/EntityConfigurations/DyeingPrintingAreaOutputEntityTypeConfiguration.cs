@@ -42,9 +42,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .Property(s => s.Area)
                .HasMaxLength(64);
 
-            builder.HasIndex(s => s.BonNo)
-                .IsUnique()
-                .HasFilter("[IsDeleted]=(0)");
+            //builder.HasIndex(s => s.BonNo)
+            //    .IsUnique()
+            //    .HasFilter("[IsDeleted]=(0)");
 
             builder
                 .Property(s => s.BonNo)
@@ -61,6 +61,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.Group)
                 .HasMaxLength(16);
+
+
+            builder
+                .Property(s => s.DeliveryOrderSalesNo)
+                .HasMaxLength(128);
         }
     }
 }

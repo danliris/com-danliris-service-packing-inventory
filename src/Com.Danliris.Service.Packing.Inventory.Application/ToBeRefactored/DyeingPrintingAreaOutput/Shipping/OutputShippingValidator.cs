@@ -25,7 +25,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    .When(s => s.InspectionMaterialProductionOrders.All(d => d.ProductionOrder != null));
             RuleForEach(s => s.ShippingProductionOrders).ChildRules(d =>
             {
-                d.RuleFor(data => data.Remark).NotNull().WithMessage("Remark Harus Diisi!");
                 d.RuleFor(data => data.Qty).Must(e => e > 0).WithMessage("Qty Keluar Harus Lebih Besar dari 0");
 
             });
