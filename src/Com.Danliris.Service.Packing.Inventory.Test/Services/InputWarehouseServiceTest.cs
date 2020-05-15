@@ -73,23 +73,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Unit = "DYEING",
                             Buyer = "ERWAN KURNIADI",
                             Color = "Grey",
-                            //Motif = "",
+                            Motif = "a",
                             UomUnit = "MTR",
                             Balance = 1,
                             HasOutputDocument = false,
                             IsChecked = false,
                             Grade = "A",
-                            //Remark = "",
-                            //Status = "",
+                            Remark = "a",
+                            Status = "a",
                             //Material = "",
-                            MtrLength = 0,
-                            YdsLength = 0,
+                            //MtrLength = 0,
+                            //YdsLength = 0,
                             PackagingUnit ="ROLL",
                             PackagingQty = 10,
                             PackagingType ="WHITE",
                             QtyOrder = 2000,
                             OutputId = 195
-                            //InputId = 0
+                            //InputId = 195
                         }
                     }
                 };

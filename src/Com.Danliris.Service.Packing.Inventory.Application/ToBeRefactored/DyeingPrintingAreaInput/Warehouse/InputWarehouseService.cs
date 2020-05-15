@@ -221,14 +221,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
-            List<int> listOfDyeingPrintingAreaIds = viewModel.WarehousesProductionOrders.Select(o => o.OutputId).ToList();
+            List<int> listOfDyeingPrintingAreaIds = viewModel.WarehousesProductionOrders.Select(o => o.OutputId).Distinct().ToList();
             foreach (var areaId in listOfDyeingPrintingAreaIds)
             {
                 result += await _outputRepository.UpdateFromInputNextAreaFlagParentOnlyAsync(areaId, true);
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            List<int> listOfOutputProductionOrderIds = viewModel.WarehousesProductionOrders.Select(o => o.Id).ToList();
+            List<int> listOfOutputProductionOrderIds = viewModel.WarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
             foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
             {
                 result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true);
@@ -376,26 +376,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var data = query.Select(s => new OutputPreWarehouseIndexViewModel()
             {
                 Id = s.Id,
-                Balance = s.Balance,
-                Buyer = s.Buyer,
-                CartNo = s.CartNo,
-                Color = s.Color,
-                Construction = s.Construction,
-                //HasNextAreaDocument = s.HasNextAreaDocument,
-                Motif = s.Motif,
-                PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = s.ProductionOrderId,
                     No = s.ProductionOrderNo,
                     Type = s.ProductionOrderType
                 },
-                Unit = s.Unit,
-                UomUnit = s.UomUnit,
-                PackagingUnit = s.PackagingUnit,
-                PackagingType = s.PackagingType,
-                PackagingQty = s.PackagingQty,
                 ProductionOrderNo = s.ProductionOrderNo,
+                CartNo = s.CartNo,
+                PackingInstruction = s.PackingInstruction,
+                Construction = s.Construction,
+                Unit = s.Unit,
+                Buyer = s.Buyer,
+                Color = s.Color,
+                Motif = s.Motif,
+                UomUnit = s.UomUnit,
+                Balance = s.Balance,
+                HasNextAreaDocument = s.HasNextAreaDocument,
+                Grade = s.Grade,
+                Remark = s.Remark,
+                Status = s.Status,
+                PackagingType = s.PackagingType,
+                PackagingUnit = s.PackagingUnit,
+                PackagingQty = s.PackagingQty,
                 QtyOrder = s.ProductionOrderOrderQuantity,
                 OutputId = s.DyeingPrintingAreaOutputId
             });

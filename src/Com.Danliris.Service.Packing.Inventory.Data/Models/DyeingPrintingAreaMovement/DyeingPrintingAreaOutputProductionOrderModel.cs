@@ -359,6 +359,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKg;
         }
 
+        //Warehouse
+        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area, string destinationArea, int dyeingPrintingAreaInputProductionOrderId)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            HasNextAreaDocument = hasNextAreaDocument;
+            Area = area;
+            DestinationArea = destinationArea;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+        }
+
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)

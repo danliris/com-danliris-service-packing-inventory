@@ -38,14 +38,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     Grade = "a",
                     Remark = "a",
                     Status = "a",
-                    Material = "a",
-                    MtrLength = 10,
-                    YdsLength = 10,
-                    Quantity = 10,
+                    //Material = "a",
+                    //MtrLength = 10,
+                    //YdsLength = 10,
+                    //Quantity = 10,
                     PackagingType = "s",
                     PackagingUnit = "a",
                     PackagingQty = 10,
                     QtyOrder = 10,
+                    DeliveryOrderSalesNo = "2k00f",
                     OutputId = 1,
                     InputId = 2
                 };
@@ -164,33 +165,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
             Assert.NotNull(dataUtil.Status);
         }
 
-        [Fact]
-        public void Should_ValidatorMaterial_Success()
-        {
-            var dataUtil = InputWarehousesProductionOrdersViewModel;
-            Assert.NotNull(dataUtil.Material);
-        }
+        //[Fact]
+        //public void Should_ValidatorMaterial_Success()
+        //{
+        //    var dataUtil = InputWarehousesProductionOrdersViewModel;
+        //    Assert.NotNull(dataUtil.Material);
+        //}
 
-        [Fact]
-        public void Should_ValidatorMtrLength_Success()
-        {
-            var dataUtil = InputWarehousesProductionOrdersViewModel;
-            Assert.NotEqual(0, dataUtil.MtrLength);
-        }
+        //[Fact]
+        //public void Should_ValidatorMtrLength_Success()
+        //{
+        //    var dataUtil = InputWarehousesProductionOrdersViewModel;
+        //    Assert.NotEqual(0, dataUtil.MtrLength);
+        //}
 
-        [Fact]
-        public void Should_ValidatorYdsLength_Success()
-        {
-            var dataUtil = InputWarehousesProductionOrdersViewModel;
-            Assert.NotEqual(0, dataUtil.YdsLength);
-        }
+        //[Fact]
+        //public void Should_ValidatorYdsLength_Success()
+        //{
+        //    var dataUtil = InputWarehousesProductionOrdersViewModel;
+        //    Assert.NotEqual(0, dataUtil.YdsLength);
+        //}
 
-        [Fact]
-        public void Should_ValidatorQuantity_Success()
-        {
-            var dataUtil = InputWarehousesProductionOrdersViewModel;
-            Assert.NotEqual(0, dataUtil.Quantity);
-        }
+        //[Fact]
+        //public void Should_ValidatorQuantity_Success()
+        //{
+        //    var dataUtil = InputWarehousesProductionOrdersViewModel;
+        //    Assert.NotEqual(0, dataUtil.Quantity);
+        //}
 
         [Fact]
         public void Should_ValidatorPackagingType_Success()
@@ -218,6 +219,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         {
             var dataUtil = InputWarehousesProductionOrdersViewModel;
             Assert.NotEqual(0, dataUtil.QtyOrder);
+        }
+
+        [Fact]
+        public void Should_ValidatorDeliveryOrderSalesNo_Success()
+        {
+            var dataUtil = InputWarehousesProductionOrdersViewModel;
+            Assert.NotNull(dataUtil.DeliveryOrderSalesNo);
         }
 
         [Fact]

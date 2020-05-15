@@ -46,7 +46,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Output
                     PackagingType = "s",
                     PackagingUnit = "a",
                     PackagingQty = 10,
-                    QtyOrder = 10
+                    QtyOrder = 10,
+                    DeliveryOrderSalesId = 12,
+                    DeliveryOrderSalesNo = "2k00f"
                 };
             }
         }
@@ -224,6 +226,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Output
         {
             var dataUtil = OutputWarehousesProductionOrdersViewModel;
             Assert.NotEqual(0, dataUtil.QtyOrder);
+        }
+
+        [Fact]
+        public void Should_ValidatorDeliveryOrderSalesId_Success()
+        {
+            var dataUtil = OutputWarehousesProductionOrdersViewModel;
+            Assert.NotEqual(0, dataUtil.DeliveryOrderSalesId);
+        }
+
+        [Fact]
+        public void Should_ValidatorDeliveryOrderSalesNo_Success()
+        {
+            var dataUtil = OutputWarehousesProductionOrdersViewModel;
+            Assert.NotNull(dataUtil.DeliveryOrderSalesNo);
         }
     }
 }

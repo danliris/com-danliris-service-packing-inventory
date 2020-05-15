@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     BonNo = "TR.GJ.20.001",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "PAGI",
-                    OutputId = 10,
+                    //OutputId = 10,
                     Group = "A",
                     WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>()
                     {
@@ -50,16 +50,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                             Grade = "a",
                             Remark = "a",
                             Status = "a",
-                            Material = "a",
-                            MtrLength = 10,
-                            YdsLength = 10,
-                            Quantity = 10,
+                            //Material = "a",
+                            //MtrLength = 10,
+                            //YdsLength = 10,
+                            //Quantity = 10,
                             PackagingType = "s",
                             PackagingUnit = "a",
                             PackagingQty = 10,
                             QtyOrder = 10,
                             OutputId = 1,
-                            InputId = 2
+                            //InputId = 2
                         }
                     }
                 };
@@ -110,12 +110,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
             Assert.NotNull(dataUtil.Shift);
         }
 
-        [Fact]
-        public void Should_ValidatorOutputId_Success()
-        {
-            var dataUtil = InputWarehouseViewModel;
-            Assert.NotEqual(0, dataUtil.OutputId);
-        }
+        //[Fact]
+        //public void Should_ValidatorOutputId_Success()
+        //{
+        //    var dataUtil = InputWarehouseViewModel;
+        //    Assert.NotEqual(0, dataUtil.OutputId);
+        //}
 
         [Fact]
         public void Should_ValidatorGroup_Success()
