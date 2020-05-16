@@ -99,5 +99,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var result = await repo.UpdateFromInputNextAreaFlagParentOnlyAsync(data.Id, true);
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_Update_3()
+        {
+            string testName = GetCurrentMethod() + "Update_3";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyWithDOModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var model = DataUtil(repo, dbContext).GetWithDOModel();
+
+            int index = 0;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var spp = data.DyeingPrintingAreaOutputProductionOrders.ElementAtOrDefault(index++);
+                item.DyeingPrintingAreaOutputId = data.Id;
+                item.Id = spp.Id;
+            }
+
+            var result = await repo2.UpdateAsync(data.Id, model);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
