@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                         Code = "SLD",
                         Id = 62,
                         Type = "SOLID",
-                        No = "F/2020/000"
+                        No = "F/2020/000",
+                        OrderQuantity = 12
                     },
                     ProductionOrderNo = "asd",
                     CartNo = "5-11",
@@ -33,13 +34,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     Motif = "a",
                     UomUnit = "a",
                     Balance = 10,
+                    HasNextAreaDocument = false,
                     Grade = "a",
                     Remark = "a",
                     Status = "a",
-                    Material = "a",
-                    MtrLength = 10,
-                    YdsLength = 10,
-                    Quantity = 10,
+                    //Material = "a",
+                    //MtrLength = 10,
+                    //YdsLength = 10,
+                    //Quantity = 10,
                     PackagingType = "s",
                     PackagingUnit = "a",
                     PackagingQty = 10,
@@ -57,10 +59,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         }
 
         [Fact]
+        public void Should_ValidatorProductionOrderId_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.NotEqual(0, dataUtil.ProductionOrder.Id);
+        }
+
+        [Fact]
+        public void Should_ValidatorProductionOrderCode_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.NotNull(dataUtil.ProductionOrder.Code);
+        }
+
+        [Fact]
         public void Should_ValidatorProductionOrderNo_Success()
         {
             var dataUtil = OutputPreWarehouseIndexViewModel;
             Assert.NotNull(dataUtil.ProductionOrderNo);
+        }
+
+        [Fact]
+        public void Should_ValidatorProductionOrderType_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.NotNull(dataUtil.ProductionOrder.Type);
+        }
+
+        [Fact]
+        public void Should_ValidatorProductionOrderOrderQuantity_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.NotEqual(0, dataUtil.ProductionOrder.OrderQuantity);
         }
 
         [Fact]
@@ -127,6 +157,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         }
 
         [Fact]
+        public void Should_ValidatorHasNextAreaDocument_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.False(dataUtil.HasNextAreaDocument);
+        }
+
+        [Fact]
         public void Should_ValidatorGrade_Success()
         {
             var dataUtil = OutputPreWarehouseIndexViewModel;
@@ -147,33 +184,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
             Assert.NotNull(dataUtil.Status);
         }
 
-        [Fact]
-        public void Should_ValidatorMaterial_Success()
-        {
-            var dataUtil = OutputPreWarehouseIndexViewModel;
-            Assert.NotNull(dataUtil.Material);
-        }
+        //[Fact]
+        //public void Should_ValidatorMaterial_Success()
+        //{
+        //    var dataUtil = OutputPreWarehouseIndexViewModel;
+        //    Assert.NotNull(dataUtil.Material);
+        //}
 
-        [Fact]
-        public void Should_ValidatorMtrLength_Success()
-        {
-            var dataUtil = OutputPreWarehouseIndexViewModel;
-            Assert.NotEqual(0, dataUtil.MtrLength);
-        }
+        //[Fact]
+        //public void Should_ValidatorMtrLength_Success()
+        //{
+        //    var dataUtil = OutputPreWarehouseIndexViewModel;
+        //    Assert.NotEqual(0, dataUtil.MtrLength);
+        //}
 
-        [Fact]
-        public void Should_ValidatorYdsLength_Success()
-        {
-            var dataUtil = OutputPreWarehouseIndexViewModel;
-            Assert.NotEqual(0, dataUtil.YdsLength);
-        }
+        //[Fact]
+        //public void Should_ValidatorYdsLength_Success()
+        //{
+        //    var dataUtil = OutputPreWarehouseIndexViewModel;
+        //    Assert.NotEqual(0, dataUtil.YdsLength);
+        //}
 
-        [Fact]
-        public void Should_ValidatorQuantity_Success()
-        {
-            var dataUtil = OutputPreWarehouseIndexViewModel;
-            Assert.NotEqual(0, dataUtil.Quantity);
-        }
+        //[Fact]
+        //public void Should_ValidatorQuantity_Success()
+        //{
+        //    var dataUtil = OutputPreWarehouseIndexViewModel;
+        //    Assert.NotEqual(0, dataUtil.Quantity);
+        //}
 
         [Fact]
         public void Should_ValidatorPackagingType_Success()

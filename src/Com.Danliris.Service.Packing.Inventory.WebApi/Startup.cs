@@ -39,8 +39,9 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -99,7 +100,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputAvalService, OutputAvalService>();
             services.AddTransient<IInputShippingService, InputShippingService>();
             services.AddTransient<IOutputShippingService, OutputShippingService>();
-            services.AddTransient<IInputWarehousesService, InputWarehousesService>();
+            services.AddTransient<IInputWarehouseService, InputWarehouseService>();
+            services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
@@ -206,7 +208,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
             services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
-            services.AddSingleton<IValidator<InputWarehousesViewModel>, InputWarehousesValidator>();
+            services.AddSingleton<IValidator<InputWarehouseViewModel>, InputWarehouseValidator>();
+            services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
 
         }
 

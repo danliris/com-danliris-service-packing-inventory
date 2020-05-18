@@ -1,11 +1,11 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Output
 {
     public class IndexViewModelDataUtil
     {
@@ -19,6 +19,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     Area = "GUDANG JADI",
                     BonNo = "TR.GJ.20.001",
                     Date = DateTimeOffset.UtcNow,
+                    DestinationArea = "SHIPPING",
+                    HasNextAreaDocument = false,
                     Shift = "PAGI",
                     Group = "A"
                 };
@@ -51,6 +53,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         {
             var dataUtil = IndexViewModel;
             Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow) < TimeSpan.FromSeconds(2));
+        }
+
+        [Fact]
+        public void Should_ValidatorDestinationArea_Success()
+        {
+            var dataUtil = IndexViewModel;
+            Assert.NotNull(dataUtil.DestinationArea);
+        }
+
+        [Fact]
+        public void Should_ValidatorHasNextAreaDocument_Success()
+        {
+            var dataUtil = IndexViewModel;
+            Assert.False(dataUtil.HasNextAreaDocument);
         }
 
         [Fact]

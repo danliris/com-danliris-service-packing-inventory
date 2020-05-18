@@ -1,24 +1,27 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouses;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
-using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaOutput;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using IndexViewModel = Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse.IndexViewModel;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class InputWarehousesControllerTest
+    public class OutputWarehouseControllerTest
     {
-        private InputWarehousesController GetController(IInputWarehousesService service, IIdentityProvider identityProvider)
+        private OutputWarehouseController GetController(IOutputWarehouseService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -27,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new InputWarehousesController(service, identityProvider)
+            var controller = new OutputWarehouseController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -50,39 +53,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private InputWarehousesViewModel ViewModel
+        private OutputWarehouseViewModel ViewModel
         {
             get
             {
-                return new InputWarehousesViewModel()
+                return new OutputWarehouseViewModel()
                 {
-                    Area = "GUDANGJADI",
-                    BonNo = "s",
+                    Id = 1,
+                    Area = "GUDANG JADI",
+                    BonNo = "TR.GJ.20.001",
                     Date = DateTimeOffset.UtcNow,
-                    Shift = "pas",
-                    WarehousesProductionOrders = new List<InputWarehousesProductionOrdersViewModel>()
+                    DestinationArea = "SHIPPING",
+                    HasNextAreaDocument = false,
+                    Shift = "PAGI",
+                    InputWarehouseId = 12,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
                     {
-                        new InputWarehousesProductionOrdersViewModel()
+                        new OutputWarehouseProductionOrderViewModel()
                         {
-                            Balance = 1,
-                            Buyer = "s",
-                            CartNo = "1",
-                            Color = "red",
-                            Construction = "sd",
-                            Grade = "s",
-                            HasOutputDocument = false,
-                            IsChecked = false,
-                            Motif = "sd",
-                            PackingInstruction = "d",
+                            Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
-                                Code = "sd",
-                                Id = 1,
-                                Type = "sd",
-                                No = "sd"
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000"
                             },
-                            Unit = "s",
-                            UomUnit = "d"
+                            CartNo = "5-11",
+                            PackingInstruction = "a",
+                            Construction = "a",
+                            Unit = "a",
+                            Buyer = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 50,
+                            PreviousBalance = 100,
+                            InputId = 2,
+                            ProductionOrderNo = "asd",
+                            HasNextAreaDocument = false,
+                            Material = "a",
+                            MtrLength = 10,
+                            YdsLength = 10,
+                            Quantity = 10,
+                            PackagingType = "s",
+                            PackagingUnit = "a",
+                            PackagingQty = 10,
+                            QtyOrder = 10
                         }
                     }
                 };
@@ -92,8 +113,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new InputWarehousesViewModel();
-            var validator = new InputWarehousesValidator();
+            var dataUtil = new OutputWarehouseViewModel();
+            var validator = new OutputWarehouseValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
@@ -103,8 +124,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputWarehouseViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -120,10 +141,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new InputWarehousesViewModel();
+            var dataUtil = new OutputWarehouseViewModel();
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputWarehouseViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -143,8 +164,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehousesViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputWarehouseViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -161,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
+            var serviceMock = new Mock<IOutputWarehouseService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -180,7 +201,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
+            var serviceMock = new Mock<IOutputWarehouseService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -198,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
+            var serviceMock = new Mock<IOutputWarehouseService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
@@ -218,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
+            var serviceMock = new Mock<IOutputWarehouseService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -236,9 +257,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_GetProductionOrders()
         {
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrders())
-                .Returns(new List<OutputPreWarehouseIndexViewModel>() { });
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.GetInputWarehouseProductionOrders())
+                .Returns(new List<InputWarehouseProductionOrderViewModel>() { });
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -256,8 +277,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IInputWarehousesService>();
-            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrders()).Throws(new Exception());
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.GetInputWarehouseProductionOrders()).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -266,6 +287,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.GetProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetWarehouseAreaNoteExcel()
+        {
+            //v
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcel(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetWarehouseAreaNoteExcel()
+        {
+            //v
+            var serviceMock = new Mock<IOutputWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcel(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
