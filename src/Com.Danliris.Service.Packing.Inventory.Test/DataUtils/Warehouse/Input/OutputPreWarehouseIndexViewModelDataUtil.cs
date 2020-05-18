@@ -21,7 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                         Code = "SLD",
                         Id = 62,
                         Type = "SOLID",
-                        No = "F/2020/000"
+                        No = "F/2020/000",
+                        OrderQuantity = 12
                     },
                     ProductionOrderNo = "asd",
                     CartNo = "5-11",
