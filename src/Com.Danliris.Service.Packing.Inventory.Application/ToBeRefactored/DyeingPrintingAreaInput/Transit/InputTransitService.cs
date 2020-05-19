@@ -112,9 +112,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
+        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string area)
         {
-            return string.Format("{0}.{1}.{2}", TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            if (area == PACKING)
+            {
+
+                return string.Format("{0}.{1}.{2}", PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else if (area == INSPECTIONMATERIAL)
+            {
+
+                return string.Format("{0}.{1}.{2}", IM, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else
+            {
+                return string.Format("{0}.{1}.{2}", TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
 
         }
 
@@ -125,10 +138,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == TRANSIT && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
 
-            if(model == null)
+            if (model == null)
             {
                 int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == TRANSIT && s.CreatedUtc.Year == viewModel.Date.Year);
-                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.Area);
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.TransitProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
@@ -164,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
-                foreach(var item in viewModel.TransitProductionOrders)
+                foreach (var item in viewModel.TransitProductionOrders)
                 {
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
@@ -178,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
-                    
+
                     result += await _SPPRepository.InsertAsync(modelItem);
                     result += await _SPPRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                     result += await _movementRepository.InsertAsync(movementModel);
@@ -192,12 +205,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                         result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
                     }
-                    
+
                 }
                 result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id), true);
             }
 
-            
+
 
             return result;
         }
@@ -333,6 +346,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Balance = d.Balance,
                 PackingInstruction = d.PackingInstruction,
                 Remark = d.Remark,
+                Area = d.Area,
                 Status = d.Status,
                 Grade = d.Grade,
                 ProductionOrder = new ProductionOrder()
@@ -345,10 +359,98 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Unit = d.Unit,
                 UomUnit = d.UomUnit,
                 OutputId = d.DyeingPrintingAreaOutputId,
+
                 DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
             });
 
             return data.ToList();
+        }
+
+        public async Task<int> Reject(InputTransitViewModel viewModel)
+        {
+            int result = 0;
+
+            var groupedProductionOrders = viewModel.TransitProductionOrders.GroupBy(s => s.Area);
+            foreach (var item in groupedProductionOrders)
+            {
+                var model = _repository.GetDbSet().AsNoTracking()
+                                .FirstOrDefault(s => s.Area == item.Key && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
+
+                if (model == null)
+                {
+                    int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == item.Key && s.CreatedUtc.Year == viewModel.Date.Year);
+                    string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, item.Key);
+                    model = new DyeingPrintingAreaInputModel(viewModel.Date, item.Key, viewModel.Shift, bonNo, viewModel.Group, viewModel.TransitProductionOrders.Select(s =>
+                         new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                         s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, false)).ToList());
+
+                    result = await _repository.InsertAsync(model);
+
+                    //result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputId, true);
+
+                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    foreach (var detail in item)
+                    {
+                        result += await _SPPRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                            detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance);
+
+                        var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == detail.OutputId && s.ProductionOrderId == detail.ProductionOrder.Id);
+
+                        var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                            detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance);
+
+                        result += await _movementRepository.InsertAsync(movementModel);
+                        if (previousSummary == null)
+                        {
+
+                            result += await _summaryRepository.InsertAsync(summaryModel);
+                        }
+                        else
+                        {
+
+                            result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var detail in item)
+                    {
+                        var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                   detail.ProductionOrder.Type, detail.ProductionOrder.OrderQuantity, detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction,
+                                   detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, detail.Balance, false);
+                        modelItem.DyeingPrintingAreaInputId = model.Id;
+
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                           detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance);
+
+                        var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == detail.OutputId && s.ProductionOrderId == detail.ProductionOrder.Id);
+
+                        var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                            detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance);
+
+                        result += await _SPPRepository.InsertAsync(modelItem);
+                        result += await _SPPRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        result += await _movementRepository.InsertAsync(movementModel);
+                        if (previousSummary == null)
+                        {
+
+                            result += await _summaryRepository.InsertAsync(summaryModel);
+                        }
+                        else
+                        {
+
+                            result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                        }
+
+                    }
+                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                }
+            }
+
+
+            return result;
         }
     }
 }
