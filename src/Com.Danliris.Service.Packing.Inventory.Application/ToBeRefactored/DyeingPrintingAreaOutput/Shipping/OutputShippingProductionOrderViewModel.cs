@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string UomUnit { get; set; }
         public string Grade { get; set; }
         public string Packing { get; set; }
-        public double QtyPacking { get; set; }
+        public decimal QtyPacking { get; set; }
         public double Qty { get; set; }
         public string PackingType { get; set; }
         public string Remark { get; set; }

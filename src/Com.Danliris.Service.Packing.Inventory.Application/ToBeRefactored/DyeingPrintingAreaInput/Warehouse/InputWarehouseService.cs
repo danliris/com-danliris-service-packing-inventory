@@ -93,7 +93,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = s.ProductionOrderId,
-                        No = s.ProductionOrderNo
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
                     },
                     Unit = s.Unit,
                     UomUnit = s.UomUnit,
@@ -101,7 +103,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackagingType = s.PackagingType,
                     PackagingUnit = s.PackagingUnit,
                     ProductionOrderNo = s.ProductionOrderNo,
-                    QtyOrder = s.ProductionOrderOrderQuantity
+                    QtyOrder = s.ProductionOrderOrderQuantity,
+                    Grade = s.Grade,
+                    PackingInstruction = s.PackingInstruction,
+                    Remark = s.Remark,
+                    Status = s.Status
                 }).ToList()
             };
 
@@ -216,8 +222,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
 
-                //Update Previous Summary with Summary Model Created Before
-                result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                if (previousSummary == null)
+                {
+                    //Update Previous Summary with Summary Model Created Before
+                    result += await _summaryRepository.InsertAsync(summaryModel);
+                }
+                else
+                {
+
+                    //Update Previous Summary with Summary Model Created Before
+                    result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                }
             }
 
             //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
@@ -311,8 +326,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
 
-                //Update Previous Summary with Summary Model Created Before
-                result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                if(previousSummary == null)
+                {
+                    //Update Previous Summary with Summary Model Created Before
+                    result += await _summaryRepository.InsertAsync(summaryModel);
+                }
+                else
+                {
+
+                    //Update Previous Summary with Summary Model Created Before
+                    result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                }
+
+
+
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True

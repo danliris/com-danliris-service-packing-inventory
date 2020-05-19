@@ -381,6 +381,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //HasOutputDocument = s.HasOutputDocument,
                 //IsChecked = s.IsChecked,
                 Motif = s.Motif,
+                Grade = s.Grade,
                 PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
                 {
