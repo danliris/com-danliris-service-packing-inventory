@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
-        private InputWarehouseViewModel ViewModel
+        private InputWarehouseViewModel ViewModelIM
         {
             get
             {
@@ -96,17 +96,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
+        private InputWarehouseViewModel ViewModelPC
+        {
+            get
+            {
+                return new InputWarehouseViewModel()
+                {
+                    Area = "PACKING",
+                    BonNo = "GJ.20.0001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    OutputId = 195,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
+                    {
+                        new InputWarehouseProductionOrderViewModel()
+                        {
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000"
+                            },
+                            ProductionOrderNo = "F/2020/0009",
+                            CartNo = "9",
+                            PackingInstruction = "d",
+                            Construction = "Greige Test Dyeing Printing / TWILL 3/1. 104 x 52 / 100",
+                            Unit = "DYEING",
+                            Buyer = "ERWAN KURNIADI",
+                            Color = "Grey",
+                            Motif = "a",
+                            UomUnit = "MTR",
+                            Balance = 1,
+                            HasOutputDocument = false,
+                            IsChecked = false,
+                            Grade = "A",
+                            Remark = "a",
+                            Status = "a",
+                            //Material = "",
+                            //MtrLength = 0,
+                            //YdsLength = 0,
+                            PackagingUnit ="ROLL",
+                            PackagingQty = 10,
+                            PackagingType ="WHITE",
+                            QtyOrder = 2000,
+                            OutputId = 195
+                            //InputId = 195
+                        }
+                    }
+                };
+            }
+        }
+
         private DyeingPrintingAreaInputModel InputModel
         {
             get
             {
-                return new DyeingPrintingAreaInputModel(ViewModel.Date,
-                                                        ViewModel.Area,
-                                                        ViewModel.Shift,
-                                                        ViewModel.BonNo,
-                                                        ViewModel.Group,
-                                                        ViewModel.WarehousesProductionOrders.Select(s =>
-                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
+                return new DyeingPrintingAreaInputModel(ViewModelIM.Date,
+                                                        ViewModelIM.Area,
+                                                        ViewModelIM.Shift,
+                                                        ViewModelIM.BonNo,
+                                                        ViewModelIM.Group,
+                                                        ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
                                                                                                             s.ProductionOrder.Id,
                                                                                                             s.ProductionOrder.No,
                                                                                                             s.ProductionOrder.Type,
@@ -130,13 +183,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaInputModel(ViewModel.Date,
+                return new DyeingPrintingAreaInputModel(ViewModelIM.Date,
                                                         "GUDANG JADI",
-                                                        ViewModel.Shift,
-                                                        ViewModel.BonNo,
-                                                        ViewModel.Group,
-                                                        ViewModel.WarehousesProductionOrders.Select(s =>
-                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
+                                                        ViewModelIM.Shift,
+                                                        ViewModelIM.BonNo,
+                                                        ViewModelIM.Group,
+                                                        ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
                                                                                                             s.ProductionOrder.Id,
                                                                                                             s.ProductionOrder.No,
                                                                                                             s.ProductionOrder.Type,
@@ -160,15 +213,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaOutputModel(ViewModel.Date, 
-                                                         ViewModel.Area, 
-                                                         ViewModel.Shift, 
-                                                         ViewModel.BonNo, 
+                return new DyeingPrintingAreaOutputModel(ViewModelIM.Date, 
+                                                         ViewModelIM.Area, 
+                                                         ViewModelIM.Shift, 
+                                                         ViewModelIM.BonNo, 
                                                          true, 
                                                          "GUDANG JADI", 
-                                                         ViewModel.Group, 
-                                                         ViewModel.WarehousesProductionOrders.Select(s =>
-                                                            new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, 
+                                                         ViewModelIM.Group, 
+                                                         ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                            new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area, 
                                                                                                              "GUDANG JADI", 
                                                                                                              true, 
                                                                                                              s.ProductionOrder.Id, 
@@ -193,44 +246,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
-        private DyeingPrintingAreaOutputProductionOrderModel OutputProductionOrderModel
-        {
-            get
-            {
-                return new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area,
-                                                                        "GUDANG JADI",
-                                                                        true,
-                                                                        It.IsAny<long>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<double>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<double>(),
-                                                                        It.IsAny<string>(),
-                                                                        It.IsAny<decimal>(),
-                                                                        It.IsAny<string>());
-            }
-        }
-
         private DyeingPrintingAreaSummaryModel SummaryModel
         {
             get
             {
-                return new DyeingPrintingAreaSummaryModel(ViewModel.Date,
-                                                          ViewModel.Area,
-                                                          ViewModel.Shift,
+                return new DyeingPrintingAreaSummaryModel(ViewModelIM.Date,
+                                                          ViewModelIM.Area,
+                                                          ViewModelIM.Shift,
                                                           1,
-                                                          ViewModel.BonNo,
+                                                          ViewModelIM.BonNo,
                                                           12,
                                                           "sd",
                                                           "io1",
@@ -244,6 +268,225 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 //{
                 //    Id = 10
                 //};
+            }
+        }
+
+        private RejectedInputWarehouseViewModel RejectedInputWarehouseViewModel_IM
+        {
+            get
+            {
+                return new RejectedInputWarehouseViewModel
+                {
+                    Id = 1,
+                    Area = "INSPECTION MATERIAL",
+                    BonNo = "IM.GJ.20.001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    OutputId = 2,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    {
+                        new RejectedInputWarehouseProductionOrderViewModel()
+                        {
+                            Id = 10,
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000",
+                                OrderQuantity = 12
+                            },
+                            CartNo = "9",
+                            Buyer = "ANAS",
+                            Construction = "a",
+                            Unit = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 100,
+                            PackingInstruction = "a",
+                            PackagingType = "a",
+                            PackagingQty = 10,
+                            PackagingUnit = "a",
+                            AvalALength = 10,
+                            AvalBLength = 10,
+                            AvalConnectionLength = 10,
+                            DeliveryOrderSalesId = 3,
+                            DeliveryOrderSalesNo = "a",
+                            AvalType = "a",
+                            AvalCartNo = "a",
+                            AvalQuantityKg = 5,
+                            Description = "a",
+                            DeliveryNote = "a",
+                            HasOutputDocument = true,
+                            IsChecked = false,
+                            Area = "INSPECTION MATERIAL",
+                            InputId = 12,
+                            OutputId = 10,
+                            DyeingPrintingAreaInputProductionOrderId = 4
+                        }
+                    }
+                };
+            }
+        }
+
+        private RejectedInputWarehouseViewModel RejectedInputWarehouseViewModel_PC
+        {
+            get
+            {
+                return new RejectedInputWarehouseViewModel
+                {
+                    Id = 1,
+                    Area = "PACKING",
+                    BonNo = "PC.GJ.20.001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    OutputId = 2,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    {
+                        new RejectedInputWarehouseProductionOrderViewModel()
+                        {
+                            Id = 10,
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000",
+                                OrderQuantity = 12
+                            },
+                            CartNo = "9",
+                            Buyer = "ANAS",
+                            Construction = "a",
+                            Unit = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 100,
+                            PackingInstruction = "a",
+                            PackagingType = "a",
+                            PackagingQty = 10,
+                            PackagingUnit = "a",
+                            AvalALength = 10,
+                            AvalBLength = 10,
+                            AvalConnectionLength = 10,
+                            DeliveryOrderSalesId = 3,
+                            DeliveryOrderSalesNo = "a",
+                            AvalType = "a",
+                            AvalCartNo = "a",
+                            AvalQuantityKg = 5,
+                            Description = "a",
+                            DeliveryNote = "a",
+                            HasOutputDocument = true,
+                            IsChecked = false,
+                            Area = "PACKING",
+                            InputId = 12,
+                            OutputId = 10,
+                            DyeingPrintingAreaInputProductionOrderId = 4
+                        }
+                    }
+                };
+            }
+        }
+
+        private RejectedInputWarehouseViewModel RejectedInputWarehouseViewModel_TR
+        {
+            get
+            {
+                return new RejectedInputWarehouseViewModel
+                {
+                    Id = 1,
+                    Area = "TRANSIT",
+                    BonNo = "TR.GJ.20.001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    OutputId = 2,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    {
+                        new RejectedInputWarehouseProductionOrderViewModel()
+                        {
+                            Id = 10,
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000",
+                                OrderQuantity = 12
+                            },
+                            CartNo = "9",
+                            Buyer = "ANAS",
+                            Construction = "a",
+                            Unit = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 100,
+                            PackingInstruction = "a",
+                            PackagingType = "a",
+                            PackagingQty = 10,
+                            PackagingUnit = "a",
+                            AvalALength = 10,
+                            AvalBLength = 10,
+                            AvalConnectionLength = 10,
+                            DeliveryOrderSalesId = 3,
+                            DeliveryOrderSalesNo = "a",
+                            AvalType = "a",
+                            AvalCartNo = "a",
+                            AvalQuantityKg = 5,
+                            Description = "a",
+                            DeliveryNote = "a",
+                            HasOutputDocument = true,
+                            IsChecked = false,
+                            Area = "TRANSIT",
+                            InputId = 12,
+                            OutputId = 10,
+                            DyeingPrintingAreaInputProductionOrderId = 4
+                        }
+                    }
+                };
+            }
+        }
+
+        private DyeingPrintingAreaInputModel ModelIM
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_IM.Date, RejectedInputWarehouseViewModel_IM.Area, RejectedInputWarehouseViewModel_IM.Shift, RejectedInputWarehouseViewModel_IM.BonNo, RejectedInputWarehouseViewModel_IM.Group, RejectedInputWarehouseViewModel_IM.WarehousesProductionOrders.Select(s =>
+                    new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_IM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+            }
+        }
+
+        private DyeingPrintingAreaInputModel ModelPC
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_PC.Date, RejectedInputWarehouseViewModel_PC.Area, RejectedInputWarehouseViewModel_PC.Shift, RejectedInputWarehouseViewModel_PC.BonNo, RejectedInputWarehouseViewModel_PC.Group, RejectedInputWarehouseViewModel_PC.WarehousesProductionOrders.Select(s =>
+                    new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_PC.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+            }
+        }
+
+        private DyeingPrintingAreaInputModel ModelTR
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_TR.Date, RejectedInputWarehouseViewModel_TR.Area, RejectedInputWarehouseViewModel_TR.Shift, RejectedInputWarehouseViewModel_TR.BonNo, RejectedInputWarehouseViewModel_TR.Group, RejectedInputWarehouseViewModel_TR.WarehousesProductionOrders.Select(s =>
+                    new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_TR.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
             }
         }
 
@@ -264,15 +507,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModel.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date,
-                                                        ViewModel.Area,
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date,
+                                                        ViewModelIM.Area,
                                                         "IN",
-                                                        ViewModel.OutputId,
-                                                        ViewModel.BonNo,
+                                                        ViewModelIM.OutputId,
+                                                        ViewModelIM.BonNo,
                                                         item.ProductionOrder.Id,
                                                         item.ProductionOrder.No,
                                                         item.CartNo,
@@ -320,7 +563,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Create(ViewModelIM);
 
             Assert.NotEqual(0, result);
         }
@@ -342,7 +585,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModel.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -384,7 +627,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Create(ViewModelIM);
 
             Assert.NotEqual(0, result);
         }
@@ -405,15 +648,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //inputRepoMock.Setup(o => o.ReadAll())
             //    .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
 
-            var item = ViewModel.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date,
-                                                        ViewModel.Area,
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date,
+                                                        ViewModelIM.Area,
                                                         "IN",
-                                                        ViewModel.OutputId,
-                                                        ViewModel.BonNo,
+                                                        ViewModelIM.OutputId,
+                                                        ViewModelIM.BonNo,
                                                         item.ProductionOrder.Id,
                                                         item.ProductionOrder.No,
                                                         item.CartNo,
@@ -445,7 +688,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Create(ViewModelIM);
 
             Assert.NotEqual(0, result);
         }
@@ -466,7 +709,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //inputRepoMock.Setup(o => o.ReadAll())
             //    .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
 
-            var item = ViewModel.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -492,7 +735,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Create(ViewModelIM);
 
             Assert.NotEqual(0, result);
         }
@@ -595,6 +838,252 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetOutputPreWarehouseProductionOrders();
 
             Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date, ViewModelIM.Area, "IN", ViewModelIM.OutputId, ViewModelIM.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = await service.Reject(RejectedInputWarehouseViewModel_IM);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM_Previous_Summary()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date, ViewModelIM.Area, "IN", item.OutputId, ViewModelIM.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = await service.Reject(RejectedInputWarehouseViewModel_IM);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_PC()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelPC }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = ViewModelPC.WarehousesProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModelPC.Date, ViewModelPC.Area, "IN", ViewModelPC.OutputId, ViewModelPC.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = await service.Reject(RejectedInputWarehouseViewModel_PC);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM_Duplicate_Shift()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            inputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date, ViewModelIM.Area, "IN", ViewModelIM.OutputId, ViewModelIM.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = await service.Reject(RejectedInputWarehouseViewModel_IM);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM_Duplicate_Shift_Previous_Summary()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            inputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelIM }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date, ViewModelIM.Area, "IN", item.OutputId, ViewModelIM.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = await service.Reject(RejectedInputWarehouseViewModel_IM);
+
+            Assert.NotEqual(0, result);
         }
     }
 }

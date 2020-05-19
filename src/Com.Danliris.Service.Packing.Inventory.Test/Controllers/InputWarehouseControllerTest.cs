@@ -89,6 +89,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
+        private RejectedInputWarehouseViewModel RejectedViewModel
+        {
+            get
+            {
+                return new RejectedInputWarehouseViewModel
+                {
+                    Id = 1,
+                    Area = "GUDANG JADI",
+                    BonNo = "TR.GJ.20.001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    OutputId = 2,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    {
+                        new RejectedInputWarehouseProductionOrderViewModel()
+                        {
+                            Id = 10,
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000",
+                                OrderQuantity = 12
+                            },
+                            CartNo = "9",
+                            Buyer = "ANAS",
+                            Construction = "a",
+                            Unit = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 100,
+                            PackingInstruction = "a",
+                            PackagingType = "a",
+                            PackagingQty = 10,
+                            PackagingUnit = "a",
+                            AvalALength = 10,
+                            AvalBLength = 10,
+                            AvalConnectionLength = 10,
+                            DeliveryOrderSalesId = 3,
+                            DeliveryOrderSalesNo = "a",
+                            AvalType = "a",
+                            AvalCartNo = "a",
+                            AvalQuantityKg = 5,
+                            Description = "a",
+                            DeliveryNote = "a",
+                            HasOutputDocument = true,
+                            IsChecked = false,
+                            Area = "a",
+                            InputId = 12,
+                            OutputId = 10,
+                            DyeingPrintingAreaInputProductionOrderId = 4
+                        }
+                    }
+                };
+            }
+        }
+
         [Fact]
         public void Should_Validator_Success()
         {
@@ -266,6 +329,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.GetProductionOrders();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject()
+        {
+            var dataUtil = RejectedViewModel;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<RejectedInputWarehouseViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_NotValid_Reject()
+        {
+            var dataUtil = new RejectedInputWarehouseViewModel();
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<RejectedInputWarehouseViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public async Task Should_Exception_Reject()
+        {
+            var dataUtil = RejectedViewModel;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<RejectedInputWarehouseViewModel>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
