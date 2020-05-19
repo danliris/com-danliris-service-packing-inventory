@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Status { get; set; }
         public double Balance { get; set; }
         public double PreviousBalance { get; set; }
+        public bool HasNextAreaDocument { get; set; }
 
         public int InputId { get; set; }
     }

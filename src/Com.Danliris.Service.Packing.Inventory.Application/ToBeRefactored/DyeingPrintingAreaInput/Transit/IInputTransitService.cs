@@ -13,5 +13,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<PreTransitIndexViewModel> ReadOutputPreTransit(int page, int size, string filter, string order, string keyword);
         List<OutputPreTransitProductionOrderViewModel> GetOutputPreTransitProductionOrders();
+        Task<int> Reject(InputTransitViewModel viewModel);
     }
 }

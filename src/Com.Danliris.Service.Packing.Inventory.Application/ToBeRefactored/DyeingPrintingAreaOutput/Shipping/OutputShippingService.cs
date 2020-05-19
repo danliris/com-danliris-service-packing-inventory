@@ -105,6 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Packing = s.PackagingUnit,
                     QtyPacking = s.PackagingQty,
                     PackingType = s.PackagingType,
+                    HasNextAreaDocument = s.HasNextAreaDocument,
                     Motif = s.Motif,
                     ProductionOrder = new ProductionOrder()
                     {

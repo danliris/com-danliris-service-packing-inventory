@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalALength = s.AvalALength,
                     AvalBLength = s.AvalBLength,
                     AvalConnectionLength = s.AvalConnectionLength,
-
+                    HasNextAreaDocument = s.HasNextAreaDocument,
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
                     DeletedAgent = s.DeletedAgent,

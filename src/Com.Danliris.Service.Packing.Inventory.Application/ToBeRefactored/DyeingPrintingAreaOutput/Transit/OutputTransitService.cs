@@ -82,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Color = s.Color,
                     Construction = s.Construction,
                     CreatedAgent = s.CreatedAgent,
+                    HasNextAreaDocument = s.HasNextAreaDocument,
                     CreatedBy = s.CreatedBy,
                     CreatedUtc = s.CreatedUtc,
                     DeletedAgent = s.DeletedAgent,
