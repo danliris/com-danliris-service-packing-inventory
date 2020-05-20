@@ -10,5 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<InputWarehouseViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         List<OutputPreWarehouseIndexViewModel> GetOutputPreWarehouseProductionOrders();
+        Task<int> Reject(RejectedInputWarehouseViewModel viewModel);
     }
 }

@@ -388,6 +388,75 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BalanceRemains = balanceRemains;
         }
 
+        public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId, 
+                                                           string productionOrderNo, 
+                                                           string cartNo, 
+                                                           string buyer, 
+                                                           string construction, 
+                                                           string unit, 
+                                                           string color, 
+                                                           string motif, 
+                                                           string uomUnit, 
+                                                           double balance, 
+                                                           bool hasOutputDocument, 
+                                                           //bool isChecked, 
+                                                           string packingInstruction, 
+                                                           string productionOrderType, 
+                                                           double productionOrderOrderQuantity, 
+                                                           string remark, 
+                                                           string grade, 
+                                                           string status, 
+                                                           //double initLength, 
+                                                           double avalALength, 
+                                                           double avalBLength, 
+                                                           double avalConnectionLength, 
+                                                           string avalType, 
+                                                           string avalCartNo, 
+                                                           double avalQuantityKg, 
+                                                           long deliveryOrderSalesId, 
+                                                           string deliveryOrderSalesNo, 
+                                                           string packagingUnit, 
+                                                           string packagingType, 
+                                                           decimal packagingQty, 
+                                                           string area, 
+                                                           double balanceRemains, 
+                                                           int dyeingPrintingAreaInputId)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            //IsChecked = isChecked;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            //InitLength = initLength;
+            AvalALength = avalALength;
+            AvalBLength = avalBLength;
+            AvalConnectionLength = avalConnectionLength;
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            AvalQuantityKg = avalQuantityKg;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            PackagingUnit = packagingUnit;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            Area = area;
+            BalanceRemains = balanceRemains;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
+        }
+
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderOrderQuantity, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)

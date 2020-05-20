@@ -398,6 +398,78 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
         }
 
+        //All Properties
+        //public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, 
+        //                                                    string productionOrderNo, 
+        //                                                    string cartNo, 
+        //                                                    string buyer, 
+        //                                                    string construction, 
+        //                                                    string unit, 
+        //                                                    string color, 
+        //                                                    string motif, 
+        //                                                    string uomUnit, 
+        //                                                    string remark, 
+        //                                                    string grade, 
+        //                                                    string status, 
+        //                                                    double balance, 
+        //                                                    string packingInstruction, 
+        //                                                    string productionOrderType, 
+        //                                                    double productionOrderOrderQuantity, 
+        //                                                    string packagingType, 
+        //                                                    decimal packagingQty, 
+        //                                                    string packagingUnit, 
+        //                                                    double avalALength, 
+        //                                                    double avalBLength, 
+        //                                                    double avalConnectionLength, 
+        //                                                    long deliveryOrderSalesId, 
+        //                                                    string deliveryOrderSalesNo, 
+        //                                                    string avalType, 
+        //                                                    string avalCartNo, 
+        //                                                    double avalQuantityKg, 
+        //                                                    bool hasNextAreaDocument, 
+        //                                                    string area, 
+        //                                                    string destinationArea, 
+        //                                                    string description, 
+        //                                                    string deliveryNote, 
+        //                                                    int dyeingPrintingAreaInputProductionOrderId, 
+        //                                                    int dyeingPrintingAreaOutputId)
+        //{
+        //    ProductionOrderId = productionOrderId;
+        //    ProductionOrderNo = productionOrderNo;
+        //    CartNo = cartNo;
+        //    Buyer = buyer;
+        //    Construction = construction;
+        //    Unit = unit;
+        //    Color = color;
+        //    Motif = motif;
+        //    UomUnit = uomUnit;
+        //    Remark = remark;
+        //    Grade = grade;
+        //    Status = status;
+        //    Balance = balance;
+        //    PackingInstruction = packingInstruction;
+        //    ProductionOrderType = productionOrderType;
+        //    ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+        //    PackagingType = packagingType;
+        //    PackagingQty = packagingQty;
+        //    PackagingUnit = packagingUnit;
+        //    AvalALength = avalALength;
+        //    AvalBLength = avalBLength;
+        //    AvalConnectionLength = avalConnectionLength;
+        //    DeliveryOrderSalesId = deliveryOrderSalesId;
+        //    DeliveryOrderSalesNo = deliveryOrderSalesNo;
+        //    AvalType = avalType;
+        //    AvalCartNo = avalCartNo;
+        //    AvalQuantityKg = avalQuantityKg;
+        //    HasNextAreaDocument = hasNextAreaDocument;
+        //    Area = area;
+        //    DestinationArea = destinationArea;
+        //    Description = description;
+        //    DeliveryNote = deliveryNote;
+        //    DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+        //    DyeingPrintingAreaOutputId = dyeingPrintingAreaOutputId;
+        //}
+
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
         {
             if (newProductionOrderId != ProductionOrderId)
