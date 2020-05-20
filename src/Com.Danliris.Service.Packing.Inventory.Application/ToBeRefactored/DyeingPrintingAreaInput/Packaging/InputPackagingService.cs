@@ -239,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             return string.Format("{0}.{1}.{2}", PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
         }
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string area)
+        public string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string area)
         {
             if (area == PACKING)
                 return string.Format("{0}.{1}.{2}", PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));

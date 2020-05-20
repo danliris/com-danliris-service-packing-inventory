@@ -480,6 +480,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_Success_Reject_PC_ModelIsNull()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var inSPPRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            var modifModelforRead = Model;
+            modifModelforRead.SetArea("INSPECTION MATERIAL","unittest","unittest");
+            modifModelforRead.SetShift("PAGI","unittest","unittest");
+
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+            //Model.Shift
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaOutputModel> { OutputModel }.AsQueryable());
+
+            var item = ViewModel.PackagingProductionOrders.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.Id, ViewModel.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+
+            var test = new List<InputPackagingProductionOrdersViewModel>();
+            foreach (var items in ViewModel.PackagingProductionOrders)
+            {
+                item.Id = 1;
+                test.Add(item);
+            }
+            var modelModif = ViewModel;
+            modelModif.PackagingProductionOrders = test;
+            var result = await service.Reject(modelModif);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_Reject_PC_Previous_Summary()
         {
             var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
@@ -660,6 +721,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.Reject(ViewModel);
 
             Assert.NotEqual(0, result);
+        }
+        [Fact]
+        public void Test_GenerateBonNo_Area()
+        {
+            var spMock = new Mock<IServiceProvider>();
+            var service = GetService(spMock.Object);
+            var bonPacking = service.GenerateBonNo(1, DateTime.Now,"PACKING");
+            var bonIM = service.GenerateBonNo(1, DateTime.Now, "INSPECTION MATERIAL");
+            var bonTr = service.GenerateBonNo(1, DateTime.Now, "TRANSIT");
+            var bonGj = service.GenerateBonNo(1, DateTime.Now, "GUDANG JADI");
+            var bonGa = service.GenerateBonNo(1, DateTime.Now, "GUDANG AVAL");
+            var bonSP = service.GenerateBonNo(1, DateTime.Now, "SHIPPING");
+            var bonElse = service.GenerateBonNo(1, DateTime.Now, "");
+
+
         }
     }
 }
