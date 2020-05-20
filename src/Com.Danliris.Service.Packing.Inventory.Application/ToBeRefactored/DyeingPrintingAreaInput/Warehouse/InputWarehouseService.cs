@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
+        //private readonly IPackagingStockRepository _packingRepository;
 
         private const string TYPE = "IN";
 
@@ -69,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
-                WarehousesProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputWarehouseProductionOrderViewModel()
+                MappedWarehousesProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputWarehouseProductionOrderViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
@@ -170,7 +171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          viewModel.Shift,
                                                          bonNo,
                                                          viewModel.Group,
-                                                         viewModel.WarehousesProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
+                                                         viewModel.MappedWarehousesProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
                                                                                                                                                           s.ProductionOrder.Id,
                                                                                                                                                           s.ProductionOrder.No,
                                                                                                                                                           s.ProductionOrder.Type,
@@ -193,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
 
-            foreach (var item in viewModel.WarehousesProductionOrders)
+            foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
@@ -250,14 +251,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
-            List<int> listOfDyeingPrintingAreaIds = viewModel.WarehousesProductionOrders.Select(o => o.OutputId).Distinct().ToList();
+            List<int> listOfDyeingPrintingAreaIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.OutputId).Distinct().ToList();
             foreach (var areaId in listOfDyeingPrintingAreaIds)
             {
                 result += await _outputRepository.UpdateFromInputNextAreaFlagParentOnlyAsync(areaId, true);
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            List<int> listOfOutputProductionOrderIds = viewModel.WarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
+            List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
             foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
             {
                 result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true);
@@ -270,7 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            foreach (var productionOrder in viewModel.WarehousesProductionOrders)
+            foreach (var productionOrder in viewModel.MappedWarehousesProductionOrders)
             {
                 //Mapping to DyeingPrintingAreaInputProductionOrderModel
                 var productionOrderModel = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
@@ -357,7 +358,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            List<int> listOfOutputProductionOrderIds = viewModel.WarehousesProductionOrders.Select(o => o.Id).ToList();
+            List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).ToList();
             foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
             {
                 result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true);
@@ -414,71 +415,100 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                         .Where(s => s.DestinationArea == GUDANGJADI &&
                                                                     !s.HasNextAreaDocument);
 
-            var data = query.Select(s => new OutputPreWarehouseIndexViewModel()
-            {
-                Id = s.Id,
-                ProductionOrder = new ProductionOrder()
-                {
-                    Id = s.ProductionOrderId,
-                    No = s.ProductionOrderNo,
-                    Type = s.ProductionOrderType,
-                    OrderQuantity = s.ProductionOrderOrderQuantity
-                },
-                CartNo = s.CartNo,
-                Buyer = s.Buyer,
-                Construction = s.Construction,
-                Unit = s.Unit,
-                Color = s.Color,
-                Motif = s.Motif,
-                UomUnit = s.UomUnit,
-                Remark = s.Remark,
-                Grade = s.Grade,
-                Status = s.Status,
-                Balance = s.Balance,
-                PackingInstruction = s.PackingInstruction,
-                PackagingType = s.PackagingType,
-                PackagingQty = s.PackagingQty,
-                PackagingUnit = s.PackagingUnit,
-                AvalALength = s.AvalALength,
-                AvalBLength = s.AvalBLength,
-                AvalConnectionLength = s.AvalConnectionLength,
-                DeliveryOrderSalesId = s.DeliveryOrderSalesId,
-                DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
-                AvalType = s.AvalType,
-                AvalCartNo = s.AvalCartNo,
-                AvalQuantityKg = s.AvalQuantityKg,
-                Description = s.Description,
-                DeliveryNote = s.DeliveryNote,
-                Area = s.Area,
-                DestinationArea = s.DestinationArea,
-                HasNextAreaDocument = s.HasNextAreaDocument,
-                DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
-                OutputId = s.DyeingPrintingAreaOutputId,
+            //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
-                //ProductionOrder = new ProductionOrder()
-                //{
-                //    Id = s.ProductionOrderId,
-                //    No = s.ProductionOrderNo,
-                //    Type = s.ProductionOrderType
-                //},
-                //CartNo = s.CartNo,
-                //PackingInstruction = s.PackingInstruction,
-                //Construction = s.Construction,
-                //Unit = s.Unit,
-                //Buyer = s.Buyer,
-                //Color = s.Color,
-                //Motif = s.Motif,
-                //UomUnit = s.UomUnit,
-                //Balance = s.Balance,
-                //HasNextAreaDocument = s.HasNextAreaDocument,
-                //Grade = s.Grade,
-                //Remark = s.Remark,
-                //Status = s.Status,
-                //PackagingType = s.PackagingType,
-                //PackagingUnit = s.PackagingUnit,
-                //PackagingQty = s.PackagingQty,
-                //DyeingPrintingAreaOutputId = s.DyeingPrintingAreaOutputId
+            var data = query.GroupBy(o => new { o.ProductionOrderId, o.ProductionOrderNo, o.ProductionOrderOrderQuantity, o.ProductionOrderType }).Select(s => new OutputPreWarehouseIndexViewModel()
+            {
+                ProductionOrderId = s.Key.ProductionOrderId,
+                ProductionOrderNo = s.Key.ProductionOrderNo,
+                ProductionOrderOrderQuantity = s.Key.ProductionOrderOrderQuantity,
+                ProductionOrderType = s.Key.ProductionOrderType,
+                ProductionOrderItems = s.Select(p=>new ProductionOrderItemListViewModel()
+                {
+
+                    Id = p.Id,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.Key.ProductionOrderId,
+                        No = s.Key.ProductionOrderNo,
+                        Type = s.Key.ProductionOrderType,
+                        OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    CartNo = p.CartNo,
+                    Buyer = p.Buyer,
+                    Construction = p.Construction,
+                    Unit = p.Unit,
+                    Color = p.Color,
+                    Motif = p.Motif,
+                    UomUnit = p.UomUnit,
+                    Remark = p.Remark,
+                    Grade = p.Grade,
+                    Status = p.Status,
+                    Balance = p.Balance,
+                    PackingInstruction = p.PackingInstruction,
+                    PackagingType = p.PackagingType,
+                    PackagingQty = p.PackagingQty,
+                    PackagingUnit = p.PackagingUnit,
+                    AvalALength = p.AvalALength,
+                    AvalBLength = p.AvalBLength,
+                    AvalConnectionLength = p.AvalConnectionLength,
+                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    AvalType = p.AvalType,
+                    AvalCartNo = p.AvalCartNo,
+                    AvalQuantityKg = p.AvalQuantityKg,
+                    Description = p.Description,
+                    DeliveryNote = p.DeliveryNote,
+                    Area = p.Area,
+                    DestinationArea = p.DestinationArea,
+                    HasNextAreaDocument = p.HasNextAreaDocument,
+                    DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty)
+                }).ToList()
+
             });
+
+            //var data = query.Select(s => new OutputPreWarehouseIndexViewModel()
+            //{
+            //    Id = s.Id,
+            //    ProductionOrder = new ProductionOrder()
+            //    {
+            //        Id = s.ProductionOrderId,
+            //        No = s.ProductionOrderNo,
+            //        Type = s.ProductionOrderType,
+            //        OrderQuantity = s.ProductionOrderOrderQuantity
+            //    },
+            //    CartNo = s.CartNo,
+            //    Buyer = s.Buyer,
+            //    Construction = s.Construction,
+            //    Unit = s.Unit,
+            //    Color = s.Color,
+            //    Motif = s.Motif,
+            //    UomUnit = s.UomUnit,
+            //    Remark = s.Remark,
+            //    Grade = s.Grade,
+            //    Status = s.Status,
+            //    Balance = s.Balance,
+            //    PackingInstruction = s.PackingInstruction,
+            //    PackagingType = s.PackagingType,
+            //    PackagingQty = s.PackagingQty,
+            //    PackagingUnit = s.PackagingUnit,
+            //    AvalALength = s.AvalALength,
+            //    AvalBLength = s.AvalBLength,
+            //    AvalConnectionLength = s.AvalConnectionLength,
+            //    DeliveryOrderSalesId = s.DeliveryOrderSalesId,
+            //    DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
+            //    AvalType = s.AvalType,
+            //    AvalCartNo = s.AvalCartNo,
+            //    AvalQuantityKg = s.AvalQuantityKg,
+            //    Description = s.Description,
+            //    DeliveryNote = s.DeliveryNote,
+            //    Area = s.Area,
+            //    DestinationArea = s.DestinationArea,
+            //    HasNextAreaDocument = s.HasNextAreaDocument,
+            //    DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
+            //    OutputId = s.DyeingPrintingAreaOutputId
+            //});
 
             return data.ToList();
         }
