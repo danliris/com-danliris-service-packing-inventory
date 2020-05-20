@@ -277,7 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         item.Id);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.InputId, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, 
                                                                             viewModel.Area, 

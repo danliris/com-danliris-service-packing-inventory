@@ -42,6 +42,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -180,12 +181,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 swagger.CustomSchemaIds(i => i.FullName);
             });
             services
+                //.AddMvcCore(options => options.Filters.Add(typeof(ValidateModelStateAttribute)))
                 .AddMvcCore()
                 .AddJsonFormatters()
                 .AddApiExplorer()
                 .AddAuthorization()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => { });
+
+            //services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
             // Register Validator
             services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();

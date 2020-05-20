@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<PreShippingIndexViewModel> ReadOutputPreShipping(int page, int size, string filter, string order, string keyword);
         ListResult<InputShippingProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
         List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders();
+        Task<int> Reject(InputShippingViewModel viewModel);
     }
 }

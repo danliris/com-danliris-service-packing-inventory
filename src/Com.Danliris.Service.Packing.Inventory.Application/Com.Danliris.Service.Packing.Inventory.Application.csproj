@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Compile Remove="ToBeRefactored\DyeingPrintingAreaInput\InspectionMaterial\ProductionOrderIndexViewModel.cs" />
+    <Compile Remove="ToBeRefactored\Utilities\ValidatorWithFullIndexerPath.cs" />
   </ItemGroup>
 
   <ItemGroup>
