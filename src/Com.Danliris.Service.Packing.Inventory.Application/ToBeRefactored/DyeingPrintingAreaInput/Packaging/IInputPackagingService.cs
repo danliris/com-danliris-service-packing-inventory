@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> ReadBonOutToPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadInProducionOrders(int page, int size, string filter, string order, string keyword);
         //ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo);
+        Task<int> Reject(InputPackagingViewModel viewModel);
 
     }
 }

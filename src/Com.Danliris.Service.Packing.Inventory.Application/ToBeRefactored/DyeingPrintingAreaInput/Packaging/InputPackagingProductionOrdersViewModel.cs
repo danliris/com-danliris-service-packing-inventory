@@ -28,6 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal YdsLength { get; set; }
         public string ProductionOrderNo { get; set; }
         public double QtyOrder { get; set; }
+        public string Area { get; set; }
 
     }
 }
