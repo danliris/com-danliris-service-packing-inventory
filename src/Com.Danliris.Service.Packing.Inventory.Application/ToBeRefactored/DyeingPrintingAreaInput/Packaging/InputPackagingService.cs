@@ -504,11 +504,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             modelOutputs.SetHasNextAreaDocument(true, "REPOSITORY", "");
 
                             result += await _repositoryAreaProductionOrderOutput.UpdateAsync(modelOutputs.Id, modelOutputs);
+                            
+                            //set saldo inputSPP from outputSPP id
+                            var modelInput = _productionOrderRepository.ReadAll().First(x => x.Id == modelOutputs.DyeingPrintingAreaInputProductionOrderId);
+                            modelInput.SetBalance(modelInput.Balance - detail.Balance, "REPOSITORY", "");
+                            result += await _productionOrderRepository.UpdateAsync(modelInput.Id, modelInput);
                         };
-                        //set saldo inputSPP from outputSPP id
-                        var modelInput = _productionOrderRepository.ReadAll().First(x => x.Id == modelOutputs.DyeingPrintingAreaInputProductionOrderId);
-                        modelInput.SetBalance(modelInput.Balance - detail.Balance, "REPOSITORY", "");
-                        result += await _productionOrderRepository.UpdateAsync(modelInput.Id, modelInput);
+                        
 
                         result += await _movementRepository.InsertAsync(movementModel);
                         if (previousSummary == null)
