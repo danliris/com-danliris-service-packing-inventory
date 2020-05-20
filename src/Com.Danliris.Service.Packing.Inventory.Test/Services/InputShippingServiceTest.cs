@@ -182,6 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "sd"
                             },
                             Packing = "s",
+                            Id = 1,
                             PackingType = "sd",
                             Qty = 1,
                             QtyPacking = 1,
@@ -218,6 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Color = "red",
                             Construction = "sd",
                             Grade = "s",
+                            Id = 1,
                             HasOutputDocument = false,
                             Motif = "sd",
                             DeliveryOrder = new DeliveryOrderSales()
