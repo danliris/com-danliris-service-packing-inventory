@@ -32,6 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalConnectionLength { get; set; }
         public bool HasNextAreaDocument { get; set; }
 
+        public double BalanceRemains { get; private set; }
+
         public ICollection<AvalItem> AvalItems { get; set; }
 
         public int InputId { get; set; }

@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleForEach(s => s.InspectionMaterialProductionOrders).ChildRules(d =>
             {
                 d.RuleFor(data => data.Balance).Must(e => e > 0).WithMessage("Qty Keluar Harus Lebih Besar dari 0");
+                d.RuleFor(data => data.Balance).LessThanOrEqualTo(e => e.BalanceRemains).WithMessage("Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo");
             });
         }
     }

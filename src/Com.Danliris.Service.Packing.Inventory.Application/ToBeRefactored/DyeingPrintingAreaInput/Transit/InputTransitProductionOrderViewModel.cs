@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Remark { get; set; }
         public string Status { get; set; }
 
+        public double BalanceRemains { get; set; }
+
         public int OutputId { get; set; }
 
         public int InputId { get; set; }

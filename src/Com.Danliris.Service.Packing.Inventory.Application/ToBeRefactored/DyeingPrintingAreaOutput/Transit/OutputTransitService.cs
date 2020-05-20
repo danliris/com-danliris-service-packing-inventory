@@ -340,6 +340,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     OrderQuantity = d.ProductionOrderOrderQuantity,
                 },
                 Grade = d.Grade,
+                BalanceRemains = d.BalanceRemains,
                 Id = d.Id,
                 Unit = d.Unit,
                 Remark = d.Remark,
