@@ -117,9 +117,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
+        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string area)
         {
-            return string.Format("{0}.{1}.{2}", SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            if (area == PACKING)
+            {
+
+                return string.Format("{0}.{1}.{2}", PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else if (area == GUDANGAVAL)
+            {
+
+                return string.Format("{0}.{1}.{2}", GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else if (area == GUDANGJADI)
+            {
+                return string.Format("{0}.{1}.{2}", GJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else
+            {
+
+                return string.Format("{0}.{1}.{2}", SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
 
         }
 
@@ -133,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (model == null)
             {
                 int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.CreatedUtc.Year == viewModel.Date.Year);
-                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.Area);
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.ShippingProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type,
                      s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, false, s.Qty, s.Unit)).ToList());
@@ -419,9 +437,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (model == null)
                 {
                     int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == item.Key && s.CreatedUtc.Year == viewModel.Date.Year);
-                    string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
-                    model = new DyeingPrintingAreaInputModel(viewModel.Date, item.Key, viewModel.Shift, bonNo, viewModel.Group, 
-                                    viewModel.ShippingProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id, 
+                    string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, item.Key);
+                    model = new DyeingPrintingAreaInputModel(viewModel.Date, item.Key, viewModel.Shift, bonNo, viewModel.Group,
+                                    viewModel.ShippingProductionOrders.Select(s => new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id,
                                         s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit,
                                         s.Qty, false, s.Packing, s.PackingType, s.QtyPacking, s.Grade, s.ProductionOrder.OrderQuantity)).ToList());
 
@@ -456,7 +474,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var detail in item)
                     {
 
-                        var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No, detail.ProductionOrder.Type, 
+                        var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No, detail.ProductionOrder.Type,
                                         detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit,
                                         detail.Qty, false, detail.Packing, detail.PackingType, detail.QtyPacking, detail.Grade, detail.ProductionOrder.OrderQuantity);
                         modelItem.DyeingPrintingAreaInputId = model.Id;
