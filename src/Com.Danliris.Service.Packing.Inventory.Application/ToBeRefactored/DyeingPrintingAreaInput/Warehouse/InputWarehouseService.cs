@@ -242,7 +242,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.PackagingType,
                                                                                                                                                                 s.PackagingQty,
                                                                                                                                                                 s.Grade,
-                                                                                                                                                                s.QtyOrder))
+                                                                                                                                                                s.QtyOrder,
+                                                                                                                                                                s.BuyerId))
                                                                                              .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
