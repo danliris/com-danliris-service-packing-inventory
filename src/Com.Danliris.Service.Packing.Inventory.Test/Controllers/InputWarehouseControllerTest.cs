@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
-                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>()
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>()
                     {
                         new InputWarehouseProductionOrderViewModel()
                         {

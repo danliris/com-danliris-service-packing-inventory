@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     OutputId = 195,
                     Group = "A",
-                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
                     {
                         new InputWarehouseProductionOrderViewModel()
                         {
@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     OutputId = 195,
                     Group = "A",
-                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
                     {
                         new InputWarehouseProductionOrderViewModel()
                         {
@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModelIM.Shift,
                                                         ViewModelIM.BonNo,
                                                         ViewModelIM.Group,
-                                                        ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                        ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
                                                                                                             s.ProductionOrder.Id,
                                                                                                             s.ProductionOrder.No,
@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModelIM.Shift,
                                                         ViewModelIM.BonNo,
                                                         ViewModelIM.Group,
-                                                        ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                        ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
                                                                                                             s.ProductionOrder.Id,
                                                                                                             s.ProductionOrder.No,
@@ -220,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          true, 
                                                          "GUDANG JADI", 
                                                          ViewModelIM.Group, 
-                                                         ViewModelIM.WarehousesProductionOrders.Select(s =>
+                                                         ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area, 
                                                                                                              "GUDANG JADI", 
                                                                                                              true, 
@@ -507,7 +507,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -585,7 +585,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -648,7 +648,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //inputRepoMock.Setup(o => o.ReadAll())
             //    .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -709,7 +709,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //inputRepoMock.Setup(o => o.ReadAll())
             //    .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -865,7 +865,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -913,7 +913,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -961,7 +961,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelPC.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelPC.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -1009,7 +1009,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelPC.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelPC.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -1060,7 +1060,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -1111,7 +1111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var item = ViewModelIM.WarehousesProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
