@@ -1,5 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Reject;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -43,11 +45,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
-        private InputWarehouseViewModel ViewModelIM
+        private InputWarehouseCreateViewModel ViewModelIM
         {
             get
             {
-                return new InputWarehouseViewModel()
+                return new InputWarehouseCreateViewModel()
                 {
                     Area = "INSPECTION MATERIAL",
                     BonNo = "GJ.20.0001",
@@ -55,9 +57,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     OutputId = 195,
                     Group = "A",
-                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderCreateViewModel>
                     {
-                        new InputWarehouseProductionOrderViewModel()
+                        new InputWarehouseProductionOrderCreateViewModel()
                         {
                             ProductionOrder = new ProductionOrder()
                             {
@@ -96,11 +98,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
-        private InputWarehouseViewModel ViewModelPC
+        private InputWarehouseCreateViewModel ViewModelPC
         {
             get
             {
-                return new InputWarehouseViewModel()
+                return new InputWarehouseCreateViewModel()
                 {
                     Area = "PACKING",
                     BonNo = "GJ.20.0001",
@@ -108,9 +110,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     OutputId = 195,
                     Group = "A",
-                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderCreateViewModel>
                     {
-                        new InputWarehouseProductionOrderViewModel()
+                        new InputWarehouseProductionOrderCreateViewModel()
                         {
                             ProductionOrder = new ProductionOrder()
                             {

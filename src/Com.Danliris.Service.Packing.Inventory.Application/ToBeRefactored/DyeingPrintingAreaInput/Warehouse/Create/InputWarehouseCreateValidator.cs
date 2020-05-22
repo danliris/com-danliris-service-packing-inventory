@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using System;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create
 {
-    public class InputWarehouseValidator : AbstractValidator<InputWarehouseViewModel>
+    public class InputWarehouseCreateValidator : AbstractValidator<InputWarehouseCreateViewModel>
     {
-        public InputWarehouseValidator()
+        public InputWarehouseCreateValidator()
         {
             RuleFor(data => data.Area).NotNull().WithMessage("Harus Memiliki Area!");
             RuleFor(data => data.Date).Must(s => s != default).WithMessage("Tanggal Harus Diisi!")

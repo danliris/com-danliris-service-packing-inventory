@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +9,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
 {
     public class OutputPreWarehouseIndexViewModelDataUtil
     {
-        private OutputPreWarehouseIndexViewModel OutputPreWarehouseIndexViewModel
+        private OutputPreWarehouseViewModel OutputPreWarehouseIndexViewModel
         {
             get
             {
-                return new OutputPreWarehouseIndexViewModel()
+                return new OutputPreWarehouseViewModel()
                 {
                     Id = 1,
                     ProductionOrderCode = "SLD",
@@ -22,9 +22,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     ProductionOrderNo = "F/2020/000",
                     ProductionOrderOrderQuantity = 12,
                     OutputId = 10,
-                    ProductionOrderItems = new List<ProductionOrderItemListViewModel>()
+                    ProductionOrderItems = new List<OutputPreWarehouseItemListViewModel>()
                     {
-                        new ProductionOrderItemListViewModel()
+                        new OutputPreWarehouseItemListViewModel()
                         {
                             ProductionOrder = new ProductionOrder()
                             {
@@ -117,6 +117,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         {
             var dataUtil = OutputPreWarehouseIndexViewModel;
             Assert.NotEqual(0, dataUtil.OutputId);
+        }
+
+        [Fact]
+        public void Should_ValidatorProductionOrderItems_Success()
+        {
+            var dataUtil = OutputPreWarehouseIndexViewModel;
+            Assert.NotEmpty(dataUtil.ProductionOrderItems);
         }
     }
 }

@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail
 {
-    public class ProductionOrderItemListViewModel : BaseViewModel
+    public class ProductionOrderItemListDetailViewModel : BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }
@@ -32,12 +32,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string AvalType { get; set; }
         public string AvalCartNo { get; set; }
         public double AvalQuantityKg { get; set; }
-        public string Description { get; set; }
-        public string DeliveryNote { get; set; }
+        //public string Description { get; set; }
+        //public string DeliveryNote { get; set; }
         public string Area { get; set; }
-        public string DestinationArea { get; set; }
-        public bool HasNextAreaDocument { get; set; }
-        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+        //public string DestinationArea { get; set; }
+        public bool HasOutputDocument { get; set; }
+        public int DyeingPrintingAreaInputId { get; set; }
         public decimal Qty { get; set; }
     }
 }
