@@ -17,6 +17,7 @@
     <Compile Remove="Controllers\ShippingAreaNoteController.cs" />
     <Compile Remove="Controllers\TransitAreaNoteController.cs" />
     <Compile Remove="Controllers\TransitInputController.cs" />
+    <Compile Remove="Helper\ValidateModelStateAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>

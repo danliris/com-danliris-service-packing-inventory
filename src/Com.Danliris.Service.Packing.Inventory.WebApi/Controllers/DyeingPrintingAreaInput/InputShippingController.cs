@@ -144,5 +144,30 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
+
+        [HttpPost("reject")]
+        public async Task<IActionResult> Reject([FromBody] InputShippingViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var excpetion = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(excpetion);
+            }
+            try
+            {
+                VerifyUser();
+                var result = await _service.Reject(viewModel);
+
+                return Created("/", result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }

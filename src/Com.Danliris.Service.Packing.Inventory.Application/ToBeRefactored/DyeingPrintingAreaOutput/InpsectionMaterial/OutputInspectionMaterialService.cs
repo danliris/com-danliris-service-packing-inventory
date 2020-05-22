@@ -375,6 +375,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 InitLength = s.InitLength,
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
+                BalanceRemains = s.BalanceRemains,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = s.ProductionOrderId,
