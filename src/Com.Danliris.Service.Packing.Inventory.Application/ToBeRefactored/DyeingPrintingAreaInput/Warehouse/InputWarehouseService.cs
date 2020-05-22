@@ -124,6 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         },
                         CartNo = s.CartNo,
                         Buyer = s.Buyer,
+                        BuyerId = s.BuyerId,
                         Construction = s.Construction,
                         Unit = s.Unit,
                         Color = s.Color,
