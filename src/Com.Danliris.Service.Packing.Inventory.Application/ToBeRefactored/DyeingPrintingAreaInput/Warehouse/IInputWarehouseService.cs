@@ -1,4 +1,9 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.List;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Reject;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +11,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public interface IInputWarehouseService
     {
-        Task<int> Create(InputWarehouseViewModel viewModel);
-        Task<InputWarehouseViewModel> ReadById(int id);
+        Task<int> Create(InputWarehouseCreateViewModel viewModel);
+        Task<InputWarehouseDetailViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
-        List<OutputPreWarehouseIndexViewModel> GetOutputPreWarehouseProductionOrders();
+        List<OutputPreWarehouseViewModel> GetOutputPreWarehouseProductionOrders();
         Task<int> Reject(RejectedInputWarehouseViewModel viewModel);
     }
 }

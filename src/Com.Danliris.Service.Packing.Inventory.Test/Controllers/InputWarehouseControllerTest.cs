@@ -1,5 +1,8 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Reject;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.List;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrintingAreaInput;
@@ -13,6 +16,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
@@ -50,19 +55,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private InputWarehouseViewModel ViewModel
+        private InputWarehouseCreateViewModel ViewModel
         {
             get
             {
-                return new InputWarehouseViewModel()
+                return new InputWarehouseCreateViewModel()
                 {
                     Area = "GUDANGJADI",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
-                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>()
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderCreateViewModel>()
                     {
-                        new InputWarehouseProductionOrderViewModel()
+                        new InputWarehouseProductionOrderCreateViewModel()
                         {
                             Balance = 1,
                             Buyer = "s",
@@ -152,11 +157,83 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
+        private InputWarehouseDetailViewModel DetailViewModel
+        {
+            get
+            {
+                return new InputWarehouseDetailViewModel()
+                {
+                    Id = 1,
+                    Area = "GUDANG JADI",
+                    BonNo = "TR.GJ.20.001",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    Group = "A",
+                    WarehousesProductionOrders = new List<InputWarehouseProductionOrderDetailViewModel>()
+                    {
+                        new InputWarehouseProductionOrderDetailViewModel()
+                        {
+                            ProductionOrderId = 12,
+                            ProductionOrderCode = "a",
+                            ProductionOrderNo = "a123",
+                            ProductionOrderType  = "qwe",
+                            ProductionOrderOrderQuantity = 100,
+                            ProductionOrderItems = new List<ProductionOrderItemListDetailViewModel>()
+                            {
+                                new ProductionOrderItemListDetailViewModel()
+                                {
+                                    Id = 3,
+                                    ProductionOrder = new ProductionOrder()
+                                    {
+                                        Code = "SLD",
+                                        Id = 62,
+                                        Type = "SOLID",
+                                        No = "F/2020/000",
+                                        OrderQuantity = 12
+                                    },
+                                    CartNo = "9",
+                                    Buyer = "ANAS",
+                                    Construction = "a",
+                                    Unit = "a",
+                                    Color = "a",
+                                    Motif = "a",
+                                    UomUnit = "a",
+                                    Remark = "a",
+                                    Grade = "a",
+                                    Status = "a",
+                                    Balance = 100,
+                                    PackingInstruction = "a",
+                                    PackagingType = "a",
+                                    PackagingQty = 10,
+                                    PackagingUnit = "a",
+                                    AvalALength = 10,
+                                    AvalBLength = 10,
+                                    AvalConnectionLength = 10,
+                                    DeliveryOrderSalesId = 3,
+                                    DeliveryOrderSalesNo = "a",
+                                    AvalType = "a",
+                                    AvalCartNo = "a",
+                                    AvalQuantityKg = 5,
+                                    //Description = "a",
+                                    //DeliveryNote = "a",
+                                    Area = "a",
+                                    //DestinationArea = "a",
+                                    HasOutputDocument = false,
+                                    DyeingPrintingAreaInputId = 1,
+                                    Qty = 100 / 10
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = new InputWarehouseViewModel();
-            var validator = new InputWarehouseValidator();
+            var dataUtil = new InputWarehouseCreateViewModel();
+            var validator = new InputWarehouseCreateValidator();
             var result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
         }
@@ -167,7 +244,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseViewModel>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseCreateViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -183,10 +260,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new InputWarehouseViewModel();
+            var dataUtil = new InputWarehouseCreateViewModel();
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseViewModel>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseCreateViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -207,7 +284,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseViewModel>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseCreateViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -225,7 +302,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(DetailViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -301,7 +378,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
             serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrders())
-                .Returns(new List<OutputPreWarehouseIndexViewModel>() { });
+                .Returns(new List<OutputPreWarehouseViewModel>() { });
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

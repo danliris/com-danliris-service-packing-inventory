@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse
 {
-    public class ProductionOrderItemListViewModel : BaseViewModel
+    public class OutputPreWarehouseItemListViewModel : BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }

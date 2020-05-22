@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,11 +10,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
 {
     public class InputWarehousesViewModelDataUtil
     {
-        private InputWarehouseViewModel InputWarehouseViewModel
+        private InputWarehouseCreateViewModel InputWarehouseCreateViewModel
         {
             get
             {
-                return new InputWarehouseViewModel()
+                return new InputWarehouseCreateViewModel()
                 {
                     Id = 1,
                     Area = "GUDANG JADI",
@@ -23,9 +23,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     Shift = "PAGI",
                     //OutputId = 10,
                     Group = "A",
-                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderViewModel>()
+                    MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderCreateViewModel>()
                     {
-                        new InputWarehouseProductionOrderViewModel()
+                        new InputWarehouseProductionOrderCreateViewModel()
                         {
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
@@ -69,8 +69,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         [Fact]
         public void Should_Validator_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
-            var validator = new InputWarehouseValidator();
+            var dataUtil = InputWarehouseCreateViewModel;
+            var validator = new InputWarehouseCreateValidator();
             var result = validator.Validate(dataUtil);
             Assert.Equal(0, result.Errors.Count);
         }
@@ -78,35 +78,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         [Fact]
         public void Should_ValidatorId_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotEqual(0, dataUtil.Id);
         }
 
         [Fact]
         public void Should_ValidatorArea_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotNull(dataUtil.Area);
         }
 
         [Fact]
         public void Should_ValidatorBonNo_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotNull(dataUtil.BonNo);
         }
 
         [Fact]
         public void Should_ValidatorDate_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Debug.Assert((dataUtil.Date - DateTimeOffset.UtcNow) < TimeSpan.FromSeconds(2));
         }
 
         [Fact]
         public void Should_ValidatorShift_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotNull(dataUtil.Shift);
         }
 
@@ -120,14 +120,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         [Fact]
         public void Should_ValidatorGroup_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotNull(dataUtil.Group);
         }
 
         [Fact]
         public void Should_ValidatorWarehousesProductionOrders_Success()
         {
-            var dataUtil = InputWarehouseViewModel;
+            var dataUtil = InputWarehouseCreateViewModel;
             Assert.NotEmpty(dataUtil.MappedWarehousesProductionOrders);
         }
     }

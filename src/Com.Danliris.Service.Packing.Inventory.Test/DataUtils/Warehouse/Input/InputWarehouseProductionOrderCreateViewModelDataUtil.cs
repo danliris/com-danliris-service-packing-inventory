@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +9,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
 {
     public class InputWarehouseProductionOrdersViewModelDataUtil
     {
-        private InputWarehouseProductionOrderViewModel InputWarehousesProductionOrdersViewModel
+        private InputWarehouseProductionOrderCreateViewModel InputWarehousesProductionOrdersViewModel
         {
             get
             {
-                return new InputWarehouseProductionOrderViewModel()
+                return new InputWarehouseProductionOrderCreateViewModel()
                 {
                     Id = 1,
                     ProductionOrder = new ProductionOrder()

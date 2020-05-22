@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -585,11 +586,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
-        public List<InputWarehouseProductionOrderViewModel> GetInputWarehouseProductionOrders()
+        public List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders()
         {
             var productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
                .Where(s => s.Area == GUDANGJADI && !s.HasOutputDocument);
-            var data = productionOrders.Select(s => new InputWarehouseProductionOrderViewModel()
+            var data = productionOrders.Select(s => new InputWarehouseProductionOrderCreateViewModel()
             {
                 Id = s.Id,
                 ProductionOrder = new ProductionOrder()
