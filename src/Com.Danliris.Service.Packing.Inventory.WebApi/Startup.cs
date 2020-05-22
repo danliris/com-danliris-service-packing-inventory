@@ -42,6 +42,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -208,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
             services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
-            services.AddSingleton<IValidator<InputWarehouseViewModel>, InputWarehouseValidator>();
+            services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
 
         }

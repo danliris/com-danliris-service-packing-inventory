@@ -1,9 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create
 {
-    public class InputWarehouseProductionOrderViewModel : BaseViewModel
+    public class InputWarehouseProductionOrderCreateViewModel : BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string ProductionOrderNo { get; set; }

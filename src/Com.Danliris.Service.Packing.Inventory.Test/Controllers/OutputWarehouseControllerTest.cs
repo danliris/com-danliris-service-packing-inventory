@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -259,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IOutputWarehouseService>();
             serviceMock.Setup(s => s.GetInputWarehouseProductionOrders())
-                .Returns(new List<InputWarehouseProductionOrderViewModel>() { });
+                .Returns(new List<InputWarehouseProductionOrderCreateViewModel>() { });
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

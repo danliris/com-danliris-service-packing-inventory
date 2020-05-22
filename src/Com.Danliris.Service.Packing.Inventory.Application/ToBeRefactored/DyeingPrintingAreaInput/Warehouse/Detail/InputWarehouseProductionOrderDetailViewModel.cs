@@ -1,18 +1,19 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Collections.Generic;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail
 {
-    public class OutputPreWarehouseIndexViewModel : BaseViewModel
+    public class InputWarehouseProductionOrderDetailViewModel : BaseViewModel
     {
+
         public long ProductionOrderId { get; set; }
         public string ProductionOrderCode { get; set; }
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
         public double ProductionOrderOrderQuantity { get; set; }
-        public int OutputId { get; set; }
-        public ICollection<ProductionOrderItemListViewModel> ProductionOrderItems { get; set; }
+        public ICollection<ProductionOrderItemListDetailViewModel> ProductionOrderItems { get; set; }
 
         //public ProductionOrder ProductionOrder { get; set; }
         //public string ProductionOrderNo { get; set; }
@@ -25,7 +26,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //public string Motif { get; set; }
         //public string UomUnit { get; set; }
         //public double Balance { get; set; }
-        //public bool HasNextAreaDocument { get; set; }
+        //public bool HasOutputDocument { get; set; }
+        //public bool IsChecked { get; set; }
         //public string Grade { get; set; }
         //public string Remark { get; set; }
         //public string Status { get; set; }
@@ -33,8 +35,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //public string PackagingUnit { get; set; }
         //public decimal PackagingQty { get; set; }
         //public double QtyOrder { get; set; }
-        //public int DyeingPrintingAreaOutputId { get; set; }
-
-
+        //public string DeliveryOrderSalesNo { get; set; }
+        //public int OutputId { get; set; }
+        //public int InputId { get; set; }
     }
 }
