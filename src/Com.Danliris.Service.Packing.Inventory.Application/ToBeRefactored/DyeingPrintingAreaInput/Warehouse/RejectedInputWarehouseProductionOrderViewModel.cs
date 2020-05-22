@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }
+        public int BuyerId { get; set; }
         public string Buyer { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }

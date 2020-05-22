@@ -186,7 +186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade,
                                                                                                              s.Status,
                                                                                                              s.Balance,
-                                                                                                             s.Id)).ToList());
+                                                                                                             s.Id,
+                                                                                                             s.BuyerId)).ToList());
             }
         }
 
@@ -221,7 +222,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade,
                                                                                                              s.Status,
                                                                                                              s.Balance,
-                                                                                                             s.Id)).ToList());
+                                                                                                             s.Id,
+                                                                                                             s.BuyerId)).ToList());
             }
         }
 
@@ -866,7 +868,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             inputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
-                new DyeingPrintingAreaInputProductionOrderModel("GUDANG JADI", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false)
+                new DyeingPrintingAreaInputProductionOrderModel("GUDANG JADI", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
             }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,

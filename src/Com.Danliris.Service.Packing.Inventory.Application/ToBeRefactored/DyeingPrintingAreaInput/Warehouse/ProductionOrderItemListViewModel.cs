@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public ProductionOrder ProductionOrder { get; set; }
         public string CartNo { get; set; }
+        public int BuyerId { get; set; }
         public string Buyer { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }
@@ -39,5 +40,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasNextAreaDocument { get; set; }
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         public decimal Qty { get; set; }
+        public int OutputId { get; set; }
     }
 }

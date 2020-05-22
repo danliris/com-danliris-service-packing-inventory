@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository inputRepository,
                                                          IDyeingPrintingAreaInputProductionOrderRepository inputProductionOrderRepo,
                                                          IDyeingPrintingAreaMovementRepository movementRepo,
-                                                         IDyeingPrintingAreaSummaryRepository summaryRepo, 
+                                                         IDyeingPrintingAreaSummaryRepository summaryRepo,
                                                          IDyeingPrintingAreaOutputRepository outputRepo,
                                                          IDyeingPrintingAreaOutputProductionOrderRepository outputProductionOrderRepo)
         {
@@ -175,7 +175,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.HasOutputDocument,
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
-                                                                                                            s.PackagingQty)).ToList());
+                                                                                                            s.PackagingQty,
+                                                                                                            s.BuyerId)).ToList());
             }
         }
 
@@ -205,7 +206,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.HasOutputDocument,
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
-                                                                                                            s.PackagingQty)).ToList());
+                                                                                                            s.PackagingQty,
+                                                                                                            s.BuyerId)).ToList());
             }
         }
 
@@ -213,36 +215,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaOutputModel(ViewModelIM.Date, 
-                                                         ViewModelIM.Area, 
-                                                         ViewModelIM.Shift, 
-                                                         ViewModelIM.BonNo, 
-                                                         true, 
-                                                         "GUDANG JADI", 
-                                                         ViewModelIM.Group, 
+                return new DyeingPrintingAreaOutputModel(ViewModelIM.Date,
+                                                         ViewModelIM.Area,
+                                                         ViewModelIM.Shift,
+                                                         ViewModelIM.BonNo,
+                                                         true,
+                                                         "GUDANG JADI",
+                                                         ViewModelIM.Group,
                                                          ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
-                                                            new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area, 
-                                                                                                             "GUDANG JADI", 
-                                                                                                             true, 
-                                                                                                             s.ProductionOrder.Id, 
-                                                                                                             s.ProductionOrder.No, 
-                                                                                                             s.ProductionOrder.Type, 
-                                                                                                             s.PackingInstruction, 
-                                                                                                             s.CartNo, 
-                                                                                                             s.Buyer, 
+                                                            new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
+                                                                                                             "GUDANG JADI",
+                                                                                                             true,
+                                                                                                             s.ProductionOrder.Id,
+                                                                                                             s.ProductionOrder.No,
+                                                                                                             s.ProductionOrder.Type,
+                                                                                                             s.PackingInstruction,
+                                                                                                             s.CartNo,
+                                                                                                             s.Buyer,
                                                                                                              s.Construction,
-                                                                                                             s.Unit, 
-                                                                                                             s.Color, 
-                                                                                                             s.Motif, 
-                                                                                                             s.UomUnit, 
-                                                                                                             s.Remark, 
-                                                                                                             s.Balance, 
-                                                                                                             s.Status, 
-                                                                                                             s.ProductionOrder.Code, 
-                                                                                                             s.ProductionOrder.OrderQuantity, 
-                                                                                                             s.PackagingType, 
-                                                                                                             s.PackagingQty, 
-                                                                                                             s.PackagingUnit)).ToList());
+                                                                                                             s.Unit,
+                                                                                                             s.Color,
+                                                                                                             s.Motif,
+                                                                                                             s.UomUnit,
+                                                                                                             s.Remark,
+                                                                                                             s.Balance,
+                                                                                                             s.Status,
+                                                                                                             s.ProductionOrder.Code,
+                                                                                                             s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackagingType,
+                                                                                                             s.PackagingQty,
+                                                                                                             s.PackagingUnit,
+                                                                                                             s.BuyerId)).ToList());
             }
         }
 
@@ -466,7 +469,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_IM.Date, RejectedInputWarehouseViewModel_IM.Area, RejectedInputWarehouseViewModel_IM.Shift, RejectedInputWarehouseViewModel_IM.BonNo, RejectedInputWarehouseViewModel_IM.Group, RejectedInputWarehouseViewModel_IM.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_IM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId)).ToList());
             }
         }
 
@@ -476,7 +479,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_PC.Date, RejectedInputWarehouseViewModel_PC.Area, RejectedInputWarehouseViewModel_PC.Shift, RejectedInputWarehouseViewModel_PC.BonNo, RejectedInputWarehouseViewModel_PC.Group, RejectedInputWarehouseViewModel_PC.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_PC.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId)).ToList());
             }
         }
 
@@ -486,7 +489,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_TR.Date, RejectedInputWarehouseViewModel_TR.Area, RejectedInputWarehouseViewModel_TR.Shift, RejectedInputWarehouseViewModel_TR.BonNo, RejectedInputWarehouseViewModel_TR.Group, RejectedInputWarehouseViewModel_TR.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_TR.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId)).ToList());
             }
         }
 
@@ -569,7 +572,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_InsertNewWarehouse_SummaryNull ()
+        public async Task Should_Success_InsertNewWarehouse_SummaryNull()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -588,8 +591,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>()
+                 {
+
                  }.AsQueryable());
 
             //summaryRepoMock.Setup(s => s.ReadAll())
@@ -712,8 +716,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModelIM.MappedWarehousesProductionOrders.FirstOrDefault();
 
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                    
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>()
+                 {
+
                  }.AsQueryable());
 
             inputProductionOrderRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
@@ -825,7 +830,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1)
+                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1, 1)
             }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,

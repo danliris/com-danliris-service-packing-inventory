@@ -83,6 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Balance = s.Balance,
                     Buyer = s.Buyer,
                     CartNo = s.CartNo,
+                    BuyerId = s.BuyerId,
                     Color = s.Color,
                     Construction = s.Construction,
                     CreatedAgent = s.CreatedAgent,
@@ -190,7 +191,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                              false, 
                                                                                                              viewModel.Area, 
                                                                                                              viewModel.DestinationArea, 
-                                                                                                             s.Id)).ToList());
+                                                                                                             s.Id,
+                                                                                                             s.BuyerId)).ToList());
 
                 result = await _outputRepository.InsertAsync(model);
 
@@ -274,7 +276,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         false,
                                                                                         viewModel.Area,
                                                                                         viewModel.DestinationArea,
-                                                                                        item.Id);
+                                                                                        item.Id,
+                                                                                        item.BuyerId);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
@@ -602,6 +605,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = s.Construction,
                 Unit = s.Unit,
                 Buyer = s.Buyer,
+                BuyerId = s.BuyerId,
                 Color = s.Color,
                 Motif = s.Motif,
                 UomUnit = s.UomUnit,

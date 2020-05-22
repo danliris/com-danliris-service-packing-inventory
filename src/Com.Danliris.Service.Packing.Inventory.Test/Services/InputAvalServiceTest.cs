@@ -210,6 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             "sd",
                                                                                                             "sd",
                                                                                                             1,
+                                                                                                            1,
                                                                                                             1)
                      })
                  }.AsQueryable());

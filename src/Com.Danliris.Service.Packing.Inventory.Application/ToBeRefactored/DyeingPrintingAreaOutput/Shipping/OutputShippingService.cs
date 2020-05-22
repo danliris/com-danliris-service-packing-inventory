@@ -45,6 +45,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string PENJUALAN = "PENJUALAN";
         private const string BUYER = "BUYER";
 
+        private const string BuyerId = "BuyerId";
+
         public OutputShippingService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -87,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
                     Buyer = s.Buyer,
+                    BuyerId = s.BuyerId,
                     CartNo = s.CartNo,
                     Color = s.Color,
                     Construction = s.Construction,
@@ -157,7 +160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.DeliveryOrder.Id, viewModel.DeliveryOrder.No,
                         viewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                       s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking)).ToList());
+                       s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId)).ToList());
                 }
                 else
                 {
@@ -165,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.DeliveryOrder.Id, viewModel.DeliveryOrder.No,
                         viewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                        s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking)).ToList());
+                        s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId)).ToList());
                 }
 
 
@@ -209,7 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.DeliveryOrder.Id, item.DeliveryOrder.No,
                         item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.Buyer, item.Construction,
-                       item.Unit, item.Color, item.Motif, item.Grade, item.UomUnit, item.DeliveryNote, item.Qty, item.Id, item.Packing, item.PackingType, item.QtyPacking);
+                       item.Unit, item.Color, item.Motif, item.Grade, item.UomUnit, item.DeliveryNote, item.Qty, item.Id, item.Packing, item.PackingType, item.QtyPacking, item.BuyerId);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
 
@@ -323,6 +326,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = d.DeliveryOrderSalesId,
                         No = d.DeliveryOrderSalesNo
                     },
+                    BuyerId = d.BuyerId,
                     Buyer = d.Buyer,
                     CartNo = d.CartNo,
                     Color = d.Color,
@@ -372,6 +376,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
             {
                 Buyer = d.Buyer,
+                BuyerId = d.BuyerId,
                 CartNo = d.CartNo,
                 Color = d.Color,
                 Construction = d.Construction,
@@ -402,6 +407,80 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             });
 
             return data.ToList();
+        }
+
+        public ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING && s.DestinationArea == PENJUALAN);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            var parentFilterDictionary = FilterDictionary.Where(s => s.Key != BuyerId).ToDictionary(s => s.Key, s => s.Value);
+            object buyerData;
+            int buyerId = 0;
+            if (FilterDictionary.TryGetValue(BuyerId, out buyerData))
+            {
+                buyerId = Convert.ToInt32(buyerData);
+            }
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Filter(query, parentFilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
+            var data = query.Where(s => s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.BuyerId == buyerId)).Skip((page - 1) * size).Take(size).Select(s => new IndexViewModel()
+            {
+                Area = s.Area,
+                BonNo = s.BonNo,
+                Date = s.Date,
+                Id = s.Id,
+                Shift = s.Shift,
+                DestinationArea = s.DestinationArea,
+                DeliveryOrder = new DeliveryOrderSales()
+                {
+                    Id = s.DeliveryOrderSalesId,
+                    No = s.DeliveryOrderSalesNo
+                },
+                HasNextAreaDocument = s.HasNextAreaDocument,
+                ShippingProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Where(d => d.BuyerId == buyerId).Select(d => new OutputShippingProductionOrderViewModel()
+                {
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = d.DeliveryOrderSalesId,
+                        No = d.DeliveryOrderSalesNo
+                    },
+                    BuyerId = d.BuyerId,
+                    Buyer = d.Buyer,
+                    CartNo = d.CartNo,
+                    Color = d.Color,
+                    Construction = d.Construction,
+                    Motif = d.Motif,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = d.ProductionOrderId,
+                        No = d.ProductionOrderNo,
+                        Type = d.ProductionOrderType
+                    },
+                    Id = d.Id,
+                    Unit = d.Unit,
+                    Grade = d.Grade,
+                    Remark = d.Remark,
+                    PackingType = d.PackagingType,
+                    QtyPacking = d.PackagingQty,
+                    Packing = d.PackagingUnit,
+                    UomUnit = d.UomUnit,
+                    DeliveryNote = d.DeliveryNote,
+                    DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = d.Balance,
+                    InputId = d.DyeingPrintingAreaOutputId
+
+                }).ToList()
+            });
+
+            return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
         }
 
         //public List<OutputShippingViewModel> GetOutputShippingProductionOrdersByBon(int shippingOutputId)

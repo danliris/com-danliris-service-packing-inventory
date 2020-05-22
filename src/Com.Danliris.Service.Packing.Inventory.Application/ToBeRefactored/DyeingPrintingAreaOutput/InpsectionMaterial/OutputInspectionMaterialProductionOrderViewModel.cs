@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }
+        public int BuyerId { get; set; }
         public string Buyer { get; set; }
         public string Color { get; set; }
         public string Motif { get; set; }
@@ -32,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalConnectionLength { get; set; }
         public bool HasNextAreaDocument { get; set; }
 
-        public double BalanceRemains { get; private set; }
+        public double BalanceRemains { get; set; }
 
         public ICollection<AvalItem> AvalItems { get; set; }
 
