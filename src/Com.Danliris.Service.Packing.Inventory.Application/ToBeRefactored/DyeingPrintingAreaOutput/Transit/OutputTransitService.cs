@@ -78,6 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     LastModifiedUtc = s.LastModifiedUtc,
                     Balance = s.Balance,
                     Buyer = s.Buyer,
+                    BuyerId = s.BuyerId,
                     CartNo = s.CartNo,
                     Color = s.Color,
                     Construction = s.Construction,
@@ -152,7 +153,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.TransitProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id)).ToList());
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.TransitProductionOrders)
@@ -186,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.Id);
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.Id, item.BuyerId);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     
 
@@ -284,6 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Balance = d.Balance,
                     Buyer = d.Buyer,
+                    BuyerId = d.BuyerId,
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
@@ -327,6 +329,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 Balance = d.Balance,
                 Buyer = d.Buyer,
+                BuyerId = d.BuyerId,
                 CartNo = d.CartNo,
                 Color = d.Color,
                 Construction = d.Construction,

@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Create(OutputShippingViewModel viewModel);
         Task<OutputShippingViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
+        ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword);
         Task<MemoryStream> GenerateExcel(int id);
         List<InputShippingProductionOrderViewModel> GetInputShippingProductionOrdersByDeliveryOrder(long deliveryOrderId);
         //List<OutputShippingProductionOrderViewModel> GetOutputShippingProductionOrdersByBon(int shippingInputId);

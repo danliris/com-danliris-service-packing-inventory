@@ -76,7 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     IsDeleted = s.IsDeleted,
                     LastModifiedAgent = s.LastModifiedAgent,
                     LastModifiedBy = s.LastModifiedBy,
-
+                    
                     Id = s.Id,
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
@@ -276,6 +276,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
                     },
+                    BuyerId = d.BuyerId,
                     CartNo = d.CartNo,
                     Buyer = d.Buyer,
                     Construction = d.Construction,

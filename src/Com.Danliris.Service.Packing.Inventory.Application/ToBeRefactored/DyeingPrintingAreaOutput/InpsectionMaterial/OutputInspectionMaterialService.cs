@@ -103,6 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Status = s.Status,
                     Id = s.Id,
                     IsDeleted = s.IsDeleted,
+                    BuyerId = s.BuyerId,
                     LastModifiedAgent = s.LastModifiedAgent,
                     LastModifiedBy = s.LastModifiedBy,
                     Motif = s.Motif,
@@ -159,7 +160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      s.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
                      s.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
                      s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length, 
-                     s.Id)).ToList());
+                     s.Id, s.BuyerId)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
@@ -213,7 +214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
                          item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length,
-                         item.Id);
+                         item.Id, item.BuyerId);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     //if (viewModel.DestinationArea == GUDANGAVAL)
@@ -290,6 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
+                    BuyerId = d.BuyerId,
                     Motif = d.Motif,
                     ProductionOrder = new ProductionOrder()
                     {
@@ -371,6 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = s.Color,
                 Construction = s.Construction,
                 Grade = s.Grade,
+                BuyerId = s.BuyerId,
                 HasOutputDocument = s.HasOutputDocument,
                 InitLength = s.InitLength,
                 Motif = s.Motif,

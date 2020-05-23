@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.SetArea(localItem.Area, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
-                    item.SetBuyer(localItem.Buyer, _identityProvider.Username, UserAgent);
+                    item.SetBuyer(localItem.BuyerId, localItem.Buyer, _identityProvider.Username, UserAgent);
                     item.SetCartNo(localItem.CartNo, _identityProvider.Username, UserAgent);
                     item.SetColor(localItem.Color, _identityProvider.Username, UserAgent);
                     item.SetConstruction(localItem.Construction, _identityProvider.Username, UserAgent);

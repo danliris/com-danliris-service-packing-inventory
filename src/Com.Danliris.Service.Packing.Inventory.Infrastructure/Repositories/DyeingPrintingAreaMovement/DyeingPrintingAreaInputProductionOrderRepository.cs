@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
             modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetBuyer(model.Buyer, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyer(model.BuyerId, model.Buyer, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetColor(model.Color, _identityProvider.Username, UserAgent);
             modelToUpdate.SetConstruction(model.Construction, _identityProvider.Username, UserAgent);
@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-            
+
             return _dbContext.SaveChangesAsync();
         }
 

@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDestinationArea(model.DestinationArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetBuyer(model.Buyer, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyer(model.BuyerId, model.Buyer, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetColor(model.Color, _identityProvider.Username, UserAgent);
             modelToUpdate.SetConstruction(model.Construction, _identityProvider.Username, UserAgent);
