@@ -148,6 +148,31 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpPut("sales-invoice/{id}")]
+        public async Task<IActionResult> UpdateHasSalesInvoice([FromRoute] int id, [FromBody] bool hasSalesInvoice)
+        {
+            if (!ModelState.IsValid)
+            {
+                var excpetion = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(excpetion);
+            }
+            try
+            {
+                VerifyUser();
+                var result = await _service.UpdateHasSalesInvoice(id, hasSalesInvoice);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         //[HttpGet("output-production-orders/{id}")]
         //public IActionResult GetProductionOrdersByBon(int id)
         //{

@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetWithDOModel()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", 1, "Np", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", 1, "Np", false, new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1,1,1,1),
@@ -53,7 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetEmptyWithDOModel()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, null, 0, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, null, 0, null, true, new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,0,0,0,1,0),
