@@ -385,5 +385,63 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task Should_Success_Put_HasSalesInvoice()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.UpdateHasSalesInvoice(1, true);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_NotValid_Put_HasSalesInvoice()
+        {
+            var dataUtil = new OutputShippingViewModel();
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.UpdateHasSalesInvoice(1, true);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Exception_Put_HasSalesInvoice()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.UpdateHasSalesInvoice(1, true);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

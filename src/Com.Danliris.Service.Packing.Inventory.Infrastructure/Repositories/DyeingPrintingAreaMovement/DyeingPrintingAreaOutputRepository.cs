@@ -84,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetHasSalesInvoice(model.HasSalesInvoice, _identityProvider.Username, UserAgent);
             foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
             {
                 var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
@@ -143,6 +144,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var modelToUpdate = _dbSet.Where(s => s.Id == id).FirstOrDefault();
             modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            modelToUpdate.SetHasSalesInvoice(hasSalesInvoice, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

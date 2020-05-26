@@ -126,5 +126,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateHasSalesInvoice()
+        {
+            string testName = GetCurrentMethod() + "UpdateHasSalesInvoice";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+
+            var result = await repo.UpdateHasSalesInvoice(data.Id, true);
+            Assert.NotEqual(0, result);
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationArea { get; private set; }
         public string Group { get; private set; }
 
+        public bool HasSalesInvoice { get; private set; }
+
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
@@ -42,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //Shipping
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -55,6 +57,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             DeliveryOrderSalesId = deliveryOrderId;
             DeliveryOrderSalesNo = deliveryOrderNo;
+
+            HasSalesInvoice = hasSalesInvoice;
         }
 
         public void SetArea(string newArea, string user, string agent)
@@ -131,6 +135,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (deliveryOrderSalesNo != DeliveryOrderSalesNo)
             {
                 DeliveryOrderSalesNo = deliveryOrderSalesNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetHasSalesInvoice(bool newFlagHasSalesInvoice, string user, string agent)
+        {
+            if (newFlagHasSalesInvoice != HasSalesInvoice)
+            {
+                HasSalesInvoice = newFlagHasSalesInvoice;
                 this.FlagForUpdate(user, agent);
             }
         }
