@@ -44,6 +44,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -107,6 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
+            services.AddScoped<IValidateService, ValidateService>();
 
             var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
             services
@@ -201,9 +203,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
             services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
-            services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
+            //services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
             services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
-            services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
+            //services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
             services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputPackagingViewModel>, InputPackagingValidator>();
             services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
@@ -211,7 +213,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputAvalItemViewModel>, InputAvalItemValidator>();
             services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
             services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
-            services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
+            //services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
