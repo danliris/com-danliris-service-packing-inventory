@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1,1,1,1),
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1),
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem",10,"a","test",1,"PACK",10,"Pack",1),
                 new DyeingPrintingAreaOutputProductionOrderModel("SAMBUNGAN","5-11","KRG", 15, 10)
 
@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,0,0,0,1,0),
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1, null, null, 0,0),
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1, null, null, 0,0, true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,null,null,null,null,null,null,null,null,null,1,null,null,1,null,1,null,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,null, 0, 0)
 
@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1,1,1,1),
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type,",1,1),
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type,",1,1, false),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e","rr","1","as","test","unit","color","motif","mtr", "rem",10,"a","test",1,"PACK",10,"Pack",1),
                 new DyeingPrintingAreaOutputProductionOrderModel("SAMBUNGAN","5-11","KRG", 15, 10)
 
@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,0,0,0,1,0),
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1,null,null,0,0),
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1,null,null,0,0, true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,null,null,null,null,null,null,null,null,null,1,null,null,1,null,1,null,0),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,null, 0, 0)
 

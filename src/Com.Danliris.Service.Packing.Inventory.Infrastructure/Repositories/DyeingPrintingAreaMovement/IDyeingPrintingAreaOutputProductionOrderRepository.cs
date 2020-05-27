@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         IQueryable<DyeingPrintingAreaOutputProductionOrderModel> ReadAllIgnoreQueryFilter();
         Task<int> UpdateFromInputNextAreaFlagAsync(int id, bool hasNextAreaDocument);
         Task<int> UpdateFromInputAsync(IEnumerable<int> ids, bool hasNextAreaDocument);
+        Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice);
     }
 }

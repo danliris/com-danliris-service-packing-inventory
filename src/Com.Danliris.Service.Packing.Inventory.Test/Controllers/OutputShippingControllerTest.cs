@@ -476,7 +476,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IOutputShippingService>();
-            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<OutputShippingUpdateSalesInvoiceViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -487,7 +487,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.UpdateHasSalesInvoice(1, true);
+            var response = await controller.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -498,7 +498,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = new OutputShippingViewModel();
             //v
             var serviceMock = new Mock<IOutputShippingService>();
-            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<OutputShippingUpdateSalesInvoiceViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -510,7 +510,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
-            var response = await controller.UpdateHasSalesInvoice(1, true);
+            var response = await controller.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel());
 
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
@@ -521,7 +521,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IOutputShippingService>();
-            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<OutputShippingUpdateSalesInvoiceViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -532,7 +532,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.UpdateHasSalesInvoice(1, true);
+            var response = await controller.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

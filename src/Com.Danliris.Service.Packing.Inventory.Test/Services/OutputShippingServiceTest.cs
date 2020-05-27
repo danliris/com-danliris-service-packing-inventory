@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Grade = "s",
                             DeliveryNote = "s",
                             DyeingPrintingAreaInputProductionOrderId = 1,
-
+                            HasSalesInvoice = false,
                             Remark = "remar",
                             Motif = "sd",
                             DeliveryOrder = new DeliveryOrderSales()
@@ -171,7 +171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
                    ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
-                    s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId)).ToList());
+                    s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice)).ToList());
             }
         }
 
@@ -182,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModelPJ.Date, ViewModelPJ.Area, ViewModelPJ.Shift, ViewModelPJ.BonNo, ViewModelPJ.HasNextAreaDocument, ViewModelPJ.DestinationArea,
                    ViewModelPJ.Group, ViewModelPJ.DeliveryOrder.Id, ViewModelPJ.DeliveryOrder.No, ViewModelPJ.HasSalesInvoice, ViewModelPJ.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
-                    s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId)).ToList());
+                    s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice)).ToList());
             }
         }
 
@@ -285,7 +285,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             repoMock.Setup(s => s.GetDbSet())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
-
+            repoMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
 
@@ -334,6 +335,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
@@ -518,10 +523,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
+            outSPPRepoMock.Setup(s => s.UpdateHasSalesInvoice(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
 
-            var result = await service.UpdateHasSalesInvoice(1, true);
+            var result = await service.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel() { HasSalesInvoice = true, ItemIds = new List<int>() { 1 } });
 
             Assert.NotEqual(0, result);
         }

@@ -49,6 +49,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string DeliveryNote { get; private set; }
 
+        public bool HasSalesInvoice { get; private set; }
+
         /// <summary>
         /// ID SPP Input
         /// </summary>
@@ -127,7 +129,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //Shipping
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
-           string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId)
+           string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId, bool hasSalesInvoice)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -154,6 +156,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductonOrderId;
 
             BuyerId = buyerId;
+
+            HasSalesInvoice = hasSalesInvoice;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
@@ -733,6 +737,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newDescription != Description)
             {
                 Description = newDescription;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetHasSalesInvoice(bool newFlagHasSalesInvoice, string user, string agent)
+        {
+            if (newFlagHasSalesInvoice != HasSalesInvoice)
+            {
+                HasSalesInvoice = newFlagHasSalesInvoice;
                 this.FlagForUpdate(user, agent);
             }
         }
