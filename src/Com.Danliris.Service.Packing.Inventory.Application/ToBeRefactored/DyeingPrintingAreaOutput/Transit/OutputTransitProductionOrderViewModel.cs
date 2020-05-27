@@ -28,5 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double BalanceRemains { get; set; }
 
         public int InputId { get; set; }
+
+        public bool IsSave { get; set; }
     }
 }

@@ -38,6 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ICollection<AvalItem> AvalItems { get; set; }
 
         public int InputId { get; set; }
+
+        public bool IsSave { get; set; }
     }
 
     public class AvalItem

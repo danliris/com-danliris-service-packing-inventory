@@ -55,7 +55,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         private ServiceValidationException GetServiceValidationExeption()
         {
             Mock<IServiceProvider> serviceProvider = new Mock<IServiceProvider>();
-            List<ValidationResult> validationResults = new List<ValidationResult>();
+            List<ValidationResult> validationResults = new List<ValidationResult>()
+            {
+                new ValidationResult("message",new string[1]{ "A" }),
+                new ValidationResult("{}",new string[1]{ "B" })
+            };
             System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(ViewModel, serviceProvider.Object, null);
             return new ServiceValidationException(validationContext, validationResults);
         }
