@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Helper
 {
@@ -25,6 +29,27 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Helper
             }
 
             return result;
+        }
+
+        public static Dictionary<string, object> Fail(ServiceValidationException e)
+        {
+            Dictionary<string, object> Errors = new Dictionary<string, object>();
+
+            foreach (ValidationResult error in e.ValidationResults)
+            {
+                string key = error.MemberNames.First();
+
+                try
+                {
+                    Errors.Add(error.MemberNames.First(), JsonConvert.DeserializeObject(error.ErrorMessage));
+                }
+                catch (Exception)
+                {
+                    Errors.Add(error.MemberNames.First(), error.ErrorMessage);
+                }
+            }
+
+            return Errors;
         }
     }
 }
