@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -70,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Grade = "s",
                             DeliveryNote = "s",
                             DyeingPrintingAreaInputProductionOrderId = 1,
-
+                            IsSave = true,
                             Remark = "remar",
                             Motif = "sd",
                             DeliveryOrder = new DeliveryOrderSales()
@@ -126,6 +127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         {
                             Buyer = "s",
                             BuyerId = 1,
+                            IsSave = true,
                             CartNo = "1",
                             Color = "red",
                             Construction = "sd",
@@ -522,6 +524,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.UpdateHasSalesInvoice(1, true);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new OutputShippingViewModel();
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
+            {
+                new OutputShippingProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    Qty = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -63,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Construction = "sd",
                             Grade = "s",
                             Remark = "remar",
+                            IsSave = true,
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
@@ -558,6 +560,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(0, spp.AvalALength);
             Assert.Equal(0, spp.AvalBLength);
             Assert.Equal(0, spp.AvalConnectionLength);
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new OutputInspectionMaterialViewModel();
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    Balance = 0
+                },
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    Balance = 1,
+                    BalanceRemains = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }

@@ -204,9 +204,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
             //services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
-            services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
+            //services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
             //services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
-            services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
+            //services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputPackagingViewModel>, InputPackagingValidator>();
             services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
@@ -214,7 +214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
             services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
             //services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
-            services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
+            //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
 

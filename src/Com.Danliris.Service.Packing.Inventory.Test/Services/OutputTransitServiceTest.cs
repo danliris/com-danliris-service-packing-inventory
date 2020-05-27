@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Transit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -63,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Construction = "sd",
                             Grade = "s",
                             Remark = "remar",
+                            IsSave = true,
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
@@ -104,6 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Color = "red",
                             Construction = "sd",
                             Grade = "s",
+                            IsSave = true,
                             Remark = "remar",
                             Status = "Ok",
                             Motif = "sd",
@@ -148,6 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Grade = "s",
                             Remark = "remar",
                             Status = "Ok",
+                            IsSave = true,
                             Motif = "sd",
                             PackingInstruction = "d",
                             ProductionOrder = new ProductionOrder()
@@ -189,6 +193,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Construction = "sd",
                             Grade = "s",
                             Remark = "remar",
+                            IsSave = true,
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
@@ -599,6 +604,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetInputTransitProductionOrders();
 
             Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSppRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new OutputTransitViewModel();
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    Balance = 0
+                },
+                new OutputTransitProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    Balance = 1,
+                    BalanceRemains = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }
