@@ -18,8 +18,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset Date { get; set; }
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
+        public string Group { get; set; }
         public string Shift { get; set; }
         public DeliveryOrderSales DeliveryOrder { get; set; }
+        public bool HasSalesInvoice { get; set; }
         public ICollection<OutputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
     }
 }
