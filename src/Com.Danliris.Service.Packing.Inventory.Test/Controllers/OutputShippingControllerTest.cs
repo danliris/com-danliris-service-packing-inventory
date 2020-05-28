@@ -78,6 +78,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     Shift = "pas",
                     HasNextAreaDocument = false,
                     DestinationArea = "SHIPPING",
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = 1,
+                        No = "DONo"
+                    },
                     InputShippingId = 1,
                     ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
                     {
@@ -535,6 +540,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var response = await controller.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPdfById()
+        {
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetPdfById()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_NotFound_GetPdfById()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(OutputShippingViewModel));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1);
+
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
         }
     }
 }
