@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword);
         Task<MemoryStream> GenerateExcel(int id);
         List<InputShippingProductionOrderViewModel> GetInputShippingProductionOrdersByDeliveryOrder(long deliveryOrderId);
-        Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice);
+        Task<int> UpdateHasSalesInvoice(int id, OutputShippingUpdateSalesInvoiceViewModel salesInvoice);
         //List<OutputShippingProductionOrderViewModel> GetOutputShippingProductionOrdersByBon(int shippingInputId);
     }
 }

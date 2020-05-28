@@ -165,7 +165,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpPut("sales-invoice/{id}")]
-        public async Task<IActionResult> UpdateHasSalesInvoice([FromRoute] int id, [FromBody] bool hasSalesInvoice)
+        public async Task<IActionResult> UpdateHasSalesInvoice([FromRoute] int id, [FromBody] OutputShippingUpdateSalesInvoiceViewModel salesInvoice)
         {
             if (!ModelState.IsValid)
             {
@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
-                var result = await _service.UpdateHasSalesInvoice(id, hasSalesInvoice);
+                var result = await _service.UpdateHasSalesInvoice(id, salesInvoice);
 
                 return Ok(result);
             }

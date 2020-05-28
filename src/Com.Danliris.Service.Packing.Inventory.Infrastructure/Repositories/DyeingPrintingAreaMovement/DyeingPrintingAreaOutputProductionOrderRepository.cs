@@ -88,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetAvalBLength(model.AvalBLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAvalConnectionLength(model.AvalConnectionLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetHasSalesInvoice(model.HasSalesInvoice, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -112,5 +113,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
+        public Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            modelToUpdate.SetHasSalesInvoice(hasSalesInvoice, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

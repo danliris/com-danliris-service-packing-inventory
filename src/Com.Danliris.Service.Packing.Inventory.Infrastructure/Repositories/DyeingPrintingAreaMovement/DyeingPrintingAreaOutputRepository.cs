@@ -115,6 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetAvalALength(localItem.AvalALength, _identityProvider.Username, UserAgent);
                     item.SetAvalBLength(localItem.AvalBLength, _identityProvider.Username, UserAgent);
                     item.SetAvalConnectionLength(localItem.AvalConnectionLength, _identityProvider.Username, UserAgent);
+                    item.SetHasSalesInvoice(localItem.HasSalesInvoice, _identityProvider.Username, UserAgent);
                 }
             }
 
