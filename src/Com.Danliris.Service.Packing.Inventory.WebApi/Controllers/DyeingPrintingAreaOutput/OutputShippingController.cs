@@ -92,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
@@ -187,6 +187,45 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPdfById([FromRoute] int id)
+        {
+            try
+            {
+                var model = await _service.ReadById(id);
+                if (model == null)
+                {
+                    var Result = new
+                    {
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.NotFound,
+                        message = "Not Found"
+                    };
+                    return NotFound(Result);
+                }
+                else
+                {
+                    int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                    var pdfTemplate = new OutputShippingPdfTemplate(model, timeoffsset);
+                    var stream = pdfTemplate.GeneratePdfTemplate();
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = string.Format("{0}.pdf", model.BonNo)
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                var Result = new
+                {
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = e.Message
+                };
+                return StatusCode((int)HttpStatusCode.InternalServerError, Result);
+            }
         }
 
         //[HttpGet("output-production-orders/{id}")]
