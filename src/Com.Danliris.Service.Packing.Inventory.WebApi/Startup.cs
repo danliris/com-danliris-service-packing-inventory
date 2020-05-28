@@ -45,6 +45,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -105,6 +106,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputShippingService, OutputShippingService>();
             services.AddTransient<IInputWarehouseService, InputWarehouseService>();
             services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
+
+            services.AddTransient<IStockWarehouseService, StockWarehouseService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
