@@ -490,6 +490,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(spp.PackingType);
             Assert.Null(spp.Remark);
             Assert.Equal(0, spp.DyeingPrintingAreaInputProductionOrderId);
+
+            var indexVM = new IndexViewModel()
+            {
+                HasSalesInvoice = false,
+                Group = "group"
+            };
+            Assert.False(indexVM.HasSalesInvoice);
+            Assert.NotNull(indexVM.Group);
         }
 
         [Fact]
