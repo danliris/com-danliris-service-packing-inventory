@@ -315,7 +315,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 BonNo = s.BonNo,
                 Date = s.Date,
                 Id = s.Id,
+                Group = s.Group,
                 Shift = s.Shift,
+                HasSalesInvoice = s.HasSalesInvoice,
                 DestinationArea = s.DestinationArea,
                 DeliveryOrder = new DeliveryOrderSales()
                 {
@@ -332,6 +334,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     BuyerId = d.BuyerId,
                     Buyer = d.Buyer,
+                    HasSalesInvoice = d.HasSalesInvoice,
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
@@ -442,6 +445,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Date = s.Date,
                 Id = s.Id,
                 Shift = s.Shift,
+                Group = s.Group,
+                HasSalesInvoice = s.HasSalesInvoice,
                 DestinationArea = s.DestinationArea,
                 DeliveryOrder = new DeliveryOrderSales()
                 {
@@ -471,6 +476,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = d.Id,
                     Unit = d.Unit,
                     Grade = d.Grade,
+                    HasSalesInvoice = d.HasSalesInvoice,
                     Remark = d.Remark,
                     PackingType = d.PackagingType,
                     QtyPacking = d.PackagingQty,
