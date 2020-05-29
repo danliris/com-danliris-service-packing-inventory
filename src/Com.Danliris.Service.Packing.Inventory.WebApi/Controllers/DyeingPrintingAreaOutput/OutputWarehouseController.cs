@@ -92,6 +92,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("list-bon")]
+        public IActionResult GetListBon([FromQuery] string keyword = null)
+        {
+            try
+            {
+
+                var data = _service.Read(keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpGet("input-production-orders")]
         public IActionResult GetProductionOrders()
         {
@@ -111,6 +127,61 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("input-production-orders-v2")]
+        public IActionResult GetProductionOrdersv2()
+        {
+            try
+            {
+
+                var data = _service.GetInputSppWarehouseItemList();
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet("input-production-orders-v2/{bonId}")]
+        public IActionResult GetProductionOrdersv2(int bonId)
+        {
+            try
+            {
+
+                var data = _service.GetInputSppWarehouseItemList(bonId);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+        [HttpGet("output-production-orders/{bonId}")]
+        public IActionResult GetOutputProductionOrdersv2(int bonId)
+        {
+            try
+            {
+
+                var data = _service.GetOutputSppWarehouseItemList(bonId);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
         [HttpGet("xls/{id}")]
         public async Task<IActionResult> GetExcel(int id)
         {
