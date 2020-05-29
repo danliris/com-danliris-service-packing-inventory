@@ -89,6 +89,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetAvalConnectionLength(model.AvalConnectionLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasSalesInvoice(model.HasSalesInvoice, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShippingGrade(model.ShippingGrade, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShippingRemark(model.ShippingRemark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetWeight(model.Weight, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 

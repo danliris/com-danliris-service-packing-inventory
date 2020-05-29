@@ -35,5 +35,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool IsSave { get; set; }
 
         public bool HasSalesInvoice { get; set; }
+
+        public string ShippingGrade { get; set; }
+        public string ShippingRemark { get; set; }
+        public double Weight { get; set; }
     }
 }
