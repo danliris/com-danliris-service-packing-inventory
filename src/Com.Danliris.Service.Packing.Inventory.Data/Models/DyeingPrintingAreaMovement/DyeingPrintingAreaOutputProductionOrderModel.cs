@@ -50,6 +50,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DeliveryNote { get; private set; }
 
         public bool HasSalesInvoice { get; private set; }
+        public string ShippingGrade { get; private set; }
+        public string ShippingRemark { get; private set; }
+        public double Weight { get; private set; }
+
 
         /// <summary>
         /// ID SPP Input
@@ -129,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //Shipping
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
-           string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId, bool hasSalesInvoice)
+           string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId, bool hasSalesInvoice, string shippingGrade, string shippingRemark, double weight)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -158,6 +162,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
 
             HasSalesInvoice = hasSalesInvoice;
+
+            ShippingGrade = shippingGrade;
+            ShippingRemark = shippingRemark;
+            Weight = weight;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
@@ -746,6 +754,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newFlagHasSalesInvoice != HasSalesInvoice)
             {
                 HasSalesInvoice = newFlagHasSalesInvoice;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetShippingGrade(string newShippingGrade, string user, string agent)
+        {
+            if (newShippingGrade != ShippingGrade)
+            {
+                ShippingGrade = newShippingGrade;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetShippingRemark(string newShippingRemark, string user, string agent)
+        {
+            if (newShippingRemark != ShippingRemark)
+            {
+                ShippingRemark = newShippingRemark;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetWeight(double newWeight, string user, string agent)
+        {
+            if (newWeight != Weight)
+            {
+                Weight = newWeight;
                 this.FlagForUpdate(user, agent);
             }
         }
