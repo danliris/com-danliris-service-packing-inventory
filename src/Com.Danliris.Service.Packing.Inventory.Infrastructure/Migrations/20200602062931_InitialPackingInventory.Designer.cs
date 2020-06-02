@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    [Migration("20200513070930_AddSPPInputIDOnOutputSPPANDBalanceRemainOnInputSPP")]
-    partial class AddSPPInputIDOnOutputSPPANDBalanceRemainOnInputSPP
+    [Migration("20200602062931_InitialPackingInventory")]
+    partial class InitialPackingInventory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,10 +71,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BonNo")
-                        .IsUnique()
-                        .HasFilter("[IsDeleted]=(0)");
-
                     b.ToTable("DyeingPrintingAreaInputs");
                 });
 
@@ -109,6 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Buyer")
                         .HasMaxLength(4096);
+
+                    b.Property<int>("BuyerId");
 
                     b.Property<string>("CartNo")
                         .HasMaxLength(128);
@@ -317,6 +315,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<long>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo")
+                        .HasMaxLength(128);
+
                     b.Property<string>("DestinationArea")
                         .HasMaxLength(64);
 
@@ -324,6 +327,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(16);
 
                     b.Property<bool>("HasNextAreaDocument");
+
+                    b.Property<bool>("HasSalesInvoice");
 
                     b.Property<bool>("IsDeleted");
 
@@ -339,10 +344,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BonNo")
-                        .IsUnique()
-                        .HasFilter("[IsDeleted]=(0)");
 
                     b.ToTable("DyeingPrintingAreaOutputs");
                 });
@@ -375,6 +376,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Buyer")
                         .HasMaxLength(4096);
 
+                    b.Property<int>("BuyerId");
+
                     b.Property<string>("CartNo")
                         .HasMaxLength(128);
 
@@ -400,6 +403,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("DeliveryNote")
+                        .HasMaxLength(128);
+
                     b.Property<long>("DeliveryOrderSalesId");
 
                     b.Property<string>("DeliveryOrderSalesNo")
@@ -420,6 +426,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<bool>("HasNextAreaDocument");
+
+                    b.Property<bool>("HasSalesInvoice");
 
                     b.Property<bool>("IsDeleted");
 
@@ -459,6 +467,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Remark")
                         .HasMaxLength(128);
 
+                    b.Property<string>("ShippingGrade")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ShippingRemark")
+                        .HasMaxLength(512);
+
                     b.Property<string>("Status")
                         .HasMaxLength(128);
 
@@ -467,6 +481,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(32);
+
+                    b.Property<double>("Weight");
 
                     b.HasKey("Id");
 
