@@ -71,6 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                             Construction = "sd",
                             Grade = "s",
                             HasOutputDocument = false,
+                            OutputId = 1,
+                            DyeingPrintingAreaInputProductionOrderId = 1,
                             IsChecked = false,
                             Motif = "sd",
                             PackingInstruction = "d",

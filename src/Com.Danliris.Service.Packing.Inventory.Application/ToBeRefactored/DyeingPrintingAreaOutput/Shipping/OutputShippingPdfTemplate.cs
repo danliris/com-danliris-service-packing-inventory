@@ -204,7 +204,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"Tanggal : { model.Date.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
+            //cell.Phrase = new Phrase($"Tanggal : { model.Date.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
+            cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("Netto: ...... Kg Bruto: ......Kg", TEXT_FONT);
@@ -213,7 +214,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"Jumlah Baris : { model.ShippingProductionOrders.Count }", TEXT_FONT);
+            //cell.Phrase = new Phrase($"Jumlah Baris : { model.ShippingProductionOrders.Count }", TEXT_FONT);
+            cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
@@ -550,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase($"Sukoharjo, {model.CreatedUtc.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase("Kasubsie Gudang Jadi", TEXT_FONT);
+            cell.Phrase = new Phrase("Kasubsie Gudang Dyeing Printing", TEXT_FONT);
             table.AddCell(cell);
             cell.Phrase = new Phrase("Audit", TEXT_FONT);
             table.AddCell(cell);
