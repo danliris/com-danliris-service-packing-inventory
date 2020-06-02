@@ -465,6 +465,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Remark")
                         .HasMaxLength(128);
 
+                    b.Property<string>("ShippingGrade")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ShippingRemark")
+                        .HasMaxLength(512);
+
                     b.Property<string>("Status")
                         .HasMaxLength(128);
 
@@ -473,6 +479,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(32);
+
+                    b.Property<double>("Weight");
 
                     b.HasKey("Id");
 

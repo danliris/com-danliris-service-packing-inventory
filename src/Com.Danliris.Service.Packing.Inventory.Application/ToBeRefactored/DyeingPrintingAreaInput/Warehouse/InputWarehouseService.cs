@@ -243,7 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.PackagingType,
                                                                                                                                                                 s.PackagingQty,
                                                                                                                                                                 s.Grade,
-                                                                                                                                                                s.QtyOrder,
+                                                                                                                                                                s.ProductionOrder.OrderQuantity,
                                                                                                                                                                 s.BuyerId))
                                                                                              .ToList());
             //Insert to Input Repository
@@ -348,7 +348,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.PackagingType,
                                                                                            productionOrder.PackagingQty,
                                                                                            productionOrder.Grade,
-                                                                                           productionOrder.QtyOrder,
+                                                                                           productionOrder.ProductionOrder.OrderQuantity,
                                                                                            productionOrder.BuyerId)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,

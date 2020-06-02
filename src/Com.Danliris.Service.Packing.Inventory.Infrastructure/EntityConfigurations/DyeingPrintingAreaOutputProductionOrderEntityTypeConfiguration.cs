@@ -125,6 +125,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.DeliveryNote)
                 .HasMaxLength(128);
+
+            builder
+                .Property(s => s.ShippingRemark)
+                .HasMaxLength(512);
+
+                        builder
+                .Property(s => s.ShippingGrade)
+                .HasMaxLength(128);
         }
     }
 }

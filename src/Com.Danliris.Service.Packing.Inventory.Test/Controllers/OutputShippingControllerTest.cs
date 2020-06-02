@@ -558,7 +558,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetPdfById(1);
+            var response = await controller.GetPdfById(1, "7");
 
             Assert.NotNull(response);
         }
@@ -580,7 +580,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetPdfById(1);
+            var response = await controller.GetPdfById(1, "7");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
@@ -602,9 +602,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetPdfById(1);
+            var response = await controller.GetPdfById(1, "7");
 
             Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPdfById_Empty_Detail()
+        {
+            //v
+            var serviceMock = new Mock<IOutputShippingService>();
+            var vm = ViewModel;
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(vm);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1, "7");
+
+            Assert.NotNull(response);
         }
     }
 }
