@@ -4,77 +4,22 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200603075319_AddTabelAvalItem")]
+    partial class AddTabelAvalItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.MaterialDeliveryNoteModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("BonCode");
-
-                    b.Property<string>("Code");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DONumber");
-
-                    b.Property<DateTimeOffset?>("DateFrom");
-
-                    b.Property<DateTimeOffset?>("DateSJ");
-
-                    b.Property<DateTimeOffset?>("DateTo");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("FONumber");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Receiver");
-
-                    b.Property<string>("Remark");
-
-                    b.Property<string>("SCNumber");
-
-                    b.Property<string>("Sender");
-
-                    b.Property<string>("StorageNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MaterialDeliveryNote");
-                });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaInputModel", b =>
                 {
@@ -346,19 +291,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
+                    b.Property<string>("CreatedAgent");
 
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
+                    b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
+                    b.Property<string>("DeletedAgent");
 
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
+                    b.Property<string>("DeletedBy");
 
                     b.Property<DateTime>("DeletedUtc");
 
@@ -366,18 +307,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
+                    b.Property<string>("LastModifiedAgent");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
+                    b.Property<string>("LastModifiedBy");
 
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<double>("Length");
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(128);
+                    b.Property<string>("Type");
 
                     b.HasKey("Id");
 
@@ -1090,59 +1028,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("InventoryDocumentSKUs");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<double?>("GetTotal");
-
-                    b.Property<string>("InputLot");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int?>("MaterialDeliveryNoteModelId");
-
-                    b.Property<string>("MaterialName");
-
-                    b.Property<string>("NoSPP");
-
-                    b.Property<double?>("WeightBale");
-
-                    b.Property<double?>("WeightBruto");
-
-                    b.Property<double?>("WeightCone");
-
-                    b.Property<double?>("WeightDOS");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaterialDeliveryNoteModelId");
-
-                    b.ToTable("Items");
-                });
-
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.PackagingStockModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1547,13 +1432,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .WithMany("Items")
                         .HasForeignKey("InventoryDocumentSKUId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.MaterialDeliveryNoteModel")
-                        .WithMany("Items")
-                        .HasForeignKey("MaterialDeliveryNoteModelId");
                 });
 #pragma warning restore 612, 618
         }

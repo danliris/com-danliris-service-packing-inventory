@@ -115,6 +115,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = s.ProductionOrderOrderQuantity
                     },
                     Unit = s.Unit,
+                    AvalItems = s.DyeingPrintingAreaOutputAvalItems.Select(d => new AvalItem()
+                    {
+                        Active = d.Active,
+                        CreatedAgent = d.CreatedAgent,
+                        CreatedBy = d.CreatedBy,
+                        CreatedUtc = d.CreatedUtc,
+                        DeletedAgent = d.DeletedAgent,
+                        DeletedBy = d.DeletedBy,
+                        DeletedUtc = d.DeletedUtc,
+                        Id = d.Id,
+                        IsDeleted = d.IsDeleted,
+                        LastModifiedAgent = d.LastModifiedAgent,
+                        LastModifiedBy = d.LastModifiedBy,
+                        LastModifiedUtc = d.LastModifiedUtc,
+                        Length = d.Length,
+                        Type = d.Type
+                    }).ToList(),
                     UomUnit = s.UomUnit
                 }).ToList()
             };
@@ -158,10 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,
-                     s.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
-                     s.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
-                     s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : s.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length, 
-                     s.Id, s.BuyerId)).ToList());
+                    s.Id, s.BuyerId, s.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList())).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
@@ -212,10 +226,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
                          item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance,
-                         item.AvalItems.FirstOrDefault(e => e.Type == AVALA) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALA).Length,
-                         item.AvalItems.FirstOrDefault(e => e.Type == AVALB) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALB).Length,
-                         item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION) == null ? 0 : item.AvalItems.FirstOrDefault(e => e.Type == AVALCONNECTION).Length,
-                         item.Id, item.BuyerId);
+                         item.Id, item.BuyerId, item.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     //if (viewModel.DestinationArea == GUDANGAVAL)
