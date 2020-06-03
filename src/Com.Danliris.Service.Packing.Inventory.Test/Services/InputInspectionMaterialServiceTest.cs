@@ -249,5 +249,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
+
+        [Fact]
+        public void ValidateCoverateVM()
+        {
+            var indexVM = new IndexViewModel();
+            Assert.Empty(indexVM.InspectionMaterialProductionOrders);
+            Assert.Equal(0, indexVM.Id);
+            Assert.Null(indexVM.Area);
+            Assert.Null(indexVM.BonNo);
+            Assert.IsType<DateTimeOffset>(indexVM.Date);
+            Assert.Null(indexVM.Shift);
+            Assert.Null(indexVM.Group);
+        }
     }
 }
