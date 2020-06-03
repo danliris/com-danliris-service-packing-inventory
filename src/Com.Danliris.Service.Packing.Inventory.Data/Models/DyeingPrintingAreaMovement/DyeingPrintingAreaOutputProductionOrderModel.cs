@@ -689,32 +689,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
-        public void SetAvalALength(double newAvalABalance, string user, string agent)
-        {
-            if (newAvalABalance != AvalALength)
-            {
-                AvalALength = newAvalABalance;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetAvalALength(double newAvalABalance, string user, string agent)
+        //{
+        //    if (newAvalABalance != AvalALength)
+        //    {
+        //        AvalALength = newAvalABalance;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
 
-        public void SetAvalBLength(double newAvalBBalance, string user, string agent)
-        {
-            if (newAvalBBalance != AvalBLength)
-            {
-                AvalBLength = newAvalBBalance;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetAvalBLength(double newAvalBBalance, string user, string agent)
+        //{
+        //    if (newAvalBBalance != AvalBLength)
+        //    {
+        //        AvalBLength = newAvalBBalance;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
 
-        public void SetAvalConnectionLength(double newAvalConnectionLength, string user, string agent)
-        {
-            if (newAvalConnectionLength != AvalConnectionLength)
-            {
-                AvalConnectionLength = newAvalConnectionLength;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+        //public void SetAvalConnectionLength(double newAvalConnectionLength, string user, string agent)
+        //{
+        //    if (newAvalConnectionLength != AvalConnectionLength)
+        //    {
+        //        AvalConnectionLength = newAvalConnectionLength;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
 
         public void SetArea(string newArea, string user, string agent)
         {
