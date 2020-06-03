@@ -93,6 +93,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
+                            OutputId = 1,
+                            DyeingPrintingAreaInputProductionOrderId = 1,
                             Color = "red",
                             Construction = "sd",
                             Grade = "s",
@@ -196,6 +198,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
+                            OutputId = 1,
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            Id = 1,
                             Construction = "sd",
                             Area = "INSPECTION MATERIAL",
                             Grade = "s",
@@ -870,7 +875,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.Id, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.OutputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
