@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200602161333_MaterialDeliveryNote_and_Items")]
+    partial class MaterialDeliveryNote_and_Items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +38,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DONumber");
 
                     b.Property<DateTimeOffset?>("DateFrom");
 
@@ -1074,8 +1074,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<int?>("MaterialDeliveryNoteModelId");
-
                     b.Property<string>("MaterialName");
 
                     b.Property<string>("NoSPP");
@@ -1089,8 +1087,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double?>("WeightDOS");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaterialDeliveryNoteModelId");
 
                     b.ToTable("Items");
                 });
@@ -1491,13 +1487,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .WithMany("Items")
                         .HasForeignKey("InventoryDocumentSKUId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.MaterialDeliveryNoteModel")
-                        .WithMany("Items")
-                        .HasForeignKey("MaterialDeliveryNoteModelId");
                 });
 #pragma warning restore 612, 618
         }
