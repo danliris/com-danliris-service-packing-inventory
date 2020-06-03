@@ -157,7 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModel.InspectionMaterialProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputInspectionMaterialId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.InputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
@@ -237,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModel.InspectionMaterialProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputInspectionMaterialId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.InputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
