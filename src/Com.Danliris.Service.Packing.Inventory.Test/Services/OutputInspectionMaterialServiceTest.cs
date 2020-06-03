@@ -87,6 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Construction = "sd",
                             Grade = "s",
                             Remark = "remar",
+                            IsSave = true,
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
@@ -119,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
                    ViewModel.Group, ViewModel.InspectionMaterialProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList())).ToList());
             }
         }
 
