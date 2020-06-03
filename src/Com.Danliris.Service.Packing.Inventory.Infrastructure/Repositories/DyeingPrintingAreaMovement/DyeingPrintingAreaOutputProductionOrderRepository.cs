@@ -27,8 +27,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> DeleteAsync(int id)
         {
-            var model = _dbSet.FirstOrDefault(s => s.Id == id);
+            var model = _dbSet.Include(s => s.DyeingPrintingAreaOutputAvalItems).FirstOrDefault(s => s.Id == id);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
+            foreach(var item in model.DyeingPrintingAreaOutputAvalItems)
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+            }
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
         }
@@ -41,6 +46,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> InsertAsync(DyeingPrintingAreaOutputProductionOrderModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
+            foreach(var item in model.DyeingPrintingAreaOutputAvalItems)
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+            }
             _dbSet.Add(model);
 
             return _dbContext.SaveChangesAsync();
@@ -48,22 +57,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public IQueryable<DyeingPrintingAreaOutputProductionOrderModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutputAvalItems).AsNoTracking();
         }
 
         public IQueryable<DyeingPrintingAreaOutputProductionOrderModel> ReadAllIgnoreQueryFilter()
         {
-            return _dbSet.IgnoreQueryFilters().AsNoTracking();
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutputAvalItems).IgnoreQueryFilters().AsNoTracking();
         }
 
         public Task<DyeingPrintingAreaOutputProductionOrderModel> ReadByIdAsync(int id)
         {
-            return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutputAvalItems).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<int> UpdateAsync(int id, DyeingPrintingAreaOutputProductionOrderModel model)
         {
-            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaOutputAvalItems).FirstOrDefault(s => s.Id == id);
             modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestinationArea(model.DestinationArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);

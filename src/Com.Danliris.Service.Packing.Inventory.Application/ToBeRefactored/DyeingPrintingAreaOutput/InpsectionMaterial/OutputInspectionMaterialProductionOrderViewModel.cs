@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool IsSave { get; set; }
     }
 
-    public class AvalItem
+    public class AvalItem : BaseViewModel
     {
         public string Type { get; set; }
         public double Length { get; set; }
