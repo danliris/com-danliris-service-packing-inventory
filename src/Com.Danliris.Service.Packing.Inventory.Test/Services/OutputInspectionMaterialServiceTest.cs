@@ -589,12 +589,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 PreviousBalance = 1,
                 InitLength = 1,
-                InputId = 1
+                InputId = 1,
+                BalanceRemains = 1
             };
 
             Assert.NotEqual(0, spp.PreviousBalance);
             Assert.NotEqual(0, spp.InitLength);
             Assert.NotEqual(0, spp.InputId);
+            Assert.NotEqual(0, spp.BalanceRemains);
+
+            var detail = new OutputInspectionMaterialProductionOrderDetailViewModel()
+            {
+                HasNextAreaDocument = false
+            };
+            Assert.False(detail.HasNextAreaDocument);
         }
 
         [Fact]
