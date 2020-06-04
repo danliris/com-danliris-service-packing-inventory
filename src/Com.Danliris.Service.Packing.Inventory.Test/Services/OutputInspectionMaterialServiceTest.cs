@@ -293,6 +293,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_Success_Create_DuplicateShift_PReviousNull()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+            var item = ViewModel.InspectionMaterialProductionOrders.FirstOrDefault();
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                    
+                 }.AsQueryable());
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_Create2()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
