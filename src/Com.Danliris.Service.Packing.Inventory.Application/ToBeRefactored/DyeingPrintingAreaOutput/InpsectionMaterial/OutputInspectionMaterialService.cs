@@ -77,65 +77,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
                 DestinationArea = model.DestinationArea,
-                HasNextAreaDocument = model.HasNextAreaDocument,
-                InspectionMaterialProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputInspectionMaterialProductionOrderViewModel()
+                HasNextAreaDocument = model.HasNextAreaDocument
+            };
+            var groupedProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.GroupBy(s => s.ProductionOrderId);
+            foreach (var item in groupedProductionOrders)
+            {
+                var sppData = item.FirstOrDefault();
+                var imProductionOrder = new OutputInspectionMaterialProductionOrderViewModel()
                 {
-                    Active = s.Active,
-                    LastModifiedUtc = s.LastModifiedUtc,
-                    Balance = s.Balance,
-                    Buyer = s.Buyer,
-                    CartNo = s.CartNo,
-                    Color = s.Color,
-                    Construction = s.Construction,
-                    CreatedAgent = s.CreatedAgent,
-                    AvalALength = s.AvalALength,
-                    AvalBLength = s.AvalBLength,
-                    AvalConnectionLength = s.AvalConnectionLength,
-                    HasNextAreaDocument = s.HasNextAreaDocument,
-                    CreatedBy = s.CreatedBy,
-                    CreatedUtc = s.CreatedUtc,
-                    DeletedAgent = s.DeletedAgent,
-                    DeletedBy = s.DeletedBy,
-                    DeletedUtc = s.DeletedUtc,
-                    Grade = s.Grade,
-                    PackingInstruction = s.PackingInstruction,
-                    Remark = s.Remark,
-                    Status = s.Status,
-                    Id = s.Id,
-                    IsDeleted = s.IsDeleted,
-                    BuyerId = s.BuyerId,
-                    LastModifiedAgent = s.LastModifiedAgent,
-                    LastModifiedBy = s.LastModifiedBy,
-                    Motif = s.Motif,
+                    Buyer = sppData.Buyer,
+                    BuyerId = sppData.BuyerId,
+                    CartNo = sppData.CartNo,
+                    Color = sppData.Color,
+                    Construction = sppData.Construction,
+                    Motif = sppData.Motif,
+                    PackingInstruction = sppData.PackingInstruction,
                     ProductionOrder = new ProductionOrder()
                     {
-                        Id = s.ProductionOrderId,
-                        No = s.ProductionOrderNo,
-                        Type = s.ProductionOrderType,
-                        OrderQuantity = s.ProductionOrderOrderQuantity
+                        Id = sppData.ProductionOrderId,
+                        No = sppData.ProductionOrderNo,
+                        OrderQuantity = sppData.ProductionOrderOrderQuantity,
+                        Type = sppData.ProductionOrderType
                     },
-                    Unit = s.Unit,
-                    AvalItems = s.DyeingPrintingAreaOutputAvalItems.Select(d => new AvalItem()
+                    Status = sppData.Status,
+                    Unit = sppData.Unit,
+                    UomUnit = sppData.UomUnit,
+                    ProductionOrderDetails = item.Select(d => new OutputInspectionMaterialProductionOrderDetailViewModel()
                     {
                         Active = d.Active,
+                        AvalItems = d.DyeingPrintingAreaOutputAvalItems.Select(e => new AvalItem()
+                        {
+                            Active = e.Active,
+                            CreatedAgent = e.CreatedAgent,
+                            CreatedBy = e.CreatedBy,
+                            CreatedUtc = e.CreatedUtc,
+                            DeletedAgent = e.DeletedAgent,
+                            DeletedBy = e.DeletedBy,
+                            DeletedUtc = e.DeletedUtc,
+                            Id = e.Id,
+                            IsDeleted = e.IsDeleted,
+                            LastModifiedAgent = e.LastModifiedAgent,
+                            LastModifiedBy = e.LastModifiedBy,
+                            LastModifiedUtc = e.LastModifiedUtc,
+                            Length = e.Length,
+                            Type = e.Type
+                        }).ToList(),
+                        LastModifiedUtc = d.LastModifiedUtc,
+                        LastModifiedBy = d.LastModifiedBy,
+                        LastModifiedAgent = d.LastModifiedAgent,
+                        IsDeleted = d.IsDeleted,
+                        Id = d.Id,
+                        Balance = d.Balance,
                         CreatedAgent = d.CreatedAgent,
                         CreatedBy = d.CreatedBy,
                         CreatedUtc = d.CreatedUtc,
                         DeletedAgent = d.DeletedAgent,
                         DeletedBy = d.DeletedBy,
                         DeletedUtc = d.DeletedUtc,
-                        Id = d.Id,
-                        IsDeleted = d.IsDeleted,
-                        LastModifiedAgent = d.LastModifiedAgent,
-                        LastModifiedBy = d.LastModifiedBy,
-                        LastModifiedUtc = d.LastModifiedUtc,
-                        Length = d.Length,
-                        Type = d.Type
-                    }).ToList(),
-                    UomUnit = s.UomUnit
-                }).ToList()
-            };
-
+                        Grade = d.Grade,
+                        HasNextAreaDocument = d.HasNextAreaDocument,
+                        Remark = d.Remark
+                    }).ToList()
+                };
+                vm.InspectionMaterialProductionOrders.Add(imProductionOrder);
+            }
 
             return vm;
         }
@@ -171,51 +176,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == INSPECTIONMATERIAL && s.DestinationArea == viewModel.DestinationArea
                 && s.CreatedUtc.Year == viewModel.Date.Year);
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
+                List<DyeingPrintingAreaOutputProductionOrderModel> productionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
 
-                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
-                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,
-                    s.Id, s.BuyerId, s.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList())).ToList());
-
-                result = await _repository.InsertAsync(model);
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
                 {
-
-                    //if (viewModel.DestinationArea == GUDANGAVAL)
-                    //{
-                    //    var avalA = item.AvalItems.FirstOrDefault(s => s.Type == AVALA)?.Length;
-                    //    var avalB = item.AvalItems.FirstOrDefault(s => s.Type == AVALB)?.Length;
-                    //    var avalConnection = item.AvalItems.FirstOrDefault(s => s.Type == AVALCONNECTION)?.Length;
-                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, avalA.GetValueOrDefault(), avalB.GetValueOrDefault(),
-                    //        avalConnection.GetValueOrDefault());
-
-                    //}
-                    //else
-                    //{
-
-                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
-
-                    //}
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
-                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
-
-                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId && s.ProductionOrderId == item.ProductionOrder.Id);
-
-                    var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
-
-                    result += await _movementRepository.InsertAsync(movementModel);
-
-                    if (previousSummary == null)
+                    foreach (var detail in item.ProductionOrderDetails)
                     {
-
-                        result += await _summaryRepository.InsertAsync(summaryModel);
+                        var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
+                            item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
+                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
+                            detail.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
+                        productionOrders.Add(outputProductionOrder);
                     }
-                    else
-                    {
+                }
 
-                        result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, productionOrders);
+
+                result = await _repository.InsertAsync(model);
+
+                foreach (var item in viewModel.InspectionMaterialProductionOrders)
+                {
+                    foreach (var detail in item.ProductionOrderDetails)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, detail.Balance);
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance);
+
+                        var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId && s.ProductionOrderId == item.ProductionOrder.Id);
+
+                        var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance);
+
+                        result += await _movementRepository.InsertAsync(movementModel);
+
+                        if (previousSummary == null)
+                        {
+
+                            result += await _summaryRepository.InsertAsync(summaryModel);
+                        }
+                        else
+                        {
+
+                            result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                        }
                     }
                 }
             }
@@ -223,47 +226,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in viewModel.InspectionMaterialProductionOrders)
                 {
-                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
+                    foreach (var detail in item.ProductionOrderDetails)
+                    {
+                        var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                         item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance,
-                         item.Id, item.BuyerId, item.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
-                    modelItem.DyeingPrintingAreaOutputId = model.Id;
+                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance,
+                         item.Id, item.BuyerId, detail.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
+                        modelItem.DyeingPrintingAreaOutputId = model.Id;
 
-                    //if (viewModel.DestinationArea == GUDANGAVAL)
-                    //{
 
-                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, item.AvalALength, item.AvalBLength, item.AvalConnectionLength);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, detail.Balance);
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance);
 
-                    //}
-                    //else
-                    //{
+                        var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId && s.ProductionOrderId == item.ProductionOrder.Id);
 
-                    //    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, item.Balance, 0, 0, 0);
+                        var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance);
 
-                    //}
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
-                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
+                        result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+                        result += await _movementRepository.InsertAsync(movementModel);
 
-                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId && s.ProductionOrderId == item.ProductionOrder.Id);
+                        if (previousSummary == null)
+                        {
 
-                    var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance);
+                            result += await _summaryRepository.InsertAsync(summaryModel);
+                        }
+                        else
+                        {
 
-                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-                    result += await _movementRepository.InsertAsync(movementModel);
-
-                    if (previousSummary == null)
-                    {
-
-                        result += await _summaryRepository.InsertAsync(summaryModel);
+                            result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
+                        }
                     }
-                    else
-                    {
-
-                        result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
-                    }
-
                 }
             }
 
@@ -295,30 +289,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Shift = s.Shift,
                 DestinationArea = s.DestinationArea,
                 Group = s.Group,
-                HasNextAreaDocument = s.HasNextAreaDocument,
-                InspectionMaterialProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputInspectionMaterialProductionOrderViewModel()
-                {
-                    Balance = d.Balance,
-                    Buyer = d.Buyer,
-                    CartNo = d.CartNo,
-                    Color = d.Color,
-                    Construction = d.Construction,
-                    BuyerId = d.BuyerId,
-                    Motif = d.Motif,
-                    ProductionOrder = new ProductionOrder()
-                    {
-                        Id = d.ProductionOrderId,
-                        No = d.ProductionOrderNo,
-                        Type = d.ProductionOrderType
-                    },
-                    Id = d.Id,
-                    Unit = d.Unit,
-                    Grade = d.Grade,
-                    Remark = d.Remark,
-                    Status = d.Status,
-                    PackingInstruction = d.PackingInstruction,
-                    UomUnit = d.UomUnit
-                }).ToList()
+                HasNextAreaDocument = s.HasNextAreaDocument
             });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
