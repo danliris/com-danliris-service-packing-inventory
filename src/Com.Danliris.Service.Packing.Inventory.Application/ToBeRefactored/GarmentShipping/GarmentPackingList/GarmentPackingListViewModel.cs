@@ -124,19 +124,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Dictionary<string, object> errorItem = new Dictionary<string, object>();
 
-                    if (item.RONo == null)
+                    if (string.IsNullOrWhiteSpace(item.RONo))
                     {
                         errorItem["RONo"] = "RONo tidak boleh kosong";
                         errorItemsCount++;
                     }
 
-                    if (item.OrderNo == null)
+                    if (string.IsNullOrWhiteSpace(item.OrderNo))
                     {
                         errorItem["OrderNo"] = "Order No tidak boleh kosong";
                         errorItemsCount++;
                     }
 
-                    if (item.Description == null)
+                    if (string.IsNullOrWhiteSpace(item.Description))
                     {
                         errorItem["Description"] = "Description tidak boleh kosong";
                         errorItemsCount++;
