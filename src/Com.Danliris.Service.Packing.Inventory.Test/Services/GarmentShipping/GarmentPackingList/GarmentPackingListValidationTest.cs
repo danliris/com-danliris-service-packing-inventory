@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,108 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 {
     public class GarmentPackingListValidationTest
     {
+        private GarmentPackingListViewModel ViewModel
+        {
+            get
+            {
+                return new GarmentPackingListViewModel
+                {
+                    InvoiceNo = null,
+                    InvoiceType = null,
+                    Section = new Section
+                    {
+                        Id = 0,
+                        Code = null
+                    },
+                    Date = null,
+                    PriceType = null,
+                    LCNo = null,
+                    IssuedBy = null,
+                    Comodity = null,
+                    Destination = null,
+                    TruckingDate = null,
+                    ExportEstimationDate = null,
+                    Omzet = false,
+                    Accounting = false,
+                    Items = new List<GarmentPackingListItemViewModel>
+                    {
+                        new GarmentPackingListItemViewModel
+                        {
+                            RONo = null,
+                            SCNo = null,
+                            Buyer = new Buyer
+                            {
+                                Id = 0,
+                                Code = null,
+                                Name = null
+                            },
+                            Quantity = 0,
+                            Uom = new UnitOfMeasurement
+                            {
+                                Id = 0,
+                                Unit = null
+                            },
+                            Price = 0,
+                            Amount = 0,
+                            Valas = null,
+                            Unit = new Unit
+                            {
+                                Id = 0,
+                                Code = null,
+                                Name = null
+                            },
+                            OTL = null,
+                            Article = null,
+                            OrderNo = null,
+                            Description = null,
+                            Details = new List<GarmentPackingListDetailViewModel>
+                            {
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Carton1 = 0,
+                                    Carton2 = 0,
+                                    Colour = null,
+                                    CartonQuantity = 0,
+                                    QuantityPCS = 0,
+                                    TotalQuantity = 0,
+                                    Sizes = new List<DetailSize>
+                                    {
+                                        new DetailSize
+                                        {
+                                            Size = null,
+                                            Quantity = 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    AVG_GW = 0,
+                    AVG_NW = 0,
+                    GrossWeight = 0,
+                    NettWeight = 0,
+                    TotalCartons = 0,
+                    Measurements = new List<GarmentPackingListMeasurementViewModel>
+                    {
+                        new GarmentPackingListMeasurementViewModel
+                        {
+                            Length = 0,
+                            Width = 0,
+                            Height = 0,
+                            CartonsQuantity = 0
+                        }
+                    },
+                    ShippingMark = null,
+                    SideMark = null,
+                    Remark = null
+                };
+            }
+        }
+
         [Fact]
         public void Validate_DefaultValue()
         {
-            GarmentPackingListViewModel viewModel = new GarmentPackingListViewModel();
+            GarmentPackingListViewModel viewModel = ViewModel;
 
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
@@ -22,12 +121,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Validate_DateMoreThanToday()
         {
-            GarmentPackingListViewModel viewModel = new GarmentPackingListViewModel
-            {
-                Date = DateTimeOffset.Now.AddDays(1),
-                Items = new List<GarmentPackingListItemViewModel>(),
-                Measurements = new List<GarmentPackingListMeasurementViewModel>()
-            };
+            GarmentPackingListViewModel viewModel = ViewModel;
+            viewModel.Date = DateTimeOffset.Now.AddDays(1);
+            viewModel.Items = new List<GarmentPackingListItemViewModel>();
+            viewModel.Measurements = new List<GarmentPackingListMeasurementViewModel>();
 
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
@@ -36,12 +133,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Validate_ItemsDefaultValue()
         {
-            GarmentPackingListViewModel viewModel = new GarmentPackingListViewModel
+            GarmentPackingListViewModel viewModel = ViewModel;
+            viewModel.Items = new List<GarmentPackingListItemViewModel>
             {
-                Items = new List<GarmentPackingListItemViewModel>
-                {
-                    new GarmentPackingListItemViewModel()
-                }
+                new GarmentPackingListItemViewModel()
             };
 
             var result = viewModel.Validate(null);
@@ -51,16 +146,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Validate_DetailsDefaultValue()
         {
-            GarmentPackingListViewModel viewModel = new GarmentPackingListViewModel
+            GarmentPackingListViewModel viewModel = ViewModel;
+            viewModel.Items = new List<GarmentPackingListItemViewModel>
             {
-                Items = new List<GarmentPackingListItemViewModel>
+                new GarmentPackingListItemViewModel
                 {
-                    new GarmentPackingListItemViewModel
+                    Details = new List<GarmentPackingListDetailViewModel>
                     {
-                        Details = new List<GarmentPackingListDetailViewModel>
-                        {
-                            new GarmentPackingListDetailViewModel()
-                        }
+                        new GarmentPackingListDetailViewModel()
                     }
                 }
             };
@@ -72,12 +165,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Validate_MeasurementsDefaultValue()
         {
-            GarmentPackingListViewModel viewModel = new GarmentPackingListViewModel
+            GarmentPackingListViewModel viewModel = ViewModel;
+            viewModel.Measurements = new List<GarmentPackingListMeasurementViewModel>
             {
-                Measurements = new List<GarmentPackingListMeasurementViewModel>
-                {
-                    new GarmentPackingListMeasurementViewModel()
-                }
+                new GarmentPackingListMeasurementViewModel()
             };
 
             var result = viewModel.Validate(null);
