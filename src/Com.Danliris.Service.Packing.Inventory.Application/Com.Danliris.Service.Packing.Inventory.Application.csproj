@@ -47,4 +47,14 @@
     <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Data\Com.Danliris.Service.Packing.Inventory.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="InventoryPacking\" />
+    <Folder Include="InventorySKU\" />
+    <Folder Include="Master\ProductPacking\Fabric\" />
+    <Folder Include="Master\ProductPacking\Greige\" />
+    <Folder Include="Master\ProductPacking\Yarn\" />
+    <Folder Include="Master\ProductSKU\Greige\" />
+    <Folder Include="Master\ProductSKU\Yarn\" />
+  </ItemGroup>
+
 </Project>

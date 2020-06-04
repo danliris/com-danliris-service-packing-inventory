@@ -1,23 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
-using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
-using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.Product;
-using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
-using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.FabricQualityControl;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
@@ -29,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
@@ -43,7 +30,6 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
-using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse;
 
@@ -68,17 +54,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             
 
             // Register Middleware
-            services.AddTransient<IProductSKURepository, ProductSKURepository>();
-            services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductPackingService, ProductPackingService>();
-            services.AddTransient<IProductSKUService, ProductSKUService>();
-
-            services.AddTransient<IInventoryDocumentSKURepository, InventoryDocumentSKURepository>();
-            services.AddTransient<IInventoryDocumentPackingRepository, InventoryDocumentPackingRepository>();
-            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
-            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
-            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
@@ -198,13 +173,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
             // Register Validator
-            services.AddSingleton<IValidator<CreateProductPackAndSKUViewModel>, CreateProductPackAndSKUValidator>();
-            services.AddSingleton<IValidator<CreateReceivingDispatchDocumentViewModel>, CreateReceivingDispatchDocumentValidator>();
-            services.AddSingleton<IValidator<CreateProductSKUViewModel>, CreateProductSKUValidator>();
-            services.AddSingleton<IValidator<UpdateProductSKUViewModel>, UpdateProductSKUValidator>();
-            services.AddSingleton<IValidator<ProductPackingFormViewModel>, ProductPackingFormValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentSKUViewModel>, CreateInventoryDocumentSKUValidator>();
-            services.AddSingleton<IValidator<CreateInventoryDocumentPackingViewModel>, CreateInventoryDocumentPackingValidator>();
             services.AddSingleton<IValidator<FabricQualityControlViewModel>, FabricQualityControlValidator>();
             //services.AddSingleton<IValidator<InputInspectionMaterialViewModel>, InputInspectionMaterialValidator>();
             //services.AddSingleton<IValidator<OutputInspectionMaterialViewModel>, OutputInspectionMaterialValidator>();
