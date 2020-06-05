@@ -1,6 +1,8 @@
-﻿namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote
+﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote
 {
-    public class ItemsViewModel
+    public class ItemsViewModel : BaseViewModel
     {
 
         public string NoSPP { get; set; }

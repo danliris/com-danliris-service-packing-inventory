@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System.Linq.Dynamic.Core;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote
 {
@@ -29,6 +30,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         {
             var vm = new MaterialDeliveryNoteViewModel()
             {
+                Active = model.Active,
+                Id = model.Id,
                 Code = model.Code,
                 DateSJ = model.DateSJ,
                 BonCode = model.BonCode,
@@ -57,13 +60,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             return vm;
         }
 
-            public async Task Create(MaterialDeliveryNoteViewModel viewModel)
+        public async Task Create(MaterialDeliveryNoteViewModel viewModel)
         {
             var model = new Data.MaterialDeliveryNoteModel(null, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber, viewModel.FONumber, viewModel.Receiver, viewModel.Remark,
                                                       viewModel.SCNumber, viewModel.Sender, viewModel.StorageNumber,
                                                       viewModel.Items.Select(s => new ItemsModel(s.NoSPP, s.MaterialName, s.InputLot, s.WeightBruto, s.WeightDOS, s.WeightCone, s.WeightBale, s.GetTotal)).ToList());
 
-            foreach(var itm in viewModel.Items)
+            foreach (var itm in viewModel.Items)
             {
                 var modelItem = new ItemsModel(itm.NoSPP, itm.MaterialName, itm.InputLot, itm.WeightBruto, itm.WeightDOS, itm.WeightCone, itm.WeightBale, itm.GetTotal);
 
@@ -89,57 +92,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             return vm;
         }
 
-        public Task Update(int id, MaterialDeliveryNoteViewModel viewModel)
+        public async Task Update(int id, MaterialDeliveryNoteViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var model = new Data.MaterialDeliveryNoteModel(viewModel.Code, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber, viewModel.FONumber, viewModel.Receiver, viewModel.Remark,
+                                                      viewModel.SCNumber, viewModel.Sender, viewModel.StorageNumber,
+                                                      viewModel.Items.Select(s => new ItemsModel(s.NoSPP, s.MaterialName, s.InputLot, s.WeightBruto, s.WeightDOS, s.WeightCone, s.WeightBale, s.GetTotal)).ToList());
+
+            //foreach (var itm in viewModel.Items)
+            //{
+            //    var modelItem = new ItemsModel(itm.NoSPP, itm.MaterialName, itm.InputLot, itm.WeightBruto, itm.WeightDOS, itm.WeightCone, itm.WeightBale, itm.GetTotal);
+
+            //    await _ItemsRepository.UpdateAsync(id, modelItem);
+            //}
+
+            await _MaterialDeliveryNoteRepository.UpdateAsync(id, model);
         }
 
         public ListResult<MaterialDeliveryNoteViewModel> ReadByKeyword(string keyword, string order, int page, int size, string filter)
         {
 
-            var query = _MaterialDeliveryNoteRepository.ReadAll();
+            var MaterialDeliveryNoteQuery = _MaterialDeliveryNoteRepository.ReadAll();
 
-            List<string> SearchAttributes = new List<string>()
+            var joinQuery = from MaterialDeliveryNote in MaterialDeliveryNoteQuery
+                            select new MaterialDeliveryNoteViewModel()
+                            {
+                                Id = MaterialDeliveryNote.Id,
+                                Code = MaterialDeliveryNote.Code,
+                                BonCode = MaterialDeliveryNote.BonCode,
+                                DateSJ = MaterialDeliveryNote.DateSJ,
+                                Receiver = MaterialDeliveryNote.Receiver,
+                                Sender = MaterialDeliveryNote.Sender
+                            };
+
+            if (!string.IsNullOrWhiteSpace(keyword))
             {
-                "BonCode"
-            };
+                joinQuery = joinQuery.Where(entity => entity.BonCode.Contains(keyword));
+            }
 
-            query = QueryHelper<Data.MaterialDeliveryNoteModel>.Search(query, SearchAttributes, keyword);
-
-            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<Data.MaterialDeliveryNoteModel>.Filter(query, FilterDictionary);
-
-            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<Data.MaterialDeliveryNoteModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new MaterialDeliveryNoteViewModel()
+            if (string.IsNullOrWhiteSpace(order))
             {
-                Code = s.Code,
-                DateSJ = s.DateSJ,
-                BonCode = s.BonCode,
-                DateFrom = (DateTimeOffset)s.DateFrom,
-                DateTo = (DateTimeOffset)s.DateTo,
-                DONumber = s.DONumber,
-                FONumber = s.FONumber,
-                Receiver = s.Receiver,
-                Remark = s.Remark,
-                SCNumber = s.SCNumber,
-                Sender = s.Sender,
-                StorageNumber = s.StorageNumber,
-                Items = s.Items.Select(d => new ItemsViewModel()
-                {
-                    NoSPP = d.NoSPP,
-                    MaterialName = d.MaterialName,
-                    InputLot = d.InputLot,
-                    WeightBruto= d.WeightBruto,
-                    WeightDOS=d.WeightDOS,
-                    WeightCone=d.WeightCone,
-                    WeightBale=d.WeightBale,
-                    GetTotal=d.GetTotal
-                }).ToList()
+                order = "{}";
+            }
+            var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            joinQuery = QueryHelper<MaterialDeliveryNoteViewModel>.Order(joinQuery, orderDictionary);
 
-            });
+            var data = joinQuery.Skip((page - 1) * size).Take(size).ToList();
+            var totalRow = joinQuery.Select(entity => entity.Id).Count();
 
-            return new ListResult<MaterialDeliveryNoteViewModel>(data.ToList(), page, size, query.Count());
+            return new ListResult<MaterialDeliveryNoteViewModel>(data, page, size, totalRow);
 
         }
     }

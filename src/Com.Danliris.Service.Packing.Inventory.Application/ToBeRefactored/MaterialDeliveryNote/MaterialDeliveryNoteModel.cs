@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         {
             Items = new HashSet<ItemsViewModel>();
         }
-
+        public int Id { get; set; }
         public string Code { get; set; }
         public DateTimeOffset? DateSJ { get; set; }
         public string BonCode { get; set; }

@@ -38,5 +38,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
         public double? WeightCone { get; set; }
         public double? WeightBale { get; set; }
         public double? GetTotal { get; set; }
+        //public int MaterialDeliveryNoteModelId { get; set; }
+
+        public void SetNoSPP(string newNoSPP)
+        {
+            if (newNoSPP != NoSPP)
+            {
+                NoSPP = newNoSPP;
+            }
+        }
+
+        public void SetMaterialName(string newMaterialName)
+        {
+            if (newMaterialName != MaterialName)
+            {
+                MaterialName = newMaterialName;
+            }
+        }
+
+        public void SetInputLot(string newInputLot)
+        {
+            if (newInputLot != InputLot)
+            {
+                InputLot = newInputLot;
+            }
+        }
+
+        public void SetWeightBruto(double? newWeightBruto)
+        {
+            if (newWeightBruto != WeightBruto)
+            {
+                WeightBruto = newWeightBruto;
+            }
+        }
+
+        public void SetWeightDOS(double? newWeightDOS)
+        {
+            if (newWeightDOS != WeightDOS)
+            {
+                WeightDOS = newWeightDOS;
+            }
+        }
+
+        public void SetWeightCone(double? newWeightCone)
+        {
+            if (newWeightCone != WeightCone)
+            {
+                WeightCone = newWeightCone;
+            }
+        }
+
+        public void SetWeightBale(double? newWeightBale)
+        {
+            if (newWeightBale != WeightBale)
+            {
+                WeightBale = newWeightBale;
+            }
+        }
+
+        public void SetGetTotal(double? newGetTotal)
+        {
+            if (newGetTotal != GetTotal)
+            {
+                GetTotal = newGetTotal;
+            }
+        }
     }
 }

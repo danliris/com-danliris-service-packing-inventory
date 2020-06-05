@@ -43,7 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             {
                 yield return new ValidationResult("Tanggal Awal harus diisi", new List<string> { "DateFrom" });
             }
-            else if (DateTo == default(DateTimeOffset))
+
+            if (DateTo == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal Akhir harus diisi", new List<string> { "DateTo" });
             }

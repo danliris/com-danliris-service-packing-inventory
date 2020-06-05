@@ -8,6 +8,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Xunit;
@@ -98,41 +99,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
+        [Fact]
+        public void Should_Validator_Success()
+        {
+            var dataUtil = new MaterialDeliveryNoteViewModel()
+            {
+                DateSJ = DateTimeOffset.UtcNow.AddHours(-5)
+            };
+            var validator = new MaterialDeliveryNoteValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.DateSJ = DateTimeOffset.UtcNow.AddDays(1);
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.DateSJ = DateTimeOffset.UtcNow.AddDays(-1);
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            dataUtil.Items = new List<ItemsViewModel>()
+            {
+                new ItemsViewModel()
+            };
+            result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+
+            //dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
+            //{
+            //    new InputInspectionMaterialProductionOrderViewModel()
+            //    {
+            //        ProductionOrder = new ProductionOrder()
+            //    }
+            //};
+            //result = validator.Validate(dataUtil);
+            //Assert.NotEqual(0, result.Errors.Count);
+        }
+
         //[Fact]
-        //public void Should_Validator_Success()
+        //public async Task Should_Success_Post()
         //{
-        //    var dataUtil = new MaterialDeliveryNoteViewModel()
-        //    {
-        //        Date = DateTimeOffset.UtcNow.AddHours(-5)
-        //    };
-        //    var validator = new InputInspectionMaterialValidator();
-        //    var result = validator.Validate(dataUtil);
-        //    Assert.NotEqual(0, result.Errors.Count);
+        //    var dataUtil = ViewModel;
+        //    //v
+        //    var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+        //    serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())).ReturnsAsync();
+        //    var service = serviceMock.Object;
 
-        //    dataUtil.Date = DateTimeOffset.UtcNow.AddDays(1);
-        //    result = validator.Validate(dataUtil);
-        //    Assert.NotEqual(0, result.Errors.Count);
+        //    var validateServiceMock = new Mock<IValidateService>();
+        //    validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+        //        .Verifiable();
+        //    var validateService = validateServiceMock.Object;
 
-        //    dataUtil.Date = DateTimeOffset.UtcNow.AddDays(-1);
-        //    result = validator.Validate(dataUtil);
-        //    Assert.NotEqual(0, result.Errors.Count);
+        //    var identityProviderMock = new Mock<IIdentityProvider>();
+        //    var identityProvider = identityProviderMock.Object;
 
-        //    dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
-        //    {
-        //        new InputInspectionMaterialProductionOrderViewModel()
-        //    };
-        //    result = validator.Validate(dataUtil);
-        //    Assert.NotEqual(0, result.Errors.Count);
+        //    var controller = GetController(service, identityProvider, validateService);
+        //    //controller.ModelState.IsValid == false;
+        //    var response = await controller.Post(dataUtil);
 
-        //    dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
-        //    {
-        //        new InputInspectionMaterialProductionOrderViewModel()
-        //        {
-        //            ProductionOrder = new ProductionOrder()
-        //        }
-        //    };
-        //    result = validator.Validate(dataUtil);
-        //    Assert.NotEqual(0, result.Errors.Count);
+        //    Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         //}
 
     }

@@ -39,8 +39,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MaterialDeliveryNoteViewModel viewModel)
         {
-            VerifyUser();
-
             if (!ModelState.IsValid)
             {
                 var result = new
@@ -49,34 +47,67 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 };
                 return new BadRequestObjectResult(result);
             }
-
-            ValidateService.Validate(viewModel);
-            await _service.Create(viewModel);
-
-            return Created("/", new
+            try
             {
-            });
+                VerifyUser();
+                ValidateService.Validate(viewModel);
+                await _service.Create(viewModel);
+
+                return Created("/", new
+                {
+                });
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
 
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] MaterialDeliveryNoteViewModel viewModel)
         {
-            VerifyUser();
             if (!ModelState.IsValid)
             {
-                var exception = new
+                var result = new
                 {
                     error = ResultFormatter.FormatErrorMessage(ModelState)
                 };
-                return new BadRequestObjectResult(exception);
+                return new BadRequestObjectResult(result);
             }
-
             try
             {
+                VerifyUser();
+                ValidateService.Validate(viewModel);
                 await _service.Update(id, viewModel);
 
-                return NoContent();
+                return Created("/", new
+                {
+                });
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
             }
             catch (Exception ex)
             {
@@ -119,7 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] string order, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string filter = "{}")
+        public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] string order = "{}", [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string filter = "{}")
         {
             var data = _service.ReadByKeyword(keyword, order, page, size, filter);
             return Ok(data);

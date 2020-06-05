@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNote
 {
@@ -17,7 +18,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
         private const string USER_AGENT = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly DbSet<ItemsModel> _ItemsDbSet;
+        private readonly DbSet<MaterialDeliveryNoteModel> _MaterialDbSet;
         private readonly IIdentityProvider _identityProvider;
+
+        public ItemsRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
+        {
+            _dbContext = dbContext;
+            _ItemsDbSet = dbContext.Set<ItemsModel>();
+            _MaterialDbSet = dbContext.Set<MaterialDeliveryNoteModel>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+        }
 
         Task<int> IRepository<ItemsModel>.DeleteAsync(int id)
         {
@@ -46,15 +56,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
         Task<int> IRepository<ItemsModel>.UpdateAsync(int id, ItemsModel model)
         {
-            var modelToUpdate = _ItemsDbSet.FirstOrDefault(entity => entity.Id == id);
 
-            var isModified = false;
+            //var modelToUpdate = _MaterialDbSet.Include(entity => entity.Items).FirstOrDefaultAsync(s => s.Id == id);
+            var modelToUpdate = _MaterialDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);
 
-            if (isModified)
+            //var modelToUpdate = _ItemsDbSet.FirstOrDefault(entity => entity.Id == id);
+
+            foreach (var item in modelToUpdate.Items)
             {
-                EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
-                _ItemsDbSet.Update(model);
+                var ItemsDetail = _ItemsDbSet.FirstOrDefault(s => s.Id == item.Id);
+
+                if (ItemsDetail != null)
+                {
+
+                    item.SetNoSPP(model.NoSPP);
+                    item.SetMaterialName(model.MaterialName);
+                    item.SetInputLot(model.InputLot);
+                    item.SetWeightBruto(model.WeightBruto);
+                    item.SetWeightDOS(model.WeightDOS);
+                    item.SetWeightCone(model.WeightCone);
+                    item.SetWeightBale(model.WeightBale);
+                    item.SetGetTotal(model.GetTotal);
+                }
+                else
+                {
+                    _ItemsDbSet.Remove(item);
+                }
             }
+
+            foreach (var newItem in _ItemsDbSet.Where(s => s.Id == 0))
+            {
+                modelToUpdate.Items.Add(newItem);
+            }
+
+
+            //var isModified = false;
+
+            //if (isModified)
+            //{
+            //EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
+            //_ItemsDbSet.Update(model);
+            //}
             return _dbContext.SaveChangesAsync();
         }
     }
