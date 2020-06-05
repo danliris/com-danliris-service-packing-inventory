@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,7 +16,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         {
             get
             {
-                return new GarmentPackingListViewModel();
+                return new GarmentPackingListViewModel
+                {
+                    Items = new List<GarmentPackingListItemViewModel>
+                    {
+                        new GarmentPackingListItemViewModel
+                        {
+                            Details = new List<GarmentPackingListDetailViewModel>()
+                            {
+                                new GarmentPackingListDetailViewModel()
+                            }
+                        }
+                    },
+                    Measurements = new List<GarmentPackingListMeasurementViewModel>
+                    {
+                        new GarmentPackingListMeasurementViewModel()
+                    }
+                };
             }
         }
 
