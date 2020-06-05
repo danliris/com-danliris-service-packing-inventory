@@ -46,6 +46,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -108,6 +109,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
 
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
+
+            services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
