@@ -48,6 +48,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilitie
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -114,6 +115,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
 
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
+
+            services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
