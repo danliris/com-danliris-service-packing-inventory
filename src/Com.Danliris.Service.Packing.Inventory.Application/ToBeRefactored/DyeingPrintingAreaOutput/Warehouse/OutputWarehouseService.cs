@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Warehouse.InputSPPWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -62,6 +63,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Id = model.Id,
                 Area = model.Area,
                 BonNo = model.BonNo,
+                Bon = new IndexViewModel
+                {
+                    Area = model.Area,
+                    BonNo = model.BonNo,
+                    DestinationArea = model.DestinationArea,
+                    Shift = model.Shift,
+                    Group = model.Group,
+                    Date = model.Date,
+                    HasNextAreaDocument = model.HasNextAreaDocument,
+                    Id = model.Id
+                },
                 CreatedAgent = model.CreatedAgent,
                 CreatedBy = model.CreatedBy,
                 CreatedUtc = model.CreatedUtc,
@@ -126,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
+        public string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
         {
             var bonNo = "";
             switch (destinationArea)
@@ -169,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                           viewModel.Group,
                                                           viewModel.WarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id,
-                                                                                                             s.ProductionOrderNo,
+                                                                                                             s.ProductionOrder.No,
                                                                                                              s.CartNo,
                                                                                                              s.Buyer,
                                                                                                              s.Construction,
@@ -254,7 +266,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.ProductionOrder.Id,
-                                                                                        item.ProductionOrderNo,
+                                                                                        item.ProductionOrder.No,
                                                                                         item.CartNo,
                                                                                         item.Buyer,
                                                                                         item.Construction,
@@ -376,6 +388,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             });
 
             return new ListResult<IndexViewModel>(data.ToList(), page, size, query.Count());
+        }
+
+        public ListResult<IndexViewModel> Read(string keyword)
+        {
+            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Search(query, SearchAttributes, keyword);
+
+            var data = query.Select(s => new IndexViewModel()
+            {
+                Id = s.Id,
+                Area = s.Area,
+                BonNo = s.BonNo,
+                Date = s.Date,
+                //DestinationArea = s.DestinationArea,
+                //HasNextAreaDocument = s.HasOutputDocument,
+                Shift = s.Shift,
+                Group = s.Group
+            });
+
+            return new ListResult<IndexViewModel>(data.ToList(), 0, data.Count(), query.Count());
         }
 
         public async Task<MemoryStream> GenerateExcel(int id)
@@ -625,6 +662,208 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 QtyOrder = s.ProductionOrderOrderQuantity,
                 InputId = s.DyeingPrintingAreaInputId
                 //DeliveryOrderSalesNo = s.DeliveryOrderSalesNo
+            });
+
+            return data.ToList();
+        }
+
+        public List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList()
+        {
+            var query = _inputProductionOrderRepository.ReadAll()
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.Area == GUDANGJADI &&
+                                                                    !s.HasOutputDocument);
+
+            //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
+
+            var data = query.GroupBy(o => new { o.ProductionOrderId, o.ProductionOrderNo, o.ProductionOrderOrderQuantity, o.ProductionOrderType }).Select(s => new InputSppWarehouseViewModel()
+            {
+                ProductionOrderId = s.Key.ProductionOrderId,
+                ProductionOrderNo = s.Key.ProductionOrderNo,
+                ProductionOrderOrderQuantity = s.Key.ProductionOrderOrderQuantity,
+                ProductionOrderType = s.Key.ProductionOrderType,
+                ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
+                {
+
+                    Id = p.Id,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.Key.ProductionOrderId,
+                        No = s.Key.ProductionOrderNo,
+                        Type = s.Key.ProductionOrderType,
+                        OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    CartNo = p.CartNo,
+                    Buyer = p.Buyer,
+                    BuyerId = p.BuyerId,
+                    Construction = p.Construction,
+                    Unit = p.Unit,
+                    Color = p.Color,
+                    Motif = p.Motif,
+                    UomUnit = p.UomUnit,
+                    Remark = p.Remark,
+                    InputId = p.DyeingPrintingAreaInputId,
+                    Grade = p.Grade,
+                    Status = p.Status,
+                    Balance = p.Balance,
+                    PackingInstruction = p.PackingInstruction,
+                    PackagingType = p.PackagingType,
+                    PackagingQty = p.PackagingQty,
+                    PackagingUnit = p.PackagingUnit,
+                    AvalALength = p.AvalALength,
+                    AvalBLength = p.AvalBLength,
+                    AvalConnectionLength = p.AvalConnectionLength,
+                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    AvalType = p.AvalType,
+                    AvalCartNo = p.AvalCartNo,
+                    AvalQuantityKg = p.AvalQuantityKg,
+                    //Description = p.Description,
+                    //DeliveryNote = p.DeliveryNote,
+                    Area = p.Area,
+                    //DestinationArea = p.DestinationArea,
+                    HasOutputDocument = p.HasOutputDocument,
+                    //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty)
+                }).ToList()
+
+            });
+
+            return data.ToList();
+        }
+        public List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId)
+        {
+            var query = _inputProductionOrderRepository.ReadAll()
+                                                        .Join(_inputRepository.ReadAll().Where(x => x.Id == bonId),
+                                                        spp => spp.DyeingPrintingAreaInputId,
+                                                        bon => bon.Id,
+                                                        (spp,bon)=> spp)
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.Area == GUDANGJADI &&
+                                                                    !s.HasOutputDocument);
+
+            //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
+
+            var data = query.GroupBy(o => new { o.ProductionOrderId, o.ProductionOrderNo, o.ProductionOrderOrderQuantity, o.ProductionOrderType }).Select(s => new InputSppWarehouseViewModel()
+            {
+                ProductionOrderId = s.Key.ProductionOrderId,
+                ProductionOrderNo = s.Key.ProductionOrderNo,
+                ProductionOrderOrderQuantity = s.Key.ProductionOrderOrderQuantity,
+                ProductionOrderType = s.Key.ProductionOrderType,
+                ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
+                {
+
+                    Id = p.Id,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.Key.ProductionOrderId,
+                        No = s.Key.ProductionOrderNo,
+                        Type = s.Key.ProductionOrderType,
+                        OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    CartNo = p.CartNo,
+                    Buyer = p.Buyer,
+                    BuyerId = p.BuyerId,
+                    Construction = p.Construction,
+                    Unit = p.Unit,
+                    Color = p.Color,
+                    Motif = p.Motif,
+                    UomUnit = p.UomUnit,
+                    Remark = p.Remark,
+                    InputId = p.DyeingPrintingAreaInputId,
+                    Grade = p.Grade,
+                    Status = p.Status,
+                    Balance = p.Balance,
+                    PackingInstruction = p.PackingInstruction,
+                    PackagingType = p.PackagingType,
+                    PackagingQty = p.PackagingQty,
+                    PackagingUnit = p.PackagingUnit,
+                    AvalALength = p.AvalALength,
+                    AvalBLength = p.AvalBLength,
+                    AvalConnectionLength = p.AvalConnectionLength,
+                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    AvalType = p.AvalType,
+                    AvalCartNo = p.AvalCartNo,
+                    AvalQuantityKg = p.AvalQuantityKg,
+                    //Description = p.Description,
+                    //DeliveryNote = p.DeliveryNote,
+                    Area = p.Area,
+                    //DestinationArea = p.DestinationArea,
+                    HasOutputDocument = p.HasOutputDocument,
+                    //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty)
+                }).ToList()
+
+            });
+
+            return data.ToList();
+        }
+
+        public List<InputSppWarehouseViewModel> GetOutputSppWarehouseItemList(int bonId)
+        {
+            var query = _outputProductionOrderRepository.ReadAll()
+                                                        .Join(_outputRepository.ReadAll().Where(x => x.Id == bonId),
+                                                        spp => spp.DyeingPrintingAreaOutputId,
+                                                        bon => bon.Id,
+                                                        (spp, bon) => spp)
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.Area == GUDANGJADI &&
+                                                                    !s.HasNextAreaDocument);
+
+            //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
+
+            var data = query.GroupBy(o => new { o.ProductionOrderId, o.ProductionOrderNo, o.ProductionOrderOrderQuantity, o.ProductionOrderType }).Select(s => new InputSppWarehouseViewModel()
+            {
+                ProductionOrderId = s.Key.ProductionOrderId,
+                ProductionOrderNo = s.Key.ProductionOrderNo,
+                ProductionOrderOrderQuantity = s.Key.ProductionOrderOrderQuantity,
+                ProductionOrderType = s.Key.ProductionOrderType,
+                ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
+                {
+
+                    Id = p.Id,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.Key.ProductionOrderId,
+                        No = s.Key.ProductionOrderNo,
+                        Type = s.Key.ProductionOrderType,
+                        OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    CartNo = p.CartNo,
+                    Buyer = p.Buyer,
+                    BuyerId = p.BuyerId,
+                    Construction = p.Construction,
+                    Unit = p.Unit,
+                    Color = p.Color,
+                    Motif = p.Motif,
+                    UomUnit = p.UomUnit,
+                    Remark = p.Remark,
+                    //InputId = p.DyeingPrintingAreaOutputId,
+                    Grade = p.Grade,
+                    Status = p.Status,
+                    Balance = p.Balance,
+                    PackingInstruction = p.PackingInstruction,
+                    PackagingType = p.PackagingType,
+                    PackagingQty = p.PackagingQty,
+                    PackagingUnit = p.PackagingUnit,
+                    AvalALength = p.AvalALength,
+                    AvalBLength = p.AvalBLength,
+                    AvalConnectionLength = p.AvalConnectionLength,
+                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    AvalType = p.AvalType,
+                    AvalCartNo = p.AvalCartNo,
+                    AvalQuantityKg = p.AvalQuantityKg,
+                    //Description = p.Description,
+                    //DeliveryNote = p.DeliveryNote,
+                    Area = p.Area,
+                    //DestinationArea = p.DestinationArea,
+                    HasOutputDocument = p.HasNextAreaDocument,
+                    //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty)
+                }).ToList()
+
             });
 
             return data.ToList();

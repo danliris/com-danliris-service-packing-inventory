@@ -204,7 +204,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"Tanggal : { model.Date.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
+            //cell.Phrase = new Phrase($"Tanggal : { model.Date.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
+            cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("Netto: ...... Kg Bruto: ......Kg", TEXT_FONT);
@@ -213,7 +214,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"Jumlah Baris : { model.ShippingProductionOrders.Count }", TEXT_FONT);
+            //cell.Phrase = new Phrase($"Jumlah Baris : { model.ShippingProductionOrders.Count }", TEXT_FONT);
+            cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
@@ -528,11 +530,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         private PdfPTable GetSignatureSection(OutputShippingViewModel model, int timeoffset)
         {
-            PdfPTable table = new PdfPTable(4)
+            PdfPTable table = new PdfPTable(3)
             {
                 WidthPercentage = 100
             };
-            float[] widths = new float[] { 1f, 1f, 1f, 1f };
+            float[] widths = new float[] { 1f, 1f, 1f };
             table.SetWidths(widths);
             PdfPCell cell = new PdfPCell()
             {
@@ -541,8 +543,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 VerticalAlignment = Element.ALIGN_MIDDLE,
             };
 
-            cell.Phrase = new Phrase("Mengetahui", TEXT_FONT);
-            table.AddCell(cell);
+            //cell.Phrase = new Phrase("Mengetahui", TEXT_FONT);
+            //table.AddCell(cell);
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
             cell.Phrase = new Phrase("", TEXT_FONT);
@@ -550,19 +552,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase($"Sukoharjo, {model.CreatedUtc.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase("Kasubsie Gudang Jadi", TEXT_FONT);
-            table.AddCell(cell);
+            //cell.Phrase = new Phrase("Kasubsie Gudang Dyeing Printing", TEXT_FONT);
+            //table.AddCell(cell);
             cell.Phrase = new Phrase("Audit", TEXT_FONT);
             table.AddCell(cell);
             cell.Phrase = new Phrase("Ekspedisi", TEXT_FONT);
             table.AddCell(cell);
-            cell.Phrase = new Phrase("Petugas Gudang", TEXT_FONT);
+            cell.Phrase = new Phrase("Gudang Dyeing Printing", TEXT_FONT);
             table.AddCell(cell);
 
             for (var i = 0; i < 11; i++)
             {
-                cell.Phrase = new Phrase("", TEXT_FONT);
-                table.AddCell(cell);
+                //cell.Phrase = new Phrase("", TEXT_FONT);
+                //table.AddCell(cell);
                 cell.Phrase = new Phrase("", TEXT_FONT);
                 table.AddCell(cell);
                 cell.Phrase = new Phrase("", TEXT_FONT);
@@ -571,8 +573,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 table.AddCell(cell);
             }
 
-            cell.Phrase = new Phrase("(                        )", TEXT_FONT);
-            table.AddCell(cell);
+            //cell.Phrase = new Phrase("(                        )", TEXT_FONT);
+            //table.AddCell(cell);
             cell.Phrase = new Phrase("(                        )", TEXT_FONT);
             table.AddCell(cell);
             cell.Phrase = new Phrase("(                        )", TEXT_FONT);

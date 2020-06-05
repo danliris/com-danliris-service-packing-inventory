@@ -64,22 +64,59 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     DetailErrors += "{";
 
-                    if (item.IsSave)
+                    if (item.ProductionOrderDetails.Count == 0)
                     {
-                        if (item.Balance == 0)
-                        {
-                            Count++;
-                            DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
-                        }
-
-                        if (item.Balance > item.BalanceRemains)
-                        {
-                            Count++;
-                            DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
-                        }
+                        Count++;
+                        DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
                     }
-                    
+                    else
+                    {
+                        DetailErrors += "ProductionOrderDetails : [ ";
+                        foreach (var detail in item.ProductionOrderDetails)
+                        {
+                            DetailErrors += "{";
+                            if (detail.Balance == 0)
+                            {
+                                Count++;
+                                DetailErrors += "Balance: 'Qty Keluar Harus Lebih dari 0!',";
+                            }
 
+                            if (detail.Balance > item.BalanceRemains)
+                            {
+                                Count++;
+                                DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
+                            }
+
+                            if(DestinationArea == "GUDANG AVAL")
+                            {
+                                if (detail.AvalItems.Count == 0)
+                                {
+                                    Count++;
+                                    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
+                                }
+                                else
+                                {
+                                    DetailErrors += "AvalItems : [ ";
+                                    foreach (var aval in detail.AvalItems)
+                                    {
+                                        DetailErrors += "{";
+
+                                        if (aval.Length == 0)
+                                        {
+                                            Count++;
+                                            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
+                                        }
+
+                                        DetailErrors += "}, ";
+                                    }
+                                    DetailErrors += "], ";
+                                }
+                            }
+                            
+                            DetailErrors += "}, ";
+                        }
+                        DetailErrors += "], ";
+                    }
                     DetailErrors += "}, ";
                 }
             }

@@ -82,13 +82,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     {
                         new OutputInspectionMaterialProductionOrderViewModel()
                         {
-                            Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
                             Construction = "sd",
-                            Grade = "s",
-                            Remark = "remar",
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
@@ -100,7 +97,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                                 No = "sd"
                             },
                             Unit = "s",
-                            UomUnit = "d"
+                            UomUnit = "d",
+                            BuyerId = 1,
+                            ProductionOrderDetails = new List<OutputInspectionMaterialProductionOrderDetailViewModel>()
+                            {
+                                new OutputInspectionMaterialProductionOrderDetailViewModel()
+                                {
+                                    Balance = 1,
+                                    Grade = "a",
+                                    HasNextAreaDocument = false,
+                                    Remark = "re",
+                                    AvalItems = new List<AvalItem>()
+                                    {
+                                        new AvalItem()
+                                        {
+                                            Type = "type",
+                                            Length = 1
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 };
