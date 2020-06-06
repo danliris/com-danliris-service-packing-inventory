@@ -71,5 +71,74 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_DeleteIMArea()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.DeleteIMArea(data);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateIMArea()
+        {
+            string testName = GetCurrentMethod() + "UpdateIMArea";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider);
+            var repo2 = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            foreach(var item in emptyData.DyeingPrintingAreaInputProductionOrders)
+            {
+                item.SetHasOutputDocument(false, "", "");
+            }
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModel();
+            var result = await repo2.UpdateIMArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateIMArea_2()
+        {
+            string testName = GetCurrentMethod() + "UpdateIMArea_2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider);
+            var repo2 = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            foreach (var item in emptyData.DyeingPrintingAreaInputProductionOrders)
+            {
+                item.SetHasOutputDocument(false, "", "");
+            }
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModel();
+
+            int index = 0;
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                var spp = dbModel.DyeingPrintingAreaInputProductionOrders.ElementAtOrDefault(index++);
+                item.DyeingPrintingAreaInputId = data.Id;
+                item.Id = spp.Id;
+            }
+
+            var result = await repo2.UpdateIMArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
