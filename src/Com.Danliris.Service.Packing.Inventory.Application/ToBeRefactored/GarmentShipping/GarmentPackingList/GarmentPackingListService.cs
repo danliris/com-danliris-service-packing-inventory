@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 ExportEstimationDate = model.ExportEstimationDate,
                 Omzet = model.Omzet,
                 Accounting = model.Accounting,
-                Items = model.Items.Select(i => new GarmentPackingListItemViewModel
+                Items = (model.Items ?? new List<GarmentPackingListItemModel>()).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     OrderNo = i.OrderNo,
                     Description = i.Description,
 
-                    Details = i.Details.Select(d => new GarmentPackingListDetailViewModel
+                    Details = (i.Details ?? new List<GarmentPackingListDetailModel>()).Select(d => new GarmentPackingListDetailViewModel
                     {
                         Active = d.Active,
                         Id = d.Id,
@@ -128,6 +128,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         QuantityPCS = d.QuantityPCS,
                         TotalQuantity = d.TotalQuantity,
 
+                        Sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeModel>()).Select(s => new GarmentPackingListDetailSizeViewModel
+                        {
+                            Size = new SizeViewModel
+                            {
+                                Id = s.SizeId,
+                                Size = s.Size
+                            },
+                            Quantity = s.Quantity
+                        }).ToList()
+
                     }).ToList(),
 
                     AVG_GW = i.AVG_GW,
@@ -137,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 GrossWeight = model.GrossWeight,
                 NettWeight = model.NettWeight,
                 TotalCartons = model.TotalCartons,
-                Measurements = model.Measurements.Select(m => new GarmentPackingListMeasurementViewModel
+                Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).Select(m => new GarmentPackingListMeasurementViewModel
                 {
                     Active = m.Active,
                     Id = m.Id,
