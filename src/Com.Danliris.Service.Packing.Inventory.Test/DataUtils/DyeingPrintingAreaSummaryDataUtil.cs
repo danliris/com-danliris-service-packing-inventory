@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaSummaryModel GetModel()
         {
-            return new DyeingPrintingAreaSummaryModel(DateTimeOffset.UtcNow, "area", "in", 1, "no", 1, "a", "a", "a", "a", "a", "a", "a", "a", 1);
+            return new DyeingPrintingAreaSummaryModel(DateTimeOffset.UtcNow, "area", "in", 1, "no", 1, "a", "a", "a", "a", "a", "a", "a", "a", 1, 1);
         }
     }
 }
