@@ -1,5 +1,10 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
+using Moq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -7,9 +12,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 {
     public class GarmentPackingListServiceTest
     {
-        protected GarmentPackingListService GetService()
+        public Mock<IServiceProvider> GetServiceProvider(IGarmentPackingListRepository repository)
         {
-            return new GarmentPackingListService();
+            var spMock = new Mock<IServiceProvider>();
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repository);
+
+            return spMock;
+        }
+
+        protected GarmentPackingListService GetService(IServiceProvider serviceProvider)
+        {
+            return new GarmentPackingListService(serviceProvider);
         }
 
         protected GarmentPackingListViewModel ViewModel
@@ -24,7 +38,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                         {
                             Details = new List<GarmentPackingListDetailViewModel>()
                             {
-                                new GarmentPackingListDetailViewModel()
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                    }
+                                }
                             }
                         }
                     },
@@ -39,7 +59,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Create_Success()
         {
-            var service = GetService();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -49,7 +73,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var service = GetService();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentPackingListModel>() { new GarmentPackingListModel() }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = service.Read(1, 25, "{}", "{}", null);
 
@@ -59,7 +87,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var service = GetService();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListModel());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = await service.ReadById(1);
 
@@ -69,7 +101,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Update_Success()
         {
-            var service = GetService();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = await service.Update(1, ViewModel);
 
@@ -79,7 +112,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Delete_Success()
         {
-            var service = GetService();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = await service.Delete(1);
 
