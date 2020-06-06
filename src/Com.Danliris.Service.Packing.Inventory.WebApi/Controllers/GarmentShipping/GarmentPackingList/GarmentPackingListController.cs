@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.GarmentPackingList
 {
     [Produces("application/json")]
-    [Route("v1/garment-shipping/garment-packings")]
+    [Route("v1/garment-shipping/packing-lists")]
     [Authorize]
     public class GarmentPackingListController : ControllerBase
     {
