@@ -90,7 +90,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 var data = _service.Read(page, size, filter, order, keyword);
 
-                return Ok(data);
+                var info = new Dictionary<string, object>
+                    {
+                        { "count", data.Data.Count },
+                        { "total", data.Total },
+                        { "order", order },
+                        { "page", page },
+                        { "size", size }
+                    };
+
+                return Ok(new
+                {
+                    data = data.Data,
+                    info
+                });
             }
             catch (Exception ex)
             {
