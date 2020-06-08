@@ -52,13 +52,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         #endregion
 
+        public bool IsUsed { get; private set; }
+
         public GarmentPackingListModel()
         {
             Items = new HashSet<GarmentPackingListItemModel>();
             Measurements = new HashSet<GarmentPackingListMeasurementModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark, bool isUsed)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -84,32 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ShippingMark = shippingMark;
             SideMark = sideMark;
             Remark = remark;
-        }
-
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, double grossWeight, double nettWeight, double totalCartons, string shippingMark, string sideMark, string remark)
-        {
-            InvoiceNo = invoiceNo;
-            PackingListType = packingListType;
-            InvoiceType = invoiceType;
-            SectionId = sectionId;
-            SectionCode = sectionCode;
-            Date = date;
-            LCNo = lCNo;
-            IssuedBy = issuedBy;
-            BuyerAgentId = buyerAgentId;
-            BuyerAgentCode = buyerAgentCode;
-            BuyerAgentName = buyerAgentName;
-            Destination = destination;
-            TruckingDate = truckingDate;
-            ExportEstimationDate = exportEstimationDate;
-            Omzet = omzet;
-            Accounting = accounting;
-            GrossWeight = grossWeight;
-            NettWeight = nettWeight;
-            TotalCartons = totalCartons;
-            ShippingMark = shippingMark;
-            SideMark = sideMark;
-            Remark = remark;
+            IsUsed = isUsed;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -309,5 +286,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetIsUsed(bool isUsed, string userName, string userAgent)
+        {
+            if (IsUsed != isUsed)
+            {
+                IsUsed = isUsed;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }
