@@ -191,6 +191,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
         }
         /// <summary>
+        /// Constructor using by Packaging Area With Balance Remains and Output Prev SppID
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderQty"></param>
+        /// <param name="grade"></param>
+        /// <param name="balanceRemains"></param>
+        /// <param name="buyerId"></param>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId, int prevSppOutputID)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQty;
+            Grade = grade;
+
+            Area = area;
+            BalanceRemains = balanceRemains;
+            BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = prevSppOutputID;
+        }
+        /// <summary>
         /// Constructor using by Packaging Area with prev Bon Einty
         /// </summary>
         /// <param name="area"></param>
