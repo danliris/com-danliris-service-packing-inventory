@@ -128,15 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             result = validator.Validate(dataUtil);
             Assert.NotEqual(0, result.Errors.Count);
 
-            //dataUtil.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
-            //{
-            //    new InputInspectionMaterialProductionOrderViewModel()
-            //    {
-            //        ProductionOrder = new ProductionOrder()
-            //    }
-            //};
-            //result = validator.Validate(dataUtil);
-            //Assert.NotEqual(0, result.Errors.Count);
+           
         }
 
         [Fact]

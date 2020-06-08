@@ -7,6 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -75,6 +76,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UOMEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackingEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteEntitiyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemsEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new PackagingStockEntityTypeConfiguration());
 

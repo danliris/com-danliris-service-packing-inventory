@@ -133,7 +133,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 new InputInspectionMaterialProductionOrderViewModel()
                 {
-                    ProductionOrder = new ProductionOrder()
+                    ProductionOrder = new ProductionOrder(),
+                    IsChecked =true,
+                    Grade="A",
+                    InitLength =1,
+                    AvalALength =1,
+                    AvalBLength =1,
+                    AvalConnectionLength=1,
+                    InputId=1,
                 }
             };
             result = validator.Validate(dataUtil);

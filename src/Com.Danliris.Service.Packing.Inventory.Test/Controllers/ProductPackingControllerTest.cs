@@ -18,6 +18,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
    public class ProductPackingControllerTest
     {
+       
+
         private ProductPackingController GetController(IProductPackingService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
@@ -60,6 +62,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     SKUId =1,
                 };
             }
+        }
+
+        [Fact]
+        public void Should_Validator_Success()
+        {
+            var dataUtil = new ProductPackingFormViewModel();
+            var validator = new ProductPackingFormValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
         }
 
         [Fact]
