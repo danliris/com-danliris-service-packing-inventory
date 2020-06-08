@@ -4,6 +4,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 {
     public class GarmentPackingListMeasurementModel : StandardEntity
     {
+        public int PackingListId { get; private set; }
+
         public double Length { get; private set; }
         public double Width { get; private set; }
         public double Height { get; private set; }
@@ -19,6 +21,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Width = width;
             Height = height;
             CartonsQuantity = cartonsQuantity;
+        }
+
+        public void SetLength(double length, string userName, string userAgent)
+        {
+            if (Length != length)
+            {
+                Length = length;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetWidth(double width, string userName, string userAgent)
+        {
+            if (Width != width)
+            {
+                Width = width;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetHeight(double height, string userName, string userAgent)
+        {
+            if (Height != height)
+            {
+                Height = height;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCartonsQuantity(double cartonsQuantity, string userName, string userAgent)
+        {
+            if (CartonsQuantity != cartonsQuantity)
+            {
+                CartonsQuantity = cartonsQuantity;
+                this.FlagForUpdate(userName, userAgent);
+            }
         }
     }
 }

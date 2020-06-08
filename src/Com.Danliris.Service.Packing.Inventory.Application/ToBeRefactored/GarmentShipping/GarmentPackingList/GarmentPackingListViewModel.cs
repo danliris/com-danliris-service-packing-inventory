@@ -12,14 +12,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         #region Description
 
         public string InvoiceNo { get; set; }
+        public string PackingListType { get; set; }
         public string InvoiceType { get; set; }
         public Section Section { get; set; }
         public DateTimeOffset? Date { get; set; }
-        public string PriceType { get; set; }
 
         public string LCNo { get; set; }
         public string IssuedBy { get; set; }
-        public string Comodity { get; set; }
+        public Buyer BuyerAgent { get; set; }
 
         public string Destination { get; set; }
 
@@ -29,10 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool Omzet { get; set; }
         public bool Accounting { get; set; }
 
-        public List<GarmentPackingListItemViewModel> Items { get; set; }
-
-        public double AVG_GW { get; set; }
-        public double AVG_NW { get; set; }
+        public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
 
         #endregion
 
@@ -41,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double GrossWeight { get; set; }
         public double NettWeight { get; set; }
         public double TotalCartons { get; set; }
-        public List<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
+        public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
 
         #endregion
 
@@ -53,9 +50,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         #endregion
 
+        public bool IsUsed { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             #region Description
+
+            if (string.IsNullOrEmpty(PackingListType))
+            {
+                yield return new ValidationResult("Jenis Packing List tidak boleh kosong", new List<string> { "PackingListType" });
+            }
 
             if (string.IsNullOrEmpty(InvoiceType))
             {
@@ -71,15 +75,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "Date" });
             }
-            else if (Date > DateTimeOffset.Now)
-            {
-                yield return new ValidationResult("Tanggal tidak boleh lebih dari hari ini", new List<string> { "Date" });
-            }
-
-            if (string.IsNullOrEmpty(PriceType))
-            {
-                yield return new ValidationResult("Price Type tidak boleh kosong", new List<string> { "PriceType" });
-            }
+            //else if (Date > DateTimeOffset.Now)
+            //{
+            //    yield return new ValidationResult("Tanggal tidak boleh lebih dari hari ini", new List<string> { "Date" });
+            //}
 
             if (string.IsNullOrEmpty(LCNo))
             {
@@ -91,9 +90,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Issued By tidak boleh kosong", new List<string> { "IssuedBy" });
             }
 
-            if (string.IsNullOrEmpty(Comodity))
+            if (BuyerAgent == null || BuyerAgent.Id == 0)
             {
-                yield return new ValidationResult("Komoditi tidak boleh kosong", new List<string> { "Comodity" });
+                yield return new ValidationResult("Buyer Agent tidak boleh kosong", new List<string> { "BuyerAgent" });
             }
 
             if (string.IsNullOrEmpty(Destination))
@@ -162,6 +161,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                 errorDetailsCount++;
                             }
 
+                            if (detail.Sizes == null || detail.Sizes.Count < 1)
+                            {
+                                errorDetail["Sizes"] = "Sizes tidak boleh kosong";
+                                errorDetailsCount++;
+                            }
+                            else
+                            {
+                                int errorSizesCount = 0;
+                                List<Dictionary<string, object>> errorSizes = new List<Dictionary<string, object>>();
+
+                                foreach (var size in detail.Sizes)
+                                {
+                                    Dictionary<string, object> errorSize = new Dictionary<string, object>();
+
+                                    if (size.Size == null || size.Size.Id == 0)
+                                    {
+                                        errorSize["Size"] = "Size tidak boleh kosong";
+                                        errorSizesCount++;
+                                    }
+
+                                    errorSizes.Add(errorSize);
+                                }
+
+                                if (errorSizesCount > 0)
+                                {
+                                    errorDetail["Sizes"] = errorSizes;
+                                    errorDetailsCount++;
+                                }
+                            }
+
                             errorDetails.Add(errorDetail);
                         }
 
@@ -198,11 +227,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
 
-                    if (measurement.Length <= 0)
-                    {
-                        errorMeasurement["Length"] = "Length harus lebih dari 0";
-                        errorMeasurementsCount++;
-                    }
+                    //if (measurement.Length <= 0)
+                    //{
+                    //    errorMeasurement["Length"] = "Length harus lebih dari 0";
+                    //    errorMeasurementsCount++;
+                    //}
 
                     errorMeasurements.Add(errorMeasurement);
                 }

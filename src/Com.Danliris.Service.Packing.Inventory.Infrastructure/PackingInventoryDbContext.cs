@@ -3,8 +3,10 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +46,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<MaterialDeliveryNoteModel> MaterialDeliveryNote { get; set; }
 
         public DbSet<ItemsModel> Items { get; set; }
+        public DbSet<GarmentPackingListModel> GarmentPackingLists { get; set; }
+        public DbSet<GarmentPackingListItemModel> GarmentPackingListItems { get; set; }
+        public DbSet<GarmentPackingListDetailModel> GarmentPackingListDetails { get; set; }
+        public DbSet<GarmentPackingListDetailSizeModel> GarmentPackingListDetailSizes { get; set; }
+        public DbSet<GarmentPackingListMeasurementModel> GarmentPackingListMeasurements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,6 +78,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new PackagingStockEntityTypeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new GarmentPackingListEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentPackingListItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentPackingListDetailEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentPackingListDetailSizeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
+
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -85,6 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingAreaOutputProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);

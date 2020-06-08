@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Type { get; private set; }
         public int DyeingPrintingAreaDocumentId { get; private set; }
         public string DyeingPrintingAreaDocumentBonNo { get; private set; }
-
+        public int DyeingPrintingAreaProductionOrderDocumentId { get; private set; }
 
         public long ProductionOrderId { get; private set; }
         public string ProductionOrderNo { get; private set; }
@@ -28,6 +28,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaSummaryModel()
         {
 
+        }
+
+        public DyeingPrintingAreaSummaryModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId) : this(date, area, type, dyeingPrintingAreaDocumentId,
+                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance)
+        {
+            DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
         }
 
         public DyeingPrintingAreaSummaryModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
@@ -197,6 +205,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newBalance != Balance)
             {
                 Balance = newBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetDyeingPrintingAreaProductionOrderDocumentId(int newId, string user, string agent)
+        {
+            if (newId != DyeingPrintingAreaProductionOrderDocumentId)
+            {
+                DyeingPrintingAreaProductionOrderDocumentId = newId;
                 this.FlagForUpdate(user, agent);
             }
         }
