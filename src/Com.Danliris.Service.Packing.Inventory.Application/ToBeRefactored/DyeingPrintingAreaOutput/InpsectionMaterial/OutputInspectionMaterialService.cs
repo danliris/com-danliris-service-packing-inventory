@@ -445,10 +445,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !productionOrders.Any(d => d.Id == s.Id)).ToList();
 
-            if (deletedData.Any(item => item.HasNextAreaDocument))
-            {
-                throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", dbModel.DestinationArea));
-            }
+            //if (deletedData.Any(item => item.HasNextAreaDocument))
+            //{
+            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", dbModel.DestinationArea));
+            //}
             result = await _repository.UpdateIMArea(id, model, dbModel);
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument && !d.IsDeleted))
             {

@@ -338,7 +338,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 throw new Exception("Ada SPP yang Sudah Dibuat di Pengeluaran Inspection Material!");
             }
+
             result = await _repository.UpdateIMArea(id, model, dbModel);
+
             foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument && !d.IsDeleted))
             {
                 double newBalance = 0;

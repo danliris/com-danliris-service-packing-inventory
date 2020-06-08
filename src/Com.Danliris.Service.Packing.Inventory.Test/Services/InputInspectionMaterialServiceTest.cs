@@ -294,7 +294,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
-            repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaInputModel>()))
+            repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(),It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
@@ -329,7 +329,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
-            repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaInputModel>()))
+            repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
@@ -364,7 +364,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
-            repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaInputModel>()))
+            repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
