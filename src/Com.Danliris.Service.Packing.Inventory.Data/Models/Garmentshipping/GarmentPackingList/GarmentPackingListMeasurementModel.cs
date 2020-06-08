@@ -4,6 +4,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 {
     public class GarmentPackingListMeasurementModel : StandardEntity
     {
+        public int PackingListId { get; private set; }
+
         public double Length { get; private set; }
         public double Width { get; private set; }
         public double Height { get; private set; }
