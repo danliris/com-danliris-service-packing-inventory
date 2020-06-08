@@ -293,7 +293,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.HasNextAreaDocument,
                                                                                                              s.Balance,
                                                                                                              s.Unit,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.BuyerId,
+                                                                                                             1)).ToList());
             }
         }
 

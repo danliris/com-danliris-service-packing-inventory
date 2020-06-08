@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public interface IInputShippingService
     {
+        Task<int> Delete(int id);
+        Task<int> Update(int id, InputShippingViewModel viewModel);
         Task<int> Create(InputShippingViewModel viewModel);
         Task<InputShippingViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);

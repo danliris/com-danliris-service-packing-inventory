@@ -88,7 +88,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             UomUnit = "d",
                             InputId = 1,
                             OutputId = 1,
-                            DyeingPrintingAreaInputProductionOrderId = 1
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            DyeingPrintingAreaOutputProductionOrderId = 1
                         }
                     }
                 };
@@ -139,7 +140,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             UomUnit = "d",
                             InputId = 1,
                             OutputId = 1,
-                            DyeingPrintingAreaInputProductionOrderId = 1
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            DyeingPrintingAreaOutputProductionOrderId = 1
                         }
                     }
                 };
@@ -191,7 +193,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             UomUnit = "d",
                             InputId = 1,
                             OutputId = 1,
-                            DyeingPrintingAreaInputProductionOrderId = 1
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            DyeingPrintingAreaOutputProductionOrderId = 1
                         }
                     }
                 };
@@ -243,7 +246,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             UomUnit = "d",
                             InputId = 1,
                             OutputId = 1,
-                            DyeingPrintingAreaInputProductionOrderId = 1
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            DyeingPrintingAreaOutputProductionOrderId = 1
                         }
                     }
                 };
@@ -256,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId)).ToList());
+                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId, s.DyeingPrintingAreaOutputProductionOrderId)).ToList());
             }
         }
 
@@ -266,7 +270,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModelPC.Date, ViewModelPC.Area, ViewModelPC.Shift, ViewModelPC.BonNo, ViewModelPC.Group, ViewModelPC.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelPC.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId)).ToList());
+                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId, s.DyeingPrintingAreaOutputProductionOrderId)).ToList());
             }
         }
 
@@ -276,7 +280,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModelGJ.Date, ViewModelGJ.Area, ViewModelGJ.Shift, ViewModelGJ.BonNo, ViewModelGJ.Group, ViewModelGJ.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelGJ.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId)).ToList());
+                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId, s.DyeingPrintingAreaOutputProductionOrderId)).ToList());
             }
         }
 
@@ -286,7 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModelGA.Date, ViewModelGA.Area, ViewModelGA.Shift, ViewModelGA.BonNo, ViewModelGA.Group, ViewModelGA.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelGA.Area, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId)).ToList());
+                    s.PackingType, s.Color, s.Motif, s.Grade, s.QtyPacking, s.Packing, s.Qty, s.UomUnit, s.HasOutputDocument, s.Qty, s.Unit, s.BuyerId, s.DyeingPrintingAreaOutputProductionOrderId)).ToList());
             }
         }
 
