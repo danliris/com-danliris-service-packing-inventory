@@ -28,6 +28,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public double BalanceRemains { get; set; }
 
+        public double PreviousBalance { get; set; }
+
         public int OutputId { get; set; }
 
         public int InputId { get; set; }

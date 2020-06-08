@@ -52,12 +52,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> DeleteIMArea(DyeingPrintingAreaInputModel model)
         {
-            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
-
-            model.FlagForDelete(_identityProvider.Username, UserAgent);
+            
+            //model.FlagForDelete(_identityProvider.Username, UserAgent);
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
         }
@@ -66,14 +66,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             int result = 0;
             result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false);
-            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
                 var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
                 result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
             }
 
-            model.FlagForDelete(_identityProvider.Username, UserAgent);
+            //model.FlagForDelete(_identityProvider.Username, UserAgent);
             _dbSet.Update(model);
 
             result += await _dbContext.SaveChangesAsync();

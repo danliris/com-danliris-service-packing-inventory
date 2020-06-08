@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.InspectionMaterialProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.BalanceRemains, s.HasOutputDocument, s.BuyerId)
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.BalanceRemains, s.HasOutputDocument, s.BuyerId,0)
                     { Id = s.Id }).ToList());
             }
         }

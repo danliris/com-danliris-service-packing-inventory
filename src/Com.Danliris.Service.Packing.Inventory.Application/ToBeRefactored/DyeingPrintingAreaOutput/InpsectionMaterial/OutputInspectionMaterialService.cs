@@ -388,10 +388,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             var model = await _repository.ReadByIdAsync(id);
 
-            if (model.DyeingPrintingAreaOutputProductionOrders.Any(s => s.HasNextAreaDocument))
-            {
-                throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", model.DestinationArea));
-            }
+            //if (model.DyeingPrintingAreaOutputProductionOrders.Any(s => s.HasNextAreaDocument))
+            //{
+            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", model.DestinationArea));
+            //}
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
