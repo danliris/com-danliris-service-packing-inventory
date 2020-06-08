@@ -217,10 +217,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 var measurement = model.Measurements.FirstOrDefault(m => m.Id == measurementToUpdate.Id);
                 if (measurement != null)
                 {
-                    measurement.SetLength(measurement.Length, _identityProvider.Username, UserAgent);
-                    measurement.SetWidth(measurement.Width, _identityProvider.Username, UserAgent);
-                    measurement.SetHeight(measurement.Height, _identityProvider.Username, UserAgent);
-                    measurement.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
+                    measurementToUpdate.SetLength(measurement.Length, _identityProvider.Username, UserAgent);
+                    measurementToUpdate.SetWidth(measurement.Width, _identityProvider.Username, UserAgent);
+                    measurementToUpdate.SetHeight(measurement.Height, _identityProvider.Username, UserAgent);
+                    measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
                 }
                 else
                 {
