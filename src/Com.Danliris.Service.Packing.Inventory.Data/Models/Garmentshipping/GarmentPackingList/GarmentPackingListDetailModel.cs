@@ -31,5 +31,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             TotalQuantity = totalQuantity;
             Sizes = sizes;
         }
+
+        public void SetCarton1(double newValue, string userName, string userAgent)
+        {
+            if (Carton1 != newValue)
+            {
+                Carton1 = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCarton2(double newValue, string userName, string userAgent)
+        {
+            if (Carton2 != newValue)
+            {
+                Carton2 = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetColour(string newValue, string userName, string userAgent)
+        {
+            if (Colour != newValue)
+            {
+                Colour = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCartonQuantity(double newValue, string userName, string userAgent)
+        {
+            if (CartonQuantity != newValue)
+            {
+                CartonQuantity = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetQuantityPCS(double newValue, string userName, string userAgent)
+        {
+            if (QuantityPCS != newValue)
+            {
+                QuantityPCS = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetTotalQuantity(double newValue, string userName, string userAgent)
+        {
+            if (TotalQuantity != newValue)
+            {
+                TotalQuantity = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
     }
 }

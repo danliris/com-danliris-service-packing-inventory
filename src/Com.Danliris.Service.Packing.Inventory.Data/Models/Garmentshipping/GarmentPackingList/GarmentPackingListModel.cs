@@ -52,13 +52,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         #endregion
 
+        public bool IsUsed { get; private set; }
+
         public GarmentPackingListModel()
         {
             Items = new HashSet<GarmentPackingListItemModel>();
             Measurements = new HashSet<GarmentPackingListMeasurementModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark, bool isUsed)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -84,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ShippingMark = shippingMark;
             SideMark = sideMark;
             Remark = remark;
+            IsUsed = isUsed;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -95,5 +98,201 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetSectionId(int sectionId, string userName, string userAgent)
+        {
+            if (SectionId != sectionId)
+            {
+                SectionId = sectionId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSectionCode(string sectionCode, string userName, string userAgent)
+        {
+            if (SectionCode != sectionCode)
+            {
+                SectionCode = sectionCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDate(DateTimeOffset date, string userName, string userAgent)
+        {
+            if (Date != date)
+            {
+                Date = date;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetLCNo(string lCNo, string userName, string userAgent)
+        {
+            if (LCNo != lCNo)
+            {
+                LCNo = lCNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIssuedBy(string issuedBy, string userName, string userAgent)
+        {
+            if (IssuedBy != issuedBy)
+            {
+                IssuedBy = issuedBy;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetBuyerAgentId(int buyerAgentId, string userName, string userAgent)
+        {
+            if (BuyerAgentId != buyerAgentId)
+            {
+                BuyerAgentId = buyerAgentId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerAgentCode(string buyerAgentCode, string userName, string userAgent)
+        {
+            if (BuyerAgentCode != buyerAgentCode)
+            {
+                BuyerAgentCode = buyerAgentCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerAgentName(string buyerAgentName, string userName, string userAgent)
+        {
+            if (BuyerAgentName != buyerAgentName)
+            {
+                BuyerAgentName = buyerAgentName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDestination(string destination, string userName, string userAgent)
+        {
+            if (Destination != destination)
+            {
+                Destination = destination;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetTruckingDate(DateTimeOffset truckingDate, string userName, string userAgent)
+        {
+            if (TruckingDate != truckingDate)
+            {
+                TruckingDate = truckingDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetExportEstimationDate(DateTimeOffset exportEstimationDate, string userName, string userAgent)
+        {
+            if (ExportEstimationDate != exportEstimationDate)
+            {
+                ExportEstimationDate = exportEstimationDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetOmzet(bool omzet, string userName, string userAgent)
+        {
+            if (Omzet != omzet)
+            {
+                Omzet = omzet;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAccounting(bool accounting, string userName, string userAgent)
+        {
+            if (Accounting != accounting)
+            {
+                Accounting = accounting;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        //public void SetItems(string items, string userName, string userAgent)
+        //{
+        //    if (Items != items)
+        //    {
+        //        Items = items;
+        //        this.FlagForUpdate(userName, userAgent);
+        //    }
+        //}
+
+        public void SetGrossWeight(double grossWeight, string userName, string userAgent)
+        {
+            if (GrossWeight != grossWeight)
+            {
+                GrossWeight = grossWeight;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetNettWeight(double nettWeight, string userName, string userAgent)
+        {
+            if (NettWeight != nettWeight)
+            {
+                NettWeight = nettWeight;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetTotalCartons(double totalCartons, string userName, string userAgent)
+        {
+            if (TotalCartons != totalCartons)
+            {
+                TotalCartons = totalCartons;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        //public void SetMeasurements(string measurements, string userName, string userAgent)
+        //{
+        //    if (Measurements != measurements)
+        //    {
+        //        Measurements = measurements;
+        //        this.FlagForUpdate(userName, userAgent);
+        //    }
+        //}
+
+        public void SetShippingMark(string shippingMark, string userName, string userAgent)
+        {
+            if (ShippingMark != shippingMark)
+            {
+                ShippingMark = shippingMark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSideMark(string sideMark, string userName, string userAgent)
+        {
+            if (SideMark != sideMark)
+            {
+                SideMark = sideMark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsUsed(bool isUsed, string userName, string userAgent)
+        {
+            if (IsUsed != isUsed)
+            {
+                IsUsed = isUsed;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }
