@@ -11,6 +11,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 {
     public interface IDyeingPrintingAreaOutputRepository : IRepository<DyeingPrintingAreaOutputModel>
     {
+        Task<int> UpdateIMArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> DeleteIMArea(DyeingPrintingAreaOutputModel model);
         IQueryable<DyeingPrintingAreaOutputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaOutputModel> ReadAllIgnoreQueryFilter();
         Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument);
