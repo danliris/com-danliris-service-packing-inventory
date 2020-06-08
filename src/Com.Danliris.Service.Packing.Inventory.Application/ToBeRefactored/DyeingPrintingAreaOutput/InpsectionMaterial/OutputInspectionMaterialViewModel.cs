@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     DetailErrors += "{";
 
-                    if (item.ProductionOrderDetails.Count == 0)
+                    if (item.ProductionOrderDetails.Count == 0 && item.IsSave)
                     {
                         Count++;
                         DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             if(DestinationArea == "GUDANG AVAL")
                             {
-                                if (detail.AvalItems.Count == 0)
+                                if (detail.AvalItems.Count == 0 && item.IsSave)
                                 {
                                     Count++;
                                     DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
