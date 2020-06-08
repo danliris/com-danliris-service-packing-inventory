@@ -1,16 +1,19 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Org.BouncyCastle.Math.EC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
@@ -136,29 +139,337 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //Assert.NotEqual(0, result.Errors.Count);
         }
 
-        //[Fact]
-        //public async Task Should_Success_Post()
-        //{
-        //    var dataUtil = ViewModel;
-        //    //v
-        //    var serviceMock = new Mock<IMaterialDeliveryNoteService>();
-        //    serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())).ReturnsAsync();
-        //    var service = serviceMock.Object;
+        [Fact]
+        public async Task Post_Return_SuccessCreate()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>()));
+            var service = serviceMock.Object;
 
-        //    var validateServiceMock = new Mock<IValidateService>();
-        //    validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
-        //        .Verifiable();
-        //    var validateService = validateServiceMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
 
-        //    var identityProviderMock = new Mock<IIdentityProvider>();
-        //    var identityProvider = identityProviderMock.Object;
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
 
-        //    var controller = GetController(service, identityProvider, validateService);
-        //    //controller.ModelState.IsValid == false;
-        //    var response = await controller.Post(dataUtil);
+            var controller = GetController(service, identityProvider, validateService);
+           
+            var response = await controller.Post(dataUtil);
 
-        //    Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
-        //}
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Post_Return_BadRequest()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>()));
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ModelState.AddModelError("key", "test");
+
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Post_Throws_ServiceValidationExeption()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())).Throws(GetServiceValidationExeption());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+         
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Post_Throws_InternalServerError()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Put_Return_Success()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(),It.IsAny<MaterialDeliveryNoteViewModel>()));
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.Put(1,dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+       
+
+        [Fact]
+        public async Task Put_Return_BadRequest()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialDeliveryNoteViewModel>()));
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ModelState.AddModelError("key", "test");
+
+            var response = await controller.Put(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Put_Return_InternalServerError()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialDeliveryNoteViewModel>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+           
+
+            var response = await controller.Put(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Put_Throw_ServiceValidationException()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialDeliveryNoteViewModel>())).Throws( GetServiceValidationExeption());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+           
+
+            var response = await controller.Put(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public async Task Delete_Return_Success()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>()));
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Delete_Return_InternalServerError()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetById_Return_Success()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(new MaterialDeliveryNoteViewModel());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.GetById(1);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public async Task GetById_Return_InternalServerError()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.GetById(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetByKeyword_Return_Success()
+        {
+            //setup
+            ListResult<MaterialDeliveryNoteViewModel> result = new ListResult<MaterialDeliveryNoteViewModel>(
+                new List<MaterialDeliveryNoteViewModel>()
+                {
+                    new MaterialDeliveryNoteViewModel()
+                    {
+                        Id =1,
+                        Code ="Code",
+                       
+
+                    }
+                }, 1, 1, 1); ;
+
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadByKeyword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>())).Returns(result);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialDeliveryNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            //act
+            var controller = GetController(service, identityProvider, validateService);
+            var response = controller.GetByKeyword("keyword", "{}", 1, 25);
+
+            //assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
 
     }
 }
