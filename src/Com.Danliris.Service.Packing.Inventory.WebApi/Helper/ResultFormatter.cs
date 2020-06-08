@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Helper
             var result = new Dictionary<string, string>();
             foreach (var key in modelState.Keys)
             {
+               
                 if (modelState[key].Errors.Count > 1)
                 {
                     var errorValue = modelState[key].Errors.FirstOrDefault();
