@@ -2,7 +2,9 @@
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -202,20 +204,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             viewModel.Section = viewModel.Section ?? new Section();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel("", viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark);
+            viewModel.InvoiceNo = GenerateInvoiceNo(viewModel);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark);
 
             int Created = await _packingListRepository.InsertAsync(garmentPackingListModel);
 
             return Created;
         }
 
+        private string GenerateInvoiceNo(GarmentPackingListViewModel viewModel)
+        {
+            var year = DateTime.Now.ToString("yy");
+
+            var prefix = $"{(viewModel.InvoiceType ?? "").Trim().ToUpper()}/{year}";
+
+            var lastInvoiceNo = _packingListRepository.ReadAll().Where(w => w.InvoiceNo.StartsWith(prefix))
+                .OrderByDescending(o => o.InvoiceNo)
+                .Select(s => int.Parse(s.InvoiceNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var invoiceNo = $"{prefix}{(lastInvoiceNo + 1).ToString("D4")}";
+
+            return invoiceNo;
+        }
+
         public ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var data = _packingListRepository.ReadAll()
+            var query = _packingListRepository.ReadAll();
+            List<string> SearchAttributes = new List<string>()
+            {
+                "InvoiceNo"
+            };
+            query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
+
+            var data = query
+                .Skip((page - 1) * size)
+                .Take(size)
                 .Select(model => MapToViewModel(model))
                 .ToList();
 
-            return new ListResult<GarmentPackingListViewModel>(data, 1, 1, 1);
+            return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
         }
 
         public async Task<GarmentPackingListViewModel> ReadById(int id)
@@ -227,14 +260,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public Task<int> Update(int id, GarmentPackingListViewModel viewModel)
+        public async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
         {
-            return Task.FromResult(1);
+            viewModel.Section = viewModel.Section ?? new Section();
+            viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark);
+
+            return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
         }
 
-        public Task<int> Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            return Task.FromResult(1);
+            return await _packingListRepository.DeleteAsync(id);
         }
     }
 }

@@ -71,5 +71,184 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             AVG_GW = aVG_GW;
             AVG_NW = aVG_NW;
         }
+
+        public void SetRONo(string rONo, string userName, string userAgent)
+        {
+            if (RONo != RONo)
+            {
+                RONo = RONo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSCNo(string sCNo, string userName, string userAgent)
+        {
+            if (SCNo != sCNo)
+            {
+                SCNo = sCNo; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerBrandId(int buyerBrandId, string userName, string userAgent)
+        {
+            if (BuyerBrandId != buyerBrandId)
+            {
+                BuyerBrandId = buyerBrandId; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerBrandName(string buyerBrandName, string userName, string userAgent)
+        {
+            if (BuyerBrandName != buyerBrandName)
+            {
+                BuyerBrandName = buyerBrandName; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetComodityId(int comodityId, string userName, string userAgent)
+        {
+            if (ComodityId != comodityId)
+            {
+                ComodityId = comodityId; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetComodityCode(string comodityCode, string userName, string userAgent)
+        {
+            if (ComodityCode != comodityCode)
+            {
+                ComodityCode = comodityCode; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetComodityName(string comodityName, string userName, string userAgent)
+        {
+            if (ComodityName != comodityName)
+            {
+                ComodityName = comodityName; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetComodityDescription(string comodityDescription, string userName, string userAgent)
+        {
+            if (ComodityDescription != comodityDescription)
+            {
+                ComodityDescription = comodityDescription; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetQuantity(double quantity, string userName, string userAgent)
+        {
+            if (Quantity != quantity)
+            {
+                Quantity = quantity; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetUomId(int uomId, string userName, string userAgent)
+        {
+            if (UomId != uomId)
+            {
+                UomId = uomId; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetUomUnit(string uomUnit, string userName, string userAgent)
+        {
+            if (UomUnit != uomUnit)
+            {
+                UomUnit = uomUnit; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPriceRO(double priceRO, string userName, string userAgent)
+        {
+            if (PriceRO != priceRO)
+            {
+                PriceRO = priceRO; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPrice(double price, string userName, string userAgent)
+        {
+            if (Price != price)
+            {
+                Price = price; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAmount(double amount, string userName, string userAgent)
+        {
+            if (Amount != amount)
+            {
+                Amount = amount; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetValas(string valas, string userName, string userAgent)
+        {
+            if (Valas != valas)
+            {
+                Valas = valas; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetUnitId(int unitId, string userName, string userAgent)
+        {
+            if (UnitId != unitId)
+            {
+                UnitId = unitId; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetUnitCode(string unitCode, string userName, string userAgent)
+        {
+            if (UnitCode != unitCode)
+            {
+                UnitCode = unitCode; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetArticle(string article, string userName, string userAgent)
+        {
+            if (Article != article)
+            {
+                Article = article; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetOrderNo(string orderNo, string userName, string userAgent)
+        {
+            if (OrderNo != orderNo)
+            {
+                OrderNo = orderNo; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDescription(string description, string userName, string userAgent)
+        {
+            if (Description != description)
+            {
+                Description = description; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAVG_GW(double aVG_GW, string userName, string userAgent)
+        {
+            if (AVG_GW != aVG_GW)
+            {
+                AVG_GW = aVG_GW; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAVG_NW(double aVG_NW, string userName, string userAgent)
+        {
+            if (AVG_NW != aVG_NW)
+            {
+                AVG_NW = aVG_NW; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+
     }
 }
