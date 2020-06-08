@@ -529,23 +529,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         s => s.DyeingPrintingAreaInputId,
                                                                         s2 => s2.Id,
                                                                         (s, s2) => s);
-            //var query = query3.GroupBy(s => s.ProductionOrderNo).Select(s => new DyeingPrintingAreaInputProductionOrderModel
-            // (s.First().Area,
-            // s.First().ProductionOrderId,
-            // s.First().ProductionOrderNo,
-            // s.First().ProductionOrderType,
-            // s.First().ProductionOrderOrderQuantity,
-            // s.First().PackingInstruction,
-            // s.First().CartNo,
-            // s.First().Buyer,
-            // s.First().Construction,
-            // s.First().Unit,
-            // s.First().Color,
-            // s.First().Motif,
-            // s.First().UomUnit,
-            // Convert.ToDouble(s.Sum(d => d.Balance).ToString()),
-            // s.First().HasOutputDocument
-            // ));
+
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -557,9 +541,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Filter(query, FilterDictionary);
 
-            //Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            //query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Order(query, OrderDictionary);
-            //var datas = query.Skip((page - 1) * size).Take(size);
             var data = query.ToList().Select(s => new InputPackagingProductionOrdersViewModel()
             {
                 Id = s.Id,
@@ -626,6 +607,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
+        public Task<int> Delete(int bonId)
+        {
+            throw new NotImplementedException();
+        }
     }
     internal static class Extensions
     {

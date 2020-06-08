@@ -515,6 +515,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
+        public async Task<int> Delete(int bonId)
+        {
+            var model = await _repository.DeleteAsync(bonId);
+            return model;
+            
+        }
+
         //public ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo)
         //{
         //    //var query = _repositoryAreaProductionOrderOutput.ReadAll();
