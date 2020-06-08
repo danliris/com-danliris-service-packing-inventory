@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 return new GarmentPackingListViewModel
                 {
                     InvoiceNo = null,
+                    PackingListType = null,
                     InvoiceType = null,
                     Section = new Section
                     {
@@ -25,10 +26,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                         Code = null
                     },
                     Date = null,
-                    PriceType = null,
                     LCNo = null,
                     IssuedBy = null,
-                    Comodity = null,
                     Destination = null,
                     TruckingDate = null,
                     ExportEstimationDate = null,
@@ -40,18 +39,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                         {
                             RONo = null,
                             SCNo = null,
-                            Buyer = new Buyer
+                            BuyerBrand = new Buyer
                             {
                                 Id = 0,
                                 Code = null,
                                 Name = null
                             },
+                            Comodity = new Comodity
+                            {
+                                Id = 0,
+                                Code = null,
+                                Name = null
+                            },
+                            ComodityDescription = null,
                             Quantity = 0,
                             Uom = new UnitOfMeasurement
                             {
                                 Id = 0,
                                 Unit = null
                             },
+                            PriceRO = 0,
                             Price = 0,
                             Amount = 0,
                             Valas = null,
@@ -61,7 +68,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                 Code = null,
                                 Name = null
                             },
-                            OTL = null,
                             Article = null,
                             OrderNo = null,
                             Description = null,
@@ -75,20 +81,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                     CartonQuantity = 0,
                                     QuantityPCS = 0,
                                     TotalQuantity = 0,
-                                    Sizes = new List<DetailSize>
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>
                                     {
-                                        new DetailSize
+                                        new GarmentPackingListDetailSizeViewModel
                                         {
-                                            Size = null,
+                                            Size = new SizeViewModel
+                                            {
+                                                Id = 0,
+                                                Size = null
+                                            },
                                             Quantity = 0
                                         }
                                     }
                                 }
-                            }
+                            },
+                            AVG_GW = 0,
+                            AVG_NW = 0,
                         }
                     },
-                    AVG_GW = 0,
-                    AVG_NW = 0,
                     GrossWeight = 0,
                     NettWeight = 0,
                     TotalCartons = 0,
