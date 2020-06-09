@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int Count = 0;
             string DetailErrors = "[";
 
-            if (InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0)
+            if ((Id == 0 && InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && InspectionMaterialProductionOrders.Count() == 0))
             {
                 yield return new ValidationResult("SPP harus Diisi", new List<string> { "InspectionMaterialProductionOrder" });
             }
@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     DetailErrors += "{";
 
-                    if (item.ProductionOrderDetails.Count == 0 && item.IsSave)
+                    if ((item.ProductionOrderDetails.Count == 0 && item.IsSave) || (Id != 0 && item.ProductionOrderDetails.Count == 0))
                     {
                         Count++;
                         DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
