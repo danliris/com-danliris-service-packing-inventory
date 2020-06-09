@@ -868,5 +868,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return data.ToList();
         }
+
+        public async Task<int> Delete(int bonId)
+        {
+            var result = 0;
+            var bonOutput = _outputRepository.ReadAll().FirstOrDefault(x => x.Id == bonId && x.DyeingPrintingAreaOutputProductionOrders.Any(s => !s.HasNextAreaDocument));
+            if (bonOutput != null)
+            {
+                var listBonInputByBonOutput = _inputProductionOrderRepository.ReadAll().Join(bonOutput.DyeingPrintingAreaOutputProductionOrders,
+                                                                              sppInput => sppInput.Id,
+                                                                              sppOutput => sppOutput.DyeingPrintingAreaInputProductionOrderId,
+                                                                              (sppInput, sppOutput) => new { Input = sppInput, Output = sppOutput });
+                foreach (var spp in listBonInputByBonOutput)
+                {
+                    spp.Input.SetHasOutputDocument(false, "OUTWAREHOUSESERVICE", "SERVICE");
+
+                    //update balance remains
+                    var newBalance = spp.Input.BalanceRemains + spp.Output.Balance;
+
+                    spp.Input.SetBalanceRemains(newBalance, "OUTWAREHOUSESERVICE", "SERVICE");
+                    result += await _inputProductionOrderRepository.UpdateAsync(spp.Input.Id, spp.Input);
+                }
+            }
+            result += await _outputRepository.DeleteAsync(bonId);
+
+            return result;
+        }
     }
 }
