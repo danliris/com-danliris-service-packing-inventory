@@ -773,7 +773,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var item = ViewModelToShipping.WarehousesProductionOrders.FirstOrDefault();
 
-            
+
             var testinput = new DyeingPrintingAreaInputModel(ViewModelToShipping.Date,
                                                          ViewModelToShipping.Area,
                                                          ViewModelToShipping.Shift,
@@ -794,7 +794,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Motif, 
                                                                                                              s.UomUnit,
                                                                                                              s.Balance,
-                                                                                                             s.Unit,
+                                                                                                             s.Balance,
+                                                                                                             s.HasNextAreaDocument,
                                                                                                              s.BuyerId,
                                                                                                              1)).ToList()); 
             foreach(var j in testinput.DyeingPrintingAreaInputProductionOrders)
