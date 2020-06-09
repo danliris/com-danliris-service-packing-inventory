@@ -10,6 +10,7 @@ using Org.BouncyCastle.Math.EC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
@@ -100,6 +101,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     }
                 };
             }
+        }
+
+        [Fact]
+        public void validate_default()
+        {
+            var viewModel = new MaterialDeliveryNoteViewModel();
+            viewModel.DateSJ = default(DateTimeOffset);
+
+
+            var defaultValidationResult = viewModel.Validate(null);
+            Assert.True(defaultValidationResult.Count() > 0);
+        }
+
+        [Fact]
+        public void Validate_when_Validationresult_MoreThan_1()
+        {
+            var viewModel = new MaterialDeliveryNoteViewModel();
+            viewModel.Items = new List<ItemsViewModel>()
+            {
+                new ItemsViewModel()
+                {
+                    WeightCone =0,
+                    WeightBale =0,
+                    WeightBruto =0,
+                    WeightDOS =0
+                }
+            };
+            viewModel.DateSJ = DateTimeOffset.Now;
+            viewModel.DateTo = DateTimeOffset.Now.AddDays(-1);
+            viewModel.DateFrom = DateTimeOffset.Now.AddDays(1);
+            
+
+            var defaultValidationResult = viewModel.Validate(null);
+            Assert.True(defaultValidationResult.Count() > 0);
         }
 
         [Fact]
