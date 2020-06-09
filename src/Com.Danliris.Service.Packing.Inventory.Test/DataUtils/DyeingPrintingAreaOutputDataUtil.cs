@@ -27,6 +27,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             });
         }
 
+        public DyeingPrintingAreaOutputModel GetModelShippingPenjualan()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "PENJUALAN", "A",1,"no",false, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1)
+
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetModelShippingPenjualanAfter()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "PENJUALAN", "A", 1, "no", false, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1)
+
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetModelShippingBuyer()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "BUYER", "A", 1, "no", false, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1)
+
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetModelShippingBuyerAfter()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "BUYER", "A", 1, "no", false, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1)
+
+            });
+        }
+
         public DyeingPrintingAreaOutputModel GetModelForUpdateAfter()
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
