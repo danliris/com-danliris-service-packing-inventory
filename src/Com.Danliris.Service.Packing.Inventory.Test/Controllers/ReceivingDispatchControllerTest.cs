@@ -90,6 +90,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
+        public void Should_Validator_Success()
+        {
+            var dataUtil = new CreateReceivingDispatchDocumentViewModel();
+            var validator = new CreateReceivingDispatchDocumentValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+        }
+        
+
+        [Fact]
         public async Task Receive_Return_Success()
         {
             //setup

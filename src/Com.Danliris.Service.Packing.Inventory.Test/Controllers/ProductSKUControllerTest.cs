@@ -94,6 +94,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [Fact]
+        public void Should_Success_CreateProductSKUValidator()
+        {
+            var dataUtil = new CreateProductSKUViewModel();
+            var validator = new CreateProductSKUValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+        }
+
+        [Fact]
+        public void Should_Success_UpdateProductSKUValidator()
+        {
+            var dataUtil = new UpdateProductSKUViewModel();
+            var validator = new UpdateProductSKUValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+        }
+
+        
+
+        [Fact]
         public async Task Post_Return_Success()
         {
             var dataUtil = ViewModel;

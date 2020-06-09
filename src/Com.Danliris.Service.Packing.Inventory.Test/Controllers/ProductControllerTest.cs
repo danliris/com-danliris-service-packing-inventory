@@ -60,6 +60,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
+        public void Should_Validator_Success()
+        {
+            var dataUtil = new CreateProductPackAndSKUViewModel();
+            var validator = new CreateProductPackAndSKUValidator();
+            var result = validator.Validate(dataUtil);
+            Assert.NotEqual(0, result.Errors.Count);
+        }
+
+     
+
+        [Fact]
         public async Task Post_Return_BadRequest()
         {
             var dataUtil = new CreateProductPackAndSKUViewModel();
