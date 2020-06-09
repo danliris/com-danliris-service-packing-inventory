@@ -85,10 +85,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_Create()
+        public async Task Should_Success_CreateProductPackAndSKU_When_SKUExist()
         {
             var productPackingRepositoryMock = new Mock<IProductPackingRepository>();
             var productSKURepository = new Mock<IProductSKURepository>();
+
+            productSKURepository.Setup(s => s.IsExist(It.IsAny<string>()))
+               .ReturnsAsync(true);
 
             productSKURepository.Setup(s => s.ReadAll())
                  .Returns(new List<ProductSKUModel>() { model}.AsQueryable());
@@ -100,7 +103,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(productPackingRepositoryMock.Object, productSKURepository.Object).Object);
 
-           // await service.CreateProductPackAndSKU(ViewModel);
+            await service.CreateProductPackAndSKU(ViewModel);
+        }
+
+        [Fact]
+        public async Task Should_Success_CreateProductPackAndSKU_When_SKUNotExist()
+        {
+            var productPackingRepositoryMock = new Mock<IProductPackingRepository>();
+            var productSKURepository = new Mock<IProductSKURepository>();
+
+            productSKURepository.Setup(s => s.IsExist(It.IsAny<string>()))
+               .ReturnsAsync(false);
+
+            productSKURepository.Setup(s => s.InsertAsync(It.IsAny<ProductSKUModel>()))
+                 .ReturnsAsync(1);
+
+
+            productPackingRepositoryMock.Setup(s => s.InsertAsync(It.IsAny<ProductPackingModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(productPackingRepositoryMock.Object, productSKURepository.Object).Object);
+
+            await service.CreateProductPackAndSKU(ViewModel);
         }
     }
 }
