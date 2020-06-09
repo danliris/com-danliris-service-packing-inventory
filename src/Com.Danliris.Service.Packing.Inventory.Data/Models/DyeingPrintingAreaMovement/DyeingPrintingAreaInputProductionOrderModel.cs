@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        //IM
+        //IM DyeingPrintingAreaInputProductionOrderModel
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, double balanceRemains, bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
         {

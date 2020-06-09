@@ -719,7 +719,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, result);
         }
         [Fact]
-        public async Task Should_Success_Delete ()
+        public async Task Should_Success_Delete()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -758,7 +758,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId)).ToList());
             tes.Id = 1;
-            foreach(var i in tes.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
                 i.Id = 1;
                 i.DyeingPrintingAreaInputProductionOrderId = 1;
@@ -773,6 +773,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var item = ViewModelToShipping.WarehousesProductionOrders.FirstOrDefault();
 
+            
             var testinput = new DyeingPrintingAreaInputModel(ViewModelToShipping.Date,
                                                          ViewModelToShipping.Area,
                                                          ViewModelToShipping.Shift,
@@ -780,27 +781,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModelToShipping.Group,
                                                          ViewModelToShipping.WarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaInputProductionOrderModel(ViewModelToShipping.Area,
-                                                                                                             1,
-                                                                                                             "1",
-                                                                                                             s.ProductionOrder.Id,
+                                                                                                              s.ProductionOrder.Id,
                                                                                                              s.ProductionOrder.No,
                                                                                                              s.ProductionOrder.Type,
                                                                                                              s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackingInstruction,
+                                                                                                             s.CartNo,
                                                                                                              s.Buyer,
                                                                                                              s.Construction,
-                                                                                                             s.PackagingType,
-                                                                                                             s.Color,
-                                                                                                             s.Motif,
-                                                                                                             s.Grade,
-                                                                                                             s.PackagingQty,
-                                                                                                             s.PackagingUnit,
-                                                                                                             s.QtyOrder,
-                                                                                                             s.UomUnit,
-                                                                                                             false,
-                                                                                                             s.Balance,
                                                                                                              s.Unit,
-                                                                                                             s.BuyerId)).ToList()); 
-            foreach(var j in testinput.DyeingPrintingAreaInputProductionOrders)
+                                                                                                             s.Color,
+                                                                                                             s.Motif, 
+                                                                                                             s.UomUnit,
+                                                                                                             s.Balance,
+                                                                                                             s.Balance,
+                                                                                                             s.HasNextAreaDocument,
+                                                                                                             s.BuyerId,
+                                                                                                              1
+                                                                                                             )).ToList());
+            foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
             }
@@ -1274,16 +1273,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public void Get_InputSPPModel()
         {
             var result = InputSPP;
-            var test = result.ProductionOrderId ;
-            var test1 = result.ProductionOrderCode ;
+            var test = result.ProductionOrderId;
+            var test1 = result.ProductionOrderCode;
             var test2 = result.ProductionOrderNo;
-            var test3 = result.ProductionOrderType ;
+            var test3 = result.ProductionOrderType;
             var test4 = result.ProductionOrderOrderQuantity;
             var test5 = result.OutputId;
             var test6 = result.ProductionOrderItems;
 
             var member6 = test6.FirstOrDefault().GetType().GetProperties();
-            foreach(var i in member6)
+            foreach (var i in member6)
             {
 
                 var val = i.GetValue(new InputSppWarehouseItemListViewModel(), null);
