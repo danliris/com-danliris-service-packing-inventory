@@ -794,12 +794,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Motif, 
                                                                                                              s.UomUnit,
                                                                                                              s.Balance,
-                                                                                                             s.Balance,
-                                                                                                             s.HasNextAreaDocument,
+                                                                                                             s.Unit,
                                                                                                              s.BuyerId,
-                                                                                                              1
-                                                                                                             )).ToList());
-            foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
+                                                                                                             1)).ToList()); 
+            foreach(var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
             }

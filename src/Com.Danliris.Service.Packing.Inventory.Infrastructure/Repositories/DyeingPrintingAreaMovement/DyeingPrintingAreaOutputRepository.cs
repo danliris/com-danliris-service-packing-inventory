@@ -18,12 +18,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaOutputModel> _dbSet;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
+        private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
+
+        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
+        private const string TRANSIT = "TRANSIT";
+        private const string PACKING = "PACKING";
+        private const string GUDANGJADI = "GUDANG JADI";
+        private const string GUDANGAVAL = "GUDANG AVAL";
+        private const string SHIPPING = "SHIPPING";
+        private const string PENJUALAN = "PENJUALAN";
+        private const string BUYER = "BUYER";
 
         public DyeingPrintingAreaOutputRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<DyeingPrintingAreaOutputModel>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
+            _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -65,6 +76,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 //inputProductionOrders.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
 
                 //inputProductionOrders.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+
+            }
+
+            //model.FlagForDelete(_identityProvider.Username, UserAgent);
+            _dbSet.Update(model);
+
+            result += await _dbContext.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<int> DeleteShippingArea(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                if (model.DestinationArea == PENJUALAN)
+                {
+
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                }
+                else
+                {
+                    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                }
 
             }
 
@@ -360,6 +397,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
 
             }
+
+            result += await _dbContext.SaveChangesAsync();
+
+            return result;
+        }
+
+        public async Task<int> UpdateShippingArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        {
+            int result = 0;
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                    if (model.DestinationArea == PENJUALAN)
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                    }
+
+                }
+                else
+                {
+                    //if (model.DestinationArea == PENJUALAN)
+                    //{
+
+                    //    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                    //}
+                    //else
+                    //{
+                    //    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                    //}
+                    item.SetShippingGrade(localItem.ShippingGrade, _identityProvider.Username, UserAgent);
+                    item.SetShippingRemark(localItem.ShippingRemark, _identityProvider.Username, UserAgent);
+                    item.SetWeight(localItem.Weight, _identityProvider.Username, UserAgent);
+                    item.SetDeliveryNote(localItem.DeliveryNote, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
+            //{
+            //    item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+            //    dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+            //    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+
+            //}
 
             result += await _dbContext.SaveChangesAsync();
 
