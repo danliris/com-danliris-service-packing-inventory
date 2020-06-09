@@ -786,5 +786,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        public void SetDeliveryNote(string newDeliveryNote, string user, string agent)
+        {
+            if (newDeliveryNote != DeliveryNote)
+            {
+                DeliveryNote = newDeliveryNote;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 }
