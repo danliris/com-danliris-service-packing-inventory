@@ -27,6 +27,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             });
         }
 
+        public DyeingPrintingAreaOutputModel GetModelForUpdateAfter()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, new List<DyeingPrintingAreaOutputAvalItemModel>(){
+                   
+                }),
+                
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetModelForUpdateBefore()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, new List<DyeingPrintingAreaOutputAvalItemModel>(){
+                    new DyeingPrintingAreaOutputAvalItemModel("type",1)
+                }),
+
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetModelForUpdateAfter2()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, new List<DyeingPrintingAreaOutputAvalItemModel>(){
+                    new DyeingPrintingAreaOutputAvalItemModel("type",1)
+                }),
+
+            });
+        }
+
+        public DyeingPrintingAreaOutputModel GetEmptyModelBefore()
+        {
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, false, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, new List<DyeingPrintingAreaOutputAvalItemModel>(){
+                    new DyeingPrintingAreaOutputAvalItemModel(null,0)
+                })
+            });
+        }
+
         public override DyeingPrintingAreaOutputModel GetEmptyModel()
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()

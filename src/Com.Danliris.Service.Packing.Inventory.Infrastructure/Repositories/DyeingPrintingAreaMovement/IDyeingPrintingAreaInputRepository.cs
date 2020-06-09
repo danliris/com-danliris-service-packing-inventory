@@ -13,6 +13,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         Task<int> UpdateIMArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         Task<int> DeleteIMArea(DyeingPrintingAreaInputModel model);
+        Task<int> DeleteTransitArea(DyeingPrintingAreaInputModel model);
+        Task<int> UpdateTransitArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
+        Task<int> DeleteShippingArea(DyeingPrintingAreaInputModel model);
+        Task<int> UpdateShippingArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         IQueryable<DyeingPrintingAreaInputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaInputModel> ReadAllIgnoreQueryFilter();
     }

@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
-                     s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, false, s.BuyerId)).ToList());
+                     s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, false, s.BuyerId, 0)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
@@ -156,7 +156,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
-                        item.Motif, item.UomUnit, item.Balance, item.Balance, false, item.BuyerId);
+                        item.Motif, item.UomUnit, item.Balance, item.Balance, false, item.BuyerId, 0);
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
                     result += await _productionOrderRepository.InsertAsync(modelItem);
@@ -319,13 +319,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var dbModel = await _repository.ReadByIdAsync(id);
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                  new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
-                 s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, s.HasOutputDocument, s.BuyerId)
+                 s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, s.HasOutputDocument, s.BuyerId, 0)
                  { Id = s.Id }).ToList());
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
-            foreach(var item in dbModel.DyeingPrintingAreaInputProductionOrders)
+            foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders)
             {
                 var lclModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
-                if(lclModel != null)
+                if (lclModel != null)
                 {
                     var diffBalance = lclModel.Balance - item.Balance;
 
@@ -338,23 +338,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 throw new Exception("Ada SPP yang Sudah Dibuat di Pengeluaran Inspection Material!");
             }
+
             result = await _repository.UpdateIMArea(id, model, dbModel);
+
             foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument && !d.IsDeleted))
             {
                 double newBalance = 0;
-                if(!dictBalance.TryGetValue(item.Id, out newBalance))
+                if (!dictBalance.TryGetValue(item.Id, out newBalance))
                 {
                     newBalance = item.Balance;
                 }
 
-                if(newBalance != 0)
+                if (newBalance != 0)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, TYPE, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id);
 
                     result += await _movementRepository.InsertAsync(movementModel);
                 }
-                
+
             }
             foreach (var item in deletedData)
             {
