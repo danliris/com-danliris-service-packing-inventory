@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
                     HasNextAreaDocument = false,
-                    DestinationArea = "SHIPPING",
+                    DestinationArea = "PENJUALAN",
                     Group = "A",
                     InputShippingId = 1,
                     HasSalesInvoice = false,
@@ -545,6 +545,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.UpdateHasSalesInvoice(1, new OutputShippingUpdateSalesInvoiceViewModel() { HasSalesInvoice = true, ItemIds = new List<int>() { 1 } });
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+            repoMock.Setup(s => s.DeleteShippingArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
+
+            var result = await service.Delete(1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Exception_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            var model = Model;
+
+            model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasSalesInvoice(true, "", "");
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.DeleteShippingArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(1));
         }
 
         [Fact]
