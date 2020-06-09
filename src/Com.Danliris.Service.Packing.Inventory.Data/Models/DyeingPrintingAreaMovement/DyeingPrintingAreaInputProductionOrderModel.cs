@@ -427,6 +427,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
         }
 
+        /// <summary>
+        /// construtor for Gudang barang jadi With OutputSPP ID
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            PackagingUnit = packagingUnit;
+            PackagingQty = packagingQty;
+            PackagingType = packagingType;
+            Grade = grade;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+
+            Area = area;
+
+            BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+        }
+
         //Transit
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status, double balanceRemains, int buyerId)

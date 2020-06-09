@@ -18,6 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Reject(InputPackagingViewModel viewModel);
 
         Task<int> Delete(int bonId);
-
+        Task<int> Update(int bonId, InputPackagingViewModel viewModel);
     }
 }

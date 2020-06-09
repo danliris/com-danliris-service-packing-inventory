@@ -590,14 +590,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
                             }
                         }
-                        //result += await _repositoryAreaOutput.UpdateAsync(bon.Id,bon);
-                        result += await _repositoryAreaOutput.DeleteAsync(bon.Id);
+                        result += await _repositoryAreaOutput.UpdateAsync(bon.Id, bon);
+                        //result += await _repositoryAreaOutput.DeleteAsync(bon.Id);
                     }
                 }
             }
 
             return result;
             
+        }
+
+        public async Task<int> Update(int bonId, InputPackagingViewModel viewModel)
+        {
+            var result = 0;
+            var bonInput = _repository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any());
+            foreach(var bon in bonInput)
+            {
+                var sppInput = bon.DyeingPrintingAreaInputProductionOrders;
+                var sppDeleted = sppInput.Where(x => viewModel.PackagingProductionOrders.Any(s => x.Id != s.Id));
+                foreach(var spp in sppDeleted)
+                {
+                    var prevOutput = _repositoryAreaProductionOrderOutput.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    foreach(var prevOut in prevOutput)
+                    {
+                        var prevInput = _productionOrderRepository.ReadAll().Where(x => x.Id == prevOut.DyeingPrintingAreaInputProductionOrderId);
+                        foreach(var prevIn in prevInput)
+                        {
+                            var newBalanceRemain = prevIn.BalanceRemains + prevOut.Balance;
+                            var newBalance = prevIn.Balance + prevOut.Balance;
+                            prevIn.SetBalanceRemains(newBalanceRemain, "UPDATEPACKING", "SERVICE");
+                            prevIn.SetBalance(newBalance, "UPDATEPACKING", "SERVICE");
+                        }
+                        prevOut.SetHasNextAreaDocument(false, "UPDATEPACKING", "SERVICE");
+                        result += await _repositoryAreaProductionOrderOutput.UpdateAsync(prevOut.Id, prevOut);
+                    }
+                    result += await _productionOrderRepository.DeleteAsync(spp.Id);
+                }
+            }
+            return result;
         }
 
         //public ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo)
