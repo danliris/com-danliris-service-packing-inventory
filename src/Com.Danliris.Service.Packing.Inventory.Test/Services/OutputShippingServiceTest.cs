@@ -239,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_Create_Penjualan()
+        public async Task Should_Success_Create_Buyer()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
@@ -258,7 +258,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputShippingId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.InputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Qty)
                  }.AsQueryable());
 
@@ -271,7 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
 
             var vm = ViewModel;
-            vm.DestinationArea = "PENJUALAN";
+            vm.DestinationArea = "BUYER";
             var result = await service.Create(vm);
 
             Assert.NotEqual(0, result);
@@ -319,7 +319,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_Create_Penjualan_DuplikateShift()
+        public async Task Should_Success_Create_Buyer_DuplikateShift()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
@@ -328,7 +328,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             var model = Model;
-            model.SetDestinationArea("PENJUALAN", "", "");
+            model.SetDestinationArea("BUYER", "", "");
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -348,7 +348,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputShippingId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.InputId, ViewModel.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Qty)
                  }.AsQueryable());
 
@@ -361,7 +361,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
 
             var vm = ViewModel;
-            vm.DestinationArea = "PENJUALAN";
+            vm.DestinationArea = "BUYER";
             var result = await service.Create(vm);
 
             Assert.NotEqual(0, result);
