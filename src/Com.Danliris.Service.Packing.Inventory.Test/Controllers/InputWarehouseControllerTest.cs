@@ -468,5 +468,88 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task Should_Success_Delete()
+        {
+            var dataUtil = RejectedViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public async Task Should_Exception_Delete()
+        {
+            var dataUtil = RejectedViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            var dataUtil = ViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), dataUtil)).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Update(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Exception_Update()
+        {
+            var dataUtil = ViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<InputWarehouseCreateViewModel>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Update(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

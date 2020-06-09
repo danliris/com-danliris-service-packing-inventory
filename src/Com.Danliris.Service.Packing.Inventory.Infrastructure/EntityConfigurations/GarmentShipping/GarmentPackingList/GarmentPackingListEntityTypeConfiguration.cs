@@ -25,6 +25,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .HasIndex(i => i.InvoiceNo)
+                .IsUnique()
+                .HasFilter("[IsDeleted]=(0)");
+
+            builder
                 .Property(s => s.PackingListType)
                 .HasMaxLength(25);
 
