@@ -199,6 +199,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetIsTransformedAval(model.IsTransformedAval, _identityProvider.Username, UserAgent);
+            dbModel.SetTotalAvalQuantity(model.TotalAvalQuantity, _identityProvider.Username, UserAgent);
+            dbModel.SetTotalAvalWeight(model.TotalAvalWeight, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {

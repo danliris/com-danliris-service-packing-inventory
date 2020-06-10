@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         }
 
         //aval transformation
-        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string avalType, bool isTransformedAval, double totalAvalQuantity, 
+        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string avalType, bool isTransformedAval, double totalAvalQuantity,
             double totalAvalWeight, ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
         {
             Date = date;
@@ -95,9 +95,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetGroup(string newGroup, string user, string agent)
         {
-            if(newGroup != Group)
+            if (newGroup != Group)
             {
                 Group = newGroup;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetIsTransformedAval(bool newFlagIsTransformedAval, string user, string agent)
+        {
+            if(newFlagIsTransformedAval != IsTransformedAval)
+            {
+                IsTransformedAval = newFlagIsTransformedAval;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetTotalAvalQuantity(double newTotalAvalQuantity, string user, string agent)
+        {
+            if (newTotalAvalQuantity != TotalAvalQuantity)
+            {
+                TotalAvalQuantity = newTotalAvalQuantity;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetTotalAvalWeight(double newTotalAvalWeight, string user, string agent)
+        {
+            if (newTotalAvalWeight != TotalAvalWeight)
+            {
+                TotalAvalWeight = newTotalAvalWeight;
                 this.FlagForUpdate(user, agent);
             }
         }

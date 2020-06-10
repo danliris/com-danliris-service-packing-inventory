@@ -213,7 +213,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             var model = await _repository.ReadByIdAsync(id);
 
-            if (model.TotalAvalQuantity == 0 && model.TotalAvalWeight == 0 && model.DyeingPrintingAreaInputProductionOrders.Any(d => d.HasOutputDocument))
+            if (model.TotalAvalQuantity == 0 && model.TotalAvalWeight == 0)
             {
                 throw new Exception("Ada SPP yang Sudah Dibuat di Pengeluaran Aval!");
             }
@@ -324,11 +324,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }).ToList());
 
             var deletedData = dbModel.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument && !viewModel.AvalTransformationProductionOrders.Any(d => d.Id == s.Id)).ToList();
-
-            if (deletedData.Any(item => item.HasOutputDocument))
-            {
-                throw new Exception("Ada SPP yang Sudah Dibuat di Pengeluaran Avall!");
-            }
 
             result = await _repository.UpdateAvalTransformationArea(id, model, dbModel);
 
