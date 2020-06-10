@@ -24,5 +24,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             string order,
                                                             string keyword);
         Task<int> Reject(InputAvalViewModel viewModel);
+        Task<int> Delete(int bonId);
     }
 }

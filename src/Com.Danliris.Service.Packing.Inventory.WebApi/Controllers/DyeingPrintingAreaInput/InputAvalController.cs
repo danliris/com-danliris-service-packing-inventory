@@ -114,6 +114,21 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromQuery] int id)
+        {
+            try
+            {
+                var data = _service.Delete(id);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpGet("pre-aval")]
         public IActionResult GetPreAval([FromQuery] DateTimeOffset searchDate,
                                         [FromQuery] string searchShift,
