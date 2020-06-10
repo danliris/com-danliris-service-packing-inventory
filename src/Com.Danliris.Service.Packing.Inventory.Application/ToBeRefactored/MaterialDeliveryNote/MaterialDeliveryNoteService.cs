@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System.Linq.Dynamic.Core;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
-using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote
 {
@@ -87,7 +86,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
             if (model == null)
                 return null;
-            //return _MaterialDeliveryNoteRepository.ReadByIdAsync(id);
             MaterialDeliveryNoteViewModel vm = MapToViewModel(model);
             return vm;
         }
@@ -97,13 +95,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             var model = new Data.MaterialDeliveryNoteModel(viewModel.Code, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber, viewModel.FONumber, viewModel.Receiver, viewModel.Remark,
                                                       viewModel.SCNumber, viewModel.Sender, viewModel.StorageNumber,
                                                       viewModel.Items.Select(s => new ItemsModel(s.NoSPP, s.MaterialName, s.InputLot, s.WeightBruto, s.WeightDOS, s.WeightCone, s.WeightBale, s.GetTotal)).ToList());
-
-            //foreach (var itm in viewModel.Items)
-            //{
-            //    var modelItem = new ItemsModel(itm.NoSPP, itm.MaterialName, itm.InputLot, itm.WeightBruto, itm.WeightDOS, itm.WeightCone, itm.WeightBale, itm.GetTotal);
-
-            //    await _ItemsRepository.UpdateAsync(id, modelItem);
-            //}
 
             await _MaterialDeliveryNoteRepository.UpdateAsync(id, model);
         }

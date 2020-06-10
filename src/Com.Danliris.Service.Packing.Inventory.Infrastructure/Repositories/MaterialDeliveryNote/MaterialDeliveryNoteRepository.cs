@@ -56,15 +56,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
         public Task<MaterialDeliveryNoteModel> ReadByIdAsync(int id)
         {
-            //return _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).ThenInclude(d => d.DyeingPrintingAreaOutputAvalItems).FirstOrDefaultAsync(s => s.Id == id);
-            //return _materialDeliveryNoteDbSet.Where(entity => entity.Id == id).FirstAsync();
             return _materialDeliveryNoteDbSet.Include(entity => entity.Items).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<int> UpdateAsync(int id, MaterialDeliveryNoteModel model)
         {
-            //var modelToUpdate = _materialDeliveryNoteDbSet.Include(entity => entity.Items).FirstOrDefaultAsync(s => s.Id == id);
-            //var modelToUpdate = _materialDeliveryNoteDbSet.FirstOrDefault(entity => entity.Id == id);
+
             var modelToUpdate = _materialDeliveryNoteDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);
 
             modelToUpdate.SetCode(model.BonCode);
@@ -106,18 +103,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
                 modelToUpdate.Items.Add(newitm);
             }
 
-            //var isModified = false;
-            ////if (modelToUpdate.Quantity != model.Quantity)
-            ////{
-            ////    modelToUpdate.Quantity = model.Quantity;
-            ////    isModified = true;
-            ////}
-
-            //if (isModified)
-            //{
-            //EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
-            //_materialDeliveryNoteDbSet.Update(model);
-            //}
             return _dbContext.SaveChangesAsync();
         }
     }

@@ -10,6 +10,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -44,8 +45,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<PackagingStockModel> PackagingStock { get; set; }
 
         public DbSet<MaterialDeliveryNoteModel> MaterialDeliveryNote { get; set; }
-
         public DbSet<ItemsModel> Items { get; set; }
+
+        public DbSet<MaterialDeliveryNoteWeavingModel> MaterialDeliveryNoteWeaving { get; set; }
+        public DbSet<ItemsMaterialDeliveryNoteWeavingModel> ItemsMaterialDeliveryNoteWeaving { get; set; }
+
         public DbSet<GarmentPackingListModel> GarmentPackingLists { get; set; }
         public DbSet<GarmentPackingListItemModel> GarmentPackingListItems { get; set; }
         public DbSet<GarmentPackingListDetailModel> GarmentPackingListDetails { get; set; }

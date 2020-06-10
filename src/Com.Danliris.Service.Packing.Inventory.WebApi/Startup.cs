@@ -51,6 +51,9 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Material
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Newtonsoft.Json.Serialization;
+using Com.Danliris.Service.Packing.Inventory.Application;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNoteWeaving;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNoteWeaving;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -95,7 +98,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IMaterialDeliveryNoteRepository, MaterialDeliveryNoteRepository>();
             services.AddTransient<IItemsRepository, ItemsRepository>();
             services.AddTransient<IMaterialDeliveryNoteService, MaterialDeliveryNoteService>();
-            
+
+            services.AddTransient<IMaterialDeliveryNoteWeavingRepository, MaterialDeliveryNoteWeavingRepository>();
+            services.AddTransient<IItemsMaterialDeliveryNoteWeavingRepository, ItemsMaterialDeliveryNoteWeavingRepository>();
+            services.AddTransient<IMaterialDeliveryNoteWeavingService, MaterialDeliveryNoteWeavingService>();
+
             services.AddTransient<IDyeingPrintingAreaInputRepository, DyeingPrintingAreaInputRepository>();
             services.AddTransient<IDyeingPrintingAreaInputProductionOrderRepository, DyeingPrintingAreaInputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();

@@ -57,10 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
         Task<int> IRepository<ItemsModel>.UpdateAsync(int id, ItemsModel model)
         {
 
-            //var modelToUpdate = _MaterialDbSet.Include(entity => entity.Items).FirstOrDefaultAsync(s => s.Id == id);
             var modelToUpdate = _MaterialDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);
-
-            //var modelToUpdate = _ItemsDbSet.FirstOrDefault(entity => entity.Id == id);
 
             foreach (var item in modelToUpdate.Items)
             {
@@ -89,14 +86,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
                 modelToUpdate.Items.Add(newItem);
             }
 
-
-            //var isModified = false;
-
-            //if (isModified)
-            //{
-            //EntityExtension.FlagForUpdate(model, _identityProvider.Username, USER_AGENT);
-            //_ItemsDbSet.Update(model);
-            //}
             return _dbContext.SaveChangesAsync();
         }
     }

@@ -38,7 +38,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
         public double? WeightCone { get; set; }
         public double? WeightBale { get; set; }
         public double? GetTotal { get; set; }
-        //public int MaterialDeliveryNoteModelId { get; set; }
 
         public void SetNoSPP(string newNoSPP)
         {
