@@ -20,6 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         IQueryable<DyeingPrintingAreaOutputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaOutputModel> ReadAllIgnoreQueryFilter();
         Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument);
+        Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument, List<int> idSpp);
+
         Task<int> UpdateFromInputNextAreaFlagParentOnlyAsync(int id, bool hasNextAreaDocument);
 
         Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice);

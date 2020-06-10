@@ -56,6 +56,31 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
 
+        [HttpPost("reject")]
+        public async Task<IActionResult> Reject([FromBody] InputAvalViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var excpetion = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(excpetion);
+            }
+            try
+            {
+                VerifyUser();
+                var result = await _service.Reject(viewModel);
+
+                return Created("/", result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -100,6 +125,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                                         [FromQuery] string filter = "{}")
         {
             var data = _service.ReadOutputPreAval(searchDate, searchShift, searchGroup, page, size, filter, order, keyword);
+            if (data == null)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return Ok(data);
+            }
+        }
+        [HttpGet("pre-aval/all")]
+        public IActionResult GetPreAvalAll(
+                                        [FromQuery] string keyword = null,
+                                        [FromQuery] int page = 1,
+                                        [FromQuery] int size = 25,
+                                        [FromQuery] string order = "{}",
+                                        [FromQuery] string filter = "{}")
+        {
+            var data = _service.ReadAllOutputPreAval(page, size, filter, order, keyword);
             if (data == null)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);

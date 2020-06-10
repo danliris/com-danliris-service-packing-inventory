@@ -17,5 +17,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             string filter, 
                                                             string order, 
                                                             string keyword);
+        ListResult<PreAvalIndexViewModel> ReadAllOutputPreAval(
+                                                            int page,
+                                                            int size,
+                                                            string filter,
+                                                            string order,
+                                                            string keyword);
+        Task<int> Reject(InputAvalViewModel viewModel);
     }
 }

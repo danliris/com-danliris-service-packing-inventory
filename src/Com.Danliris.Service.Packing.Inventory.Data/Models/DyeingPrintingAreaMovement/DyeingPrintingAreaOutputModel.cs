@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DeliveryOrderSalesNo { get; private set; }
 
 
-        public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; private set; }
+        public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
         public DyeingPrintingAreaOutputModel()
         {
