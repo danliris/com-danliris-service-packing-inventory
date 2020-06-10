@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609232108_Add_GarmentShippingCoverLetters")]
+    partial class Add_GarmentShippingCoverLetters
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Area")
                         .HasMaxLength(64);
-
-                    b.Property<string>("AvalType")
-                        .HasMaxLength(128);
 
                     b.Property<string>("BonNo")
                         .HasMaxLength(64);
@@ -59,8 +58,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<bool>("IsTransformedAval");
-
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
 
@@ -71,10 +68,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
-
-                    b.Property<double>("TotalAvalQuantity");
-
-                    b.Property<double>("TotalAvalWeight");
 
                     b.HasKey("Id");
 
@@ -99,8 +92,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("AvalCartNo");
 
                     b.Property<double>("AvalConnectionLength");
-
-                    b.Property<double>("AvalQuantity");
 
                     b.Property<double>("AvalQuantityKg");
 
@@ -157,9 +148,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("HasOutputDocument");
 
                     b.Property<double>("InitLength");
-
-                    b.Property<string>("InputAvalBonNo")
-                        .HasMaxLength(64);
 
                     b.Property<bool>("IsChecked");
 
@@ -227,10 +215,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Area")
                         .HasMaxLength(128);
-
-                    b.Property<double>("AvalQuantity");
-
-                    b.Property<double>("AvalWeightQuantity");
 
                     b.Property<double>("Balance");
 
