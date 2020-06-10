@@ -50,6 +50,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteAvalTransformationArea(DyeingPrintingAreaInputModel model)
+        {
+            int result = 0;
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+                result += await _SPPRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
+            }
+
+            _dbSet.Update(model);
+
+            result += await _dbContext.SaveChangesAsync();
+            return result;
+        }
+
         public Task<int> DeleteIMArea(DyeingPrintingAreaInputModel model)
         {
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
@@ -176,6 +191,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             }
 
             return _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateAvalTransformationArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel)
+        {
+            int result = 0;
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
+            {
+                var localItem = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+                    result += await _SPPRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
+                }
+                else
+                {
+                    item.SetAvalQuantity(localItem.AvalQuantity, _identityProvider.Username, UserAgent);
+                    item.SetAvalQuantityKG(localItem.AvalQuantityKg, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            result += await _dbContext.SaveChangesAsync();
+            return result;
         }
 
         public Task<int> UpdateIMArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel modelToUpdate)

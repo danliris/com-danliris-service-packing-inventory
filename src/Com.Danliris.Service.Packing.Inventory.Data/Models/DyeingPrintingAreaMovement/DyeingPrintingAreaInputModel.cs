@@ -12,6 +12,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Shift { get; private set; }
         public string BonNo { get; private set; }
         public string Group { get; private set; }
+
+        #region isi di aval transform
+        public string AvalType { get; private set; }
+
+        public double TotalAvalQuantity { get; private set; }
+
+        public double TotalAvalWeight { get; private set; }
+
+        public bool IsTransformedAval { get; private set; }
+        #endregion
+
         public ICollection<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaInputModel()
@@ -27,6 +38,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Shift = shift;
             BonNo = bonNo;
             Group = group;
+            DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
+        }
+
+        //aval transformation
+        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string avalType, bool isTransformedAval, double totalAvalQuantity, 
+            double totalAvalWeight, ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            AvalType = avalType;
+            IsTransformedAval = isTransformedAval;
+            TotalAvalQuantity = totalAvalQuantity;
+            TotalAvalWeight = totalAvalWeight;
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 
