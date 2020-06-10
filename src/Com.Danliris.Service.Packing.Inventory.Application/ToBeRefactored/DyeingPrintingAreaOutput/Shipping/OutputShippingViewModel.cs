@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int Count = 0;
             string DetailErrors = "[";
 
-            if (ShippingProductionOrders.Where(s => s.IsSave).Count() == 0)
+            if ((Id == 0 && ShippingProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && ShippingProductionOrders.Count() == 0))
             {
                 yield return new ValidationResult("SPP harus Diisi", new List<string> { "ShippingProductionOrder" });
             }

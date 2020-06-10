@@ -1,10 +1,12 @@
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
@@ -48,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentPackingListDetailModel> GarmentPackingListDetails { get; set; }
         public DbSet<GarmentPackingListDetailSizeModel> GarmentPackingListDetailSizes { get; set; }
         public DbSet<GarmentPackingListMeasurementModel> GarmentPackingListMeasurements { get; set; }
+        public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
         public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
 
@@ -84,6 +87,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
+
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

@@ -799,7 +799,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              false,
                                                                                                              s.Balance,
                                                                                                              s.Unit,
-                                                                                                             s.BuyerId)).ToList()); 
+                                                                                                             s.BuyerId,
+                                                                                                             1)).ToList()); 
             foreach(var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
