@@ -30,13 +30,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 
         private IQueryable<SimpleAvalViewModel> GetAwalData(DateTimeOffset searchDate, IEnumerable<string> avalTypes)
         {
-            var queryTransform = _movementRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.Type == TRANSFORM && s.Date.Date < searchDate.Date && avalTypes.Contains(s.AvalType))
+            var queryTransform = _movementRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.Date < searchDate.Date && avalTypes.Contains(s.AvalType))
                 .GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
                 {
                     AvalType = d.Key,
-                    AvalQuantity = d.Sum(e => e.AvalQuantity),
+                    AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
                     Type = AWAL,
-                    AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
+                    AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
                 });
 
             return queryTransform;
