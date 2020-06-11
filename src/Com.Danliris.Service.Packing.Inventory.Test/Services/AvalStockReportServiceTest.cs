@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
-        private DyeingPrintingAreaMovementModel ModelAwal
+        private DyeingPrintingAreaMovementModel ModelAwalOut
         {
             get
             {
@@ -75,13 +75,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
+        private DyeingPrintingAreaMovementModel ModelAwalTransform
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+
 
         [Fact]
         public void Should_Success_GetData()
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwal, ModelTransform, ModelOut };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 
@@ -98,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwal, ModelTransform, ModelOut };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 
@@ -114,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwal, ModelTransform, ModelOut };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaMovementModel>().AsQueryable());
 
