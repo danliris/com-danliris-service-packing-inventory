@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromQuery] DateTimeOffset? searchDate)
+        public IActionResult Get([FromQuery] DateTimeOffset? searchDate)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 {
                     throw new Exception("Tanggal Harus Diisi");
                 }
-                var data = await _service.GetReportDataAsync(searchDate.GetValueOrDefault());
+                var data = _service.GetReportData(searchDate.GetValueOrDefault());
                 return Ok(data);
             }
             catch (Exception ex)
@@ -53,7 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
         [HttpGet("xls/")]
-        public async Task<IActionResult> GetExcelAsync([FromQuery] DateTimeOffset? searchDate)
+        public IActionResult GetExcel([FromQuery] DateTimeOffset? searchDate)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                     throw new Exception("Tanggal Harus Diisi");
                 }
                 byte[] xlsInBytes;
-                var Result = await _service.GenerateExcelAsync(searchDate.GetValueOrDefault());
+                var Result = _service.GenerateExcel(searchDate.GetValueOrDefault());
                 string filename = $"Stock Aval - {searchDate.GetValueOrDefault().ToString("dd MMMM yyyy")}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

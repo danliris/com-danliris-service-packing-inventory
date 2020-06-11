@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             return queryTransform;
         }
 
-        private async Task<IEnumerable<AvalStockReportViewModel>> GetQueryAsync(DateTimeOffset searchDate)
+        private IEnumerable<AvalStockReportViewModel> GetQuery(DateTimeOffset searchDate)
         {
             //var dataTransformFunc = GetDataTransform(searchDate).ToListAsync();
             //var dataOutpuFunc = GetDataOutput(searchDate).ToListAsync();
@@ -93,9 +93,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             //var dataOutput = await dataOutpuFunc;
             //var joinData1 = dataTransform.Concat(dataOutput);
 
-            var dataSearchDate = await GetDataByDate(searchDate).ToListAsync();
+            var dataSearchDate = GetDataByDate(searchDate).ToList();
             var listAvalType = dataSearchDate.Select(d => d.AvalType).Distinct();
-            var dataAwal = await GetAwalData(searchDate, listAvalType).ToListAsync();
+            var dataAwal = GetAwalData(searchDate, listAvalType).ToList();
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => d.AvalType).Select(e => new AvalStockReportViewModel()
@@ -107,8 +107,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 InAvalWeightQuantity = e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0,
                 OutAvalQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0,
                 OutAvalWeightQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0,
-                EndAvalQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantity : 0) 
-                    + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0) 
+                EndAvalQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0)
                     - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0),
                 EndAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0)
@@ -118,9 +118,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             return result;
         }
 
-        public async Task<MemoryStream> GenerateExcelAsync(DateTimeOffset searchDate)
+        public MemoryStream GenerateExcel(DateTimeOffset searchDate)
         {
-            var data = await GetQueryAsync(searchDate);
+            var data = GetQuery(searchDate);
 
             DataTable dt = new DataTable();
 
@@ -150,9 +150,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Laporan Stock Gudang Aval") }, true);
         }
 
-        public async Task<ListResult<AvalStockReportViewModel>> GetReportDataAsync(DateTimeOffset searchDate)
+        public ListResult<AvalStockReportViewModel> GetReportData(DateTimeOffset searchDate)
         {
-            var data = await GetQueryAsync(searchDate);
+            var data = GetQuery(searchDate);
             return new ListResult<AvalStockReportViewModel>(data.ToList(), 1, data.Count(), data.Count());
         }
     }

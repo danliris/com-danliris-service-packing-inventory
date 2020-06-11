@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 {
     public interface IAvalStockReportService
     {
-        Task<ListResult<AvalStockReportViewModel>> GetReportDataAsync(DateTimeOffset searchDate);
-        Task<MemoryStream> GenerateExcelAsync(DateTimeOffset searchDate);
+        ListResult<AvalStockReportViewModel> GetReportData(DateTimeOffset searchDate);
+        MemoryStream GenerateExcel(DateTimeOffset searchDate);
     }
 }

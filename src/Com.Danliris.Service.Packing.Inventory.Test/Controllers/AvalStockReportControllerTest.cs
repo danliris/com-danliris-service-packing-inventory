@@ -71,12 +71,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Success_Get()
+        public void Should_Success_Get()
         {
             //v
             var serviceMock = new Mock<IAvalStockReportService>();
-            serviceMock.Setup(s => s.GetReportDataAsync(It.IsAny<DateTimeOffset>()))
-                .ReturnsAsync(new ListResult<AvalStockReportViewModel>(new List<AvalStockReportViewModel>() { ViewModel }, 1, 1, 1));
+            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>()))
+                .Returns(new ListResult<AvalStockReportViewModel>(new List<AvalStockReportViewModel>() { ViewModel }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -85,18 +85,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetAsync(DateTimeOffset.UtcNow);
+            var response = controller.Get(DateTimeOffset.UtcNow);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Should_Exception_Get()
+        public void Should_Exception_Get()
         {
             //v
             var serviceMock = new Mock<IAvalStockReportService>();
-            serviceMock.Setup(s => s.GetReportDataAsync(It.IsAny<DateTimeOffset>()))
-                .ReturnsAsync(new ListResult<AvalStockReportViewModel>(new List<AvalStockReportViewModel>() { ViewModel }, 1, 1, 1));
+            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>()))
+                .Returns(new ListResult<AvalStockReportViewModel>(new List<AvalStockReportViewModel>() { ViewModel }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -105,18 +105,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetAsync(null);
+            var response = controller.Get(null);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Should_Success_GetExcel()
+        public void Should_Success_GetExcel()
         {
             //v
             var serviceMock = new Mock<IAvalStockReportService>();
-            serviceMock.Setup(s => s.GenerateExcelAsync(It.IsAny<DateTimeOffset>()))
-                .ReturnsAsync(new MemoryStream());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>()))
+                .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -125,17 +125,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcelAsync(DateTimeOffset.UtcNow);
+            var response = controller.GetExcel(DateTimeOffset.UtcNow);
             Assert.NotNull(response);
         }
 
         [Fact]
-        public async Task Should_Exception_GetExcel()
+        public void Should_Exception_GetExcel()
         {
             //v
             var serviceMock = new Mock<IAvalStockReportService>();
-            serviceMock.Setup(s => s.GenerateExcelAsync(It.IsAny<DateTimeOffset>()))
-                .ReturnsAsync(new MemoryStream());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>()))
+                .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcelAsync(null);
+            var response = controller.GetExcel(null);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
