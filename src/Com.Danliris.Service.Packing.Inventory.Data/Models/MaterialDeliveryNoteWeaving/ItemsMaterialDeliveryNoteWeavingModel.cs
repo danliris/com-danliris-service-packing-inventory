@@ -5,98 +5,114 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
     public class ItemsMaterialDeliveryNoteWeavingModel : StandardEntity
     {
 
-        public ItemsMaterialDeliveryNoteWeavingModel(
-            string itemnospp,
-            string itemmaterialName,
-            string itemdesign,
-            string itemtype,
-            string itemcode,
-            decimal inputpacking,
-            decimal length,
-            decimal inputconversion
-            )
+        public ItemsMaterialDeliveryNoteWeavingModel()
         {
-            ItemNoSPP = itemnospp;
-            ItemMaterialName = itemmaterialName;
-            ItemDesign = itemdesign;
-            ItemType = itemtype;
-            ItemCode = itemcode;
-            InputPacking = inputpacking;
-            Length = length;
-            InputConversion = inputconversion;
 
         }
 
-        public string ItemNoSPP { get; set; }
-        public string ItemMaterialName { get; set; }
-        public string ItemDesign { get; set; }
-        public string ItemType { get; set; }
-        public string ItemCode { get; set; }
-        public decimal InputPacking { get; set; }
-        public decimal Length { get; set; }
-        public decimal InputConversion { get; set; }
-
-        public void SetItemNoSPP(string newItemNoSPP)
+        public ItemsMaterialDeliveryNoteWeavingModel(
+            string itemnosop,
+            string itemmaterialName,
+            string itemgrade,
+            string itemtype,
+            string itemcode,
+            decimal? inputbale,
+            decimal? inputpiece,
+            decimal? inputmeter,
+            decimal? inputkg
+            )
         {
-            if (newItemNoSPP != ItemNoSPP)
+            itemNoSOP = itemnosop;
+            itemMaterialName = itemmaterialName;
+            itemGrade = itemgrade;
+            itemType = itemtype;
+            itemCode = itemcode;
+            inputBale = inputbale;
+            inputPiece = inputpiece;
+            inputMeter = inputmeter;
+            inputKg = inputkg;
+
+        }
+
+        public string itemNoSOP { get; set; }
+        public string itemMaterialName { get; set; }
+        public string itemGrade { get; set; }
+        public string itemType { get; set; }
+        public string itemCode { get; set; }
+        public decimal? inputBale { get; set; }
+        public decimal? inputPiece { get; set; }
+        public decimal? inputMeter { get; set; }
+        public decimal? inputKg { get; set; }
+
+        public void SetItemNoSOP(string newItemNoSPP)
+        {
+            if (newItemNoSPP != itemNoSOP)
             {
-                ItemNoSPP = newItemNoSPP;
+                itemNoSOP = newItemNoSPP;
             }
         }
 
         public void SetItemMaterialName(string newItemMaterialName)
         {
-            if (newItemMaterialName != ItemMaterialName)
+            if (newItemMaterialName != itemMaterialName)
             {
-                ItemMaterialName = newItemMaterialName;
+                itemMaterialName = newItemMaterialName;
             }
         }
 
-        public void SetItemDesign(string newItemDesign)
+        public void SetitemGrade(string newitemGrade)
         {
-            if (newItemDesign != ItemDesign)
+            if (newitemGrade != itemGrade)
             {
-                ItemDesign = newItemDesign;
+                itemGrade = newitemGrade;
             }
         }
 
         public void SetItemType(string newItemType)
         {
-            if (newItemType != ItemType)
+            if (newItemType != itemType)
             {
-                ItemType = newItemType;
+                itemType = newItemType;
             }
         }
 
         public void SetItemCode(string newItemCode)
         {
-            if (newItemCode != ItemCode)
+            if (newItemCode != itemCode)
             {
-                ItemCode = newItemCode;
+                itemCode = newItemCode;
             }
         }
 
-        public void SetInputPacking(decimal newInputPacking)
+        public void SetinputBale(decimal? newinputBale)
         {
-            if (newInputPacking != InputPacking)
+            if (newinputBale != inputBale)
             {
-                InputPacking = newInputPacking;
+                inputBale = newinputBale;
             }
         }
 
-        public void SetLength(decimal newLength)
+        public void SetinputPiece(decimal? newinputPiece)
         {
-            if (newLength != Length)
+            if (newinputPiece != inputPiece)
             {
-                Length = newLength;
+                inputPiece = newinputPiece;
             }
         }
 
-        public void SetInputConversion(decimal newInputConversion)
+        public void SetinputMeter(decimal? newinputMeter)
         {
-            if (newInputConversion != InputConversion)
+            if (newinputMeter != inputMeter)
             {
-                InputConversion = newInputConversion;
+                inputMeter = newinputMeter;
+            }
+        }
+
+        public void SetinputKg(decimal? newinputKg)
+        {
+            if (newinputKg != inputKg)
+            {
+                inputKg = newinputKg;
             }
         }
     }

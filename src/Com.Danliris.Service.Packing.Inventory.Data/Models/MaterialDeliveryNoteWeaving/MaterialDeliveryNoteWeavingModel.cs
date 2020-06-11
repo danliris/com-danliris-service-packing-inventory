@@ -23,8 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
         public int? StorageId { get; set; }
         public string StorageCode { get; set; }
         public string StorageName { get; set; }
-        public string UnitLength { get; set; }
-        public string UnitPacking { get; set; }
         public string Remark { get; set; }
 
         public ICollection<ItemsMaterialDeliveryNoteWeavingModel> ItemsMaterialDeliveryNoteWeaving { get; private set; }
@@ -49,8 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             int? storageid,
             string storagecode,
             string storagename,
-            string unitlength,
-            string unitpacking,
             string remark,
             ICollection<ItemsMaterialDeliveryNoteWeavingModel> items
             )
@@ -69,8 +65,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             StorageId = storageid;
             StorageCode = storagecode;
             StorageName = storagename;
-            UnitLength = unitlength;
-            UnitPacking = unitpacking;
             Remark = remark;
             ItemsMaterialDeliveryNoteWeaving = items;
 
@@ -185,22 +179,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             if (newStorageName != StorageName)
             {
                 StorageName = newStorageName;
-            }
-        }
-
-        public void SetUnitLength(string newUnitLength)
-        {
-            if (newUnitLength != UnitLength)
-            {
-                UnitLength = newUnitLength;
-            }
-        }
-
-        public void SetUnitPacking(string newUnitPacking)
-        {
-            if (newUnitPacking != UnitPacking)
-            {
-                UnitPacking = newUnitPacking;
             }
         }
 

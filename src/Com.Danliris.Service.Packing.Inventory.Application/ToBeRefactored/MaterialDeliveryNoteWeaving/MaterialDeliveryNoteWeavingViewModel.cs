@@ -23,15 +23,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
         public Buyer Buyer { get; set; }
         public string NumberBonOut { get; set; }
         public Storage Storage { get; set; }
-        public string UnitLength { get; set; }
-        public string UnitPacking { get; set; }
         public string Remark { get; set; }
 
         public ICollection<ItemsMaterialDeliveryNoteWeavingViewModel> ItemsMaterialDeliveryNoteWeaving { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (DateSJ == default(DateTimeOffset))
+            if (DateSJ== null || DateSJ == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal S.J harus diisi", new List<string> { "DateSJ" });
             }
@@ -66,22 +64,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                 yield return new ValidationResult("Gudang harus diisi", new List<string> { "Storage" });
             }
 
-            if (string.IsNullOrWhiteSpace(UnitLength))
-            {
-                yield return new ValidationResult("Satuan Panjang harus diisi", new List<string> { "UnitLength" });
-            }
-
-            if (string.IsNullOrWhiteSpace(UnitPacking))
-            {
-                yield return new ValidationResult("Satuan Packing harus diisi", new List<string> { "UnitLength" });
-            }
-
             int Count = 0;
             string DetailErrors = "[";
 
             if (ItemsMaterialDeliveryNoteWeaving.Count == 0)
             {
-                yield return new ValidationResult("SPP harus Diisi", new List<string> { "ItemsMaterialDeliveryNoteW" });
+                yield return new ValidationResult("SPP harus Diisi", new List<string> { "ItemsMaterialDeliveryNoteWeaving" });
             }
             else
             {
@@ -89,46 +77,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                 {
                     DetailErrors += "{";
 
-                    if (string.IsNullOrEmpty(item.ItemNoSPP))
+                    if (string.IsNullOrEmpty(item.itemNoSOP))
                     {
                         Count++;
-                        DetailErrors += "ItemNoSPP: 'No. SPP Harus Diisi!',";
+                        DetailErrors += "ItemNoSOP: 'No. SOP Harus Diisi!',";
                     }
 
-                    if (string.IsNullOrEmpty(item.ItemMaterialName))
+                    if (string.IsNullOrEmpty(item.itemMaterialName))
                     {
                         Count++;
-                        DetailErrors += "ItemMaterialName: 'No. Nama Barang Harus Diisi!',";
+                        DetailErrors += "ItemMaterialName: 'Nama Barang Harus Diisi!',";
                     }
 
-                    if (string.IsNullOrEmpty(item.ItemDesign))
+                    if (string.IsNullOrEmpty(item.itemGrade))
                     {
                         Count++;
-                        DetailErrors += "ItemDesign: 'Nama Design Harus Diisi!',";
+                        DetailErrors += "ItemGrade: 'Grade Harus Diisi!',";
                     }
 
-                    if (string.IsNullOrEmpty(item.ItemType))
+                    if (string.IsNullOrEmpty(item.itemType))
                     {
                         Count++;
-                        DetailErrors += "ItemType: 'Nama Jenis Harus Diisi!',";
+                        DetailErrors += "ItemType: 'Jenis Harus Diisi!',";
                     }
 
-                    if (string.IsNullOrEmpty(item.ItemCode))
+                    if (string.IsNullOrEmpty(item.itemCode))
                     {
                         Count++;
                         DetailErrors += "ItemCode: 'Kode Harus Diisi!',";
                     }
 
-                    if (item.InputPacking == 0)
+                    if (item.inputBale == 0)
                     {
                         Count++;
-                        DetailErrors += "InputPakcing: 'Packing Harus Diisi!',";
+                        DetailErrors += "InputBale: 'Bale Harus Diisi!',";
                     }
 
-                    if (item.Length == 0)
+                    if (item.inputPiece == 0)
                     {
                         Count++;
-                        DetailErrors += "Length: 'Panjang Harus Diisi!',";
+                        DetailErrors += "InputPiece: 'Piece Harus Diisi!',";
+                    }
+
+                    if (item.inputMeter == 0)
+                    {
+                        Count++;
+                        DetailErrors += "InputMeter: 'Meter Harus Diisi!',";
+                    }
+
+                    if (item.inputKg == 0)
+                    {
+                        Count++;
+                        DetailErrors += "InputKg: 'Kg Harus Diisi!',";
                     }
 
                     DetailErrors += "}, ";
@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             DetailErrors += "]";
 
             if (Count > 0)
-                yield return new ValidationResult(DetailErrors, new List<string> { "ItemsMaterialDeliveryNoteW" });
+                yield return new ValidationResult(DetailErrors, new List<string> { "ItemsMaterialDeliveryNoteWeaving" });
         }
     }
 }

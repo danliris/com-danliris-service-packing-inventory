@@ -28,8 +28,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         public string UnitLength { get; set; }
         public string UnitPacking { get; set; }
         public string Remark { get; set; }
-
-
         public ICollection<ItemsMaterialDeliveryNoteWeavingViewModel> ItemsMaterialDeliveryNoteWeaving { get; set; }
     }
 }

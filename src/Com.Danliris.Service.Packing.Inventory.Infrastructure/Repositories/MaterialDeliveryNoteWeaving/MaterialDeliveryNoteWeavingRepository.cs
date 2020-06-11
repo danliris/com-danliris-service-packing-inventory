@@ -77,8 +77,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
             modelToUpdate.SetStorageId(model.StorageId);
             modelToUpdate.SetStorageCode(model.StorageCode);
             modelToUpdate.SetStorageName(model.StorageName);
-            modelToUpdate.SetUnitLength(model.UnitLength);
-            modelToUpdate.SetUnitPacking(model.UnitPacking);
             modelToUpdate.SetRemark(model.Remark);
 
             foreach (var itm in modelToUpdate.ItemsMaterialDeliveryNoteWeaving)
@@ -87,14 +85,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
                 if (locitem != null)
                 {
-                    itm.SetItemNoSPP(locitem.ItemNoSPP);
-                    itm.SetItemMaterialName(locitem.ItemMaterialName);
-                    itm.SetItemDesign(locitem.ItemDesign);
-                    itm.SetItemType(locitem.ItemType);
-                    itm.SetItemCode(locitem.ItemCode);
-                    itm.SetInputPacking(locitem.InputPacking);
-                    itm.SetLength(locitem.Length);
-                    itm.SetInputConversion(locitem.InputConversion);
+                    itm.SetItemNoSOP(locitem.itemNoSOP);
+                    itm.SetItemMaterialName(locitem.itemMaterialName);
+                    itm.SetitemGrade(locitem.itemGrade);
+                    itm.SetItemType(locitem.itemType);
+                    itm.SetinputBale(locitem.inputBale);
+                    itm.SetinputPiece(locitem.inputPiece);
+                    itm.SetinputMeter(locitem.inputMeter);
+                    itm.SetinputKg(locitem.inputKg);
                 }
                 else
                 {

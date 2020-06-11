@@ -64,15 +64,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
                 if (ItemsDetail != null)
                 {
-
-                    item.SetItemNoSPP(model.ItemNoSPP);
-                    item.SetItemMaterialName(model.ItemMaterialName);
-                    item.SetItemDesign(model.ItemDesign);
-                    item.SetItemType(model.ItemType);
-                    item.SetItemCode(model.ItemCode);
-                    item.SetInputPacking(model.InputPacking);
-                    item.SetLength(model.Length);
-                    item.SetInputConversion(model.InputConversion);
+                    item.SetItemNoSOP(model.itemNoSOP);
+                    item.SetItemMaterialName(model.itemMaterialName);
+                    item.SetitemGrade(model.itemGrade);
+                    item.SetItemType(model.itemType);
+                    item.SetinputBale(model.inputBale);
+                    item.SetinputPiece(model.inputPiece);
+                    item.SetinputMeter(model.inputMeter);
+                    item.SetinputKg(model.inputKg);
                 }
                 else
                 {

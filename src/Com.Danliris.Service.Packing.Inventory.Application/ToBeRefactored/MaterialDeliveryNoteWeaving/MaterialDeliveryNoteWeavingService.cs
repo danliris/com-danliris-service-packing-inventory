@@ -59,19 +59,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                     Code = model.StorageCode,
                     Name = model.StorageName
                 },
-                UnitLength = model.UnitLength,
-                UnitPacking = model.UnitPacking,
                 Remark = model.Remark,
                 ItemsMaterialDeliveryNoteWeaving = model.ItemsMaterialDeliveryNoteWeaving.Select(d => new ItemsMaterialDeliveryNoteWeavingViewModel()
                 {
-                    ItemNoSPP = d.ItemNoSPP,
-                    ItemMaterialName = d.ItemMaterialName,
-                    ItemDesign = d.ItemDesign,
-                    ItemType = d.ItemType,
-                    ItemCode = d.ItemCode,
-                    InputPacking = d.InputPacking,
-                    Length = d.Length,
-                    InputConversion = d.InputConversion
+                    itemNoSOP = d.itemNoSOP,
+                    itemMaterialName = d.itemMaterialName,
+                    itemGrade = d.itemGrade,
+                    itemType = d.itemType,
+                    itemCode = d.itemCode,
+                    inputBale = d.inputBale,
+                    inputPiece = d.inputPiece,
+                    inputMeter = d.inputMeter,
+                    inputKg = d.inputKg
                 }).ToList()
             };
 
@@ -82,12 +81,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         {
             var model = new Data.MaterialDeliveryNoteWeavingModel(null, viewModel.DateSJ, viewModel.selectedDO.Id, viewModel.selectedDO.No, viewModel.SendTo, viewModel.Unit.Id, viewModel.Unit.Name,
                                                                 viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Buyer.Name, viewModel.NumberBonOut, viewModel.Storage.Id, viewModel.Storage.Code, viewModel.Storage.Name,
-                                                                viewModel.UnitLength, viewModel.UnitPacking, viewModel.Remark,
-                                                                viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.ItemNoSPP, s.ItemMaterialName, s.ItemDesign, s.ItemType, s.ItemCode, s.InputPacking, s.Length, s.InputConversion)).ToList());
+                                                                viewModel.Remark,
+                                                                viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.itemNoSOP, s.itemMaterialName, s.itemGrade, s.itemType, s.itemCode, s.inputBale, s.inputPiece, s.inputMeter,s.inputKg)).ToList());
 
             foreach (var itm in viewModel.ItemsMaterialDeliveryNoteWeaving)
             {
-                var modelItem = new ItemsMaterialDeliveryNoteWeavingModel(itm.ItemNoSPP, itm.ItemMaterialName, itm.ItemDesign, itm.ItemType, itm.ItemCode, itm.InputPacking, itm.Length, itm.InputConversion);
+                var modelItem = new ItemsMaterialDeliveryNoteWeavingModel(itm.itemNoSOP, itm.itemMaterialName, itm.itemGrade, itm.itemType, itm.itemCode, itm.inputBale, itm.inputPiece, itm.inputMeter,itm.inputKg);
 
                 await _ItemsMaterialDeliveryNoteWeavingRepository.InsertAsync(modelItem);
             }
@@ -149,8 +148,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         {
             var model = new Data.MaterialDeliveryNoteWeavingModel(viewModel.Code, viewModel.DateSJ, viewModel.selectedDO.Id, viewModel.selectedDO.No, viewModel.SendTo, viewModel.Unit.Id, viewModel.Unit.Name,
                                                                 viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Buyer.Name, viewModel.NumberBonOut, viewModel.Storage.Id, viewModel.Storage.Code, viewModel.Storage.Name,
-                                                                viewModel.UnitLength, viewModel.UnitPacking, viewModel.Remark,
-                                                                viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.ItemNoSPP, s.ItemMaterialName, s.ItemDesign, s.ItemType, s.ItemCode, s.InputPacking, s.Length, s.InputConversion)).ToList());
+                                                                viewModel.Remark,
+                                                                viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.itemNoSOP, s.itemMaterialName, s.itemGrade, s.itemType, s.itemCode, s.inputBale, s.inputPiece, s.inputMeter, s.inputKg)).ToList());
 
             await _MaterialDeliveryNoteWeavingRepository.UpdateAsync(id, model);
         }

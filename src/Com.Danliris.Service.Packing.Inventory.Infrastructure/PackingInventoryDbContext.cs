@@ -3,6 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
@@ -12,7 +13,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNoteWeaving;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -93,6 +94,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteWeavingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemsMaterialDeliveryNoteWeavingEntityTypeConfiguration());
+
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -119,6 +123,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<MaterialDeliveryNoteModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<ItemsModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<MaterialDeliveryNoteWeavingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<ItemsMaterialDeliveryNoteWeavingModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }

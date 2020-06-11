@@ -39,35 +39,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.ItemNoSPP)
+                .Property(s => s.itemNoSOP)
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.ItemMaterialName)
+                .Property(s => s.itemMaterialName)
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.ItemDesign)
+                .Property(s => s.itemGrade)
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.ItemType)
+                .Property(s => s.itemType)
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.ItemCode)
+                .Property(s => s.itemCode)
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.InputPacking)
+                .Property(s => s.inputBale)
                 .HasColumnType("decimal(18,2)");
 
             builder
-                .Property(s => s.Length)
+                .Property(s => s.inputPiece)
                 .HasColumnType("decimal(18,2)");
 
             builder
-                .Property(s => s.InputConversion)
+                .Property(s => s.inputMeter)
+                .HasColumnType("decimal(18,2)");
+
+            builder
+                .Property(s => s.inputKg)
                 .HasColumnType("decimal(18,2)");
         }
     }

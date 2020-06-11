@@ -4,13 +4,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
 {
     public  class ItemsMaterialDeliveryNoteWeavingViewModel: BaseViewModel
     {
-        public string ItemNoSPP { get; set; }
-        public string ItemMaterialName { get; set; }
-        public string ItemDesign { get; set; }
-        public string ItemType { get; set; }
-        public string ItemCode { get; set; }
-        public decimal InputPacking { get; set; }
-        public decimal Length { get; set; }
-        public decimal InputConversion { get; set; }
+        public string itemNoSOP { get; set; }
+        public string itemMaterialName { get; set; }
+        public string itemGrade { get; set; }
+        public string itemType { get; set; }
+        public string itemCode { get; set; }
+        public decimal? inputBale { get; set; }
+        public decimal? inputPiece { get; set; }
+        public decimal? inputMeter { get; set; }
+        public decimal? inputKg { get; set; }
     }
 }
