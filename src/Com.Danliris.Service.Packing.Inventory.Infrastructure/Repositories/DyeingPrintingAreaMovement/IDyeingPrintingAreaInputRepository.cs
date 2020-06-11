@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateTransitArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         Task<int> DeleteShippingArea(DyeingPrintingAreaInputModel model);
         Task<int> UpdateShippingArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
+        Task<int> DeleteAvalTransformationArea(DyeingPrintingAreaInputModel model);
+        Task<int> UpdateAvalTransformationArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         IQueryable<DyeingPrintingAreaInputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaInputModel> ReadAllIgnoreQueryFilter();
     }
