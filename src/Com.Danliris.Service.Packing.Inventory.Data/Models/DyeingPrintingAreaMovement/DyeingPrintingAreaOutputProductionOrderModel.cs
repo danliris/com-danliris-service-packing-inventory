@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// </summary>
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
 
-        public ICollection<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; private set; }
+        //public ICollection<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; private set; }
 
 
         public int DyeingPrintingAreaOutputId { get; set; }
@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public DyeingPrintingAreaOutputProductionOrderModel()
         {
-            DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
+            //DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
         }
 
         //IM
