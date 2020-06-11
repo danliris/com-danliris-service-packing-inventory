@@ -463,5 +463,96 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon Aval Area Dyeing Printing") }, true);
             return stream;
         }
+
+        public ListResult<AvailableAvalIndexViewModel> ReadAllAvailableAval(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _inputRepository.ReadAll().Where(s => 
+                                                         s.Area == GUDANGAVAL &&
+                                                         s.DyeingPrintingAreaInputProductionOrders.Any(o => !o.HasOutputDocument));
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
+            var data = new List<AvailableAvalIndexViewModel>();
+            foreach (var avalInput in query)
+            {
+                foreach (var avalInputItem in avalInput.DyeingPrintingAreaInputProductionOrders)
+                {
+                    var avalItems = new AvailableAvalIndexViewModel()
+                    {
+                        AvalInputId = avalInput.Id,
+                        Date = avalInput.Date,
+                        Area = avalInput.Area,
+                        Shift = avalInput.Shift,
+                        Group = avalInput.Group,
+                        BonNo = avalInput.BonNo,
+                        AvalItemId = avalInputItem.Id,
+                        AvalType = avalInputItem.AvalType,
+                        AvalCartNo = avalInputItem.AvalCartNo,
+                        AvalUomUnit = avalInputItem.UomUnit,
+                        AvalQuantity = avalInputItem.Balance,
+                        AvalQuantityKg = avalInputItem.AvalQuantityKg
+                    };
+
+                    data.Add(avalItems);
+                }
+            }
+
+            return new ListResult<AvailableAvalIndexViewModel>(data, page, size, query.Count());
+        }
+
+        public ListResult<AvailableAvalIndexViewModel> ReadByBonAvailableAval(int bonId, int page, int size, string filter, string order, string keyword)
+        {
+            var query = _inputRepository.ReadAll().Where(s =>
+                                                         s.Id == bonId &&
+                                                         s.Area == GUDANGAVAL &&
+                                                         s.DyeingPrintingAreaInputProductionOrders.Any(o => !o.HasOutputDocument));
+            List<string> SearchAttributes = new List<string>()
+            {
+                "BonNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputModel>.Order(query, OrderDictionary);
+            var data = new List<AvailableAvalIndexViewModel>();
+            foreach (var avalInput in query)
+            {
+                foreach (var avalInputItem in avalInput.DyeingPrintingAreaInputProductionOrders)
+                {
+                    var avalItems = new AvailableAvalIndexViewModel()
+                    {
+                        AvalInputId = avalInput.Id,
+                        Date = avalInput.Date,
+                        Area = avalInput.Area,
+                        Shift = avalInput.Shift,
+                        Group = avalInput.Group,
+                        BonNo = avalInput.BonNo,
+                        AvalItemId = avalInputItem.Id,
+                        AvalType = avalInputItem.AvalType,
+                        AvalCartNo = avalInputItem.AvalCartNo,
+                        AvalUomUnit = avalInputItem.UomUnit,
+                        AvalQuantity = avalInputItem.Balance,
+                        AvalQuantityKg = avalInputItem.AvalQuantityKg
+                    };
+
+                    data.Add(avalItems);
+                }
+            }
+
+            return new ListResult<AvailableAvalIndexViewModel>(data, page, size, query.Count());
+        }
     }
 }
