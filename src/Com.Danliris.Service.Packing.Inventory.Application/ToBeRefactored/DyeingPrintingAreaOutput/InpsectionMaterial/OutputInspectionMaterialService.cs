@@ -351,9 +351,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
             var data = productionOrders.Select(s => new InputInspectionMaterialProductionOrderViewModel()
             {
-                AvalALength = s.AvalALength,
-                AvalBLength = s.AvalBLength,
-                AvalConnectionLength = s.AvalConnectionLength,
                 Balance = s.Balance,
                 Buyer = s.Buyer,
                 CartNo = s.CartNo,

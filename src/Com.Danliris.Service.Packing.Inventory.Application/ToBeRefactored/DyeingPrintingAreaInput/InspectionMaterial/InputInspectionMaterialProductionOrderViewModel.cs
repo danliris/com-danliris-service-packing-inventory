@@ -23,9 +23,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool IsChecked { get; set; }
         public string Grade { get; set; }
         public double InitLength { get; set; }
-        public double AvalALength { get; set; }
-        public double AvalBLength { get; set; }
-        public double AvalConnectionLength { get; set; }
+        //public double AvalALength { get; set; }
+        //public double AvalBLength { get; set; }
+        //public double AvalConnectionLength { get; set; }
 
         public double BalanceRemains { get; set; }
 
