@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string Notify { get; set; }
         public string SpecialInstruction { get; set; }
         #endregion
+        
 
         public GarmentShippingInstructionModel(string invoiceNo, int packingListId, DateTimeOffset date, int emklId, string emklCode, string emklName, string attn, string fax, string cc,int shippingStaffId, string shippingStaffName,string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge,string placeOfDelivery,string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName,int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction)
         {
@@ -73,6 +74,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BuyerAgentId = buyerAgentId;
             Notify = notify;
             SpecialInstruction = specialInstruction;
+        }
+
+        public GarmentShippingInstructionModel()
+        {
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
