@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-        public double AvalQuantityKg { get; private set; }
+        
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -46,6 +46,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Area { get; private set; }
 
         public double BalanceRemains { get; private set; }
+
+        #region aval transformasi
+        public string InputAvalBonNo { get; private set; }
+        public double AvalQuantityKg { get; private set; }
+        public double AvalQuantity { get; private set; }
+        #endregion
 
         public int DyeingPrintingAreaInputId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
@@ -398,36 +404,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
         }
-        /// <summary>
-        /// construtor for Gudang barang jadi
-        /// </summary>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, double productionOrderOrderQuantity, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            PackagingUnit = packagingUnit;
-            PackagingQty = packagingQty;
-            PackagingType = packagingType;
-            Grade = grade;
-            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
-
-            Area = area;
-
-            BuyerId = buyerId;
-        }
-
+        
         /// <summary>
         /// construtor for Gudang barang jadi With OutputSPP ID
         /// </summary>
@@ -610,6 +587,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
         }
+
+        //aval transformation
+        public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType, 
+            double productionOrderQuantity, string cartNo, string construction,string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit, 
+            double balance, double avalQuantity, double avalWeightQuantity, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId)
+        {
+            Area = area;
+            InputAvalBonNo = inputAvalBonNo;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            CartNo = cartNo;
+            Construction = construction;
+            Unit = unit;
+            Buyer = buyer;
+            BuyerId = buyerId;
+            Color = color;
+            Motif = motif;
+            AvalType = avalType;
+            UomUnit = uomUnit;
+            Balance = balance;
+            AvalQuantity = avalQuantity;
+            AvalQuantityKg = avalWeightQuantity;
+
+            HasOutputDocument = hasOutputDocument;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+
+        }
+
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderOrderQuantity, string user, string agent)
         {
@@ -865,5 +872,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
+
+        public void SetAvalQuantityKG(double newavalKG, string user, string agent)
+        {
+            if (newavalKG != AvalQuantityKg)
+            {
+                AvalQuantityKg = newavalKG;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalQuantity(double newavalQuantity, string user, string agent)
+        {
+            if (newavalQuantity != AvalQuantity)
+            {
+                AvalQuantity = newavalQuantity;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 }
