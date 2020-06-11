@@ -151,6 +151,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("aval-summary-by-type")]
+        public IActionResult GetSummaryAvalByType([FromQuery]string avalType,
+                                              [FromQuery] string keyword = null,
+                                              [FromQuery] int page = 1,
+                                              [FromQuery] int size = 25,
+                                              [FromQuery] string order = "{}",
+                                              [FromQuery] string filter = "{}")
+        {
+            var data = _service.ReadByTypeAvailableAval(avalType, page, size, filter, order, keyword);
+            if (data == null)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return Ok(data);
+            }
+        }
+
         [HttpGet("xls/{id}")]
         public async Task<IActionResult> GetExcel(int id)
         {

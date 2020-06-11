@@ -514,7 +514,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalBLength = d.AvalBLength,
                     AvalConnectionLength = d.AvalConnectionLength,
                     QtyOrder = d.ProductionOrderOrderQuantity,
-                    AvalType = d.Grade,
+                    AvalType = d.AvalType,
                     DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
 
                 }).ToList()

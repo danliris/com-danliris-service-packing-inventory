@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromQuery] int id)
+        public IActionResult Delete([FromRoute] int id)
         {
             try
             {
