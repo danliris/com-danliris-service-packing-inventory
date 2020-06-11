@@ -47,6 +47,7 @@ using Microsoft.OpenApi.Models;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.AvalTransformation;
 using System.Collections.Generic;
 using System.Text;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -118,9 +119,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
             services.AddTransient<IInputAvalTransformationService, InputAvalTransformationService>();
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
+            services.AddTransient<IAvalStockReportService, AvalStockReportService>();
 
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
+
             #endregion
 
             // Register Provider
