@@ -119,14 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                     Id = 2,
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    AvalItems = new List<AvalItem>()
-                                    {
-                                        new AvalItem()
-                                        {
-                                            Type = "type",
-                                            Length = 1
-                                        }
-                                    }
+                                    AvalType = "type"
                                 }
                             },
                             BuyerId = 1,
@@ -151,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         var productionOrders = new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalItems.Select(e => new DyeingPrintingAreaOutputAvalItemModel(e.Type, e.Length)).ToList())
+                            detail.AvalType)
                         {
                             Id = detail.Id
                         };
@@ -740,15 +733,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         [Fact]
         public void Validate_VM()
         {
-            var avalItem = new AvalItem()
-            {
-                Length = 1,
-                Type = "Aval A"
-            };
-
-            Assert.NotEqual(0, avalItem.Length);
-            Assert.NotNull(avalItem.Type);
-
+           
             var spp = new OutputInspectionMaterialProductionOrderViewModel()
             {
                 PreviousBalance = 1,

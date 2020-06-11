@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //IM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, ICollection<DyeingPrintingAreaOutputAvalItemModel> dyeingPrintingAreaOutputAvalItems)
+            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
 
-            DyeingPrintingAreaOutputAvalItems = dyeingPrintingAreaOutputAvalItems;
+            AvalType = avalType;
         }
 
         //Transit
@@ -792,6 +792,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newDeliveryNote != DeliveryNote)
             {
                 DeliveryNote = newDeliveryNote;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalType(string newAvalType, string user, string agent)
+        {
+            if (newAvalType != AvalType)
+            {
+                AvalType = newAvalType;
                 this.FlagForUpdate(user, agent);
             }
         }

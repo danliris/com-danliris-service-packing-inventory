@@ -109,23 +109,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderDetails = item.Select(d => new OutputInspectionMaterialProductionOrderDetailViewModel()
                     {
                         Active = d.Active,
-                        AvalItems = d.DyeingPrintingAreaOutputAvalItems.Select(e => new AvalItem()
-                        {
-                            Active = e.Active,
-                            CreatedAgent = e.CreatedAgent,
-                            CreatedBy = e.CreatedBy,
-                            CreatedUtc = e.CreatedUtc,
-                            DeletedAgent = e.DeletedAgent,
-                            DeletedBy = e.DeletedBy,
-                            DeletedUtc = e.DeletedUtc,
-                            Id = e.Id,
-                            IsDeleted = e.IsDeleted,
-                            LastModifiedAgent = e.LastModifiedAgent,
-                            LastModifiedBy = e.LastModifiedBy,
-                            LastModifiedUtc = e.LastModifiedUtc,
-                            Length = e.Length,
-                            Type = e.Type
-                        }).ToList(),
+                        //AvalItems = d.DyeingPrintingAreaOutputAvalItems.Select(e => new AvalItem()
+                        //{
+                        //    Active = e.Active,
+                        //    CreatedAgent = e.CreatedAgent,
+                        //    CreatedBy = e.CreatedBy,
+                        //    CreatedUtc = e.CreatedUtc,
+                        //    DeletedAgent = e.DeletedAgent,
+                        //    DeletedBy = e.DeletedBy,
+                        //    DeletedUtc = e.DeletedUtc,
+                        //    Id = e.Id,
+                        //    IsDeleted = e.IsDeleted,
+                        //    LastModifiedAgent = e.LastModifiedAgent,
+                        //    LastModifiedBy = e.LastModifiedBy,
+                        //    LastModifiedUtc = e.LastModifiedUtc,
+                        //    Length = e.Length,
+                        //    Type = e.Type
+                        //}).ToList(),
+                        AvalType = d.AvalType,
                         LastModifiedUtc = d.LastModifiedUtc,
                         LastModifiedBy = d.LastModifiedBy,
                         LastModifiedAgent = d.LastModifiedAgent,
@@ -188,8 +189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
                             item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
+                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType);
                         productionOrders.Add(outputProductionOrder);
                     }
                 }
@@ -234,7 +234,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
                          item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance,
-                         item.Id, item.BuyerId, detail.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length)).ToList());
+                         item.Id, item.BuyerId, detail.AvalType);
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                         result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -421,8 +421,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, detail.HasNextAreaDocument, item.ProductionOrder.Id,
                         item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                        detail.AvalItems.Select(d => new DyeingPrintingAreaOutputAvalItemModel(d.Type, d.Length) { Id = d.Id }).ToList())
+                        item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType)
                     {
                         Id = detail.Id
                     };
@@ -457,14 +456,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     newBalance = item.Balance;
                 }
-                if(newBalance != 0)
+                if (newBalance != 0)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, TYPE, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id);
 
                     result += await _movementRepository.InsertAsync(movementModel);
                 }
-                
+
 
             }
             foreach (var item in deletedData)

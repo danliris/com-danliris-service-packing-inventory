@@ -315,10 +315,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
-                foreach(var aval in item.DyeingPrintingAreaOutputAvalItems)
-                {
-                    aval.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().DyeingPrintingAreaOutputAvalItems.FirstOrDefault().Id;
-                }
             }
             var result = await repo2.UpdateIMArea(data.Id, model, dbModel);
 
