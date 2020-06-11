@@ -36,5 +36,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                  new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,0,null,null,null,null,null,null,null,null,1,1,true,0,0),
             });
         }
+
+        public DyeingPrintingAreaInputModel GetAvalTransformModel()
+        {
+            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "shif", "np", "gr", "typ", true, 5, 5, new List<DyeingPrintingAreaInputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,2,2,false,1),
+                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,2,2,false,1)
+            });
+        }
+
+        public DyeingPrintingAreaInputModel GetEmptyuAvalTransformModel()
+        {
+            return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow.AddDays(-1), null, null, null, null, null, false, 0, 0, new List<DyeingPrintingAreaInputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaInputProductionOrderModel(null,null,0,null,null,0,null,null,null,null,0,null,null,null,null,0,1,1,true,0)
+            });
+        }
     }
 }

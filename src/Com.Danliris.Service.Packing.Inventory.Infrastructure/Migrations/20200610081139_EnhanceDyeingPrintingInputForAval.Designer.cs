@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200610081139_EnhanceDyeingPrintingInputForAval")]
+    partial class EnhanceDyeingPrintingInputForAval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,9 +231,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<double>("AvalQuantity");
-
-                    b.Property<string>("AvalType")
-                        .HasMaxLength(128);
 
                     b.Property<double>("AvalWeightQuantity");
 
@@ -832,122 +831,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("NewFabricQualityControls");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter.GarmentShippingCoverLetterModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ATTN")
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(1000);
-
-                    b.Property<DateTimeOffset>("BookingDate");
-
-                    b.Property<double>("CartoonQuantity");
-
-                    b.Property<string>("ContainerNo")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DLSeal")
-                        .HasMaxLength(250);
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Driver")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("EMKLSeal")
-                        .HasMaxLength(250);
-
-                    b.Property<DateTimeOffset>("ExportEstimationDate");
-
-                    b.Property<string>("ForwarderCode")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("ForwarderId");
-
-                    b.Property<string>("ForwarderName")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Freight")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("InvoiceNo")
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("OrderCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("OrderId");
-
-                    b.Property<string>("OrderName")
-                        .HasMaxLength(255);
-
-                    b.Property<double>("PACKQuantity");
-
-                    b.Property<double>("PCSQuantity");
-
-                    b.Property<int>("PackingListId");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("PlateNumber")
-                        .HasMaxLength(250);
-
-                    b.Property<double>("SETSQuantity");
-
-                    b.Property<string>("ShippingSeal")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("ShippingStaff")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Truck")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Unit")
-                        .HasMaxLength(1000);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GarmentShippingCoverLetters");
-                });
-
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList.GarmentPackingListDetailModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1303,128 +1186,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasFilter("[IsDeleted]=(0)");
 
                     b.ToTable("GarmentPackingLists");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction.GarmentShippingInstructionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ATTN")
-                        .HasMaxLength(1000);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("BankAccountId");
-
-                    b.Property<string>("BankAccountName")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("BuyerAgentAddress")
-                        .HasMaxLength(4000);
-
-                    b.Property<string>("BuyerAgentCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("BuyerAgentId");
-
-                    b.Property<string>("BuyerAgentName")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CC")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("Carrier")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CartonNo")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("EMKLCode")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("EMKLId");
-
-                    b.Property<string>("EMKLName")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Fax")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("FeederVessel")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Flight")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("InvoiceNo")
-                        .HasMaxLength(50);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Notify")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("OceanVessel")
-                        .HasMaxLength(255);
-
-                    b.Property<int>("PackingListId");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("PlaceOfDelivery")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("PortOfDischarge")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ShippedBy")
-                        .HasMaxLength(20);
-
-                    b.Property<int>("ShippingStaffId");
-
-                    b.Property<string>("ShippingStaffName")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("SpecialInstruction")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("Transit")
-                        .HasMaxLength(255);
-
-                    b.Property<DateTimeOffset>("TruckingDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GarmentShippingInstructions");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingItemModel", b =>

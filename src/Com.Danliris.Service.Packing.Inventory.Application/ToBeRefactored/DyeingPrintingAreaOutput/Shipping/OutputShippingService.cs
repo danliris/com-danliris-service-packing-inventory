@@ -354,6 +354,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Unit = d.Unit,
                     Grade = d.Grade,
                     Remark = d.Remark,
+                    HasNextAreaDocument = d.HasNextAreaDocument,
+                    
                     PackingType = d.PackagingType,
                     QtyPacking = d.PackagingQty,
                     Packing = d.PackagingUnit,
