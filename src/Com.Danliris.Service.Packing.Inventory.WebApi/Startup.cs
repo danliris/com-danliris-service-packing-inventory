@@ -48,6 +48,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using System.Collections.Generic;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -101,6 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
+            services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
 
             #endregion
 
@@ -123,6 +126,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
+            services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
+            services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
 
             #endregion
 
