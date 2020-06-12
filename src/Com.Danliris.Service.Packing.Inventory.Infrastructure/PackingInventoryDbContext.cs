@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteItemConfig());
 
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
-			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
 
 			modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
