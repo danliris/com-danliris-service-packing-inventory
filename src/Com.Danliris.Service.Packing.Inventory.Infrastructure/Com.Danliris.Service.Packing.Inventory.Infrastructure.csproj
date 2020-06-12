@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <Compile Remove="EntityConfigurations\DyeingPrintingAreaMovementHistoryEntityTypeConfiguration.cs" />
+    <Compile Remove="EntityConfigurations\DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration.cs" />
     <Compile Remove="EntityConfigurations\OldDyeingPrintingAreaMovementEntityTypeConfiguration.cs" />
     <Compile Remove="Migrations\20200401094743_AddDyeingPrintingAreaMovement.cs" />
     <Compile Remove="Migrations\20200401094743_AddDyeingPrintingAreaMovement.Designer.cs" />
@@ -29,8 +30,14 @@
     <Compile Remove="Migrations\20200603093958_UpdateMaterialDeliveryNote.Designer.cs" />
     <Compile Remove="Migrations\20200604101205_UpdateMaterialDeliveryNote_V2.cs" />
     <Compile Remove="Migrations\20200604101205_UpdateMaterialDeliveryNote_V2.Designer.cs" />
+    <Compile Remove="Migrations\20200603075100_AddTabelAvalItem.cs" />
+    <Compile Remove="Migrations\20200603075100_AddTabelAvalItem.Designer.cs" />
+    <Compile Remove="Migrations\20200610080922_EnhanceDyeingPrintingInputForAval.cs" />
+    <Compile Remove="Migrations\20200610080922_EnhanceDyeingPrintingInputForAval.Designer.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaOutputAvalItemRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\OldDyeingPrintingAreaMovementRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\OldIDyeingPrintingAreaMovementRepository.cs" />
   </ItemGroup>

@@ -413,6 +413,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.IsType<DateTimeOffset>(indexVM.Date);
             Assert.Null(indexVM.Shift);
             Assert.Null(indexVM.Group);
+
+            var sppVM = new InputInspectionMaterialProductionOrderViewModel();
+            Assert.False(sppVM.IsChecked);
+            Assert.Null(sppVM.Grade);
+            Assert.Equal(0, sppVM.InitLength);
+            Assert.Equal(0, sppVM.InputId);
         }
     }
 }

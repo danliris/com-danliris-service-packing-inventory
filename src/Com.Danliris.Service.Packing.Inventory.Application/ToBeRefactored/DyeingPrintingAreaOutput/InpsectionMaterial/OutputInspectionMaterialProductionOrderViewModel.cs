@@ -38,21 +38,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
     public class OutputInspectionMaterialProductionOrderDetailViewModel : BaseViewModel
     {
-        public OutputInspectionMaterialProductionOrderDetailViewModel()
-        {
-            AvalItems = new HashSet<AvalItem>();
-        }
-
+        public string AvalType { get; set; }
         public string Remark { get; set; }
         public string Grade { get; set; }
         public double Balance { get; set; }
         public bool HasNextAreaDocument { get; set; }
-        public ICollection<AvalItem> AvalItems { get; set; }
     }
 
-    public class AvalItem : BaseViewModel
-    {
-        public string Type { get; set; }
-        public double Length { get; set; }
-    }
+    //public class AvalItem : BaseViewModel
+    //{
+    //    public string Type { get; set; }
+    //    public double Length { get; set; }
+    //}
 }

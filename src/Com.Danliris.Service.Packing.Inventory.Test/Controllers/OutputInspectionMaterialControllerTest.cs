@@ -107,14 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                                     Grade = "a",
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    AvalItems = new List<AvalItem>()
-                                    {
-                                        new AvalItem()
-                                        {
-                                            Type = "type",
-                                            Length = 1
-                                        }
-                                    }
+                                    AvalType = "tupe",
                                 }
                             }
                         }

@@ -25,6 +25,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Motif { get; private set; }
         public string UomUnit { get; private set; }
         public double Balance { get; private set; }
+        public double AvalQuantity { get; private set; }
+        public double AvalWeightQuantity { get; private set; }
+        public string AvalType { get; private set; }
 
         public DyeingPrintingAreaMovementModel()
         {
@@ -37,6 +40,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance)
         {
             DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
+        }
+
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, double avalQuantity, double avalWeightQuantity, string avalType) :
+            this(date, area, type, dyeingPrintingAreaDocumentId,
+                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId)
+        {
+            AvalQuantity = avalQuantity;
+            AvalWeightQuantity = avalWeightQuantity;
+            AvalType = avalType;
         }
 
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,

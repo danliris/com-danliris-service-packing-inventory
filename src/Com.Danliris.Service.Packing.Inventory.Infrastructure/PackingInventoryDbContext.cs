@@ -2,12 +2,22 @@ using Com.Danliris.Service.Packing.Inventory.Data;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; set; }
         public DbSet<DyeingPrintingAreaOutputModel> DyeingPrintingAreaOutputs { get; set; }
         public DbSet<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
-        public DbSet<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; set; }
+        //public DbSet<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
         public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
@@ -52,7 +62,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<MaterialDeliveryNoteModel> MaterialDeliveryNote { get; set; }
 
         public DbSet<ItemsModel> Items { get; set; }
+        public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
+        public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
+        public DbSet<GarmentShippingLetterOfCreditModel> GarmentShippingLetterOfCredits { get; set; }
+        public DbSet<GarmentShippingNoteModel> GarmentShippingNotes { get; set; }
+        public DbSet<GarmentShippingNoteItemModel> GarmentShippingNoteItems { get; set; }
+
+
+		public DbSet<GarmentShippingInvoiceModel> GarmentShippingInvoices { get; set; }
+		public DbSet<GarmentShippingInvoiceItemModel> GarmentShippingInvoiceItems { get; set; }
+		public DbSet<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustments { get; set; }
+		
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InventoryDocumentPackingEntityTypeConfiguration());
@@ -68,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaInputProductionOrderEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputProductionOrderEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
 
@@ -88,7 +109,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
 
-            modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentLetterOfCreditEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingNoteItemConfig());
+
+			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
+			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
+
+			modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -102,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingAreaOutputProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);
