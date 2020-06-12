@@ -42,7 +42,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
         {
             do
             {
-                model.Code = CodeGenerator.Generate(6);
+                var datamod = _materialDeliveryNoteWeavingDbSet.Where(a => a.NumberOut == model.NumberOut).Count();
+
+                if(datamod >= 0 && datamod < 9)
+                {
+                    datamod += 1;
+                    model.Code = model.NumberOut + $"000{datamod}";
+                }
+                else if(datamod >= 9 && datamod < 99)
+                {
+                    datamod += 1;
+                    model.Code = model.NumberOut + $"00{datamod}";
+                }
+                else if(datamod >= 999 && datamod < 9999)
+                {
+                    datamod += 1;
+                    model.Code = model.NumberOut + $"0{datamod}";
+                }
+                else
+                {
+                    datamod += 1;
+                    model.Code = model.NumberOut + $"{datamod}";
+                }
+
             } while (_materialDeliveryNoteWeavingDbSet.Any(entity => entity.Code == model.Code));
             EntityExtension.FlagForCreate(model, _identityProvider.Username, USER_AGENT);
             _materialDeliveryNoteWeavingDbSet.Add(model);

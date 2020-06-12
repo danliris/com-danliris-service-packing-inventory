@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             };
 
 
-            cell.Phrase = new Phrase($"Tanggal S.J : {model.DateSJ}", TEXT_FONT);
+            cell.Phrase = new Phrase($"Tanggal S.J : {model.DateSJ?.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
@@ -382,61 +382,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 table.AddCell(cellHeader);
             }
 
-            decimal quantityTotal = 0;
-            double lengthTotal = 0;
-            double yardLengthTotal = 0;
-            double weightTotal = 0;
+            decimal balTotal = 0;
+            decimal pieceTotal = 0;
+            decimal meterTotal = 0;
+            decimal kgTotal = 0;
             int index = 1;
             foreach (var detail in model.ItemsMaterialDeliveryNoteWeaving)
             {
-                //cellRight.Phrase = new Phrase(index++.ToString(), TEXT_FONT);
-                //table.AddCell(cellRight);
+                cellRight.Phrase = new Phrase(index++.ToString(), TEXT_FONT);
+                table.AddCell(cellRight);
 
-                //cellHeader.Phrase = new Phrase(detail.ItemNoSPP, TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellHeader.Phrase = new Phrase(detail.itemMaterialName, TEXT_FONT);
+                table.AddCell(cellHeader);
 
-                //cellHeader.Phrase = new Phrase(detail.ItemMaterialName, TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellHeader.Phrase = new Phrase(detail.itemGrade, TEXT_FONT);
+                table.AddCell(cellHeader);
 
-                ////Ket
-                //cellHeader.Phrase = new Phrase(detail.ItemDesign, TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellHeader.Phrase = new Phrase(detail.itemType, TEXT_FONT);
+                table.AddCell(cellHeader);
 
-                //cellHeader.Phrase = new Phrase(detail.ItemType, TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellRight.Phrase = new Phrase(detail.inputBale?.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                table.AddCell(cellRight);
+                balTotal += detail.inputBale.GetValueOrDefault();
 
-                ////Grade 2
-                //cellHeader.Phrase = new Phrase(detail.ItemCode, TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellRight.Phrase = new Phrase(detail.inputPiece?.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                table.AddCell(cellRight);
+                pieceTotal += detail.inputPiece.GetValueOrDefault();
 
-                //var packing = detail.InputPacking;
-                //cellHeader.Phrase = new Phrase(detail.InputPacking.ToString("0.00"), TEXT_FONT);
-                //table.AddCell(cellHeader);
+                cellRight.Phrase = new Phrase(detail.inputMeter?.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                table.AddCell(cellRight);
+                meterTotal += detail.inputMeter.GetValueOrDefault();
 
-                //cellHeader.Phrase = new Phrase(detail.Color, TEXT_FONT);
-                //table.AddCell(cellHeader);
-
-                //cellRight.Phrase = new Phrase(detail.QtyPacking.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                //table.AddCell(cellRight);
-                //quantityTotal += detail.QtyPacking;
-
-                //cellHeader.Phrase = new Phrase(detail.Packing, TEXT_FONT);
-                //table.AddCell(cellHeader);
-
-                //var yardLength = 1.093613298 * detail.Qty;
-                //cellRight.Phrase = new Phrase(yardLength.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                //table.AddCell(cellRight);
-                //yardLengthTotal += yardLength;
-
-                //cellRight.Phrase = new Phrase(detail.Qty.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                //table.AddCell(cellRight);
-                //lengthTotal += detail.Qty;
-
-                //// KG
-                ////cellRight.Phrase = new Phrase((packingReceiptItem.Quantity * packingReceiptItem.Weight).ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                //cellRight.Phrase = new Phrase(detail.Weight.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                //table.AddCell(cellRight);
-                //weightTotal += detail.Weight;
+                cellRight.Phrase = new Phrase(detail.inputKg?.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                table.AddCell(cellRight);
+                kgTotal += detail.inputKg.GetValueOrDefault();
 
             }
 
@@ -462,32 +441,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             cellRight.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellRight);
 
-            cellRight.Phrase = new Phrase("", TEXT_FONT);
-            table.AddCell(cellRight);
-
-            cellRight.Phrase = new Phrase("", TEXT_FONT);
-            table.AddCell(cellRight);
-
-            cellRight.Phrase = new Phrase("", TEXT_FONT);
-            table.AddCell(cellRight);
-
-            cellRight.Phrase = new Phrase("", TEXT_FONT);
-            table.AddCell(cellRight);
-
-            //cellRight.Phrase = new Phrase(quantityTotal == 0 ? "" : quantityTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            //cellRight.Phrase = new Phrase("", TEXT_FONT);
             //table.AddCell(cellRight);
 
             //cellRight.Phrase = new Phrase("", TEXT_FONT);
             //table.AddCell(cellRight);
 
-            //cellRight.Phrase = new Phrase(yardLengthTotal == 0 ? "" : yardLengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            //cellRight.Phrase = new Phrase("", TEXT_FONT);
             //table.AddCell(cellRight);
 
-            //cellRight.Phrase = new Phrase(lengthTotal == 0 ? "" : lengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            //cellRight.Phrase = new Phrase("", TEXT_FONT);
             //table.AddCell(cellRight);
 
-            //cellRight.Phrase = new Phrase(weightTotal == 0 ? "" : weightTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            cellRight.Phrase = new Phrase(balTotal == 0 ? "" : balTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            table.AddCell(cellRight);
+
+            //cellRight.Phrase = new Phrase("", TEXT_FONT);
             //table.AddCell(cellRight);
+
+            cellRight.Phrase = new Phrase(pieceTotal == 0 ? "" : pieceTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            table.AddCell(cellRight);
+
+            cellRight.Phrase = new Phrase(meterTotal == 0 ? "" : meterTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            table.AddCell(cellRight);
+
+            cellRight.Phrase = new Phrase(kgTotal == 0 ? "" : kgTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            table.AddCell(cellRight);
 
             container.AddCell(table);
 
@@ -551,7 +530,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             table.AddCell(cell);
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
-            cell.Phrase = new Phrase($"Sukoharjo, {model.CreatedUtc.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
+            cell.Phrase = new Phrase($"Sukoharjo, {model.DateSJ?.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
             table.AddCell(cell);
 
             //cell.Phrase = new Phrase("Kasubsie Gudang Dyeing Printing", TEXT_FONT);

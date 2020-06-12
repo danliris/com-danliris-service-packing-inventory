@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
     {
 
         public string Code { get; set; }
-        public DateTimeOffset? DateSJ { get; set; }
+        public DateTimeOffset DateSJ { get; set; }
         public long DoSalesNumberId { get; set; }
         public string DoSalesNumber { get; set; }
         public string SendTo { get; set; }
@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
 
         public MaterialDeliveryNoteWeavingModel(
             string code,
-            DateTimeOffset? datesj,
+            DateTimeOffset datesj,
             long dosalesnumberid,
             string dosalesnumber,
             string sendto,
@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             }
         }
 
-        public void SetDateSJ(DateTimeOffset? newDateSJ)
+        public void SetDateSJ(DateTimeOffset newDateSJ)
         {
             if (newDateSJ != DateSJ)
             {

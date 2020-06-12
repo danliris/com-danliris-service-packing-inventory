@@ -17,22 +17,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
 
         public string Code { get; set; }
         public DateTimeOffset? DateSJ { get; set; }
-        public DeliveryOrderSales selectedDO { get; set; }
+        public DeliveryOrderMaterialDeliveryNoteWeaving selectedDO { get; set; }
         public string SendTo { get; set; }
-        public Unit Unit { get; set; }
-        public Buyer Buyer { get; set; }
+        public UnitMaterialDeliveryNoteWeaving Unit { get; set; }
+        public BuyerMaterialDeliveryNoteWeaving Buyer { get; set; }
         public string NumberBonOut { get; set; }
-        public Storage Storage { get; set; }
+        public StorageMaterialDeliveryNoteWeaving Storage { get; set; }
         public string Remark { get; set; }
 
         public ICollection<ItemsMaterialDeliveryNoteWeavingViewModel> ItemsMaterialDeliveryNoteWeaving { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (DateSJ== null || DateSJ == default(DateTimeOffset))
+            //if (DateSJ== null || DateSJ == default(DateTimeOffset))
+            if(!DateSJ.HasValue)
             {
                 yield return new ValidationResult("Tanggal S.J harus diisi", new List<string> { "DateSJ" });
             }
+
 
             if (selectedDO == null || selectedDO.Id == 0)
             {
@@ -107,25 +109,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                         DetailErrors += "ItemCode: 'Kode Harus Diisi!',";
                     }
 
-                    if (item.inputBale == 0)
+                    if (!item.inputBale.HasValue || item.inputBale <= 0)
                     {
                         Count++;
                         DetailErrors += "InputBale: 'Bale Harus Diisi!',";
                     }
 
-                    if (item.inputPiece == 0)
+                    if (!item.inputPiece.HasValue || item.inputPiece <= 0)
                     {
                         Count++;
                         DetailErrors += "InputPiece: 'Piece Harus Diisi!',";
                     }
 
-                    if (item.inputMeter == 0)
+                    if (!item.inputMeter.HasValue || item.inputMeter <= 0)
                     {
                         Count++;
                         DetailErrors += "InputMeter: 'Meter Harus Diisi!',";
                     }
 
-                    if (item.inputKg == 0)
+                    if (!item.inputKg.HasValue || item.inputKg <= 0)
                     {
                         Count++;
                         DetailErrors += "InputKg: 'Kg Harus Diisi!',";

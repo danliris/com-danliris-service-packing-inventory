@@ -134,9 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.MaterialDeli
                 ValidateService.Validate(viewModel);
                 await _service.Update(id, viewModel);
 
-                return Created("/", new
-                {
-                });
+                return NoContent();
             }
             catch (ServiceValidationException ex)
             {
@@ -193,8 +191,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.MaterialDeli
         [HttpGet]
         public IActionResult GetByKeyword([FromQuery] string keyword, [FromQuery] string order = "{}", [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string filter = "{}")
         {
-            var data = _service.ReadByKeyword(keyword, order, page, size, filter);
-            return Ok(data);
+
+            try
+            {
+
+                var data = _service.ReadByKeyword(keyword, order, page, size, filter);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
         }
     }
 }

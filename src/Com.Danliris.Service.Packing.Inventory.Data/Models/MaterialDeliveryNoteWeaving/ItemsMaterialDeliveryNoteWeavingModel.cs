@@ -16,10 +16,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             string itemgrade,
             string itemtype,
             string itemcode,
-            decimal? inputbale,
-            decimal? inputpiece,
-            decimal? inputmeter,
-            decimal? inputkg
+            decimal inputbale,
+            decimal inputpiece,
+            decimal inputmeter,
+            decimal inputkg
             )
         {
             itemNoSOP = itemnosop;
@@ -39,10 +39,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
         public string itemGrade { get; set; }
         public string itemType { get; set; }
         public string itemCode { get; set; }
-        public decimal? inputBale { get; set; }
-        public decimal? inputPiece { get; set; }
-        public decimal? inputMeter { get; set; }
-        public decimal? inputKg { get; set; }
+        public decimal inputBale { get; set; }
+        public decimal inputPiece { get; set; }
+        public decimal inputMeter { get; set; }
+        public decimal inputKg { get; set; }
 
         public void SetItemNoSOP(string newItemNoSPP)
         {
@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetinputBale(decimal? newinputBale)
+        public void SetinputBale(decimal newinputBale)
         {
             if (newinputBale != inputBale)
             {
@@ -92,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetinputPiece(decimal? newinputPiece)
+        public void SetinputPiece(decimal newinputPiece)
         {
             if (newinputPiece != inputPiece)
             {
@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetinputMeter(decimal? newinputMeter)
+        public void SetinputMeter(decimal newinputMeter)
         {
             if (newinputMeter != inputMeter)
             {
@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetinputKg(decimal? newinputKg)
+        public void SetinputKg(decimal newinputKg)
         {
             if (newinputKg != inputKg)
             {
