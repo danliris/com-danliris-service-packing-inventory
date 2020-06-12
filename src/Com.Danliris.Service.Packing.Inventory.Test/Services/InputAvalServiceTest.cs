@@ -754,5 +754,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public void Should_Success_GetSetModel()
+        {
+            var test = new OutputPreAvalProductionOrderViewModel
+            {
+                BuyerId = 1,
+                QtyOrder = 1,
+                AvalType = "KAINKOTOR",
+                DyeingPrintingAreaInputProductionOrderId = 1,
+                ProductionOrder = new ProductionOrder
+                {
+                    Id = 1,
+                    No ="test1"
+                }
+            };
+            var test1 = test.BuyerId;
+            var test2 = test.ProductionOrder;
+            var test3 = test.QtyOrder;
+            var test4 = test.AvalType;
+
+            Assert.NotNull(test);
+        }
     }
 }

@@ -57,6 +57,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "PAGI",
                     BonNo = "GA.20.0001",
                     Group = "A",
+                    DeliveryOrderSalesNo = "Do01",
+                    DeliveryOrdeSalesId = 1,
+                    HasNextAreaDocument = false,
                     AvalItems = new List<OutputAvalItemViewModel>()
                     {
                         new OutputAvalItemViewModel()
@@ -66,7 +69,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             AvalCartNo = "5",
                             AvalUomUnit = "MTR",
                             AvalQuantity = 5,
-                            AvalQuantityKg = 1
+                            AvalQuantityKg = 1,
+                            AvalOutQuantity = 1,
                         }
                     },
                     DyeingPrintingMovementIds = new List<OutputAvalDyeingPrintingAreaMovementIdsViewModel>()
@@ -443,6 +447,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.GenerateExcel(1);
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GetSetModel()
+        {
+            var test = ViewModel;
+            var did = test.DeliveryOrdeSalesId;
+            var dno = test.DeliveryOrderSalesNo;
+            var nexArea = test.HasNextAreaDocument;
+            var dpIds = test.DyeingPrintingMovementIds;
+            Assert.NotNull(test);
         }
     }
 }
