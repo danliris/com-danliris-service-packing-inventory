@@ -4,12 +4,14 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
@@ -55,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
         public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
+        public DbSet<GarmentShippingLetterOfCreditModel> GarmentShippingLetterOfCredits { get; set; }
         public DbSet<GarmentShippingNoteModel> GarmentShippingNotes { get; set; }
         public DbSet<GarmentShippingNoteItemModel> GarmentShippingNoteItems { get; set; }
 
@@ -92,6 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentLetterOfCreditEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteItemConfig());
 

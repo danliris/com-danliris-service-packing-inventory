@@ -7,38 +7,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 {
     public class GarmentShippingInstructionModel : StandardEntity
     {
-        public string InvoiceNo { get; set; }
-        public int PackingListId { get; set; }
-        public DateTimeOffset Date { get; set; }
-        public int EMKLId { get; set; }
-        public string EMKLCode { get; set; }
-        public string EMKLName { get; set; }
-        public string ATTN { get; set; }
-        public string Fax { get; set; }
-        public string CC { get; set; }
-        public int ShippingStaffId { get; set; }
-        public string ShippingStaffName { get; set; }
-        public string Phone { get; set; }
+        public string InvoiceNo { get; private set; }
+        public int PackingListId { get; private set; }
+        public DateTimeOffset Date { get; private set; }
+        public int EMKLId { get; private set; }
+        public string EMKLCode { get; private set; }
+        public string EMKLName { get; private set; }
+        public string ATTN { get; private set; }
+        public string Fax { get; private set; }
+        public string CC { get; private set; }
+        public int ShippingStaffId { get; private set; }
+        public string ShippingStaffName { get; private set; }
+        public string Phone { get; private set; }
 
         #region Detail Instruction
-        public string ShippedBy { get; set; }
-        public DateTimeOffset TruckingDate { get; set; }
-        public string CartonNo { get; set; }
-        public string PortOfDischarge { get; set; }
-        public string PlaceOfDelivery { get; set; }
-        public string FeederVessel { get; set; }
-        public string OceanVessel { get; set; }
-        public string Carrier { get; set; }
-        public string Flight { get; set; }
-        public string Transit { get; set; }
-        public int BankAccountId { get; set; }
-        public string BankAccountName { get; set; }
-        public int BuyerAgentId { get; set; }
-        public string BuyerAgentCode { get; set; }
-        public string BuyerAgentName { get; set; }
-        public string BuyerAgentAddress { get; set; }
-        public string Notify { get; set; }
-        public string SpecialInstruction { get; set; }
+        public string ShippedBy { get; private set; }
+        public DateTimeOffset TruckingDate { get; private set; }
+        public string CartonNo { get; private set; }
+        public string PortOfDischarge { get; private set; }
+        public string PlaceOfDelivery { get; private set; }
+        public string FeederVessel { get; private set; }
+        public string OceanVessel { get; private set; }
+        public string Carrier { get; private set; }
+        public string Flight { get; private set; }
+        public string Transit { get; private set; }
+        public int BankAccountId { get; private set; }
+        public string BankAccountName { get; private set; }
+        public int BuyerAgentId { get; private set; }
+        public string BuyerAgentCode { get; private set; }
+        public string BuyerAgentName { get; private set; }
+        public string BuyerAgentAddress { get; private set; }
+        public string Notify { get; private set; }
+        public string SpecialInstruction { get; private set; }
         #endregion
         
 
