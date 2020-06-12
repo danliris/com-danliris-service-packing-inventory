@@ -447,7 +447,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackingInstruction = d.PackingInstruction,
                     AvalALength = d.AvalALength,
                     AvalBLength = d.AvalBLength,
-                    AvalConnectionLength = d.AvalConnectionLength
+                    AvalConnectionLength = d.AvalConnectionLength,
+                    QtyOrder = d.ProductionOrderOrderQuantity,
+                    DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
+                    AvalType = d.AvalType
                 }).ToList()
             });
 
