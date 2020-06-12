@@ -20,8 +20,10 @@
     <Compile Remove="Controllers\TransitAreaNoteControllerTest.cs" />
     <Compile Remove="Controllers\TransitInputControllerTest.cs" />
     <Compile Remove="DataUtils\DyeingPrintingAreaMovementHistoryDataUtil.cs" />
+    <Compile Remove="DataUtils\DyeingPrintingAreaOutputAvalItemDataUtil.cs" />
     <Compile Remove="DataUtils\OldDyeingPrintingAreaMovementDataUtil.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovementHistoryRepositoryTest.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaOutputAvalItemRepositoryTest.cs" />
     <Compile Remove="Repositories\OldDyeingPrintingAreaMovementRepositoryTest.cs" />
     <Compile Remove="Services\AvalAreaNoteServiceTest.cs" />
     <Compile Remove="Services\AvalInputServiceTest.cs" />

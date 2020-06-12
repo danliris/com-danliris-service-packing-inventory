@@ -97,7 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var query = _repository.ReadAll();
 
-            List<string> SearchAttributes = new List<string>() { "InvoiceNo", "Name", "Address", "ATTN", "Phone", "Order" };
+            List<string> SearchAttributes = new List<string>() { "InvoiceNo", "Name", "Address", "ATTN", "Phone", "OrderName" };
             query = QueryHelper<GarmentShippingCoverLetterModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
