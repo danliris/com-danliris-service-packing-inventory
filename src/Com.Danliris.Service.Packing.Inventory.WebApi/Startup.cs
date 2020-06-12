@@ -53,7 +53,8 @@ using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
-
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -114,6 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
+            services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
 
             #endregion
 
@@ -145,6 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
+            services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
 
             #endregion
 
