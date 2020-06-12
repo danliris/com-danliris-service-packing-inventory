@@ -22,6 +22,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 			return model;
 		}
 
+		public   GarmentShippingInvoiceModel GetModels()
+		{
+			var items = new HashSet<GarmentShippingInvoiceItemModel> {
+				new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3),new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+			var adjustments = new HashSet<GarmentShippingInvoiceAdjustmentModel> {
+				new GarmentShippingInvoiceAdjustmentModel(1, "", 0),new GarmentShippingInvoiceAdjustmentModel(1,"ddd",1000) };
+			var model = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", items, 1000, 23, "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustments, 100000);
+
+			return model;
+		}
+
 		public override GarmentShippingInvoiceModel GetEmptyModel()
 		{
 			var items = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel(null, null, 0, null, 0, 0, null, null, null, 0, null, 0, 0, 0, null, 0, null, 0) };

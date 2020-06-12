@@ -6,9 +6,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentShippingInvoice;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -119,53 +117,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
 			GarmentShippingInvoiceRepository repo2 = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
 			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
-			GarmentShippingInvoiceModel oldModel = invoiceDataUtil.GetModel();
+			GarmentShippingInvoiceModel oldModel = invoiceDataUtil.GetModels();
 			oldModel.PackingListId = dataPL.Id;
 			await repo.InsertAsync(oldModel);
 
 			var model = repo.ReadAll().FirstOrDefault();
 			var data = await repo.ReadByIdAsync(model.Id);
 
-			data.From = "aaaa";
-			data.To = "bbb";
-			data.Consignee = "dsdsds";
-			data.ShippingPer = "model.ShippingPer";
-			data.SailingDate = DateTimeOffset.Now.AddDays(3);
-			data.ConfirmationOfOrderNo = "dada";
-			data.ShippingStaffId = 4;
-			data.ShippingStaff = " model.ShippingStaff";
-			data.FabricTypeId = 2;
-			data.FabricType = "model.FabricType";
-			data.BankAccountId = 3;
-			data.BankAccount = "model.BankAccount";
-			data.PaymentDue = 33;
-			data.PEBNo = "model.PEBNo";
-			data.PEBDate = DateTimeOffset.Now.AddDays(3);
-			data.NPENo = "model.NPENo";
-			data.NPEDate = DateTimeOffset.Now.AddDays(3);
-			data.BL = "model.BL";
-			data.BLDate = DateTimeOffset.Now.AddDays(3);
-			data.CO = "model.CO";
-			data.CODate = DateTimeOffset.Now.AddDays(3);
-			data.COTP = "model.COTP";
-			data.COTPDate = DateTimeOffset.Now.AddDays(3);
-			data.Description = "model.Description";
-			data.Say = "model.Say";
-			data.Memo = "model.Memo";
-			data.AmountToBePaid = 500;
-			data.TotalAmount = 2;
+			data.SetFrom("aaaa", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetTo("bbb", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetConsignee ( "dsdsds", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetShippingPer( "model.ShippingPer", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetSailingDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetConfirmationOfOrderNo( "dada", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetShippingStaffId( 4, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetShippingStaff( " model.ShippingStaff", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetFabricTypeId( 2, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetFabricType( "model.FabricType", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetBankAccountId( 3, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetBankAccount( "model.BankAccount", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPaymentDue( 33, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPEBNo( "model.PEBNo", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPEBDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetNPENo( "model.NPENo", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetNPEDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetBL( "model.BL", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetBLDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetCO( "model.CO", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetCODate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetCOTP("model.COTP", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetCOTPDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetDescription("model.Description", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetSay( "model.Say", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetMemo("model.Memo", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetAmountToBePaid( 500, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetTotalAmount(2, data.LastModifiedBy, data.LastModifiedAgent);
+			data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3));
 			foreach (var item in data.Items)
 			{
-				item.Price = 1039;
-				item.ComodityDesc = "hahhahah";
-				item.CMTPrice = 56000;
+				
+				item.SetPrice(1039, item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetComodityDesc("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetCMTPrice(56000, item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetUomId(2, item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetUomUnit("sss", item.LastModifiedBy, item.LastModifiedAgent);
 			}
-			foreach (var item in data.GarmentShippingInvoiceAdjustment)
-			{
-				item.SetAdjustmentDescription("dsds",item.LastModifiedBy,item.LastModifiedAgent);
-				item.SetAdjustmentValue( 10000 + item.AdjustmentValue,item.LastModifiedBy, item.LastModifiedAgent);
+			var ajdData = data.GarmentShippingInvoiceAdjustment.FirstOrDefault();
+			data.GarmentShippingInvoiceAdjustment.Add(new GarmentShippingInvoiceAdjustmentModel(data.Id,"ddd",1000));
+			ajdData.SetAdjustmentDescription("dsds", ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
+			ajdData.SetAdjustmentValue( 10000 + ajdData.AdjustmentValue, ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 
-			}
+			 
+			 
 			var result = await repo2.UpdateAsync(data.Id, data);
 
 			Assert.NotEqual(0, result);
