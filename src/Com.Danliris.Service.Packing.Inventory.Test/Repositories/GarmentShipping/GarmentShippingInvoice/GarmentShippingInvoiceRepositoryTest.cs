@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 		public GarmentShippingInvoiceRepositoryTest() : base(ENTITY)
 		{
 		}
-
+		[Fact]
 		public async override Task Should_Success_Insert()
 		{
 			string testName = GetCurrentMethod();
@@ -31,16 +31,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
 			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
 			GarmentPackingListModel dataPL = utilPL.GetModel();
-			var dataPackingList=await repoPL.InsertAsync(dataPL);
-			
-			GarmentShippingInvoiceRepository repo =new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
-			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo,utilPL);
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
+			GarmentShippingInvoiceRepository repo = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
+			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
 			GarmentShippingInvoiceModel data = invoiceDataUtil.GetModel();
+			data.PackingListId = dataPL.Id;
 			var result = await repo.InsertAsync(data);
 			Assert.NotEqual(0, result);
-			 
-		}
 
+		}
+		[Fact]
 		public async override Task Should_Success_Delete()
 		{
 			string testName = GetCurrentMethod();
@@ -55,11 +56,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			GarmentShippingInvoiceRepository repo = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
 			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
 			GarmentShippingInvoiceModel data = invoiceDataUtil.GetModel();
+			data.PackingListId = dataPL.Id;
 			var result = await repo.InsertAsync(data);
 			var resultdelete = await repo.DeleteAsync(data.Id);
 			Assert.NotEqual(0, result);
 		}
-
+		[Fact]
 		public async override Task Should_Success_ReadById()
 		{
 			string testName = GetCurrentMethod();
@@ -74,12 +76,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			GarmentShippingInvoiceRepository repo = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
 			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
 			GarmentShippingInvoiceModel data = invoiceDataUtil.GetModel();
+			data.PackingListId = dataPL.Id;
 			var results = await repo.InsertAsync(data);
 			var result = repo.ReadByIdAsync(data.Id);
 
 			Assert.NotNull(result);
 		}
-
+		[Fact]
 		public async override Task Should_Success_ReadAll()
 		{
 			string testName = GetCurrentMethod();
@@ -94,11 +97,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			GarmentShippingInvoiceRepository repo = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
 			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
 			GarmentShippingInvoiceModel data = invoiceDataUtil.GetModel();
+			data.PackingListId = dataPL.Id;
 			var results = await repo.InsertAsync(data);
 			var result = repo.ReadAll();
 
 			Assert.NotEmpty(result);
 		}
+		[Fact]
 		public async override Task Should_Success_Update()
 		{
 			string testName = GetCurrentMethod();
@@ -115,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			GarmentShippingInvoiceRepository repo2 = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
 			GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
 			GarmentShippingInvoiceModel oldModel = invoiceDataUtil.GetModel();
-			 
+			oldModel.PackingListId = dataPL.Id;
 			await repo.InsertAsync(oldModel);
 
 			var model = repo.ReadAll().FirstOrDefault();
@@ -128,12 +133,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SailingDate = DateTimeOffset.Now.AddDays(3);
 			data.ConfirmationOfOrderNo = "dada";
 			data.ShippingStaffId = 4;
-			data.ShippingStaff =" model.ShippingStaff";
-			data.FabricTypeId =2;
-			data.FabricType = "model.FabricType";	
+			data.ShippingStaff = " model.ShippingStaff";
+			data.FabricTypeId = 2;
+			data.FabricType = "model.FabricType";
 			data.BankAccountId = 3;
 			data.BankAccount = "model.BankAccount";
-			data.PaymentDue =33;
+			data.PaymentDue = 33;
 			data.PEBNo = "model.PEBNo";
 			data.PEBDate = DateTimeOffset.Now.AddDays(3);
 			data.NPENo = "model.NPENo";
@@ -149,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.Memo = "model.Memo";
 			data.AmountToBePaid = 500;
 			data.TotalAmount = 2;
-			foreach(var item in data.Items)
+			foreach (var item in data.Items)
 			{
 				item.Price = 1039;
 				item.ComodityDesc = "hahhahah";
@@ -158,7 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			var result = await repo2.UpdateAsync(data.Id, data);
 
 			Assert.NotEqual(0, result);
-		
+
 		}
 	}
 }
