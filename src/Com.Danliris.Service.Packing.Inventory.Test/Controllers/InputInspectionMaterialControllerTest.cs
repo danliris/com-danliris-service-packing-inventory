@@ -137,9 +137,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     IsChecked =true,
                     Grade="A",
                     InitLength =1,
-                    AvalALength =1,
-                    AvalBLength =1,
-                    AvalConnectionLength=1,
+                    //AvalALength =1,
+                    //AvalBLength =1,
+                    //AvalConnectionLength=1,
                     InputId=1,
                 }
             };
