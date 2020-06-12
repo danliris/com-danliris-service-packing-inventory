@@ -17,5 +17,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
         }
+
+        [Fact]
+        public void Validate_Double_DocNo()
+        {
+            GarmentLetterOfCreditViewModel viewModel = new GarmentLetterOfCreditViewModel();
+            viewModel.DocumentCreditNo = "a";
+            viewModel.available = true;
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
     }
 }
