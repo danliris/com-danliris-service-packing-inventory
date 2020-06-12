@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = await DataUtil(repo, dbContext).GetTestData();
             var test = new List<int> { data.Id };
-            var result = await repo.UpdateFromInputAsync(data.Id, true);
+            var result = await repo.UpdateFromInputAsync(data.Id, true,test);
             Assert.NotEqual(0, result);
         }
 
