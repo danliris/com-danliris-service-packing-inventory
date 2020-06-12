@@ -121,33 +121,50 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                                               [FromQuery] string order = "{}",
                                               [FromQuery] string filter = "{}")
         {
-            var data = _service.ReadAllAvailableAval(page, size, filter, order, keyword);
-            if (data == null)
+            try
+            {
+                var data = _service.ReadAllAvailableAval(page, size, filter, order, keyword);
+                if (data == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    return Ok(data);
+                }
+            }
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-            else
-            {
-                return Ok(data);
+
             }
         }
 
         [HttpGet("available-aval/{id}")]
-        public IActionResult GetAvailableByBonAval([FromRoute]int id, 
+        public IActionResult GetAvailableByBonAval([FromRoute]int id,
                                               [FromQuery] string keyword = null,
                                               [FromQuery] int page = 1,
                                               [FromQuery] int size = 25,
                                               [FromQuery] string order = "{}",
                                               [FromQuery] string filter = "{}")
         {
-            var data = _service.ReadByBonAvailableAval(id, page, size, filter, order, keyword);
-            if (data == null)
+            try
+            {
+
+
+                var data = _service.ReadByBonAvailableAval(id, page, size, filter, order, keyword);
+                if (data == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    return Ok(data);
+                }
+            }catch(Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-            else
-            {
-                return Ok(data);
+
             }
         }
 
@@ -159,14 +176,21 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                                               [FromQuery] string order = "{}",
                                               [FromQuery] string filter = "{}")
         {
-            var data = _service.ReadByTypeAvailableAval(avalType, page, size, filter, order, keyword);
-            if (data == null)
+            try
+            {
+                var data = _service.ReadByTypeAvailableAval(avalType, page, size, filter, order, keyword);
+                if (data == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    return Ok(data);
+                }
+            }catch(Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-            else
-            {
-                return Ok(data);
+
             }
         }
 

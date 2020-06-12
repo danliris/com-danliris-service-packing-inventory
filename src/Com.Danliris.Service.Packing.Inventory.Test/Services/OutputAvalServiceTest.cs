@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -114,6 +115,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          new List<DyeingPrintingAreaOutputProductionOrderModel>());
             }
         }
+        private InputAvalViewModel ViewModelInput
+        {
+            get
+            {
+                return new InputAvalViewModel()
+                {
+                    Area = "GUDANG AVAL",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "PAGI",
+                    BonNo = "GA.20.0001",
+                    Group = "A",
+                    AvalItems = new List<InputAvalItemViewModel>()
+                    {
+                        new InputAvalItemViewModel()
+                        {
+                            AvalType = "KAIN KOTOR",
+                            AvalCartNo = "5",
+                            AvalUomUnit = "MTR",
+                            AvalQuantity = 5,
+                            AvalQuantityKg = 1,
+                            HasOutputDocument = false,
+                            IsChecked = false,
+                            Area = "INSPECTION MATERIAL"
+                        }
+                    },
+                    DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()
+                    {
+                        new InputAvalDyeingPrintingAreaMovementIdsViewModel()
+                        {
+                            DyeingPrintingAreaMovementId = 51,
+                            ProductionOrderIds = new List<int>()
+                            {
+                                11,
+                                12
+                            }
+                        }
+                    }
+                };
+            }
+        }
+        private DyeingPrintingAreaInputModel ModelInput
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(ViewModel.Date,
+                                                        ViewModel.Area,
+                                                        ViewModel.Shift,
+                                                        ViewModel.BonNo,
+                                                        ViewModel.Group,
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
+                                                                                                                                        s.AvalType,
+                                                                                                                                        s.AvalCartNo,
+                                                                                                                                        s.AvalUomUnit,
+                                                                                                                                        s.AvalQuantity,
+                                                                                                                                        s.AvalQuantityKg,
+                                                                                                                                        false))
+                                                                           .ToList());
+            }
+        }
 
         [Fact]
         public async Task Should_Success_Create()
@@ -184,6 +244,75 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEmpty(result.Data);
         }
 
+        [Fact]
+        public void Should_Success_ReadAllAvailableAval()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { ModelInput }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+
+            var result = service.ReadAllAvailableAval(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+        [Fact]
+        public void Should_Success_ReadByBonAvailableAval()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { ModelInput }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+
+            var result = service.ReadByBonAvailableAval(0,1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+        [Fact]
+        public void Should_Success_ReadByTypeAvailableAval()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            var test = ModelInput;
+            test.SetIsTransformedAval( true,"unittest","unittest");
+
+            inputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { test }.AsQueryable());
+            
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+
+            var result = service.ReadByTypeAvailableAval("KAIN KOTOR", 1, 25, "{ }", "{}", null);
+
+            Assert.Empty(result.Data);
+        }
         [Fact]
         public void Should_Success_ReadAvailableAval()
         {

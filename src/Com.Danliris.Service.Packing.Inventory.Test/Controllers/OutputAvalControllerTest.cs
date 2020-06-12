@@ -71,7 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                             AvalCartNo = "5-11",
                             AvalUomUnit = "KRG",
                             AvalQuantity = 5,
-                            AvalQuantityKg = 10
+                            AvalQuantityKg = 10,
+                            AvalOutQuantity = 5
                         }
                     },
                     DyeingPrintingMovementIds = new List<OutputAvalDyeingPrintingAreaMovementIdsViewModel>()
@@ -90,6 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Validator_Success()
         {
             var dataUtil = OutputAvalViewModel;
+
             var validator = new OutputAvalValidator();
             var result = validator.Validate(dataUtil);
             Assert.Equal(0, result.Errors.Count);
@@ -316,6 +318,235 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetExcel(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetAvailableAllAval()
+        {
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadAllAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Returns(new ListResult<AvailableAvalIndexViewModel>(new List<AvailableAvalIndexViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableAllAval(OutputAvalViewModel.Date, OutputAvalViewModel.Shift, OutputAvalViewModel.Group);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetAvailableAllAval()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadAllAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableAllAval(DateTimeOffset.UtcNow, "SIANG", "B");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetAvailableByBonAval()
+        {
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByBonAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Returns(new ListResult<AvailableAvalIndexViewModel>(new List<AvailableAvalIndexViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableByBonAval(1);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetAvailableByBonAval()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByBonAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableByBonAval(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetSummaryAvalByType()
+        {
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByTypeAvailableAval(
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Returns(new ListResult<AvailableAvalIndexViewModel>(new List<AvailableAvalIndexViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSummaryAvalByType("string");
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetSummaryAvalByType()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByTypeAvailableAval(
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSummaryAvalByType("string");
+
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Null_GetSummaryAvalByType()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByTypeAvailableAval(
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Returns<ListResult<AvailableAvalIndexViewModel>>(null);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSummaryAvalByType("string");
+
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+        [Fact]
+        public void Should_Null_GetAvailableByBonAval()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadByBonAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                      .Returns<ListResult<AvailableAvalIndexViewModel>>(null);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableByBonAval(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Null_GetAvailableAllAval()
+        {
+            var dataUtil = OutputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IOutputAvalService>();
+            serviceMock.Setup(s => s.ReadAllAvailableAval(
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<int>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<string>()))
+                       .Returns<ListResult<AvailableAvalIndexViewModel>>(null);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetAvailableAllAval(DateTimeOffset.UtcNow, "SIANG", "B");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

@@ -59,14 +59,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         [HttpPost("reject")]
         public async Task<IActionResult> Reject([FromBody] InputAvalViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                var excpetion = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(excpetion);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    var excpetion = new
+            //    {
+            //        error = ResultFormatter.FormatErrorMessage(ModelState)
+            //    };
+            //    return new BadRequestObjectResult(excpetion);
+            //}
             try
             {
                 VerifyUser();
@@ -157,14 +157,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                                         [FromQuery] string order = "{}",
                                         [FromQuery] string filter = "{}")
         {
-            var data = _service.ReadAllOutputPreAval(page, size, filter, order, keyword);
-            if (data == null)
+            try
+            {
+                var data = _service.ReadAllOutputPreAval(page, size, filter, order, keyword);
+                if (data == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    return Ok(data);
+                }
+            }catch(Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-            else
-            {
-                return Ok(data);
             }
         }
     }

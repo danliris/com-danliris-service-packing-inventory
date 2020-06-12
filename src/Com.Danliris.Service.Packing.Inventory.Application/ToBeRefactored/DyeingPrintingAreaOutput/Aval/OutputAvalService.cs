@@ -73,6 +73,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Group = model.Group,
                 DestinationArea = model.DestinationArea,
                 HasNextAreaDocument = model.HasNextAreaDocument,
+                DeliveryOrderSalesNo = model.DeliveryOrderSalesNo,
+                DeliveryOrdeSalesId = Convert.ToInt32(model.DeliveryOrderSalesId),
                 AvalItems = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputAvalItemViewModel()
                 {
                     Active = s.Active,
