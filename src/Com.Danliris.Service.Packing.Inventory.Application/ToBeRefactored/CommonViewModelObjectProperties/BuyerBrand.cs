@@ -7,7 +7,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Comm
 	public class BuyerBrand
 	{
 		public int Id { get; set; }
-		public string Code { get; set; }
 		public string Name { get; set; }
 	}
 }

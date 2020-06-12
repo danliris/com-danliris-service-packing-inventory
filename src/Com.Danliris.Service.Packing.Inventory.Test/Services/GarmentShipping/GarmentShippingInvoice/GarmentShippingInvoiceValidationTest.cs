@@ -30,7 +30,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 							BuyerBrand = new BuyerBrand
 							{
 								Id = 0,
-								Code = null,
 								Name = null
 							},
 							Comodity = new Comodity

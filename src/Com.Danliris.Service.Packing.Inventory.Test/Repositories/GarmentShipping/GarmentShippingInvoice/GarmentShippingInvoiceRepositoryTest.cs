@@ -162,9 +162,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			}
 			foreach (var item in data.GarmentShippingInvoiceAdjustment)
 			{
-				item.AdjustmentDescription = "huuuuuuuu";
-				item.AdjustmentValue = 10000;
-				
+				item.SetAdjustmentDescription("dsds",item.LastModifiedBy,item.LastModifiedAgent);
+				item.SetAdjustmentValue( 10000 + item.AdjustmentValue,item.LastModifiedBy, item.LastModifiedAgent);
+
 			}
 			var result = await repo2.UpdateAsync(data.Id, data);
 
