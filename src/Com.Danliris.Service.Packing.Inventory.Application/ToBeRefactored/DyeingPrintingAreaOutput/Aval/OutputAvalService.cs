@@ -119,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //Generate Bon Number
             string bonNo = string.Empty;
             var bonExist = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
-                                                                s.Date == viewModel.Date &&
+                                                                s.Date.Date == viewModel.Date.Date &&
                                                                 s.Shift == viewModel.Shift);
             int bonExistCount = bonExist.Count();
             if (bonExistCount == 0)

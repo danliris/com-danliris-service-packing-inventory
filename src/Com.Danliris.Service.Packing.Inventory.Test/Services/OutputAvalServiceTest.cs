@@ -44,7 +44,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             return spMock;
         }
+        public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository inputRepo,
+                                                        IDyeingPrintingAreaOutputRepository outputRepo,
+                                                        IDyeingPrintingAreaMovementRepository movementRepo,
+                                                        IDyeingPrintingAreaSummaryRepository summaryRepo,
+                                                        IDyeingPrintingAreaInputProductionOrderRepository inputProductionOrderRepo,
+                                                        IDyeingPrintingAreaOutputProductionOrderRepository outputProductionOrderRepo)
+        {
+            var spMock = new Mock<IServiceProvider>();
 
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputRepository)))
+                .Returns(outputRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaMovementRepository)))
+                .Returns(movementRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaSummaryRepository)))
+                .Returns(summaryRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputProductionOrderRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputProductionOrderRepo);
+            //spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+            //    .Returns(new DyeingPrintingAreaInputProductionOrderRepository());
+
+            return spMock;
+        }
         private OutputAvalViewModel ViewModel
         {
             get
@@ -164,12 +189,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaInputModel(ViewModel.Date,
-                                                        ViewModel.Area,
-                                                        ViewModel.Shift,
-                                                        ViewModel.BonNo,
-                                                        ViewModel.Group,
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
+                return new DyeingPrintingAreaInputModel(ViewModelInput.Date,
+                                                        ViewModelInput.Area,
+                                                        ViewModelInput.Shift,
+                                                        ViewModelInput.BonNo,
+                                                        ViewModelInput.Group,
+                                                        "KAIN KOTOR",
+                                                        true,
+                                                        10,
+                                                        10,
+                                                        ViewModelInput.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModelInput.Area,
                                                                                                                                         s.AvalType,
                                                                                                                                         s.AvalCartNo,
                                                                                                                                         s.AvalUomUnit,
@@ -220,6 +249,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object, 
                                                         summaryRepoMock.Object, 
                                                         inputProductionOrdersRepoMock.Object).Object);
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Create_bonExist()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            //Mock for totalCurrentYear
+            outputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel }.AsQueryable());
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel }.AsQueryable());
+            outputSppRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
+                .ReturnsAsync(1);
+            //Mock for Create New Row in Input and ProductionOrdersInput in Each Repository 
+            outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            var test = ModelInput;
+            test.SetIsTransformedAval(true,"unittest","unittest");
+            inputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel> { test }.AsQueryable());
+
+
+
+            inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<string>(),
+                                                                         It.IsAny<int>(),
+                                                                         It.IsAny<int>(),
+                                                                         It.IsAny<bool>()));
+
+            inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object,
+                                                        outputSppRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
 
