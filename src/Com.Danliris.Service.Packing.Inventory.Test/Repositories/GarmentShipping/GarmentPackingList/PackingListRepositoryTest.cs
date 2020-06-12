@@ -93,5 +93,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             Assert.NotEqual(0, result);
         }
-    }
+		[Fact]
+		public async override Task Should_Success_ReadAll()
+		{
+			string testName = GetCurrentMethod();
+			var dbContext = DbContext(testName);
+
+			var serviceProvider = GetServiceProviderMock(dbContext).Object;
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
+			
+			var result = repoPL.ReadNotUsedAsync();
+
+			Assert.NotEmpty(result);
+		}
+	}
 }

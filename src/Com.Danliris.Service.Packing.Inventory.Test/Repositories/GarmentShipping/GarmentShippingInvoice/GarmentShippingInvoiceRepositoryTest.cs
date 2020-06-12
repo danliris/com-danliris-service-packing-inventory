@@ -160,6 +160,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 				item.ComodityDesc = "hahhahah";
 				item.CMTPrice = 56000;
 			}
+			foreach (var item in data.GarmentShippingInvoiceAdjustment)
+			{
+				item.AdjustmentDescription = "huuuuuuuu";
+				item.AdjustmentValue = 10000;
+				
+			}
 			var result = await repo2.UpdateAsync(data.Id, data);
 
 			Assert.NotEqual(0, result);
