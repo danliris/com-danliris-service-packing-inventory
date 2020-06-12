@@ -132,6 +132,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         Sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeModel>()).Select(s => new GarmentPackingListDetailSizeViewModel
                         {
+                            Active = s.Active,
+                            Id = s.Id,
+                            CreatedAgent = s.CreatedAgent,
+                            CreatedBy = s.CreatedBy,
+                            CreatedUtc = s.CreatedUtc,
+                            DeletedAgent = s.DeletedAgent,
+                            DeletedBy = s.DeletedBy,
+                            DeletedUtc = s.DeletedUtc,
+                            IsDeleted = s.IsDeleted,
+                            LastModifiedAgent = s.LastModifiedAgent,
+                            LastModifiedBy = s.LastModifiedBy,
+                            LastModifiedUtc = s.LastModifiedUtc,
+
                             Size = new SizeViewModel
                             {
                                 Id = s.SizeId,
@@ -187,20 +200,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     var sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeViewModel>()).Select(s =>
                     {
                         s.Size = s.Size ?? new SizeViewModel();
-                        return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity);
+                        return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity) { Id = s.Id };
                     }).ToList();
 
-                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, sizes);
+                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, sizes) { Id = d.Id };
                 }).ToList();
 
                 i.BuyerBrand = i.BuyerBrand ?? new Buyer();
                 i.Uom = i.Uom ?? new UnitOfMeasurement();
                 i.Unit = i.Unit ?? new Unit();
                 i.Comodity = i.Comodity ?? new Comodity();
-                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, details, i.AVG_GW, i.AVG_NW);
+                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, details, i.AVG_GW, i.AVG_NW)
+                {
+                    Id = i.Id
+                };
             }).ToList();
 
-            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity)).ToList();
+            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity)
+            {
+                Id = m.Id
+            }).ToList();
 
             viewModel.Section = viewModel.Section ?? new Section();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
