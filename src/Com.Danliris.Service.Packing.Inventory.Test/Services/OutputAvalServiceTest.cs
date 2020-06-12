@@ -404,7 +404,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var result = service.ReadByTypeAvailableAval("KAIN KOTOR", 1, 25, "{ }", "{}", null);
 
-            Assert.Empty(result.Data);
+            Assert.NotEmpty(result.Data);
         }
         [Fact]
         public void Should_Success_ReadAvailableAval()
