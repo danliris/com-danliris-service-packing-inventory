@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                     Grade = "a",
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    
+
                                 }
                             },
                             BuyerId = 1,
@@ -119,14 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                     Id = 2,
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    AvalItems = new List<AvalItem>()
-                                    {
-                                        new AvalItem()
-                                        {
-                                            Type = "type",
-                                            Length = 1
-                                        }
-                                    }
+                                    AvalType = "type"
                                 }
                             },
                             BuyerId = 1,
@@ -151,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         var productionOrders = new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalItems.Select(e => new DyeingPrintingAreaOutputAvalItemModel(e.Type, e.Length)).ToList())
+                            detail.AvalType)
                         {
                             Id = detail.Id
                         };
@@ -322,8 +315,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
             var item = ViewModel.InspectionMaterialProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                    
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>()
+                 {
+
                  }.AsQueryable());
 
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
@@ -537,7 +531,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(Model);
 
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type",1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0));
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
@@ -740,27 +734,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         [Fact]
         public void Validate_VM()
         {
-            var avalItem = new AvalItem()
-            {
-                Length = 1,
-                Type = "Aval A"
-            };
-
-            Assert.NotEqual(0, avalItem.Length);
-            Assert.NotNull(avalItem.Type);
 
             var spp = new OutputInspectionMaterialProductionOrderViewModel()
             {
                 PreviousBalance = 1,
                 InitLength = 1,
                 InputId = 1,
-                BalanceRemains = 1
+                BalanceRemains = 1,
+                Balance = 1
             };
 
             Assert.NotEqual(0, spp.PreviousBalance);
             Assert.NotEqual(0, spp.InitLength);
             Assert.NotEqual(0, spp.InputId);
             Assert.NotEqual(0, spp.BalanceRemains);
+            Assert.NotEqual(0, spp.Balance);
 
             var detail = new OutputInspectionMaterialProductionOrderDetailViewModel()
             {
@@ -799,6 +787,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BalanceRemains = 0
                 }
             };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    BalanceRemains = 1,
+                    ProductionOrderDetails = new List<OutputInspectionMaterialProductionOrderDetailViewModel>()
+                    {
+                        new OutputInspectionMaterialProductionOrderDetailViewModel()
+                        {
+                            Balance = 0
+                        },
+                        new OutputInspectionMaterialProductionOrderDetailViewModel()
+                        {
+                            Balance = 2
+                        }
+                    }
+                },
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    BalanceRemains = 0,
+                     
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.DestinationArea = "GUDANG AVAL";
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }

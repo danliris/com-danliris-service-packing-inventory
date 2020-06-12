@@ -87,30 +87,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
                             }
 
-                            if(DestinationArea == "GUDANG AVAL")
+                            if (DestinationArea == "GUDANG AVAL")
                             {
-                                if (detail.AvalItems.Count == 0 && item.IsSave)
+                                if (string.IsNullOrEmpty(detail.AvalType))
                                 {
                                     Count++;
-                                    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
+                                    DetailErrors += "AvalType: 'Macam Barang Tidak Boleh Kosong',";
                                 }
-                                else
-                                {
-                                    DetailErrors += "AvalItems : [ ";
-                                    foreach (var aval in detail.AvalItems)
-                                    {
-                                        DetailErrors += "{";
 
-                                        if (aval.Length == 0)
-                                        {
-                                            Count++;
-                                            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
-                                        }
+                                //if (detail.AvalItems.Count == 0 && item.IsSave)
+                                //{
+                                //    Count++;
+                                //    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
+                                //}
+                                //else
+                                //{
+                                //    DetailErrors += "AvalItems : [ ";
+                                //    foreach (var aval in detail.AvalItems)
+                                //    {
+                                //        DetailErrors += "{";
 
-                                        DetailErrors += "}, ";
-                                    }
-                                    DetailErrors += "], ";
-                                }
+                                //        if (aval.Length == 0)
+                                //        {
+                                //            Count++;
+                                //            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
+                                //        }
+
+                                //        DetailErrors += "}, ";
+                                //    }
+                                //    DetailErrors += "], ";
+                                //}
                             }
                             
                             DetailErrors += "}, ";
