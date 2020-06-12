@@ -286,7 +286,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
+		public ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword)
+		{
+			var query = _packingListRepository.ReadAll();
+			List<string> SearchAttributes = new List<string>()
+			{
+				"InvoiceNo"
+			};
+			query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+
+			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+			query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+			query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
+
+			var data = query
+				.Skip((page - 1) * size)
+				.Take(size)
+				.Where(s=>s.IsUsed== false)
+				.Select(model => MapToViewModel(model))
+				.ToList();
+
+			return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
+		}
+
+
+
+		public async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
         {
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 

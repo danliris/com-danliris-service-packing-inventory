@@ -87,8 +87,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result.Data);
         }
+		[Fact]
+		public void ReadNotUsed_Success()
+		{
+			var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", false);
 
-        [Fact]
+			var repoMock = new Mock<IGarmentPackingListRepository>();
+			repoMock.Setup(s => s.ReadAll())
+				.Returns(new List<GarmentPackingListModel>() { model }.AsQueryable());
+
+			var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+			var result = service.ReadNotUsed(1, 25, "{}", "{}", null);
+
+			Assert.NotEmpty(result.Data);
+		}
+		[Fact]
         public async Task ReadById_Success()
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
