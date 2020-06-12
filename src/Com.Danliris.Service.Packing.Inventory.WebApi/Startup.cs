@@ -48,6 +48,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using System.Collections.Generic;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInstruction;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -99,8 +103,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
             //services.AddTransient<IDyeingPrintingAreaOutputAvalItemRepository, DyeingPrintingAreaOutputAvalItemRepository>();
 
+            services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
+            services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
 
             #endregion
 
@@ -121,8 +127,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
 
+            services.AddTransient<IGarmentShippingInstructionService, GarmentShippingInstructionService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
+            services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
 
             #endregion
 
