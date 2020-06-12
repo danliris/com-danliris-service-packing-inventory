@@ -86,6 +86,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var result = await repo.UpdateFromInputAsync(data.Id, true);
             Assert.NotEqual(0, result);
         }
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromInput2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromInput";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var test = new List<int> { data.Id };
+            var result = await repo.UpdateFromInputAsync(data.Id, true);
+            Assert.NotEqual(0, result);
+        }
 
         [Fact]
         public virtual async Task Should_Success_UpdateFromInputNextAreaFlagParentOnly()
