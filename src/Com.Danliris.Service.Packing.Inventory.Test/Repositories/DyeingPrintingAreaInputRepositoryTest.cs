@@ -410,5 +410,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateHeaderAvalTransforArea()
+        {
+            string testName = GetCurrentMethod() + "_UpdateHeaderAvalTransforArea";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetAvalTransformModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            
+            var result = await repo2.UpdateHeaderAvalTransform(emptyData, 10, 10);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
