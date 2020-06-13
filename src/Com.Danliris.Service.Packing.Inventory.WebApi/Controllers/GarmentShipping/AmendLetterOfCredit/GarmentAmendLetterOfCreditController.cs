@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.GarmentAmendLetterOfCredit
 {
     [Produces("application/json")]
-    [Route("v1/garment-shipping/letter-of-credits")]
+    [Route("v1/garment-shipping/amend-letter-of-credits")]
     [Authorize]
     public class GarmentAmendLetterOfCreditController : ControllerBase
     {
