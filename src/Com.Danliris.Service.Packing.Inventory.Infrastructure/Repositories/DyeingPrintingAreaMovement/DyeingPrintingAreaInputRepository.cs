@@ -153,6 +153,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetTotalAvalQuantity(model.TotalAvalQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetTotalAvalWeight(model.TotalAvalWeight, _identityProvider.Username, UserAgent);
 
             foreach (var item in modelToUpdate.DyeingPrintingAreaInputProductionOrders)
             {

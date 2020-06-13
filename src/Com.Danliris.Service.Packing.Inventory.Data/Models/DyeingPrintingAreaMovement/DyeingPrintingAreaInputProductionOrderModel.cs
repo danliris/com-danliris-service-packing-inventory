@@ -485,6 +485,135 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
         }
 
+        /// <summary>
+        /// Aval Insert Data Using SPP Entity
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area,
+                                                           string avalType,
+                                                           string avalCartNo,
+                                                           string uomUnit,
+                                                           double quantity,
+                                                           double avalQuantityKg,
+                                                           bool hasOutputDocument,
+                                                           int productionOrderId,
+                                                           string productionOrderNo,
+                                                           string cartNo,
+                                                           int buyerId,
+                                                           string buyer,
+                                                           string construction,
+                                                           string unit,
+                                                           string color,
+                                                           string motif,
+                                                           string remark,
+                                                           string grade,
+                                                           string status,
+                                                           double balance,
+                                                           string packingInstruction,
+                                                           string productionOrderType,
+                                                           double productionOrderOrderQuantity,
+                                                           string packagingType,
+                                                           decimal packagingQty,
+                                                           string packagingUnit,
+                                                           int dyeingPrintingAreaOutputProductionOrderId
+                                                           )
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = uomUnit;
+            Balance = quantity;
+            AvalQuantityKg = avalQuantityKg;
+            HasOutputDocument = hasOutputDocument;
+
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = PackingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+
+            Area = area;
+        }
+
+        /// <summary>
+        /// Aval Insert Data Using SPP Entity and ID Bon existing
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area,
+                                                           string avalType,
+                                                           string avalCartNo,
+                                                           string uomUnit,
+                                                           double quantity,
+                                                           double avalQuantityKg,
+                                                           bool hasOutputDocument,
+                                                           int productionOrderId,
+                                                           string productionOrderNo,
+                                                           string cartNo,
+                                                           int buyerId,
+                                                           string buyer,
+                                                           string construction,
+                                                           string unit,
+                                                           string color,
+                                                           string motif,
+                                                           string remark,
+                                                           string grade,
+                                                           string status,
+                                                           double balance,
+                                                           double balanceRemains,
+                                                           string packingInstruction,
+                                                           string productionOrderType,
+                                                           double productionOrderOrderQuantity,
+                                                           string packagingType,
+                                                           decimal packagingQty,
+                                                           string packagingUnit,
+                                                           int dyeingPrintingAreaOutputProductionOrderId,
+                                                           int dyeingPrintingAreaInputsId
+                                                           )
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = uomUnit;
+            Balance = quantity;
+            AvalQuantityKg = avalQuantityKg;
+            HasOutputDocument = hasOutputDocument;
+
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = PackingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputsId;
+
+            Area = area;
+        }
+
         //Shipping
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
            string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains, string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)

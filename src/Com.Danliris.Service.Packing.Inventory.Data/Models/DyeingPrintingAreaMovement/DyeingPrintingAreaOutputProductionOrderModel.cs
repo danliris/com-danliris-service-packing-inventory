@@ -399,7 +399,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
         }
-
+        /// <summary>
+        /// Insert Aval with existing bon
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
+                                                            string avalCartNo,
+                                                            string avalUomUnit,
+                                                            double avalQuantity,
+                                                            double avalQuantityKg,
+                                                            int dyeingPrintingOutputId) : this()
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantity;
+            AvalQuantityKg = avalQuantityKg;
+            DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
+        }
         //Warehouse
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area, string destinationArea, int dyeingPrintingAreaInputProductionOrderId, int buyerId) : this()
         {

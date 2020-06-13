@@ -30,7 +30,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Output
                             AvalCartNo = "5-11",
                             AvalUomUnit = "KRG",
                             AvalQuantity = 5,
-                            AvalQuantityKg = 10
+                            AvalQuantityKg = 10,
+                            AvalOutQuantity = 5
                         }
                     },
                     DyeingPrintingMovementIds = new List<OutputAvalDyeingPrintingAreaMovementIdsViewModel>()

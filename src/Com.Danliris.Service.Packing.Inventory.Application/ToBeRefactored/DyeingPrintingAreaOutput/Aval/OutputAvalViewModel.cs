@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public string BonNo { get; set; }
         public string Group { get; set; }
+        public int DeliveryOrdeSalesId { get; set; }
+        public string DeliveryOrderSalesNo { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public ICollection<OutputAvalItemViewModel> AvalItems { get; set; }
         public List<OutputAvalDyeingPrintingAreaMovementIdsViewModel> DyeingPrintingMovementIds { get; set; }

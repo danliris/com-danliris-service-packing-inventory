@@ -10,5 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string AvalUomUnit { get; set; }
         public double AvalQuantity { get; set; }
         public double AvalQuantityKg { get; set; }
+        public string AvalOutSatuan { get; set; }
+        public double AvalOutQuantity { get; set; }
     }
 }
