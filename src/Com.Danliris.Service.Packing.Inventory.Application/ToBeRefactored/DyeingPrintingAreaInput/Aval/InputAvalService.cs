@@ -348,6 +348,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && 
+                                                              !s.IsTransformedAval &&
                                                               s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             List<string> SearchAttributes = new List<string>()
             {

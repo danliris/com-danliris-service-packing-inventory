@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
                 result += await _SPPRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
             }
-
+            model.FlagForDelete(_identityProvider.Username, UserAgent);
             _dbSet.Update(model);
 
             result += await _dbContext.SaveChangesAsync();
@@ -223,6 +223,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             result += await _dbContext.SaveChangesAsync();
             return result;
+        }
+
+        public Task<int> UpdateHeaderAvalTransform(DyeingPrintingAreaInputModel model, double avalQuantity, double weightQuantity)
+        {
+            var newAvalQuantity = model.TotalAvalQuantity + avalQuantity;
+            var newWeightQuantity = model.TotalAvalWeight + weightQuantity;
+
+            model.SetTotalAvalQuantity(newAvalQuantity, _identityProvider.Username, UserAgent);
+            model.SetTotalAvalWeight(newWeightQuantity, _identityProvider.Username, UserAgent);
+
+            _dbSet.Update(model);
+
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> UpdateIMArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel modelToUpdate)

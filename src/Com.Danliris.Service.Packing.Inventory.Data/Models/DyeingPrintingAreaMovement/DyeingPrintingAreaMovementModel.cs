@@ -34,6 +34,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, string avalType, double avalQuantity, double avalWeightQuantity)
+        {
+            Date = date;
+            Area = area;
+            Type = type;
+            AvalType = avalType;
+            AvalQuantity = avalQuantity;
+            AvalWeightQuantity = avalWeightQuantity;
+        }
+
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId) : this(date, area, type, dyeingPrintingAreaDocumentId, 

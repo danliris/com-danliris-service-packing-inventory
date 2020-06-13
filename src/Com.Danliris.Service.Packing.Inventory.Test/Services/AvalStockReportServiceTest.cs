@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(movementRepoMock.Object).Object);
 
-            var result = service.GetReportData(DateTimeOffset.UtcNow);
+            var result = service.GetReportData(DateTimeOffset.UtcNow, 7);
 
             Assert.NotEmpty(result.Data);
         }
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(movementRepoMock.Object).Object);
 
-            var result = service.GenerateExcel(DateTimeOffset.UtcNow);
+            var result = service.GenerateExcel(DateTimeOffset.UtcNow, 7);
 
             Assert.NotNull(result);
         }
@@ -129,11 +129,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(movementRepoMock.Object).Object);
 
-            var result = service.GenerateExcel(DateTimeOffset.UtcNow);
+            var result = service.GenerateExcel(DateTimeOffset.UtcNow, 7);
 
             Assert.NotNull(result);
         }
     }
 
-    
+
 }

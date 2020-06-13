@@ -69,14 +69,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 CreatedUtc = model.CreatedUtc,
                 Date = model.Date,
                 DeletedAgent = model.DeletedAgent,
-                DeletedBy=model.DeletedBy,
-                DeletedUtc= model.DeletedUtc,
+                DeletedBy = model.DeletedBy,
+                DeletedUtc = model.DeletedUtc,
                 Group = model.Group,
                 Id = model.Id,
                 IsDeleted = model.IsDeleted,
                 LastModifiedAgent = model.LastModifiedAgent,
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
+                IsTransformedAval = model.IsTransformedAval,
                 Shift = model.Shift,
                 AvalTransformationProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(d => new InputAvalTransformationProductionOrderViewModel()
                 {
@@ -97,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DeletedUtc = d.DeletedUtc,
                     DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaOutputProductionOrderId,
                     Id = d.Id,
-                    IsDeleted =d.IsDeleted,
+                    IsDeleted = d.IsDeleted,
                     LastModifiedAgent = d.LastModifiedAgent,
                     LastModifiedBy = d.LastModifiedBy,
                     LastModifiedUtc = d.LastModifiedUtc,
@@ -126,10 +127,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == GUDANGAVAL && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.AvalType == viewModel.AvalType && s.IsTransformedAval);
-
+            viewModel.AvalTransformationProductionOrders = viewModel.AvalTransformationProductionOrders.Where(s => s.IsSave).ToList();
             if (model == null)
             {
-                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.CreatedUtc.Year == viewModel.Date.Year);
+                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.IsTransformedAval && s.Area == GUDANGAVAL && s.CreatedUtc.Year == viewModel.Date.Year);
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.AvalType, true,
                     viewModel.AvalTransformationProductionOrders.Sum(d => d.AvalQuantity), viewModel.AvalTransformationProductionOrders.Sum(d => d.WeightQuantity),
@@ -185,6 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Quantity, modelItem.Id, item.AvalQuantity, item.WeightQuantity, item.AvalType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
+                    
                     //var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.OutputId && s.ProductionOrderId == item.ProductionOrder.Id);
 
                     //var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -201,6 +203,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //    result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
                     //}
                 }
+
+                result += await _repository.UpdateHeaderAvalTransform(model, viewModel.AvalTransformationProductionOrders.Sum(d => d.AvalQuantity), viewModel.AvalTransformationProductionOrders.Sum(d => d.WeightQuantity));
             }
 
 
@@ -223,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (!item.HasOutputDocument)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id);
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.AvalQuantity * -1, item.AvalQuantityKg * -1, item.AvalType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
 
@@ -268,7 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<InputAvalTransformationViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval&& s.TotalAvalQuantity != 0 && s.TotalAvalWeight != 0);
+            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval && s.TotalAvalQuantity != 0 && s.TotalAvalWeight != 0);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -329,8 +333,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in deletedData)
             {
-                var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, TYPE, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id);
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.AvalQuantity * -1, item.AvalQuantityKg * -1, item.AvalType);
 
                 result += await _movementRepository.InsertAsync(movementModel);
             }
