@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProcessType
 {
     public class IPProcessTypeViewModelValidator : AbstractValidator<IPProcessTypeViewModel>
     {
