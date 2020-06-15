@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
@@ -189,6 +190,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     errorDetail["Sizes"] = errorSizes;
                                     errorDetailsCount++;
                                 }
+
+                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                {
+                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                    errorDetailsCount++;
+                                }
                             }
 
                             errorDetails.Add(errorDetail);
@@ -197,6 +204,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         if (errorDetailsCount > 0)
                         {
                             errorItem["Details"] = errorDetails;
+                            errorItemsCount++;
+                        }
+
+                        if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
+                        {
+                            errorItem["totalQty"] = "Harus sama dengan Qty";
                             errorItemsCount++;
                         }
                     }
