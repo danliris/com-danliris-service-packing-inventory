@@ -1157,7 +1157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var inputId = outPre.ShippingProductionOrders.FirstOrDefault().InputId;
             //var test = outPre.Grade;
             //var test2 = outPre.DeliveryOrder
-            Assert.NotNull(inputId);
+            Assert.NotEqual(0, inputId);
         }
 
         [Fact]

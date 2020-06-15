@@ -57,6 +57,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -83,48 +85,37 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             #region Repository
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
             services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductPackingService, ProductPackingService>();
-            services.AddTransient<IProductSKUService, ProductSKUService>();
-
             services.AddTransient<IInventoryDocumentSKURepository, InventoryDocumentSKURepository>();
             services.AddTransient<IInventoryDocumentPackingRepository, InventoryDocumentPackingRepository>();
-            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
-            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
-            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
-            services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
-
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
-            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
-            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
-
             services.AddTransient<IDyeingPrintingAreaInputRepository, DyeingPrintingAreaInputRepository>();
             services.AddTransient<IDyeingPrintingAreaInputProductionOrderRepository, DyeingPrintingAreaInputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
-			//services.AddTransient<IDyeingPrintingAreaOutputAvalItemRepository, DyeingPrintingAreaOutputAvalItemRepository>();
 			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
-
 			services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
-			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
-
-			services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
-
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
+            services.AddTransient<IWeftTypeRepository, WeftTypeRepository>();
 
             #endregion
 
             #region Service
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductPackingService, ProductPackingService>();
+            services.AddTransient<IProductSKUService, ProductSKUService>();
+            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
+            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
+            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
+            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
-
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
             services.AddTransient<IOutputTransitService, OutputTransitService>();
@@ -139,25 +130,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputAvalTransformationService, InputAvalTransformationService>();
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-
-
-
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-			// Register Provider
-			services.AddScoped<IIdentityProvider, IdentityProvider>();
+            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
+            services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
             services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
             services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
+            services.AddTransient<IWeftTypeService, WeftTypeService>();
 
             #endregion
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
-
             services.AddScoped<IValidateService, ValidateService>();
 
             var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
