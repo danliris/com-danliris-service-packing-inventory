@@ -535,5 +535,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
 
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Return_DownloadTemplate()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IWeftTypeService>();
+            serviceMock.Setup(s => s.DownloadTemplate())
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = controller.DownloadTemplate();
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Exception_DownloadTemplate()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IWeftTypeService>();
+            serviceMock.Setup(s => s.DownloadTemplate())
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = controller.DownloadTemplate();
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

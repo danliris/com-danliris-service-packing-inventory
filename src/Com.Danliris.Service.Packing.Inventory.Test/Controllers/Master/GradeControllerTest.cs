@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -19,9 +19,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
 {
-    public class MaterialConstructionControllerTest
+    public class GradeControllerTest
     {
-        private MaterialConstructionController GetController(IMaterialConstructionService service, IIdentityProvider identityProvider, IValidateService validateService)
+        private GradeController GetController(IGradeService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new MaterialConstructionController(service, identityProvider, validateService)
+            var controller = new GradeController(service, identityProvider, validateService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -65,15 +65,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private MaterialConstructionViewModel ViewModel
+        private GradeViewModel ViewModel
         {
             get
             {
-                return new MaterialConstructionViewModel()
+                return new GradeViewModel()
                 {
                     Id = 1,
                     Type = "test",
-                    Code = "1"
+                    Code = "1",
+                    IsAvalGrade = true,
                 };
             }
         }
@@ -83,15 +84,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<GradeViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -105,17 +106,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new MaterialConstructionViewModel();
+            var dataUtil = new GradeViewModel();
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<GradeViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -133,15 +134,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<GradeViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -157,15 +158,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<GradeViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Throws(GetServiceValidationExeption());
             var validateService = validateServiceMock.Object;
 
@@ -180,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -202,7 +203,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -223,9 +224,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<MaterialConstructionViewModel>(new List<MaterialConstructionViewModel>() { ViewModel }, 1, 1, 1));
+                .Returns(new ListResult<GradeViewModel>(new List<GradeViewModel>() { ViewModel }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -246,7 +247,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -267,7 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
@@ -290,7 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).Throws(new Exception("error"));
             var service = serviceMock.Object;
 
@@ -313,12 +314,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<GradeViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -337,12 +338,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<GradeViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -362,12 +363,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<GradeViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Throws(GetServiceValidationExeption());
             var validateService = validateServiceMock.Object;
 
@@ -386,12 +387,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).Throws(new Exception("mess"));
+            var serviceMock = new Mock<IGradeService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<GradeViewModel>())).Throws(new Exception("mess"));
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<GradeViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -410,7 +411,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -429,10 +430,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_BadRequest_Upload()
         {
             var dataUtil = ViewModel;
-            var header = new List<string>() { "Lusi Pakan", "Kode" };
+            var header = new List<string>() { "Grade", "Kode" };
             var isi = new List<string>() { dataUtil.Type, dataUtil.Code };
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(false);
             var service = serviceMock.Object;
@@ -455,10 +456,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_InternalServerError_Upload()
         {
             var dataUtil = ViewModel;
-            var header = new List<string>() { "Lusi Pakan", "Kode" };
+            var header = new List<string>() { "Grade", "Kode" };
             var isi = new List<string>() { dataUtil.Type, dataUtil.Code };
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
@@ -481,13 +482,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Return_ErrorFile_Upload()
         {
             var dataUtil = ViewModel;
-            var header = "Lusi Pakan, Kode";
+            var header = "Grade, Kode";
             var isi = $"{ViewModel.Type}, {ViewModel.Code}";
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(true);
-            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
+            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<GradeViewModel>>()))
                 .Returns(new Tuple<bool, List<object>>(false, new List<object>()));
             var service = serviceMock.Object;
 
@@ -509,15 +510,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Return_Created_Upload()
         {
             var dataUtil = ViewModel;
-            var header = "Lusi Pakan, Kode";
+            var header = "Grade, Kode";
             var isi = $"{ViewModel.Type}, {ViewModel.Code}";
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(true);
-            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
+            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<GradeViewModel>>()))
                 .Returns(new Tuple<bool, List<object>>(true, new List<object>()));
-            serviceMock.Setup(s => s.Upload(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
+            serviceMock.Setup(s => s.Upload(It.IsAny<IEnumerable<GradeViewModel>>()))
                .ReturnsAsync(1);
             var service = serviceMock.Object;
 
@@ -540,7 +541,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.DownloadTemplate())
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
@@ -561,7 +562,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IMaterialConstructionService>();
+            var serviceMock = new Mock<IGradeService>();
             serviceMock.Setup(s => s.DownloadTemplate())
                 .Throws(new Exception());
             var service = serviceMock.Object;

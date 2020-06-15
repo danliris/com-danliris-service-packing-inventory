@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,5 +17,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
         Task<int> Upload(IEnumerable<WarpTypeViewModel> data);
         Tuple<bool, List<object>> UploadValidate(IEnumerable<WarpTypeViewModel> data);
         bool ValidateHeader(IEnumerable<string> headers);
+        MemoryStream DownloadTemplate();
     }
 }

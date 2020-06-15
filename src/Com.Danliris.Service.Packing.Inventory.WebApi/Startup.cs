@@ -64,13 +64,13 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.W
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWidthType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidthType;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYarnType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPProcessType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProcessType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -122,9 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPYarnTypeRepository, IPYarnTypeRepository>();
             services.AddTransient<IIPWarpTypeRepository, IPWarpTypeRepository>();
             services.AddTransient<IIPProcessTypeRepository, IPProcessTypeRepository>();
-
-
-
+            services.AddTransient<IGradeRepository, GradeRepository>();
             #endregion
 
             #region Service
@@ -152,20 +150,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
             services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
             services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
             services.AddTransient<IIPWidthTypeService, IPWidthService>();
             services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
             services.AddTransient<IIPWarpTypeService, IPWarpTypeService>();
             services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
-
-
-
-
-
-
-            services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-			// Register Provider
-			services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
@@ -176,6 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IWeftTypeService, WeftTypeService>();
             services.AddTransient<IWarpTypeService, WarpTypeService>();
             services.AddTransient<IMaterialConstructionService, MaterialConstructionService>();
+            services.AddTransient<IGradeService, GradeService>();
             #endregion
 
             // Register Provider

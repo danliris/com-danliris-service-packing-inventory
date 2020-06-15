@@ -40,8 +40,12 @@
     <Compile Remove="Migrations\20200615111939_Test.Designer.cs" />
     <Compile Remove="Migrations\20200615112207_AddJenisPakanDanJenisLusi.cs" />
     <Compile Remove="Migrations\20200615112207_AddJenisPakanDanJenisLusi.Designer.cs" />
+    <Compile Remove="Migrations\20200615112348_AddJenisPakanDanJenisLusi.cs" />
+    <Compile Remove="Migrations\20200615112348_AddJenisPakanDanJenisLusi.Designer.cs" />
     <Compile Remove="Migrations\20200615212328_AddLusiPakan.cs" />
     <Compile Remove="Migrations\20200615212328_AddLusiPakan.Designer.cs" />
+    <Compile Remove="Migrations\20200615225555_Test.cs" />
+    <Compile Remove="Migrations\20200615225555_Test.Designer.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />

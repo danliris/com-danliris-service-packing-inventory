@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
@@ -12,49 +12,50 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
 {
-    public class WeftTypeServiceTest
+    public class GradeServiceTest
     {
-        public WeftTypeService GetService(IServiceProvider serviceProvider)
+        public GradeService GetService(IServiceProvider serviceProvider)
         {
-            return new WeftTypeService(serviceProvider);
+            return new GradeService(serviceProvider);
         }
 
-        public Mock<IServiceProvider> GetServiceProvider(IWeftTypeRepository repository)
+        public Mock<IServiceProvider> GetServiceProvider(IGradeRepository repository)
         {
             var spMock = new Mock<IServiceProvider>();
-            spMock.Setup(s => s.GetService(typeof(IWeftTypeRepository)))
+            spMock.Setup(s => s.GetService(typeof(IGradeRepository)))
                 .Returns(repository);
 
             return spMock;
         }
 
-        private WeftTypeViewModel ViewModel
+        private GradeViewModel ViewModel
         {
             get
             {
-                return new WeftTypeViewModel()
+                return new GradeViewModel()
                 {
                     Id = 1,
                     Type = "test",
-                    Code = "01"
+                    Code = "1",
+                    IsAvalGrade = true,
                 };
             }
         }
 
-        private WeftTypeModel Model
+        private GradeModel Model
         {
             get
             {
-                return new WeftTypeModel(ViewModel.Type, ViewModel.Code);
+                return new GradeModel(ViewModel.Type, ViewModel.Code, ViewModel.IsAvalGrade);
             }
         }
 
         [Fact]
         public async Task Should_Success_Create()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<WeftTypeModel>()))
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<GradeModel>()))
                 .ReturnsAsync(1);
 
 
@@ -68,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public async Task Should_Success_Delete()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
@@ -84,10 +85,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Success_Read()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<WeftTypeModel>() { Model }.AsQueryable());
+                .Returns(new List<GradeModel>() { Model }.AsQueryable());
 
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
@@ -100,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public async Task Should_Success_ReadById()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
@@ -116,10 +117,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public async Task Should_Null_ReadById()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(default(WeftTypeModel));
+                .ReturnsAsync(default(GradeModel));
 
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
@@ -132,9 +133,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public async Task Should_Success_Update()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<WeftTypeModel>()))
+            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GradeModel>()))
                 .ReturnsAsync(1);
 
 
@@ -148,14 +149,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public async Task Should_Success_Upload()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
-            repoMock.Setup(s => s.MultipleInsertAsync(It.IsAny<IEnumerable<WeftTypeModel>>()))
+            repoMock.Setup(s => s.MultipleInsertAsync(It.IsAny<IEnumerable<GradeModel>>()))
                 .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = await service.Upload(new List<WeftTypeViewModel>() { ViewModel });
+            var result = await service.Upload(new List<GradeViewModel>() { ViewModel });
 
             Assert.NotEqual(0, result);
         }
@@ -163,14 +164,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Success_UploadValidate()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<WeftTypeModel>().AsQueryable());
+                .Returns(new List<GradeModel>().AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.UploadValidate(new List<WeftTypeViewModel>() { ViewModel });
+            var result = service.UploadValidate(new List<GradeViewModel>() { ViewModel });
 
             Assert.True(result.Item1);
         }
@@ -178,30 +179,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Error_UploadValidate_EmptyData()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<WeftTypeModel>().AsQueryable());
+                .Returns(new List<GradeModel>().AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var vm = new WeftTypeViewModel();
-            var result = service.UploadValidate(new List<WeftTypeViewModel>() { vm });
+            var vm = new GradeViewModel();
+            var result = service.UploadValidate(new List<GradeViewModel>() { vm });
 
             Assert.False(result.Item1);
 
             vm.Code = "test";
-            result = service.UploadValidate(new List<WeftTypeViewModel>() { vm });
+            result = service.UploadValidate(new List<GradeViewModel>() { vm });
 
             Assert.False(result.Item1);
 
             vm.Code = "0";
-            result = service.UploadValidate(new List<WeftTypeViewModel>() { vm });
+            result = service.UploadValidate(new List<GradeViewModel>() { vm });
 
             Assert.False(result.Item1);
 
             vm.Code = "110";
-            result = service.UploadValidate(new List<WeftTypeViewModel>() { vm });
+            result = service.UploadValidate(new List<GradeViewModel>() { vm });
 
             Assert.False(result.Item1);
         }
@@ -209,28 +210,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Error_UploadValidate_ExistData()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<WeftTypeModel>() { Model }.AsQueryable());
+                .Returns(new List<GradeModel>() { Model }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.UploadValidate(new List<WeftTypeViewModel>() { ViewModel });
+            var result = service.UploadValidate(new List<GradeViewModel>() { ViewModel });
 
             Assert.False(result.Item1);
-           
+
         }
 
 
         [Fact]
         public void Should_Success_ValidateHeader()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.ValidateHeader(new List<string>() { "Jenis Pakan", "Kode" });
+            var result = service.ValidateHeader(new List<string>() { "Grade", "Kode" });
 
             Assert.True(result);
         }
@@ -238,16 +239,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Exception_ValidationVM()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
             var model = Model;
             model.Id = 1;
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<WeftTypeModel>() { model }.AsQueryable());
+                .Returns(new List<GradeModel>() { model }.AsQueryable());
 
             var serviceProvider = GetServiceProvider(repoMock.Object).Object;
             var service = GetService(serviceProvider);
 
-            var vm = new WeftTypeViewModel();
+            var vm = new GradeViewModel();
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
@@ -259,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
-            vm.Code = "120";
+            vm.Code = "1202";
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
@@ -272,7 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         [Fact]
         public void Should_Success_DownloadTemplate()
         {
-            var repoMock = new Mock<IWeftTypeRepository>();
+            var repoMock = new Mock<IGradeRepository>();
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 

@@ -11,6 +11,9 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Dynamic;
+using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction
 {
@@ -202,6 +205,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
         public bool ValidateHeader(IEnumerable<string> headers)
         {
             return CsvHeader.SequenceEqual(headers, StringComparer.OrdinalIgnoreCase);
+        }
+
+        public MemoryStream DownloadTemplate()
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (var streamWriter = new StreamWriter(stream))
+                {
+
+                    using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                    {
+                        foreach (var item in CsvHeader)
+                        {
+                            csvWriter.WriteField(item);
+                        }
+                        csvWriter.NextRecord();
+                    }
+                }
+                return stream;
+            }
         }
     }
 }

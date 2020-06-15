@@ -18,14 +18,14 @@ using static Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.M
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
 {
     [Produces("application/json")]
-    [Route("v1/weft-type")]
+    [Route("v1/master/weft-type")]
     [Authorize]
     public class WeftTypeController : ControllerBase
     {
         private readonly IWeftTypeService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService ValidateService;
-        private readonly string ContentType = "application/vnd.openxmlformats";
+        private readonly string ContentType = "text/csv";
         private readonly string FileName = string.Concat("Error Log - Jenis Pakan ", DateTime.UtcNow.ToString("dd MMM yyyy"), ".csv");
 
 
@@ -186,7 +186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
         {
             try
             {
-                if(file == null)
+                VerifyUser();
+                if (file == null)
                 {
                     var Result = new
                     {
@@ -255,6 +256,32 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                         return BadRequest(Result);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                var error = new
+                {
+                    statusCode = HttpStatusCode.InternalServerError,
+                    error = ex.Message
+                };
+                return StatusCode((int)HttpStatusCode.InternalServerError, error);
+            }
+        }
+
+        [HttpGet("template/download")]
+        public IActionResult DownloadTemplate()
+        {
+            try
+            {
+                byte[] csvInBytes;
+                var csv = _service.DownloadTemplate();
+
+                string fileName = "Jenis Pakan.csv";
+
+                csvInBytes = csv.ToArray();
+
+                var file = File(csvInBytes, ContentType, fileName);
+                return file;
             }
             catch (Exception ex)
             {

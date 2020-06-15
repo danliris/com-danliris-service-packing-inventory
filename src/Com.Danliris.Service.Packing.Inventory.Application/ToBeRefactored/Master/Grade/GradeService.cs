@@ -7,49 +7,50 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using CsvHelper.Configuration;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
-using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Newtonsoft.Json;
 using System.Linq;
 using System.Dynamic;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade
 {
-    public class WarpTypeService : IWarpTypeService
+    public class GradeService : IGradeService
     {
-        private readonly IWarpTypeRepository _repository;
+        private readonly IGradeRepository _repository;
 
-        public WarpTypeService(IServiceProvider serviceProvider)
+        public GradeService(IServiceProvider serviceProvider)
         {
-            _repository = serviceProvider.GetService<IWarpTypeRepository>();
+            _repository = serviceProvider.GetService<IGradeRepository>();
         }
 
         /* Upload CSV */
         private readonly List<string> Header = new List<string>()
         {
-            "Jenis Lusi", "Kode"
+            "Grade", "Kode"
         };
 
         public List<string> CsvHeader => Header;
 
-        public sealed class WarpTypeMap : ClassMap<WarpTypeViewModel>
+        public sealed class GradeMap : ClassMap<GradeViewModel>
         {
-            public WarpTypeMap()
+            public GradeMap()
             {
                 Map(c => c.Type).Index(0);
                 Map(c => c.Code).Index(1);
             }
         }
 
-        private WarpTypeViewModel MapToViewModel(WarpTypeModel model)
+        private GradeViewModel MapToViewModel(GradeModel model)
         {
-            var vm = new WarpTypeViewModel()
+            var vm = new GradeViewModel()
             {
                 LastModifiedUtc = model.LastModifiedUtc,
                 Type = model.Type,
                 Code = model.Code,
+                IsAvalGrade = model.IsAvalGrade,
                 Id = model.Id,
                 Active = model.Active,
                 CreatedAgent = model.CreatedAgent,
@@ -66,9 +67,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return vm;
         }
 
-        public Task<int> Create(WarpTypeViewModel viewModel)
+        public Task<int> Create(GradeViewModel viewModel)
         {
-            var model = new WarpTypeModel(viewModel.Type, viewModel.Code);
+            var model = new GradeModel(viewModel.Type, viewModel.Code, viewModel.IsAvalGrade);
 
             return _repository.InsertAsync(model);
         }
@@ -78,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return _repository.DeleteAsync(id);
         }
 
-        public ListResult<WarpTypeViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public ListResult<GradeViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
@@ -86,25 +87,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 "Type", "Code"
             };
 
-            query = QueryHelper<WarpTypeModel>.Search(query, SearchAttributes, keyword);
+            query = QueryHelper<GradeModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<WarpTypeModel>.Filter(query, FilterDictionary);
+            query = QueryHelper<GradeModel>.Filter(query, FilterDictionary);
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<WarpTypeModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new WarpTypeViewModel()
+            query = QueryHelper<GradeModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new GradeViewModel()
             {
                 Id = s.Id,
                 Code = s.Code,
+                IsAvalGrade = s.IsAvalGrade,
                 Type = s.Type,
                 LastModifiedUtc = s.LastModifiedUtc
             });
 
-            return new ListResult<WarpTypeViewModel>(data.ToList(), page, size, query.Count());
+            return new ListResult<GradeViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public async Task<WarpTypeViewModel> ReadById(int id)
+        public async Task<GradeViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
             if (model == null)
@@ -115,20 +117,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return vm;
         }
 
-        public Task<int> Update(int id, WarpTypeViewModel viewModel)
+        public Task<int> Update(int id, GradeViewModel viewModel)
         {
-            var model = new WarpTypeModel(viewModel.Type, viewModel.Code);
+            var model = new GradeModel(viewModel.Type, viewModel.Code, viewModel.IsAvalGrade);
             return _repository.UpdateAsync(id, model);
         }
 
-        public Task<int> Upload(IEnumerable<WarpTypeViewModel> data)
+        public Task<int> Upload(IEnumerable<GradeViewModel> data)
         {
-            var models = data.Select(s => new WarpTypeModel(s.Type, s.Code));
+            var models = data.Select(s => new GradeModel(s.Type, s.Code, s.IsAvalGrade));
 
             return _repository.MultipleInsertAsync(models);
         }
 
-        public Tuple<bool, List<object>> UploadValidate(IEnumerable<WarpTypeViewModel> data)
+        public Tuple<bool, List<object>> UploadValidate(IEnumerable<GradeViewModel> data)
         {
             List<object> ErrorList = new List<object>();
             string ErrorMessage;
@@ -140,13 +142,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 ErrorMessage = "";
                 if (string.IsNullOrWhiteSpace(item.Type))
                 {
-                    ErrorMessage = string.Concat(ErrorMessage, "Jenis Lusi tidak boleh kosong, ");
+                    ErrorMessage = string.Concat(ErrorMessage, "Grade tidak boleh kosong, ");
                 }
                 else
                 {
                     if (_repository.ReadAll().Any(d => d.Type == item.Type))
                     {
-                        ErrorMessage = string.Concat(ErrorMessage, "Jenis Lusi sudah terdaftar, ");
+                        ErrorMessage = string.Concat(ErrorMessage, "Grade sudah terdaftar, ");
                     }
                 }
 
@@ -163,24 +165,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 {
                     ErrorMessage = string.Concat(ErrorMessage, "Kode harus lebih besar dari 0, ");
                 }
-                else if (code >= 100)
+                else if (code >= 10)
                 {
-                    ErrorMessage = string.Concat(ErrorMessage, "Panjang Kode hanya boleh 2 digit, ");
+                    ErrorMessage = string.Concat(ErrorMessage, "Panjang Kode hanya boleh 3 digit, ");
                 }
                 else
                 {
-                    var stringCode = code.ToString().PadLeft(2, '0');
-                    if (_repository.ReadAll().Any(d => d.Code == stringCode))
+                    if (_repository.ReadAll().Any(d => d.Code == item.Code))
                     {
                         ErrorMessage = string.Concat(ErrorMessage, "Kode sudah terdaftar, ");
                     }
                 }
 
-                if (string.IsNullOrEmpty(ErrorMessage))
-                {
-                    item.Code = code.ToString().PadLeft(2, '0');
-                }
-                else
+                if (!string.IsNullOrEmpty(ErrorMessage))
                 {
                     ErrorMessage = ErrorMessage.Remove(ErrorMessage.Length - 2);
                     var Error = new ExpandoObject() as IDictionary<string, object>;

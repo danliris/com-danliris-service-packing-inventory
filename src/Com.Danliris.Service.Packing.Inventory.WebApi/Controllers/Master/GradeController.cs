@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -13,22 +13,22 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using static Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType.WarpTypeService;
+using static Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade.GradeService;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
 {
     [Produces("application/json")]
-    [Route("v1/master/warp-type")]
+    [Route("v1/master/grade")]
     [Authorize]
-    public class WarpTypeController : ControllerBase
+    public class GradeController : ControllerBase
     {
-        private readonly IWarpTypeService _service;
+        private readonly IGradeService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService ValidateService;
         private readonly string ContentType = "text/csv";
-        private readonly string FileName = string.Concat("Error Log - Jenis Lusi ", DateTime.UtcNow.ToString("dd MMM yyyy"), ".csv");
-
-        public WarpTypeController(IWarpTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
+        private readonly string FileName = string.Concat("Error Log - Grade ", DateTime.UtcNow.ToString("dd MMM yyyy"), ".csv");
+        
+        public GradeController(IGradeService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] WarpTypeViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] GradeViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] WarpTypeViewModel viewModel)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] GradeViewModel viewModel)
         {
             VerifyUser();
             if (!ModelState.IsValid)
@@ -214,10 +214,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                         CsvReader Csv = new CsvReader(Reader, CultureInfo.InvariantCulture);
                         Csv.Configuration.IgnoreQuotes = false;
                         Csv.Configuration.Delimiter = ",";
-                        Csv.Configuration.RegisterClassMap<WarpTypeMap>();
+                        Csv.Configuration.RegisterClassMap<GradeMap>();
                         Csv.Configuration.HeaderValidated = null;
 
-                        List<WarpTypeViewModel> Data = Csv.GetRecords<WarpTypeViewModel>().ToList();
+                        List<GradeViewModel> Data = Csv.GetRecords<GradeViewModel>().ToList();
 
                         Tuple<bool, List<object>> Validated = _service.UploadValidate(Data);
 
@@ -239,7 +239,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                                         csvWriter.WriteRecords(Validated.Item2);
                                     }
                                 }
-
                                 return File(memoryStream.ToArray(), ContentType, FileName);
                             }
                         }
@@ -276,7 +275,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                 byte[] csvInBytes;
                 var csv = _service.DownloadTemplate();
 
-                string fileName = "Jenis Lusi.csv";
+                string fileName = "Grade.csv";
 
                 csvInBytes = csv.ToArray();
 

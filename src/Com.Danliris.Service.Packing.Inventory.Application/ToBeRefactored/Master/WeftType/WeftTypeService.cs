@@ -11,6 +11,9 @@ using System.Dynamic;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
+using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType
 {
@@ -203,6 +206,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
         public bool ValidateHeader(IEnumerable<string> headers)
         {
             return CsvHeader.SequenceEqual(headers, StringComparer.OrdinalIgnoreCase);
+        }
+
+        public MemoryStream DownloadTemplate()
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (var streamWriter = new StreamWriter(stream))
+                {
+
+                    using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                    {
+                        foreach (var item in CsvHeader)
+                        {
+                            csvWriter.WriteField(item);
+                        }
+                        csvWriter.NextRecord();
+                    }
+                }
+                return stream;
+            }
         }
     }
 }

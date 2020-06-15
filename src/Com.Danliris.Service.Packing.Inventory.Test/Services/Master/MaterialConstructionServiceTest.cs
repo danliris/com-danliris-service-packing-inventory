@@ -268,5 +268,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
+
+        [Fact]
+        public void Should_Success_DownloadTemplate()
+        {
+            var repoMock = new Mock<IMaterialConstructionRepository>();
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.DownloadTemplate();
+
+            Assert.NotNull(result);
+        }
     }
 }
