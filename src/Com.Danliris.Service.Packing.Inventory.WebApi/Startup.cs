@@ -60,7 +60,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWidthType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidthType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
-
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYarnType;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -124,6 +125,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
             services.AddTransient<IIPWidthTypeRepository, IPWidthTypeRepository>();
+            services.AddTransient<IIPYarnTypeRepository, IPYarnTypeRepository>();
+
 
             #endregion
 
@@ -146,10 +149,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
 			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
             services.AddTransient<IIPWidthTypeService, IPWidthService>();
+            services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
 
 
 
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+
+            services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
 			// Register Provider
 			services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
@@ -275,7 +280,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
             services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
-		}
+            services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

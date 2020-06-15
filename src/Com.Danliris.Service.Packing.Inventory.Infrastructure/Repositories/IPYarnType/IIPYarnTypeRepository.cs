@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType
 {
-    interface IIPYarnTypeRepository: IRepository<IPYarnTypeModel>
+    public interface IIPYarnTypeRepository: IRepository<IPYarnTypeModel>
     {
     }
 }
