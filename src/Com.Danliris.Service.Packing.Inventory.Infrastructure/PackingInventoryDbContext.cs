@@ -72,6 +72,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingAmendLetterOfCreditModel> GarmentShippingAmendLetterOfCredits { get; set; }
 
+        public DbSet<IPWidthTypeModel> IPWidthType { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InventoryDocumentPackingEntityTypeConfiguration());
@@ -115,6 +117,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new IPWidthTypeEntityTypeConfiguration());
+
+
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -137,6 +142,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<UnitOfMeasurementModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<PackagingStockModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<IPWidthTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -57,6 +57,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWidthType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidthType;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -119,6 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
+            services.AddTransient<IIPWidthTypeRepository, IPWidthTypeRepository>();
 
             #endregion
 
@@ -140,6 +143,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
 			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+            services.AddTransient<IIPWidthTypeService, IPWidthService>();
 
 
 
@@ -267,6 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
+            services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
