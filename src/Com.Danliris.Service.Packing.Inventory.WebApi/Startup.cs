@@ -59,6 +59,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -139,6 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
             services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
             services.AddTransient<IWeftTypeService, WeftTypeService>();
+            services.AddTransient<IGarmentShippingInstructionService, GarmentShippingInstructionService>();
 
             #endregion
 

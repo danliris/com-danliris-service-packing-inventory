@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Com.Moonlay.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInstruction
 {
@@ -16,12 +17,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private const string UserAgent = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
+        private readonly DbSet<GarmentShippingInvoiceModel> _garmentshippingInvoiceDbSet;
         private readonly DbSet<GarmentShippingInstructionModel> _dbSet;
 
         public GarmentShippingInstructionRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingInstructionModel>();
+            _garmentshippingInvoiceDbSet = dbContext.Set<GarmentShippingInvoiceModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -30,12 +33,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             var model = _dbSet
                 .FirstOrDefault(s => s.Id == id);
 
+            var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
+            invoice.SetIsUsed(false, _identityProvider.Username, UserAgent);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> InsertAsync(GarmentShippingInstructionModel model)
         {
+            var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
+            invoice.SetIsUsed(true, _identityProvider.Username, UserAgent);
+
             model.FlagForCreate(_identityProvider.Username, UserAgent);
             _dbSet.Add(model);
 
