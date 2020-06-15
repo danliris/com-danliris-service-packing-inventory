@@ -75,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
 			Assert.Empty(dbContext.GarmentShippingInvoices);
 			Assert.Empty(dbContext.GarmentShippingInvoiceItems);
 			Assert.Empty(dbContext.GarmentShippingInvoiceAdjustments);
-		}
+            Assert.Empty(dbContext.IPWeftTypes);
+        }
     }
 }

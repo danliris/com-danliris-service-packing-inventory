@@ -482,8 +482,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Return_ErrorFile_Upload()
         {
             var dataUtil = ViewModel;
-            var header = new List<string>() { "Jenis Pakan", "Kode" };
-            var isi = new List<string>() { dataUtil.Type, dataUtil.Code };
+            var header = "Jenis Pakan, Kode";
+            var isi = $"{ViewModel.Type}, {ViewModel.Code}";
             //v
             var serviceMock = new Mock<IWeftTypeService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
