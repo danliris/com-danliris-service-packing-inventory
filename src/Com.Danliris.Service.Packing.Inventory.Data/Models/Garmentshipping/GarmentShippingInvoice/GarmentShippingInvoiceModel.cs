@@ -353,5 +353,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 				this.FlagForUpdate(username, uSER_AGENT);
 			}
 		}
-	}
+
+        public void SetIsUsed(bool isUsed, string username, string uSER_AGENT)
+        {
+            if (IsUsed != isUsed)
+            {
+                IsUsed = isUsed;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+    }
 }
