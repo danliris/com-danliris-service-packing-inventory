@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 {
     public interface IDyeingPrintingAreaInputRepository : IRepository<DyeingPrintingAreaInputModel>
     {
+        Task<int> UpdateHeaderAvalTransform(DyeingPrintingAreaInputModel model, double avalQuantity, double weightQuantity);
         Task<int> UpdateIMArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         Task<int> DeleteIMArea(DyeingPrintingAreaInputModel model);
         Task<int> DeleteTransitArea(DyeingPrintingAreaInputModel model);

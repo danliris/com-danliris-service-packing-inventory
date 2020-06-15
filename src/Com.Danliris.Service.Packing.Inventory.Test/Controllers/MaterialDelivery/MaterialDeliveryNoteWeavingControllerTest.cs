@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
+namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelivery
 {
     public class MaterialDeliveryNoteWeavingControllerTest
     {
