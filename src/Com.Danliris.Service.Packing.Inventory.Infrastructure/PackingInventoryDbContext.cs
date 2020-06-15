@@ -77,6 +77,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<IPYarnTypeModel> IPYarnType { get; set; }
 
+        public DbSet<IPProcessTypeModel> IPProcessType { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -124,6 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new IPWidthTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new IPWarpTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new IPYarnTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new IPProcessTypeEntityTypeConfiguration());
 
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -152,6 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<IPWidthTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<IPWarpTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<IPYarnTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<IPProcessTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }
