@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BankAccountId = bankAccountId;
             BankAccountName = bankAccountName;
             BuyerAgentAddress = buyerAgentAddress;
-            BuyerAgentCode = buyerAgentAddress;
+            BuyerAgentCode = buyerAgentCode;
             BuyerAgentName = buyerAgentName;
             BuyerAgentId = buyerAgentId;
             Notify = notify;

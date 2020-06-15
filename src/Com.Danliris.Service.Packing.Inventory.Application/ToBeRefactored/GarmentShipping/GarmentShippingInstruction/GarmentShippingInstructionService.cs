@@ -86,7 +86,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             
             viewModel.EMKL = viewModel.EMKL ?? new EMKL();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
-            GarmentShippingInstructionModel garmentShippingInstructionModel = new GarmentShippingInstructionModel(viewModel.InvoiceNo,viewModel.InvoiceId, viewModel.Date, viewModel.EMKL.Id, viewModel.EMKL.Code, viewModel.EMKL.Name, viewModel.ATTN, viewModel.Fax, viewModel.CC, viewModel.ShippingStaffId, viewModel.ShippingStaffName, viewModel.Phone, viewModel.ShippedBy, viewModel.TruckingDate, viewModel.CartonNo, viewModel.PortOfDischarge, viewModel.PlaceOfDelivery, viewModel.FeederVessel, viewModel.OceanVessel, viewModel.Carrier, viewModel.Flight, viewModel.Transit, viewModel.BankAccountId, viewModel.BankAccountName, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.BuyerAgentAddress, viewModel.Notify, viewModel.SpecialInstruction);
+            GarmentShippingInstructionModel garmentShippingInstructionModel = new GarmentShippingInstructionModel(viewModel.InvoiceNo,viewModel.InvoiceId, 
+                viewModel.Date, viewModel.EMKL.Id, viewModel.EMKL.Code, viewModel.EMKL.Name, 
+                viewModel.ATTN, viewModel.Fax, viewModel.CC, viewModel.ShippingStaffId, 
+                viewModel.ShippingStaffName, viewModel.Phone, viewModel.ShippedBy, viewModel.TruckingDate, 
+                viewModel.CartonNo, viewModel.PortOfDischarge, viewModel.PlaceOfDelivery, 
+                viewModel.FeederVessel, viewModel.OceanVessel, viewModel.Carrier, viewModel.Flight, 
+                viewModel.Transit, viewModel.BankAccountId, viewModel.BankAccountName, viewModel.BuyerAgent.Id, 
+                viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.BuyerAgentAddress, 
+                viewModel.Notify, viewModel.SpecialInstruction);
 
             return garmentShippingInstructionModel;
         }
