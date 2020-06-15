@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public DateTimeOffset? NPEDate { get; set; }
 		public string Description { get; set; }
 		public decimal AmountToBePaid { get; set; }
-		public decimal CPrice { get; set; }
+		public string CPrice { get; set; }
 		public string Say { get; set; }
 		public string Memo { get; set; }
 		public bool IsUsed { get; set; }
@@ -67,6 +67,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			if (string.IsNullOrEmpty(Consignee))
 				yield return new ValidationResult("Consignee harus diisi", new List<string> { "Consignee" });
+			if (string.IsNullOrEmpty(ShippingPer))
+				yield return new ValidationResult("ShippingPer harus diisi", new List<string> { "ShippingPer" });
 
 			if (string.IsNullOrEmpty(ConfirmationOfOrderNo))
 				yield return new ValidationResult("ConfirmationOfOrderNo harus diisi", new List<string> { "ConfirmationOfOrderNo" });
@@ -83,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			if (PaymentDue.Equals(0))
 				yield return new ValidationResult("PaymentDue harus diisi", new List<string> { "PaymentDue" });
 
-			if (CPrice.Equals(0))
+			if (string.IsNullOrEmpty(CPrice))
 				yield return new ValidationResult("CPrice harus diisi", new List<string> { "CPrice" });
 
 			int Count = 0;

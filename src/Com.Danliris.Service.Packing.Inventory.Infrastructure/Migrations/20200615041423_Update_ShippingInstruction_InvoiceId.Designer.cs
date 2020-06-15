@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200615041423_Update_ShippingInstruction_InvoiceId")]
+    partial class Update_ShippingInstruction_InvoiceId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1604,7 +1606,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("COTPDate");
 
-                    b.Property<string>("CPrice");
+                    b.Property<decimal>("CPrice");
 
                     b.Property<string>("ConfirmationOfOrderNo")
                         .HasMaxLength(255);
@@ -1680,6 +1682,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(5);
 
                     b.Property<DateTimeOffset>("SailingDate");
+
+                    b.Property<string>("Say");
 
                     b.Property<string>("SectionCode")
                         .HasMaxLength(100);
@@ -1893,45 +1897,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasFilter("[IsDeleted]=(0)");
 
                     b.ToTable("GarmentShippingNotes");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.IPWidthTypeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("WidthType")
-                        .HasMaxLength(1024);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPWidthType");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingItemModel", b =>

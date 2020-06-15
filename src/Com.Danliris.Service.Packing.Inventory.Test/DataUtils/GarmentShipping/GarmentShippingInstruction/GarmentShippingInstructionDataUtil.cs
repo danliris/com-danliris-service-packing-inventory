@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentShippingInvoice;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 {
     public class GarmentShippingInstructionDataUtil : BaseDataUtil<GarmentShippingInstructionRepository, GarmentShippingInstructionModel>
     {
-        public GarmentShippingInstructionDataUtil(GarmentShippingInstructionRepository repository) : base(repository)
+        public GarmentShippingInstructionDataUtil(GarmentShippingInstructionRepository repository, GarmentShippingInvoiceDataUtil garmentShippingInvoiceDataUtil) : base(repository)
         {
         }
 
