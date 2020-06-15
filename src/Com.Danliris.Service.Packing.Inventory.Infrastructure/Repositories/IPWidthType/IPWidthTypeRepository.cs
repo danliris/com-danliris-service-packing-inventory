@@ -28,7 +28,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPW
 
         public Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var modelToDelete = _iPWidthTypeDbSet.FirstOrDefault(s => s.Id == id);
+            modelToDelete.FlagForDelete(_identityProvider.Username, UserAgent);
+
+            _iPWidthTypeDbSet.Update(modelToDelete);
+
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> InsertAsync(IPWidthTypeModel model)

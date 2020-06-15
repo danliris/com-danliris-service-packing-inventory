@@ -73,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingAmendLetterOfCreditModel> GarmentShippingAmendLetterOfCredits { get; set; }
 
         public DbSet<IPWidthTypeModel> IPWidthType { get; set; }
+        public DbSet<IPWarpTypeModel> IPWarpType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -118,6 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new IPWidthTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new IPWarpTypeEntityTypeConfiguration());
 
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -144,6 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<PackagingStockModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<IPWidthTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<IPWarpTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
         }
