@@ -164,21 +164,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var model = repoInstruction.ReadAll().FirstOrDefault();
             var modelToUpdate = await repoInstruction.ReadByIdAsync(model.Id);
 
-            data.SetFrom("aaaa", data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetCarrier(model.Carrier, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetCartonNo(model.CartonNo, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetCarrier("model.Carrier", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetCartonNo("model.CartonNo", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetDate(model.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLCode(model.EMKLCode, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLId(model.EMKLId, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLName(model.EMKLName, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetFeederVessel(model.FeederVessel, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetFlight(model.Flight, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetNotify(model.Notify, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetOceanVessel(model.OceanVessel, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetPlaceOfDelivery(model.PlaceOfDelivery, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetPortOfDischarge(model.PortOfDischarge, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetShippedBy(model.ShippedBy, data.LastModifiedBy, data.LastModifiedAgent);
-            
+            modelToUpdate.SetEMKLCode("model.EMKLCode", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetEMKLId(2, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetEMKLName("model.EMKLName", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetFeederVessel("model.FeederVessel", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetFlight("model.Flight", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetNotify("model.Notify", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetOceanVessel("model.OceanVessel", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetPlaceOfDelivery("model.PlaceOfDelivery", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetPortOfDischarge("model.PortOfDischarge", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetShippedBy("model.ShippedBy", data.LastModifiedBy, data.LastModifiedAgent);
+
+
             var result = await repoInstruction2.UpdateAsync(modelToUpdate.Id, modelToUpdate);
 
             Assert.NotEqual(0, result);
