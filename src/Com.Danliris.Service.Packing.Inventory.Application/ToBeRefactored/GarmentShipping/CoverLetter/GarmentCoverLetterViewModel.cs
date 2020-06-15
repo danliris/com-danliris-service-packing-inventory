@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentCoverLetterViewModel : BaseViewModel, IValidatableObject
     {
         public int packingListId { get; set; }
+        public int invoiceId { get; set; }
         public string invoiceNo { get; set; }
 
         public DateTimeOffset? date { get; set; }
@@ -34,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string emklSeal { get; set; }
         public DateTimeOffset? exportEstimationDate { get; set; }
         public string unit { get; set; }
-        public string shippingStaff { get; set; }
+        public ShippingStaff shippingStaff { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -118,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Unit tidak boleh kosong", new List<string> { "unit" });
             }
 
-            if (string.IsNullOrEmpty(shippingStaff))
+            if (shippingStaff == null || shippingStaff.id == 0)
             {
                 yield return new ValidationResult("Shipping Staff tidak boleh kosong", new List<string> { "shippingStaff" });
             }

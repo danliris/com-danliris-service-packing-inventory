@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Services
+namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryNote
 {
     public class MaterialDeliveryNoteServiceTest
     {
