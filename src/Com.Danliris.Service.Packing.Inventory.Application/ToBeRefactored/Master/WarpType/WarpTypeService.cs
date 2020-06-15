@@ -6,43 +6,43 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using CsvHelper.Configuration;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
+using Newtonsoft.Json;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System.Linq;
 using System.Dynamic;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
-using Newtonsoft.Json;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType
 {
-    public class WeftTypeService : IWeftTypeService
+    public class WarpTypeService : IWarpTypeService
     {
-        private readonly IWeftTypeRepository _repository;
+        private readonly IWarpTypeRepository _repository;
 
-        public WeftTypeService(IServiceProvider serviceProvider)
+        public WarpTypeService(IServiceProvider serviceProvider)
         {
-            _repository = serviceProvider.GetService<IWeftTypeRepository>();
+            _repository = serviceProvider.GetService<IWarpTypeRepository>();
         }
 
         /* Upload CSV */
         private readonly List<string> Header = new List<string>()
         {
-            "Jenis Pakan", "Kode"
+            "Jenis Lusi", "Kode"
         };
 
         public List<string> CsvHeader => Header;
 
-        public sealed class WeftTypeMap : ClassMap<WeftTypeViewModel>
+        public sealed class WarpTypeMap : ClassMap<WarpTypeViewModel>
         {
-            public WeftTypeMap()
+            public WarpTypeMap()
             {
                 Map(c => c.Type).Index(0);
                 Map(c => c.Code).Index(1);
             }
         }
 
-        private WeftTypeViewModel MapToViewModel(WeftTypeModel model)
+        private WarpTypeViewModel MapToViewModel(WarpTypeModel model)
         {
-            var vm = new WeftTypeViewModel()
+            var vm = new WarpTypeViewModel()
             {
                 LastModifiedUtc = model.LastModifiedUtc,
                 Type = model.Type,
@@ -63,10 +63,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return vm;
         }
 
-
-        public Task<int> Create(WeftTypeViewModel viewModel)
+        public Task<int> Create(WarpTypeViewModel viewModel)
         {
-            var model = new WeftTypeModel(viewModel.Type, viewModel.Code);
+            var model = new WarpTypeModel(viewModel.Type, viewModel.Code);
 
             return _repository.InsertAsync(model);
         }
@@ -76,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return _repository.DeleteAsync(id);
         }
 
-        public ListResult<WeftTypeViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public ListResult<WarpTypeViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
@@ -84,14 +83,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 "Type", "Code"
             };
 
-            query = QueryHelper<WeftTypeModel>.Search(query, SearchAttributes, keyword);
+            query = QueryHelper<WarpTypeModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<WeftTypeModel>.Filter(query, FilterDictionary);
+            query = QueryHelper<WarpTypeModel>.Filter(query, FilterDictionary);
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<WeftTypeModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size).Select(s => new WeftTypeViewModel()
+            query = QueryHelper<WarpTypeModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new WarpTypeViewModel()
             {
                 Id = s.Id,
                 Code = s.Code,
@@ -99,10 +98,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 LastModifiedUtc = s.LastModifiedUtc
             });
 
-            return new ListResult<WeftTypeViewModel>(data.ToList(), page, size, query.Count());
+            return new ListResult<WarpTypeViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public async Task<WeftTypeViewModel> ReadById(int id)
+        public async Task<WarpTypeViewModel> ReadById(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
             if (model == null)
@@ -113,20 +112,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
             return vm;
         }
 
-        public Task<int> Update(int id, WeftTypeViewModel viewModel)
+        public Task<int> Update(int id, WarpTypeViewModel viewModel)
         {
-            var model = new WeftTypeModel(viewModel.Type, viewModel.Code);
+            var model = new WarpTypeModel(viewModel.Type, viewModel.Code);
             return _repository.UpdateAsync(id, model);
         }
 
-        public Task<int> Upload(IEnumerable<WeftTypeViewModel> data)
+        public Task<int> Upload(IEnumerable<WarpTypeViewModel> data)
         {
-            var models = data.Select(s => new WeftTypeModel(s.Type, s.Code));
+            var models = data.Select(s => new WarpTypeModel(s.Type, s.Code));
 
             return _repository.MultipleInsertAsync(models);
         }
 
-        public Tuple<bool, List<object>> UploadValidate(IEnumerable<WeftTypeViewModel> data)
+        public Tuple<bool, List<object>> UploadValidate(IEnumerable<WarpTypeViewModel> data)
         {
             List<object> ErrorList = new List<object>();
             string ErrorMessage;
@@ -138,13 +137,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                 ErrorMessage = "";
                 if (string.IsNullOrWhiteSpace(item.Type))
                 {
-                    ErrorMessage = string.Concat(ErrorMessage, "Jenis Pakan tidak boleh kosong, ");
+                    ErrorMessage = string.Concat(ErrorMessage, "Jenis Lusi tidak boleh kosong, ");
                 }
                 else
                 {
                     if (_repository.ReadAll().Any(d => d.Type == item.Type))
                     {
-                        ErrorMessage = string.Concat(ErrorMessage, "Jenis Pakan sudah terdaftar, ");
+                        ErrorMessage = string.Concat(ErrorMessage, "Jenis Lusi sudah terdaftar, ");
                     }
                 }
 
@@ -183,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mast
                     ErrorMessage = ErrorMessage.Remove(ErrorMessage.Length - 2);
                     var Error = new ExpandoObject() as IDictionary<string, object>;
 
-                    Error.Add("Jenis Pakan", item.Type);
+                    Error.Add("Jenis Lusi", item.Type);
                     Error.Add("Kode", item.Code);
                     Error.Add("Error", ErrorMessage);
                     ErrorList.Add(Error);

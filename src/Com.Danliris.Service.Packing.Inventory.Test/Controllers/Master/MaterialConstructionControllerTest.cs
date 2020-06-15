@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -6,7 +6,6 @@ using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,9 +19,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
 {
-    public class WeftTypeControllerTest
+    public class MaterialConstructionControllerTest
     {
-        private WeftTypeController GetController(IWeftTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
+        private MaterialConstructionController GetController(IMaterialConstructionService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -31,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new WeftTypeController(service, identityProvider, validateService)
+            var controller = new MaterialConstructionController(service, identityProvider, validateService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -66,11 +65,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private WeftTypeViewModel ViewModel
+        private MaterialConstructionViewModel ViewModel
         {
             get
             {
-                return new WeftTypeViewModel()
+                return new MaterialConstructionViewModel()
                 {
                     Id = 1,
                     Type = "test",
@@ -84,15 +83,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<WeftTypeViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -106,17 +105,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         [Fact]
         public async Task Should_NotValid_Post()
         {
-            var dataUtil = new WeftTypeViewModel();
+            var dataUtil = new MaterialConstructionViewModel();
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<WeftTypeViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -134,15 +133,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<WeftTypeViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -158,15 +157,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<WeftTypeViewModel>())).ThrowsAsync(new Exception());
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialConstructionViewModel>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Throws(GetServiceValidationExeption());
             var validateService = validateServiceMock.Object;
 
@@ -181,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Success_GetById()
         {
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
@@ -203,7 +202,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -224,9 +223,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public void Should_Success_Get()
         {
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<WeftTypeViewModel>(new List<WeftTypeViewModel>() { ViewModel }, 1, 1, 1));
+                .Returns(new ListResult<MaterialConstructionViewModel>(new List<MaterialConstructionViewModel>() { ViewModel }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -247,7 +246,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -268,7 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
@@ -291,7 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).Throws(new Exception("error"));
             var service = serviceMock.Object;
 
@@ -314,12 +313,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<WeftTypeViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -338,12 +337,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<WeftTypeViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -363,12 +362,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<WeftTypeViewModel>())).ReturnsAsync(1);
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Throws(GetServiceValidationExeption());
             var validateService = validateServiceMock.Object;
 
@@ -387,12 +386,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
-            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<WeftTypeViewModel>())).Throws(new Exception("mess"));
+            var serviceMock = new Mock<IMaterialConstructionService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<MaterialConstructionViewModel>())).Throws(new Exception("mess"));
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<WeftTypeViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<MaterialConstructionViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -411,7 +410,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             var dataUtil = ViewModel;
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -430,10 +429,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_BadRequest_Upload()
         {
             var dataUtil = ViewModel;
-            var header = new List<string>() { "Jenis Pakan", "Kode" };
+            var header = new List<string>() { "Lusi Pakan", "Kode" };
             var isi = new List<string>() { dataUtil.Type, dataUtil.Code };
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(false);
             var service = serviceMock.Object;
@@ -456,10 +455,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_InternalServerError_Upload()
         {
             var dataUtil = ViewModel;
-            var header = new List<string>() { "Jenis Pakan", "Kode" };
+            var header = new List<string>() { "Lusi Pakan", "Kode" };
             var isi = new List<string>() { dataUtil.Type, dataUtil.Code };
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
@@ -482,13 +481,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Return_ErrorFile_Upload()
         {
             var dataUtil = ViewModel;
-            var header = "Jenis Pakan, Kode";
+            var header = "Lusi Pakan, Kode";
             var isi = $"{ViewModel.Type}, {ViewModel.Code}";
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(true);
-            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<WeftTypeViewModel>>()))
+            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
                 .Returns(new Tuple<bool, List<object>>(false, new List<object>()));
             var service = serviceMock.Object;
 
@@ -510,15 +509,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task Should_Return_Created_Upload()
         {
             var dataUtil = ViewModel;
-            var header = "Jenis Pakan, Kode";
+            var header = "Lusi Pakan, Kode";
             var isi = $"{ViewModel.Type}, {ViewModel.Code}";
             //v
-            var serviceMock = new Mock<IWeftTypeService>();
+            var serviceMock = new Mock<IMaterialConstructionService>();
             serviceMock.Setup(s => s.ValidateHeader(It.IsAny<IEnumerable<string>>()))
                 .Returns(true);
-            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<WeftTypeViewModel>>()))
+            serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
                 .Returns(new Tuple<bool, List<object>>(true, new List<object>()));
-            serviceMock.Setup(s => s.Upload(It.IsAny<IEnumerable<WeftTypeViewModel>>()))
+            serviceMock.Setup(s => s.Upload(It.IsAny<IEnumerable<MaterialConstructionViewModel>>()))
                .ReturnsAsync(1);
             var service = serviceMock.Object;
 

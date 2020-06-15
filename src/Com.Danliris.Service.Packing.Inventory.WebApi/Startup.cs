@@ -60,6 +60,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -105,7 +107,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
             services.AddTransient<IWeftTypeRepository, WeftTypeRepository>();
-
+            services.AddTransient<IWarpTypeRepository, WarpTypeRepository>();
+            services.AddTransient<IMaterialConstructionRepository, MaterialConstructionRepository>();
             #endregion
 
             #region Service
@@ -139,9 +142,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
             services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
             services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
-            services.AddTransient<IWeftTypeService, WeftTypeService>();
             services.AddTransient<IGarmentShippingInstructionService, GarmentShippingInstructionService>();
-
+            services.AddTransient<IWeftTypeService, WeftTypeService>();
+            services.AddTransient<IWarpTypeService, WarpTypeService>();
+            services.AddTransient<IMaterialConstructionService, MaterialConstructionService>();
             #endregion
 
             // Register Provider
@@ -270,11 +274,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 app.UseHsts();
             }
 
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
-                context.Database.Migrate();
-            }
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
+            //    context.Database.Migrate();
+            //}
 
             app.UseCors(PACKING_INVENTORY_POLICY);
 

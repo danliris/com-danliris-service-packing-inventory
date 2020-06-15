@@ -77,6 +77,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
+        public DbSet<WarpTypeModel> IPWarpTypes { get; set; }
+        public DbSet<MaterialConstructionModel> IPMaterialConstructions { get; set; }
+        public DbSet<GradeModel> IPGrades { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -148,6 +151,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             #region master
             modelBuilder.ApplyConfiguration(new WeftTypeEntityTypeConfiguration());
             modelBuilder.Entity<WeftTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.ApplyConfiguration(new WarpTypeEntityTypeConfiguration());
+            modelBuilder.Entity<WarpTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.ApplyConfiguration(new MaterialConstructionEntityTypeConfiguration());
+            modelBuilder.Entity<MaterialConstructionModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.ApplyConfiguration(new GradeEntityTypeConfiguration());
+            modelBuilder.Entity<GradeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             #endregion
 
             base.OnModelCreating(modelBuilder);

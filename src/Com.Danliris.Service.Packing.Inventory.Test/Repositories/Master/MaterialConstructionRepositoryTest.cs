@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.Master
 {
-    public class WeftTypeRepositoryTest
-        : BaseRepositoryTest<PackingInventoryDbContext, WeftTypeRepository, WeftTypeModel, WeftTypeDataUtil>
+    public class MaterialConstructionRepositoryTest
+        : BaseRepositoryTest<PackingInventoryDbContext, MaterialConstructionRepository, MaterialConstructionModel, MaterialConstructionDataUtil>
     {
-        private const string ENTITY = "WeftType";
-        public WeftTypeRepositoryTest() : base(ENTITY)
+        private const string ENTITY = "MaterialConstruction";
+        public MaterialConstructionRepositoryTest() : base(ENTITY)
         {
 
         }
@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.Master
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
 
-            var repo = new WeftTypeRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo = new MaterialConstructionRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = await DataUtil(repo, dbContext).GetTestData();
             var result = repo.GetDbSet();
 
@@ -38,9 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.Master
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
-            var repo = new WeftTypeRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo = new MaterialConstructionRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var data = DataUtil(repo, dbContext).GetModel();
-            var result = await repo.MultipleInsertAsync(new List<WeftTypeModel>() { data });
+            var result = await repo.MultipleInsertAsync(new List<MaterialConstructionModel>() { data });
             Assert.NotEqual(0, result);
         }
     }
