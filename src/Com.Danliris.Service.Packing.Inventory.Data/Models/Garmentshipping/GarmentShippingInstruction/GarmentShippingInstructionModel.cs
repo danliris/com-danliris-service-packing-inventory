@@ -223,5 +223,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetFax(string fax, string userName, string userAgent)
+        {
+            if (Fax != fax)
+            {
+                Fax = fax;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetATTN(string attn, string userName, string userAgent)
+        {
+            if (ATTN != attn)
+            {
+                ATTN = attn;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCC(string cc, string userName, string userAgent)
+        {
+            if (CC != cc)
+            {
+                CC = cc;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }

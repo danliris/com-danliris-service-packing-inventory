@@ -80,6 +80,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetPlaceOfDelivery(model.PlaceOfDelivery, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPortOfDischarge(model.PortOfDischarge, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShippedBy(model.ShippedBy, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetATTN(model.ATTN, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFax(model.Fax, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetCC(model.CC, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetSpecialInstruction(model.SpecialInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTransit(model.Transit, _identityProvider.Username, UserAgent);
