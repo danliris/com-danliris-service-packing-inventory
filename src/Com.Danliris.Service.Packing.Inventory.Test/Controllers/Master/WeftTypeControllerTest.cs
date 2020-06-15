@@ -518,7 +518,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
                 .Returns(true);
             serviceMock.Setup(s => s.UploadValidate(It.IsAny<IEnumerable<WeftTypeViewModel>>()))
                 .Returns(new Tuple<bool, List<object>>(true, new List<object>()));
-            serviceMock.Setup(s => s.Upload(It.IsAny<IEnumerable<WeftTypeViewModel>>()))
+            serviceMock.Setup(s => s.Upload(It.IsAny<List<WeftTypeViewModel>>()))
                .ReturnsAsync(1);
             var service = serviceMock.Object;
 

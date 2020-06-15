@@ -239,6 +239,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
         public void Should_Exception_ValidationVM()
         {
             var repoMock = new Mock<IWeftTypeRepository>();
+            var model = Model;
+            model.Id = 1;
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<WeftTypeModel>() { model }.AsQueryable());
+
             var serviceProvider = GetServiceProvider(repoMock.Object).Object;
             var service = GetService(serviceProvider);
 
@@ -246,6 +251,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
+            vm.Code = "str";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Code = "0";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Code = "120";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = Model.Type;
+            vm.Code = Model.Code;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }

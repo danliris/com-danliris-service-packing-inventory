@@ -216,7 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                         Csv.Configuration.RegisterClassMap<WeftTypeMap>();
                         Csv.Configuration.HeaderValidated = null;
 
-                        IEnumerable<WeftTypeViewModel> Data = Csv.GetRecords<WeftTypeViewModel>().ToList();
+                        List<WeftTypeViewModel> Data = Csv.GetRecords<WeftTypeViewModel>().ToList();
 
                         Tuple<bool, List<object>> Validated = _service.UploadValidate(Data);
 
