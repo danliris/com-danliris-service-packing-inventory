@@ -82,6 +82,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -185,6 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
             services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
             services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
+            services.AddTransient<IGarmentShippingInstructionService, GarmentShippingInstructionService>();
 
             #endregion
 
