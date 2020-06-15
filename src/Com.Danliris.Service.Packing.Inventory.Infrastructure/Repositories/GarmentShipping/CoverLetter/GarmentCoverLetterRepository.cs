@@ -80,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetEMKLSeal(model.EMKLSeal, _identityProvider.Username, UserAgent);
             modelToUpdate.SetExportEstimationDate(model.ExportEstimationDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUnit(model.Unit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShippingStaffId(model.ShippingStaffId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShippingStaffName(model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             return await _dbContext.SaveChangesAsync();
