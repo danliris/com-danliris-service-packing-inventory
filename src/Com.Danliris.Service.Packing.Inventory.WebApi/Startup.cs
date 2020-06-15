@@ -62,6 +62,15 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWidthType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidthType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPProcessType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProcessType;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -109,6 +118,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IWeftTypeRepository, WeftTypeRepository>();
             services.AddTransient<IWarpTypeRepository, WarpTypeRepository>();
             services.AddTransient<IMaterialConstructionRepository, MaterialConstructionRepository>();
+            services.AddTransient<IIPWidthTypeRepository, IPWidthTypeRepository>();
+            services.AddTransient<IIPYarnTypeRepository, IPYarnTypeRepository>();
+            services.AddTransient<IIPWarpTypeRepository, IPWarpTypeRepository>();
+            services.AddTransient<IIPProcessTypeRepository, IPProcessTypeRepository>();
+
+
+
             #endregion
 
             #region Service
@@ -136,6 +152,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
             services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
             services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+            services.AddTransient<IIPWidthTypeService, IPWidthService>();
+            services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
+            services.AddTransient<IIPWarpTypeService, IPWarpTypeService>();
+            services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
+
+
+
+
+
+
+            services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+			// Register Provider
+			services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
@@ -259,7 +289,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
-		}
+            services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPWarpTypeViewModel>, IPWarpTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPProcessTypeViewModel>, IPProcessTypeViewModelValidator>();
+
+
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
