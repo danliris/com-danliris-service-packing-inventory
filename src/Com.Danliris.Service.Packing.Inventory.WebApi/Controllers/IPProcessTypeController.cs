@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
     [Produces("application/json")]
     [Route("v1/master/ip-process-type")]
     [Authorize]
-    public class IPProcessController : ControllerBase
+    public class IPProcessTypeController : ControllerBase
     {
         private readonly IIPProcessTypeService _service;
         private readonly IIdentityProvider _identityProvider;
@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         //    _identityProvider = identityProvider;
         //}
 
-        public IPProcessController(IIPProcessTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
+        public IPProcessTypeController(IIPProcessTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
