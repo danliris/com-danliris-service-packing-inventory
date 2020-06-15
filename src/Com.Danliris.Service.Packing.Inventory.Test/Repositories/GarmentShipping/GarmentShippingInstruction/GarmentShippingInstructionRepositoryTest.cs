@@ -177,6 +177,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetPlaceOfDelivery("model.PlaceOfDelivery", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetPortOfDischarge("model.PortOfDischarge", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetShippedBy("model.ShippedBy", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetSpecialInstruction("model.ins", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetTransit("model.transit", data.LastModifiedBy, data.LastModifiedAgent);
 
 
             var result = await repoInstruction2.UpdateAsync(modelToUpdate.Id, modelToUpdate);
