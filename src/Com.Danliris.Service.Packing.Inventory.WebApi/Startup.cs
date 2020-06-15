@@ -308,11 +308,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 app.UseHsts();
             }
 
-            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
-            //    context.Database.Migrate();
-            //}
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
+                context.Database.Migrate();
+            }
 
             app.UseCors(PACKING_INVENTORY_POLICY);
 

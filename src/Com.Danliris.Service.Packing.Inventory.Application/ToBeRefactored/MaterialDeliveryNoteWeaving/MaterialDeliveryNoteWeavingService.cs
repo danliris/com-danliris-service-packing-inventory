@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 selectedDO = new DeliveryOrderMaterialDeliveryNoteWeaving()
                 {
                     Id = model.DoSalesNumberId,
-                    No = model.DoSalesNumber
+                    DOSalesNo = model.DoSalesNumber
                 },
                 SendTo = model.SendTo,
                 Unit = new UnitMaterialDeliveryNoteWeaving()
@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 Buyer = new BuyerMaterialDeliveryNoteWeaving()
                 {
                     Id = model.BuyerId,
-                    Code = model.Code,
+                    Code = model.BuyerCode,
                     Name = model.BuyerName
                 },
                 NumberBonOut = model.NumberOut,
@@ -63,15 +63,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 Remark = model.Remark,
                 ItemsMaterialDeliveryNoteWeaving = model.ItemsMaterialDeliveryNoteWeaving.Select(d => new ItemsMaterialDeliveryNoteWeavingViewModel()
                 {
-                    itemNoSOP = d.itemNoSOP,
-                    itemMaterialName = d.itemMaterialName,
-                    itemGrade = d.itemGrade,
-                    itemType = d.itemType,
-                    itemCode = d.itemCode,
-                    inputBale = d.inputBale,
-                    inputPiece = d.inputPiece,
-                    inputMeter = d.inputMeter,
-                    inputKg = d.inputKg
+                    itemNoSOP = d.ItemNoSOP,
+                    itemMaterialName = d.ItemMaterialName,
+                    itemGrade = d.ItemGrade,
+                    itemType = d.ItemType,
+                    itemCode = d.ItemCode,
+                    inputBale = d.InputBale,
+                    inputPiece = d.InputPiece,
+                    inputMeter = d.InputMeter,
+                    inputKg = d.InputKg
                 }).ToList()
             };
 
@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
         public async Task Create(MaterialDeliveryNoteWeavingViewModel viewModel)
         {
-            var model = new Data.MaterialDeliveryNoteWeavingModel(null, viewModel.DateSJ.GetValueOrDefault(), viewModel.selectedDO.Id.GetValueOrDefault(), viewModel.selectedDO.No, viewModel.SendTo, viewModel.Unit.Id.GetValueOrDefault(), viewModel.Unit.Name,
+            var model = new Data.MaterialDeliveryNoteWeavingModel(null, viewModel.DateSJ.GetValueOrDefault(), viewModel.selectedDO.Id.GetValueOrDefault(), viewModel.selectedDO.DOSalesNo, viewModel.SendTo, viewModel.Unit.Id.GetValueOrDefault(), viewModel.Unit.Name,
                                                                 viewModel.Buyer.Id.GetValueOrDefault(), viewModel.Buyer.Code, viewModel.Buyer.Name, viewModel.NumberBonOut, viewModel.Storage.Id, viewModel.Storage.Code, viewModel.Storage.Name,
                                                                 viewModel.Remark,
                                                                 viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.itemNoSOP, s.itemMaterialName, s.itemGrade, s.itemType, s.itemCode, s.inputBale.GetValueOrDefault(), s.inputPiece.GetValueOrDefault(), s.inputMeter.GetValueOrDefault(), s.inputKg.GetValueOrDefault())).ToList());
@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
         public async Task Update(int id, MaterialDeliveryNoteWeavingViewModel viewModel)
         {
-            var model = new Data.MaterialDeliveryNoteWeavingModel(viewModel.Code, viewModel.DateSJ.GetValueOrDefault(), viewModel.selectedDO.Id.GetValueOrDefault(), viewModel.selectedDO.No, viewModel.SendTo, viewModel.Unit.Id.GetValueOrDefault(), viewModel.Unit.Name,
+            var model = new Data.MaterialDeliveryNoteWeavingModel(viewModel.Code, viewModel.DateSJ.GetValueOrDefault(), viewModel.selectedDO.Id.GetValueOrDefault(), viewModel.selectedDO.DOSalesNo, viewModel.SendTo, viewModel.Unit.Id.GetValueOrDefault(), viewModel.Unit.Name,
                                                                 viewModel.Buyer.Id.GetValueOrDefault(), viewModel.Buyer.Code, viewModel.Buyer.Name, viewModel.NumberBonOut, viewModel.Storage.Id, viewModel.Storage.Code, viewModel.Storage.Name,
                                                                 viewModel.Remark,
                                                                 viewModel.ItemsMaterialDeliveryNoteWeaving.Select(s => new ItemsMaterialDeliveryNoteWeavingModel(s.itemNoSOP, s.itemMaterialName, s.itemGrade, s.itemType, s.itemCode, s.inputBale.GetValueOrDefault(), s.inputPiece.GetValueOrDefault(), s.inputMeter.GetValueOrDefault(), s.inputKg.GetValueOrDefault())).ToList());

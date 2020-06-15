@@ -7,6 +7,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Comm
     public class DeliveryOrderMaterialDeliveryNoteWeaving
     {
         public long? Id { get; set; }
-        public string No { get; set; }
+        public string DOSalesNo { get; set; }
     }
 }

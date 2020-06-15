@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
         public string StorageCode { get; set; }
         public string StorageName { get; set; }
         public string Remark { get; set; }
+        //public string StorageUnit { get; set; }
 
         public ICollection<ItemsMaterialDeliveryNoteWeavingModel> ItemsMaterialDeliveryNoteWeaving { get; private set; }
 
@@ -48,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             string storagecode,
             string storagename,
             string remark,
+            //string storageunit,
             ICollection<ItemsMaterialDeliveryNoteWeavingModel> items
             )
         {
@@ -66,6 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             StorageCode = storagecode;
             StorageName = storagename;
             Remark = remark;
+            //StorageUnit = storageunit;
             ItemsMaterialDeliveryNoteWeaving = items;
 
         }
@@ -181,6 +184,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
                 StorageName = newStorageName;
             }
         }
+
+        //public void SetStorageUnit(string newStorageUnit)
+        //{
+        //    if (newStorageUnit != StorageUnit)
+        //    {
+        //        StorageUnit = newStorageUnit;
+        //    }
+        //}
 
         public void SetRemark(string newRemark)
         {

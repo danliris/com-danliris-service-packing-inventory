@@ -98,6 +98,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(s => s.Remark)
                 .HasMaxLength(128);
 
+            //builder
+            //    .Property(s => s.StorageUnit)
+            //    .HasMaxLength(128);
+
             builder
                 .HasMany(inventoryDocument => inventoryDocument.ItemsMaterialDeliveryNoteWeaving)
                 .WithOne()

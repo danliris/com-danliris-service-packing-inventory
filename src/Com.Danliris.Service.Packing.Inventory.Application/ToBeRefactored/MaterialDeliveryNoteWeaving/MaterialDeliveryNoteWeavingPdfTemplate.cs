@@ -283,33 +283,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 table.AddCell(cellHeader);
             }
 
-            //double lengthTotal = 0;
-            //int index = 1;
-            //var detailGroup = model.ShippingProductionOrders.GroupBy(s => s.Construction);
-            //foreach (var detail in detailGroup)
-            //{
-            //    cellHeader.Phrase = new Phrase(index++.ToString(), TEXT_FONT);
-            //    table.AddCell(cellHeader);
-
-            //    cellHeader.Phrase = new Phrase(detail.Key, TEXT_FONT);
-            //    table.AddCell(cellHeader);
-
-            //    cellRight.Phrase = new Phrase(detail.Sum(s => s.Qty).ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-            //    table.AddCell(cellRight);
-            //    lengthTotal += detail.Sum(s => s.Qty);
-
-            //}
-
             cellHeader.Phrase = new Phrase("Total", TEXT_FONT);
             table.AddCell(cellHeader);
 
             cellHeader.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellHeader);
-
-            //cellRight.Phrase = new Phrase(lengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-            //table.AddCell(cellRight);
-
-            //cellContainer.AddElement(table);
 
             container.AddCell(table);
 
@@ -441,23 +419,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
             cellRight.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellRight);
 
-            //cellRight.Phrase = new Phrase("", TEXT_FONT);
-            //table.AddCell(cellRight);
-
-            //cellRight.Phrase = new Phrase("", TEXT_FONT);
-            //table.AddCell(cellRight);
-
-            //cellRight.Phrase = new Phrase("", TEXT_FONT);
-            //table.AddCell(cellRight);
-
-            //cellRight.Phrase = new Phrase("", TEXT_FONT);
-            //table.AddCell(cellRight);
-
             cellRight.Phrase = new Phrase(balTotal == 0 ? "" : balTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
-
-            //cellRight.Phrase = new Phrase("", TEXT_FONT);
-            //table.AddCell(cellRight);
 
             cellRight.Phrase = new Phrase(pieceTotal == 0 ? "" : pieceTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
@@ -544,8 +507,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
             for (var i = 0; i < 11; i++)
             {
-                //cell.Phrase = new Phrase("", TEXT_FONT);
-                //table.AddCell(cell);
+                
                 cell.Phrase = new Phrase("", TEXT_FONT);
                 table.AddCell(cell);
                 cell.Phrase = new Phrase("", TEXT_FONT);
@@ -554,8 +516,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 table.AddCell(cell);
             }
 
-            //cell.Phrase = new Phrase("(                        )", TEXT_FONT);
-            //table.AddCell(cell);
             cell.Phrase = new Phrase("(                        )", TEXT_FONT);
             table.AddCell(cell);
             cell.Phrase = new Phrase("(                        )", TEXT_FONT);
