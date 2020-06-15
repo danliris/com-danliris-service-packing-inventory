@@ -11,11 +11,11 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliveryNote
 {
-    public class MaterialDeliveryNoteWeavingTest : BaseRepositoryTest<PackingInventoryDbContext, MaterialDeliveryNoteWeavingRepository, Data.MaterialDeliveryNoteWeavingModel, MaterialDeliveryNoteWeavingDataUtil>
+    public class MaterialDeliveryNoteWeavingRepositoryTest : BaseRepositoryTest<PackingInventoryDbContext, MaterialDeliveryNoteWeavingRepository, Data.MaterialDeliveryNoteWeavingModel, MaterialDeliveryNoteWeavingDataUtil>
     {
         private const string ENTITY = "MaterialDeliveryNoteWeaving";
 
-        public MaterialDeliveryNoteWeavingTest() : base(ENTITY)
+        public MaterialDeliveryNoteWeavingRepositoryTest() : base(ENTITY)
         {
 
         }
