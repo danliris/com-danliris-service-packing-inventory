@@ -5,30 +5,30 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 {
-    public class IPWidthTypeModel : StandardEntity
+    public class IPYarnTypeModel : StandardEntity
     {
         public string Code { get; private set; }
-        public string WidthType { get; private set; }
-        public IPWidthTypeModel()
+        public string YarnType { get; private set; }
+        public IPYarnTypeModel()
         {
 
         }
 
-        public IPWidthTypeModel(string code, string widthType)
+        public IPYarnTypeModel(string code, string yarnType)
         {
             Code = code;
-            WidthType = widthType;
+            YarnType = yarnType;
         }
 
-        public void SetCode(string newCode,string username,string agent)
+        public void SetCode(string newCode, string username, string agent)
         {
             Code = newCode;
             this.FlagForUpdate(username, agent);
         }
 
-        public void SetWidthType(string newWidthType, string username, string agent)
+        public void SetYarnType(string newWidthType, string username, string agent)
         {
-            WidthType = newWidthType;
+            YarnType = newWidthType;
             this.FlagForUpdate(username, agent);
         }
     }
