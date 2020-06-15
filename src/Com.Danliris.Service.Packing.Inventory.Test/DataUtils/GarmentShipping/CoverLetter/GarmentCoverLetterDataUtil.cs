@@ -12,14 +12,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingCoverLetterModel GetModel()
         {
-            var model = new GarmentShippingCoverLetterModel(1, "", DateTimeOffset.Now, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", "");
+            var model = new GarmentShippingCoverLetterModel(1, 1, "", DateTimeOffset.Now, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", 1, "");
 
             return model;
         }
 
         public override GarmentShippingCoverLetterModel GetEmptyModel()
         {
-            var model = new GarmentShippingCoverLetterModel(0, null, DateTimeOffset.MinValue, null, null, null, null, DateTimeOffset.MinValue, 0, null, null, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, DateTimeOffset.MinValue, null, null);
+            var model = new GarmentShippingCoverLetterModel(0, 0, null, DateTimeOffset.MinValue, null, null, null, null, DateTimeOffset.MinValue, 0, null, null, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null, DateTimeOffset.MinValue, null, 0, null);
 
             return model;
         }
