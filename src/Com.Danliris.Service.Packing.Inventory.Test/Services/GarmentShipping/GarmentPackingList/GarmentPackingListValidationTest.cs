@@ -173,6 +173,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public void Validate_QuantityDifferent()
+        {
+            GarmentPackingListViewModel viewModel = ViewModel;
+
+            foreach (var item in viewModel.Items)
+            {
+                foreach (var detail in item.Details)
+                {
+                    foreach (var size in detail.Sizes)
+                    {
+                        size.Quantity = 1;
+                    }
+                    detail.QuantityPCS = 2;
+                    detail.CartonQuantity = 3;
+                }
+                item.Quantity = 4;
+            }
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
+
+        [Fact]
         public void Validate_MeasurementsDefaultValue()
         {
             GarmentPackingListViewModel viewModel = ViewModel;
