@@ -78,7 +78,10 @@ using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
-
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -147,6 +150,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
+            services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
+            services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
 
             #endregion
 
@@ -178,6 +183,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
+            services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
+            services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
 
             #endregion
 

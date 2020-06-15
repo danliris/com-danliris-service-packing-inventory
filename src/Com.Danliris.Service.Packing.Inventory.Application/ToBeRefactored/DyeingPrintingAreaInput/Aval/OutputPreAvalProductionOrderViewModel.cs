@@ -25,6 +25,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalConnectionLength { get; set; }
         public double AvalALength { get; set; }
         public double AvalBLength { get; set; }
+        public double QtyOrder { get; set; }
+        public string AvalType { get; set; }
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         //public string AvalType { get; set; }
         //public string AvalCartNo { get; set; }
         //public string AvalUomUnit { get; set; }

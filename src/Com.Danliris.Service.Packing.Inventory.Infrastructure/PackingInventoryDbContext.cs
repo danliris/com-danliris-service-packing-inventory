@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovem
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
@@ -12,6 +13,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterO
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
@@ -77,7 +79,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 		public DbSet<GarmentShippingInvoiceModel> GarmentShippingInvoices { get; set; }
 		public DbSet<GarmentShippingInvoiceItemModel> GarmentShippingInvoiceItems { get; set; }
 		public DbSet<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustments { get; set; }
-		
+
+        public DbSet<GarmentShippingAmendLetterOfCreditModel> GarmentShippingAmendLetterOfCredits { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InventoryDocumentPackingEntityTypeConfiguration());
@@ -121,8 +125,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
 
-			modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
