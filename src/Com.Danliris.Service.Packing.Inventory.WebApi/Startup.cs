@@ -62,6 +62,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidth
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -126,6 +128,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
             services.AddTransient<IIPWidthTypeRepository, IPWidthTypeRepository>();
             services.AddTransient<IIPYarnTypeRepository, IPYarnTypeRepository>();
+            services.AddTransient<IIPWarpTypeRepository, IPWarpTypeRepository>();
+
 
 
             #endregion
@@ -150,6 +154,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
             services.AddTransient<IIPWidthTypeService, IPWidthService>();
             services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
+            services.AddTransient<IIPWarpTypeService, IPWarpTypeService>();
+
 
 
 
@@ -281,6 +287,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
             services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPWarpTypeViewModel>, IPWarpTypeViewModelValidator>();
+
 
         }
 
