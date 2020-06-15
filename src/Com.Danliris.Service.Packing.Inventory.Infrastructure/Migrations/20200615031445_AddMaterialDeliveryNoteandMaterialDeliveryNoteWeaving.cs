@@ -4,10 +4,45 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
-    public partial class MaterialDeliveryNote : Migration
+    public partial class AddMaterialDeliveryNoteandMaterialDeliveryNoteWeaving : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "MaterialDeliveryNote",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAgent = table.Column<string>(nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedAgent = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(nullable: true),
+                    DeletedAgent = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(nullable: true),
+                    DateSJ = table.Column<DateTimeOffset>(nullable: true),
+                    BonCode = table.Column<string>(nullable: true),
+                    DateFrom = table.Column<DateTimeOffset>(nullable: true),
+                    DateTo = table.Column<DateTimeOffset>(nullable: true),
+                    DONumber = table.Column<string>(nullable: true),
+                    FONumber = table.Column<string>(nullable: true),
+                    Receiver = table.Column<string>(nullable: true),
+                    Remark = table.Column<string>(nullable: true),
+                    SCNumber = table.Column<string>(nullable: true),
+                    Sender = table.Column<string>(nullable: true),
+                    StorageNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialDeliveryNote", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "MaterialDeliveryNoteWeaving",
                 columns: table => new
@@ -26,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
                     DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
                     Code = table.Column<string>(maxLength: 128, nullable: true),
-                    DateSJ = table.Column<DateTimeOffset>(maxLength: 128, nullable: true),
+                    DateSJ = table.Column<DateTimeOffset>(maxLength: 128, nullable: false),
                     DoSalesNumberId = table.Column<long>(maxLength: 128, nullable: false),
                     DoSalesNumber = table.Column<string>(maxLength: 128, nullable: true),
                     SendTo = table.Column<string>(maxLength: 128, nullable: true),
@@ -39,13 +74,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     StorageId = table.Column<int>(maxLength: 128, nullable: true),
                     StorageCode = table.Column<string>(maxLength: 128, nullable: true),
                     StorageName = table.Column<string>(maxLength: 128, nullable: true),
-                    UnitLength = table.Column<string>(maxLength: 128, nullable: true),
-                    UnitPacking = table.Column<string>(maxLength: 128, nullable: true),
                     Remark = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaterialDeliveryNoteWeaving", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAgent = table.Column<string>(nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedAgent = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(nullable: true),
+                    DeletedAgent = table.Column<string>(nullable: true),
+                    NoSPP = table.Column<string>(nullable: true),
+                    MaterialName = table.Column<string>(nullable: true),
+                    InputLot = table.Column<string>(nullable: true),
+                    WeightBruto = table.Column<double>(nullable: true),
+                    WeightDOS = table.Column<double>(nullable: true),
+                    WeightCone = table.Column<double>(nullable: true),
+                    WeightBale = table.Column<double>(nullable: true),
+                    GetTotal = table.Column<double>(nullable: true),
+                    MaterialDeliveryNoteModelId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_MaterialDeliveryNote_MaterialDeliveryNoteModelId",
+                        column: x => x.MaterialDeliveryNoteModelId,
+                        principalTable: "MaterialDeliveryNote",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,14 +136,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedUtc = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
                     DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
-                    ItemNoSPP = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemNoSOP = table.Column<string>(maxLength: 128, nullable: true),
                     ItemMaterialName = table.Column<string>(maxLength: 128, nullable: true),
-                    ItemDesign = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemGrade = table.Column<string>(maxLength: 128, nullable: true),
                     ItemType = table.Column<string>(maxLength: 128, nullable: true),
                     ItemCode = table.Column<string>(maxLength: 128, nullable: true),
-                    InputPacking = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Length = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    InputConversion = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    InputBale = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputPiece = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputKg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     MaterialDeliveryNoteWeavingId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -87,6 +159,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_MaterialDeliveryNoteModelId",
+                table: "Items",
+                column: "MaterialDeliveryNoteModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ItemsMaterialDeliveryNoteWeaving_MaterialDeliveryNoteWeavingId",
                 table: "ItemsMaterialDeliveryNoteWeaving",
                 column: "MaterialDeliveryNoteWeavingId");
@@ -95,7 +172,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
                 name: "ItemsMaterialDeliveryNoteWeaving");
+
+            migrationBuilder.DropTable(
+                name: "MaterialDeliveryNote");
 
             migrationBuilder.DropTable(
                 name: "MaterialDeliveryNoteWeaving");
