@@ -32,9 +32,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var model = repo.ReadAll().FirstOrDefault();
             var data = await repo.ReadByIdAsync(model.Id);
             data.SetDate(data.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
-            data.SetBuyerId(data.BuyerId + 1, data.LastModifiedBy, data.LastModifiedAgent);
-            data.SetBuyerCode(data.BuyerCode + 1, data.LastModifiedBy, data.LastModifiedAgent);
-            data.SetBuyerName(data.BuyerName + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetTotalAmount(data.TotalAmount + 1, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)

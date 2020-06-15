@@ -72,9 +72,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetBuyerId(model.BuyerId, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetBuyerCode(model.BuyerCode, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetBuyerName(model.BuyerName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTotalAmount(model.TotalAmount, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
