@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
     public class GarmentShippingInstructionModel : StandardEntity
     {
         public string InvoiceNo { get; private set; }
-        public int PackingListId { get; private set; }
+        public int InvoiceId { get; private set; }
         public DateTimeOffset Date { get; private set; }
         public int EMKLId { get; private set; }
         public string EMKLCode { get; private set; }
@@ -42,10 +42,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         #endregion
         
 
-        public GarmentShippingInstructionModel(string invoiceNo, int packingListId, DateTimeOffset date, int emklId, string emklCode, string emklName, string attn, string fax, string cc,int shippingStaffId, string shippingStaffName,string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge,string placeOfDelivery,string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName,int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction)
+        public GarmentShippingInstructionModel(string invoiceNo, int invoiceId, DateTimeOffset date, int emklId, string emklCode, string emklName, string attn, string fax, string cc,int shippingStaffId, string shippingStaffName,string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge,string placeOfDelivery,string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName,int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction)
         {
             InvoiceNo = invoiceNo;
-            PackingListId = packingListId;
+            InvoiceId = invoiceId;
             Date = date;
             EMKLCode = emklCode;
             EMKLId = emklId;
@@ -78,6 +78,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public GarmentShippingInstructionModel()
         {
+        }
+
+        public void SetInvoiceId(int invoiceId, string userName, string userAgent)
+        {
+            if (InvoiceId != invoiceId)
+            {
+                InvoiceId = invoiceId;
+                this.FlagForUpdate(userName, userAgent);
+            }
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
