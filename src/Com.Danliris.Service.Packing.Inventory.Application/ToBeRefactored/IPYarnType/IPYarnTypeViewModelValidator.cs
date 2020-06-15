@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYa
         public IPYarnTypeViewModelValidator()
         {
             RuleFor(data => data.Code).NotNull().NotEmpty().WithMessage("Kode Harus Diisi!");
-            RuleFor(data => data.YarnType).NotNull().NotEmpty().WithMessage("Jenis Anyaman Harus Diisi!");
+            RuleFor(data => data.YarnType).NotNull().NotEmpty().WithMessage("Jenis Benang Harus Diisi!");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
         public IPWarpTypeViewModelValidator()
         {
             RuleFor(data => data.Code).NotNull().NotEmpty().WithMessage("Kode Harus Diisi!");
-            RuleFor(data => data.WarpType).NotNull().NotEmpty().WithMessage("Jenis Lebar Harus Diisi!");
+            RuleFor(data => data.WarpType).NotNull().NotEmpty().WithMessage("Jenis Anyaman Harus Diisi!");
         }
     }
 }
