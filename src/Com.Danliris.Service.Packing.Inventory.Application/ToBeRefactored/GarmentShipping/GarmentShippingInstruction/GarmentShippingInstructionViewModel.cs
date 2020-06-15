@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentShippingInstructionViewModel : BaseViewModel, IValidatableObject
     {
         public string InvoiceNo { get; set; }
-        public int PackingListId { get; set; }
+        public int InvoiceId { get; set; }
         public DateTimeOffset Date { get; set; }
         public EMKL EMKL { get; set; }
         public string ATTN { get; set; }
@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             if (string.IsNullOrEmpty(InvoiceNo))
             {
-                yield return new ValidationResult("Invoice No  tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Invoice No  tidak boleh kosong", new List<string> { "InvoiceNo" });
             }
 
             if (Date == null || Date == DateTimeOffset.MinValue)
@@ -53,57 +53,72 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (string.IsNullOrEmpty(CC))
             {
-                yield return new ValidationResult("CC  tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("CC  tidak boleh kosong", new List<string> { "CC" });
             }
 
             if (string.IsNullOrEmpty(Phone))
             {
-                yield return new ValidationResult("Phone tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Phone tidak boleh kosong", new List<string> { "Phone" });
             }
 
             if (string.IsNullOrEmpty(ShippedBy))
             {
-                yield return new ValidationResult("ShippedBy tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("ShippedBy tidak boleh kosong", new List<string> { "ShippedBy" });
             }
 
             if (string.IsNullOrEmpty(CartonNo))
             {
-                yield return new ValidationResult("Carton No tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Carton No tidak boleh kosong", new List<string> { "CartonNo" });
             }
 
             if (string.IsNullOrEmpty(PortOfDischarge))
             {
-                yield return new ValidationResult("Port Of Discharge tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Port Of Discharge tidak boleh kosong", new List<string> { "PortOfDischarge" });
             }
 
             if (string.IsNullOrEmpty(PlaceOfDelivery))
             {
-                yield return new ValidationResult("Place Of Delivery tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Place Of Delivery tidak boleh kosong", new List<string> { "PlaceOfDelivery" });
             }
 
             if (string.IsNullOrEmpty(FeederVessel))
             {
-                yield return new ValidationResult("Feeder Vessel BY/DD tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Feeder Vessel BY/DD tidak boleh kosong", new List<string> { "FeederVessel" });
             }
 
             if (string.IsNullOrEmpty(OceanVessel))
             {
-                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "OceanVessel" });
             }
 
             if (string.IsNullOrEmpty(Carrier))
             {
-                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Carrier BY/DD tidak boleh kosong", new List<string> { "Carrier" });
             }
 
             if (string.IsNullOrEmpty(Flight))
             {
-                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Flight tidak boleh kosong", new List<string> { "Flight" });
             }
 
-            if (string.IsNullOrEmpty(OceanVessel))
+            if (string.IsNullOrEmpty(Transit))
             {
-                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "PackingListType" });
+                yield return new ValidationResult("Transit tidak boleh kosong", new List<string> { "Transit" });
+            }
+
+            if (string.IsNullOrEmpty(SpecialInstruction))
+            {
+                yield return new ValidationResult("Special Instruction tidak boleh kosong", new List<string> { "SpecialInstruction" });
+            }
+
+            if (string.IsNullOrEmpty(Notify))
+            {
+                yield return new ValidationResult("Notify tidak boleh kosong", new List<string> { "Notify" });
+            }
+
+            if (EMKL == null || EMKL.Id == 0)
+            {
+                yield return new ValidationResult("Applicant tidak boleh kosong", new List<string> { "EMKL" });
             }
         }
     }
