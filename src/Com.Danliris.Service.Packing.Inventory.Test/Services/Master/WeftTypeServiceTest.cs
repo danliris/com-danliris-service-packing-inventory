@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 using Moq;
@@ -35,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
                 {
                     Id = 1,
                     Type = "test",
-                    Code = "1"
+                    Code = "01"
                 };
             }
         }
@@ -232,6 +233,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
             var result = service.ValidateHeader(new List<string>() { "Jenis Pakan", "Kode" });
 
             Assert.True(result);
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var repoMock = new Mock<IWeftTypeRepository>();
+            var serviceProvider = GetServiceProvider(repoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new WeftTypeViewModel();
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
         }
     }
 }
