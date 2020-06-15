@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder.Property(s => s.DLSeal).HasMaxLength(250);
             builder.Property(s => s.EMKLSeal).HasMaxLength(250);
             builder.Property(s => s.Unit).HasMaxLength(1000);
-            builder.Property(s => s.ShippingStaff).HasMaxLength(250);
+            builder.Property(s => s.ShippingStaffName).HasMaxLength(250);
         }
     }
 }

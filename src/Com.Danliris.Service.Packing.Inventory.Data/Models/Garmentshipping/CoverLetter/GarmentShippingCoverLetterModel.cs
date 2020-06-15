@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cov
     public class GarmentShippingCoverLetterModel : StandardEntity
     {
         public int PackingListId { get; private set; }
+        public int InvoiceId { get; private set; }
         public string InvoiceNo { get; private set; }
 
         public DateTimeOffset Date { get; private set; }
@@ -38,11 +39,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cov
         public string EMKLSeal { get; private set; }
         public DateTimeOffset ExportEstimationDate { get; private set; }
         public string Unit { get; private set; }
-        public string ShippingStaff { get; private set; }
+        public int ShippingStaffId { get; private set; }
+        public string ShippingStaffName { get; private set; }
 
-        public GarmentShippingCoverLetterModel(int packingListId, string invoiceNo, DateTimeOffset date, string name, string address, string aTTN, string phone, DateTimeOffset bookingDate, int orderId, string orderCode, string orderName, double pCSQuantity, double sETSQuantity, double pACKQuantity, double cartoonQuantity, int forwarderId, string forwarderCode, string forwarderName, string truck, string plateNumber, string driver, string containerNo, string freight, string shippingSeal, string dLSeal, string eMKLSeal, DateTimeOffset exportEstimationDate, string unit, string shippingStaff)
+        public GarmentShippingCoverLetterModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, string name, string address, string aTTN, string phone, DateTimeOffset bookingDate, int orderId, string orderCode, string orderName, double pCSQuantity, double sETSQuantity, double pACKQuantity, double cartoonQuantity, int forwarderId, string forwarderCode, string forwarderName, string truck, string plateNumber, string driver, string containerNo, string freight, string shippingSeal, string dLSeal, string eMKLSeal, DateTimeOffset exportEstimationDate, string unit, int shippingStaffId, string shippingStaffName)
         {
             PackingListId = packingListId;
+            InvoiceId = invoiceId;
             InvoiceNo = invoiceNo;
             Date = date;
             Name = name;
@@ -70,7 +73,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cov
             EMKLSeal = eMKLSeal;
             ExportEstimationDate = exportEstimationDate;
             Unit = unit;
-            ShippingStaff = shippingStaff;
+            ShippingStaffId = shippingStaffId;
+            ShippingStaffName = shippingStaffName;
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
@@ -307,11 +311,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cov
             }
         }
 
-        public void SetShippingStaff(string shippingStaff, string userName, string userAgent)
+        public void SetShippingStaffId(int shippingStaffId, string userName, string userAgent)
         {
-            if (ShippingStaff != shippingStaff)
+            if (ShippingStaffId != shippingStaffId)
             {
-                ShippingStaff = shippingStaff;
+                ShippingStaffId = shippingStaffId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetShippingStaffName(string shippingStaffName, string userName, string userAgent)
+        {
+            if (ShippingStaffName != shippingStaffName)
+            {
+                ShippingStaffName = shippingStaffName;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
