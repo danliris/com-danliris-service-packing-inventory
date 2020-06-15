@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Data;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport
 {
@@ -28,10 +29,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
         }
 
-        private IQueryable<SimpleAvalViewModel> GetAwalData(DateTimeOffset searchDate, IEnumerable<string> avalTypes)
+        private IEnumerable<SimpleAvalViewModel> GetAwalData(DateTimeOffset searchDate, IEnumerable<string> avalTypes, int offset)
         {
-            var queryTransform = _movementRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.Date < searchDate.Date && avalTypes.Contains(s.AvalType))
-                .GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
+            var queryTransform = _movementRepository.ReadAll()
+                .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < searchDate.Date && avalTypes.Contains(s.AvalType))
+                .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
+
+            var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
                 {
                     AvalType = d.Key,
                     AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
@@ -39,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                     AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
                 });
 
-            return queryTransform;
+            return result;
         }
 
         //private IQueryable<SimpleAvalViewModel> GetDataTransform(DateTimeOffset searchDate)
@@ -70,10 +74,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
         //    return queryTransform;
         //}
 
-        private IQueryable<SimpleAvalViewModel> GetDataByDate(DateTimeOffset searchDate)
+        private IEnumerable<SimpleAvalViewModel> GetDataByDate(DateTimeOffset searchDate, int offset)
         {
-            var queryTransform = _movementRepository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.Date == searchDate.Date)
-                .GroupBy(s => new { s.AvalType, s.Type }).Select(d => new SimpleAvalViewModel()
+            var queryTransform = _movementRepository.ReadAll()
+                   .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date == searchDate.Date)
+                   .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
+            
+            var result = queryTransform.GroupBy(s => new { s.AvalType, s.Type }).Select(d => new SimpleAvalViewModel()
                 {
                     Type = d.Key.Type,
                     AvalType = d.Key.AvalType,
@@ -81,10 +88,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                     AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
                 });
 
-            return queryTransform;
+            return result;
         }
 
-        private IEnumerable<AvalStockReportViewModel> GetQuery(DateTimeOffset searchDate)
+        private IEnumerable<AvalStockReportViewModel> GetQuery(DateTimeOffset searchDate, int offset)
         {
             //var dataTransformFunc = GetDataTransform(searchDate).ToListAsync();
             //var dataOutpuFunc = GetDataOutput(searchDate).ToListAsync();
@@ -93,9 +100,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             //var dataOutput = await dataOutpuFunc;
             //var joinData1 = dataTransform.Concat(dataOutput);
 
-            var dataSearchDate = GetDataByDate(searchDate).ToList();
+            var dataSearchDate = GetDataByDate(searchDate, offset);
             var listAvalType = dataSearchDate.Select(d => d.AvalType).Distinct();
-            var dataAwal = GetAwalData(searchDate, listAvalType).ToList();
+            var dataAwal = GetAwalData(searchDate, listAvalType, offset);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => d.AvalType).Select(e => new AvalStockReportViewModel()
@@ -118,9 +125,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             return result;
         }
 
-        public MemoryStream GenerateExcel(DateTimeOffset searchDate)
+        public MemoryStream GenerateExcel(DateTimeOffset searchDate, int offset)
         {
-            var data = GetQuery(searchDate);
+            var data = GetQuery(searchDate, offset);
 
             DataTable dt = new DataTable();
 
@@ -150,9 +157,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Laporan Stock Gudang Aval") }, true);
         }
 
-        public ListResult<AvalStockReportViewModel> GetReportData(DateTimeOffset searchDate)
+        public ListResult<AvalStockReportViewModel> GetReportData(DateTimeOffset searchDate, int offset)
         {
-            var data = GetQuery(searchDate);
+            var data = GetQuery(searchDate, offset);
             return new ListResult<AvalStockReportViewModel>(data.ToList(), 1, data.Count(), data.Count());
         }
     }

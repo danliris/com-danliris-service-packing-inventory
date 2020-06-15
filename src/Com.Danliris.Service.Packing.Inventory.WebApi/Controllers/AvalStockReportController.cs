@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] DateTimeOffset? searchDate)
+        public IActionResult Get([FromQuery] DateTimeOffset? searchDate, [FromHeader(Name = "x-timezone-offset")] string timezone)
         {
             try
             {
@@ -44,16 +44,17 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 {
                     throw new Exception("Tanggal Harus Diisi");
                 }
-                var data = _service.GetReportData(searchDate.GetValueOrDefault());
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var data = _service.GetReportData(searchDate.GetValueOrDefault(), clientTimeZoneOffset);
                 return Ok(data);
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
         [HttpGet("xls/")]
-        public IActionResult GetExcel([FromQuery] DateTimeOffset? searchDate)
+        public IActionResult GetExcel([FromQuery] DateTimeOffset? searchDate, [FromHeader(Name = "x-timezone-offset")] string timezone)
         {
             try
             {
@@ -63,7 +64,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                     throw new Exception("Tanggal Harus Diisi");
                 }
                 byte[] xlsInBytes;
-                var Result = _service.GenerateExcel(searchDate.GetValueOrDefault());
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var Result = _service.GenerateExcel(searchDate.GetValueOrDefault(), clientTimeZoneOffset);
                 string filename = $"Stock Aval - {searchDate.GetValueOrDefault().ToString("dd MMMM yyyy")}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
