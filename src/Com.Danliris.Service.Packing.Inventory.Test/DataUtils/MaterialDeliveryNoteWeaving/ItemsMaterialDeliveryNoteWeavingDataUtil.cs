@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNote
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNoteWeaving
 {
     public class ItemsMaterialDeliveryNoteWeavingDataUtil : BaseDataUtil<ItemsMaterialDeliveryNoteWeavingRepository, ItemsMaterialDeliveryNoteWeavingModel>
     {

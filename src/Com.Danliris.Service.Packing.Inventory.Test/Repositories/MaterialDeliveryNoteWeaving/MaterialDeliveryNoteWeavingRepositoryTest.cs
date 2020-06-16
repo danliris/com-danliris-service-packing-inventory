@@ -1,7 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNoteWeaving;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNoteWeaving;
-using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNoteWeaving;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliveryNote
+namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliveryNoteWeaving
 {
     public class MaterialDeliveryNoteWeavingRepositoryTest : BaseRepositoryTest<PackingInventoryDbContext, MaterialDeliveryNoteWeavingRepository, Data.MaterialDeliveryNoteWeavingModel, MaterialDeliveryNoteWeavingDataUtil>
     {

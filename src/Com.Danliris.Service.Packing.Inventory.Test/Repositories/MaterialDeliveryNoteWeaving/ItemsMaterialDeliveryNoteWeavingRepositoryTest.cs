@@ -1,14 +1,14 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNoteWeaving;
-using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDeliveryNoteWeaving;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliveryNote
+namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliveryNoteWeaving
 {
    public class ItemsMaterialDeliveryNoteWeavingRepositoryTest : BaseRepositoryTest<PackingInventoryDbContext, ItemsMaterialDeliveryNoteWeavingRepository, ItemsMaterialDeliveryNoteWeavingModel, ItemsMaterialDeliveryNoteWeavingDataUtil>
     {
@@ -51,8 +51,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliv
             Assert.NotNull(result);
         }
 
-
-
+        
+        
 
     }
 }
