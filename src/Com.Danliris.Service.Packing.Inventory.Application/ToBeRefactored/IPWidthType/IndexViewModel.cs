@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWi
 {
     public class IndexViewModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string WidthType { get; set; }
 
