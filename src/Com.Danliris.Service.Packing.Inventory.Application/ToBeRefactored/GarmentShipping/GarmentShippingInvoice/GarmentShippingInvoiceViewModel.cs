@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -87,49 +88,82 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			if (string.IsNullOrEmpty(CPrice))
 				yield return new ValidationResult("CPrice harus diisi", new List<string> { "CPrice" });
-
-			int Count = 0;
-			string DetailErrors = "[";
+ 
 
 			if (Items.Count == 0)
 			{
-				yield return new ValidationResult("Detail  harus Diisi", new List<string> { "Items" });
+				yield return new ValidationResult("Detail  harus Diisi", new List<string> { "ItemsCount" });
 			}
 			else
 			{
+
+				int errorItemsCount = 0;
+				List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
+
 				foreach (var item in Items)
 				{
-					DetailErrors += "{";
+					Dictionary<string, object> errorItem = new Dictionary<string, object>();
 
-					if (string.IsNullOrEmpty(item.RONo))
+					if (string.IsNullOrWhiteSpace(item.RONo))
 					{
-						Count++;
-						DetailErrors += "RONo: 'RONo Harus Diisi!',";
-					}
-					if (string.IsNullOrEmpty(item.ComodityDesc))
-					{
-						Count++;
-						DetailErrors += "ComodityDesc: 'ComodityDesc Harus Diisi!',";
+						errorItem["RONo"] = "RONo tidak boleh kosong";
+						errorItemsCount++;
 					}
 
 					if (item.Quantity == 0)
 					{
-						Count++;
-						DetailErrors += "Quantity: 'Quantity Harus Diisi!',";
+						errorItem["Quantity"] = "Quantity tidak boleh 0";
+						errorItemsCount++;
 					}
 
 					if (item.Price == 0)
 					{
-						Count++;
-						DetailErrors += "Price: 'Price Harus Diisi!',";
+						errorItem["Price"] = "Price tidak boleh 0";
+						errorItemsCount++;
 					}
 
-					DetailErrors += "}, ";
+
+					errorItems.Add(errorItem);
+				}
+				if (errorItemsCount > 0)
+				{
+					yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "Items" });
+				}
+
+
+			}
+			if (GarmentShippingInvoiceAdjustments.Count > 0)
+			{
+				int errorAdjustmentCount = 0;
+				List<Dictionary<string, object>> errorAdjustments = new List<Dictionary<string, object>>();
+
+
+				foreach (var item in GarmentShippingInvoiceAdjustments)
+				{
+					Dictionary<string, object> errorItem = new Dictionary<string, object>();
+
+
+					if (string.IsNullOrEmpty(item.AdjustmentDescription) && item.AdjustmentValue > 0)
+					{
+						errorItem["AdjustmentDescription"] = "AdjustmentDescription tidak boleh kosong";
+						errorAdjustmentCount++;
+						
+					}
+					if (item.AdjustmentValue == 0 && item.AdjustmentDescription != "")
+					{
+						errorItem["AdjustmentValue"] = "AdjustmentValue tidak boleh 0";
+						errorAdjustmentCount++;
+					}
+					errorAdjustments.Add(errorItem);
+
+				}
+				if (errorAdjustmentCount > 0)
+				{
+				 
+					yield return new ValidationResult(JsonConvert.SerializeObject(errorAdjustments), new List<string> { "GarmentShippingInvoiceAdjustments" });
 				}
 			}
-
-			DetailErrors += "]";
-
+			
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BankAccountId = bankAccountId;
             BankAccountName = bankAccountName;
             BuyerAgentAddress = buyerAgentAddress;
-            BuyerAgentCode = buyerAgentAddress;
+            BuyerAgentCode = buyerAgentCode;
             BuyerAgentName = buyerAgentName;
             BuyerAgentId = buyerAgentId;
             Notify = notify;
@@ -220,6 +220,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (SpecialInstruction != specialInstruction)
             {
                 SpecialInstruction = specialInstruction;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetFax(string fax, string userName, string userAgent)
+        {
+            if (Fax != fax)
+            {
+                Fax = fax;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetATTN(string attn, string userName, string userAgent)
+        {
+            if (ATTN != attn)
+            {
+                ATTN = attn;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCC(string cc, string userName, string userAgent)
+        {
+            if (CC != cc)
+            {
+                CC = cc;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
