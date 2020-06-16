@@ -20,12 +20,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             Name = name;
         }
 
-        public int ProductSKUId { get; }
-        public int UOMId { get; }
-        public double PackingSize { get; }
+        public int ProductSKUId { get; private set; }
+        public int UOMId { get; private set; }
+        public double PackingSize { get; private set; }
         [MaxLength(64)]
-        public string Code { get; }
+        public string Code { get; private set; }
         [MaxLength(512)]
-        public string Name { get; }
+        public string Name { get; private set; }
     }
 }

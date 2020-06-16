@@ -28,12 +28,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
         }
 
         [MaxLength(64)]
-        public string Code { get; }
-        public int YarnProductSKUId { get; }
-        public int ProductSKUId { get; }
-        public int ProductPackingId { get; }
+        public string Code { get; private set; }
+        public int YarnProductSKUId { get; private set; }
+        public int ProductSKUId { get; private set; }
+        public int ProductPackingId { get; private set; }
         [MaxLength(64)]
-        public string UOMUnit { get; }
-        public double PackingSize { get; }
+        public string UOMUnit { get; private set; }
+        public double PackingSize { get; private set; }
     }
 }

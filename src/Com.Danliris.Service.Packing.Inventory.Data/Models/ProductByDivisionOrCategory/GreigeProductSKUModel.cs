@@ -34,20 +34,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
         }
 
         [MaxLength(64)]
-        public string Code { get; }
+        public string Code { get; private set; }
         [MaxLength(128)]
-        public string WovenType { get; }
+        public string WovenType { get; private set; }
         [MaxLength(128)]
-        public string Construction { get; }
+        public string Construction { get; private set; }
         [MaxLength(64)]
-        public string Width { get; }
+        public string Width { get; private set; }
         [MaxLength(64)]
-        public string Warp { get; }
+        public string Warp { get; private set; }
         [MaxLength(64)]
-        public string Weft { get; }
+        public string Weft { get; private set; }
         [MaxLength(32)]
-        public string Grade { get; }
+        public string Grade { get; private set; }
         [MaxLength(64)]
-        public string UOMUnit { get; }
+        public string UOMUnit { get; private set; }
     }
 }

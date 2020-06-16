@@ -50,11 +50,8 @@
   <ItemGroup>
     <Folder Include="InventoryPacking\" />
     <Folder Include="InventorySKU\" />
-    <Folder Include="Master\ProductPacking\Fabric\" />
-    <Folder Include="Master\ProductPacking\Greige\" />
-    <Folder Include="Master\ProductPacking\Yarn\" />
-    <Folder Include="Master\ProductSKU\Greige\" />
-    <Folder Include="Master\ProductSKU\Yarn\" />
+    <Folder Include="Master\Greige\" />
+    <Folder Include="Master\Yarn\" />
   </ItemGroup>
 
 </Project>

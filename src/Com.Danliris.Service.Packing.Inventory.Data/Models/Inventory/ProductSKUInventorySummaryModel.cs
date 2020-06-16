@@ -27,13 +27,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             Quantity = quantity;
         }
 
-        public int ProductSKUId { get; }
-        public int StorageId { get; }
+        public int ProductSKUId { get; private set; }
+        public int StorageId { get; private set; }
         [MaxLength(64)]
-        public string StorageCode { get; }
+        public string StorageCode { get; private set; }
         [MaxLength(256)]
-        public string StorageName { get; }
-        public int UOMId { get; }
-        public double Quantity { get; }
+        public string StorageName { get; private set; }
+        public int UOMId { get; private set; }
+        public double Quantity { get; private set; }
     }
 }

@@ -96,5 +96,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
 
             return await _categoryRepository.UpdateAsync(id, model);
         }
+
+        public async Task<int> Upsert(FormDto form)
+        {
+            if (!_categoryRepository.ReadAll().Any(entity => entity.Name.ToLower() == form.Name.ToLower()))
+            {
+                var categoryId = await Create(form);
+                return categoryId;
+            } 
+            else
+            {
+                var category = _categoryRepository.ReadAll().FirstOrDefault(entity => entity.Name.ToLower() == form.Name.ToLower());
+                return category.Id;
+            }
+        }
     }
 }

@@ -24,10 +24,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             Remark = remark;
         }
 
-        public int InventoryDocumentId { get; }
-        public int ProductSKUId { get; }
-        public int UOMId { get; }
-        public double Quantity { get; }
-        public string Remark { get; }
+        public int InventoryDocumentId { get; private set; }
+        public int ProductSKUId { get; private set; }
+        public int UOMId { get; private set; }
+        public double Quantity { get; private set; }
+        public string Remark { get; private set; }
     }
 }

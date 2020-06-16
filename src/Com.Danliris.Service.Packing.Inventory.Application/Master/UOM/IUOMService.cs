@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
     public interface IUOMService
     {
         Task<int> Create(FormDto form);
+        Task<int> Upsert(FormDto form);
         Task<int> Update(int id, FormDto form);
         Task<int> Delete(int id);
         Task<UnitOfMeasurementDto> GetById(int id);

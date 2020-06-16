@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
 {
@@ -86,6 +87,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
             model.SetUnit(form.Unit);
 
             return await _uomRepository.UpdateAsync(id, model);
+        }
+
+        public async Task<int> Upsert(FormDto form)
+        {
+            if (!_uomRepository.ReadAll().Any(entity => entity.Unit.ToLower() == form.Unit.ToLower()))
+            {
+                var id = await Create(form);
+                return id;
+            }
+            else
+            {
+                var model = _uomRepository.ReadAll().FirstOrDefault(entity => entity.Unit.ToLower() == form.Unit.ToLower());
+                return model.Id;
+            }
         }
     }
 }
