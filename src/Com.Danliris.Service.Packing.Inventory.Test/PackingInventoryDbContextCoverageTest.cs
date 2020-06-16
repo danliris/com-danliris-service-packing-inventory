@@ -51,7 +51,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.DyeingPrintingAreaOutputProductionOrders);
             Assert.Empty(dbContext.DyeingPrintingAreaOutputs);
             Assert.Empty(dbContext.DyeingPrintingAreaSummaries);
-            Assert.Empty(dbContext.DyeingPrintingAreaOutputAvalItems);
+            Assert.Empty(dbContext.PackagingStock);
+            //Assert.Empty(dbContext.DyeingPrintingAreaOutputAvalItems);
+            Assert.Empty(dbContext.IPCategories);
+            Assert.Empty(dbContext.IPPackings);
+            Assert.Empty(dbContext.IPProducts);
+            Assert.Empty(dbContext.IPUnitOfMeasurements);
+
+            Assert.Empty(dbContext.GarmentPackingLists);
+            Assert.Empty(dbContext.GarmentPackingListItems);
+            Assert.Empty(dbContext.GarmentPackingListDetails);
+            Assert.Empty(dbContext.GarmentPackingListDetailSizes);
+            Assert.Empty(dbContext.GarmentPackingListMeasurements);
+
+            Assert.Empty(dbContext.GarmentShippingCoverLetters);
+            Assert.Empty(dbContext.GarmentShippingInstructions);
+
+			Assert.Empty(dbContext.GarmentShippingInvoices);
+			Assert.Empty(dbContext.GarmentShippingInvoiceItems);
+			Assert.Empty(dbContext.GarmentShippingInvoiceAdjustments);
+            Assert.Empty(dbContext.IPWeftTypes);
+            Assert.Empty(dbContext.IPWarpTypes);
+            Assert.Empty(dbContext.IPMaterialConstructions);
+            Assert.Empty(dbContext.IPGrades);
+            Assert.Empty(dbContext.IPWovenType);
+            Assert.Empty(dbContext.IPYarnType);
+            Assert.Empty(dbContext.IPProcessType);
+            Assert.Empty(dbContext.IPWidthType);
         }
     }
 }

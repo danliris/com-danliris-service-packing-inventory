@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.GarmentPackingList
 {
     [Produces("application/json")]
-    [Route("v1/garment-shipping/garment-packings")]
+    [Route("v1/garment-shipping/packing-lists")]
     [Authorize]
     public class GarmentPackingListController : ControllerBase
     {
@@ -83,14 +83,55 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
-        [HttpGet]
+		[HttpGet("not-used")]
+		public IActionResult GetNotUsed([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
+		{
+			try
+			{
+				var data = _service.ReadNotUsed(page, size, filter, order, keyword);
+
+				var info = new Dictionary<string, object>
+					{
+						{ "count", data.Data.Count },
+						{ "total", data.Total },
+						{ "order", order },
+						{ "page", page },
+						{ "size", size }
+					};
+
+				return Ok(new
+				{
+					data = data.Data,
+					info
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+
+		[HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
         {
             try
             {
                 var data = _service.Read(page, size, filter, order, keyword);
 
-                return Ok(data);
+                var info = new Dictionary<string, object>
+                    {
+                        { "count", data.Data.Count },
+                        { "total", data.Total },
+                        { "order", order },
+                        { "page", page },
+                        { "size", size }
+                    };
+
+                return Ok(new
+                {
+                    data = data.Data,
+                    info
+                });
             }
             catch (Exception ex)
             {

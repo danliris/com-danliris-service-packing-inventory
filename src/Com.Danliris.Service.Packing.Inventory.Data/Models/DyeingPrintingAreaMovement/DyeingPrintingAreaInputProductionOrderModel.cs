@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-        public double AvalQuantityKg { get; private set; }
+        
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -47,7 +47,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public double BalanceRemains { get; private set; }
 
+        #region aval transformasi
+        public string InputAvalBonNo { get; private set; }
+        public double AvalQuantityKg { get; private set; }
+        public double AvalQuantity { get; private set; }
+        #endregion
+
         public int DyeingPrintingAreaInputId { get; set; }
+        public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
 
         public DyeingPrintingAreaInputProductionOrderModel()
@@ -57,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         //IM
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, double balanceRemains, bool hasOutputDocument, int buyerId)
+            string unit, string color, string motif, string uomUnit, double balance, double balanceRemains, bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -79,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
 
             BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
         }
 
         //FQC
@@ -190,6 +198,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
         }
         /// <summary>
+        /// Constructor using by Packaging Area With Balance Remains and Output Prev SppID
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderQty"></param>
+        /// <param name="grade"></param>
+        /// <param name="balanceRemains"></param>
+        /// <param name="buyerId"></param>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId, int prevSppOutputID)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQty;
+            Grade = grade;
+
+            Area = area;
+            BalanceRemains = balanceRemains;
+            BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = prevSppOutputID;
+        }
+        /// <summary>
         /// Constructor using by Packaging Area with prev Bon Einty
         /// </summary>
         /// <param name="area"></param>
@@ -279,6 +332,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
         }
 
+        /// <summary>
+        /// Constructor Using By Packaging Area WIth BalanceRemain and Bon ID and OutputSPP ID
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderQty"></param>
+        /// <param name="grade"></param>
+        /// <param name="dyeingPrintingAreaInputId"></param>
+        /// <param name="balanceRemains"></param>
+        /// <param name="buyerId"></param>
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, double balanceRemains, int buyerId,int dyeingPrintingAreaOutputProductionOrderId)
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            HasOutputDocument = hasOutputDocument;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQty;
+            Grade = grade;
+
+            Area = area;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
+            BalanceRemains = balanceRemains;
+            BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+        }
+
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, int buyerId)
         {
@@ -303,11 +404,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
         }
+        
         /// <summary>
-        /// construtor for Gudang barang jadi
+        /// construtor for Gudang barang jadi With OutputSPP ID
         /// </summary>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, double productionOrderOrderQuantity, int buyerId)
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -331,11 +433,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
 
             BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
         }
 
         //Transit
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status, double balanceRemains, int buyerId)
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string remark, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -360,6 +463,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BalanceRemains = balanceRemains;
 
             BuyerId = buyerId;
+
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(string area,
@@ -380,9 +485,138 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
         }
 
+        /// <summary>
+        /// Aval Insert Data Using SPP Entity
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area,
+                                                           string avalType,
+                                                           string avalCartNo,
+                                                           string uomUnit,
+                                                           double quantity,
+                                                           double avalQuantityKg,
+                                                           bool hasOutputDocument,
+                                                           int productionOrderId,
+                                                           string productionOrderNo,
+                                                           string cartNo,
+                                                           int buyerId,
+                                                           string buyer,
+                                                           string construction,
+                                                           string unit,
+                                                           string color,
+                                                           string motif,
+                                                           string remark,
+                                                           string grade,
+                                                           string status,
+                                                           double balance,
+                                                           string packingInstruction,
+                                                           string productionOrderType,
+                                                           double productionOrderOrderQuantity,
+                                                           string packagingType,
+                                                           decimal packagingQty,
+                                                           string packagingUnit,
+                                                           int dyeingPrintingAreaOutputProductionOrderId
+                                                           )
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = uomUnit;
+            Balance = quantity;
+            AvalQuantityKg = avalQuantityKg;
+            HasOutputDocument = hasOutputDocument;
+
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = PackingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+
+            Area = area;
+        }
+
+        /// <summary>
+        /// Aval Insert Data Using SPP Entity and ID Bon existing
+        /// </summary>
+        public DyeingPrintingAreaInputProductionOrderModel(string area,
+                                                           string avalType,
+                                                           string avalCartNo,
+                                                           string uomUnit,
+                                                           double quantity,
+                                                           double avalQuantityKg,
+                                                           bool hasOutputDocument,
+                                                           int productionOrderId,
+                                                           string productionOrderNo,
+                                                           string cartNo,
+                                                           int buyerId,
+                                                           string buyer,
+                                                           string construction,
+                                                           string unit,
+                                                           string color,
+                                                           string motif,
+                                                           string remark,
+                                                           string grade,
+                                                           string status,
+                                                           double balance,
+                                                           double balanceRemains,
+                                                           string packingInstruction,
+                                                           string productionOrderType,
+                                                           double productionOrderOrderQuantity,
+                                                           string packagingType,
+                                                           decimal packagingQty,
+                                                           string packagingUnit,
+                                                           int dyeingPrintingAreaOutputProductionOrderId,
+                                                           int dyeingPrintingAreaInputsId
+                                                           )
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = uomUnit;
+            Balance = quantity;
+            AvalQuantityKg = avalQuantityKg;
+            HasOutputDocument = hasOutputDocument;
+
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = PackingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+            DyeingPrintingAreaInputId = dyeingPrintingAreaInputsId;
+
+            Area = area;
+        }
+
         //Shipping
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
-           string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains, string unit, int buyerId)
+           string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains, string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -408,6 +642,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BalanceRemains = balanceRemains;
 
             BuyerId = buyerId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId,
@@ -481,6 +716,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
         }
+
+        //aval transformation
+        public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType, 
+            double productionOrderQuantity, string cartNo, string construction,string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit, 
+            double balance, double avalQuantity, double avalWeightQuantity, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId)
+        {
+            Area = area;
+            InputAvalBonNo = inputAvalBonNo;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            CartNo = cartNo;
+            Construction = construction;
+            Unit = unit;
+            Buyer = buyer;
+            BuyerId = buyerId;
+            Color = color;
+            Motif = motif;
+            AvalType = avalType;
+            UomUnit = uomUnit;
+            Balance = balance;
+            AvalQuantity = avalQuantity;
+            AvalQuantityKg = avalWeightQuantity;
+
+            HasOutputDocument = hasOutputDocument;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+
+        }
+
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderOrderQuantity, string user, string agent)
         {
@@ -732,6 +997,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newArea != Area)
             {
                 Area = newArea;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+
+        public void SetAvalQuantityKG(double newavalKG, string user, string agent)
+        {
+            if (newavalKG != AvalQuantityKg)
+            {
+                AvalQuantityKg = newavalKG;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalQuantity(double newavalQuantity, string user, string agent)
+        {
+            if (newavalQuantity != AvalQuantity)
+            {
+                AvalQuantity = newavalQuantity;
                 this.FlagForUpdate(user, agent);
             }
         }

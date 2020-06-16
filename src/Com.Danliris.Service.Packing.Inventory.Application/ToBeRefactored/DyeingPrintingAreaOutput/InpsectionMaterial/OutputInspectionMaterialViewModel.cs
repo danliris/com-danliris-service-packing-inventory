@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int Count = 0;
             string DetailErrors = "[";
 
-            if (InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0)
+            if ((Id == 0 && InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && InspectionMaterialProductionOrders.Count() == 0))
             {
                 yield return new ValidationResult("SPP harus Diisi", new List<string> { "InspectionMaterialProductionOrder" });
             }
@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     DetailErrors += "{";
 
-                    if (item.ProductionOrderDetails.Count == 0)
+                    if ((item.ProductionOrderDetails.Count == 0 && item.IsSave) || (Id != 0 && item.ProductionOrderDetails.Count == 0))
                     {
                         Count++;
                         DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
@@ -87,30 +87,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
                             }
 
-                            if(DestinationArea == "GUDANG AVAL")
+                            if (DestinationArea == "GUDANG AVAL")
                             {
-                                if (detail.AvalItems.Count == 0)
+                                if (string.IsNullOrEmpty(detail.AvalType))
                                 {
                                     Count++;
-                                    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
+                                    DetailErrors += "AvalType: 'Macam Barang Tidak Boleh Kosong',";
                                 }
-                                else
-                                {
-                                    DetailErrors += "AvalItems : [ ";
-                                    foreach (var aval in detail.AvalItems)
-                                    {
-                                        DetailErrors += "{";
 
-                                        if (aval.Length == 0)
-                                        {
-                                            Count++;
-                                            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
-                                        }
+                                //if (detail.AvalItems.Count == 0 && item.IsSave)
+                                //{
+                                //    Count++;
+                                //    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
+                                //}
+                                //else
+                                //{
+                                //    DetailErrors += "AvalItems : [ ";
+                                //    foreach (var aval in detail.AvalItems)
+                                //    {
+                                //        DetailErrors += "{";
 
-                                        DetailErrors += "}, ";
-                                    }
-                                    DetailErrors += "], ";
-                                }
+                                //        if (aval.Length == 0)
+                                //        {
+                                //            Count++;
+                                //            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
+                                //        }
+
+                                //        DetailErrors += "}, ";
+                                //    }
+                                //    DetailErrors += "], ";
+                                //}
                             }
                             
                             DetailErrors += "}, ";

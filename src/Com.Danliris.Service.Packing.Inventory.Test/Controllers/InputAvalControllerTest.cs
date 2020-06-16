@@ -284,5 +284,161 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+        [Fact]
+        public async Task Should_Success_Reject()
+        {
+            var dataUtil = InputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<InputAvalViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+        [Fact]
+        public async Task Should_NotValid_Reject()
+        {
+            var dataUtil = InputAvalViewModel;
+            //v
+            dataUtil.Area = null;
+            dataUtil.Date = new DateTimeOffset();
+
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<InputAvalViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Exception_Reject()
+        {
+            var dataUtil = InputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<InputAvalViewModel>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+        [Fact]
+        public  void Should_Success_Delete()
+        {
+            var dataUtil = InputAvalViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response =  controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public void Should_Exception_Delete()
+        {
+            var dataUtil = InputAvalViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.Delete(It.IsAny<int>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.Delete(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetPreAvalAll()
+        {
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.ReadAllOutputPreAval(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<PreAvalIndexViewModel>(new List<PreAvalIndexViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetPreAvalAll();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetPreAvalAll()
+        {
+            var dataUtil = InputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.ReadAllOutputPreAval(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetPreAvalAll();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Null_GetPreAvalAll()
+        {
+            var dataUtil = InputAvalViewModel;
+            //v
+            var serviceMock = new Mock<IInputAvalService>();
+            serviceMock.Setup(s => s.ReadAllOutputPreAval(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns<ListResult<PreAvalIndexViewModel>>(null);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetPreAvalAll();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

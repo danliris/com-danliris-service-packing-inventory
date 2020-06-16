@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
+                            Id = 1,
                             Construction = "sd",
                             IsSave = true,
                             Status = "Ok",
@@ -79,10 +80,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 new OutputInspectionMaterialProductionOrderDetailViewModel()
                                 {
                                     Balance = 1,
+                                    Id = 1,
                                     Grade = "a",
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    
+
                                 }
                             },
                             BuyerId = 1,
@@ -96,6 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Construction = "sd",
                             IsSave = true,
                             Status = "Ok",
+                            Id = 2,
                             Motif = "sd",
                             PackingInstruction = "d",
                             ProductionOrder = new ProductionOrder()
@@ -113,16 +116,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 {
                                     Balance = 1,
                                     Grade = "a",
+                                    Id = 2,
                                     HasNextAreaDocument = false,
                                     Remark = "re",
-                                    AvalItems = new List<AvalItem>()
-                                    {
-                                        new AvalItem()
-                                        {
-                                            Type = "type",
-                                            Length = 1
-                                        }
-                                    }
+                                    AvalType = "type"
                                 }
                             },
                             BuyerId = 1,
@@ -147,7 +144,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         var productionOrders = new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalItems.Select(e => new DyeingPrintingAreaOutputAvalItemModel(e.Type, e.Length)).ToList());
+                            detail.AvalType)
+                        {
+                            Id = detail.Id
+                        };
                         productionOrderModels.Add(productionOrders);
                     }
                 }
@@ -315,8 +315,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
             var item = ViewModel.InspectionMaterialProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                    
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>()
+                 {
+
                  }.AsQueryable());
 
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
@@ -529,6 +530,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
 
+            sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0));
+
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
             var result = await service.ReadById(1);
@@ -615,29 +619,136 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
         [Fact]
+        public async Task Should_Success_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+            repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = await service.Delete(1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        //[Fact]
+        //public async Task Should_Exception_Delete()
+        //{
+        //    var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+        //    var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+        //    var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+        //    var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+        //    var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+        //    var model = Model;
+        //    model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
+        //    repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+        //        .ReturnsAsync(model);
+        //    repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
+        //        .ReturnsAsync(1);
+
+        //    movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+        //         .ReturnsAsync(1);
+
+
+        //    var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+        //    await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(1));
+        //}
+
+        [Fact]
+        public async Task Should_Success_Update()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var model = Model;
+            model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
+
+            var vm = ViewModel;
+            vm.Shift = vm.Shift + "new";
+
+            vm.InspectionMaterialProductionOrders.FirstOrDefault().Balance = 1;
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputModel>(), It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = await service.Update(1, vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Update_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var model = Model;
+            model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
+            model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
+
+            var vm = ViewModel;
+            vm.Shift = vm.Shift + "new";
+
+            //vm.InspectionMaterialProductionOrders.FirstOrDefault().Balance = 1;
+            var detail = vm.InspectionMaterialProductionOrders.FirstOrDefault();
+            detail.Id = 0;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>() { detail };
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputModel>(), It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = await service.Update(1, vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public void Validate_VM()
         {
-            var avalItem = new AvalItem()
-            {
-                Length = 1,
-                Type = "Aval A"
-            };
-
-            Assert.NotEqual(0, avalItem.Length);
-            Assert.NotNull(avalItem.Type);
 
             var spp = new OutputInspectionMaterialProductionOrderViewModel()
             {
                 PreviousBalance = 1,
                 InitLength = 1,
                 InputId = 1,
-                BalanceRemains = 1
+                BalanceRemains = 1,
+                Balance = 1
             };
 
             Assert.NotEqual(0, spp.PreviousBalance);
             Assert.NotEqual(0, spp.InitLength);
             Assert.NotEqual(0, spp.InputId);
             Assert.NotEqual(0, spp.BalanceRemains);
+            Assert.NotEqual(0, spp.Balance);
 
             var detail = new OutputInspectionMaterialProductionOrderDetailViewModel()
             {
@@ -676,6 +787,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     BalanceRemains = 0
                 }
             };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    BalanceRemains = 1,
+                    ProductionOrderDetails = new List<OutputInspectionMaterialProductionOrderDetailViewModel>()
+                    {
+                        new OutputInspectionMaterialProductionOrderDetailViewModel()
+                        {
+                            Balance = 0
+                        },
+                        new OutputInspectionMaterialProductionOrderDetailViewModel()
+                        {
+                            Balance = 2
+                        }
+                    }
+                },
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    IsSave = true,
+                    BalanceRemains = 0,
+                     
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.DestinationArea = "GUDANG AVAL";
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }

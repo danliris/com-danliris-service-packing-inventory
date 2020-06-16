@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<MemoryStream> GenerateExcel(int id);
         ListResult<IndexViewModel> ReadBonOutFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPack(int page, int size, string filter, string order, string keyword);
+        Task<int> Delete(int bonId);
 
     }
 }

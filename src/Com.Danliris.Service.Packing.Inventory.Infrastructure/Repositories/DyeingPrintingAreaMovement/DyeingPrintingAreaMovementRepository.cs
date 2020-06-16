@@ -25,6 +25,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
+        //public Task<int> DeleteAreaIM(int bonId, int bonItemId, string type)
+        //{
+        //    var model = _dbSet.FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == bonId && s.DyeingPrintingAreaProductionOrderDocumentId == bonItemId && s.Type == type);
+            
+        //    if(model != null)
+        //    {
+        //        model.FlagForDelete(_identityProvider.Username, UserAgent);
+        //        _dbSet.Update(model);
+        //    }
+            
+        //    return _dbContext.SaveChangesAsync();
+        //}
+
         public Task<int> DeleteAsync(int id)
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
@@ -61,6 +74,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        //public Task<int> UpdateAreaIM(DyeingPrintingAreaMovementModel model)
+        //{
+        //    var modelToUpdate = _dbSet.FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == model.DyeingPrintingAreaDocumentId && s.DyeingPrintingAreaProductionOrderDocumentId == model.DyeingPrintingAreaProductionOrderDocumentId && s.Type == model.Type);
+            
+        //    if(modelToUpdate == null)
+        //    {
+        //        model.FlagForCreate(_identityProvider.Username, UserAgent);
+        //        _dbSet.Add(model);
+        //    }
+        //    else
+        //    {
+        //        modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
+        //        modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
+        //        modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+        //    }
+            
+
+        //    return _dbContext.SaveChangesAsync();
+        //}
+
         public Task<int> UpdateAsync(int id, DyeingPrintingAreaMovementModel model)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
@@ -77,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDyeingPrintingAreaDocument(model.DyeingPrintingAreaDocumentId, model.DyeingPrintingAreaDocumentBonNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetType(model.Type, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetDyeingPrintingAreaProductionOrderDocumentId(model.DyeingPrintingAreaProductionOrderDocumentId, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

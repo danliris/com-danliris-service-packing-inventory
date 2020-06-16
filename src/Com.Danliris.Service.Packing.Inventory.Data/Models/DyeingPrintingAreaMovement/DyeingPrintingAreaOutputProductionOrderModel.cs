@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// </summary>
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
 
-        public ICollection<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; private set; }
+        //public ICollection<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; private set; }
 
 
         public int DyeingPrintingAreaOutputId { get; set; }
@@ -68,12 +68,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public DyeingPrintingAreaOutputProductionOrderModel()
         {
-            DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
+            //DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
         }
 
         //IM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, ICollection<DyeingPrintingAreaOutputAvalItemModel> dyeingPrintingAreaOutputAvalItems)
+            string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
 
-            DyeingPrintingAreaOutputAvalItems = dyeingPrintingAreaOutputAvalItems;
+            AvalType = avalType;
         }
 
         //Transit
@@ -399,7 +399,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
         }
-
+        /// <summary>
+        /// Insert Aval with existing bon
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
+                                                            string avalCartNo,
+                                                            string avalUomUnit,
+                                                            double avalQuantity,
+                                                            double avalQuantityKg,
+                                                            int dyeingPrintingOutputId) : this()
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantity;
+            AvalQuantityKg = avalQuantityKg;
+            DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
+        }
         //Warehouse
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area, string destinationArea, int dyeingPrintingAreaInputProductionOrderId, int buyerId) : this()
         {
@@ -783,6 +799,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newWeight != Weight)
             {
                 Weight = newWeight;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetDeliveryNote(string newDeliveryNote, string user, string agent)
+        {
+            if (newDeliveryNote != DeliveryNote)
+            {
+                DeliveryNote = newDeliveryNote;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalType(string newAvalType, string user, string agent)
+        {
+            if (newAvalType != AvalType)
+            {
+                AvalType = newAvalType;
                 this.FlagForUpdate(user, agent);
             }
         }

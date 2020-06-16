@@ -18,6 +18,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                   string filter,
                                                                   string order,
                                                                   string keyword);
+        ListResult<AvailableAvalIndexViewModel> ReadAllAvailableAval(
+                                                                  int page,
+                                                                  int size,
+                                                                  string filter,
+                                                                  string order,
+                                                                  string keyword);
+        ListResult<AvailableAvalIndexViewModel> ReadByBonAvailableAval(
+                                                                  int bonId,
+                                                                  int page,
+                                                                  int size,
+                                                                  string filter,
+                                                                  string order,
+                                                                  string keyword);
+        ListResult<AvailableAvalIndexViewModel> ReadByTypeAvailableAval(
+                                                                  string avalType,
+                                                                  int page,
+                                                                  int size,
+                                                                  string filter,
+                                                                  string order,
+                                                                  string keyword);
         Task<MemoryStream> GenerateExcel(int id);
     }
 }

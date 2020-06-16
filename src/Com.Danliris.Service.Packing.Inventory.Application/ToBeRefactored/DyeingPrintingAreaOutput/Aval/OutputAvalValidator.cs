@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             RuleFor(data => data.Group).NotNull().WithMessage("Grup Harus Diisi!");
             RuleFor(data => data.AvalItems).Must(s => s.Count > 0);
             RuleForEach(data => data.AvalItems).SetValidator(new OutputAvalItemValidator());
-            RuleFor(data => data.DyeingPrintingMovementIds).Must(s => s.Count > 0);
+            //RuleFor(data => data.DyeingPrintingMovementIds).Must(s => s.Count > 0);
         }
     }
 }
