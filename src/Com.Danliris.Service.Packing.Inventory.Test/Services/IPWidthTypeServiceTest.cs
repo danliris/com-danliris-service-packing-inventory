@@ -63,6 +63,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                 };
             }
         }
+        private IndexViewModel IndexViewModel
+        {
+            get
+            {
+                return new IndexViewModel
+                {
+                    Id = 1,
+                    Code = "1",
+                    WidthType = "Testing"
+                };
+            }
+        }
         private IPWidthTypeViewModel NotValidViewModel
         {
             get
@@ -200,6 +212,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             var id = ViewModel.Id;
             Assert.NotEqual(0, id);
+        }
+        [Fact]
+        public void Should_Success_GetIndexView()
+        {
+            var id = IndexViewModel.Id;
+            var code = IndexViewModel.Code;
+            var type = IndexViewModel.WidthType;
+            Assert.NotEqual(0, id);
+            Assert.NotNull(code);
+            Assert.NotNull(type);
+
         }
     }
 }
