@@ -59,5 +59,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.Created, (int)response.GetType().GetProperty("StatusCode").GetValue(response, null));
         }
+
+        [Fact]
+        public async Task Post_Return_BadRequest()
+        {
+            var dataUtil = new CreateProductPackAndSKUViewModel();
+            //v
+            var serviceMock = new Mock<IProductService>();
+            serviceMock.Setup(s => s.CreateProductPackAndSKU(It.IsAny<CreateProductPackAndSKUViewModel>())).ReturnsAsync(new ProductPackingBarcodeInfo("", 1, 1, "", "", 1, ""));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ModelState.AddModelError("key", "ErrorMessage");
+
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, (int)response.GetType().GetProperty("StatusCode").GetValue(response, null));
+        }
     }
 }
