@@ -230,23 +230,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
         [Fact]
-        public void Should_Success_GetById()
+        public async void Should_Success_GetById()
         {
             //v
             var unittest = new IPWidthTypeControllerTest();
             var controller = unittest._controllerMock;
-            var response = controller.GetById(1);
+            var response = await controller.GetById(1);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public void Should_Exception_GetById()
+        public async void Should_Exception_GetById()
         {
             //v
             var unittest = new IPWidthTypeControllerTest(true);
             var controller = unittest._controllerMock;
-            var response = controller.GetById(1);
+            var response = await controller.GetById(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
