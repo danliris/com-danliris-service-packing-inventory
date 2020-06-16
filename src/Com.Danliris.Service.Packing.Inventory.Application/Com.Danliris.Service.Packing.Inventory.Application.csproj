@@ -54,7 +54,6 @@
     <Folder Include="InventoryPacking\" />
     <Folder Include="InventorySKU\" />
     <Folder Include="Master\Greige\" />
-    <Folder Include="Master\Fabric\" />
     <Folder Include="Master\Yarn\" />
   </ItemGroup>
 
