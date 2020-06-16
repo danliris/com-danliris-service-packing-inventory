@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void Should_Success_CreateProductPackAndSKUValidator()
         {
             CreateProductPackAndSKUValidator validator = new CreateProductPackAndSKUValidator();
+           
             Assert.NotNull(validator);
         }
 
