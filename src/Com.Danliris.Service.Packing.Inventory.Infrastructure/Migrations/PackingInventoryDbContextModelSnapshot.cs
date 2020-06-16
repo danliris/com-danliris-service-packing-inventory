@@ -2040,6 +2040,162 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("GarmentShippingNotes");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.IPProcessTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("ProcessType")
+                        .HasMaxLength(1024);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPProcessType");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.IPWarpTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("WarpType")
+                        .HasMaxLength(1024);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPWovenType");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.IPWidthTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("WidthType")
+                        .HasMaxLength(1024);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPWidthType");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.IPYarnTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("YarnType")
+                        .HasMaxLength(1024);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPYarnType");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingItemModel", b =>
                 {
                     b.Property<int>("Id")
@@ -2269,6 +2425,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.GradeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2322,12 +2479,100 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving.ItemsMaterialDeliveryNoteWeavingModel", b =>
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsAvalGrade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPGrades");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.MaterialConstructionModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPMaterialConstructions");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.WarpTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
 
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
@@ -2374,6 +2619,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ItemType")
                         .HasMaxLength(128);
 
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPWarpTypes");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.WeftTypeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
 
@@ -2389,6 +2681,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasIndex("MaterialDeliveryNoteWeavingId");
 
                     b.ToTable("ItemsMaterialDeliveryNoteWeaving");
+                    b.Property<string>("Type")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPWeftTypes");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.PackagingStockModel", b =>
