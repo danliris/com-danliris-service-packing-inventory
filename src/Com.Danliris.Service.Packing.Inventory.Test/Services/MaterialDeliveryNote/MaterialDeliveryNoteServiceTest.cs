@@ -120,6 +120,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
         }
 
         [Fact]
+        public async Task Should_Success_ReadById_Return_Null()
+        {
+            var materialDeliveryNoteRepositoryMock = new Mock<IMaterialDeliveryNoteRepository>();
+            var itemsRepositoryMock = new Mock<IItemsRepository>();
+
+
+            materialDeliveryNoteRepositoryMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                 .ReturnsAsync(()=>null);
+
+            var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
+
+            var result = await service.ReadById(1);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task Should_Success_Delete()
         {
             var materialDeliveryNoteRepositoryMock = new Mock<IMaterialDeliveryNoteRepository>();

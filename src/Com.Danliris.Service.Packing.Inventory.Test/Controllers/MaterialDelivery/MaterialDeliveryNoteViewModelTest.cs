@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
         }
 
         [Fact]
-        public void Validate_Default_When_Items_More_Than1()
+        public void Validate_When_Items_More_Than1()
         {
             MaterialDeliveryNoteViewModel viewModel = new MaterialDeliveryNoteViewModel();
             viewModel.DateTo = default(DateTimeOffset);
@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
 
 
         [Fact]
-        public void Validate_Default_When_DateFrom_MoreThan_DateTo()
+        public void Validate_When_DateFrom_MoreThan_DateTo()
         {
             MaterialDeliveryNoteViewModel viewModel = new MaterialDeliveryNoteViewModel();
             viewModel.DateTo = DateTimeOffset.Now.AddDays(-1);
@@ -57,6 +57,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                 }
             };
 
+
+            var defaultValidationResult = viewModel.Validate(null);
+            Assert.True(defaultValidationResult.Count() > 0);
+        }
+
+        [Fact]
+        public void Validate_When_DateSJ_Empty()
+        {
+            MaterialDeliveryNoteViewModel viewModel = new MaterialDeliveryNoteViewModel();
+            viewModel.DateSJ = default(DateTimeOffset);
+            
 
             var defaultValidationResult = viewModel.Validate(null);
             Assert.True(defaultValidationResult.Count() > 0);
