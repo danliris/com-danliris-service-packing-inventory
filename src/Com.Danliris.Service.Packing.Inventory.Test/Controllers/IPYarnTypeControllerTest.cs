@@ -111,6 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPYarnTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     YarnType = "Testing"
                 };
@@ -122,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPYarnTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     YarnType = null
                 };

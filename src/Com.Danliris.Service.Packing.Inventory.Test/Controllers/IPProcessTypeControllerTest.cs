@@ -83,6 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPProcessTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     ProcessType = "Testing"
                 };
@@ -94,6 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPProcessTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     ProcessType = null
                 };

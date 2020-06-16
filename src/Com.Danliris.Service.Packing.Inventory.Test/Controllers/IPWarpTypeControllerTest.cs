@@ -111,6 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWarpTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WarpType = "Testing"
                 };
@@ -122,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWarpTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WarpType = null
                 };

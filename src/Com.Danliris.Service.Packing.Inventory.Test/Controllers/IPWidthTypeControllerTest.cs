@@ -111,6 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWidthTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WidthType = "Testing"
                 };
@@ -122,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWidthTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WidthType = null
                 };
