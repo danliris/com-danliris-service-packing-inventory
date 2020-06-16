@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("v1/master/ip-warp-type")]
+    [Route("v1/master/ip-woven-type")]
     [Authorize]
     public class IPWarpTypeController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
         }
         
-        [HttpGet]
+        [HttpGet("all")]
         public IActionResult Get()
         {
             try

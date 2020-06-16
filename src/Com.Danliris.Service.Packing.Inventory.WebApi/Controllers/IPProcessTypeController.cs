@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
         }
         
-        [HttpGet]
+        [HttpGet("all")]
         public IActionResult Get()
         {
             try
