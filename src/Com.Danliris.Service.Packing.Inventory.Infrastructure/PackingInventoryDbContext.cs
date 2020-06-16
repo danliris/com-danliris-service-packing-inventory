@@ -20,9 +20,9 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Master;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Com.Danliris.Service.Packing.Inventory.Data.Models;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -107,13 +107,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new UOMEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new PackingEntityTypeConfiguration());
-
-            modelBuilder.ApplyConfiguration(new PackagingStockEntityTypeConfiguration());
-
             modelBuilder.ApplyConfiguration(new GarmentPackingListEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailEntityTypeConfiguration());
@@ -131,13 +124,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
 
-
-
-            modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricQualityControlModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricGradeTestModel>().HasQueryFilter(entity => !entity.IsDeleted);
@@ -150,11 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<ProductModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<PackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<UnitOfMeasurementModel>().HasQueryFilter(entity => !entity.IsDeleted);
-
-            modelBuilder.Entity<PackagingStockModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             #region master
             modelBuilder.ApplyConfiguration(new WeftTypeEntityTypeConfiguration());

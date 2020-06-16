@@ -1,12 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.GoodsWarehouse;
-using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentPacking;
-using Com.Danliris.Service.Packing.Inventory.Application.InventoryDocumentSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.Product;
-using Com.Danliris.Service.Packing.Inventory.Application.ProductPacking;
-using Com.Danliris.Service.Packing.Inventory.Application.ProductSKU;
-using Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDocument;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging;
@@ -34,10 +28,6 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentPacking;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.InventoryDocumentSKU;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
@@ -50,8 +40,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.AvalTransformation;
-using System.Collections.Generic;
-using System.Text;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AvalStockReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
@@ -76,7 +64,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.G
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
-	public class Startup
+    public class Startup
     {
         private const string DEFAULT_CONNECTION = "DefaultConnection";
         private const string PACKING_INVENTORY_POLICY = "Packing Inventory Policy";
@@ -97,10 +85,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             // Register Middleware
 
             #region Repository
-            services.AddTransient<IProductSKURepository, ProductSKURepository>();
-            services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
-            services.AddTransient<IInventoryDocumentSKURepository, InventoryDocumentSKURepository>();
-            services.AddTransient<IInventoryDocumentPackingRepository, InventoryDocumentPackingRepository>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
@@ -130,12 +114,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             #endregion
 
             #region Service
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductPackingService, ProductPackingService>();
-            services.AddTransient<IProductSKUService, ProductSKUService>();
-            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
-            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
-            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
             services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
