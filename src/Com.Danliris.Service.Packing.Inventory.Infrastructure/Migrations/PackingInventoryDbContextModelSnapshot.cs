@@ -2540,7 +2540,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("InventoryDocumentSKUs");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.GradeModel", b =>
                 {
                     b.Property<int>("Id")
@@ -2549,52 +2548,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<double?>("GetTotal");
-
-                    b.Property<string>("InputLot");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int?>("MaterialDeliveryNoteModelId");
-
-                    b.Property<string>("MaterialName");
-
-                    b.Property<string>("NoSPP");
-
-                    b.Property<double?>("WeightBale");
-
-                    b.Property<double?>("WeightBruto");
-
-                    b.Property<double?>("WeightCone");
-
-                    b.Property<double?>("WeightDOS");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaterialDeliveryNoteModelId");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving.ItemsMaterialDeliveryNoteWeavingModel", b =>
                     b.Property<string>("Code")
                         .HasMaxLength(16);
 
@@ -2706,35 +2659,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<decimal>("InputBale")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("InputKg")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("InputMeter")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("InputPiece")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("ItemCode")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("ItemGrade")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("ItemMaterialName")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("ItemNoSOP")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("ItemType")
-                        .HasMaxLength(128);
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -2790,6 +2714,128 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<string>("Type")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IPWeftTypes");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote.ItemsModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<double?>("GetTotal");
+
+                    b.Property<string>("InputLot");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int?>("MaterialDeliveryNoteModelId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("NoSPP");
+
+                    b.Property<double?>("WeightBale");
+
+                    b.Property<double?>("WeightBruto");
+
+                    b.Property<double?>("WeightCone");
+
+                    b.Property<double?>("WeightDOS");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialDeliveryNoteModelId");
+
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving.ItemsMaterialDeliveryNoteWeavingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<decimal>("InputBale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("InputKg")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("InputMeter")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("InputPiece")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("ItemCode")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ItemGrade")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ItemMaterialName")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ItemNoSOP")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ItemType")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
                     b.Property<int?>("MaterialDeliveryNoteWeavingId");
 
                     b.HasKey("Id");
@@ -2797,12 +2843,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasIndex("MaterialDeliveryNoteWeavingId");
 
                     b.ToTable("ItemsMaterialDeliveryNoteWeaving");
-                    b.Property<string>("Type")
-                        .HasMaxLength(128);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IPWeftTypes");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.PackagingStockModel", b =>
