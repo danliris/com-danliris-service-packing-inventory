@@ -82,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 				CPrice = model.CPrice,
 				Memo = model.Memo,
 				TotalAmount = model.TotalAmount,
+				IsUsed = model.IsUsed,
 				GarmentShippingInvoiceAdjustments = model.GarmentShippingInvoiceAdjustment.Select(i=> new GarmentShippingInvoiceAdjustmentViewModel
 				{
 					AdjustmentDescription = i.AdjustmentDescription,
@@ -135,6 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 						Code = i.UnitCode
 					}
 				}).ToList(),
+				
 
 			};
 			return vm;
