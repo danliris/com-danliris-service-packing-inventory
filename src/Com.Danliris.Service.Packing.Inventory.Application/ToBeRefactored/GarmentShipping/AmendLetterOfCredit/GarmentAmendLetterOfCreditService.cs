@@ -66,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var query = _repository.ReadAll();
 
-            List<string> SearchAttributes = new List<string>() { "DocumentCreditNo", "IssuedBank", "ApplicantName", "UomUnit" };
+            List<string> SearchAttributes = new List<string>() { "DocumentCreditNo", "Description" };
             query = QueryHelper<GarmentShippingAmendLetterOfCreditModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);

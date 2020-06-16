@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
-    public partial class AddMaterialDeliveryNoteandMaterialDeliveryNoteWeaving : Migration
+    public partial class MaterialDeliveryNote_and_MaterialDeliveryNoteWeaving : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
