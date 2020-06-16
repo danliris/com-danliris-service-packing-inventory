@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWidthTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WidthType = "Testing"
                 };
@@ -68,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPWidthTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     WidthType = null
                 };
@@ -192,6 +194,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             IPWidthTypeViewModelValidator validation = new IPWidthTypeViewModelValidator();
             FluentValidation.Results.ValidationResult valid = validation.Validate(ViewModel);
             Assert.True(valid.IsValid);
+        }
+        [Fact]
+        public void Should_Success_GetIdViewModel()
+        {
+            var id = ViewModel.Id;
+            Assert.NotEqual(0, id);
         }
     }
 }

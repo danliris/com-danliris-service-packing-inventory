@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPProcessTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     ProcessType = "Testing"
                 };
@@ -68,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new IPProcessTypeViewModel
                 {
+                    Id = 1,
                     Code = "1",
                     ProcessType = null
                 };
@@ -192,6 +194,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             IPProcessTypeViewModelValidator validation = new IPProcessTypeViewModelValidator();
             FluentValidation.Results.ValidationResult valid = validation.Validate(ViewModel);
             Assert.True(valid.IsValid);
+        }
+
+        [Fact]
+        public void Should_Success_GetIdViewModel()
+        {
+            var id = ViewModel.Id;
+            Assert.NotEqual(0,id);
         }
     }
 }
