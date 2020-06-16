@@ -64,9 +64,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 					{
 						new GarmentShippingInvoiceAdjustmentViewModel
 						{
-							AdjustmentDescription = "",
+							AdjustmentDescription = "aaa",
 							AdjustmentValue =0
 							 
+						},
+						new GarmentShippingInvoiceAdjustmentViewModel
+						{
+							AdjustmentDescription = "",
+							AdjustmentValue =1
+
 						}
 					},
 					TotalAmount = 0,
@@ -117,6 +123,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 			{
 				new GarmentShippingInvoiceItemViewModel
 				{
+					Price =0,
+					Quantity=0,
+					ComodityDesc=""
 					 
 				}
 			};
@@ -126,12 +135,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 		}
 
 		[Fact]
-		public void Validate_MeasurementsDefaultValue()
+		public void Validate_AdjustmentDescriptionValue()
 		{
 			GarmentShippingInvoiceViewModel viewModel = ViewModel;
 			viewModel.GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>
 			{
-				new GarmentShippingInvoiceAdjustmentViewModel()
+				new GarmentShippingInvoiceAdjustmentViewModel
+				{
+					AdjustmentDescription = "",
+					AdjustmentValue = 1
+				}
+			};
+
+			var result = viewModel.Validate(null);
+			Assert.NotEmpty(result.ToList());
+		}
+		[Fact]
+		public void Validate_AdjustmentValue()
+		{
+			GarmentShippingInvoiceViewModel viewModel = ViewModel;
+			viewModel.GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>
+			{
+				new GarmentShippingInvoiceAdjustmentViewModel
+				{
+					AdjustmentDescription = "adjustment",
+					AdjustmentValue = 0
+				}
 			};
 
 			var result = viewModel.Validate(null);
