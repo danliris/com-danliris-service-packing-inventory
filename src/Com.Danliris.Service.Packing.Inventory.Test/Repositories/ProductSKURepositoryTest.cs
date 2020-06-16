@@ -29,6 +29,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             Assert.NotEqual(0, result);
         }
 
+        
+
+        [Fact]
+        public async Task IsExist_Return_true()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            ProductSKURepository repo = new ProductSKURepository(dbContext, serviceProvider);
+            var data = DataUtil(repo, dbContext).GetModelYarn();
+            await repo.InsertAsync(data);
+            var result = await repo.IsExist(data.Name);
+            Assert.True(result);
+        }
+
         [Fact]
         public async Task Should_Success_InsertYarn()
         {
