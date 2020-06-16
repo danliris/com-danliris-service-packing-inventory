@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
                 {
                     Id = 1,
                     Type = "test",
-                    Code = "01"
+                    Code = "001"
                 };
             }
         }
@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.Master
 
             Assert.False(result.Item1);
 
-            vm.Code = "110";
+            vm.Code = "1100";
             result = service.UploadValidate(new List<MaterialConstructionViewModel>() { vm });
 
             Assert.False(result.Item1);
