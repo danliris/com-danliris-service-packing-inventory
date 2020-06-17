@@ -73,11 +73,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
             var searchAttributes = new List<string>() { "Name", "Code" };
             var order = JsonConvert.DeserializeObject<Dictionary<string, string>>(queryParam.order);
 
-            var categoryQuery = _categoryRepository.ReadAll();
-
             var query = _categoryRepository.ReadAll().Select(entity => new CategoryIndexInfo(entity));
 
-            query = QueryHelper<CategoryIndexInfo>.Search(query, searchAttributes, queryParam.keyword);
+            //if (!string.IsNullOrWhiteSpace(queryParam.keyword))
+            //    query = query.Where(entity => entity.Code.Contains(queryParam.keyword) || entity.Name.Contains(queryParam.keyword));
+
+            query = QueryHelper<CategoryIndexInfo>.Search(query, searchAttributes, queryParam.keyword, true);
             query = QueryHelper<CategoryIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();
