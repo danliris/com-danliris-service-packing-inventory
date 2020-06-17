@@ -60,12 +60,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 
         }
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute]int id)
+        public async Task<IActionResult> GetById([FromRoute]int id)
         {
             try
             {
 
-                var data = _service.ReadById(id);
+                var data = await _service.ReadById(id);
                 return Ok(new
                 {
                     data
