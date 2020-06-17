@@ -346,10 +346,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon IM Area Dyeing Printing") }, true);
         }
 
-        public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders()
+        public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders(long productionOrderId)
         {
-            var productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
+            IQueryable<DyeingPrintingAreaInputProductionOrderModel> productionOrders;
+
+            if (productionOrderId == 0)
+            {
+                productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                                    .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
+            }
+            else
+            {
+                productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                                    .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId);
+
+            }
+
+
             var data = productionOrders.Select(s => new InputInspectionMaterialProductionOrderViewModel()
             {
                 Balance = s.Balance,
@@ -390,6 +403,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             });
 
             return data.ToList();
+        }
+
+        public ListResult<InputInspectionMaterialProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ProductionOrderNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size)
+                .GroupBy(d => d.ProductionOrderId)
+                .Select(s => s.First())
+                .OrderBy(s => s.ProductionOrderNo)
+                .Select(s => new InputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+
+                    }
+                });
+
+            return new ListResult<InputInspectionMaterialProductionOrderViewModel>(data.ToList(), page, size, query.Count());
         }
 
         public async Task<int> Delete(int id)
