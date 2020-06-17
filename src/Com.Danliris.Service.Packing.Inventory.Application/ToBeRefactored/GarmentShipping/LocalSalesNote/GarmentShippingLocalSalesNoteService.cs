@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var year = DateTime.Now.ToString("yy");
 
-            var prefix = $"{(vm.transactionType.code ?? "").Trim().ToUpper()}/{year}";
+            var prefix = $"{year}/{(vm.transactionType.code ?? "").Trim().ToUpper()}/";
 
             var lastInvoiceNo = _repository.ReadAll().Where(w => w.NoteNo.StartsWith(prefix))
                 .OrderByDescending(o => o.NoteNo)
