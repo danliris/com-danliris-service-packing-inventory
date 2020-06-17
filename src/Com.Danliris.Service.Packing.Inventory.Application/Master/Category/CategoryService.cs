@@ -44,10 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
-            var model = new CategoryModel(
-                code,
-                form.Name
-                );
+            var model = new CategoryModel(form.Name, code);
 
             return _categoryRepository.InsertAsync(model);
         }
@@ -73,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
             if (string.IsNullOrWhiteSpace(queryParam.order))
                 queryParam.order = "{}";
 
-            var searchAttributes = new List<string>() { "Name", "Code", "UOMUnit", "CategoryName" };
+            var searchAttributes = new List<string>() { "Name", "Code" };
             var order = JsonConvert.DeserializeObject<Dictionary<string, string>>(queryParam.order);
 
             var categoryQuery = _categoryRepository.ReadAll();
@@ -103,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
             {
                 var categoryId = await Create(form);
                 return categoryId;
-            } 
+            }
             else
             {
                 var category = _categoryRepository.ReadAll().FirstOrDefault(entity => entity.Name.ToLower() == form.Name.ToLower());

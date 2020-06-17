@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +16,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UpsertMaster
         public UpsertMasterService(IServiceProvider serviceProvider)
         {
             _weftTypeRepository = serviceProvider.GetService<IWeftTypeRepository>();
+        }
+
+        public Task<UnitOfMeasurementModel> UpsertUOM(string uomUnit)
+        {
+            throw new NotImplementedException();
         }
 
         public Task<WeftTypeModel> UpsertWeftType(string weftType)

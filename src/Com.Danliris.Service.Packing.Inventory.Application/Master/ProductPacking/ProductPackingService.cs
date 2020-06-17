@@ -56,15 +56,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
-            var model = new ProductPackingModel(
-                product.Id,
-                uom.Id,
-                form.PackingSize.GetValueOrDefault(),
-                code,
-                name
-                );
+            //var model = new ProductPackingModel(
+            //    product.Id,
+            //    uom.Id,
+            //    form.PackingSize.GetValueOrDefault(),
+            //    code,
+            //    name
+            //    );
 
-            return await _productPackingRepository.InsertAsync(model);
+            //return await _productPackingRepository.InsertAsync(model);
+
+            throw new NotImplementedException();
         }
 
         public Task<int> Delete(int id)

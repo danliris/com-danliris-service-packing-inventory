@@ -56,11 +56,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                 if (!_productPackingRepository.ReadAll().Any(entity => entity.Code == code))
                 {
-                    var packingModel = new ProductPackingModel(fabricSKU.ProductSKUID, uom.Id, form.PackingSize.GetValueOrDefault(), code, code);
+                    //var packingModel = new ProductPackingModel(fabricSKU.ProductSKUID, uom.Id, form.PackingSize.GetValueOrDefault(), code, code);
 
-                    var packingId = await _productPackingRepository.InsertAsync(packingModel);
-                    var fabricPacking = new FabricProductPackingModel(code, fabricSKU.Id, fabricSKU.ProductSKUID, packingId, uom.Id, form.PackingSize.GetValueOrDefault());
-                    await _fabricProductPackingRepository.InsertAsync(fabricPacking);
+                    //var packingId = await _productPackingRepository.InsertAsync(packingModel);
+                    //var fabricPacking = new FabricProductPackingModel(code, fabricSKU.Id, fabricSKU.ProductSKUID, packingId, uom.Id, form.PackingSize.GetValueOrDefault());
+                    //await _fabricProductPackingRepository.InsertAsync(fabricPacking);
                 }
 
                 return code;
@@ -79,19 +79,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 var uom = await _upsertMaster.UpsertUOM(form.PackingUOM);
                 var packingSizeRoundedString = Math.Round(form.PackingSize.GetValueOrDefault(), 2).ToString().Replace(".", "").Replace(",", "");
 
-                var code = AppendMonthAndYear(fabricSKU.Code + uom.Unit + packingSizeRoundedString + uom.Unit);
+                //var code = AppendMonthAndYear(fabricSKU.Code + uom.Unit + packingSizeRoundedString + uom.Unit);
 
-                if (!_productPackingRepository.ReadAll().Any(entity => entity.Code == code))
-                {
-                    var name = $"{sku.Name} {}"
-                    var packingModel = new ProductPackingModel(fabricSKU.ProductSKUID, uom.Id, form.PackingSize.GetValueOrDefault(), code, code);
+                //if (!_productPackingRepository.ReadAll().Any(entity => entity.Code == code))
+                //{
+                //    //var name = $"{sku.Name} {}"
+                //    var packingModel = new ProductPackingModel(fabricSKU.ProductSKUID, uom.Id, form.PackingSize.GetValueOrDefault(), code, code);
 
-                    var packingId = await _productPackingRepository.InsertAsync(packingModel);
-                    var fabricPacking = new FabricProductPackingModel(code, fabricSKU.Id, fabricSKU.ProductSKUID, packingId, uom.Id, form.PackingSize.GetValueOrDefault());
-                    await _fabricProductPackingRepository.InsertAsync(fabricPacking);
-                }
+                //    var packingId = await _productPackingRepository.InsertAsync(packingModel);
+                //    var fabricPacking = new FabricProductPackingModel(code, fabricSKU.Id, fabricSKU.ProductSKUID, packingId, uom.Id, form.PackingSize.GetValueOrDefault());
+                //    await _fabricProductPackingRepository.InsertAsync(fabricPacking);
+                //}
 
-                return code;
+                //return code;
             }
 
             return string.Empty;

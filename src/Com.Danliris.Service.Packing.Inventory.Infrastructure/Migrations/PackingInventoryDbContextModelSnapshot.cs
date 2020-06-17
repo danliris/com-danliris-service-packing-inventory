@@ -2334,7 +2334,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("IPYarnType");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingItemModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory.ProductPackingInventoryDocumentModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2538,6 +2538,96 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("ProductSKUInventoryDocuments");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory.ProductSKUInventoryMovementModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("InventoryDocumentId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<int>("UOMId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductSKUInventoryMovements");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory.ProductSKUInventorySummaryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<string>("StorageCode")
+                        .HasMaxLength(64);
+
+                    b.Property<int>("StorageId");
+
+                    b.Property<string>("StorageName")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("UOMId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductSKUInventorySummaries");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Master.GradeModel", b =>
                 {
                     b.Property<int>("Id")
@@ -2720,96 +2810,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("IPWeftTypes");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.PackagingStockModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<int>("InventoryDocumentId");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("ProductSKUId");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<string>("Remark");
-
-                    b.Property<int>("UOMId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductSKUInventoryMovements");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory.ProductSKUInventorySummaryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("ProductSKUId");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<string>("StorageCode")
-                        .HasMaxLength(64);
-
-                    b.Property<int>("StorageId");
-
-                    b.Property<string>("StorageName")
-                        .HasMaxLength(256);
-
-                    b.Property<int>("UOMId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductSKUInventorySummaries");
-                });
-
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Product.CategoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -2864,7 +2864,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy");
 
+                    b.Property<int>("CreatedMonth");
+
                     b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("CreatedYear");
 
                     b.Property<string>("DeletedAgent");
 
@@ -3014,8 +3018,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("ProductSKUId");
 
-                    b.Property<string>("UOMUnit")
-                        .HasMaxLength(64);
+                    b.Property<int>("UOMId");
 
                     b.HasKey("Id");
 
@@ -3033,11 +3036,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(64);
 
-                    b.Property<string>("Composition")
-                        .HasMaxLength(128);
+                    b.Property<int>("ColorWayId");
 
-                    b.Property<string>("Construction")
-                        .HasMaxLength(128);
+                    b.Property<int>("ConstructionTypeId");
 
                     b.Property<string>("CreatedAgent");
 
@@ -3051,11 +3052,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("Design")
-                        .HasMaxLength(64);
-
-                    b.Property<string>("Grade")
-                        .HasMaxLength(32);
+                    b.Property<int>("GradeId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -3065,13 +3062,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<int>("ProductSKUId");
+                    b.Property<int>("ProcessTypeId");
 
-                    b.Property<string>("UOMUnit")
-                        .HasMaxLength(64);
+                    b.Property<int>("ProductSKUID");
 
-                    b.Property<string>("Width")
-                        .HasMaxLength(64);
+                    b.Property<int>("UOMId");
+
+                    b.Property<int>("WarpThreadId");
+
+                    b.Property<int>("WeftThreadId");
+
+                    b.Property<int>("WidthId");
+
+                    b.Property<int>("WovenTypeId");
 
                     b.HasKey("Id");
 
@@ -3368,21 +3371,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote.GarmentShippingNoteModel")
                         .WithMany("Items")
                         .HasForeignKey("ShippingNoteId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingItemModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentPackingModel")
-                        .WithMany("Items")
-                        .HasForeignKey("InventoryDocumentPackingId");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentSKUItemModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.InventoryDocumentSKUModel")
-                        .WithMany("Items")
-                        .HasForeignKey("InventoryDocumentSKUId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

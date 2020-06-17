@@ -65,6 +65,10 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Data;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Product;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Category;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -117,7 +121,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGradeRepository, GradeRepository>();
             services.AddTransient<IGarmentShippingCreditAdviceRepository, GarmentShippingCreditAdviceRepository>();
             services.AddTransient<IGarmentShippingLocalSalesNoteRepository, GarmentShippingLocalSalesNoteRepository>();
-
+            
+            services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             #endregion
 
             #region Service
@@ -156,6 +161,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGradeService, GradeService>();
             services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
             services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
+
+            services.AddTransient<ICategoryService, CategoryService>();
 
             #endregion
 
