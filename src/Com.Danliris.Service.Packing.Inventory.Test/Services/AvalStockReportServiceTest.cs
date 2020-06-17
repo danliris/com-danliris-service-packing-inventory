@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
