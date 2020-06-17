@@ -400,6 +400,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKg;
         }
         /// <summary>
+        /// insert aval using prev total weight
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
+                                                            string avalCartNo,
+                                                            string avalUomUnit,
+                                                            double avalQuantityOut,
+                                                            double avalQuantityKgOut,
+                                                            double avalQuantity,
+                                                            double avalQuantityTotal) : this()
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantityOut;
+            AvalQuantityKg = avalQuantityKgOut;
+            AvalALength = avalQuantity;
+            AvalBLength = avalQuantityTotal;
+        }
+        /// <summary>
+        /// Insert Aval with existing bon using prev total weight
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
+                                                            string avalCartNo,
+                                                            string avalUomUnit,
+                                                            double avalQuantityOut,
+                                                            double avalQuantityKgOut,
+                                                            double avalQuantity,
+                                                            double avalQuantityTotal,
+                                                            int dyeingPrintingOutputId) : this()
+        {
+            AvalType = avalType;
+            AvalCartNo = avalCartNo;
+            UomUnit = avalUomUnit;
+            Balance = avalQuantityOut;
+            AvalQuantityKg = avalQuantityKgOut;
+            AvalALength = avalQuantity;
+            AvalBLength = avalQuantityTotal;
+            DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
+        }
+
+        /// <summary>
         /// Insert Aval with existing bon
         /// </summary>
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
