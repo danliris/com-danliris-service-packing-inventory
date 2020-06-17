@@ -246,7 +246,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Status,
                                                                                                              s.Balance,
                                                                                                              s.Id,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.BuyerId,
+                                                                                                             s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth)).ToList());
             }
         }
 
@@ -282,7 +284,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Status,
                                                                                                              s.Balance,
                                                                                                              s.Id,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth)).ToList());
             }
 
         }
@@ -783,7 +786,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Status,
                                                                                                              s.Balance,
                                                                                                              s.Id,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.BuyerId,
+                                                                                                             s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
