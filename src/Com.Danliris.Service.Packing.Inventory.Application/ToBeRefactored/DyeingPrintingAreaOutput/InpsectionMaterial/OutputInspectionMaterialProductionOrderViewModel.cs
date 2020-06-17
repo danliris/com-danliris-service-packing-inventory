@@ -13,6 +13,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             ProductionOrderDetails = new HashSet<OutputInspectionMaterialProductionOrderDetailViewModel>();
         }
         public ProductionOrder ProductionOrder { get; set; }
+        public Material Material { get; set; }
+        public MaterialConstruction MaterialConstruction { get; set; }
+        public string MaterialWidth { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }

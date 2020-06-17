@@ -222,7 +222,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             Assert.NotEqual(0, id);
             Assert.NotNull(code);
             Assert.NotNull(type);
-
         }
     }
 }
