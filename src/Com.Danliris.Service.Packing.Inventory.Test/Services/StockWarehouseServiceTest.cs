@@ -73,6 +73,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "sd",
                                 No = "sd"
                             },
+                            MaterialProduct = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             Unit = "s",
                             UomUnit = "d",
                             QtyOrder = 123,
@@ -98,7 +109,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, false, "PACKING", ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, "PACKING", false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,1, s.BuyerId)).ToList());
+                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModel2
@@ -178,6 +190,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "sd",
                                 No = "sd"
                             },
+                            MaterialProduct = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             Unit = "s",
                             UomUnit = "d",
                         }
@@ -191,7 +214,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModelIM.Date, ViewModelIM.Area, ViewModelIM.Shift, ViewModelIM.BonNo, ViewModelIM.Group, ViewModelIM.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
+                    s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
             }
         }
 
