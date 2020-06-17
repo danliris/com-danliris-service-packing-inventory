@@ -15,12 +15,12 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
 {
-    public class CategoryService : IUOMService
+    public class UOMService : IUOMService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IRepository<UnitOfMeasurementModel> _uomRepository;
 
-        public CategoryService(IServiceProvider serviceProvider)
+        public UOMService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
 

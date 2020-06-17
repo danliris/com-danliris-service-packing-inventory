@@ -69,6 +69,7 @@ using Com.Danliris.Service.Packing.Inventory.Data;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Product;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Category;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.UOM;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -123,6 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalSalesNoteRepository, GarmentShippingLocalSalesNoteRepository>();
             
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
+            services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             #endregion
 
             #region Service
@@ -163,6 +165,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IUOMService, UOMService>();
 
             #endregion
 
