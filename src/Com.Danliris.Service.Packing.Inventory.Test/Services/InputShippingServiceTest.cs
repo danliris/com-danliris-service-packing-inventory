@@ -1207,6 +1207,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //var test = outPre.Grade;
             //var test2 = outPre.DeliveryOrder
             Assert.NotNull(test);
+            Assert.NotNull(outPre.Material);
+            Assert.NotNull(outPre.MaterialConstruction);
+            Assert.NotNull(outPre.MaterialWidth);
         }
 
         [Fact]

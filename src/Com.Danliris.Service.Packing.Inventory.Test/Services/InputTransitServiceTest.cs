@@ -796,6 +796,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(outputPreTransitSPP.Status);
             Assert.Equal(0, outputPreTransitSPP.Balance);
             Assert.Equal(0, outputPreTransitSPP.OutputId);
+            Assert.Null(outputPreTransitSPP.Material);
+            Assert.Null(outputPreTransitSPP.MaterialConstruction);
+            Assert.Null(outputPreTransitSPP.MaterialWidth);
         }
 
         [Fact]
