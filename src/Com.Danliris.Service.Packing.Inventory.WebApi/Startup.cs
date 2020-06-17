@@ -73,6 +73,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProces
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -126,6 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPProcessTypeRepository, IPProcessTypeRepository>();
             services.AddTransient<IGradeRepository, GradeRepository>();
             services.AddTransient<IGarmentShippingCreditAdviceRepository, GarmentShippingCreditAdviceRepository>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteRepository, GarmentShippingLocalSalesNoteRepository>();
 
             #endregion
 
@@ -170,6 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IMaterialConstructionService, MaterialConstructionService>();
             services.AddTransient<IGradeService, GradeService>();
             services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
 
             #endregion
 
