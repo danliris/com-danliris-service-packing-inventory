@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
 {
     public class IPWarpTypeViewModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string WarpType { get; set; }
     }

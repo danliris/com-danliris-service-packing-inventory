@@ -61,6 +61,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpTy
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPProcessType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProcessType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -111,6 +115,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPWarpTypeRepository, IPWarpTypeRepository>();
             services.AddTransient<IIPProcessTypeRepository, IPProcessTypeRepository>();
             services.AddTransient<IGradeRepository, GradeRepository>();
+            services.AddTransient<IGarmentShippingCreditAdviceRepository, GarmentShippingCreditAdviceRepository>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteRepository, GarmentShippingLocalSalesNoteRepository>();
+
             #endregion
 
             #region Service
@@ -147,6 +154,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IWarpTypeService, WarpTypeService>();
             services.AddTransient<IMaterialConstructionService, MaterialConstructionService>();
             services.AddTransient<IGradeService, GradeService>();
+            services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
+
             #endregion
 
             // Register Provider

@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (items == null || items.Count == 0)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "items" });
+                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "itemsCount" });
             }
             else
             {

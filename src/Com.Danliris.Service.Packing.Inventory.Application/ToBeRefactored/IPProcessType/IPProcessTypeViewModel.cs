@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPPr
 {
     public class IPProcessTypeViewModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string ProcessType { get; set; }
     }
