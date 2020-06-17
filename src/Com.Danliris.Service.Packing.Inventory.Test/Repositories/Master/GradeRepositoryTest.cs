@@ -43,5 +43,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.Master
             var result = await repo.MultipleInsertAsync(new List<GradeModel>() { data });
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_GetCodeByType()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new GradeRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = repo.GetCodeByType(data.Type);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
