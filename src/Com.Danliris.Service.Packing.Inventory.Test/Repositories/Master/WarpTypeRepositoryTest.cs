@@ -56,5 +56,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.Master
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Zero_GetCodeByType()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new WarpTypeRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = repo.GetCodeByType("");
+
+            Assert.Equal(0, result);
+        }
     }
 }
