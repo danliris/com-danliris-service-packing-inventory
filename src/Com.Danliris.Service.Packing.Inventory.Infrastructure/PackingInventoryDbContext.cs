@@ -28,6 +28,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNoteWeaving;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -140,7 +141,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteWeavingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ItemsMaterialDeliveryNoteWeavingEntityTypeConfiguration());
-			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteEntitiyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemsEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
 
