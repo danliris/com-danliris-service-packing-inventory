@@ -41,6 +41,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, int doId, bool hasNextAreaDocument,
+            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            HasNextAreaDocument = hasNextAreaDocument;
+            DestinationArea = destinationArea;
+            DeliveryOrderSalesId = doId;
+            DeliveryOrderSalesNo = donNo;
+            DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
+        }
 
         //Shipping
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
