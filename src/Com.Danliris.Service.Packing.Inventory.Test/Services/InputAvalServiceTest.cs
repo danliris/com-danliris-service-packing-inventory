@@ -636,6 +636,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'2020-06-12','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
             var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]";
             var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
+            ObjectTestPayload.Date = ViewModel.Date;
             foreach (var item in ObjectTestPayload.AvalItems)
             {
                 item.Material = new Material()
@@ -660,7 +661,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
             //Model.SetArea("PACKING","unittest","unittest");
             repoMock.Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelPC }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
             //Mock for Create New Row in Input and ProductionOrdersInput in Each Repository 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
                 .ReturnsAsync(1);
@@ -812,7 +813,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     Id = 1,
                     No ="test1"
-                }
+                },
+                Material = new Material()
+                {
+                    Id = 1,
+                    Name = "a"
+                },
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Id = 1,
+                    Name = "a"
+                },
+                MaterialWidth = "1"
             };
             var test1 = test.BuyerId;
             var test2 = test.ProductionOrder;
@@ -820,6 +832,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var test4 = test.AvalType;
 
             Assert.NotNull(test);
+            Assert.NotNull(test.Material);
+            Assert.NotNull(test.MaterialConstruction);
+            Assert.NotNull(test.MaterialWidth);
         }
     }
 }
