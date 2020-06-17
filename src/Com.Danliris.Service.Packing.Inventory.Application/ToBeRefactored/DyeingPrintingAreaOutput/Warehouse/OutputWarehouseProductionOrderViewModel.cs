@@ -6,6 +6,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class OutputWarehouseProductionOrderViewModel: BaseViewModel
     {
         public ProductionOrder ProductionOrder { get; set; }
+        public Material MaterialProduct { get; set; }
+        public MaterialConstruction MaterialConstruction { get; set; }
+        public string MaterialWidth { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }

@@ -10,6 +10,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
     {
         public long ProductionOrderId { get; private set; }
         public string ProductionOrderNo { get; private set; }
+        public int MaterialId { get; private set; }
+        public string MaterialName { get; private set; }
+        public int MaterialConstructionId { get; private set; }
+        public string MaterialConstructionName { get; private set; }
+        public string MaterialWidth { get; private set; }
         public string CartNo { get; private set; }
         public int BuyerId { get; private set; }
         public string Buyer { get; private set; }
@@ -817,6 +822,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newAvalType != AvalType)
             {
                 AvalType = newAvalType;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetMaterial(int newId, string newName, string user, string agent)
+        {
+            if (newId != MaterialId)
+            {
+                MaterialId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (newName != MaterialName)
+            {
+                MaterialName = newName;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetMaterialConstruction(int newId, string newName, string user, string agent)
+        {
+            if (newId != MaterialConstructionId)
+            {
+                MaterialConstructionId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+
+            if (newName != MaterialConstructionName)
+            {
+                MaterialConstructionName = newName;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetMaterialWidth(string newMaterialWidth, string user, string agent)
+        {
+
+            if (newMaterialWidth != MaterialWidth)
+            {
+                MaterialWidth = newMaterialWidth;
                 this.FlagForUpdate(user, agent);
             }
         }

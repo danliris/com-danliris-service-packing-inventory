@@ -117,6 +117,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.InputAvalBonNo)
               .HasMaxLength(64);
+
+            builder
+              .Property(s => s.MaterialName)
+              .HasMaxLength(1024);
+
+            builder
+              .Property(s => s.MaterialConstructionName)
+              .HasMaxLength(1024);
+
+            builder
+              .Property(s => s.MaterialWidth)
+              .HasMaxLength(1024);
         }
     }
 }

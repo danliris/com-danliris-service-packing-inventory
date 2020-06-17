@@ -106,6 +106,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "SOLID",
                                 No = "F/2020/000"
                             },
+                            MaterialProduct = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             CartNo = "5-11",
                             PackingInstruction = "a",
                             Construction = "a",
@@ -162,6 +173,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "SOLID",
                                 No = "F/2020/000"
                             },
+                            MaterialProduct = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             CartNo = "5-11",
                             PackingInstruction = "a",
                             Construction = "a",
@@ -295,7 +317,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Balance,
                                                                                                              s.Unit,
                                                                                                              s.BuyerId,
-                                                                                                             1)).ToList());
+                                                                                                             1,
+                                                                                                             s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name,
+                                                                                                             s.MaterialConstruction.Id,
+                                                                                                             s.MaterialConstruction.Name,
+                                                                                                             s.MaterialWidth)).ToList());
             }
         }
 
@@ -719,7 +746,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, result);
         }
         [Fact]
-        public async Task Should_Success_Delete ()
+        public async Task Should_Success_Delete()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -758,7 +785,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId)).ToList());
             tes.Id = 1;
-            foreach(var i in tes.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
                 i.Id = 1;
                 i.DyeingPrintingAreaInputProductionOrderId = 1;
@@ -800,8 +827,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Balance,
                                                                                                              s.Unit,
                                                                                                              s.BuyerId,
-                                                                                                             1)).ToList()); 
-            foreach(var j in testinput.DyeingPrintingAreaInputProductionOrders)
+                                                                                                             1,
+                                                                                                             s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name,
+                                                                                                             s.MaterialConstruction.Id,
+                                                                                                             s.MaterialConstruction.Name,
+                                                                                                             s.MaterialWidth)).ToList());
+            foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
             }
@@ -1275,16 +1307,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public void Get_InputSPPModel()
         {
             var result = InputSPP;
-            var test = result.ProductionOrderId ;
-            var test1 = result.ProductionOrderCode ;
+            var test = result.ProductionOrderId;
+            var test1 = result.ProductionOrderCode;
             var test2 = result.ProductionOrderNo;
-            var test3 = result.ProductionOrderType ;
+            var test3 = result.ProductionOrderType;
             var test4 = result.ProductionOrderOrderQuantity;
             var test5 = result.OutputId;
             var test6 = result.ProductionOrderItems;
 
             var member6 = test6.FirstOrDefault().GetType().GetProperties();
-            foreach(var i in member6)
+            foreach (var i in member6)
             {
 
                 var val = i.GetValue(new InputSppWarehouseItemListViewModel(), null);

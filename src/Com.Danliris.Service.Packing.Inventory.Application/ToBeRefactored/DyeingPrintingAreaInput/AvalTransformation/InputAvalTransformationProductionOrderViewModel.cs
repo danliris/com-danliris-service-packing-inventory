@@ -11,6 +11,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool IsSave { get; set; }
         public string BonNo { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
+        public Material Material { get; set; }
+        public MaterialConstruction MaterialConstruction { get; set; }
+        public string MaterialWidth { get; set; }
         public string CartNo { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }

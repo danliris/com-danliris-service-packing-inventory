@@ -103,6 +103,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     LastModifiedBy = d.LastModifiedBy,
                     LastModifiedUtc = d.LastModifiedUtc,
                     Motif = d.Motif,
+                    MaterialWidth = d.MaterialWidth,
+                    Material = new Material()
+                    {
+                        Id = d.MaterialId,
+                        Name = d.MaterialName
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Name = d.MaterialConstructionName,
+                        Id = d.MaterialConstructionId
+                    },
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = d.ProductionOrderId,
@@ -136,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Sum(d => d.AvalQuantity), viewModel.AvalTransformationProductionOrders.Sum(d => d.WeightQuantity),
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.Quantity, d.AvalQuantity,
-                    d.WeightQuantity, false, d.Id)).ToList());
+                    d.WeightQuantity, false, d.Id, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth)).ToList());
 
                 result = await _repository.InsertAsync(model);
 
@@ -175,7 +186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity, item.CartNo, item.Construction, item.Unit, item.Buyer, item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit,
-                        item.Quantity, item.AvalQuantity, item.WeightQuantity, false, item.Id);
+                        item.Quantity, item.AvalQuantity, item.WeightQuantity, false, item.Id, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name,
+                        item.MaterialWidth);
 
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -252,6 +264,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     OrderQuantity = s.ProductionOrderOrderQuantity,
                     Type = s.ProductionOrderType
                 },
+                MaterialWidth = s.MaterialWidth,
+                Material = new Material()
+                {
+                    Id = s.MaterialId,
+                    Name = s.MaterialName
+                },
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Name = s.MaterialConstructionName,
+                    Id = s.MaterialConstructionId
+                },
                 Buyer = s.Buyer,
                 BuyerId = s.BuyerId,
                 Construction = s.Construction,
@@ -322,7 +345,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Sum(d => d.AvalQuantity), viewModel.AvalTransformationProductionOrders.Sum(d => d.WeightQuantity),
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.Quantity, d.AvalQuantity,
-                    d.WeightQuantity, d.HasOutputDocument, d.DyeingPrintingAreaInputProductionOrderId)
+                    d.WeightQuantity, d.HasOutputDocument, d.DyeingPrintingAreaInputProductionOrderId, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth)
                     {
                         Id = d.Id
                     }).ToList());

@@ -195,6 +195,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetShippingGrade(localItem.ShippingGrade, _identityProvider.Username, UserAgent);
                     item.SetShippingRemark(localItem.ShippingRemark, _identityProvider.Username, UserAgent);
                     item.SetWeight(localItem.Weight, _identityProvider.Username, UserAgent);
+                    item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                 }
             }
 
