@@ -34,6 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GJ = "GJ";
         private const string GA = "GA";
         private const string SP = "SP";
+        private const string PR = "PR";
 
         private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
         private const string TRANSIT = "TRANSIT";
@@ -41,6 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GUDANGJADI = "GUDANG JADI";
         private const string GUDANGAVAL = "GUDANG AVAL";
         private const string SHIPPING = "SHIPPING";
+        private const string PRODUKSI = "PRODUKSI";
 
         private const string AVALA = "Aval A";
         private const string AVALB = "Aval B";
@@ -154,10 +156,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 return string.Format("{0}.{1}.{2}.{3}", IM, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
-            else
+            else if (destinationArea == GUDANGAVAL)
             {
                 return string.Format("{0}.{1}.{2}.{3}", IM, GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
+            }
+            else
+            {
+                return string.Format("{0}.{1}.{2}.{3}", IM, PR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
 
         }
@@ -183,7 +189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
                             item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType, 
+                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
                             item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
                         productionOrders.Add(outputProductionOrder);
                     }
@@ -391,11 +397,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             var model = await _repository.ReadByIdAsync(id);
 
-            //if (model.DyeingPrintingAreaOutputProductionOrders.Any(s => s.HasNextAreaDocument))
-            //{
-            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", model.DestinationArea));
-            //}
-
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 if (!item.HasNextAreaDocument)
@@ -448,10 +449,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !productionOrders.Any(d => d.Id == s.Id)).ToList();
 
-            //if (deletedData.Any(item => item.HasNextAreaDocument))
-            //{
-            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", dbModel.DestinationArea));
-            //}
             result = await _repository.UpdateIMArea(id, model, dbModel);
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument && !d.IsDeleted))
             {
