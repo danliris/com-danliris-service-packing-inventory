@@ -28,6 +28,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalCoverLetter;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -84,6 +86,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingExportSalesDOItemModel> GarmentShippingExportSalesDOItems { get; set; }
         public DbSet<GarmentShippingLocalSalesNoteModel> GarmentShippingLocalSalesNotes { get; set; }
         public DbSet<GarmentShippingLocalSalesNoteItemModel> GarmentShippingLocalSalesNoteItems { get; set; }
+
+        public DbSet<GarmentShippingLocalCoverLetterModel> GarmentShippingLocalCoverLetters { get; set; }
 
 
         #region master
@@ -150,6 +154,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentLocalCoverLetterConfig());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
