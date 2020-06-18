@@ -32,6 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder.Property(s => s.BankAccountName).HasMaxLength(255);
             builder.Property(s => s.BankAddress).HasMaxLength(1000);
+
+            builder.Property(s => s.Remark).HasMaxLength(1000);
         }
     }
 }

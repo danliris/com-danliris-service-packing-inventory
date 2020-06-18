@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200618081629_MaterialDeliveryNote")]
+    partial class MaterialDeliveryNote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1248,9 +1250,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("PackingListId");
 
-                    b.Property<string>("Remark")
-                        .HasMaxLength(1000);
-
                     b.Property<string>("SRNo")
                         .HasMaxLength(250);
 
@@ -2225,80 +2224,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasFilter("[IsDeleted]=(0)");
 
                     b.ToTable("GarmentShippingLetterOfCredits");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter.GarmentShippingLocalCoverLetterModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("BuyerAdddress")
-                        .HasMaxLength(1000);
-
-                    b.Property<string>("BuyerCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Driver")
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("LocalSalesNoteId");
-
-                    b.Property<string>("NoteNo")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("PlateNumber")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(1000);
-
-                    b.Property<int>("ShippingStaffId");
-
-                    b.Property<string>("ShippingStaffName")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Truck")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GarmentShippingLocalCoverLetters");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote.GarmentShippingLocalSalesNoteItemModel", b =>
