@@ -46,12 +46,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         public double CreditInterest { get; set; }
         public double BankCharges { get; set; }
         public DateTimeOffset DocumentPresente { get; set; }
+        public string Remark { get; set; }
 
         public GarmentShippingCreditAdviceModel()
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -87,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             CreditInterest = creditInterest;
             BankCharges = bankCharges;
             DocumentPresente = documentPresente;
+            Remark = remark;
         }
 
         public void SetValas(bool valas, string userName, string userAgent)
@@ -263,6 +265,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             if (DocumentPresente != documentPresente)
             {
                 DocumentPresente = documentPresente;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
