@@ -15,12 +15,12 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
 {
-    public class CategoryService : IUOMService
+    public class UOMService : IUOMService
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IRepository<UnitOfMeasurementModel> _uomRepository;
 
-        public CategoryService(IServiceProvider serviceProvider)
+        public UOMService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
 
@@ -68,11 +68,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.UOM
             var searchAttributes = new List<string>() { "Unit" };
             var order = JsonConvert.DeserializeObject<Dictionary<string, string>>(queryParam.order);
 
-            var categoryQuery = _uomRepository.ReadAll();
-
             var query = _uomRepository.ReadAll().Select(entity => new UOMIndexInfo(entity));
 
-            query = QueryHelper<UOMIndexInfo>.Search(query, searchAttributes, queryParam.keyword);
+            query = QueryHelper<UOMIndexInfo>.Search(query, searchAttributes, queryParam.keyword, true);
+
+            //if (!string.IsNullOrWhiteSpace(queryParam.keyword))
+            //    query = query.Where(entity => entity.Unit.Contains(queryParam.keyword));
+
             query = QueryHelper<UOMIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();

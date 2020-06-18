@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             int fabricProductSKUId,
             int productSKUId,
             int productPackingId,
-            string uomUnit,
+            int uomId,
             double packingSize
             )
         {
@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             FabricProductSKUId = fabricProductSKUId;
             ProductSKUId = productSKUId;
             ProductPackingId = productPackingId;
-            UOMUnit = uomUnit;
+            UOMId = uomId;
             PackingSize = packingSize;
         }
 
@@ -32,8 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
         public int FabricProductSKUId { get; private set; }
         public int ProductSKUId { get; private set; }
         public int ProductPackingId { get; private set; }
-        [MaxLength(64)]
-        public string UOMUnit { get; private set; }
+        public int UOMId { get; private set; }
         public double PackingSize { get; private set; }
     }
 }

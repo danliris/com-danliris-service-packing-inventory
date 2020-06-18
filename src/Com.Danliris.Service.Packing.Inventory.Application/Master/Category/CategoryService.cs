@@ -44,10 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
-            var model = new CategoryModel(
-                code,
-                form.Name
-                );
+            var model = new CategoryModel(form.Name, code);
 
             return _categoryRepository.InsertAsync(model);
         }
@@ -73,14 +70,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
             if (string.IsNullOrWhiteSpace(queryParam.order))
                 queryParam.order = "{}";
 
-            var searchAttributes = new List<string>() { "Name", "Code", "UOMUnit", "CategoryName" };
+            var searchAttributes = new List<string>() { "Name", "Code" };
             var order = JsonConvert.DeserializeObject<Dictionary<string, string>>(queryParam.order);
-
-            var categoryQuery = _categoryRepository.ReadAll();
 
             var query = _categoryRepository.ReadAll().Select(entity => new CategoryIndexInfo(entity));
 
-            query = QueryHelper<CategoryIndexInfo>.Search(query, searchAttributes, queryParam.keyword);
+            //if (!string.IsNullOrWhiteSpace(queryParam.keyword))
+            //    query = query.Where(entity => entity.Code.Contains(queryParam.keyword) || entity.Name.Contains(queryParam.keyword));
+
+            query = QueryHelper<CategoryIndexInfo>.Search(query, searchAttributes, queryParam.keyword, true);
             query = QueryHelper<CategoryIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();
@@ -103,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
             {
                 var categoryId = await Create(form);
                 return categoryId;
-            } 
+            }
             else
             {
                 var category = _categoryRepository.ReadAll().FirstOrDefault(entity => entity.Name.ToLower() == form.Name.ToLower());

@@ -2,10 +2,12 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovem
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
@@ -14,10 +16,12 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCate
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Master;
 using Com.Moonlay.Data.EntityFrameworkCore;
@@ -81,6 +85,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingAmendLetterOfCreditModel> GarmentShippingAmendLetterOfCredits { get; set; }
 
+        public DbSet<GarmentShippingLocalSalesNoteModel> GarmentShippingLocalSalesNotes { get; set; }
+        public DbSet<GarmentShippingLocalSalesNoteItemModel> GarmentShippingLocalSalesNoteItems { get; set; }
+
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
@@ -93,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<IPProcessTypeModel> IPProcessType { get; set; }
         #endregion
 
+        public DbSet<GarmentShippingCreditAdviceModel> GarmentShippingCreditAdvices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -122,8 +130,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
+
             modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
 
+            modelBuilder.ApplyConfiguration(new GarmentCreditAdviceEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteItemConfig());
+
+            //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            //modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            //modelBuilder.Entity<InventoryDocumentSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<ProductSKUModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricQualityControlModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<FabricGradeTestModel>().HasQueryFilter(entity => !entity.IsDeleted);

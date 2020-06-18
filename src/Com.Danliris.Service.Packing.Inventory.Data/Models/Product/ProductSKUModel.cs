@@ -53,5 +53,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         {
             Description = description;
         }
+
+        public void SetCode(string code)
+        {
+            Code = code;
+        }
     }
 }

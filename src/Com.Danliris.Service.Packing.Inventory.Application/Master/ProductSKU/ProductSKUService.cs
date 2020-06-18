@@ -33,13 +33,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
 
         public Task<int> Create(FormDto form)
         {
-            var code = CodeGenerator.Generate(8);
-
-            while (_productSKURepository.ReadAll().Any(entity => entity.Code == code))
-            {
-                code = CodeGenerator.Generate(8);
-            }
-
             if (_productSKURepository.ReadAll().Any(entity => entity.Name == form.Name))
             {
                 var errorResult = new List<ValidationResult>()
@@ -50,8 +43,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
+            if (_productSKURepository.ReadAll().Any(entity => entity.Code == form.Code))
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode tidak boleh duplikat", new List<string> { "Kode" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
             var model = new ProductSKUModel(
-                code,
+                form.Code,
                 form.Name,
                 form.UOMId.GetValueOrDefault(),
                 form.CategoryId.GetValueOrDefault(),
@@ -109,7 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
                             Id = product.Id
                         };
 
-            query = QueryHelper<ProductSKUIndexInfo>.Search(query, searchAttributes, queryParam.keyword);
+            query = QueryHelper<ProductSKUIndexInfo>.Search(query, searchAttributes, queryParam.keyword, true);
             query = QueryHelper<ProductSKUIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();
@@ -121,6 +124,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
         {
             var model = await _productSKURepository.ReadByIdAsync(id);
 
+            if (_productSKURepository.ReadAll().Any(entity => entity.Name == form.Name) && form.Name != model.Name)
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Nama tidak boleh duplikat", new List<string> { "Name" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+            if (_productSKURepository.ReadAll().Any(entity => entity.Code == form.Code) && form.Code != model.Code)
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode tidak boleh duplikat", new List<string> { "Kode" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+            model.SetCode(form.Code);
             model.SetName(form.Name);
             model.SetUOM(form.UOMId.GetValueOrDefault());
             model.SetCategory(form.CategoryId.GetValueOrDefault());

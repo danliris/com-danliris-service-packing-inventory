@@ -93,8 +93,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
                     AvalUomUnit = s.UomUnit,
-                    AvalQuantity = s.Balance,
-                    AvalQuantityKg = s.AvalQuantityKg
+                    AvalQuantity = s.AvalALength,
+                    AvalQuantityKg = s.AvalBLength,
+
+
+                    AvalOutSatuan = s.Balance,
+                    AvalOutQuantity = s.AvalQuantityKg,
+
                 }).ToList()
             };
 
@@ -137,14 +142,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                               viewModel.Area,
                                                               viewModel.Shift,
                                                               bonNo,
+                                                              viewModel.DeliveryOrderSalesNo,
+                                                              viewModel.DeliveryOrdeSalesId,
                                                               false,
                                                               viewModel.DestinationArea,
                                                               viewModel.Group,
                                                               viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
                                                                                                                                                s.AvalCartNo,
+                                                                                                                                               s.AvalUomUnit,
                                                                                                                                                s.AvalOutSatuan,
                                                                                                                                                s.AvalOutQuantity,
-                                                                                                                                               s.AvalOutQuantity))
+                                                                                                                                               s.AvalQuantity,
+                                                                                                                                               s.AvalQuantityKg))
                                                                                  .ToList());
 
                 //Create New Row in Output and ProductionOrdersOutput in Each Repository 
@@ -156,14 +165,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                               bonExist.FirstOrDefault().Area,
                                                               bonExist.FirstOrDefault().Shift,
                                                               bonNo,
+                                                              viewModel.DeliveryOrderSalesNo,
+                                                              viewModel.DeliveryOrdeSalesId,
                                                               false,
                                                               bonExist.FirstOrDefault().DestinationArea,
                                                               bonExist.FirstOrDefault().Group,
                                                               viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
                                                                                                                                                s.AvalCartNo,
+                                                                                                                                               s.AvalUomUnit,
                                                                                                                                                s.AvalOutSatuan,
                                                                                                                                                s.AvalOutQuantity,
-                                                                                                                                               s.AvalOutQuantity,
+                                                                                                                                               s.AvalQuantity,
+                                                                                                                                               s.AvalQuantityKg,
                                                                                                                                                bonExist.FirstOrDefault().Id))
                                                                                  .ToList());
                 foreach (var avalitem in model.DyeingPrintingAreaOutputProductionOrders)

@@ -302,6 +302,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "F/2020/000",
                                 OrderQuantity = 12
                             },
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             CartNo = "9",
                             Buyer = "ANAS",
                             Construction = "a",
@@ -364,6 +375,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "SOLID",
                                 No = "F/2020/000",
                                 OrderQuantity = 12
+                            },
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
                             },
                             CartNo = "9",
                             Buyer = "ANAS",
@@ -428,6 +449,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "F/2020/000",
                                 OrderQuantity = 12
                             },
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
                             CartNo = "9",
                             Buyer = "ANAS",
                             Construction = "a",
@@ -471,7 +503,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_IM.Date, RejectedInputWarehouseViewModel_IM.Area, RejectedInputWarehouseViewModel_IM.Shift, RejectedInputWarehouseViewModel_IM.BonNo, RejectedInputWarehouseViewModel_IM.Group, RejectedInputWarehouseViewModel_IM.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_IM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
+                    s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
             }
         }
 
@@ -481,7 +514,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_PC.Date, RejectedInputWarehouseViewModel_PC.Area, RejectedInputWarehouseViewModel_PC.Shift, RejectedInputWarehouseViewModel_PC.BonNo, RejectedInputWarehouseViewModel_PC.Group, RejectedInputWarehouseViewModel_PC.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_PC.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
+                    s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
             }
         }
 
@@ -491,7 +525,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_TR.Date, RejectedInputWarehouseViewModel_TR.Area, RejectedInputWarehouseViewModel_TR.Shift, RejectedInputWarehouseViewModel_TR.BonNo, RejectedInputWarehouseViewModel_TR.Group, RejectedInputWarehouseViewModel_TR.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_TR.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id)).ToList());
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
+                    s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
             }
         }
         [Fact]
@@ -1063,7 +1098,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1, 1)
+                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1, 1,1,"a",1,"a","1")
             }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,

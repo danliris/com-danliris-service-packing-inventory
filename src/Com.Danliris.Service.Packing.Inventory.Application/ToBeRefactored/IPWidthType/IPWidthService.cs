@@ -35,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWi
         {
             return new IndexViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 WidthType = modelDb.WidthType,
             };
@@ -58,6 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWi
         {
             return new IPWidthTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 WidthType = modelDb.WidthType
             };
@@ -112,7 +114,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWi
         public async Task<IPWidthTypeViewModel> ReadById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
-            return MappingViewModel(data);
+            var result = MappingViewModel(data);
+            return result;
         }
 
         public Task<int> Update(int id, IPWidthTypeViewModel model)

@@ -35,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
         {
             return new IPWarpTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 WarpType = modelDb.WarpType,
             };
@@ -58,6 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
         {
             return new IPWarpTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 WarpType = modelDb.WarpType
             };
