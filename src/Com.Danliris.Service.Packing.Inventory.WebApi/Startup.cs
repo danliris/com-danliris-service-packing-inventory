@@ -57,9 +57,24 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.AmendLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WeftType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Master;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ExportSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ExportSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.WarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.MaterialConstruction;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWidthType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWidthType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYarnType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPProcessType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPProcessType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Master.Grade;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -86,49 +101,46 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             #region Repository
             services.AddTransient<IProductSKURepository, ProductSKURepository>();
             services.AddTransient<IProductPackingRepository, ProductPackingRepository>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductPackingService, ProductPackingService>();
-            services.AddTransient<IProductSKUService, ProductSKUService>();
-
             services.AddTransient<IInventoryDocumentSKURepository, InventoryDocumentSKURepository>();
             services.AddTransient<IInventoryDocumentPackingRepository, InventoryDocumentPackingRepository>();
-            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
-            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
-            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
-            services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
-
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
-            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
-            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
-
             services.AddTransient<IDyeingPrintingAreaInputRepository, DyeingPrintingAreaInputRepository>();
             services.AddTransient<IDyeingPrintingAreaInputProductionOrderRepository, DyeingPrintingAreaInputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
-			//services.AddTransient<IDyeingPrintingAreaOutputAvalItemRepository, DyeingPrintingAreaOutputAvalItemRepository>();
 			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
-
 			services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
-			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
-
-			services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
-
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
             services.AddTransient<IGarmentAmendLetterOfCreditRepository, GarmentAmendLetterOfCreditRepository>();
+            services.AddTransient<IWeftTypeRepository, WeftTypeRepository>();
+            services.AddTransient<IWarpTypeRepository, WarpTypeRepository>();
+            services.AddTransient<IMaterialConstructionRepository, MaterialConstructionRepository>();
+            services.AddTransient<IIPWidthTypeRepository, IPWidthTypeRepository>();
+            services.AddTransient<IIPYarnTypeRepository, IPYarnTypeRepository>();
+            services.AddTransient<IIPWarpTypeRepository, IPWarpTypeRepository>();
+            services.AddTransient<IIPProcessTypeRepository, IPProcessTypeRepository>();
+            services.AddTransient<IGradeRepository, GradeRepository>();
+            services.AddTransient<IGarmentShippingCreditAdviceRepository, GarmentShippingCreditAdviceRepository>();
 
             services.AddTransient<IGarmentShippingExportSalesDORepository, GarmentShippingExportSalesDORepository>();
             #endregion
 
             #region Service
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductPackingService, ProductPackingService>();
+            services.AddTransient<IProductSKUService, ProductSKUService>();
+            services.AddTransient<IReceivingDispatchService, ReceivingDispatchService>();
+            services.AddTransient<IInventoryDocumentSKUService, InventoryDocumentSKUService>();
+            services.AddTransient<IInventoryDocumentPackingService, InventoryDocumentPackingService>();
+            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
-
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
             services.AddTransient<IOutputTransitService, OutputTransitService>();
@@ -143,13 +155,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputAvalTransformationService, InputAvalTransformationService>();
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-
-
-
-			services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
-			// Register Provider
-			services.AddScoped<IIdentityProvider, IdentityProvider>();
+            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
+            services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
+            services.AddTransient<IIPWidthTypeService, IPWidthService>();
+            services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
+            services.AddTransient<IIPWarpTypeService, IPWarpTypeService>();
+            services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
@@ -157,6 +168,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLetterOfCreditService, GarmentLetterOfCreditService>();
             services.AddTransient<IGarmentAmendLetterOfCreditService, GarmentAmendLetterOfCreditService>();
             services.AddTransient<IGarmentShippingInstructionService, GarmentShippingInstructionService>();
+            services.AddTransient<IWeftTypeService, WeftTypeService>();
+            services.AddTransient<IWarpTypeService, WarpTypeService>();
+            services.AddTransient<IMaterialConstructionService, MaterialConstructionService>();
+            services.AddTransient<IGradeService, GradeService>();
+            services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
 
             services.AddTransient <IGarmentShippingExportSalesDOService, GarmentShippingExportSalesDOService>();
 
@@ -164,7 +180,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
-
             services.AddScoped<IValidateService, ValidateService>();
 
             var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
@@ -274,7 +289,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
             services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
-		}
+            services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPWarpTypeViewModel>, IPWarpTypeViewModelValidator>();
+            services.AddSingleton<IValidator<IPProcessTypeViewModel>, IPProcessTypeViewModelValidator>();
+
+
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

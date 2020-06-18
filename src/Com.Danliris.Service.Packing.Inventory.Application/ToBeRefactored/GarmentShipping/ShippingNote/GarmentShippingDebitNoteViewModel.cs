@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (items == null || items.Count == 0)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "items" });
+                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "itemsCount" });
             }
             else
             {
@@ -31,6 +31,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 foreach (var item in items)
                 {
                     Dictionary<string, object> errorItem = new Dictionary<string, object>();
+
+                    if (string.IsNullOrWhiteSpace(item.description))
+                    {
+                        errorItem["description"] = "Description tidak boleh kosong";
+                        errorItemsCount++;
+                    }
 
                     if (item.currency == null || item.currency.Id == 0)
                     {

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
@@ -112,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Items == null || Items.Count < 1)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "Items" });
+                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
             }
             else
             {
@@ -143,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     if (item.Details == null || item.Details.Count < 1)
                     {
-                        errorItem["Details"] = "Details tidak boleh kosong";
+                        errorItem["DetailsCount"] = "Details tidak boleh kosong";
                         errorItemsCount++;
                     }
                     else
@@ -163,7 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                             if (detail.Sizes == null || detail.Sizes.Count < 1)
                             {
-                                errorDetail["Sizes"] = "Sizes tidak boleh kosong";
+                                errorDetail["SizesCount"] = "Sizes tidak boleh kosong";
                                 errorDetailsCount++;
                             }
                             else
@@ -189,6 +190,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     errorDetail["Sizes"] = errorSizes;
                                     errorDetailsCount++;
                                 }
+
+                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                {
+                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                    errorDetailsCount++;
+                                }
                             }
 
                             errorDetails.Add(errorDetail);
@@ -197,6 +204,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         if (errorDetailsCount > 0)
                         {
                             errorItem["Details"] = errorDetails;
+                            errorItemsCount++;
+                        }
+
+                        if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
+                        {
+                            errorItem["totalQty"] = "Harus sama dengan Qty";
                             errorItemsCount++;
                         }
                     }
@@ -216,7 +229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Measurements == null || Measurements.Count < 1)
             {
-                yield return new ValidationResult("Measurements tidak boleh kosong", new List<string> { "Measurements" });
+                yield return new ValidationResult("Measurements tidak boleh kosong", new List<string> { "MeasurementsCount" });
             }
             else
             {

@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="15.0.5" />
+    <Compile Remove="Master\DyeingPrinting\**" />
     <Compile Remove="ToBeRefactored\AreaNote\**" />
     <Compile Remove="ToBeRefactored\AvalInput\**" />
     <Compile Remove="ToBeRefactored\InspectionBalanceIM\**" />
@@ -14,6 +16,7 @@
     <Compile Remove="ToBeRefactored\InspectionMaterial\**" />
     <Compile Remove="ToBeRefactored\ShipmentInput\**" />
     <Compile Remove="ToBeRefactored\TransitInput\**" />
+    <EmbeddedResource Remove="Master\DyeingPrinting\**" />
     <EmbeddedResource Remove="ToBeRefactored\AreaNote\**" />
     <EmbeddedResource Remove="ToBeRefactored\AvalInput\**" />
     <EmbeddedResource Remove="ToBeRefactored\InspectionBalanceIM\**" />
@@ -21,6 +24,7 @@
     <EmbeddedResource Remove="ToBeRefactored\InspectionMaterial\**" />
     <EmbeddedResource Remove="ToBeRefactored\ShipmentInput\**" />
     <EmbeddedResource Remove="ToBeRefactored\TransitInput\**" />
+    <None Remove="Master\DyeingPrinting\**" />
     <None Remove="ToBeRefactored\AreaNote\**" />
     <None Remove="ToBeRefactored\AvalInput\**" />
     <None Remove="ToBeRefactored\InspectionBalanceIM\**" />
@@ -45,6 +49,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Infrastructure\Com.Danliris.Service.Packing.Inventory.Infrastructure.csproj" />
     <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Data\Com.Danliris.Service.Packing.Inventory.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="InventoryPacking\" />
+    <Folder Include="InventorySKU\" />
+    <Folder Include="Master\Greige\" />
+    <Folder Include="Master\Yarn\" />
   </ItemGroup>
 
 </Project>
