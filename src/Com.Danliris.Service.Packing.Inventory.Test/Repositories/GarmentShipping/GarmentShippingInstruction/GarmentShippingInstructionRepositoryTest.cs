@@ -182,6 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetATTN("model.attn", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetCC("model.cc", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetFax("model.fax", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetPhone("model.phone", data.LastModifiedBy, data.LastModifiedAgent);
 
             var result = await repoInstruction2.UpdateAsync(modelToUpdate.Id, modelToUpdate);
 

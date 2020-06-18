@@ -250,5 +250,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetPhone(string phone, string userName, string userAgent)
+        {
+            if (Phone != phone)
+            {
+                Phone = phone;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }
