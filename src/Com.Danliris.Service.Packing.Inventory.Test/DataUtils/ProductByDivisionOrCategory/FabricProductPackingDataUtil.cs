@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.ProductByDivisio
 
         public override FabricProductPackingModel GetModel()
         {
-            return new FabricProductPackingModel("code",1,1,1, "uomUnit", 1);
+            return new FabricProductPackingModel("code",1,1,1,1, 1);
         }
 
     }
