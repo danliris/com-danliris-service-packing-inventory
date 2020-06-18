@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Invento
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.ProductSKU;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +18,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ReceivingDispatchDo
         private readonly IProductSKURepository _productSKURepository;
         private readonly IProductPackingRepository _productPackingRepository;
 
-        public ReceivingDispatchService(IInventoryDocumentSKURepository inventoryDocumentSKURepository, IInventoryDocumentPackingRepository inventoryDocumentPackingRepository, IProductSKURepository productSKURepository, IProductPackingRepository productPackingRepository)
+        //public ReceivingDispatchService(IInventoryDocumentSKURepository inventoryDocumentSKURepository, IInventoryDocumentPackingRepository inventoryDocumentPackingRepository, IProductSKURepository productSKURepository, IProductPackingRepository productPackingRepository)
+        //{
+        //    _inventoryDocumentSKURepository = inventoryDocumentSKURepository;
+        //    _inventoryDocumentPackingRepository = inventoryDocumentPackingRepository;
+        //    _productSKURepository = productSKURepository;
+        //    _productPackingRepository = productPackingRepository;
+        //}
+
+        public ReceivingDispatchService(IServiceProvider serviceProvider)
         {
-            _inventoryDocumentSKURepository = inventoryDocumentSKURepository;
-            _inventoryDocumentPackingRepository = inventoryDocumentPackingRepository;
-            _productSKURepository = productSKURepository;
-            _productPackingRepository = productPackingRepository;
+            _inventoryDocumentSKURepository = serviceProvider.GetService<IInventoryDocumentSKURepository>();
+            _inventoryDocumentPackingRepository = serviceProvider.GetService<IInventoryDocumentPackingRepository>();
+            _productSKURepository = serviceProvider.GetService<IProductSKURepository>();
+            _productPackingRepository = serviceProvider.GetService<IProductPackingRepository>();
         }
+
 
         public async Task Dispatch(CreateReceivingDispatchDocumentViewModel viewModel)
         {
