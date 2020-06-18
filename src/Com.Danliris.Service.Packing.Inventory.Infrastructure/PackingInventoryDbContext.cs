@@ -1,6 +1,9 @@
+using Com.Danliris.Service.Packing.Inventory.Data;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNoteWeaving;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.AmendLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
@@ -26,6 +29,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.Product;
 using Com.Moonlay.Data.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNoteWeaving;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -58,6 +63,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<UnitOfMeasurementModel> IPUnitOfMeasurements { get; set; }
 
         public DbSet<PackagingStockModel> PackagingStock { get; set; }
+
+        public DbSet<MaterialDeliveryNoteModel> MaterialDeliveryNote { get; set; }
+        public DbSet<ItemsModel> Items { get; set; }
+
+        public DbSet<MaterialDeliveryNoteWeavingModel> MaterialDeliveryNoteWeaving { get; set; }
+        public DbSet<ItemsMaterialDeliveryNoteWeavingModel> ItemsMaterialDeliveryNoteWeaving { get; set; }
 
         public DbSet<GarmentPackingListModel> GarmentPackingLists { get; set; }
         public DbSet<GarmentPackingListItemModel> GarmentPackingListItems { get; set; }
@@ -133,7 +144,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteItemConfig());
 
-			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteWeavingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemsMaterialDeliveryNoteWeavingEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new MaterialDeliveryNoteEntitiyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemsEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
 			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
 
@@ -167,6 +184,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.Entity<PackagingStockModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
+            modelBuilder.Entity<MaterialDeliveryNoteModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<ItemsModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<MaterialDeliveryNoteWeavingModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.Entity<ItemsMaterialDeliveryNoteWeavingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             #region master
             modelBuilder.ApplyConfiguration(new WeftTypeEntityTypeConfiguration());
             modelBuilder.Entity<WeftTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);

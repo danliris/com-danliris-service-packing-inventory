@@ -52,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Com\Danliris\Service\Packing\Inventory\Data\" />
     <Folder Include="InventoryPacking\" />
     <Folder Include="InventorySKU\" />
     <Folder Include="Master\Greige\" />
