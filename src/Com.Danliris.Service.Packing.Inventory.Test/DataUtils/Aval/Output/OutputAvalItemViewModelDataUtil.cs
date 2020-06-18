@@ -20,7 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Aval.Output
                     AvalUomUnit = "KRG",
                     AvalQuantity = 5,
                     AvalQuantityKg = 10,
-                    AvalOutQuantity = 5
+                    AvalOutQuantity = 5,
+                    AvalOutSatuan = 1
                 };
             }
         }
