@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             AvalQuantity = 5,
                             AvalQuantityKg = 1,
                             AvalOutQuantity = 1,
-                            AvalOutSatuan= "KRG"
+                            AvalOutSatuan= 1
                         }
                     },
                     DyeingPrintingMovementIds = new List<OutputAvalDyeingPrintingAreaMovementIdsViewModel>()

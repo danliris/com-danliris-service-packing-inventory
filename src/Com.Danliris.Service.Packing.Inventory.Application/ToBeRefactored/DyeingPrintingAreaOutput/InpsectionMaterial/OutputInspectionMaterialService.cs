@@ -101,6 +101,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = sppData.ProductionOrderOrderQuantity,
                         Type = sppData.ProductionOrderType
                     },
+                    MaterialWidth = sppData.MaterialWidth,
+                    Material = new Material()
+                    {
+                        Id = sppData.MaterialId,
+                        Name = sppData.MaterialName
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Name = sppData.MaterialConstructionName,
+                        Id = sppData.MaterialConstructionId
+                    },
                     Status = sppData.Status,
                     Unit = sppData.Unit,
                     UomUnit = sppData.UomUnit,
@@ -109,23 +120,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderDetails = item.Select(d => new OutputInspectionMaterialProductionOrderDetailViewModel()
                     {
                         Active = d.Active,
-                        //AvalItems = d.DyeingPrintingAreaOutputAvalItems.Select(e => new AvalItem()
-                        //{
-                        //    Active = e.Active,
-                        //    CreatedAgent = e.CreatedAgent,
-                        //    CreatedBy = e.CreatedBy,
-                        //    CreatedUtc = e.CreatedUtc,
-                        //    DeletedAgent = e.DeletedAgent,
-                        //    DeletedBy = e.DeletedBy,
-                        //    DeletedUtc = e.DeletedUtc,
-                        //    Id = e.Id,
-                        //    IsDeleted = e.IsDeleted,
-                        //    LastModifiedAgent = e.LastModifiedAgent,
-                        //    LastModifiedBy = e.LastModifiedBy,
-                        //    LastModifiedUtc = e.LastModifiedUtc,
-                        //    Length = e.Length,
-                        //    Type = e.Type
-                        //}).ToList(),
                         AvalType = d.AvalType,
                         LastModifiedUtc = d.LastModifiedUtc,
                         LastModifiedBy = d.LastModifiedBy,
@@ -189,7 +183,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
                             item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType);
+                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType, 
+                            item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
                         productionOrders.Add(outputProductionOrder);
                     }
                 }
@@ -233,8 +228,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance,
-                         item.Id, item.BuyerId, detail.AvalType);
+                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
+                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                         result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -370,6 +365,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     OrderQuantity = s.ProductionOrderOrderQuantity,
                     Type = s.ProductionOrderType
                 },
+                MaterialWidth = s.MaterialWidth,
+                Material = new Material()
+                {
+                    Id = s.MaterialId,
+                    Name = s.MaterialName
+                },
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Name = s.MaterialConstructionName,
+                    Id = s.MaterialConstructionId
+                },
                 Unit = s.Unit,
                 UomUnit = s.UomUnit,
                 Id = s.Id,
@@ -418,7 +424,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, detail.HasNextAreaDocument, item.ProductionOrder.Id,
                         item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType)
+                        item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
+                        item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth)
                     {
                         Id = detail.Id
                     };

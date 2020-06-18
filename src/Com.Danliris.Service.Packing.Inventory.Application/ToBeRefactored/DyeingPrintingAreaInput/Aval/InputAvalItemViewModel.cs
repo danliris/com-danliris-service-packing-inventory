@@ -38,6 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
+        public Material Material { get; set; }
+        public MaterialConstruction MaterialConstruction { get; set; }
+        public string MaterialWidth { get; set; }
         public string Area { get; set; }
         public string UomUnit { get; set; }
         public double QtyOrder { get; set; }
