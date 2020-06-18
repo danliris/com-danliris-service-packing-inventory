@@ -71,6 +71,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Product
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Category;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.UOM;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacking;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -127,6 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
+            services.AddTransient<IRepository<ProductPackingModel>, ProductPackingRepository>();
             #endregion
 
             #region Service
@@ -169,6 +171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();
             services.AddTransient<IProductSKUService, ProductSKUService>();
+            services.AddTransient<IProductPackingService, ProductPackingService>();
 
             #endregion
 
