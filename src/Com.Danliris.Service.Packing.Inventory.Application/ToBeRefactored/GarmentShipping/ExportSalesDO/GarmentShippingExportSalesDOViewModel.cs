@@ -34,9 +34,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 yield return new ValidationResult("Invoice No tidak boleh kosong", new List<string> { "invoiceNo" });
             }
+            if (string.IsNullOrEmpty(to))
+            {
+                yield return new ValidationResult("Kepada tidak boleh kosong", new List<string> { "to" });
+            }
+            if (unit == null || unit.Id == 0)
+            {
+                yield return new ValidationResult("Bag Gudang tidak boleh kosong", new List<string> { "unit" });
+            }
             if (items == null || items.Count < 1)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "items" });
+                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "itemsCount" });
             }
             else
             {
