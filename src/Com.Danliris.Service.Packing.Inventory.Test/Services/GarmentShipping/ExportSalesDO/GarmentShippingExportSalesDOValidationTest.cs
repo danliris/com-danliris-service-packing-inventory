@@ -18,5 +18,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.E
             Assert.NotEmpty(result.ToList());
         }
 
+        [Fact]
+        public void Validate_ItemsDefaultValue()
+        {
+            GarmentShippingExportSalesDOViewModel viewModel = new GarmentShippingExportSalesDOViewModel();
+            viewModel.items = new List<GarmentShippingExportSalesDOItemViewModel>
+            {
+                new GarmentShippingExportSalesDOItemViewModel()
+            };
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
+
     }
 }
