@@ -6,8 +6,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public OutputAvalItemValidator()
         {
-            RuleFor(data => data.AvalOutQuantity).NotEmpty().WithMessage("Harus Memiliki Qty Satuan!");
-            RuleFor(data => data.AvalQuantityKg).NotEmpty().WithMessage("Harus Memiliki Qty Kg!");
+            RuleFor(data => data.AvalOutSatuan).NotEmpty().NotNull().NotEqual(0).WithMessage("Harus Memiliki Qty Satuan!");
+            RuleFor(data => data.AvalOutQuantity).NotEmpty().NotNull().NotEqual(0).WithMessage("Harus Memiliki Qty Kg!");
         }
     }
 }
