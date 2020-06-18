@@ -130,9 +130,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(s => s.ShippingRemark)
                 .HasMaxLength(512);
 
-                        builder
+            builder
                 .Property(s => s.ShippingGrade)
                 .HasMaxLength(128);
+
+            builder
+              .Property(s => s.MaterialName)
+              .HasMaxLength(1024);
+
+            builder
+              .Property(s => s.MaterialConstructionName)
+              .HasMaxLength(1024);
+
+            builder
+              .Property(s => s.MaterialWidth)
+              .HasMaxLength(1024);
         }
     }
 }

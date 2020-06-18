@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
 
         public Task<int> UpdateAsync(int id, CategoryModel model)
         {
-            EntityExtension.FlagForDelete(model, _identityProvider.Username, UserAgent);
+            EntityExtension.FlagForUpdate(model, _identityProvider.Username, UserAgent);
             _dbContext.IPCategories.Update(model);
 
             return _dbContext.SaveChangesAsync();

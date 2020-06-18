@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYa
         {
             return new IPYarnTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 YarnType = modelDb.YarnType,
             };
@@ -53,6 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPYa
         {
             return new IPYarnTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 YarnType = modelDb.YarnType
             };

@@ -34,6 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPPr
         {
             return new IPProcessTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 ProcessType = modelDb.ProcessType,
             };
@@ -57,6 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPPr
         {
             return new IPProcessTypeViewModel
             {
+                Id = modelDb.Id,
                 Code = modelDb.Code,
                 ProcessType = modelDb.ProcessType
             };
