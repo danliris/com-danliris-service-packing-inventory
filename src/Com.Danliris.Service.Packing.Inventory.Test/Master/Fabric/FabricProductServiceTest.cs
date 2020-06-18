@@ -12,6 +12,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -74,12 +75,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             {
                 return new FabricProductPackingCompositeIdFormDto()
                 {
-                  
-
                 };
 
             }
         }
+
+        private FabricProductPackingCompositeStringFormDto fabricProductPackingCompositeStringFormDto
+        {
+            get
+            {
+              return  new FabricProductPackingCompositeStringFormDto();
+            }
+        }
+
 
         private FabricProductSKUModel fabricProductSKUModel
         {
@@ -96,6 +104,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
                 return new UnitOfMeasurementDto(new UnitOfMeasurementModel());
             }
         }
+
+        private ProductPackingDto productPackingDto
+        {
+            get
+            {
+                return new ProductPackingDto(
+                    new ProductPackingModel(),
+                    new ProductSKUModel(),
+                    new UnitOfMeasurementModel()
+                    );
+            }
+        }
+
 
         [Fact]
         public async Task Should_Success_GenerateProductPackingCodeByCompositeId()
@@ -166,6 +187,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             Assert.Empty(result);
         }
 
+        [Fact]
+        public async Task GenerateProductPackingCodeByCompositeString_Return_Success()
+        {
+            var categoryService = new Mock<ICategoryService>();
+            var UOMService = new Mock<IUOMService>();
+            var productSKUService = new Mock<IProductSKUService>();
+            var productPackingService = new Mock<IProductPackingService>();
+            var fabricProductSKURepository = new Mock<IRepository<FabricProductSKUModel>>();
+            var fabricProductPackingRepository = new Mock<IRepository<FabricProductPackingModel>>();
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var upsertMasterService = new Mock<IUpsertMasterService>();
+            var identityProvider = new Mock<IIdentityProvider>();
 
+            fabricProductSKURepository.Setup(s => s.ReadAll())
+               .Returns(new List<FabricProductSKUModel>() {fabricProductSKUModel }.AsQueryable());
+
+            productPackingService.Setup(s => s.GetById(It.IsAny<int>()))
+              .ReturnsAsync(productPackingDto);
+
+            var service = GetService(GetServiceProvider(categoryService.Object,
+                UOMService.Object,
+                productSKUService.Object,
+                productPackingService.Object,
+                fabricProductSKURepository.Object,
+                fabricProductPackingRepository.Object,
+                productPackingRepository.Object,
+                upsertMasterService.Object,
+                identityProvider.Object
+                ).Object);
+
+            var result = await service.GenerateProductPackingCodeByCompositeString(fabricProductPackingCompositeStringFormDto);
+            Assert.Empty(result);
+        }
     }
 }
