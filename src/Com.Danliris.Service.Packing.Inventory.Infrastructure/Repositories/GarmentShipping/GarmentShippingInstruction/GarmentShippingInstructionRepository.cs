@@ -83,6 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetATTN(model.ATTN, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFax(model.Fax, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCC(model.CC, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPhone(model.Phone, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetSpecialInstruction(model.SpecialInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTransit(model.Transit, _identityProvider.Username, UserAgent);
