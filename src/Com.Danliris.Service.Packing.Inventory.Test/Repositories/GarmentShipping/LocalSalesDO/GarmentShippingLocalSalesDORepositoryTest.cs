@@ -143,6 +143,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetVolume(1 + item.Volume, item.LastModifiedBy, item.LastModifiedAgent);
 
             }
+            GarmentShippingLocalSalesDOItemModel newItem = new GarmentShippingLocalSalesDOItemModel(2, 2, 2, "a", "", "", 2, 2, "", 2, 2, 2, 2);
+            
+            oldModel.Items.Add(newItem);
 
             var result = await repoLocalSalesDO2.UpdateAsync(modelToUpdate.Id, modelToUpdate);
 
