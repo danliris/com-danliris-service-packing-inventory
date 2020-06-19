@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == PENJUALAN)
+                if (model.DestinationArea != BUYER)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
@@ -359,7 +359,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                    if (model.DestinationArea == PENJUALAN)
+                    if (model.DestinationArea != BUYER)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, false);

@@ -587,7 +587,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
-
+                    Remark = d.Remark,
                     Motif = d.Motif,
                     ProductionOrder = new ProductionOrder()
                     {
