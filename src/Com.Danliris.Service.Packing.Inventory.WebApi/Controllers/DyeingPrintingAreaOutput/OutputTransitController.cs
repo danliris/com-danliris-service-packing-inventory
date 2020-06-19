@@ -128,12 +128,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("input-production-orders")]
-        public IActionResult GetProductionOrders()
+        public IActionResult GetProductionOrders([FromQuery] long productionOrderId = 0)
         {
             try
             {
 
-                var data = _service.GetInputTransitProductionOrders();
+                var data = _service.GetInputTransitProductionOrders(productionOrderId);
                 return Ok(new
                 {
                     data
@@ -208,6 +208,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                     error = ex.Message
                 };
                 return StatusCode((int)HttpStatusCode.InternalServerError, error);
+            }
+        }
+
+        [HttpGet("production-order-loader")]
+        public IActionResult GetDistinctProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.GetDistinctProductionOrder(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
             }
         }
     }
