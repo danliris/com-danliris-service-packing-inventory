@@ -151,6 +151,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             Assert.NotEqual(0, result);
 
+            oldModel.Items.Remove(oldModel.Items.First());
+
+            var result2 = await repoLocalSalesDO2.UpdateAsync(oldModel.Id, oldModel);
+
+            Assert.NotEqual(0, result2);
+
+
         }
     }
 }
