@@ -62,6 +62,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task Post_StateInvalid_Return_BadRequest()
+        {
+            var dataUtil = ViewModel;
+
+            var serviceMock = new Mock<IGarmentShippingCreditAdviceService>();
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingCreditAdviceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ModelState.AddModelError("key", "ErrorMessage");
+
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task Post_Exception_InternalServerError()
         {
             var dataUtil = ViewModel;

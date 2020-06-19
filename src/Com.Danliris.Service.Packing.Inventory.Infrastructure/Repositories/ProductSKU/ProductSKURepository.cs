@@ -43,6 +43,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Pro
             return _dbContext.SaveChangesAsync();
         }
 
+        public Task<bool> IsExist(string name)
+        {
+            return _productSKUDbSet.AnyAsync(entity => entity.Name.ToUpper() == name.ToUpper());
+        }
+
         public IQueryable<ProductSKUModel> ReadAll()
         {
             return _productSKUDbSet.AsNoTracking();

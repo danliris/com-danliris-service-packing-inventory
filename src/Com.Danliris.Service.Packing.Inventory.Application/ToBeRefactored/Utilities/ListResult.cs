@@ -1,9 +1,11 @@
+using Com.Danliris.Service.Packing.Inventory.Data;
 using System.Collections.Generic;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Utilities
 {
     public class ListResult<T>
     {
+
         public ListResult(List<T> data, int page, int size, int totalRow)
         {
             Data = data;

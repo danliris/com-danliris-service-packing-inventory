@@ -75,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetCreditInterest(model.CreditInterest, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankCharges(model.BankCharges, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDocumentPresente(model.DocumentPresente, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
 
             return await _dbContext.SaveChangesAsync();
         }

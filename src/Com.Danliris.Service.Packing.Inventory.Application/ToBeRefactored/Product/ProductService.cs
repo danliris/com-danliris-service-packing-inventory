@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
                 viewModel.YarnType2
                 );
 
-            if (await IsSKUAlreadyExist(productSKUToCheck))
+            if (await _productSKURepository.IsExist(productSKUToCheck.Name))
             {
                 var skuId = _productSKURepository.ReadAll().Where(entity => entity.Name == productSKUToCheck.Name).Select(entity => entity.Id).FirstOrDefault();
                 var productPackingModel = new ProductPackingModel(null, viewModel.PackType, viewModel.Quantity.GetValueOrDefault(), skuId);
@@ -59,9 +59,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Product
             }
         }
 
-        private Task<bool> IsSKUAlreadyExist(ProductSKUModel productSKU)
-        {
-            return _productSKURepository.ReadAll().AnyAsync(entity => entity.Name.ToUpper() == productSKU.Name.ToUpper());
-        }
+        //private Task<bool> IsSKUAlreadyExist(ProductSKUModel productSKU)
+        //{
+        //    return _productSKURepository.ReadAll().AnyAsync(entity => entity.Name.ToUpper() == productSKU.Name.ToUpper());
+        //}
     }
 }

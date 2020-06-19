@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mas
     {
         IQueryable<GradeModel> GetDbSet();
         Task<int> MultipleInsertAsync(IEnumerable<GradeModel> models);
+        int GetCodeByType(string type);
     }
 }

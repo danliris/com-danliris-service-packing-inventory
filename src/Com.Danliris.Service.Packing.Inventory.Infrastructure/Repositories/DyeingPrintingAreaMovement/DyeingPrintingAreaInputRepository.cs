@@ -183,6 +183,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetIsChecked(localItem.IsChecked, _identityProvider.Username, UserAgent);
                     item.SetPackingInstruction(localItem.PackingInstruction, _identityProvider.Username, UserAgent);
                     item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
+                    item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                 }
             }
 
