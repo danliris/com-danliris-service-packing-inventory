@@ -379,6 +379,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Buyer = "df",
                     Color = "df",
                     Motif = "df",
+                    Remark = "s",
                     UomUnit = "df",
                     Grade = "fd",
                     Packing = "dsaf",
@@ -1211,6 +1212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(outPre.Material);
             Assert.NotNull(outPre.MaterialConstruction);
             Assert.NotNull(outPre.MaterialWidth);
+            Assert.NotNull(outPre.Remark);
         }
 
         [Fact]
