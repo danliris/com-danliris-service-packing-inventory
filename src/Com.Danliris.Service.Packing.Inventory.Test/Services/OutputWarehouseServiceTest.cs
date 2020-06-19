@@ -1363,6 +1363,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputProductionOrderRepoMock.Object).Object);
 
             var result = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "INSPECTION MATERIAL");
+            var result1 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "SHIPPING");
+            var result2 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "PACKING");
+            var result3 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "TRANSIT");
 
             Assert.NotEmpty(result);
             result = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "xx");

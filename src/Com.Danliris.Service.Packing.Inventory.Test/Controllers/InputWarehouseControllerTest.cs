@@ -571,5 +571,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.NotNull(response);
         }
+        [Fact]
+        public async Task Should_Exception_GetWarehouseAreaNoteExcelAll()
+        {
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelAll())
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcelAll();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
+        }
     }
 }
