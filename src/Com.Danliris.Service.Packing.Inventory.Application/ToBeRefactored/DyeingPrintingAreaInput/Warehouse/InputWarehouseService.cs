@@ -849,7 +849,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MemoryStream GenerateExcelAll()
         {
             //var model = await _repository.ReadByIdAsync(id);
-            var modelAll = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && !s.DyeingPrintingAreaInputProductionOrders.Any(d=> !d.HasOutputDocument)).ToList().Select(s =>
+            var modelWhere = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var modelAll = modelWhere.Select(s =>
                 new
                 {
                     SppList = s.DyeingPrintingAreaInputProductionOrders.Select(d => new

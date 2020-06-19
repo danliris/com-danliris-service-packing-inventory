@@ -149,6 +149,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 case INSPECTIONMATERIAL:
                     bonNo = string.Format("{0}.{1}.{2}.{3}", GJ, IM, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
                     break;
+                case PACKING:
+                    bonNo = string.Format("{0}.{1}.{2}.{3}", GJ, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                    break;
+                case TRANSIT:
+                    bonNo = string.Format("{0}.{1}.{2}.{3}", GJ, TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                    break;
                 default:
                     break;
             }
