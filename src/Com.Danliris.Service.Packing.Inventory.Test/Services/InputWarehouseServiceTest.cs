@@ -213,6 +213,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
+        private DyeingPrintingAreaInputModel ExistingInputModel
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(ViewModelIM.Date,
+                                                        "GUDANG JADI",
+                                                        ViewModelIM.Shift,
+                                                        ViewModelIM.BonNo,
+                                                        ViewModelIM.Group,
+                                                        ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
+                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
+                                                                                                            s.ProductionOrder.Id,
+                                                                                                            s.ProductionOrder.No,
+                                                                                                            s.ProductionOrder.Type,
+                                                                                                            s.PackingInstruction,
+                                                                                                            s.CartNo,
+                                                                                                            s.Buyer,
+                                                                                                            s.Construction,
+                                                                                                            s.Unit,
+                                                                                                            s.Color,
+                                                                                                            s.Motif,
+                                                                                                            s.UomUnit,
+                                                                                                            s.Balance,
+                                                                                                            s.HasOutputDocument,
+                                                                                                            s.PackagingUnit,
+                                                                                                            s.PackagingType,
+                                                                                                            s.PackagingQty,
+                                                                                                            s.BuyerId)).ToList());
+            }
+        }
+
         private DyeingPrintingAreaOutputModel OutputModel
         {
             get
@@ -1371,5 +1402,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEqual(0, result);
         }
+
+        //[Fact]
+        //public void Should_Success_GenerateExcelAll()
+        //{
+        //    var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+        //    var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+        //    var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+        //    var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+        //    var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+        //    var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+        //    inputRepoMock.Setup(s => s.ReadAll())
+        //        .Returns(new List<DyeingPrintingAreaOutputModel> { InputModel }.AsQueryable());
+
+
+        //    var service = GetService(GetServiceProvider(inputRepoMock.Object,
+        //                                                inputProductionOrderRepoMock.Object,
+        //                                                movementRepoMock.Object,
+        //                                                summaryRepoMock.Object,
+        //                                                outputRepoMock.Object,
+        //                                                outputProductionOrderRepoMock.Object).Object);
+
+        //    var result = service.GenerateExcelAll();
+
+        //    Assert.NotNull(result);
+        //}
     }
 }
