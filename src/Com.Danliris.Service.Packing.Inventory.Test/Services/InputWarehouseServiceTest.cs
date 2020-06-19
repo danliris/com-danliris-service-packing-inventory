@@ -213,36 +213,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
-        private DyeingPrintingAreaInputModel ExistingInputModel
-        {
-            get
-            {
-                return new DyeingPrintingAreaInputModel(ViewModelIM.Date,
-                                                        "GUDANG JADI",
-                                                        ViewModelIM.Shift,
-                                                        ViewModelIM.BonNo,
-                                                        ViewModelIM.Group,
-                                                        ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
-                                                            new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
-                                                                                                            s.ProductionOrder.Id,
-                                                                                                            s.ProductionOrder.No,
-                                                                                                            s.ProductionOrder.Type,
-                                                                                                            s.PackingInstruction,
-                                                                                                            s.CartNo,
-                                                                                                            s.Buyer,
-                                                                                                            s.Construction,
-                                                                                                            s.Unit,
-                                                                                                            s.Color,
-                                                                                                            s.Motif,
-                                                                                                            s.UomUnit,
-                                                                                                            s.Balance,
-                                                                                                            s.HasOutputDocument,
-                                                                                                            s.PackagingUnit,
-                                                                                                            s.PackagingType,
-                                                                                                            s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
-            }
-        }
+        //private DyeingPrintingAreaInputModel ExistingInputModel
+        //{
+        //    get
+        //    {
+        //        return new DyeingPrintingAreaInputModel(ViewModelIM.Date,
+        //                                                "GUDANG JADI",
+        //                                                ViewModelIM.Shift,
+        //                                                ViewModelIM.BonNo,
+        //                                                ViewModelIM.Group,
+        //                                                ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
+        //                                                    new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area,
+        //                                                                                                    s.ProductionOrder.Id,
+        //                                                                                                    s.ProductionOrder.No,
+        //                                                                                                    s.ProductionOrder.Type,
+        //                                                                                                    s.PackingInstruction,
+        //                                                                                                    s.CartNo,
+        //                                                                                                    s.Buyer,
+        //                                                                                                    s.Construction,
+        //                                                                                                    s.Unit,
+        //                                                                                                    s.Color,
+        //                                                                                                    s.Motif,
+        //                                                                                                    s.UomUnit,
+        //                                                                                                    s.Balance,
+        //                                                                                                    s.HasOutputDocument,
+        //                                                                                                    s.PackagingUnit,
+        //                                                                                                    s.PackagingType,
+        //                                                                                                    s.PackagingQty,
+        //                                                                                                    s.BuyerId)).ToList());
+        //    }
+        //}
 
         private DyeingPrintingAreaOutputModel OutputModel
         {
