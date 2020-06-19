@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingP
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging
 {
@@ -628,6 +631,124 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
             return result;
+        }
+        public MemoryStream GenerateExcelAll()
+        {
+            //var model = await _repository.ReadByIdAsync(id);
+            var modelAll = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d=>!d.HasOutputDocument)).ToList().Select(s =>
+                new
+                {
+                    SppList = s.DyeingPrintingAreaInputProductionOrders.Select(d => new
+                    {
+                        BonNo = s.BonNo,
+                        NoSPP = d.ProductionOrderNo,
+                        QtyOrder = d.ProductionOrderOrderQuantity,
+                        NoKreta = d.CartNo,
+                        Material = d.Construction,
+                        Unit = d.Unit,
+                        Buyer = d.Buyer,
+                        Warna = d.Color,
+                        Motif = d.Motif,
+                        Grade = d.Grade,
+                        QtyKeluar = d.Balance,
+                        SAT = d.UomUnit
+                    })
+                });
+            var model = modelAll.First();
+            //var query = model.DyeingPrintingAreaOutputProductionOrders;
+            var query = modelAll.SelectMany(s => s.SppList);
+
+            //var query = GetQuery(date, group, zona, timeOffSet);
+            DataTable dt = new DataTable();
+
+            #region Mapping Properties Class to Head excel
+            Dictionary<string, string> mappedClass = new Dictionary<string, string>
+            {
+                {"BonNo","NO BON" },
+                {"NoSPP","NO SP" },
+                {"QtyOrder","QTY ORDER" },
+                {"NoKreta","NO KRETA" },
+                {"Material","MATERIAL"},
+                {"Unit","UNIT"},
+                {"Buyer","BUYER"},
+                {"Warna","WARNA"},
+                {"Motif","MOTIF"},
+                {"Grade","GRADE"},
+                {"QtyKeluar","QTY KELUAR" },
+                {"SAT","SAT" },
+            };
+            var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
+            #endregion
+            #region Assign Column
+            foreach (var prop in mappedClass.Select((item, index) => new { Index = index, Items = item }))
+            {
+                string fieldName = prop.Items.Value;
+                dt.Columns.Add(new DataColumn() { ColumnName = fieldName, DataType = typeof(string) });
+            }
+            #endregion
+            #region Assign Data
+            foreach (var item in query)
+            {
+                List<string> data = new List<string>();
+                foreach (DataColumn column in dt.Columns)
+                {
+                    var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
+                    string valueClass = "";
+                    if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+                    {
+                        var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
+                        var searchValue = searchProperty.GetValue(item, null);
+                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                    }
+                    else
+                    {
+                        valueClass = "";
+                    }
+                    data.Add(valueClass);
+                }
+                dt.Rows.Add(data.ToArray());
+            }
+            #endregion
+
+            #region Render Excel Header
+            ExcelPackage package = new ExcelPackage();
+            var sheet = package.Workbook.Worksheets.Add("PENERIMAAN PACKAGING");
+
+            int startHeaderColumn = 1;
+            int endHeaderColumn = mappedClass.Count;
+
+            sheet.Cells[1, 1, 1, endHeaderColumn].Style.Font.Bold = true;
+
+
+            sheet.Cells[1, startHeaderColumn].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn, 1, endHeaderColumn].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            sheet.Cells[1, startHeaderColumn, 1, endHeaderColumn].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
+
+            foreach (DataColumn column in dt.Columns)
+            {
+
+                sheet.Cells[1, startHeaderColumn].Value = column.ColumnName;
+                sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                startHeaderColumn++;
+            }
+            #endregion
+
+            #region Insert Data To Excel
+            int tableRowStart = 2;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+            #endregion
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
         }
 
         //public ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo)
