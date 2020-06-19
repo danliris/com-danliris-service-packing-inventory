@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedUtc = model.LastModifiedUtc,
 
                 localSalesDONo = model.LocalSalesDONo,
-                
+
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -52,8 +52,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 localSalesNoteNo = model.LocalSalesNoteNo,
                 localSalesNoteId = model.LocalSalesNoteId,
                 to = model.To,
-                storageDivision=model.StorageDivision,
-                items = model.Items.Select(i => new GarmentShippingLocalSalesDOItemViewModel
+                storageDivision = model.StorageDivision,
+                items = model.Items == null ? new List<GarmentShippingLocalSalesDOItemViewModel>() : model.Items.Select(i => new GarmentShippingLocalSalesDOItemViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
@@ -146,7 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "LocalSalesDONo", "BuyerName", "StorageDivision", "To","LocalSalesNoteNo"
+                "LocalSalesDONo", "BuyerName", "StorageDivision", "To","LocalSalesNoteNo", "BuyerCode"
             };
             query = QueryHelper<GarmentShippingLocalSalesDOModel>.Search(query, SearchAttributes, keyword);
 
