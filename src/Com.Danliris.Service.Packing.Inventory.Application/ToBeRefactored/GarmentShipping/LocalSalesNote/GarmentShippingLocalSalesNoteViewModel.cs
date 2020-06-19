@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string dispositionNo { get; set; }
         public bool useVat { get; set; }
         public string remark { get; set; }
+        public bool isUsed { get; set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemViewModel> items { get; set; }
 

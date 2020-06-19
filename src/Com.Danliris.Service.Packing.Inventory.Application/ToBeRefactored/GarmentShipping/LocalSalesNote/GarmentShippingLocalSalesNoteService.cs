@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 dispositionNo = model.DispositionNo,
                 useVat = model.UseVat,
                 remark = model.Remark,
-
+                isUsed=model.IsUsed,
                 items = (model.Items ?? new List<GarmentShippingLocalSalesNoteItemModel>()).Select(i => new GarmentShippingLocalSalesNoteItemViewModel
                 {
                     Active = i.Active,
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesNoteModel(GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.tempo, vm.dispositionNo, vm.useVat, vm.remark, items) { Id = vm.Id };
+            return new GarmentShippingLocalSalesNoteModel(GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.tempo, vm.dispositionNo, vm.useVat, vm.remark,vm.isUsed, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteViewModel vm)
