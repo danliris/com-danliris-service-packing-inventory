@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.LocalSalesDO
 {
     [Produces("application/json")]
-    [Route("v1/garment-shipping/export-sales-dos")]
+    [Route("v1/garment-shipping/local-sales-dos")]
     [Authorize]
     public class GarmentShippingLocalSalesDOController : ControllerBase
     {
