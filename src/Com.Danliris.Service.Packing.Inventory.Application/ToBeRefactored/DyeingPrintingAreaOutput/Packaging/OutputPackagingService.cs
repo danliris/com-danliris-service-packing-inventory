@@ -593,10 +593,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var searchValue = searchProperty.GetValue(item, null);
                         valueClass = searchValue == null ? "" : searchValue.ToString();
                     }
-                    else
-                    {
-                        valueClass = "";
-                    }
+                    //else
+                    //{
+                    //    valueClass = "";
+                    //}
                     data.Add(valueClass);
                 }
                 dt.Rows.Add(data.ToArray());
