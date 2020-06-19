@@ -3,6 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
+using MockQueryable.Moq;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -244,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductSKU
             Assert.Null(result);
         }
 
-       // [Fact]
+        [Fact]
         public async Task GetIndex_Return_Success()
         {
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
@@ -253,14 +254,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductSKU
 
             
             productSKURepository.Setup(s => s.ReadAll())
-                  .Returns(new List<ProductSKUModel>() { productSKUModel }.AsQueryable());
+                  .Returns(new List<ProductSKUModel>() { productSKUModel }.AsQueryable().BuildMock().Object);
 
             categoryRepository.Setup(s => s.ReadAll())
-           .Returns(new List<CategoryModel>() { categoryModel }.AsQueryable());
+           .Returns(new List<CategoryModel>() { categoryModel }.AsQueryable().BuildMock().Object);
 
 
             unitOfMeasurementRepository.Setup(s => s.ReadAll())
-           .Returns(new List<UnitOfMeasurementModel>() { unitOfMeasurementModel }.AsQueryable());
+           .Returns(new List<UnitOfMeasurementModel>() { unitOfMeasurementModel }.AsQueryable().BuildMock().Object);
 
 
             var service = GetService(GetServiceProvider(

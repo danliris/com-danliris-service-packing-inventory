@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilitie
 using Com.Danliris.Service.Packing.Inventory.Data;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Microsoft.EntityFrameworkCore;
+using MockQueryable.Moq;
 using Moq;
 using Newtonsoft.Json;
 using System;
@@ -135,26 +136,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
 
             categoryRepository.Setup(s => s.ReadAll())
-                 .Returns(new List<CategoryModel>() { categoryModel, categoryModel }.AsQueryable());
+                 .Returns(new List<CategoryModel>() { categoryModel, categoryModel }.AsQueryable().BuildMock().Object);
             
-            //Create object
-            var orderData = new
-            {
-                Name = "desc",
-            };
-
-            string oder = JsonConvert.SerializeObject(orderData);
+            
 
             IndexQueryParam queryParam = new IndexQueryParam()
             {
                 page=1,
                 size =25,
                 keyword ="Name",
-                order = oder
+                order = ""
             };
 
-            //var result = await service.GetIndex(queryParam);
-            //Assert.NotNull(result);
+            var result = await service.GetIndex(queryParam);
+            Assert.NotNull(result);
+            Assert.True(0 < result.data.Count);
         }
 
 
