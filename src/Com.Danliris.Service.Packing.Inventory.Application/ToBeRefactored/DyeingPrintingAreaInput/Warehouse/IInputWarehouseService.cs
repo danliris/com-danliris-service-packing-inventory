@@ -6,6 +6,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
 {
@@ -18,5 +19,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Reject(RejectedInputWarehouseViewModel viewModel);
         Task<int> Delete(int bonId);
         Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel);
+        MemoryStream GenerateExcelAll();
     }
 }

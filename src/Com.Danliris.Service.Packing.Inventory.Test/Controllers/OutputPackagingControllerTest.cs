@@ -277,6 +277,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
+        public async Task Should_Success_GetPackingAreaNoteExcelAll()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.GenerateExcelAll())
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcelAll();
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetPackingAreaNoteExcelAll()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.GenerateExcelAll())
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcelAll();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
+        }
+
+        [Fact]
         public void Should_Success_GetListBonOut()
         {
             //v
@@ -294,7 +333,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
+        [Fact]
+        public void Should_Success_ReadSPPGrouped()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.ReadSppInFromPackGroup(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<OutputPackagingProductionOrderGroupedViewModel>(new List<OutputPackagingProductionOrderGroupedViewModel>(), 1, 1, 1));
+            var service = serviceMock.Object;
 
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSppInPackingGroup();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+        [Fact]
+        public void Should_Exception_ReadSPPGrouped()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.ReadSppInFromPackGroup(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetSppInPackingGroup();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+
+        }
         [Fact]
         public void Should_Exception_GetListBonOut()
         {
@@ -384,6 +459,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var response = await controller.Delete(1);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetSet_GrouppedSPP()
+        {
+            var model = new OutputPackagingProductionOrderGroupedViewModel();
+            model.ProductionOrder = "test";
+            model.ProductionOrderList = new List<Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging.InputPackagingProductionOrdersViewModel>();
+
+            var test = model.ProductionOrder;
+            var testlist = model.ProductionOrderList;
+            Assert.True(true);
         }
     }
 }

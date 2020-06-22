@@ -3,6 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<MemoryStream> GenerateExcel(int id);
         ListResult<IndexViewModel> ReadBonOutFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPack(int page, int size, string filter, string order, string keyword);
+        ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSppInFromPackGroup(int page, int size, string filter, string order, string keyword);
+        MemoryStream GenerateExcelAll();
         Task<int> Delete(int bonId);
 
     }
