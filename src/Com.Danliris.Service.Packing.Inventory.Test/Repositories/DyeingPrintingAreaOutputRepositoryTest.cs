@@ -92,8 +92,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             string testName = GetCurrentMethod() + "UpdateFromInput";
             var dbContext = DbContext(testName);
 
-            var serviceProvider = GetServiceProviderMock(dbContext).Object;
-            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            //var serviceProviderMock = GetServiceProviderMock(dbContext).Object;
+            var outSppMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            outSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
+                .ReturnsAsync(1);
+            var serviceProviderMock = GetServiceProviderMock(dbContext);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outSppMock.Object);
+            var serviceProvider = serviceProviderMock.Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider);
+
+
             var data = await DataUtil(repo, dbContext).GetTestData();
             var test = new List<int> { data.Id };
             var result = await repo.UpdateFromInputAsync(data.Id, true,test);
