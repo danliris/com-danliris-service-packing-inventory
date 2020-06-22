@@ -110,6 +110,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public virtual async Task Should_Success_UpdateFromInput2_WithSameNumberSPP()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromInput";
+            var dbContext = DbContext(testName);
+
+            //var serviceProviderMock = GetServiceProviderMock(dbContext).Object;
+            var outSppMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            outSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
+                .ReturnsAsync(1);
+            var serviceProviderMock = GetServiceProviderMock(dbContext);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outSppMock.Object);
+            var serviceProvider = serviceProviderMock.Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider);
+
+
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            
+            List<int> test = new List<int> ();
+            foreach (var item in data.DyeingPrintingAreaOutputProductionOrders) {
+                test.Add(item.Id);
+            }
+            var result = await repo.UpdateFromInputAsync(data.Id, true, test);
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public virtual async Task Should_Success_UpdateFromInputNextAreaFlagParentOnly()
         {
             string testName = GetCurrentMethod() + "UpdateFromInputNextAreaFlagParentOnly";
