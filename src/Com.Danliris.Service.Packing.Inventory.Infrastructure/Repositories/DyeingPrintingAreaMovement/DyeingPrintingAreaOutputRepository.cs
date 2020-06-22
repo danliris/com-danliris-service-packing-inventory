@@ -222,20 +222,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
-        public Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument, List<int> idSpp)
+        public async Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument, List<int> idSpp)
         {
+            var resultUpdate = 0;
             var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).FirstOrDefault(s => s.Id == id);
             var sppUpdated = modelToUpdate.DyeingPrintingAreaOutputProductionOrders.Where(t => idSpp.Contains(t.Id)).ToList();
-            modelToUpdate.DyeingPrintingAreaOutputProductionOrders = sppUpdated;
             if(modelToUpdate.DyeingPrintingAreaOutputProductionOrders.Count() == sppUpdated.Count())
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
 
-            foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
+            //modelToUpdate.DyeingPrintingAreaOutputProductionOrders = sppUpdated;
+            foreach (var item in sppUpdated)
             {
                 item.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+                resultUpdate = await _outputProductionOrderRepository.UpdateAsync(item.Id, item);
             }
-
-            return _dbContext.SaveChangesAsync();
+            
+            return resultUpdate;
         }
 
         public Task<int> UpdateFromInputNextAreaFlagParentOnlyAsync(int id, bool hasNextAreaDocument)
