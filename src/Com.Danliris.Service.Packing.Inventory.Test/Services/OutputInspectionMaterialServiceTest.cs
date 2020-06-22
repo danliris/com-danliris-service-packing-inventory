@@ -650,15 +650,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
-
-            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(EmptyDetailModel);
-
+            var vm = ViewModel;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
+            
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            var vm = ViewModel;
-            vm.InspectionMaterialProductionOrders.Clear();
-            var result = service.GenerateExcel(ViewModel);
+            
+            var result = service.GenerateExcel(vm);
 
             Assert.NotNull(result);
         }
