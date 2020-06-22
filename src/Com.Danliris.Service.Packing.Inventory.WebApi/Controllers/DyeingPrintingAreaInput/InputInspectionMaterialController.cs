@@ -191,6 +191,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, error);
             }
         }
+
+        [HttpGet("xls")]
+        public IActionResult GetExcelAll()
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                var Result = _service.GenerateExcel();
+                string filename = "IM Area Note Dyeing/Printing.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 
 }
