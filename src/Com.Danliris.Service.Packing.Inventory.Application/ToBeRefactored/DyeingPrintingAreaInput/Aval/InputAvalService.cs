@@ -296,23 +296,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
-            ////Movement from Previous Area to Aval Area
-            //foreach (var dyeingPrintingMovement in viewModel.DyeingPrintingMovementIds)
-            //{
-            //    //Flag for already on Input DyeingPrintingAreaOutputMovement
-            //    result += await _outputRepository.UpdateFromInputAsync(dyeingPrintingMovement.DyeingPrintingAreaMovementId, true, dyeingPrintingMovement.ProductionOrderIds);
+            //Movement from Previous Area to Aval Area
+            foreach (var dyeingPrintingMovement in viewModel.DyeingPrintingMovementIds)
+            {
+                //Flag for already on Input DyeingPrintingAreaOutputMovement
+                result += await _outputRepository.UpdateFromInputAsync(dyeingPrintingMovement.DyeingPrintingAreaMovementId, true, dyeingPrintingMovement.ProductionOrderIds);
 
-            //    foreach (var productionOrderId in dyeingPrintingMovement.ProductionOrderIds)
-            //    {
-            //        //Get Previous Summary
-            //        var previousSummary = _summaryRepository.ReadAll()
-            //                                                .FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == dyeingPrintingMovement.DyeingPrintingAreaMovementId &&
-            //                                                                     s.ProductionOrderId == productionOrderId);
-            //        if (previousSummary != null)
-            //            //Update Previous Summary
-            //            result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
-            //    }
-            //}
+                //foreach (var productionOrderId in dyeingPrintingMovement.ProductionOrderIds)
+                //{
+                //    //Get Previous Summary
+                //    var previousSummary = _summaryRepository.ReadAll()
+                //                                            .FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == dyeingPrintingMovement.DyeingPrintingAreaMovementId &&
+                //                                                                 s.ProductionOrderId == productionOrderId);
+                //    if (previousSummary != null)
+                //        //Update Previous Summary
+                //        result += await _summaryRepository.UpdateToAvalAsync(previousSummary, viewModel.Date, viewModel.Area, TYPE);
+                //}
+            }
 
             //Summed Up Balance (or Quantity in Aval)
             var groupedProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy(o => new { o.AvalType,
@@ -490,74 +490,61 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var query = _outputRepository.ReadAll().Where(s => 
                                                                s.DestinationArea == GUDANGAVAL &&
-                                                               s.DyeingPrintingAreaOutputProductionOrders.Any(t=>!t.HasNextAreaDocument)
-                                                               );
-            List<string> SearchAttributes = new List<string>()
-            {
-                "BonNo"
-            };
+                                                               s.DyeingPrintingAreaOutputProductionOrders.Any(t=> !t.HasNextAreaDocument)
+                                                               ).Select(s => new PreAvalIndexViewModel()
+                                                               {
+                                                                   Id = s.Id,
+                                                                   Date = s.Date,
+                                                                   Area = s.Area,
+                                                                   Shift = s.Shift,
+                                                                   Group = s.Group,
+                                                                   BonNo = s.BonNo,
+                                                                   HasNextAreaDocument = s.HasNextAreaDocument,
+                                                                   DestinationArea = s.DestinationArea,
+                                                                   PreAvalProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Where(x => !x.HasNextAreaDocument).Select(d => new OutputPreAvalProductionOrderViewModel()
+                                                                   {
+                                                                       Id = d.Id,
+                                                                       ProductionOrder = new ProductionOrder()
+                                                                       {
+                                                                           Id = d.ProductionOrderId,
+                                                                           No = d.ProductionOrderNo,
+                                                                           Type = d.ProductionOrderType
+                                                                       },
+                                                                       MaterialWidth = d.MaterialWidth,
+                                                                       Material = new Material()
+                                                                       {
+                                                                           Id = d.MaterialId,
+                                                                           Name = d.MaterialName
+                                                                       },
+                                                                       MaterialConstruction = new MaterialConstruction()
+                                                                       {
+                                                                           Name = d.MaterialConstructionName,
+                                                                           Id = d.MaterialConstructionId
+                                                                       },
+                                                                       BuyerId = d.BuyerId,
+                                                                       CartNo = d.CartNo,
+                                                                       Buyer = d.Buyer,
+                                                                       Construction = d.Construction,
+                                                                       Unit = d.Unit,
+                                                                       Color = d.Color,
+                                                                       Motif = d.Motif,
+                                                                       UomUnit = d.UomUnit,
+                                                                       Remark = d.Remark,
+                                                                       Grade = d.Grade,
+                                                                       Status = d.Status,
+                                                                       Balance = d.Balance,
+                                                                       PackingInstruction = d.PackingInstruction,
+                                                                       AvalALength = d.AvalALength,
+                                                                       AvalBLength = d.AvalBLength,
+                                                                       AvalConnectionLength = d.AvalConnectionLength,
+                                                                       QtyOrder = d.ProductionOrderOrderQuantity,
+                                                                       AvalType = d.AvalType,
+                                                                       DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
 
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Search(query, SearchAttributes, keyword);
+                                                                   }).ToList()
+                                                               });
 
-            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Filter(query, FilterDictionary);
-
-            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<DyeingPrintingAreaOutputModel>.Order(query, OrderDictionary);
-            var data = query.Select(s => new PreAvalIndexViewModel()
-            {
-                Id = s.Id,
-                Date = s.Date,
-                Area = s.Area,
-                Shift = s.Shift,
-                Group = s.Group,
-                BonNo = s.BonNo,
-                HasNextAreaDocument = s.HasNextAreaDocument,
-                DestinationArea = s.DestinationArea,
-                PreAvalProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputPreAvalProductionOrderViewModel()
-                {
-                    Id = d.Id,
-                    ProductionOrder = new ProductionOrder()
-                    {
-                        Id = d.ProductionOrderId,
-                        No = d.ProductionOrderNo,
-                        Type = d.ProductionOrderType
-                    },
-                    MaterialWidth = d.MaterialWidth,
-                    Material = new Material()
-                    {
-                        Id = d.MaterialId,
-                        Name = d.MaterialName
-                    },
-                    MaterialConstruction = new MaterialConstruction()
-                    {
-                        Name = d.MaterialConstructionName,
-                        Id = d.MaterialConstructionId
-                    },
-                    BuyerId = d.BuyerId,
-                    CartNo = d.CartNo,
-                    Buyer = d.Buyer,
-                    Construction = d.Construction,
-                    Unit = d.Unit,
-                    Color = d.Color,
-                    Motif = d.Motif,
-                    UomUnit = d.UomUnit,
-                    Remark = d.Remark,
-                    Grade = d.Grade,
-                    Status = d.Status,
-                    Balance = d.Balance,
-                    PackingInstruction = d.PackingInstruction,
-                    AvalALength = d.AvalALength,
-                    AvalBLength = d.AvalBLength,
-                    AvalConnectionLength = d.AvalConnectionLength,
-                    QtyOrder = d.ProductionOrderOrderQuantity,
-                    AvalType = d.AvalType,
-                    DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
-
-                }).ToList()
-            });
-
-            return new ListResult<PreAvalIndexViewModel>(data.ToList(), page, size, query.Count());
+            return new ListResult<PreAvalIndexViewModel>(query.ToList(), page, size, query.Count());
         }
 
         public async Task<int> Reject(InputAvalViewModel viewModel)
