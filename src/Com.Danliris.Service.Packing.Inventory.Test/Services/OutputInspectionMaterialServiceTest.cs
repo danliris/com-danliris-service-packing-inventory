@@ -624,7 +624,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_GenerateExcel()
+        public void Should_Success_GenerateExcel()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
@@ -637,26 +637,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = service.GenerateExcel(ViewModel);
 
             Assert.NotNull(result);
         }
 
         [Fact]
-        public async Task Should_Empty_GenerateExcel()
+        public void Should_Empty_GenerateExcel()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
-
-            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(EmptyDetailModel);
-
+            var vm = ViewModel;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
+            
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            
+            var result = service.GenerateExcel(vm);
 
             Assert.NotNull(result);
         }
@@ -726,28 +726,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, result);
         }
 
-        //[Fact]
-        //public async Task Should_Exception_Delete()
-        //{
-        //    var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
-        //    var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-        //    var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
-        //    var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-        //    var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
-        //    var model = Model;
-        //    model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
-        //    repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-        //        .ReturnsAsync(model);
-        //    repoMock.Setup(s => s.DeleteIMArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
-        //        .ReturnsAsync(1);
-
-        //    movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
-        //         .ReturnsAsync(1);
-
-
-        //    var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-        //    await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(1));
-        //}
 
         [Fact]
         public async Task Should_Success_Update()
@@ -835,6 +813,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetDistinctProductionOrder(1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelAll()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = service.GenerateExcel();
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcel_Empty()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = service.GenerateExcel();
+
+            Assert.NotNull(result);
         }
 
         [Fact]
