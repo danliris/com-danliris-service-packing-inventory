@@ -129,6 +129,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
               .Property(s => s.MaterialWidth)
               .HasMaxLength(1024);
+
+            builder
+             .Property(s => s.AvalMachine)
+             .HasMaxLength(32);
         }
     }
 }

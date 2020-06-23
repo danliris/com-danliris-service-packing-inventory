@@ -66,6 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
+                            AvalMachine = "a",
                             Material = new Material()
                             {
                                 Id = 1,
