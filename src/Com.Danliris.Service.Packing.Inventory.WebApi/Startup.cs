@@ -106,6 +106,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.PackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -223,6 +224,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient <IGarmentShippingExportSalesDOService, GarmentShippingExportSalesDOService>();
             services.AddTransient<IGarmentShippingLocalSalesDOService, GarmentShippingLocalSalesDOService>();
             services.AddTransient<IGarmentLocalCoverLetterService, GarmentLocalCoverLetterService>();
+
+            services.AddTransient<IGarmentPackingListMonitoringService, GarmentPackingListMonitoringService>();
 
             #endregion
 
