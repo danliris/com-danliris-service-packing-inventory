@@ -917,7 +917,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "a"
                 },
-                MaterialWidth = "1"
+                MaterialWidth = "1",
+                AvalMachine = "a"
             };
             var test1 = test.BuyerId;
             var test2 = test.ProductionOrder;
@@ -928,6 +929,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(test.Material);
             Assert.NotNull(test.MaterialConstruction);
             Assert.NotNull(test.MaterialWidth);
+            Assert.NotNull(test.AvalMachine);
         }
     }
 }
