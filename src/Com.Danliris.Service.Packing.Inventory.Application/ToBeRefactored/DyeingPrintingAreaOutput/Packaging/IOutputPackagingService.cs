@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public interface IOutputPackagingService
     {
         Task<int> Create(OutputPackagingViewModel viewModel);
+        Task<int> CreateV2(OutputPackagingViewModel viewModel);
         Task<OutputPackagingViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<MemoryStream> GenerateExcel(int id);
