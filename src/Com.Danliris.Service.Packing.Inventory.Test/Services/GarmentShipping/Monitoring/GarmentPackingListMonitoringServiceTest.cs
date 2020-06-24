@@ -46,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var result = service.GetReportData(model.Id, model.InvoiceType, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
 
             Assert.NotEmpty(result.Data);
+            Assert.Empty(result.Data.Where(d => d.id == 0));
         }
 
         [Fact]
