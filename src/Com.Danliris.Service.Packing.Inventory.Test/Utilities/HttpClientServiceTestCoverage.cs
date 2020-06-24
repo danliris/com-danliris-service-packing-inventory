@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Utilities
 {
     public class HttpClientServiceTestCoverage
     {
-        private const string url = "http://127.0.1.1/";
+        private const string url = "http://127.0.0.1/";
         private HttpClientService HttpClientService => new HttpClientService(new IdentityProvider());
         private HttpContent HttpContent => new StringContent("");
 
