@@ -93,6 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetNettWeight(item.NettWeight, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetCartonQuantity(item.CartonQuantity, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetVolume(item.Volume, _identityProvider.Username, UserAgent);
 
                 }
                 else
