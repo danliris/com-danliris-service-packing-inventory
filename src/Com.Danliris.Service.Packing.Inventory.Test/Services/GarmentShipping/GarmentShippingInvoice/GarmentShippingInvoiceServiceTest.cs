@@ -61,7 +61,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             return spMock;
 		}
 
-		protected GarmentShippingInvoiceService GetService(IServiceProvider serviceProvider)
+        public Mock<IServiceProvider> GetServiceProvider_Error(IGarmentShippingInvoiceRepository repository)
+        {
+            HttpResponseMessage message = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            var HttpClientService = new Mock<IHttpClientService>();
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(message);
+
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-buyers")))
+                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        apiVersion = "1.0",
+                        statusCode = 500,
+                        message = "Ok",
+                        data = JsonConvert.SerializeObject(new Buyer { })
+                    }))
+                });
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/account-banks")))
+                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        apiVersion = "1.0",
+                        statusCode = 500,
+                        message = "Ok",
+                        data = JsonConvert.SerializeObject(new BankAccount { })
+                    }))
+                });
+
+            var spMock = new Mock<IServiceProvider>();
+            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+                .Returns(repository);
+            spMock
+                .Setup(x => x.GetService(typeof(IHttpClientService)))
+                .Returns(HttpClientService.Object);
+
+            return spMock;
+        }
+
+        protected GarmentShippingInvoiceService GetService(IServiceProvider serviceProvider)
 		{
 			return new GarmentShippingInvoiceService(serviceProvider);
 		}
@@ -170,9 +213,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Success_Get_BuyerViewModel()
         {
+            var items = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustments = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100) };
+            var model = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", items, 1000, "dddd", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustments, 100000);
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
-            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
-                .ReturnsAsync(1);
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
             var result = service.GetBuyer(It.IsAny<int>());
@@ -183,14 +230,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Success_Get_BankViewModel()
         {
+            var items = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustments = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100) };
+            var model = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", items, 1000, "dddd", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustments, 100000);
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
-            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
-                .ReturnsAsync(1);
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
             var result = service.GetBank(It.IsAny<int>());
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Null_Get_BuyerViewModel()
+        {
+            var items = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustments = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100) };
+            var model = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", items, 1000, "dddd", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustments, 100000);
+
+            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+
+            var service = GetService(GetServiceProvider_Error(repoMock.Object).Object);
+             var result = service.GetBuyer(It.IsAny<int>());
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void Should_Null_Get_BankViewModel()
+        {
+            var items = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustments = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100) };
+            var model = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", items, 1000, "dddd", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustments, 100000);
+
+            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+
+            var service = GetService(GetServiceProvider_Error(repoMock.Object).Object);
+            var result = service.GetBank(It.IsAny<int>());
+
+            Assert.Null(result);
         }
     }
 }
