@@ -37,6 +37,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCo
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -104,6 +106,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalSalesDOModel> GarmentShippingLocalSalesDOs { get; set; }
         public DbSet<GarmentShippingLocalSalesDOItemModel> GarmentShippingLocalSalesDOItems { get; set; }
+
+        public DbSet<GarmentShippingLocalPriceCorrectionNoteModel> GarmentShippingLocalPriceCorrectionNotes { get; set; }
+        public DbSet<GarmentShippingLocalPriceCorrectionNoteItemModel> GarmentShippingLocalPriceCorrectionNoteItems { get; set; }
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
@@ -180,6 +185,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteItemConfig());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
