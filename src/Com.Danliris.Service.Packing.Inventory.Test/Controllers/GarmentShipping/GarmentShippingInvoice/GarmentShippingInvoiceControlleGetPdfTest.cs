@@ -1,0 +1,138 @@
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Xunit;
+using System.Threading.Tasks;
+using Moq;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using System.Net;
+
+namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingInvoice
+{
+    public class GarmentShippingInvoiceControlleGetPdfTest : GarmentShippingInvoiceControllerTest
+    {
+        private GarmentShippingInvoiceViewModel ViewModel
+        {
+            get
+            {
+                return new GarmentShippingInvoiceViewModel()
+                {
+                    InvoiceDate = DateTimeOffset.Now,
+                    InvoiceNo = "no",
+                    BuyerAgent = new BuyerAgent
+                    {
+                        Id = '1',
+                        Code = "aa",
+                        Name = "aa"
+                    },
+                    BankAccount = "aa",
+                    BankAccountId = 1,
+                    CO = "aa",
+                    Description = "aa",
+                    LCNo = "aa",
+                    PackingListId=1,
+                    ShippingPer="aa",
+                    From="aa",
+                    To="aa",
+                    Items= new List<GarmentShippingInvoiceItemViewModel> ()
+                    {
+                        new GarmentShippingInvoiceItemViewModel
+                        {
+                            ComodityDesc="aa",
+                            Quantity=100,
+                            Amount=122,
+                            Price=133,
+                            RONo="roNo"
+                        }
+                    }
+                };
+            }
+        }
+
+        private GarmentPackingListViewModel packingListVM
+        {
+            get
+            {
+                return new GarmentPackingListViewModel()
+                {
+                    Remark="aa",
+                    SideMark="aa",
+                    ShippingMark="aa",
+                    GrossWeight=12,
+                    NettWeight=12,
+                    Measurements= new List<GarmentPackingListMeasurementViewModel>()
+                    {
+                        new GarmentPackingListMeasurementViewModel
+                        {
+                            Width=1,
+                            Height=1,
+                            CartonsQuantity=1,
+                            Length=1
+                        }
+                    }
+                };
+            }
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF()
+        {
+            //v
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1);
+
+            Assert.NotNull(response);
+        }
+
+
+        [Fact]
+        public async Task Should_Exception_GetPDF()
+        {
+            //v
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+    }
+}

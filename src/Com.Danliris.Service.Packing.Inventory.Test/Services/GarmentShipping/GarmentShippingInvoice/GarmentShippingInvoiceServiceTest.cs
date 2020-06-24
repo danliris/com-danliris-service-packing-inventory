@@ -1,10 +1,14 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,11 +20,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 	{
 		public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository)
 		{
-			var spMock = new Mock<IServiceProvider>();
-			spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
-				.Returns(repository);
+            HttpResponseMessage message = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            var HttpClientService = new Mock<IHttpClientService>();
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(message);
 
-			return spMock;
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-buyers")))
+                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        apiVersion = "1.0",
+                        statusCode = 200,
+                        message = "Ok",
+                        data = JsonConvert.SerializeObject(new Buyer { })
+                    }))
+                });
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/account-banks")))
+                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        apiVersion = "1.0",
+                        statusCode = 200,
+                        message = "Ok",
+                        data = JsonConvert.SerializeObject(new BankAccount { })
+                    }))
+                });
+
+            var spMock = new Mock<IServiceProvider>();
+            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+				.Returns(repository);
+            spMock
+                .Setup(x => x.GetService(typeof(IHttpClientService)))
+                .Returns(HttpClientService.Object);
+
+            return spMock;
 		}
 
 		protected GarmentShippingInvoiceService GetService(IServiceProvider serviceProvider)
@@ -128,5 +166,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
 			Assert.NotEqual(0, result);
 		}
-	}
+
+        [Fact]
+        public void Should_Success_Get_BuyerViewModel()
+        {
+            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var result = service.GetBuyer(It.IsAny<int>());
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_Get_BankViewModel()
+        {
+            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var result = service.GetBank(It.IsAny<int>());
+
+            Assert.NotNull(result);
+        }
+    }
 }
