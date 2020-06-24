@@ -640,7 +640,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Exception_GetTransitAreaNoteExcelAll()
+        public void Should_Exception_GetIMAreaNoteExcelAll()
         {
             //v
             var serviceMock = new Mock<IOutputInspectionMaterialService>();
