@@ -722,7 +722,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return new ListResult<InputPackagingProductionOrdersViewModel>(data.ToList(), page, size, query.Count());
         }
+        public ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPackSumBySPPNo(int page, int size, string filter, string order, string keyword)
+        {
+            var query2 = _inputRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => d.DyeingPrintingAreaInputId == s.Id)); ;
+            var query = _inputProductionOrderRepository.ReadAll().Join(query2,
+                                                                        s => s.DyeingPrintingAreaInputId,
+                                                                        s2 => s2.Id,
+                                                                        (s, s2) => s);
 
+
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ProductionOrderNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            //var queryGroup = query.GroupBy(
+            //                        s => s.ProductionOrderId,
+            //                        s => s,
+            //                        (key, item) => new { Key = key, Items = item })
+            //                        .Select(s=> new InputPackagingProductionOrdersViewModel()
+            //                        {
+            //                            Id = s.Items.FirstOrDefault().Id,
+            //                            Balance = s.Items.Sum(d=> d.Balance),
+            //                            Buyer = s.Items.First().Buyer,
+            //                            CartNo = s.Items.First().CartNo,
+            //                            Color = s.Items.First().Color,
+            //                            Construction = s.Items.First().Construction,
+            //                            //HasOutputDocument = s.HasOutputDocument,
+            //                            //IsChecked = s.IsChecked,
+            //                            Motif = s.Items.First().Motif,
+            //                            PackingInstruction = s.Items.First().PackingInstruction,
+            //                            ProductionOrder = new ProductionOrder()
+            //                            {
+            //                                Id = s.Items.First().ProductionOrderId,
+            //                                No = s.Items.First().ProductionOrderNo,
+            //                                Type = s.Items.First().ProductionOrderType
+            //                            },
+            //                            Unit = s.Items.First().Unit,
+            //                            UomUnit = s.Items.First().UomUnit,
+            //                            ProductionOrderNo = s.Items.First().ProductionOrderNo,
+            //                            Area = s.Items.First().Area,
+            //                            BuyerId = s.Items.First().BuyerId,
+            //                            Grade = s.Items.First().Grade,
+            //                            Status = s.Items.First().Status,
+            //                            HasOutputDocument = s.Items.First().HasOutputDocument,
+            //                            QtyOrder = s.Items.First().ProductionOrderOrderQuantity,
+            //                            Remark = s.Items.First().Remark,
+            //                        });
+            var queryGroup = query.GroupBy(
+                                   s => s.ProductionOrderId,
+                                   s => s,
+                                   (key, item) => new { Key = key, Items = item });
+
+            var data = queryGroup.ToList().Select(s => new InputPackagingProductionOrdersViewModel()
+            {
+                Id = 0,
+                Balance = s.Items.Sum(d=>d.Balance),
+                Buyer = s.Items.First().Buyer,
+                CartNo = s.Items.First().CartNo,
+                Color = s.Items.First().Color,
+                Construction = s.Items.First().Construction,
+                //HasOutputDocument = s.HasOutputDocument,
+                //IsChecked = s.IsChecked,
+                Motif = s.Items.First().Motif,
+                PackingInstruction = s.Items.First().PackingInstruction,
+                ProductionOrder = new ProductionOrder()
+                {
+                    Id = s.Items.First().ProductionOrderId,
+                    No = s.Items.First().ProductionOrderNo,
+                    Type = s.Items.First().ProductionOrderType
+                },
+                Unit = s.Items.First().Unit,
+                UomUnit = s.Items.First().UomUnit,
+                ProductionOrderNo = s.Items.First().ProductionOrderNo,
+                Area = s.Items.First().Area,
+                BuyerId = s.Items.First().BuyerId,
+                Grade = s.Items.First().Grade,
+                Status = s.Items.First().Status,
+                HasOutputDocument = s.Items.First().HasOutputDocument,
+                QtyOrder = s.Items.First().ProductionOrderOrderQuantity,
+                Remark = s.Items.First().Remark
+            });
+
+            return new ListResult<InputPackagingProductionOrdersViewModel>(data.ToList(), page, size, query.Count());
+        }
         public ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSppInFromPackGroup(int page, int size, string filter, string order, string keyword)
         {
             var query2 = _inputRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => d.DyeingPrintingAreaInputId == s.Id)); ;
@@ -780,6 +868,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return new ListResult<OutputPackagingProductionOrderGroupedViewModel>(data.ToList(),page,size,data.Count());
         }
+
 
         public ICollection<OutputPackagingProductionOrderViewModel> MapModeltoModelView(List<DyeingPrintingAreaInputProductionOrderModel> source)
         {
