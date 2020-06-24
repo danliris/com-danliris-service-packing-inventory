@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200624042007_GarmentShippingLocalPriceCorrectionNotes")]
+    partial class GarmentShippingLocalPriceCorrectionNotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2485,8 +2487,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.HasIndex("PriceCorrectionNoteId");
 
-                    b.HasIndex("SalesNoteItemId");
-
                     b.ToTable("GarmentShippingLocalPriceCorrectionNoteItems");
                 });
 
@@ -3954,11 +3954,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .WithMany("Items")
                         .HasForeignKey("PriceCorrectionNoteId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote.GarmentShippingLocalSalesNoteItemModel", "SalesNoteItem")
-                        .WithMany()
-                        .HasForeignKey("SalesNoteItemId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote.GarmentShippingLocalPriceCorrectionNoteModel", b =>

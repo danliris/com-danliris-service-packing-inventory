@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
             return query;
         }
 
-        public static IQueryable<TModel> Order(IQueryable<TModel> query, Dictionary<string, string> orderDictionary)
+        public static IQueryable<TModel> Order(IQueryable<TModel> query, Dictionary<string, string> orderDictionary, bool ignoreDot = false)
         {
             /* Default Order */
             if (orderDictionary.Count.Equals(0))
@@ -40,12 +40,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
                 string Key = orderDictionary.Keys.First();
                 string OrderType = orderDictionary[Key];
 
-                query = query.OrderBy(string.Concat(Key.Replace(".", ""), " ", OrderType));
+                query = query.OrderBy(string.Concat(ignoreDot ? Key : Key.Replace(".", ""), " ", OrderType));
             }
             return query;
         }
 
-        public static IQueryable<TModel> Search(IQueryable<TModel> query, List<string> searchAttributes, string keyword, bool ToLowerCase = false)
+        public static IQueryable<TModel> Search(IQueryable<TModel> query, List<string> searchAttributes, string keyword, bool ToLowerCase = false, bool ignoreDot = false)
         {
             /* Search with Keyword */
             if (keyword != null)
@@ -53,7 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
                 string SearchQuery = String.Empty;
                 foreach (string Attribute in searchAttributes)
                 {
-                    if (Attribute.Contains("."))
+                    if (Attribute.Contains(".") && !ignoreDot)
                     {
                         var Key = Attribute.Split(".");
                         SearchQuery = string.Concat(SearchQuery, Key[0], $".Any({Key[1]}.Contains(@0)) OR ");
