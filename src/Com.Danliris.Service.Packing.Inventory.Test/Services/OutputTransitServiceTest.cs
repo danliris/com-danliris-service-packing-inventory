@@ -645,7 +645,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_GenerateExcel()
+        public void Should_Success_GenerateExcel()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
@@ -658,13 +658,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSppRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = service.GenerateExcel(ViewModel);
 
             Assert.NotNull(result);
         }
 
         [Fact]
-        public async Task Should_Empty_GenerateExcel()
+        public void Should_Empty_GenerateExcel()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
@@ -677,7 +677,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSppRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = service.GenerateExcel(ViewModel);
 
             Assert.NotNull(result);
         }

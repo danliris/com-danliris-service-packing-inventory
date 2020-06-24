@@ -333,8 +333,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
-                .ReturnsAsync(new MemoryStream());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>()))
+                .Returns(new MemoryStream());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -355,8 +356,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
-                .Throws(new Exception());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>()))
+               .Throws(new Exception());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
