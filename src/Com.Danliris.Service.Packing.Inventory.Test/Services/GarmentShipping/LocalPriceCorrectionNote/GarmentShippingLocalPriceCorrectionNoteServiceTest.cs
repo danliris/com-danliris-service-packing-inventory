@@ -35,6 +35,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     items = new List<GarmentShippingLocalPriceCorrectionNoteItemViewModel>()
                     {
                         new GarmentShippingLocalPriceCorrectionNoteItemViewModel()
+                        {
+                            isChecked = true
+                        }
                     }
                 };
             }

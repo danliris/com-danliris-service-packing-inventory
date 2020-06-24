@@ -23,6 +23,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             viewModel.items = new List<GarmentShippingLocalPriceCorrectionNoteItemViewModel>
             {
                 new GarmentShippingLocalPriceCorrectionNoteItemViewModel()
+                {
+                    isChecked = true
+                }
             };
 
             var result = viewModel.Validate(null);

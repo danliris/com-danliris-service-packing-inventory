@@ -12,13 +12,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 {
     public class GarmentShippingLocalPriceCorrectionNoteControllerGetTest : GarmentShippingLocalPriceCorrectionNoteControllerTest
     {
+        private IndexViewModel IndexViewModel
+        {
+            get {
+                return new IndexViewModel
+                {
+                    id = 1,
+                    correctionNoteNo = "",
+                    salesNote = new SalesNote()
+                };
+            }
+        }
+
         [Fact]
         public void Get_Ok()
         {
             var serviceMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteService>();
             serviceMock
                 .Setup(s => s.Read(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(), 1, 1, 1));
+                .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>()
+                {
+                    new IndexViewModel
+                    {
+                        id = IndexViewModel.id,
+                        correctionNoteNo = IndexViewModel.correctionNoteNo,
+                        salesNote = new SalesNote
+                        {
+                            id = IndexViewModel.salesNote.id,
+                            noteNo = IndexViewModel.salesNote.noteNo,
+                            buyer = IndexViewModel.salesNote.buyer,
+                            date = IndexViewModel.salesNote.date.GetValueOrDefault(),
+                            tempo = IndexViewModel.salesNote.tempo,
+                            dispositionNo = IndexViewModel.salesNote.dispositionNo
+                        }
+                    }
+                }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
