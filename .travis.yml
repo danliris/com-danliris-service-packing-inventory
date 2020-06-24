@@ -1,8 +1,8 @@
 sudo: false
-dist: xenial
+dist: trusty
 language: csharp
 mono: none
-dotnet: 2.2.207
+dotnet: 2.2
 solution: Com.Danliris.Service.Packing.Inventory.sln
 env:
     - ASPNETCORE_ENVIRONMENT=Test
