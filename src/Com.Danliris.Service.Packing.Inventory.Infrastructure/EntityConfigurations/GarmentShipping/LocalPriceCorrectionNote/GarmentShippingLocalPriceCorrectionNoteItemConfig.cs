@@ -19,7 +19,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder.HasQueryFilter(f => !f.IsDeleted);
             /* StandardEntity */
 
-            builder.Ignore(i => i.SalesNoteItem);
+            builder
+                .HasOne(h => h.SalesNoteItem)
+                .WithMany()
+                .HasForeignKey(f => f.SalesNoteItemId)
+                .OnDelete(DeleteBehavior.Restrict);
+            // tambahkan pada migration => "onDelete: ReferentialAction.NoAction"
         }
     }
 }
