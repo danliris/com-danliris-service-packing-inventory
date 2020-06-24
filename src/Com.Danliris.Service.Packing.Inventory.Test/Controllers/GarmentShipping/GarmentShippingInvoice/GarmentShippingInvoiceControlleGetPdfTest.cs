@@ -10,6 +10,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilitie
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using System.Net;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingInvoice
 {
@@ -84,6 +85,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             //v
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(It.IsAny<BankAccount>());
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(It.IsAny<Buyer>());
             var service = serviceMock.Object;
 
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
@@ -133,6 +136,61 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var response = await controller.GetPDF(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_NotFound_GetPDF()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1);
+
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_BadRequest_GetPDF()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
     }
 }
