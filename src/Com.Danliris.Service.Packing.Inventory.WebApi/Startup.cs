@@ -87,6 +87,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.PackingList;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalPriceCorrectionNote;
 
@@ -105,10 +106,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
         public IConfiguration Configuration { get; }
 
+        private void RegisterEndpoints()
+        {
+            APIEndpoint.Core = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
+            
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            RegisterEndpoints();
 
             // Register Middleware
 
@@ -217,6 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             // Register Provider
             services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddScoped<IValidateService, ValidateService>();
+            services.AddScoped<IHttpClientService, HttpClientService>();
 
             var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
             services
