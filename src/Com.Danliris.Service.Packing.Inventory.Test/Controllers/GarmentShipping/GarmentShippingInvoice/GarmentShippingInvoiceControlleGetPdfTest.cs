@@ -142,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         public async Task Should_NotFound_GetPDF()
         {
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(GarmentShippingInvoiceViewModel));
             var service = serviceMock.Object;
 
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
