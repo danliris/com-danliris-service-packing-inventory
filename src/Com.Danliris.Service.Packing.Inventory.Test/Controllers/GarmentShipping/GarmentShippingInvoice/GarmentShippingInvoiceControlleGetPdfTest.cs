@@ -45,9 +45,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         {
                             ComodityDesc="aa",
                             Quantity=1002,
-                            Amount=1222,
+                            Amount=12222,
                             Price=1332,
-                            RONo="roNo"
+                            RONo="roNo",
+                            Uom= new UnitOfMeasurement
+                            {
+                                Id=1,
+                                Unit="aa"
+                            }
                         }
                     }
                 };
@@ -72,7 +77,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Width=1,
                             Height=1,
                             CartonsQuantity=1,
-                            Length=1
+                            Length=1,
+                            
                         }
                     }
                 };
