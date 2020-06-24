@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-        public string AvalMachine { get; private set; }
+        public string Machine { get; private set; }
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -543,7 +543,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            decimal packagingQty,
                                                            string packagingUnit,
                                                            int dyeingPrintingAreaOutputProductionOrderId,
-                                                           string avalMachine)
+                                                           string machine)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -574,7 +574,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
 
             Area = area;
-            AvalMachine = avalMachine;
+            Machine = machine;
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            string packagingUnit,
                                                            int dyeingPrintingAreaOutputProductionOrderId,
                                                            int dyeingPrintingAreaInputsId,
-                                                           string avalMachine)
+                                                           string machine)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -641,7 +641,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputId = dyeingPrintingAreaInputsId;
 
             Area = area;
-            AvalMachine = avalMachine;
+            Machine = machine;
         }
 
         //Shipping
@@ -762,7 +762,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType,
             double productionOrderQuantity, string cartNo, string construction, string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit,
             double balance, double avalQuantity, double avalWeightQuantity, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName, 
-            int materialConstructionId, string materialConstructionName, string materialWidth, string avalMachine) : this()
+            int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
         {
             Area = area;
             InputAvalBonNo = inputAvalBonNo;
@@ -780,7 +780,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalType = avalType;
             UomUnit = uomUnit;
             Balance = balance;
-            AvalMachine = avalMachine;
+            Machine = machine;
             AvalQuantity = avalQuantity;
             AvalQuantityKg = avalWeightQuantity;
 
@@ -1108,12 +1108,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
-        public void SetAvalMachine(string newAvalMachine, string user, string agent)
+        public void SetMachine(string newMachine, string user, string agent)
         {
 
-            if (newAvalMachine != AvalMachine)
+            if (newMachine != Machine)
             {
-                AvalMachine = newAvalMachine;
+                Machine = newMachine;
                 this.FlagForUpdate(user, agent);
             }
         }
