@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var resultUpdate = 0;
             var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).FirstOrDefault(s => s.Id == id);
             var sppUpdated = modelToUpdate.DyeingPrintingAreaOutputProductionOrders.Where(t => idSpp.Contains(t.Id)).ToList();
-            if(modelToUpdate.DyeingPrintingAreaOutputProductionOrders.Count() == sppUpdated.Count())
+            if (modelToUpdate.DyeingPrintingAreaOutputProductionOrders.Count() == sppUpdated.Count())
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
 
             //modelToUpdate.DyeingPrintingAreaOutputProductionOrders = sppUpdated;
@@ -236,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 item.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
                 resultUpdate = await _outputProductionOrderRepository.UpdateAsync(item.Id, item);
             }
-            
+
             return resultUpdate;
         }
 
@@ -271,28 +271,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
-                    
+
                 }
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
-                    
+
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAvalType(localItem.AvalType, _identityProvider.Username, UserAgent);
+                    item.SetAvalMachine(localItem.AvalMachine, _identityProvider.Username, UserAgent);
                 }
             }
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
-                
+
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
                 result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
-                
+
             }
 
             result += await _dbContext.SaveChangesAsync();
@@ -314,27 +315,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    
+
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
-                    
+
 
                 }
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
-                    
+
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
-                    
+
                 }
             }
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
-               
+
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
                 result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);

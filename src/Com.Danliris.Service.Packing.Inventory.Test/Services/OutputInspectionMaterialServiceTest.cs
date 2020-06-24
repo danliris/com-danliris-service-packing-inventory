@@ -66,6 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Status = "Ok",
                             Motif = "sd",
                             PackingInstruction = "d",
+                            AvalMachine = "a",
                             Material = new Material()
                             {
                                 Id = 1,
@@ -166,7 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         var productionOrders = new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth)
+                            detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AvalMachine)
                         {
                             Id = detail.Id
                         };

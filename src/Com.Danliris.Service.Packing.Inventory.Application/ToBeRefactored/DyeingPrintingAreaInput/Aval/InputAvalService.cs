@@ -72,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 AvalItems = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalItemViewModel()
                 {
                     Active = s.Active,
+                    AvalMachine = s.AvalMachine,
                     LastModifiedUtc = s.LastModifiedUtc,
                     CreatedAgent = s.CreatedAgent,
                     CreatedBy = s.CreatedBy,
@@ -222,7 +223,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingType,
                                                                                                                                             s.PackagingQty,
                                                                                                                                             s.PackagingUnit,
-                                                                                                                                            s.DyeingPrintingAreaOutputProductionOrderId))
+                                                                                                                                            s.DyeingPrintingAreaOutputProductionOrderId,
+                                                                                                                                            s.AvalMachine))
                                                                                .ToList());
             }
             else
@@ -260,8 +262,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingQty,
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.DyeingPrintingAreaOutputProductionOrderId,
-                                                                                                                                            bonExist.First().Id
-                                                                                                                                            ))
+                                                                                                                                            bonExist.First().Id,
+                                                                                                                                            s.AvalMachine))
                                                                                .ToList());
             }
 
@@ -444,6 +446,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
                     },
+                    AvalMachine = d.AvalMachine,
                     MaterialWidth = d.MaterialWidth,
                     Material = new Material()
                     {
@@ -521,6 +524,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                            Name = d.MaterialConstructionName,
                                                                            Id = d.MaterialConstructionId
                                                                        },
+                                                                       AvalMachine = d.AvalMachine,
                                                                        BuyerId = d.BuyerId,
                                                                        CartNo = d.CartNo,
                                                                        Buyer = d.Buyer,
