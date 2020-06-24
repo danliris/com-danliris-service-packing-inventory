@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     ShippingPer="aa",
                     From="aa",
                     To="aa",
+                    
                     Items= new List<GarmentShippingInvoiceItemViewModel> ()
                     {
                         new GarmentShippingInvoiceItemViewModel
@@ -156,7 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             //v
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
-            ViewModel.Items.First().Amount = 1234567890123456;
+            ViewModel.Items.First().Amount = (decimal)123456789012345612.007;
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
