@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
-
+        public string AvalMachine { get; private set; }
 
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
@@ -231,8 +231,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="grade"></param>
         /// <param name="balanceRemains"></param>
         /// <param name="buyerId"></param>
+        /// <param name="remark"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId, int prevSppOutputID)
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId, int prevSppOutputID, string remark)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -254,6 +255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BalanceRemains = balanceRemains;
             BuyerId = buyerId;
             DyeingPrintingAreaOutputProductionOrderId = prevSppOutputID;
+            Remark = remark;
         }
         /// <summary>
         /// Constructor using by Packaging Area with prev Bon Einty
@@ -367,8 +369,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="dyeingPrintingAreaInputId"></param>
         /// <param name="balanceRemains"></param>
         /// <param name="buyerId"></param>
+        /// <param name="remark"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId,
+            string remark)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -391,6 +395,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BalanceRemains = balanceRemains;
             BuyerId = buyerId;
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+            Remark = remark;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
@@ -422,7 +427,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// construtor for Gudang barang jadi With OutputSPP ID
         /// </summary>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId)
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, 
+            double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, string remark)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -447,6 +453,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
+
+            Remark = remark;
         }
 
         //Transit
@@ -534,8 +542,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            string packagingType,
                                                            decimal packagingQty,
                                                            string packagingUnit,
-                                                           int dyeingPrintingAreaOutputProductionOrderId
-                                                           )
+                                                           int dyeingPrintingAreaOutputProductionOrderId,
+                                                           string avalMachine)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -566,6 +574,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
 
             Area = area;
+            AvalMachine = avalMachine;
         }
 
         /// <summary>
@@ -599,8 +608,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            decimal packagingQty,
                                                            string packagingUnit,
                                                            int dyeingPrintingAreaOutputProductionOrderId,
-                                                           int dyeingPrintingAreaInputsId
-                                                           )
+                                                           int dyeingPrintingAreaInputsId,
+                                                           string avalMachine)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -632,12 +641,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputId = dyeingPrintingAreaInputsId;
 
             Area = area;
+            AvalMachine = avalMachine;
         }
 
         //Shipping
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
            string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains,
-           string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth)
+           string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, 
+           string cartNo, string remark)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -670,6 +681,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionName = materialConstructionName;
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
+
+            CartNo = cartNo;
+            Remark = remark;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(long productionOrderId,
@@ -748,7 +762,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType,
             double productionOrderQuantity, string cartNo, string construction, string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit,
             double balance, double avalQuantity, double avalWeightQuantity, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName, 
-            int materialConstructionId, string materialConstructionName, string materialWidth)
+            int materialConstructionId, string materialConstructionName, string materialWidth, string avalMachine) : this()
         {
             Area = area;
             InputAvalBonNo = inputAvalBonNo;
@@ -766,6 +780,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalType = avalType;
             UomUnit = uomUnit;
             Balance = balance;
+            AvalMachine = avalMachine;
             AvalQuantity = avalQuantity;
             AvalQuantityKg = avalWeightQuantity;
 
@@ -1089,6 +1104,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newMaterialWidth != MaterialWidth)
             {
                 MaterialWidth = newMaterialWidth;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalMachine(string newAvalMachine, string user, string agent)
+        {
+
+            if (newAvalMachine != AvalMachine)
+            {
+                AvalMachine = newAvalMachine;
                 this.FlagForUpdate(user, agent);
             }
         }

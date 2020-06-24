@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
         List<InputSppWarehouseViewModel> GetOutputSppWarehouseItemList(int bonId);
+        MemoryStream GenerateExcelAll();
         Task<int> Delete(int bonId);
 
     }

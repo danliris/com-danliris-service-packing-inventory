@@ -44,5 +44,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Area { get; set; }
         public string UomUnit { get; set; }
         public double QtyOrder { get; set; }
+        public string AvalMachine { get; set; }
     }
 }

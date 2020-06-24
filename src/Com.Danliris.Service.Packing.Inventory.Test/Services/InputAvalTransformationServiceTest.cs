@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
+                            AvalMachine = "a",
                             Construction = "sd",
                             HasOutputDocument = false,
                             Motif = "sd",
@@ -114,7 +115,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     ViewModel.TotalQuantity,ViewModel.TotalWeight, ViewModel.AvalTransformationProductionOrders.Select(item => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
                     item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,item.CartNo, item.Construction,item.Unit, item.Buyer,
                     item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.AvalQuantity, item.WeightQuantity, item.HasOutputDocument, 
-                    item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth)).ToList());
+                    item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, 
+                    item.AvalMachine)).ToList());
             }
         }
 

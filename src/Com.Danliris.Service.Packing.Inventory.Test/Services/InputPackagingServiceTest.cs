@@ -1053,5 +1053,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
         }
+        [Fact]
+        public void Should_Success_GenerateExcelAll()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            inputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel> { Model }.AsQueryable());
+
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+
+
+            var result = service.GenerateExcelAll();
+
+            Assert.NotNull(result);
+        }
     }
 }

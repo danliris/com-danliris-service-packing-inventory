@@ -259,6 +259,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("AvalConnectionLength");
 
+                    b.Property<string>("AvalMachine")
+                        .HasMaxLength(32);
+
                     b.Property<double>("AvalQuantity");
 
                     b.Property<double>("AvalQuantityKg");
@@ -561,6 +564,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("AvalCartNo");
 
                     b.Property<double>("AvalConnectionLength");
+
+                    b.Property<string>("AvalMachine")
+                        .HasMaxLength(32);
 
                     b.Property<double>("AvalQuantityKg");
 
