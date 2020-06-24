@@ -44,9 +44,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=100,
-                            Amount=122,
-                            Price=133,
+                            Quantity=1002,
+                            Amount=1222,
+                            Price=1332,
                             RONo="roNo"
                         }
                     }
@@ -79,14 +79,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             }
         }
 
+        private Buyer buyerVm
+        {
+            get
+            {
+                return new Buyer()
+                {
+                    Id=1,
+                    Name="aa",
+                    Code="aa",
+                    Country="aa",
+                    Address="aa",
+                };
+            }
+        }
+
+        private BankAccount bankVm
+        {
+            get
+            {
+                return new BankAccount()
+                {
+                   id=1,
+                   accountName="aa",
+                   Currency=new Currency
+                   {
+                       Id=1,
+                       Code="aa",
+                   },
+                   AccountNumber="21231",
+                   bankAddress="asdasda",
+                   swiftCode="jskha"
+                };
+            }
+        }
+
         [Fact]
         public async Task Should_Success_GetPDF()
         {
             //v
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(It.IsAny<BankAccount>());
-            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(It.IsAny<Buyer>());
+            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
 
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
