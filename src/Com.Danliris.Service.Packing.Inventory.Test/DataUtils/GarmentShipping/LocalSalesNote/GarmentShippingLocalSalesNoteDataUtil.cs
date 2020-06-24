@@ -3,7 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using System;
 using System.Collections.Generic;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentCoverLetter
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentLocalSalesNote
 {
     public class GarmentShippingLocalSalesNoteDataUtil : BaseDataUtil<GarmentShippingLocalSalesNoteRepository, GarmentShippingLocalSalesNoteModel>
     {
