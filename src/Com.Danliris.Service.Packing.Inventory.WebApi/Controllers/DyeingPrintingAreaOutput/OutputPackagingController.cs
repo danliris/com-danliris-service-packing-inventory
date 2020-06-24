@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
-                var result = await _service.Create(viewModel);
+                var result = await _service.CreateV2(viewModel);
 
                 return Created("/", result);
             }
@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
 
-                var data = await _service.Delete(id);
+                var data = await _service.DeleteV2(id);
                 return Ok(new
                 {
                     data

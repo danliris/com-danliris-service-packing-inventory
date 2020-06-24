@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         MemoryStream GenerateExcelAll();
         Task<int> Delete(int bonId);
+        Task<int> DeleteV2(int bonId);
 
     }
 }
