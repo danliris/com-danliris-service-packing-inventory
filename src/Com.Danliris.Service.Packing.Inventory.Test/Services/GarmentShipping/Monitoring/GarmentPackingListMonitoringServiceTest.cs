@@ -46,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var result = service.GetReportData(model.Id, model.InvoiceType, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
 
             Assert.NotEmpty(result.Data);
+            Assert.Empty(result.Data.Where(d => d.id == 0));
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(model.Id, model.InvoiceType, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
+            var result = service.GenerateExcel(model.BuyerAgentId, model.BuyerAgentCode, model.InvoiceType, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
 
             Assert.NotNull(result.Data);
         }
@@ -76,7 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(0, null, null, null);
+            var result = service.GenerateExcel(0, null, null, null, null);
 
             Assert.NotNull(result.Data);
         }

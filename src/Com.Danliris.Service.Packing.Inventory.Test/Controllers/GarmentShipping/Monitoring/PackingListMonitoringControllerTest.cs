@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
+            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -82,7 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
+            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
@@ -92,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentPackingListMonitoringService>();
             serviceMock
-                .Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
+                .Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>()))
                 .Returns(new ExcelResult(new MemoryStream(), "FileName"));
             var service = serviceMock.Object;
 
@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
-            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
+            var response = controller.Get(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>());
 
             Assert.NotNull(response);
         }

@@ -44,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 id = s.Id,
                 invoiceNo = s.InvoiceNo,
                 date = s.Date,
+                buyerAgentCode = s.BuyerAgentCode,
                 buyerAgentName = s.BuyerAgentName,
                 sectionCode = s.SectionCode,
                 truckingDate = s.TruckingDate,
@@ -69,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentPackingListMonitoringViewModel>(data, 1, total, total);
         }
 
-        public ExcelResult GenerateExcel(int buyerAgentId, string invoiceType, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
+        public ExcelResult GenerateExcel(int buyerAgentId, string buyerAgent, string invoiceType, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
         {
             var data = GetData(buyerAgentId, invoiceType, dateFrom, dateTo);
 
@@ -96,17 +97,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 foreach (var d in data)
                 {
-                    dt.Rows.Add(d.invoiceNo, DateTimeToString(d.date), d.buyerAgentName, d.sectionCode, DateTimeToString(d.truckingDate), DateTimeToString(d.exportEstimationDate), d.destination, d.lcNo, d.issuedBy, d.grossWeight, d.nettWeight, d.totalCarton);
+                    dt.Rows.Add(d.invoiceNo, DateTimeToString(d.date), $"{d.buyerAgentCode} - {d.buyerAgentName}", d.sectionCode, DateTimeToString(d.truckingDate), DateTimeToString(d.exportEstimationDate), d.destination, d.lcNo, d.issuedBy, d.grossWeight, d.nettWeight, d.totalCarton);
                 }
             }
 
-            var buyerName = data.Where(s => s.buyerAgentName != null).Select(s => s.buyerAgentName.Trim()).FirstOrDefault();
-            buyerName = buyerAgentId == 0 ? "" : $" {buyerName}";
+            buyerAgent = buyerAgentId == 0 ? "" : $" {buyerAgent}";
             invoiceType = string.IsNullOrWhiteSpace(invoiceType) ? "" : $" {invoiceType}";
-            dateTo = dateTo ?? DateTimeOffset.MaxValue;
+            var dateFromString = dateFrom == null ? "" : $" from {DateTimeToString(dateFrom.GetValueOrDefault())}";
+            var dateToString = dateTo == null ? "" : $" to {DateTimeToString(dateTo.GetValueOrDefault())}";
 
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing List") }, true);
-            var filename = $"Monitoring Packing List{buyerName}{invoiceType} {dateFrom.GetValueOrDefault().ToString("dd MMMM yyyy")} - {dateTo.GetValueOrDefault().ToString("dd MMMM yyyy")}.xlsx";
+            var filename = $"Monitoring Packing List{buyerAgent}{invoiceType}{dateFromString}{dateToString}.xlsx";
 
             return new ExcelResult(excel, filename);
         }

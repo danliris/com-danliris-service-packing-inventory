@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 AvalItems = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputAvalItemViewModel()
                 {
                     Active = s.Active,
-                    AvalMachine = s.AvalMachine,
+                    Machine = s.Machine,
                     LastModifiedUtc = s.LastModifiedUtc,
                     CreatedAgent = s.CreatedAgent,
                     CreatedBy = s.CreatedBy,
@@ -224,7 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingQty,
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.DyeingPrintingAreaOutputProductionOrderId,
-                                                                                                                                            s.AvalMachine))
+                                                                                                                                            s.Machine))
                                                                                .ToList());
             }
             else
@@ -263,7 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.DyeingPrintingAreaOutputProductionOrderId,
                                                                                                                                             bonExist.First().Id,
-                                                                                                                                            s.AvalMachine))
+                                                                                                                                            s.Machine))
                                                                                .ToList());
             }
 
@@ -446,7 +446,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
                     },
-                    AvalMachine = d.AvalMachine,
+                    Machine = d.Machine,
                     MaterialWidth = d.MaterialWidth,
                     Material = new Material()
                     {
@@ -524,7 +524,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                            Name = d.MaterialConstructionName,
                                                                            Id = d.MaterialConstructionId
                                                                        },
-                                                                       AvalMachine = d.AvalMachine,
+                                                                       Machine = d.Machine,
                                                                        BuyerId = d.BuyerId,
                                                                        CartNo = d.CartNo,
                                                                        Buyer = d.Buyer,

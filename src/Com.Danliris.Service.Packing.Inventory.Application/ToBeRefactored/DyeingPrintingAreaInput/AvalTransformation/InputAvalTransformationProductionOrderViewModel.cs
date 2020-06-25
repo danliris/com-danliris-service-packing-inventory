@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalQuantity { get; set; }
         public double WeightQuantity { get; set; }
         public bool HasOutputDocument { get; set; }
-        public string AvalMachine { get; set; }
+        public string Machine { get; set; }
 
         public int InputId { get; set; }
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }

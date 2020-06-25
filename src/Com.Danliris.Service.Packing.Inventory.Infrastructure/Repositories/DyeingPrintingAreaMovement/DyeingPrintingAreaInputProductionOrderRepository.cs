@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetMaterial(model.MaterialId, model.MaterialName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialConstruction(model.MaterialConstructionId, model.MaterialConstructionName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialWidth(model.MaterialWidth, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetAvalMachine(model.AvalMachine, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetMachine(model.Machine, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
