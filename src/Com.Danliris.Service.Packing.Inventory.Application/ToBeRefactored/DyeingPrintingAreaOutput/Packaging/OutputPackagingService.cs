@@ -308,7 +308,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in viewModel.PackagingProductionOrders)
             {
                 //get BonNo with shift
-                var hasBonNoWithShift = _repository.ReadAll().Where(x => x.Shift == viewModel.Shift && x.Area == PACKING && x.Date == viewModel.Date).FirstOrDefault();
+                var hasBonNoWithShift = _repository.ReadAll().Where(x => x.Shift == viewModel.Shift && x.Area == PACKING && x.Date.Date == viewModel.Date.Date).FirstOrDefault();
                 DyeingPrintingAreaOutputModel model = new DyeingPrintingAreaOutputModel();
 
                 //get spp in that will be decrease balance
