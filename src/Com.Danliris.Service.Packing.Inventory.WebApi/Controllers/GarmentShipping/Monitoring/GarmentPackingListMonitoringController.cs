@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] int buyerAgentId, [FromQuery] string invoiceType, [FromQuery] DateTimeOffset? dateFrom, [FromQuery] DateTimeOffset? dateTo)
+        public IActionResult Get([FromQuery] int buyerAgentId, [FromQuery] string buyerAgent, [FromQuery] string invoiceType, [FromQuery] DateTimeOffset? dateFrom, [FromQuery] DateTimeOffset? dateTo)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
                 if (accept == "application/xls")
                 {
-                    var result = _service.GenerateExcel(buyerAgentId, invoiceType, dateFrom, dateTo);
+                    var result = _service.GenerateExcel(buyerAgentId, buyerAgent, invoiceType, dateFrom, dateTo);
 
                     return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
                 }
