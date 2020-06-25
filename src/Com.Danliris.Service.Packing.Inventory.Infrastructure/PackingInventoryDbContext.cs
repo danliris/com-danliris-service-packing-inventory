@@ -39,6 +39,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSa
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -109,6 +110,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalPriceCorrectionNoteModel> GarmentShippingLocalPriceCorrectionNotes { get; set; }
         public DbSet<GarmentShippingLocalPriceCorrectionNoteItemModel> GarmentShippingLocalPriceCorrectionNoteItems { get; set; }
+
+        public DbSet<GarmentShippingLocalReturnNoteModel> GarmentShippingLocalReturnNotes { get; set; }
+        public DbSet<GarmentShippingLocalReturnNoteItemModel> GarmentShippingLocalReturnNoteItems { get; set; }
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
