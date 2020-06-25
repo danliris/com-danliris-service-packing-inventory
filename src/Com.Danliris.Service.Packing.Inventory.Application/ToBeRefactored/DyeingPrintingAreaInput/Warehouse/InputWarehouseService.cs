@@ -920,12 +920,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
                         string valueClass = "";
-                        if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
-                        {
+                        //if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+                        //{
                             var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                             var searchValue = searchProperty.GetValue(item, null);
                             valueClass = searchValue == null ? "" : searchValue.ToString();
-                        }
+                        //}
                         //else
                         //{
                         //    valueClass = "";
