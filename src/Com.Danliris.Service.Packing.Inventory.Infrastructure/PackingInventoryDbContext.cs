@@ -40,6 +40,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalReturnNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -192,6 +193,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteItemConfig());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
