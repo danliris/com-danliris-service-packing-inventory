@@ -333,8 +333,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
-                .ReturnsAsync(new MemoryStream());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>()))
+                .Returns(new MemoryStream());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -355,8 +356,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
-                .Throws(new Exception());
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>()))
+               .Throws(new Exception());
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -599,6 +601,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.GetDistinctProductionOrder();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetTransitAreaNoteExcelAll()
+        {
+            //v
+            var serviceMock = new Mock<IOutputTransitService>();
+
+            serviceMock.Setup(s => s.GenerateExcel())
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetExcel();
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Exception_GetTransitAreaNoteExcelAll()
+        {
+            //v
+            var serviceMock = new Mock<IOutputTransitService>();
+
+            serviceMock.Setup(s => s.GenerateExcel())
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetExcel();
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

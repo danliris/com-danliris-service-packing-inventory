@@ -15,8 +15,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Create(OutputTransitViewModel viewModel);
         Task<OutputTransitViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
-        Task<MemoryStream> GenerateExcel(int id);
         List<InputTransitProductionOrderViewModel> GetInputTransitProductionOrders(long productionOrderId);
         ListResult<InputTransitProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
+        MemoryStream GenerateExcel(OutputTransitViewModel viewModel);
+        MemoryStream GenerateExcel();
     }
 }
