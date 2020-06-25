@@ -52,25 +52,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                         DOSalesNo = "DOSalesNo"
                     },
                     FONumber = "FONumber",
-                    Receiver = new BuyerMaterialDeliveryNoteWeaving()
+                    buyer = new BuyerMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",
                         Name = "Name"
                     },
                     Remark = "Remark",
-                    SCNumber = new SalesContract()
+                    salesContract = new SalesContract()
                     {
-                        Id = 1,
-                        Number = "Number"
+                        SalesContractId = 1,
+                        SalesContractNo = "Number"
                     },
-                    Sender = new UnitMaterialDeliveryNoteWeaving()
+                    unit = new UnitMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",
                         Name = "Name"
                     },
-                    StorageNumber = new StorageMaterialDeliveryNoteWeaving()
+                    storage = new StorageMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",
@@ -109,18 +109,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                      ViewModel.DONumber.Id,
                      ViewModel.DONumber.DOSalesNo,
                      ViewModel.FONumber,
-                     ViewModel.Receiver.Id,
-                     ViewModel.Receiver.Code,
-                     ViewModel.Receiver.Name,
+                     ViewModel.buyer.Id,
+                     ViewModel.buyer.Code,
+                     ViewModel.buyer.Name,
                      ViewModel.Remark,
-                     ViewModel.SCNumber.Id,
-                     ViewModel.SCNumber.Number,
-                     ViewModel.Sender.Id,
-                     ViewModel.Sender.Code,
-                     ViewModel.Sender.Name,
-                     ViewModel.StorageNumber.Id,
-                     ViewModel.StorageNumber.Code,
-                     ViewModel.StorageNumber.Name,
+                     ViewModel.salesContract.SalesContractId,
+                     ViewModel.salesContract.SalesContractNo,
+                     ViewModel.unit.Id,
+                     ViewModel.unit.Code,
+                     ViewModel.unit.Name,
+                     ViewModel.storage.Id,
+                     ViewModel.storage.Code,
+                     ViewModel.storage.Name,
                         new List<ItemsModel>()
                         {
                             new ItemsModel(1,"1","materialName","inputLot",1,"111,222","111,222",1,1)

@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                     var stream = pdfTemplate.GeneratePdfTemplate();
                     return new FileStreamResult(stream, "application/pdf")
                     {
-                        FileDownloadName = string.Format("{0}.pdf", model.Code)
+                        FileDownloadName = string.Format("Bon Pengiriman Barang Spinning - {0}.pdf", model.Code)
                     };
                 }
             }

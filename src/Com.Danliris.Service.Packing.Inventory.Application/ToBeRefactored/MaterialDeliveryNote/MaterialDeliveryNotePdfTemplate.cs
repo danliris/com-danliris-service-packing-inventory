@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             DocumentISO = GetISO();
             DocumentInfo = GetBuyerInfo(model, timeoffset);
             GroupDetailInfo = GetGroupDetailInfo(model);
-            DetailInfo = GetDetailInfo(model);
+            DetailInfo = GetDetailInfo(model, timeoffset);
             NettoSection = GetNettoSection();
             SignatureSection = GetSignatureSection(model, timeoffset);
         }
@@ -206,13 +206,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             };
 
 
-            cell.Phrase = new Phrase($"Kepada Yth : {model.Receiver}", TEXT_FONT);
+            cell.Phrase = new Phrase($"Kepada Yth : {model.buyer.Name}", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"No. : {model.Code}", TEXT_FONT);
+            cell.Phrase = new Phrase($"No. : {model.Code}", TEXT_FONT_BOLD);
             table.AddCell(cell);
             //cell.Phrase = new Phrase($"NO. : {model.BonNo}", TEXT_FONT);
             //table.AddCell(cell);
@@ -227,14 +227,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             //cell.Phrase = new Phrase($"Sesuai DO. NO. : {model.DeliveryOrder.No}", TEXT_FONT);
             //table.AddCell(cell);
 
-            cell.Phrase = new Phrase($"U/dikirim Kpd : {model.Receiver}", TEXT_FONT);
+            cell.Phrase = new Phrase($"U/dikirim Kpd : {model.unit.Name}", TEXT_FONT);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cell);
 
             //cell.Phrase = new Phrase($"Tanggal : { model.Date.AddHours(timeoffset).ToString("dd MMMM yyyy")}", TEXT_FONT);
-            cell.Phrase = new Phrase($"Sesuai DO No. : {model.DONumber}", TEXT_FONT);
+            cell.Phrase = new Phrase($"Sesuai DO No. : {model.DONumber.DOSalesNo}", TEXT_FONT_BOLD);
             table.AddCell(cell);
 
             cell.Phrase = new Phrase("", TEXT_FONT);
@@ -343,7 +343,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             return container;
         }
 
-        private PdfPTable GetDetailInfo(MaterialDeliveryNoteViewModel model)
+        private PdfPTable GetDetailInfo(MaterialDeliveryNoteViewModel model, int timeoffset)
         {
             PdfPTable container = new PdfPTable(1)
             {
@@ -445,7 +445,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                 cellRight.Phrase = new Phrase(" ", TEXT_FONT);
                 table.AddCell(cellRight);
 
-                cellLeft.Phrase = new Phrase(detail.WeightDOS + "DOS@" + detail.WeightCone + "CONE", TEXT_FONT);
+                var dos = detail.WeightDOS.Split(",");
+                var cone = detail.WeightCone.Split(",");
+
+                cellLeft.Phrase = new Phrase(dos[0] + "DOS@" + cone[0] + "CONE+" + dos[1] + "DOS@" + cone[1] + "CONE", TEXT_FONT);
                 table.AddCell(cellLeft);
 
                 cellRight.Phrase = new Phrase(" ", TEXT_FONT);
@@ -458,7 +461,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                 cellRight.Phrase = new Phrase(" ", TEXT_FONT);
                 table.AddCell(cellRight);
 
-                cellLeft.Phrase = new Phrase("PROD`", TEXT_FONT);
+                cellLeft.Phrase = new Phrase($"PROD`{model.DateFrom.AddHours(timeoffset):dd}-{model.DateTo.AddHours(timeoffset):dd} {model.DateFrom.AddHours(timeoffset):y}", TEXT_FONT);
                 table.AddCell(cellLeft);
 
                 cellRight.Phrase = new Phrase(" ", TEXT_FONT);
@@ -560,10 +563,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
                 VerticalAlignment = Element.ALIGN_MIDDLE,
             };
 
-            cellColspan.Phrase = new Phrase("No.FO : "+ model.FONumber +"       Ex.Spn : "+ model.StorageNumber, TEXT_FONT);
+            cellColspan.Phrase = new Phrase("No.FO : " + model.FONumber + "       Ex.Spn : " + model.storage.Name, TEXT_FONT);
             table.AddCell(cellColspan);
 
-            cellColspan.Phrase = new Phrase("No.SC : "+ model.SCNumber, TEXT_FONT);
+            cellColspan.Phrase = new Phrase("No.SC : " + model.salesContract.SalesContractNo, TEXT_FONT);
             table.AddCell(cellColspan);
 
             //cell.Phrase = new Phrase(" ", TEXT_FONT);

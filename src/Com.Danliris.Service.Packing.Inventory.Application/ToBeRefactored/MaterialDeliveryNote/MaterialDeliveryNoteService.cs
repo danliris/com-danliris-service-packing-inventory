@@ -44,25 +44,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                     DOSalesNo = model.DONumber
                 },
                 FONumber = model.FONumber,
-                Receiver = new BuyerMaterialDeliveryNoteWeaving()
+                buyer = new BuyerMaterialDeliveryNoteWeaving()
                 {
                     Id = model.ReceiverId,
                     Code = model.ReceiverCode,
                     Name = model.ReceiverName
                 },
                 Remark = model.Remark,
-                SCNumber = new SalesContract() 
-                { 
-                    Number = model.SCNumber,
-                    Id = model.SCNumberId
+                salesContract = new SalesContract() 
+                {
+                    SalesContractNo = model.SCNumber,
+                    SalesContractId = model.SCNumberId
                 },
-                Sender = new UnitMaterialDeliveryNoteWeaving() 
+                unit = new UnitMaterialDeliveryNoteWeaving() 
                 {
                     Id = model.SenderId,
                     Code = model.SenderCode,
                     Name = model.SenderName
                 },
-                StorageNumber = new StorageMaterialDeliveryNoteWeaving() 
+                storage = new StorageMaterialDeliveryNoteWeaving() 
                 {
                     Id = model.StorageId,
                     Code = model.StorageCode,
@@ -87,9 +87,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
         public async Task Create(MaterialDeliveryNoteViewModel viewModel)
         {
-            var model = new Data.MaterialDeliveryNoteModel(null, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber.Id.GetValueOrDefault(), viewModel.DONumber.DOSalesNo, viewModel.FONumber, viewModel.Receiver.Id.GetValueOrDefault(), viewModel.Receiver.Code, 
-                viewModel.Receiver.Name,viewModel.Remark, viewModel.SCNumber.Id.GetValueOrDefault(), viewModel.SCNumber.Number, viewModel.Sender.Id.GetValueOrDefault(),viewModel.Sender.Code, viewModel.Sender.Name, 
-                viewModel.StorageNumber.Id.GetValueOrDefault(), viewModel.StorageNumber.Code,viewModel.StorageNumber.Name,
+            var model = new Data.MaterialDeliveryNoteModel(null, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber.Id.GetValueOrDefault(), viewModel.DONumber.DOSalesNo, viewModel.FONumber, viewModel.buyer.Id.GetValueOrDefault(), viewModel.buyer.Code, 
+                viewModel.buyer.Name,viewModel.Remark, viewModel.salesContract.SalesContractId.GetValueOrDefault(), viewModel.salesContract.SalesContractNo, viewModel.unit.Id.GetValueOrDefault(),viewModel.unit.Code, viewModel.unit.Name, 
+                viewModel.storage.Id.GetValueOrDefault(), viewModel.storage.Code,viewModel.storage.Name,
                 viewModel.Items.Select(s => new ItemsModel(s.IdSOP,s.NoSOP, s.MaterialName, s.InputLot, s.WeightBruto, s.WeightDOS, s.WeightCone, s.WeightBale, s.GetTotal)).ToList());
 
             foreach (var itm in viewModel.Items)
@@ -119,9 +119,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
         public async Task Update(int id, MaterialDeliveryNoteViewModel viewModel)
         {
-            var model = new Data.MaterialDeliveryNoteModel(null, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber.Id.GetValueOrDefault(), viewModel.DONumber.DOSalesNo, viewModel.FONumber, viewModel.Receiver.Id.GetValueOrDefault(), viewModel.Receiver.Code,
-                viewModel.Receiver.Name, viewModel.Remark, viewModel.SCNumber.Id.GetValueOrDefault(), viewModel.SCNumber.Number, viewModel.Sender.Id.GetValueOrDefault(), viewModel.Sender.Code, viewModel.Sender.Name,
-                viewModel.StorageNumber.Id.GetValueOrDefault(), viewModel.StorageNumber.Code, viewModel.StorageNumber.Name,
+            var model = new Data.MaterialDeliveryNoteModel(null, viewModel.DateSJ, viewModel.BonCode, viewModel.DateFrom, viewModel.DateTo, viewModel.DONumber.Id.GetValueOrDefault(), viewModel.DONumber.DOSalesNo, viewModel.FONumber, viewModel.buyer.Id.GetValueOrDefault(), viewModel.buyer.Code,
+                viewModel.buyer.Name, viewModel.Remark, viewModel.salesContract.SalesContractId.GetValueOrDefault(), viewModel.salesContract.SalesContractNo, viewModel.unit.Id.GetValueOrDefault(), viewModel.unit.Code, viewModel.unit.Name,
+                viewModel.storage.Id.GetValueOrDefault(), viewModel.storage.Code, viewModel.storage.Name,
                 viewModel.Items.Select(s => new ItemsModel(s.IdSOP, s.NoSOP, s.MaterialName, s.InputLot, s.WeightBruto, s.WeightDOS, s.WeightCone, s.WeightBale, s.GetTotal)).ToList());
 
             await _MaterialDeliveryNoteRepository.UpdateAsync(id, model);
@@ -139,11 +139,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                                 Code = MaterialDeliveryNote.Code,
                                 BonCode = MaterialDeliveryNote.BonCode,
                                 DateSJ = (DateTimeOffset)MaterialDeliveryNote.DateSJ,
-                                Receiver = new BuyerMaterialDeliveryNoteWeaving()
+                                buyer = new BuyerMaterialDeliveryNoteWeaving()
                                 {
                                     Name = MaterialDeliveryNote.ReceiverName
                                 },
-                                Sender = new UnitMaterialDeliveryNoteWeaving()
+                                unit = new UnitMaterialDeliveryNoteWeaving()
                                 {
                                     Name = MaterialDeliveryNote.SenderName
                                 }

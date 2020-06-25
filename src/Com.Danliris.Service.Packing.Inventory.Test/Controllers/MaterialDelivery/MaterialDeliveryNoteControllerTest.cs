@@ -81,25 +81,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                         DOSalesNo = "DOSalesNo"
                     },
                     FONumber = "123",
-                    Receiver = new BuyerMaterialDeliveryNoteWeaving()
+                    buyer = new BuyerMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",
                         Name = "Name"
                     },
                     Remark = "abc",
-                    SCNumber = new SalesContract()
+                    salesContract = new SalesContract()
                     {
-                        Id = 1,
-                        Number = "Number"
+                        SalesContractId = 1,
+                        SalesContractNo = "Number"
                     },
-                    Sender = new UnitMaterialDeliveryNoteWeaving()
+                    unit = new UnitMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",
                         Name = "Name"
                     },
-                    StorageNumber = new StorageMaterialDeliveryNoteWeaving()
+                    storage = new StorageMaterialDeliveryNoteWeaving()
                     {
                         Id = 1,
                         Code = "Code",

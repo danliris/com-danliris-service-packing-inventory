@@ -6,8 +6,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Comm
 {
     public class SalesContract
     {
-            public string Number { get; set; }
-            public int? Id { get; set; }
+            public string SalesContractNo { get; set; }
+            public int? SalesContractId { get; set; }
         
     }
 }

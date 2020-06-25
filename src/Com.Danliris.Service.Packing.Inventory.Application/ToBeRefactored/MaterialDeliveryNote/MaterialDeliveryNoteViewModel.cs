@@ -23,11 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
         public DateTimeOffset DateTo { get; set; }
         public DeliveryOrderMaterialDeliveryNoteWeaving DONumber { get; set; }
         public string FONumber { get; set; }
-        public BuyerMaterialDeliveryNoteWeaving Receiver { get; set; }
+        public BuyerMaterialDeliveryNoteWeaving buyer { get; set; }
         public string Remark { get; set; }
-        public SalesContract SCNumber { get; set; }
-        public UnitMaterialDeliveryNoteWeaving Sender { get; set; }
-        public StorageMaterialDeliveryNoteWeaving StorageNumber { get; set; }
+        public SalesContract salesContract { get; set; }
+        public UnitMaterialDeliveryNoteWeaving unit { get; set; }
+        public StorageMaterialDeliveryNoteWeaving storage { get; set; }
         public ICollection<ItemsViewModel> Items { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -64,9 +64,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 yield return new ValidationResult("Nomor DO harus diisi", new List<string> { "DONumber" });
             }
 
-            if (SCNumber == null || SCNumber.Id == 0)
+            if (salesContract == null || salesContract.SalesContractId == 0)
             {
-                yield return new ValidationResult("Nomor SC harus diisi", new List<string> { "SCNumber" });
+                yield return new ValidationResult("Nomor SC harus diisi", new List<string> { "SalesContract" });
             }
 
             if (string.IsNullOrEmpty(FONumber))
@@ -74,19 +74,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                 yield return new ValidationResult("Nomor FO harus diisi", new List<string> { "FONumber" });
             }
 
-            if (StorageNumber == null || StorageNumber.Id == 0)
+            if (storage == null || storage.Id == 0)
             {
-                yield return new ValidationResult("Nomor Gudang harus diisi", new List<string> { "StorageNumber" });
+                yield return new ValidationResult("Nomor Gudang harus diisi", new List<string> { "Storage" });
             }
 
-            if (Receiver == null || Receiver.Id == 0)
+            if (buyer == null || buyer.Id == 0)
             {
-                yield return new ValidationResult("Dikirim Kepada harus diisi", new List<string> { "Receiver" });
+                yield return new ValidationResult("Dikirim Kepada harus diisi", new List<string> { "Buyer" });
             }
 
-            if (Sender == null || Sender.Id == 0)
+            if (unit == null || unit.Id == 0)
             {
-                yield return new ValidationResult("Bagian/Pengirim harus diisi", new List<string> { "Sender" });
+                yield return new ValidationResult("Bagian/Pengirim harus diisi", new List<string> { "Unit" });
             }
 
             int Count = 0;
@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
             if (Items.Count == 0)
             {
-                yield return new ValidationResult("SPP harus Diisi", new List<string> { "Items" });
+                yield return new ValidationResult("SOP harus Diisi", new List<string> { "Item" });
             }
             else
             {
@@ -126,33 +126,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
                         DetailErrors += "WeightBruto: 'Bruto Harus Lebih dari 0!',";
                     }
 
+                    Regex r = new Regex("^[a-zA-Z]*$");
+
                     if (string.IsNullOrEmpty(item.WeightDOS))
                     {
                         Count++;
-                        //DetailErrors += "WeightDOS: 'DOS Harus Lebih dari 0!',";
                         DetailErrors += "WeightDOS: 'DOS Harus Diisi!',";
                     }
-
-                    Regex r = new Regex("^[a-zA-Z0-9]*$");
-
-                    if (!r.IsMatch(item.WeightDOS))
+                    else if (r.IsMatch(item.WeightDOS))
                     {
                         Count++;
-                        //DetailErrors += "WeightDOS: 'DOS Harus Lebih dari 0!',";
                         DetailErrors += "WeightDOS: 'DOS Harus Angka!',";
                     }
 
                     if (string.IsNullOrEmpty(item.WeightCone))
                     {
                         Count++;
-                        //DetailErrors += "WeightCone: 'Cone Harus Lebih dari 0!',";
                         DetailErrors += "WeightCone: 'Cone Harus Diisi!',";
                     }
-
-                    if (!r.IsMatch(item.WeightCone))
+                    else if (r.IsMatch(item.WeightCone))
                     {
                         Count++;
-                        //DetailErrors += "WeightCone: 'Cone Harus Lebih dari 0!',";
                         DetailErrors += "WeightCone: 'Cone Harus Angka!',";
                     }
 
