@@ -7,7 +7,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 {
     public class DyeingPrintingAreaInputProductionOrderModel : StandardEntity
     {
-
         public long ProductionOrderId { get;  set; }
         public string ProductionOrderNo { get;  set; }
         public int MaterialId { get;  set; }
