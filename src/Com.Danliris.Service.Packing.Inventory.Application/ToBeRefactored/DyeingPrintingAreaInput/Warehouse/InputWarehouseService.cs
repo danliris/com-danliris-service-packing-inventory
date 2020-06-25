@@ -876,7 +876,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             //var model = modelAll.First();
             //var query = model.DyeingPrintingAreaOutputProductionOrders;
-            var query = modelAll.SelectMany(s => s.SppList);
+            //var query = modelAll.SelectMany(s => s.SppList);
+            var query = modelAll.Select(s => s.SppList);
+
 
             //var query = GetQuery(date, group, zona, timeOffSet);
             DataTable dt = new DataTable();
@@ -909,26 +911,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             #endregion
             #region Assign Data
-            foreach (var item in query)
+            foreach (var items in query)
             {
-                List<string> data = new List<string>();
-                foreach (DataColumn column in dt.Columns)
+                foreach (var item in items)
                 {
-                    var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
-                    string valueClass = "";
-                    if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+                    List<string> data = new List<string>();
+                    foreach (DataColumn column in dt.Columns)
                     {
-                        var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
-                        var searchValue = searchProperty.GetValue(item, null);
-                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                        var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
+                        string valueClass = "";
+                        //if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+                        //{
+                            var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
+                            var searchValue = searchProperty.GetValue(item, null);
+                            valueClass = searchValue == null ? "" : searchValue.ToString();
+                        //}
+                        //else
+                        //{
+                        //    valueClass = "";
+                        //}
+                        data.Add(valueClass);
                     }
-                    //else
-                    //{
-                    //    valueClass = "";
-                    //}
-                    data.Add(valueClass);
+                    dt.Rows.Add(data.ToArray());
                 }
-                dt.Rows.Add(data.ToArray());
             }
             #endregion
 

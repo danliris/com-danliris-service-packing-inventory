@@ -98,11 +98,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 maxLength: 128,
                 nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "PrevSppInJson",
-                table: "DyeingPrintingAreaOutputProductionOrders",
-                type: "varchar(MAX)",
-                nullable: true);
+            //migrationBuilder.AddColumn<string>(
+            //    name: "PrevSppInJson",
+            //    table: "DyeingPrintingAreaOutputProductionOrders",
+            //    type: "varchar(MAX)",
+            //    nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -143,9 +143,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 name: "IdSOP",
                 table: "Items");
 
-            migrationBuilder.DropColumn(
-                name: "PrevSppInJson",
-                table: "DyeingPrintingAreaOutputProductionOrders");
+            //migrationBuilder.DropColumn(
+            //    name: "PrevSppInJson",
+            //    table: "DyeingPrintingAreaOutputProductionOrders");
 
             migrationBuilder.RenameColumn(
                 name: "StorageName",
