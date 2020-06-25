@@ -12,14 +12,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public interface IOutputPackagingService
     {
         Task<int> Create(OutputPackagingViewModel viewModel);
+        Task<int> CreateV2(OutputPackagingViewModel viewModel);
         Task<OutputPackagingViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<MemoryStream> GenerateExcel(int id);
         ListResult<IndexViewModel> ReadBonOutFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPack(int page, int size, string filter, string order, string keyword);
+        ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPackSumBySPPNo(int page, int size, string filter, string order, string keyword);
+
         ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSppInFromPackGroup(int page, int size, string filter, string order, string keyword);
+
         MemoryStream GenerateExcelAll();
         Task<int> Delete(int bonId);
+        Task<int> DeleteV2(int bonId);
 
     }
 }
