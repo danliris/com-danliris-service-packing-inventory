@@ -19,9 +19,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             SalesNoteItem = new GarmentShippingLocalSalesNoteItemModel(); ;
             ReturnQuantity = returnQuantity;
         }
-
-        public GarmentShippingLocalReturnNoteItemModel()
-        {
-        }
     }
 }
