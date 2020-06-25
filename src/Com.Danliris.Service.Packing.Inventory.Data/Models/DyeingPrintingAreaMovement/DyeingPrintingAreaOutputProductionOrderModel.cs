@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
         public double AvalQuantityKg { get; private set; }
-        public string AvalMachine { get; private set; }
+        public string Machine { get; private set; }
 
         public bool HasNextAreaDocument { get; private set; }
         public string Area { get; private set; }
@@ -82,7 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         //IM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
-            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string avalMachine) : this()
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -117,7 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
 
-            AvalMachine = avalMachine;
+            Machine = machine;
         }
 
         //Transit
@@ -974,12 +974,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
-        public void SetAvalMachine(string newAvalMachine, string user, string agent)
+        public void SetMachine(string newMachine, string user, string agent)
         {
 
-            if (newAvalMachine != AvalMachine)
+            if (newMachine != Machine)
             {
-                AvalMachine = newAvalMachine;
+                Machine = newMachine;
                 this.FlagForUpdate(user, agent);
             }
         }

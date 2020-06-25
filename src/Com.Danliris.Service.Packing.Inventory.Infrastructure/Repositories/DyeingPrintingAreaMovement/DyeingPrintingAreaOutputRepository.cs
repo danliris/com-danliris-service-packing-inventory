@@ -282,7 +282,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAvalType(localItem.AvalType, _identityProvider.Username, UserAgent);
-                    item.SetAvalMachine(localItem.AvalMachine, _identityProvider.Username, UserAgent);
+                    item.SetMachine(localItem.Machine, _identityProvider.Username, UserAgent);
                 }
             }
 
