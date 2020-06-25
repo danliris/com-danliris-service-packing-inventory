@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200624092851_GarmentShippingLocalPriceCorrectionNoteItems_SalesNoteItem_NoAction")]
+    partial class GarmentShippingLocalPriceCorrectionNoteItems_SalesNoteItem_NoAction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,6 +261,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("AvalConnectionLength");
 
+                    b.Property<string>("AvalMachine")
+                        .HasMaxLength(32);
+
                     b.Property<double>("AvalQuantity");
 
                     b.Property<double>("AvalQuantityKg");
@@ -331,9 +336,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Machine")
-                        .HasMaxLength(32);
 
                     b.Property<int>("MaterialConstructionId");
 
@@ -565,6 +567,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("AvalConnectionLength");
 
+                    b.Property<string>("AvalMachine")
+                        .HasMaxLength(32);
+
                     b.Property<double>("AvalQuantityKg");
 
                     b.Property<string>("AvalType");
@@ -636,9 +641,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Machine")
-                        .HasMaxLength(32);
 
                     b.Property<int>("MaterialConstructionId");
 
