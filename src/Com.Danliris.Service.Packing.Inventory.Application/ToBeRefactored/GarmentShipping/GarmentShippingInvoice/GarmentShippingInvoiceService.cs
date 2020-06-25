@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
@@ -16,12 +17,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 	public class GarmentShippingInvoiceService : IGarmentShippingInvoiceService
 	{
 		private readonly IGarmentShippingInvoiceRepository _repository;
-		private readonly IGarmentPackingListRepository _packingListrepository;
+        private readonly IServiceProvider serviceProvider;
 
-		public GarmentShippingInvoiceService(IServiceProvider serviceProvider)
+        public GarmentShippingInvoiceService(IServiceProvider serviceProvider)
 		{
 			_repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
-		}
+
+            this.serviceProvider = serviceProvider;
+
+        }
 		private GarmentShippingInvoiceViewModel MapToViewModel(GarmentShippingInvoiceModel model)
 		{
 			var vm = new GarmentShippingInvoiceViewModel()
@@ -220,5 +224,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		{
 			return await _repository.DeleteAsync(id);
 		}
-	}
+
+        public Buyer GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-buyers";
+            IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public BankAccount GetBank(int id)
+        {
+            string bankUri = "master/account-banks";
+            IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{bankUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                BankAccount viewModel = JsonConvert.DeserializeObject<BankAccount>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
 }

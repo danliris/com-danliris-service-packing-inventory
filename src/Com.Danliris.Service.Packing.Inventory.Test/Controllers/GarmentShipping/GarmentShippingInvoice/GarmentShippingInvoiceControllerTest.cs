@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.GarmentShippingInvoice;
@@ -15,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 {
 	public class GarmentShippingInvoiceControllerTest
 	{
-		protected GarmentShippingInvoiceController GetController(IGarmentShippingInvoiceService service, IIdentityProvider identityProvider, IValidateService validateService)
+		protected GarmentShippingInvoiceController GetController(IGarmentShippingInvoiceService service, IGarmentPackingListService packingListService, IIdentityProvider identityProvider, IValidateService validateService)
 		{
 			var claimPrincipal = new Mock<ClaimsPrincipal>();
 			var claims = new Claim[]
@@ -24,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 			};
 			claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-			var controller = new GarmentShippingInvoiceController(service, identityProvider, validateService)
+			var controller = new GarmentShippingInvoiceController(service, packingListService, identityProvider, validateService)
 			{
 				ControllerContext = new ControllerContext()
 				{
@@ -49,6 +50,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 				return new GarmentShippingInvoiceViewModel();
 			}
 		}
+
+
 
 		protected ServiceValidationException GetServiceValidationExeption()
 		{

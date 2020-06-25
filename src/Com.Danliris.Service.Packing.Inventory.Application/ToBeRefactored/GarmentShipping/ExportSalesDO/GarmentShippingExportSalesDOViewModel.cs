@@ -55,12 +55,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Dictionary<string, object> errorItem = new Dictionary<string, object>();
 
-                    if (string.IsNullOrWhiteSpace(item.description))
-                    {
-                        errorItem["description"] = "Description tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-
                     if (item.quantity<=0)
                     {
                         errorItem["quantity"] = "Quantity harus lebih dari 0";

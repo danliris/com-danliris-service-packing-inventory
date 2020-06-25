@@ -1,9 +1,8 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDO;
-using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentLocalSalesNote;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.LocalSalesDO
 {
