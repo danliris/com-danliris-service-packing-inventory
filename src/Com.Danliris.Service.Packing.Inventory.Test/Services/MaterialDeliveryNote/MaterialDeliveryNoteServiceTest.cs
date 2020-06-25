@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNote;
@@ -45,23 +46,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                     BonCode = "BonCode",
                     DateFrom = DateTimeOffset.Now.AddDays(-2),
                     DateTo = DateTimeOffset.Now.AddDays(1),
-                    DONumber = "DONumber",
+                    DONumber = new DeliveryOrderMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        DOSalesNo = "DOSalesNo"
+                    },
                     FONumber = "FONumber",
-                    Receiver = "Receiver",
+                    Receiver = new BuyerMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
                     Remark = "Remark",
-                    SCNumber = "SCNumber",
-                    Sender = "someone",
-                    StorageNumber = "1",
+                    SCNumber = new SalesContract()
+                    {
+                        Id = 1,
+                        Number = "Number"
+                    },
+                    Sender = new UnitMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    StorageNumber = new StorageMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
                     Items = new List<ItemsViewModel>()
                     {
                         new ItemsViewModel()
                         {
-                            NoSPP ="NoSPP",
+                            NoSOP ="NoSPP",
                             MaterialName = "MaterialName",
                             InputLot ="InputLot",
                             WeightBruto =1,
-                            WeightDOS =1,
-                            WeightCone =1,
+                            WeightDOS ="111,222",
+                            WeightCone ="111,222",
                             WeightBale =1,
                             GetTotal =1,
                         }
@@ -82,16 +106,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                      ViewModel.BonCode,
                      ViewModel.DateFrom,
                      ViewModel.DateTo,
-                     ViewModel.DONumber,
+                     ViewModel.DONumber.Id,
+                     ViewModel.DONumber.DOSalesNo,
                      ViewModel.FONumber,
-                     ViewModel.Receiver,
+                     ViewModel.Receiver.Id,
+                     ViewModel.Receiver.Code,
+                     ViewModel.Receiver.Name,
                      ViewModel.Remark,
-                     ViewModel.SCNumber,
-                     ViewModel.Sender,
-                     ViewModel.StorageNumber,
+                     ViewModel.SCNumber.Id,
+                     ViewModel.SCNumber.Number,
+                     ViewModel.Sender.Id,
+                     ViewModel.Sender.Code,
+                     ViewModel.Sender.Name,
+                     ViewModel.StorageNumber.Id,
+                     ViewModel.StorageNumber.Code,
+                     ViewModel.StorageNumber.Name,
                         new List<ItemsModel>()
                         {
-                            new ItemsModel("1","materialName","inputLot",1,1,1,1,1)
+                            new ItemsModel(1,"1","materialName","inputLot",1,"111,222","111,222",1,1)
                         }
                     )
                 {

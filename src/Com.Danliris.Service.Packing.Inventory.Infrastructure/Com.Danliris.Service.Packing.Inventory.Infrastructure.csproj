@@ -62,6 +62,8 @@
     <Compile Remove="Migrations\20200616121457_test.Designer.cs" />
     <Compile Remove="Migrations\20200616121746_MaterialDeliveryNote_and_MaterialDeliveryNoteWeaving.cs" />
     <Compile Remove="Migrations\20200616121746_MaterialDeliveryNote_and_MaterialDeliveryNoteWeaving.Designer.cs" />
+    <Compile Remove="Migrations\20200625082954_UpdateMaterialDeliveryNoteSpinning.cs" />
+    <Compile Remove="Migrations\20200625082954_UpdateMaterialDeliveryNoteSpinning.Designer.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />

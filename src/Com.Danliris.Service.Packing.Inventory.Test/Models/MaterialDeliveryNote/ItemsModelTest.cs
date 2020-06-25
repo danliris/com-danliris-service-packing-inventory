@@ -12,12 +12,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.MaterialDeliveryNot
         public void should_Success_Instantiate()
         {
             ItemsModel model = new ItemsModel(
+                1,
                 "noSPP",
                 "materialName",
                 "inputLot",
                 1,
-                1,
-                1,
+                "222,222",
+                "222,222",
                 1,
                 1
                 );
@@ -27,8 +28,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.MaterialDeliveryNot
             model.SetMaterialName("newMaterialName");
             model.SetInputLot("NewInputLot");
             model.SetWeightBruto(2);
-            model.SetWeightDOS(2);
-            model.SetWeightCone(2);
+            model.SetWeightDOS("222,222");
+            model.SetWeightCone("222,222");
             model.SetWeightBale(2);
            
         }

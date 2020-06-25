@@ -65,8 +65,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
                 if (ItemsDetail != null)
                 {
-
-                    item.SetNoSPP(model.NoSPP);
+                    item.Setidsop(model.IdSOP);
+                    item.SetNoSPP(model.NoSOP);
                     item.SetMaterialName(model.MaterialName);
                     item.SetInputLot(model.InputLot);
                     item.SetWeightBruto(model.WeightBruto);

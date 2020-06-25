@@ -29,8 +29,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                 {
                     WeightBruto =0,
                     WeightBale =0,
-                    WeightCone =0,
-                    WeightDOS =0
+                    WeightCone ="",
+                    WeightDOS =""
                 }
             };
 
@@ -52,8 +52,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                 {
                     WeightBruto =0,
                     WeightBale =0,
-                    WeightCone =0,
-                    WeightDOS =0
+                    WeightCone ="",
+                    WeightDOS =""
                 }
             };
 

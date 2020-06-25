@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
             RuleForEach(s => s.Items).ChildRules(d =>
             {
-                d.RuleFor(data => data.NoSPP).NotNull().WithMessage("No SPP Harus Diisi!");
+                d.RuleFor(data => data.NoSOP).NotNull().WithMessage("No SPP Harus Diisi!");
                 d.RuleFor(data => data.MaterialName).NotNull().WithMessage("Nama Barang Harus Diisi!");
                 d.RuleFor(data => data.InputLot).NotNull().WithMessage("Lot Harus Diisi!");
 

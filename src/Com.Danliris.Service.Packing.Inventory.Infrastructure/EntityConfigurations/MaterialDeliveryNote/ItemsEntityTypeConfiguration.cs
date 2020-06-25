@@ -39,7 +39,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.NoSPP)
+                .Property(s => s.IdSOP)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.NoSOP)
                 .HasMaxLength(128);
 
             builder
@@ -56,11 +60,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder
                 .Property(s => s.WeightDOS)
-                .HasColumnType("decimal(18,2)");
+                .HasMaxLength(128);
 
             builder
                 .Property(s => s.WeightCone)
-                .HasColumnType("decimal(18,2)");
+                .HasMaxLength(128);
 
             builder
                 .Property(s => s.WeightBale)
