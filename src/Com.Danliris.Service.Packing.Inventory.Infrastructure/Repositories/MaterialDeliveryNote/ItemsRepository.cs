@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
             return _ItemsDbSet.Where(entity => entity.Id == id).FirstAsync();
         }
 
-        Task<int> IRepository<ItemsModel>.UpdateAsync(int id, ItemsModel model)
+        public Task<int> UpdateAsync(int id, ItemsModel model)
         {
 
             //var modelToUpdate = _MaterialDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);

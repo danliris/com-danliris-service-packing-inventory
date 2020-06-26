@@ -179,15 +179,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                  .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
-            try
-            {
+           
                 await service.Delete(1);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+           
 
            
         }
@@ -207,15 +202,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+           
                 await service.Create(ViewModel);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
         }
 
 
@@ -230,15 +220,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+            
                 await service.Update(1,ViewModel);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
+            
         }
 
         [Fact]
@@ -252,15 +238,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+            
                  service.ReadByKeyword("BonCode","",1,1,"filter");
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
         }
 
     }
