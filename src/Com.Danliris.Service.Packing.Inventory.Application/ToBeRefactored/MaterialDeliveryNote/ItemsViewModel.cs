@@ -5,12 +5,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
     public class ItemsViewModel : BaseViewModel
     {
 
-        public string NoSPP { get; set; }
+        public int? IdSOP { get; set; }
+        public string NoSOP { get; set; }
         public string MaterialName { get; set; }
         public string InputLot { get; set; }
         public double? WeightBruto { get; set; }
-        public double? WeightDOS { get; set; }
-        public double? WeightCone { get; set; }
+        public string WeightDOS { get; set; }
+        public string WeightCone { get; set; }
         public double? WeightBale { get; set; }
         public double? GetTotal { get; set; }
     }

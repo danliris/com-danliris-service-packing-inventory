@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.MaterialDeliveryNote;
@@ -45,23 +46,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                     BonCode = "BonCode",
                     DateFrom = DateTimeOffset.Now.AddDays(-2),
                     DateTo = DateTimeOffset.Now.AddDays(1),
-                    DONumber = "DONumber",
+                    DONumber = new DeliveryOrderMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        DOSalesNo = "DOSalesNo"
+                    },
                     FONumber = "FONumber",
-                    Receiver = "Receiver",
+                    buyer = new BuyerMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
                     Remark = "Remark",
-                    SCNumber = "SCNumber",
-                    Sender = "someone",
-                    StorageNumber = "1",
+                    salesContract = new SalesContract()
+                    {
+                        SalesContractId = 1,
+                        SalesContractNo = "Number"
+                    },
+                    unit = new UnitMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    storage = new StorageMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
                     Items = new List<ItemsViewModel>()
                     {
                         new ItemsViewModel()
                         {
-                            NoSPP ="NoSPP",
+                            IdSOP = 1,
+                            NoSOP ="NoSPP",
                             MaterialName = "MaterialName",
                             InputLot ="InputLot",
                             WeightBruto =1,
-                            WeightDOS =1,
-                            WeightCone =1,
+                            WeightDOS ="111,222",
+                            WeightCone ="111,222",
                             WeightBale =1,
                             GetTotal =1,
                         }
@@ -82,16 +107,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                      ViewModel.BonCode,
                      ViewModel.DateFrom,
                      ViewModel.DateTo,
-                     ViewModel.DONumber,
+                     ViewModel.DONumber.Id,
+                     ViewModel.DONumber.DOSalesNo,
                      ViewModel.FONumber,
-                     ViewModel.Receiver,
+                     ViewModel.buyer.Id,
+                     ViewModel.buyer.Code,
+                     ViewModel.buyer.Name,
                      ViewModel.Remark,
-                     ViewModel.SCNumber,
-                     ViewModel.Sender,
-                     ViewModel.StorageNumber,
+                     ViewModel.salesContract.SalesContractId,
+                     ViewModel.salesContract.SalesContractNo,
+                     ViewModel.unit.Id,
+                     ViewModel.unit.Code,
+                     ViewModel.unit.Name,
+                     ViewModel.storage.Id,
+                     ViewModel.storage.Code,
+                     ViewModel.storage.Name,
                         new List<ItemsModel>()
                         {
-                            new ItemsModel("1","materialName","inputLot",1,1,1,1,1)
+                            new ItemsModel(1,"1","materialName","inputLot",1,"111,222","111,222",1,1)
                         }
                     )
                 {
@@ -146,15 +179,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                  .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
-            try
-            {
+           
                 await service.Delete(1);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+           
 
            
         }
@@ -174,15 +202,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+           
                 await service.Create(ViewModel);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
         }
 
 
@@ -197,15 +220,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+            
                 await service.Update(1,ViewModel);
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
+            
         }
 
         [Fact]
@@ -219,15 +238,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
 
             var service = GetService(GetServiceProvider(materialDeliveryNoteRepositoryMock.Object, itemsRepositoryMock.Object).Object);
 
-            try
-            {
+            
                  service.ReadByKeyword("BonCode","",1,1,"filter");
                 Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            
         }
 
     }

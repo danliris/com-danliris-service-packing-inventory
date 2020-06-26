@@ -60,6 +60,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
+                .Property(s => s.DoNumberId)
+                .HasMaxLength(128);
+
+            builder
                 .Property(s => s.DONumber)
                 .HasMaxLength(128);
 
@@ -68,7 +72,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
-                .Property(s => s.Receiver)
+                .Property(s => s.ReceiverId)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.ReceiverCode)
+                .HasMaxLength(128);
+
+            builder
+                .Property(s => s.ReceiverName)
                 .HasMaxLength(128);
 
             builder
@@ -76,15 +88,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
+                .Property(s => s.SCNumberId)
+                .HasMaxLength(128);
+
+            builder
                 .Property(s => s.SCNumber)
                 .HasMaxLength(128);
 
             builder
-               .Property(s => s.Sender)
+               .Property(s => s.SenderId)
                .HasMaxLength(128);
 
             builder
-               .Property(s => s.StorageNumber)
+               .Property(s => s.SenderCode)
+               .HasMaxLength(128);
+
+            builder
+               .Property(s => s.SenderName)
+               .HasMaxLength(128);
+
+            builder
+               .Property(s => s.StorageId)
+               .HasMaxLength(128);
+
+            builder
+               .Property(s => s.StorageCode)
+               .HasMaxLength(128);
+
+            builder
+               .Property(s => s.StorageName)
                .HasMaxLength(128);
         }
     }

@@ -61,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.MaterialDeli
                     var stream = pdfTemplate.GeneratePdfTemplate();
                     return new FileStreamResult(stream, "application/pdf")
                     {
-                        FileDownloadName = string.Format("{0}.pdf", model.Code)
+                        FileDownloadName = string.Format("Bon Pengiriman Barang Weaving - {0}.pdf", model.Code)
                     };
                 }
             }

@@ -140,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             DetailErrors += "]";
 
             if (Count > 0)
-                yield return new ValidationResult(DetailErrors, new List<string> { "ItemsMaterialDeliveryNoteWeaving" });
+                yield return new ValidationResult(DetailErrors, new List<string> { "ItemsMaterialDeliveryNoteWeavings" });
         }
     }
 }

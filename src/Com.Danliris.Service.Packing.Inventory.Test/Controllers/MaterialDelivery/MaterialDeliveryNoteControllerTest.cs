@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers;
@@ -74,24 +75,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                     BonCode = "123",
                     DateFrom = DateTimeOffset.UtcNow,
                     DateTo = DateTimeOffset.UtcNow,
-                    DONumber="123",
-                    FONumber="123",
-                    Receiver="abc",
-                    Remark= "abc",
-                    SCNumber= "abc",
-                    Sender= "abc",
-                    StorageNumber= "abc",
+                    DONumber = new DeliveryOrderMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        DOSalesNo = "DOSalesNo"
+                    },
+                    FONumber = "123",
+                    buyer = new BuyerMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    Remark = "abc",
+                    salesContract = new SalesContract()
+                    {
+                        SalesContractId = 1,
+                        SalesContractNo = "Number"
+                    },
+                    unit = new UnitMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    storage = new StorageMaterialDeliveryNoteWeaving()
+                    {
+                        Id = 1,
+                        Code = "Code",
+                        Name = "Name"
+                    },
 
                     Items = new List<ItemsViewModel>()
                     {
                         new ItemsViewModel()
                         {
-                            NoSPP = "123",
+                            NoSOP = "123",
                             MaterialName = "s",
                             InputLot = "123",
                             WeightBruto = 2,
-                            WeightDOS = 2,
-                            WeightCone = 2,
+                            WeightDOS = "123,123",
+                            WeightCone = "123,123",
                             WeightBale = 2,
                             GetTotal = 2,
                         }
@@ -169,11 +193,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
-            
+
             //act
             var controller = GetController(service, identityProvider, validateService);
             var response = await controller.Post(dataUtil);
-            
+
             //Assertion
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
@@ -210,7 +234,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
             //setup
             var dataUtil = ViewModel;
             var serviceMock = new Mock<IMaterialDeliveryNoteService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())) .Throws(GetServiceValidationExeption());
+            serviceMock.Setup(s => s.Create(It.IsAny<MaterialDeliveryNoteViewModel>())).Throws(GetServiceValidationExeption());
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
@@ -249,7 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
 
             //Act
             var controller = GetController(service, identityProvider, validateService);
-            var response = await controller.Put(1,dataUtil);
+            var response = await controller.Put(1, dataUtil);
 
             //Assertion
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
@@ -454,11 +478,99 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
 
             //Act
             var controller = GetController(service, identityProvider, validateService);
-            var response =  controller.GetByKeyword("keyword","{}",1,25,"{}");
+            var response = controller.GetByKeyword("keyword", "{}", 1, 25, "{}");
 
             //Assertion
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
+
+        [Fact]
+        public async Task Should_Success_GetPdfById()
+        {
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1, "7");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetPdfById()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1, "7");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_NotFound_GetPdfById()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(MaterialDeliveryNoteViewModel));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1, "7");
+
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPdfById_Empty_Detail()
+        {
+            //v
+            var serviceMock = new Mock<IMaterialDeliveryNoteService>();
+            var vm = ViewModel;
+            vm.Items = new List<ItemsViewModel>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(vm);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPdfById(1, "7");
+
+            Assert.NotNull(response);
+        }
     }
 }
