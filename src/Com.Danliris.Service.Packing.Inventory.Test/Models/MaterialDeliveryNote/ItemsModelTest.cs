@@ -28,9 +28,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.MaterialDeliveryNot
             model.SetMaterialName("newMaterialName");
             model.SetInputLot("NewInputLot");
             model.SetWeightBruto(2);
-            model.SetWeightDOS("222,222");
-            model.SetWeightCone("222,222");
+            model.SetWeightDOS("333,333");
+            model.SetWeightCone("333,333");
             model.SetWeightBale(2);
+            model.Setidsop(2);
            
         }
     }

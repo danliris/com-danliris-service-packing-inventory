@@ -80,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                     {
                         new ItemsViewModel()
                         {
+                            IdSOP = 1,
                             NoSOP ="NoSPP",
                             MaterialName = "MaterialName",
                             InputLot ="InputLot",
