@@ -16,13 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public GarmentShippingLocalSalesNoteModel SalesNote { get; private set; }
         public ICollection<GarmentShippingLocalReturnNoteItemModel> Items { get; private set; }
 
-        public GarmentShippingLocalReturnNoteModel(string returnNoteNo, int salesNoteId, DateTimeOffset returnDate, string description, ICollection<GarmentShippingLocalReturnNoteItemModel> items)
+        public GarmentShippingLocalReturnNoteModel(string returnNoteNo, int salesNoteId, DateTimeOffset returnDate, string description, GarmentShippingLocalSalesNoteModel salesNote, ICollection<GarmentShippingLocalReturnNoteItemModel> items)
         {
             ReturnNoteNo = returnNoteNo;
             SalesNoteId = salesNoteId;
             ReturnDate = returnDate;
             Description = description;
-            SalesNote = new GarmentShippingLocalSalesNoteModel(); 
+            SalesNote = salesNote;
             Items = items;
         }
 
