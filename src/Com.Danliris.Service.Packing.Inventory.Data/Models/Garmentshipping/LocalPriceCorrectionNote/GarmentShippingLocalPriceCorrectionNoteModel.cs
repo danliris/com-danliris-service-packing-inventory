@@ -18,12 +18,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalPriceCorrectionNoteModel(string correctionNoteNo, DateTimeOffset correctionDate, int salesNoteId, ICollection<GarmentShippingLocalPriceCorrectionNoteItemModel> items)
+        public GarmentShippingLocalPriceCorrectionNoteModel(string correctionNoteNo, DateTimeOffset correctionDate, int salesNoteId, GarmentShippingLocalSalesNoteModel salesNote, ICollection<GarmentShippingLocalPriceCorrectionNoteItemModel> items)
         {
             CorrectionNoteNo = correctionNoteNo;
             CorrectionDate = correctionDate;
             SalesNoteId = salesNoteId;
-            SalesNote = new GarmentShippingLocalSalesNoteModel();
+            SalesNote = salesNote;
             Items = items;
         }
     }

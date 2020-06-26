@@ -1,12 +1,12 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCuttingNote;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote
+namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCuttingNote
 {
-    public class GarmentShippingLocalPriceCorrectionNoteItemConfig : IEntityTypeConfiguration<GarmentShippingLocalPriceCorrectionNoteItemModel>
+    public class GarmentShippingLocalPriceCuttingNoteItemConfig : IEntityTypeConfiguration<GarmentShippingLocalPriceCuttingNoteItemModel>
     {
-        public void Configure(EntityTypeBuilder<GarmentShippingLocalPriceCorrectionNoteItemModel> builder)
+        public void Configure(EntityTypeBuilder<GarmentShippingLocalPriceCuttingNoteItemModel> builder)
         {
             /* StandardEntity */
             builder.HasKey(s => s.Id);
@@ -20,10 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder
-                .HasOne(h => h.SalesNoteItem)
-                .WithMany()
-                .HasForeignKey(f => f.SalesNoteItemId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .Property(s => s.SalesNoteNo)
+                .HasMaxLength(50);
         }
     }
 }
