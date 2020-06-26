@@ -97,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task Delete_Success()
         {
+            var items = new GarmentShippingLocalReturnNoteItemModel();
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
