@@ -141,6 +141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Mate
 
                     if (string.IsNullOrEmpty(item.WeightCone))
                     {
+                        //
                         Count++;
                         DetailErrors += "WeightCone: 'Cone Harus Diisi!',";
                     }

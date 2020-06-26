@@ -25,37 +25,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
                 DateFrom = date,
                 DateSJ =date,
                 DateTo =date,
-                DONumber = new DeliveryOrderMaterialDeliveryNoteWeaving()
-                {
-                    Id = 1,
-                    DOSalesNo = "123"
-                },
+                DoNumberId =1,
+                DONumber = "DONumber",
                 FONumber = "FONumber",
-                buyer = new BuyerMaterialDeliveryNoteWeaving
-                {
-                    Id = 1,
-                    Code = "abc123",
-                    Name = "abc"
-                },
+                ReceiverId =1,
+                ReceiverCode = "ReceiverCode",
+                ReceiverName = "ReceiverName",
                 Remark = "Remark",
-                salesContract = new SalesContract()
-                {
-                    SalesContractId = 1,
-                    SalesContractNo = "SalesContractNo"
-                },
-                unit = new UnitMaterialDeliveryNoteWeaving
-                {
-                    Id = 1,
-                    Code = "abc123",
-                    Name = "abc"
-                },
-                storage = new StorageMaterialDeliveryNoteWeaving
-                {
-                    Id = 1,
-                    Code = "abc123",
-                    Name = "abc",
-                    unit = "abc"
-                },
+                SCNumberId = 1,
+                SCNumber = "SCNumber",
+                SenderId =1,
+                SenderCode= "SenderCode",
+                SenderName = "SenderName",
+                StorageId =1,
+                StorageCode= "StorageCode",
+                StorageName= "StorageName",
                 Items = item
             };
             Assert.Equal(1, model.Id);
@@ -65,28 +49,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
             Assert.Equal(date, model.DateTo);
             Assert.Equal(date, model.DateSJ);
 
-            Assert.Equal(1, model.DONumber.Id);
-            Assert.Equal("DONumber", model.DONumber.DOSalesNo);
+            Assert.Equal(1, model.DoNumberId);
+            Assert.Equal("DONumber", model.DONumber);
 
             Assert.Equal("FONumber", model.FONumber);
 
-            Assert.Equal(1, model.buyer.Id);
-            Assert.Equal("Receiver", model.buyer.Code);
-            Assert.Equal("Receiver", model.buyer.Name);
+            Assert.Equal(1, model.ReceiverId);
+            Assert.Equal("Receiver", model.ReceiverCode);
+            Assert.Equal("Receiver", model.ReceiverName);
 
             Assert.Equal("Remark", model.Remark);
 
-            Assert.Equal(1, model.salesContract.SalesContractId);
-            Assert.Equal("SCNumber", model.salesContract.SalesContractNo);
+            Assert.Equal(1, model.SCNumberId);
+            Assert.Equal("SCNumber", model.SCNumber);
 
-            Assert.Equal(1, model.unit.Id);
-            Assert.Equal("Sender", model.unit.Code);
-            Assert.Equal("Sender", model.unit.Name);
+            Assert.Equal(1, model.SenderId);
+            Assert.Equal("Sender", model.SenderCode);
+            Assert.Equal("Sender", model.SenderName);
 
-            Assert.Equal(1, model.storage.Id);
-            Assert.Equal("StorageNumber", model.storage.Code);
-            Assert.Equal("StorageNumber", model.storage.Name);
-            Assert.Equal("StorageNumber", model.storage.unit);
+            Assert.Equal(1, model.StorageId);
+            Assert.Equal("StorageNumber", model.StorageCode);
+            Assert.Equal("StorageNumber", model.StorageName);
 
             Assert.Equal(item, model.Items);
         }
