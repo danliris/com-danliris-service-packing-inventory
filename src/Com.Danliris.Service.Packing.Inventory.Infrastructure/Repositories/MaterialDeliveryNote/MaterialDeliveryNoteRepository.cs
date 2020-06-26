@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
                     datamod += 1;
                     model.Code = model.BonCode + $"00{datamod}";
                 }
-                else if (datamod >= 999 && datamod < 9999)
+                else if (datamod >= 99 && datamod < 999)
                 {
                     datamod += 1;
                     model.Code = model.BonCode + $"0{datamod}";

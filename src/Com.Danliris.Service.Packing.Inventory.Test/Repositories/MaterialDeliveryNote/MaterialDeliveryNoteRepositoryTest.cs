@@ -28,12 +28,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliv
             var repo = new MaterialDeliveryNoteRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var repo2 = new MaterialDeliveryNoteRepository(dbContext, GetServiceProviderMock(dbContext).Object);
             var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
             
             var result = await repo2.UpdateAsync(data.Id, emptyData);
 
             Assert.NotEqual(0, result);
+
+        }
+
+        [Fact]
+        public async Task Should_Success_Insert_99()
+        {
+            string testName = ENTITY + GetCurrentAsyncMethod();
+            var dbContext = DbContext(testName);
+
+            var repo = new MaterialDeliveryNoteRepository(dbContext, GetServiceProviderMock(dbContext).Object);           
+
+            for(int i=0;i<=1000; i++)
+            {
+                var emptyData = DataUtil(repo, dbContext).GetModel();
+                var result = await repo.InsertAsync(emptyData);
+                Assert.NotEqual(0, result);
+            }
 
         }
     }
