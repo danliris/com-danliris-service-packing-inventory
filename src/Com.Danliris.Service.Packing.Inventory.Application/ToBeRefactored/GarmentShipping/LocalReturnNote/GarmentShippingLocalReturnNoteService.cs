@@ -140,11 +140,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 .Select(i =>
                 {
                     i.salesNoteItem = i.salesNoteItem ?? new GarmentShippingLocalSalesNoteItemViewModel();
-                    return new GarmentShippingLocalReturnNoteItemModel(i.salesNoteItem.Id, i.returnQuantity) { Id = i.Id };
+                    return new GarmentShippingLocalReturnNoteItemModel(i.salesNoteItem.Id,null, i.returnQuantity) { Id = i.Id };
                 }).ToList();
 
             vm.salesNote = vm.salesNote ?? new GarmentShippingLocalSalesNoteViewModel();
-            return new GarmentShippingLocalReturnNoteModel(GenerateNo(), vm.salesNote.Id, vm.returnDate.GetValueOrDefault(),vm.description, items) { Id = vm.Id };
+            return new GarmentShippingLocalReturnNoteModel(GenerateNo(), vm.salesNote.Id, vm.returnDate.GetValueOrDefault(),vm.description,null, items) { Id = vm.Id };
         }
 
         private string GenerateNo()

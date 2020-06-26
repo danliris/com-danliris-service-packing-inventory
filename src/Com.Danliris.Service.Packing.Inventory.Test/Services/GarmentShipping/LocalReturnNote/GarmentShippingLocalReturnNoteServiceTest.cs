@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Moq;
 using System;
@@ -63,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new List<GarmentShippingLocalReturnNoteItemModel>());
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), new List<GarmentShippingLocalReturnNoteItemModel>());
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -79,8 +80,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, 1) };
-            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", items);
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1), 1) };
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -96,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task Delete_Success()
         {
+            var items = new GarmentShippingLocalReturnNoteItemModel();
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
