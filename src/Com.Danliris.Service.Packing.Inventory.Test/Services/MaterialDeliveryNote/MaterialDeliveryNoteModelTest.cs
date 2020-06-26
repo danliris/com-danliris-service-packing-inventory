@@ -54,17 +54,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.MaterialDeliveryN
             Assert.Equal("DONumber", model.DONumber);
             Assert.Equal("FONumber", model.FONumber);
             Assert.Equal(1, model.ReceiverId);
-            Assert.Equal("Receiver", model.ReceiverCode);
-            Assert.Equal("Receiver", model.ReceiverName);
+            Assert.Equal("ReceiverCode", model.ReceiverCode);
+            Assert.Equal("ReceiverName", model.ReceiverName);
             Assert.Equal("Remark", model.Remark);
             Assert.Equal(1, model.SCNumberId);
             Assert.Equal("SCNumber", model.SCNumber);
             Assert.Equal(1, model.SenderId);
-            Assert.Equal("Sender", model.SenderCode);
-            Assert.Equal("Sender", model.SenderName);
+            Assert.Equal("SenderCode", model.SenderCode);
+            Assert.Equal("SenderName", model.SenderName);
             Assert.Equal(1, model.StorageId);
-            Assert.Equal("StorageNumber", model.StorageCode);
-            Assert.Equal("StorageNumber", model.StorageName);
+            Assert.Equal("StorageCode", model.StorageCode);
+            Assert.Equal("StorageName", model.StorageName);
             Assert.Equal(item, model.Items);
         }
     }
