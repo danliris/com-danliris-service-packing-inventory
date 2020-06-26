@@ -22,8 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .HasOne(h => h.SalesNoteItem)
                 .WithMany()
-                .HasForeignKey(f => f.SalesNoteItemId);
-            // tambahkan pada migration => "onDelete: ReferentialAction.NoAction"
+                .HasForeignKey(f => f.SalesNoteItemId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

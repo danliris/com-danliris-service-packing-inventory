@@ -60,6 +60,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ShippingRemark { get; private set; }
         public double Weight { get; private set; }
 
+        public string PrevSppInJson { get; set; }
+
 
         /// <summary>
         /// ID SPP Input
@@ -417,6 +419,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             BuyerId = buyerId;
 
+        }
+        /// <summary>
+        /// Using For Packaging Area when you want to set with SPP input and Prev Spp In that decrease
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
+            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
+            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int dyeingPrintintOutputId, int dyeingPrintingAreaInputProductionOrderId, int buyerId,string prevSppInJson) : this()
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            Description = description;
+            DyeingPrintingAreaOutputId = dyeingPrintintOutputId;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+
+            BuyerId = buyerId;
+            PrevSppInJson = prevSppInJson;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
