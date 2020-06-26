@@ -14,10 +14,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalPriceCorrectionNoteItemModel(int salesNoteItemId, double priceCorrection)
+        public GarmentShippingLocalPriceCorrectionNoteItemModel(int salesNoteItemId, GarmentShippingLocalSalesNoteItemModel salesNoteItem, double priceCorrection)
         {
             SalesNoteItemId = salesNoteItemId;
-            SalesNoteItem = new GarmentShippingLocalSalesNoteItemModel();
+            SalesNoteItem = salesNoteItem;
             PriceCorrection = priceCorrection;
         }
     }

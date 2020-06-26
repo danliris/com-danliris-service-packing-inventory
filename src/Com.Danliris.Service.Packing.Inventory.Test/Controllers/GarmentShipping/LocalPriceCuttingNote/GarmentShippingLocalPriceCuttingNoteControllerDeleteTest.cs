@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalPriceCuttingNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Moq;
@@ -7,16 +8,16 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingDebitNote
+namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingLocalPriceCuttingNote
 {
-    public class GarmentShippingDebitNoteControllerDeleteTest : GarmentShippingDebitNoteControllerTest
+    public class GarmentShippingLocalPriceCuttingNoteControllerDeleteTest : GarmentShippingLocalPriceCuttingNoteControllerTest
     {
         [Fact]
         public async Task Delete_Ok()
         {
             var dataUtil = ViewModel;
 
-            var serviceMock = new Mock<IGarmentShippingDebitNoteService>();
+            var serviceMock = new Mock<IGarmentShippingLocalPriceCuttingNoteService>();
             serviceMock
                 .Setup(s => s.Delete(It.IsAny<int>()))
                 .ReturnsAsync(1);
@@ -40,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var dataUtil = ViewModel;
 
-            var serviceMock = new Mock<IGarmentShippingDebitNoteService>();
+            var serviceMock = new Mock<IGarmentShippingLocalPriceCuttingNoteService>();
             serviceMock
                 .Setup(s => s.Delete(It.IsAny<int>()))
                 .ThrowsAsync(new Exception());
