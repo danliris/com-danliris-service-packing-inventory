@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
-            writer.PageEvent = new GarmentShippingInvoicePDFTemplatePageEvent();
+            writer.PageEvent = new GarmentShippingInvoiceCMTPDFTemplatePageEvent();
 
             document.Open();
 
