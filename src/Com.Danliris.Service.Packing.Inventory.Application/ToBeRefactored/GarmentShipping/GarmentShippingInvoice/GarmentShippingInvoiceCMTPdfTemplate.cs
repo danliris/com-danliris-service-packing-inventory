@@ -414,7 +414,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
 
-            string amountToText = NumberToTextEN.toWords((double)totalPaid);
+            string amountToText = "";
+            if (totalPaid < 0)
+            {
+                totalPaid = totalPaid * -1;
+                amountToText= "MINUS " + NumberToTextEN.toWords((double)totalPaid);
+            }
+            else
+            {
+                amountToText = NumberToTextEN.toWords((double)totalPaid);
+            }
             calculationCellLeft.Phrase = new Phrase($"SAY : {amountToText.ToUpper()} ", normal_font);
             calculationCellLeft.Colspan = 4;
             calculationTable.AddCell(calculationCellLeft);

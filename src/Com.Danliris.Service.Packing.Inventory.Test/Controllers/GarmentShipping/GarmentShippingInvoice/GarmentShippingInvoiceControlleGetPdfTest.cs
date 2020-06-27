@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Amount=(decimal)12222.01,
                             Price=1332,
                             RONo="roNo",
+                            CMTPrice=0,
                             Uom= new UnitOfMeasurement
                             {
                                 Id=1,
@@ -62,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Quantity=10021,
                             Amount=(decimal)1222.01,
                             Price=1332,
-                            CMTPrice=12209,
+                            CMTPrice=129,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -78,6 +79,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             AdjustmentValue=1000,
                             AdjustmentDescription="AA",
                             
+                        }
+                    }
+                };
+            }
+        }
+
+        private GarmentShippingInvoiceViewModel ViewModel2
+        {
+            get
+            {
+                return new GarmentShippingInvoiceViewModel()
+                {
+                    InvoiceDate = DateTimeOffset.Now,
+                    InvoiceNo = "no",
+                    BuyerAgent = new BuyerAgent
+                    {
+                        Id = '1',
+                        Code = "aa",
+                        Name = "aa"
+                    },
+                    BankAccount = "aa",
+                    BankAccountId = 1,
+                    CO = "aa",
+                    Description = "aa",
+                    LCNo = "aa",
+                    PackingListId = 1,
+                    ShippingPer = "aa",
+                    From = "aa",
+                    To = "aa",
+
+                    Items = new List<GarmentShippingInvoiceItemViewModel>()
+                    {
+                        new GarmentShippingInvoiceItemViewModel
+                        {
+                            ComodityDesc="aad",
+                            Quantity=10,
+                            Amount=99999999999,
+                            Price=1332,
+                            CMTPrice=1,
+                            RONo="roNo1",
+                            Uom= new UnitOfMeasurement
+                            {
+                                Id=2,
+                                Unit="abaa"
+                            }
+                        }
+                    },
+                    GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>()
+                    {
+                        new GarmentShippingInvoiceAdjustmentViewModel
+                        {
+                            AdjustmentValue=1000,
+                            AdjustmentDescription="AA",
+
                         }
                     }
                 };
@@ -177,6 +232,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
         [Fact]
         public async Task Should_Success_GetPDF_CMT()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel2);
+            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1, "cmt");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF_CMT_MINUS()
         {
             //v
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
