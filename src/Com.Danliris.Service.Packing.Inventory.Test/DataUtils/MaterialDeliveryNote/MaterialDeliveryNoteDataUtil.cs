@@ -19,26 +19,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDelivery
         {
             return new MaterialDeliveryNoteModel(
                 "code",
-                DateTimeOffset.Now,
+                DateTimeOffset.UtcNow,
                 "boncode",
-                 DateTimeOffset.Now.AddDays(-2),
-                 DateTimeOffset.Now.AddDays(2),
+                 DateTimeOffset.UtcNow,
+                 DateTimeOffset.UtcNow,
+                 1,
                  "donumber",
                  "fonumber",
-                 "receiver",
+                 1,
+                 "receivercode",
+                 "receivername",
                  "remark",
+                 1,
                  "scnumber",
-                 "sender",
-                 "storageNumber",
+                 1,
+                 "sendercode",
+                 "sendername",
+                 1,
+                 "storagecode",
+                 "storagename",
                  new List<ItemsModel>()
                  {
                      new ItemsModel(
+                         1,
                          "noSPP",
                          "materialName",
                          "inputLot",
                          1,
-                         1,
-                         1,
+                         "222,222",
+                         "222,222",
                          1,
                          1
                          )
@@ -50,29 +59,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDelivery
         public override MaterialDeliveryNoteModel GetEmptyModel()
         {
             return new MaterialDeliveryNoteModel(
-                "code",
-                DateTimeOffset.Now,
-                "boncode",
-                 DateTimeOffset.Now.AddDays(-2),
-                 DateTimeOffset.Now.AddDays(2),
-                 "donumber",
-                 "fonumber",
-                 "receiver",
-                 "remark",
-                 "scnumber",
-                 "sender",
-                 "storageNumber",
+                null,
+               DateTimeOffset.UtcNow.AddSeconds(3),
+                "null",
+                 DateTimeOffset.UtcNow.AddSeconds(3),
+                 DateTimeOffset.UtcNow.AddSeconds(3),
+                 0,
+                 null,
+                 null,
+                 0,
+                 null,
+                 null,
+                 null,
+                 0,
+                 null,
+                 0,
+                 null,
+                 null,
+                 0,
+                 null,
+                 null,
                  new List<ItemsModel>()
                  {
                      new ItemsModel(
-                         "noSPP",
-                         "materialName",
-                         "inputLot",
-                         1,
-                         1,
-                         1,
-                         1,
-                         1
+                         0,
+                         null,
+                         null,
+                         null,
+                         0,
+                         null,
+                         null,
+                         0,
+                         0
                          )
                  }
 

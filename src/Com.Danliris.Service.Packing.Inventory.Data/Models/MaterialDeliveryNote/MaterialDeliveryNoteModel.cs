@@ -13,13 +13,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
         public string BonCode { get; set; }
         public DateTimeOffset? DateFrom { get; set; }
         public DateTimeOffset? DateTo { get; set; }
+        public long? DoNumberId { get; set; }
         public string DONumber { get; set; }
         public string FONumber { get; set; }
-        public string Receiver { get; set; }
+        public int? ReceiverId { get; set; }
+        public string ReceiverCode { get; set; }
+        public string ReceiverName { get; set; }
         public string Remark { get; set; }
+        public int? SCNumberId { get; set; }
         public string SCNumber { get; set; }
-        public string Sender { get; set; }
-        public string StorageNumber { get; set; }
+        public int? SenderId { get; set; }
+        public string SenderCode { get; set; }
+        public string SenderName { get; set; }
+        public int? StorageId { get; set; }
+        public string StorageCode { get; set; }
+        public string StorageName { get; set; }
         public ICollection<ItemsModel> Items { get; private set; }
 
         public MaterialDeliveryNoteModel()
@@ -33,13 +41,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             string boncode,
             DateTimeOffset datefrom,
             DateTimeOffset dateto,
+            long? donumberid,
             string donumber,
             string fonumber,
-            string receiver,
+            int? receiverid,
+            string receivercode,
+            string receivername,
             string remark,
+            int? scnumberid,
             string scnumber,
-            string sender,
-            string storageNumber,
+            int? senderid,
+            string sendercode,
+            string sendername,
+            int? storageid,
+            string storagecode,
+            string storagename,
             ICollection<ItemsModel> items
             )
         {
@@ -48,13 +64,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             BonCode = boncode;
             DateFrom = datefrom;
             DateTo = dateto;
+            DoNumberId = donumberid;
             DONumber = donumber;
             FONumber = fonumber;
-            Receiver = receiver;
+            ReceiverId = receiverid;
+            ReceiverCode = receivercode;
+            ReceiverName = receivername;
             Remark = remark;
+            SCNumberId = scnumberid;
             SCNumber = scnumber;
-            Sender = sender;
-            StorageNumber = storageNumber;
+            SenderId = senderid;
+            SenderCode = sendercode;
+            SenderName = sendername;
+            StorageId = storageid;
+            StorageCode = storagecode;
+            StorageName = storagename;
+            
             Items = items;
 
         }
@@ -99,6 +124,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             }
         }
 
+        public void SetDONumberId(long? newDONumberid)
+        {
+            if (newDONumberid != DoNumberId)
+            {
+                DoNumberId = newDONumberid;
+            }
+        }
+
         public void SetDONumber(string newDONumber)
         {
             if (newDONumber != DONumber)
@@ -115,11 +148,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             }
         }
 
-        public void SetReceiver(string newReceiver)
+        public void SetReceiverId(int? newReceiverid)
         {
-            if (newReceiver != Receiver)
+            if (newReceiverid != ReceiverId)
             {
-                Receiver = newReceiver;
+                ReceiverId = newReceiverid;
+            }
+        }
+
+        public void SetReceiverCode(string newReceivercode)
+        {
+            if (newReceivercode != ReceiverCode)
+            {
+                ReceiverCode = newReceivercode;
+            }
+        }
+
+        public void SetReceiverName(string newReceivername)
+        {
+            if (newReceivername != ReceiverName)
+            {
+                ReceiverName = newReceivername;
             }
         }
 
@@ -131,6 +180,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             }
         }
 
+        public void SetSCNumberId(int? newSCNumberid)
+        {
+            if (newSCNumberid != SCNumberId)
+            {
+                SCNumberId = newSCNumberid;
+            }
+        }
+
         public void SetSCNumber(string newSCNumber)
         {
             if (newSCNumber != SCNumber)
@@ -139,19 +196,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Data
             }
         }
 
-        public void SetSender(string newSender)
+        public void SetSenderId(int? newSenderid)
         {
-            if (newSender != Sender)
+            if (newSenderid != SenderId)
             {
-                Sender = newSender;
+                SenderId = newSenderid;
             }
         }
 
-        public void SetStorageNumber(string newStorageNumber)
+        public void SetSenderCode(string newSendercode)
         {
-            if (newStorageNumber != StorageNumber)
+            if (newSendercode != SenderCode)
             {
-                StorageNumber = newStorageNumber;
+                SenderCode = newSendercode;
+            }
+        }
+
+        public void SetSenderName(string newSendername)
+        {
+            if (newSendername != SenderName)
+            {
+                SenderName = newSendername;
+            }
+        }
+
+        public void SetStorageid(int? newStorageid)
+        {
+            if (newStorageid != StorageId)
+            {
+                StorageId = newStorageid;
+            }
+        }
+
+        public void SetStorageCode(string newStorageCode)
+        {
+            if (newStorageCode != StorageCode)
+            {
+                StorageCode = newStorageCode;
+            }
+        }
+
+        public void SetStorageName(string newStorageName)
+        {
+            if (newStorageName != StorageName)
+            {
+                StorageName = newStorageName;
             }
         }
 

@@ -29,8 +29,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                 {
                     WeightBruto =0,
                     WeightBale =0,
-                    WeightCone =0,
-                    WeightDOS =0
+                    WeightCone ="",
+                    WeightDOS =""
                 }
             };
 
@@ -52,8 +52,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.MaterialDelive
                 {
                     WeightBruto =0,
                     WeightBale =0,
-                    WeightCone =0,
-                    WeightDOS =0
+                    WeightCone ="",
+                    WeightDOS =""
+                }
+            };
+
+
+            var defaultValidationResult = viewModel.Validate(null);
+            Assert.True(defaultValidationResult.Count() > 0);
+        }
+
+        [Fact]
+        public void Validate_When_DateFrom_DateTo_Success()
+        {
+            MaterialDeliveryNoteViewModel viewModel = new MaterialDeliveryNoteViewModel();
+            viewModel.DateTo = DateTimeOffset.Now.AddDays(1);
+            viewModel.DateFrom = DateTimeOffset.Now.AddDays(2);
+            viewModel.Items = new List<ItemsViewModel>()
+            {
+                new ItemsViewModel()
+                {
+                    WeightBruto =0,
+                    WeightBale =0,
+                    WeightCone ="",
+                    WeightDOS =""
+                }
+            };
+
+
+            var defaultValidationResult = viewModel.Validate(null);
+            Assert.True(defaultValidationResult.Count() > 0);
+        }
+
+        [Fact]
+        public void Validate_When_WeightDosCone_text_failed()
+        {
+            MaterialDeliveryNoteViewModel viewModel = new MaterialDeliveryNoteViewModel();
+            viewModel.DateTo = DateTimeOffset.Now.AddDays(1);
+            viewModel.DateFrom = DateTimeOffset.Now.AddDays(2);
+            viewModel.Items = new List<ItemsViewModel>()
+            {
+                new ItemsViewModel()
+                {
+                    WeightBruto =0,
+                    WeightBale =0,
+                    WeightCone ="asd",
+                    WeightDOS ="asd"
                 }
             };
 

@@ -24,9 +24,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingNoteViewModel>()))
-                .Verifiable();
             var validateService = validateServiceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -51,9 +48,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingNoteViewModel>()))
-                .Verifiable();
             var validateService = validateServiceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Reject;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -1492,6 +1493,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GenerateExcelAll();
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_Compare()
+        {
+            var y = new ProductionOrderItemListDetailViewModel
+            {
+                Id = 1
+            };
+            var x = new ProductionOrderItemListDetailViewModel
+            {
+                Id = 1
+            };
+            PackingComparer compare = new PackingComparer();
+            var test = compare.Equals(y, x);
+            Assert.True(test);
+            
         }
     }
 }

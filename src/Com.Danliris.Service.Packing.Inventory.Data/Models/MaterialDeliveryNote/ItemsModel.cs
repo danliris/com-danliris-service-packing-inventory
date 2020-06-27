@@ -8,18 +8,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
     public class ItemsModel : StandardEntity
     {
 
+        public ItemsModel()
+        {
+
+        }
+
         public ItemsModel(
-            string noSPP,
+            int? idsop,
+            string noSOP,
             string materialName,
             string inputLot,
             double? weightBruto,
-            double? weightDOS,
-            double? weightCone,
+            string weightDOS,
+            string weightCone,
             double? weightBale,
             double? getTotal
             )
         {
-            NoSPP = noSPP;
+            IdSOP = idsop;
+            NoSOP = noSOP;
             MaterialName = materialName;
             InputLot = inputLot;
             WeightBruto = weightBruto;
@@ -30,20 +37,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
 
         }
         
-        public string NoSPP { get; set; }
+        public int? IdSOP { get; set; }
+        public string NoSOP { get; set; }
         public string MaterialName { get; set; }
         public string InputLot { get; set; }
         public double? WeightBruto { get; set; }
-        public double? WeightDOS { get; set; }
-        public double? WeightCone { get; set; }
+        public string WeightDOS { get; set; }
+        public string WeightCone { get; set; }
         public double? WeightBale { get; set; }
         public double? GetTotal { get; set; }
 
+        public void Setidsop(int? newIdSOP)
+        {
+            if (newIdSOP != IdSOP)
+            {
+                IdSOP = newIdSOP;
+            }
+        }
         public void SetNoSPP(string newNoSPP)
         {
-            if (newNoSPP != NoSPP)
+            if (newNoSPP != NoSOP)
             {
-                NoSPP = newNoSPP;
+                NoSOP = newNoSPP;
             }
         }
 
@@ -71,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetWeightDOS(double? newWeightDOS)
+        public void SetWeightDOS(string newWeightDOS)
         {
             if (newWeightDOS != WeightDOS)
             {
@@ -79,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.MaterialDeliveryNot
             }
         }
 
-        public void SetWeightCone(double? newWeightCone)
+        public void SetWeightCone(string newWeightCone)
         {
             if (newWeightCone != WeightCone)
             {
