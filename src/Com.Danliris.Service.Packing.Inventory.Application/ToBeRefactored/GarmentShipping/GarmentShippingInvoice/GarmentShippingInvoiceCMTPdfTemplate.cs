@@ -86,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
             cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
+           // cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
             cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
@@ -422,6 +422,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(calculationTable);
             #endregion
 
+            document.Add(new Paragraph("\n", normal_font));
             document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));
             
             document.Add(new Paragraph(viewModel.BankAccount, normal_font));
@@ -434,6 +435,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region MARK
             PdfPTable tableMark = new PdfPTable(2);
             tableMark.SetWidths(new float[] { 2f, 4f });
+            tableMark.WidthPercentage = 100;
 
             PdfPCell cellMarkContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellMarkContent.AddElement(new Phrase("SHIPPING MARKS :", normal_font_underlined));
@@ -455,6 +457,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Weight
             PdfPTable tableWeight = new PdfPTable(3);
             tableWeight.SetWidths(new float[] { 3f, 1f, 6f });
+            tableWeight.WidthPercentage = 100;
 
             PdfPCell cellWeightContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellWeightContentLeft.AddElement(new Phrase("GROSS WEIGHT ", normal_font));
