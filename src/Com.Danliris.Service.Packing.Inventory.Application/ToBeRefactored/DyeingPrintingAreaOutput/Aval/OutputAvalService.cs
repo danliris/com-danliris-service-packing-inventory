@@ -248,8 +248,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (bonLastAval != null)
                 {
                     var sumType = type.Items.Sum(s => s.AvalQuantityKg);
+                    var sumTypeQuantity = type.Items.Sum(s => s.Balance);
                     var substractSum = bonLastAval.TotalAvalWeight - sumType;
+                    var substractQuantity = bonLastAval.TotalAvalQuantity - sumTypeQuantity;
                     bonLastAval.SetTotalAvalWeight(substractSum, "OUTPUTAVALSERVICE", "SERVICES");
+                    bonLastAval.SetTotalAvalQuantity(substractQuantity, "OUTPUTAVALSERVICE", "SERVICES");
                     result += await _inputRepository.UpdateAsync(bonLastAval.Id, bonLastAval);
                 }
             }
