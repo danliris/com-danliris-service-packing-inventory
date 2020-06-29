@@ -121,6 +121,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                .Property(s => s.Freight)
                .HasMaxLength(1000);
+
+            builder
+               .Property(s => s.Marks)
+               .HasMaxLength(4000);
         }
     }
 }

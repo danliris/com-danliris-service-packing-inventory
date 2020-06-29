@@ -42,13 +42,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public DateTimeOffset LadingDate { get; private set; }
         public string LadingBill { get; private set; }
         public string Freight { get; private set; }
+        public string Marks { get; private set; }
         #endregion
 
         public GarmentShippingInstructionModel()
         {
         }
 
-        public GarmentShippingInstructionModel(string invoiceNo, int invoiceId, DateTimeOffset date, int eMKLId, string eMKLCode, string eMKLName, string aTTN, string fax, string cC, int shippingStaffId, string shippingStaffName, string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge, string placeOfDelivery, string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction, DateTimeOffset ladingDate, string ladingBill, string freight)
+        public GarmentShippingInstructionModel(string invoiceNo, int invoiceId, DateTimeOffset date, int eMKLId, string eMKLCode, string eMKLName, string aTTN, string fax, string cC, int shippingStaffId, string shippingStaffName, string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge, string placeOfDelivery, string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction, DateTimeOffset ladingDate, string ladingBill, string freight, string marks)
         {
             InvoiceNo = invoiceNo;
             InvoiceId = invoiceId;
@@ -83,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             LadingDate = ladingDate;
             LadingBill = ladingBill;
             Freight = freight;
+            Marks = marks;
         }
 
         public void SetInvoiceId(int invoiceId, string userName, string userAgent)
@@ -288,6 +290,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Freight != freight)
             {
                 Freight = freight;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetMarks(string marks, string userName, string userAgent)
+        {
+            if (Marks != marks)
+            {
+                Marks = marks;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
