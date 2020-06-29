@@ -165,8 +165,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
 		}
 
-        [HttpGet("pdf/{Id}")]
-        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        [HttpGet("pdf/{Id}/{type}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id, [FromRoute] string type)
         {
             if (!ModelState.IsValid)
             {
@@ -192,13 +192,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
                     BankAccount bank = _service.GetBank(model.BankAccountId);
                     GarmentPackingListViewModel pl =await _packingListService.ReadById(model.PackingListId);
-                    var PdfTemplate = new GarmentShippingInvoicePdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,buyer,bank, pl, timeoffsset);
-
-                    return new FileStreamResult(stream, "application/pdf")
+                    if (type == "fob")
                     {
-                        FileDownloadName = model.InvoiceNo + ".pdf"
-                    };
+                        var PdfTemplate = new GarmentShippingInvoicePdfTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.InvoiceNo+"-FOB" + ".pdf"
+                        };
+                    }
+                    else
+                    {
+                        var PdfTemplate = new GarmentShippingInvoiceCMTPdfTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.InvoiceNo + "-FOB-CMT" + ".pdf"
+                        };
+                    }
 
                 }
             }
