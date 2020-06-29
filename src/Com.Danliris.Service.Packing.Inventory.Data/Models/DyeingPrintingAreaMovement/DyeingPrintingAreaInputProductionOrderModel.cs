@@ -766,7 +766,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         //aval transformation
         public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType,
             double productionOrderQuantity, string cartNo, string construction, string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit,
-            double balance, double avalQuantity, double avalWeightQuantity, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName, 
+            double balance, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName, 
             int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
         {
             Area = area;
@@ -787,9 +787,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
 
             Machine = machine;
-
-            AvalQuantity = avalQuantity;
-            AvalQuantityKg = avalWeightQuantity;
 
             HasOutputDocument = hasOutputDocument;
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
@@ -1052,25 +1049,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newArea != Area)
             {
                 Area = newArea;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-
-        public void SetAvalQuantityKG(double newavalKG, string user, string agent)
-        {
-            if (newavalKG != AvalQuantityKg)
-            {
-                AvalQuantityKg = newavalKG;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetAvalQuantity(double newavalQuantity, string user, string agent)
-        {
-            if (newavalQuantity != AvalQuantity)
-            {
-                AvalQuantity = newavalQuantity;
                 this.FlagForUpdate(user, agent);
             }
         }

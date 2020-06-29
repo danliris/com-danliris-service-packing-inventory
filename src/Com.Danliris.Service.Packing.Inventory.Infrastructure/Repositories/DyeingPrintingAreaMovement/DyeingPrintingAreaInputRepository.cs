@@ -218,11 +218,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _SPPRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
                 }
-                else
-                {
-                    item.SetAvalQuantity(localItem.AvalQuantity, _identityProvider.Username, UserAgent);
-                    item.SetAvalQuantityKG(localItem.AvalQuantityKg, _identityProvider.Username, UserAgent);
-                }
             }
 
             result += await _dbContext.SaveChangesAsync();
