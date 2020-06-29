@@ -38,6 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string BuyerAgentAddress { get; set; }
         public string Notify { get; set; }
         public string SpecialInstruction { get; set; }
+        public DateTimeOffset? LadingDate { get; set; }
+        public string LadingBill { get; set; }
+        public string Freight { get; set; }
         #endregion
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
