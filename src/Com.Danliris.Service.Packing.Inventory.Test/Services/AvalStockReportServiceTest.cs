@@ -91,6 +91,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
+        private DyeingPrintingAreaMovementModel ModelAwalTransform3
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
 
 
         [Fact]
