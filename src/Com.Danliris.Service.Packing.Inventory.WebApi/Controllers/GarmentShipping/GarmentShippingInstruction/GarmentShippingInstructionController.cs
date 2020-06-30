@@ -1,11 +1,16 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,12 +25,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         private readonly IGarmentShippingInstructionService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
+        private readonly IGarmentPackingListService _packingListService;
+        private readonly IGarmentShippingInvoiceService _invoiceService;
 
-        public GarmentShippingInstructionController(IGarmentShippingInstructionService service, IIdentityProvider identityProvider, IValidateService validateService)
+        public GarmentShippingInstructionController(IGarmentShippingInstructionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentPackingListService packingListService, IGarmentShippingInvoiceService invoiceService)
         {
             _service = service;
             _identityProvider = identityProvider;
             _validateService = validateService;
+            _packingListService = packingListService;
+            _invoiceService = invoiceService;
         }
 
         protected void VerifyUser()
@@ -156,6 +165,48 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id, [FromRoute] string type)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+
+            try
+            {
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
+
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    GarmentShippingInvoiceViewModel invoice =await _invoiceService.ReadById(model.InvoiceId);
+                    GarmentPackingListViewModel pl = await _packingListService.ReadById(invoice.PackingListId);
+
+                    var PdfTemplate = new GarmentShippingInstructionPdfTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,  pl, invoice, timeoffsset);
+
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = "Shipping Instruction - "+model.InvoiceNo  + ".pdf"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }
