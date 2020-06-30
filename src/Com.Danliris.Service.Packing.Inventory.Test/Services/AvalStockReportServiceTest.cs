@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAwalTransform2 };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAwalTransform2, ModelAwalTransform3 };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 
