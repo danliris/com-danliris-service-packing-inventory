@@ -480,7 +480,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             double avalQuantityOut,
                                                             double avalQuantityKgOut,
                                                             double avalQuantity,
-                                                            double avalQuantityTotal) : this()
+                                                            double avalQuantityTotal,
+                                                            string area,
+                                                            string destinationArea,
+                                                            string deliveryNote) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -489,6 +492,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKgOut;
             AvalALength = avalQuantity;
             AvalBLength = avalQuantityTotal;
+            Area = area;
+            DestinationArea = destinationArea;
+            DeliveryNote = deliveryNote;
         }
         /// <summary>
         /// Insert Aval with existing bon using prev total weight
@@ -500,7 +506,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             double avalQuantityKgOut,
                                                             double avalQuantity,
                                                             double avalQuantityTotal,
-                                                            int dyeingPrintingOutputId) : this()
+                                                            int dyeingPrintingOutputId,
+                                                            string area,
+                                                            string destinationArea,
+                                                            string deliveryNote) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -510,6 +519,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalALength = avalQuantity;
             AvalBLength = avalQuantityTotal;
             DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
+            Area = area;
+            DestinationArea = destinationArea;
+            DeliveryNote = deliveryNote;
         }
 
         /// <summary>

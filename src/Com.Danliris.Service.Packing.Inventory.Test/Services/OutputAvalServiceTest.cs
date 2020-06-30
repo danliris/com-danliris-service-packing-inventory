@@ -130,7 +130,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                             .ToList());
             }
         }
-
+        private DyeingPrintingAreaOutputModel OutputModelExist
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModel.Date,
+                                                         ViewModel.Area,
+                                                         ViewModel.Shift,
+                                                         ViewModel.BonNo,
+                                                         ViewModel.DeliveryOrderSalesNo,
+                                                         ViewModel.DeliveryOrdeSalesId,
+                                                         false,
+                                                         ViewModel.DestinationArea,
+                                                         ViewModel.Group,
+                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
+                                                                                                                                          s.AvalCartNo,
+                                                                                                                                          s.AvalUomUnit,
+                                                                                                                                          s.AvalQuantity,
+                                                                                                                                          s.AvalQuantityKg))
+                                                                            .ToList());
+            }
+        }
         private DyeingPrintingAreaOutputModel OutputEmptyModel
         {
             get
@@ -264,13 +284,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
-
+            //OutputModel.SetDeliveryOrderSales( ViewModel.DeliveryOrdeSalesId,ViewModel.DeliveryOrderSalesNo,"unitetest","unittest");
+            //var outputmodel = OutputModel;
             //Mock for totalCurrentYear
             outputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelExist }.AsQueryable());
 
             outputRepoMock.Setup(s => s.ReadAll())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelExist }.AsQueryable());
             outputSppRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
                 .ReturnsAsync(1);
             //Mock for Create New Row in Input and ProductionOrdersInput in Each Repository 
@@ -536,6 +557,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.GenerateExcel(1);
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GeneratedBon()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+            var res1 = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "SHIPPING");
+            var res2 = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "PENJUALAN");
+            var res3 = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "BUYER");
+            var res4 = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "test");
+
+            Assert.NotNull(res1);
+            Assert.NotNull(res2);
+            Assert.NotNull(res3);
+            Assert.NotNull(res4);
+
+
         }
 
         [Fact]
