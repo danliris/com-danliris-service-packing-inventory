@@ -168,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet("pdf/{Id}")]
-        public async Task<IActionResult> GetPDF([FromRoute] int Id, [FromRoute] string type)
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
         {
             if (!ModelState.IsValid)
             {
