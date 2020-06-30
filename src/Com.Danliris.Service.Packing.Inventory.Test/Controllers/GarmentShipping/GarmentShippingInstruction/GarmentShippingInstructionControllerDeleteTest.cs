@@ -6,6 +6,8 @@ using System;
 using Xunit;
 using System.Net;
 using System.Threading.Tasks;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingInstruction
 {
@@ -21,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                 .Setup(s => s.Delete(It.IsAny<int>()))
                 .ReturnsAsync(1);
             var service = serviceMock.Object;
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -31,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService);
+            var controller = GetController(service, identityProvider, validateService, packingListServiceMock.Object, invoiceServiceMock.Object);
 
             var response = await controller.Delete(dataUtil.Id);
 
@@ -48,6 +52,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                 .Setup(s => s.Delete(It.IsAny<int>()))
                 .ThrowsAsync(new Exception());
             var service = serviceMock.Object;
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -58,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService);
+            var controller = GetController(service, identityProvider, validateService, packingListServiceMock.Object, invoiceServiceMock.Object);
             var response = await controller.Delete(dataUtil.Id);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));

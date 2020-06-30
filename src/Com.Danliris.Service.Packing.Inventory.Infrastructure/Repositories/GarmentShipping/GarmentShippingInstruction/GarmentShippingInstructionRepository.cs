@@ -87,7 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetLadingBill(model.LadingBill, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLadingDate(model.LadingDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFreight(model.Freight, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetMarks(model.Marks, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSpecialInstruction(model.SpecialInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTransit(model.Transit, _identityProvider.Username, UserAgent);
 
