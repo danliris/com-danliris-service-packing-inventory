@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mas
     {
         IQueryable<MaterialConstructionModel> GetDbSet();
         Task<int> MultipleInsertAsync(IEnumerable<MaterialConstructionModel> models);
+        int GetCodeByType(string type);
     }
 }
