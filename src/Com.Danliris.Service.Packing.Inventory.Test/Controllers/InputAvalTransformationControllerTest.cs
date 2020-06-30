@@ -85,7 +85,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     {
                         new InputAvalTransformationProductionOrderViewModel()
                         {
-                            AvalQuantity = 5,
                             Id = 1,
                             AvalType = "type",
                             BonNo = "1",
@@ -94,7 +93,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                             InputId = 1,
                             IsSave = true,
                             Quantity = 5,
-                            WeightQuantity = 5,
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",

@@ -54,39 +54,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
             return _ItemsDbSet.Where(entity => entity.Id == id).FirstAsync();
         }
 
-        Task<int> IRepository<ItemsModel>.UpdateAsync(int id, ItemsModel model)
+        public Task<int> UpdateAsync(int id, ItemsModel model)
         {
 
-            var modelToUpdate = _MaterialDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);
+            //var modelToUpdate = _MaterialDbSet.Include(s => s.Items).FirstOrDefault(entity => entity.Id == id);
 
-            foreach (var item in modelToUpdate.Items)
-            {
-                var ItemsDetail = _ItemsDbSet.FirstOrDefault(s => s.Id == item.Id);
+            //foreach (var item in modelToUpdate.Items)
+            //{
+            //    var ItemsDetail = _ItemsDbSet.FirstOrDefault(s => s.Id == item.Id);
 
-                if (ItemsDetail != null)
-                {
+            //    if (ItemsDetail != null)
+            //    {
+            //        item.Setidsop(model.IdSOP);
+            //        item.SetNoSPP(model.NoSOP);
+            //        item.SetMaterialName(model.MaterialName);
+            //        item.SetInputLot(model.InputLot);
+            //        item.SetWeightBruto(model.WeightBruto);
+            //        item.SetWeightDOS(model.WeightDOS);
+            //        item.SetWeightCone(model.WeightCone);
+            //        item.SetWeightBale(model.WeightBale);
+            //        item.SetGetTotal(model.GetTotal);
+            //    }
+            //    else
+            //    {
+            //        _ItemsDbSet.Remove(item);
+            //    }
+            //}
 
-                    item.SetNoSPP(model.NoSPP);
-                    item.SetMaterialName(model.MaterialName);
-                    item.SetInputLot(model.InputLot);
-                    item.SetWeightBruto(model.WeightBruto);
-                    item.SetWeightDOS(model.WeightDOS);
-                    item.SetWeightCone(model.WeightCone);
-                    item.SetWeightBale(model.WeightBale);
-                    item.SetGetTotal(model.GetTotal);
-                }
-                else
-                {
-                    _ItemsDbSet.Remove(item);
-                }
-            }
+            //foreach (var newItem in _ItemsDbSet.Where(s => s.Id == 0))
+            //{
+            //    modelToUpdate.Items.Add(newItem);
+            //}
 
-            foreach (var newItem in _ItemsDbSet.Where(s => s.Id == 0))
-            {
-                modelToUpdate.Items.Add(newItem);
-            }
-
-            return _dbContext.SaveChangesAsync();
+            //return _dbContext.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }

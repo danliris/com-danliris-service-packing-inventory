@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string AvalType { get; private set; }
         public string AvalCartNo { get; private set; }
         public double AvalQuantityKg { get; private set; }
+        public string Machine { get; private set; }
 
         public bool HasNextAreaDocument { get; private set; }
         public string Area { get; private set; }
@@ -58,6 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ShippingGrade { get; private set; }
         public string ShippingRemark { get; private set; }
         public double Weight { get; private set; }
+
+        public string PrevSppInJson { get; set; }
 
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         //IM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
-            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth) : this()
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -113,6 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionName = materialConstructionName;
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
+
+            Machine = machine;
         }
 
         //Transit
@@ -155,7 +160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         //Shipping
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
            string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId, bool hasSalesInvoice, string shippingGrade, string shippingRemark, double weight,
-           int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth) : this()
+           int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string cartNo, string remark) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -194,6 +199,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionName = materialConstructionName;
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
+
+            CartNo = cartNo;
+            Remark = remark;
         }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
@@ -412,6 +420,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             BuyerId = buyerId;
 
         }
+        /// <summary>
+        /// Using For Packaging Area when you want to set with SPP input and Prev Spp In that decrease
+        /// </summary>
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
+            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
+            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int dyeingPrintintOutputId, int dyeingPrintingAreaInputProductionOrderId, int buyerId,string prevSppInJson) : this()
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+
+            Area = area;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            Description = description;
+            DyeingPrintingAreaOutputId = dyeingPrintintOutputId;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+
+            BuyerId = buyerId;
+            PrevSppInJson = prevSppInJson;
+        }
 
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
                                                             string avalCartNo,
@@ -434,7 +480,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             double avalQuantityOut,
                                                             double avalQuantityKgOut,
                                                             double avalQuantity,
-                                                            double avalQuantityTotal) : this()
+                                                            double avalQuantityTotal,
+                                                            string area,
+                                                            string destinationArea,
+                                                            string deliveryNote) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -443,6 +492,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKgOut;
             AvalALength = avalQuantity;
             AvalBLength = avalQuantityTotal;
+            Area = area;
+            DestinationArea = destinationArea;
+            DeliveryNote = deliveryNote;
         }
         /// <summary>
         /// Insert Aval with existing bon using prev total weight
@@ -454,7 +506,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             double avalQuantityKgOut,
                                                             double avalQuantity,
                                                             double avalQuantityTotal,
-                                                            int dyeingPrintingOutputId) : this()
+                                                            int dyeingPrintingOutputId,
+                                                            string area,
+                                                            string destinationArea,
+                                                            string deliveryNote) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -464,6 +519,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalALength = avalQuantity;
             AvalBLength = avalQuantityTotal;
             DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
+            Area = area;
+            DestinationArea = destinationArea;
+            DeliveryNote = deliveryNote;
         }
 
         /// <summary>
@@ -924,6 +982,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newMaterialWidth != MaterialWidth)
             {
                 MaterialWidth = newMaterialWidth;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetMachine(string newMachine, string user, string agent)
+        {
+
+            if (newMachine != Machine)
+            {
+                Machine = newMachine;
                 this.FlagForUpdate(user, agent);
             }
         }

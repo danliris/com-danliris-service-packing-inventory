@@ -64,7 +64,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputAvalTransformationProductionOrderViewModel()
                         {
-                            AvalQuantity = 5,
                             Id = 1,
                             AvalType = "type",
                             BonNo = "1",
@@ -73,10 +72,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             InputId = 1,
                             IsSave = true,
                             Quantity = 5,
-                            WeightQuantity = 5,
                             Buyer = "s",
                             CartNo = "1",
                             Color = "red",
+                            Machine = "a",
                             Construction = "sd",
                             HasOutputDocument = false,
                             Motif = "sd",
@@ -113,8 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.AvalType, ViewModel.IsTransformedAval,
                     ViewModel.TotalQuantity,ViewModel.TotalWeight, ViewModel.AvalTransformationProductionOrders.Select(item => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
                     item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,item.CartNo, item.Construction,item.Unit, item.Buyer,
-                    item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.AvalQuantity, item.WeightQuantity, item.HasOutputDocument, 
-                    item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth)).ToList());
+                    item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.HasOutputDocument, 
+                    item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, 
+                    item.Machine)).ToList());
             }
         }
 
@@ -407,14 +407,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
-            vm = ViewModel;
-            foreach(var item in vm.AvalTransformationProductionOrders)
-            {
-                item.WeightQuantity = 0;
-                item.AvalQuantity = 0;
-            }
-            validateService = new ValidateService(serviceProvider);
-            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }

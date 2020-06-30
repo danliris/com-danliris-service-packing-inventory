@@ -114,9 +114,28 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 VerifyUser();
                 byte[] xlsInBytes;
-                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = await _service.GenerateExcel(id);
-                string filename = "Transit Area Note Dyeing/Printing.xlsx";
+                var data = await _service.ReadById(id);
+                var Result = _service.GenerateExcel(data);
+                string filename = $"Pencatatan Pengeluaran Area Transit Dyeing/Printing - {data.BonNo}.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("xls")]
+        public IActionResult GetExcel()
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                var Result = _service.GenerateExcel();
+                string filename = "Pencatatan Pengeluaran Area Transit Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;
@@ -128,12 +147,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("input-production-orders")]
-        public IActionResult GetProductionOrders()
+        public IActionResult GetProductionOrders([FromQuery] long productionOrderId = 0)
         {
             try
             {
 
-                var data = _service.GetInputTransitProductionOrders();
+                var data = _service.GetInputTransitProductionOrders(productionOrderId);
                 return Ok(new
                 {
                     data
@@ -208,6 +227,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                     error = ex.Message
                 };
                 return StatusCode((int)HttpStatusCode.InternalServerError, error);
+            }
+        }
+
+        [HttpGet("production-order-loader")]
+        public IActionResult GetDistinctProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.GetDistinctProductionOrder(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
             }
         }
     }

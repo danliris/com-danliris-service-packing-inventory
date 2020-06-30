@@ -150,7 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "InvoiceNo", "PackingListType", "SectionCode", "Destination"
+                "InvoiceNo", "BuyerAgentName", "UnitName", "ExportSalesDONo", "To"
             };
             query = QueryHelper<GarmentShippingExportSalesDOModel>.Search(query, SearchAttributes, keyword);
 

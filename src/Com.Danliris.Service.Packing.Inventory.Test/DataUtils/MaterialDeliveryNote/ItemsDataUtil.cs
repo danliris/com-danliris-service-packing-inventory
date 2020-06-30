@@ -15,12 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDelivery
         public override ItemsModel GetModel()
         {
             return new ItemsModel(
+                1,
                 "noSPP",
                 "materialName",
                 "inputLot",
                 1,
-                1,
-                1,
+                "222,222",
+                "222,222",
                 1,
                 1
                 );
@@ -29,19 +30,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.MaterialDelivery
         public override ItemsModel GetEmptyModel()
         {
             return new ItemsModel(
+               1,
                "noSPP",
                "materialName",
                "inputLot",
                1,
-               1,
-               1,
+               "222,222",
+               "222,222",
                1,
                1
                );
         }
     }
 
-   
-    
-    
+
+
+
 }

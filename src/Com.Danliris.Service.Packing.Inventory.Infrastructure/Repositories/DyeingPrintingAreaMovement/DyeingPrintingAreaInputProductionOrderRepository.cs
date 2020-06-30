@@ -91,6 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetMaterial(model.MaterialId, model.MaterialName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialConstruction(model.MaterialConstructionId, model.MaterialConstructionName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialWidth(model.MaterialWidth, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetMachine(model.Machine, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -118,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
 
-            if(modelToUpdate != null)
+            if (modelToUpdate != null)
             {
                 var newBalance = modelToUpdate.BalanceRemains - balance;
                 modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
@@ -131,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
                 }
             }
-            
+
             return _dbContext.SaveChangesAsync();
         }
 

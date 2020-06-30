@@ -42,7 +42,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
         {
             do
             {
-                model.Code = CodeGenerator.Generate(6);
+                var datamod = _materialDeliveryNoteDbSet.Where(a => a.BonCode == model.BonCode).Count();
+
+                if (datamod >= 0 && datamod < 9)
+                {
+                    datamod += 1;
+                    model.Code = model.BonCode + $"000{datamod}";
+                }
+                else if (datamod >= 9 && datamod < 99)
+                {
+                    datamod += 1;
+                    model.Code = model.BonCode + $"00{datamod}";
+                }
+                else if (datamod >= 99 && datamod < 999)
+                {
+                    datamod += 1;
+                    model.Code = model.BonCode + $"0{datamod}";
+                }
+                else
+                {
+                    datamod += 1;
+                    model.Code = model.BonCode + $"{datamod}";
+                }
+
             } while (_materialDeliveryNoteDbSet.Any(entity => entity.Code == model.Code));
             EntityExtension.FlagForCreate(model, _identityProvider.Username, USER_AGENT);
             _materialDeliveryNoteDbSet.Add(model);
@@ -69,13 +91,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
             modelToUpdate.SetBonCode(model.BonCode);
             modelToUpdate.SetDateFrom(model.DateFrom);
             modelToUpdate.SetDateTo(model.DateTo);
+            modelToUpdate.SetDONumberId(model.DoNumberId);
             modelToUpdate.SetDONumber(model.DONumber);
             modelToUpdate.SetFONumber(model.FONumber);
-            modelToUpdate.SetReceiver(model.Receiver);
+            modelToUpdate.SetReceiverId(model.ReceiverId);
+            modelToUpdate.SetReceiverCode(model.ReceiverCode);
+            modelToUpdate.SetReceiverName(model.ReceiverName);
             modelToUpdate.SetRemark(model.Remark);
+            modelToUpdate.SetSCNumberId(model.SCNumberId);
             modelToUpdate.SetSCNumber(model.SCNumber);
-            modelToUpdate.SetSender(model.Sender);
-            modelToUpdate.SetStorageNumber(model.StorageNumber);
+            modelToUpdate.SetSenderId(model.SenderId);
+            modelToUpdate.SetSenderCode(model.SenderCode);
+            modelToUpdate.SetSenderName(model.SenderName);
+            modelToUpdate.SetStorageid(model.StorageId);
+            modelToUpdate.SetStorageCode(model.StorageCode);
+            modelToUpdate.SetStorageName(model.StorageName);
 
             foreach (var itm in modelToUpdate.Items)
             {
@@ -83,7 +113,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mat
 
                 if (locitem != null)
                 {
-                    itm.SetNoSPP(locitem.NoSPP);
+                    itm.Setidsop(locitem.IdSOP);
+                    itm.SetNoSPP(locitem.NoSOP);
                     itm.SetMaterialName(locitem.MaterialName);
                     itm.SetInputLot(locitem.InputLot);
                     itm.SetWeightBruto(locitem.WeightBruto);

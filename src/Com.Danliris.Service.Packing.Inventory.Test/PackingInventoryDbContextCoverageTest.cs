@@ -80,6 +80,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.IPYarnType);
             Assert.Empty(dbContext.IPProcessType);
             Assert.Empty(dbContext.IPWidthType);
+
+            Assert.Empty(dbContext.GarmentShippingLetterOfCredits);
+            Assert.Empty(dbContext.GarmentShippingNotes);
+            Assert.Empty(dbContext.GarmentShippingNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingAmendLetterOfCredits);
+            Assert.Empty(dbContext.GarmentShippingExportSalesDOs);
+            Assert.Empty(dbContext.GarmentShippingExportSalesDOItems);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalCoverLetters);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesDOs);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesDOItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCorrectionNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCorrectionNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalReturnNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalReturnNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNoteItems);
         }
     }
 }

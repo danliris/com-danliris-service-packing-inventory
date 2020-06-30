@@ -75,7 +75,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 ShippingStaffName = model.ShippingStaffName,
                 SpecialInstruction = model.SpecialInstruction,
                 Transit= model.Transit,
-                TruckingDate= model.TruckingDate
+                TruckingDate= model.TruckingDate,
+                LadingDate=model.LadingDate,
+                LadingBill=model.LadingBill,
+                Freight=model.Freight,
+                Marks=model.Marks
             };
 
             return vm;
@@ -94,7 +98,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 viewModel.FeederVessel, viewModel.OceanVessel, viewModel.Carrier, viewModel.Flight, 
                 viewModel.Transit, viewModel.BankAccountId, viewModel.BankAccountName, viewModel.BuyerAgent.Id, 
                 viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.BuyerAgentAddress, 
-                viewModel.Notify, viewModel.SpecialInstruction);
+                viewModel.Notify, viewModel.SpecialInstruction, viewModel.LadingDate.GetValueOrDefault(),
+                viewModel.LadingBill,viewModel.Freight, viewModel.Marks);
 
             return garmentShippingInstructionModel;
         }

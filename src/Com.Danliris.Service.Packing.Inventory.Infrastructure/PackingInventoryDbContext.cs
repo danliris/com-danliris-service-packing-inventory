@@ -36,6 +36,14 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.MaterialDeliveryNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalReturnNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCuttingNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCuttingNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -107,6 +115,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalCoverLetterModel> GarmentShippingLocalCoverLetters { get; set; }
 
+        public DbSet<GarmentShippingLocalSalesDOModel> GarmentShippingLocalSalesDOs { get; set; }
+        public DbSet<GarmentShippingLocalSalesDOItemModel> GarmentShippingLocalSalesDOItems { get; set; }
+
+        public DbSet<GarmentShippingLocalPriceCorrectionNoteModel> GarmentShippingLocalPriceCorrectionNotes { get; set; }
+        public DbSet<GarmentShippingLocalPriceCorrectionNoteItemModel> GarmentShippingLocalPriceCorrectionNoteItems { get; set; }
+
+        public DbSet<GarmentShippingLocalReturnNoteModel> GarmentShippingLocalReturnNotes { get; set; }
+        public DbSet<GarmentShippingLocalReturnNoteItemModel> GarmentShippingLocalReturnNoteItems { get; set; }
+
+        public DbSet<GarmentShippingLocalPriceCuttingNoteModel> GarmentShippingLocalPriceCuttingNotes { get; set; }
+        public DbSet<GarmentShippingLocalPriceCuttingNoteItemModel> GarmentShippingLocalPriceCuttingNoteItems { get; set; }
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
@@ -167,6 +186,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentLocalCoverLetterConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCuttingNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCuttingNoteItemConfig());
 
             modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

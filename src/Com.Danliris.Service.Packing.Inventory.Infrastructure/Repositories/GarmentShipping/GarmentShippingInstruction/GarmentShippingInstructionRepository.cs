@@ -84,7 +84,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetFax(model.Fax, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCC(model.CC, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPhone(model.Phone, _identityProvider.Username, UserAgent);
-
+            modelToUpdate.SetLadingBill(model.LadingBill, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetLadingDate(model.LadingDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFreight(model.Freight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetMarks(model.Marks, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSpecialInstruction(model.SpecialInstruction, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTransit(model.Transit, _identityProvider.Username, UserAgent);
 

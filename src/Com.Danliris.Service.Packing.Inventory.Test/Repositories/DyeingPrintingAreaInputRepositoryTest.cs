@@ -74,6 +74,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public virtual async Task Should_Success_Update_3()
+        {
+            string testName = GetCurrentMethod() + "Update3";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new DyeingPrintingAreaInputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyuAvalTransformModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var model = DataUtil(repo, dbContext).GetAvalTransformModel();
+
+            int index = 0;
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                var spp = data.DyeingPrintingAreaInputProductionOrders.ElementAtOrDefault(index++);
+                item.DyeingPrintingAreaInputId = data.Id;
+                if(spp != null)
+                {
+                    item.Id = spp.Id;
+                }
+            }
+
+            var result = await repo2.UpdateAsync(data.Id, model);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public virtual async Task Should_Success_DeleteIMArea()
         {
             string testName = GetCurrentMethod();

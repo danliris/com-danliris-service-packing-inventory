@@ -186,6 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
+                    item.SetMachine(localItem.Machine, _identityProvider.Username, UserAgent);
                 }
             }
 
@@ -216,11 +217,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _SPPRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
-                }
-                else
-                {
-                    item.SetAvalQuantity(localItem.AvalQuantity, _identityProvider.Username, UserAgent);
-                    item.SetAvalQuantityKG(localItem.AvalQuantityKg, _identityProvider.Username, UserAgent);
                 }
             }
 

@@ -81,11 +81,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 DetailErrors += "Balance: 'Qty Keluar Harus Lebih dari 0!',";
                             }
 
-                            if (detail.Balance > item.BalanceRemains)
-                            {
-                                Count++;
-                                DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
-                            }
+                            //if (detail.Balance > item.BalanceRemains)
+                            //{
+                            //    Count++;
+                            //    DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
+                            //}
 
                             if (DestinationArea == "GUDANG AVAL")
                             {
@@ -95,28 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     DetailErrors += "AvalType: 'Macam Barang Tidak Boleh Kosong',";
                                 }
 
-                                //if (detail.AvalItems.Count == 0 && item.IsSave)
-                                //{
-                                //    Count++;
-                                //    DetailErrors += "AvalItem: 'Aval Item harus Diisi',";
-                                //}
-                                //else
-                                //{
-                                //    DetailErrors += "AvalItems : [ ";
-                                //    foreach (var aval in detail.AvalItems)
-                                //    {
-                                //        DetailErrors += "{";
-
-                                //        if (aval.Length == 0)
-                                //        {
-                                //            Count++;
-                                //            DetailErrors += "Length: 'Panjang Harus Lebih dari 0!',";
-                                //        }
-
-                                //        DetailErrors += "}, ";
-                                //    }
-                                //    DetailErrors += "], ";
-                                //}
+                                
                             }
                             
                             DetailErrors += "}, ";

@@ -83,6 +83,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
+        private DyeingPrintingAreaMovementModel ModelAwalTransform2
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+        private DyeingPrintingAreaMovementModel ModelAwalTransform3
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
 
 
         [Fact]
@@ -90,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAwalTransform2, ModelAwalTransform3 };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 
@@ -133,6 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotNull(result);
         }
+
     }
 
 
