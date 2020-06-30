@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingInvoice
 {
-    public class GarmentShippingInvoiceControlleGetPdfTest : GarmentShippingInvoiceControllerTest
+    public class GarmentShippingInvoiceControllerGetPdfTest : GarmentShippingInvoiceControllerTest
     {
         private GarmentShippingInvoiceViewModel ViewModel
         {
