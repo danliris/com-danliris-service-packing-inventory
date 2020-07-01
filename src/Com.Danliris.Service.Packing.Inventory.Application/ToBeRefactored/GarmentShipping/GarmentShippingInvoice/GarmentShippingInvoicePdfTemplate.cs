@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentCenter.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("Date  :  " + viewModel.InvoiceDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            cellHeaderContentCenter.AddElement(new Paragraph("Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             tableHeader.AddCell(cellHeaderContentCenter);
 
             PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             
             cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
             cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
             cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
             //cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellLeftBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase($"{item.Quantity}", body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Quantity)}", body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
@@ -239,12 +239,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellRightBorder.BorderColorLeft = BaseColor.White;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{item.Price}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n4}", item.Price)}", body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{item.Amount}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Amount)}", body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
@@ -256,7 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{totalQuantity}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalQuantity)}", body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -274,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{totalAmount}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalAmount)}", body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -287,7 +287,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             string amountToText = NumberToTextEN.toWords((double)totalAmount);
-            document.Add(new Paragraph("SAY   : " + amountToText.ToUpper(), normal_font));
+            document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper(), normal_font));
             document.Add(new Paragraph("\n", normal_font));
 
             document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));
