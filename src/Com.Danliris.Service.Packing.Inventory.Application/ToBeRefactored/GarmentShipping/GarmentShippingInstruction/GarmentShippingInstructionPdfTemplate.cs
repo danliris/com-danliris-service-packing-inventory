@@ -73,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("WE REQUEST YOU TO ARRANGE THE FOLLOWING SHIPMENT", normal_font));
 
             document.Add(new Paragraph("\n", normal_font));
+
             #region detail
             PdfPTable detailTable = new PdfPTable(3);
             detailTable.HorizontalAlignment = Element.ALIGN_LEFT;

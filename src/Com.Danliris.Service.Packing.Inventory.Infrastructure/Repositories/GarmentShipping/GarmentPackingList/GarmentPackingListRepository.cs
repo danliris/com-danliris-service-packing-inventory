@@ -244,5 +244,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				.Where(s=>s.IsUsed == false);
 		}
 
-	}
+        public Task<GarmentPackingListModel> ReadByInvoiceNoAsync(string no)
+        {
+            return _dbSet
+                .Include(i => i.Items)
+                    .ThenInclude(i => i.Details)
+                        .ThenInclude(i => i.Sizes)
+                .Include(i => i.Measurements)
+                .FirstOrDefaultAsync(s => s.InvoiceNo==no);
+        }
+
+    }
 }
