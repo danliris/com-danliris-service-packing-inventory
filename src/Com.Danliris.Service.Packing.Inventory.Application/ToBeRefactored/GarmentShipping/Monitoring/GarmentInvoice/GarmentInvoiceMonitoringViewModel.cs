@@ -6,7 +6,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentInvoiceMonitoringViewModel
     {
-        public int Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
         public string Origin { get; set; }
