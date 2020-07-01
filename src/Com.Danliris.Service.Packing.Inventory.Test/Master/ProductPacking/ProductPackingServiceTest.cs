@@ -53,6 +53,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             {
                 return new FormDto()
                 {
+                    Name ="Name",
+                    Code ="Code",
+                    Description = "Description",
                     PackingSize=1,
                     ProductSKUId =1,
                     UOMId =1
@@ -67,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
         {
             get
             {
-                return new ProductPackingModel(1,1,1,"Code","Name","description");
+                return new ProductPackingModel(1,1,1,"Code","Name","Description");
             }
         }
         private ProductSKUModel productSKUModel
@@ -106,14 +109,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             productPackingRepository.Setup(s => s.ReadAll())
                .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
 
-            productSKURepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-              .ReturnsAsync(productSKUModel);
-
-            unitOfMeasurementRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-            .ReturnsAsync(unitOfMeasurementModel);
-
-            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-            .ReturnsAsync(categoryModel);
+            productPackingRepository.Setup(s => s.InsertAsync(It.IsAny<ProductPackingModel>()))
+              .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
@@ -122,10 +119,83 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
                 unitOfMeasurementRepository.Object
                 ).Object);
 
-            //var result = await service.Create(formDto);
-           await  Assert.ThrowsAsync<NotImplementedException>(() =>service.Create(formDto));
-            //Assert.NotNull(result);
+
+            var result = await service.Create(new FormDto() { Name ="newName",Code ="NewCode",ProductSKUId =2});
+            Assert.Equal(1,result);
         }
+
+        [Fact]
+        public async Task Create_Throws_ServiceValidationException_When_Code_Duplicate()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository.Setup(s => s.InsertAsync(It.IsAny<ProductPackingModel>()))
+              .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Create(new FormDto() { Name = "newName", Code = "Code", ProductSKUId = 2 }));
+        }
+
+        [Fact]
+        public async Task Create_Throws_ServiceValidationException_When_Name_Duplicate()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository.Setup(s => s.InsertAsync(It.IsAny<ProductPackingModel>()))
+              .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Create(new FormDto() { Name = "Name", Code = "NewCode", ProductSKUId = 2 }));
+        }
+
+        [Fact]
+        public async Task Create_Throws_ServiceValidationException_When_SKU_Duplicate()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository.Setup(s => s.InsertAsync(It.IsAny<ProductPackingModel>()))
+              .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Create(new FormDto() { Name = "newName", Code = "NewCode", ProductSKUId = 1,PackingSize=1 }));
+        }
+
 
         [Fact]
         public async Task Create_Throws_ServiceValidationException()

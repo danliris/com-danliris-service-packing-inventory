@@ -341,7 +341,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             var response = await controller.Delete(1);
 
             //Assert
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
         }
 
         [Fact]
