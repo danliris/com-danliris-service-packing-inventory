@@ -227,24 +227,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellLeftBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Quantity)}", body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity), body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{item.Uom.Unit}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(item.Uom.Unit, body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellRightBorder.BorderColorLeft = BaseColor.White;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n4}", item.Price)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n4}", item.Price), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Amount)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Amount), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
@@ -256,7 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalQuantity)}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(string.Format("{0:n2}", totalQuantity), body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -274,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalAmount)}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;

@@ -185,7 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell bodyTableCellLeftBorder = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.LEFT_BORDER };
             PdfPCell bodyTableCellCenterBorder = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER };
 
-            bodyTableCellLeftBorder.Phrase = new Phrase($"{viewModel.Description}", body_font);
+            bodyTableCellLeftBorder.Phrase = new Phrase(viewModel.Description, body_font);
             bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
             bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellLeftBorder);
@@ -270,34 +270,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellLeftBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Quantity)}", body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity), body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{item.Uom.Unit}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(item.Uom.Unit, body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellRightBorder.BorderColorLeft = BaseColor.White;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n4}", item.Price)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n4}", item.Price), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Amount)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Amount), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n4}", item.CMTPrice)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n4}", item.CMTPrice), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellRightBorder.Phrase = new Phrase($"{string.Format("{0:n2}", item.Quantity * (double)item.CMTPrice)}", body_font);
+                bodyTableCellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity * (double)item.CMTPrice), body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTable.AddCell(bodyTableCellRightBorder);
@@ -309,7 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalQuantity)}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(string.Format("{0:n2}", totalQuantity), body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -327,7 +327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalAmount)}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -338,7 +338,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{string.Format("{0:n2}", totalCMTPrice)}", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(string.Format("{0:n2}", totalCMTPrice), body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -363,7 +363,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationTable.AddCell(calculationCellLeft);
             calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalAmount)}", normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font);
             calculationTable.AddCell(calculationCellRight);
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
@@ -373,7 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationTable.AddCell(calculationCellLeft);
             calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalPrice - (decimal)totalCMTPrice)}", normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPrice - (decimal)totalCMTPrice), normal_font);
             calculationTable.AddCell(calculationCellRight);
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
@@ -383,7 +383,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationTable.AddCell(calculationCellLeft);
             calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalAmountCMT)}", normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalAmountCMT), normal_font);
             calculationTable.AddCell(calculationCellRight);
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
@@ -398,7 +398,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     calculationTable.AddCell(calculationCellLeft);
                     calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
                     calculationTable.AddCell(calculationCellLeft);
-                    calculationCellRight.Phrase = new Phrase($"{string.Format("{0:n2}", adj.AdjustmentValue)}", normal_font);
+                    calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", adj.AdjustmentValue), normal_font);
                     calculationTable.AddCell(calculationCellRight);
                     calculationCellRight.Phrase = new Phrase("", normal_font);
                     calculationTable.AddCell(calculationCellRight);
@@ -409,7 +409,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationTable.AddCell(calculationCellLeft);
             calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalPaid)}", normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPaid), normal_font);
             calculationTable.AddCell(calculationCellRight);
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
