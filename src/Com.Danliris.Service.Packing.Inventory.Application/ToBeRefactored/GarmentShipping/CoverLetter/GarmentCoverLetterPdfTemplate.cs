@@ -122,11 +122,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetail.Phrase = new Phrase("Jumlah Muatan", normal_font);
             tableDetail.AddCell(cellDetail);
 
-            cellDetail.Phrase = new Phrase($"{viewModel.truck}", normal_font);
+            cellDetail.Phrase = new Phrase(viewModel.truck, normal_font);
             tableDetail.AddCell(cellDetail);
-            cellDetail.Phrase = new Phrase($"{viewModel.plateNumber}", normal_font);
+            cellDetail.Phrase = new Phrase(viewModel.plateNumber, normal_font);
             tableDetail.AddCell(cellDetail);
-            cellDetail.Phrase = new Phrase($"{viewModel.driver}", normal_font);
+            cellDetail.Phrase = new Phrase(viewModel.driver, normal_font);
             tableDetail.AddCell(cellDetail);
             Paragraph weight = new Paragraph($"GW  : {pl.GrossWeight} KGS \n\n" +
                                            $"NW  : {pl.NettWeight} KGS \n\n" +
@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellMark.Rowspan = 2;
             tableMark.AddCell(cellMark);
 
-            cellMark.Phrase = new Phrase($"{pl.ShippingMark}", normal_font);
+            cellMark.Phrase = new Phrase(pl.ShippingMark", normal_font);
             tableMark.AddCell(cellMark);
 
             string sealType = "";
@@ -176,13 +176,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
 
-            cellMark.Phrase = new Phrase($"{sealType}", normal_font);
+            cellMark.Phrase = new Phrase(sealType, normal_font);
             cellMark.Rowspan = 1;
             cellMark.Border = Rectangle.NO_BORDER;
             cellMark.HorizontalAlignment = Element.ALIGN_RIGHT;
             tableMark.AddCell(cellMark);
 
-            cellMark.Phrase = new Phrase($"{seal}", normal_font);
+            cellMark.Phrase = new Phrase(seal, normal_font);
             cellMark.Rowspan = 1;
             cellMark.Border = Rectangle.NO_BORDER;
             cellMark.HorizontalAlignment = Element.ALIGN_LEFT;
