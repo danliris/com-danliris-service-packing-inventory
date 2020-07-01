@@ -107,5 +107,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.NotNull(response);
         }
+
+        [Fact]
+        public void GetGenerateExcel_Error()
+        {
+            var serviceMock = new Mock<IGarmentInvoiceMonitoringService>();
+            serviceMock
+                .Setup(s => s.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            var response = controller.GetXls(null,null, null, null);
+
+            Assert.NotNull(response);
+        }
     }
 }
