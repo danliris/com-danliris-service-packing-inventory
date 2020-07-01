@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
-                var result = await _service.Create(viewModel);
+                var result = await _service.CreateV2(viewModel);
 
                 return Created("/", result);
             }
@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
 
-                var data = await _service.Delete(id);
+                var data = await _service.DeleteV2(id);
                 return Ok(new
                 {
                     data
@@ -128,6 +128,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+        [HttpGet("xls")]
+        public async Task<IActionResult> GetExcelAll()
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result =  _service.GenerateExcelAll();
+                string filename = "Packing Area Note Dyeing/Printing.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
         [HttpGet("list-bon-out")]
         public IActionResult GetBonInPacking([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
             [FromQuery] string filter = "{}")
@@ -152,6 +171,39 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
 
                 var data = _service.ReadSppInFromPack(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+        [HttpGet("list-production-order-in-group")]
+        public IActionResult GetSppInPackingGroup([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.ReadSppInFromPackGroup(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet("list-production-order-in-sum")]
+        public IActionResult GetSppInPackingSum([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.ReadSppInFromPackSumBySPPNo(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

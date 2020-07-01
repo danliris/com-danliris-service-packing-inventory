@@ -116,6 +116,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
             query = QueryHelper<ProductSKUIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();
+
+            if (queryParam.page <= 0)
+                queryParam.page = 1;
+
             var data = query.Skip(queryParam.size * (queryParam.page - 1)).Take(queryParam.size).ToList();
             return new ProductSKUIndex(data, total, queryParam.page, queryParam.size);
         }

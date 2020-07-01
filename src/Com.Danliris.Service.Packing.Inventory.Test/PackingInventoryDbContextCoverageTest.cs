@@ -67,6 +67,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
 			Assert.Empty(dbContext.GarmentShippingInvoices);
 			Assert.Empty(dbContext.GarmentShippingInvoiceItems);
 			Assert.Empty(dbContext.GarmentShippingInvoiceAdjustments);
+
+            Assert.Empty(dbContext.MaterialDeliveryNote);
+            Assert.Empty(dbContext.Items);
+            Assert.Empty(dbContext.MaterialDeliveryNoteWeaving);
+            Assert.Empty(dbContext.ItemsMaterialDeliveryNoteWeaving);
             Assert.Empty(dbContext.IPWeftTypes);
             Assert.Empty(dbContext.IPWarpTypes);
             Assert.Empty(dbContext.IPMaterialConstructions);
@@ -75,6 +80,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.IPYarnType);
             Assert.Empty(dbContext.IPProcessType);
             Assert.Empty(dbContext.IPWidthType);
+
+            Assert.Empty(dbContext.GarmentShippingLetterOfCredits);
+            Assert.Empty(dbContext.GarmentShippingNotes);
+            Assert.Empty(dbContext.GarmentShippingNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingAmendLetterOfCredits);
+            Assert.Empty(dbContext.GarmentShippingExportSalesDOs);
+            Assert.Empty(dbContext.GarmentShippingExportSalesDOItems);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalCoverLetters);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesDOs);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesDOItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCorrectionNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCorrectionNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalReturnNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalReturnNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNotes);
+            Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNoteItems);
         }
     }
 }

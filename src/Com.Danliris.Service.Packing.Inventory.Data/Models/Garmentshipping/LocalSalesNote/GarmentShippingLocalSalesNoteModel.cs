@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string DispositionNo { get; set; }
         public bool UseVat { get; set; }
         public string Remark { get; set; }
+        public bool IsUsed { get; set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemModel> Items { get; private set; }
 
@@ -29,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, int tempo, string dispositionNo, bool useVat, string remark, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, int tempo, string dispositionNo, bool useVat, string remark, bool isUsed, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             NoteNo = noteNo;
             Date = date;
@@ -45,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             UseVat = useVat;
             Remark = remark;
             Items = items;
+            IsUsed = isUsed;
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
@@ -88,6 +90,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (Remark != remark)
             {
                 Remark = remark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsUsed(bool isUsed, string userName, string userAgent)
+        {
+            if (IsUsed != isUsed)
+            {
+                IsUsed = isUsed;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

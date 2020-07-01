@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingP
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging
 {
@@ -59,8 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.PackagingProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.QtyOrder, s.Grade, s.Balance, s.BuyerId,s.Id)).ToList());
-                
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.QtyOrder, s.Grade, s.Balance, s.BuyerId, s.Id, s.Remark)).ToList());
+
                 result = await _repository.InsertAsync(model);
             }
             else
@@ -68,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 bonNo = prevBon.BonNo;
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.PackagingProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.QtyOrder, s.Grade, prevBon.Id, s.Balance, s.BuyerId,s.Id)).ToList());
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.QtyOrder, s.Grade, prevBon.Id, s.Balance, s.BuyerId, s.Id, s.Remark)).ToList());
                 model.Id = prevBon.Id;
 
             }
@@ -173,6 +176,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Grade = d.Grade,
                     Id = d.Id,
                     Unit = d.Unit,
+                    Remark = d.Remark,
                     IsChecked = d.IsChecked,
                     PackingInstruction = d.PackingInstruction,
                     UomUnit = d.UomUnit,
@@ -219,6 +223,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 BuyerId = s.BuyerId,
                 CartNo = s.CartNo,
                 Color = s.Color,
+                Remark = s.Remark,
                 Construction = s.Construction,
                 HasOutputDocument = s.HasOutputDocument,
                 IsChecked = s.IsChecked,
@@ -308,6 +313,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DeletedAgent = s.DeletedAgent,
                     DeletedBy = s.DeletedBy,
                     DeletedUtc = s.DeletedUtc,
+                    Remark = s.Remark,
                     HasOutputDocument = s.HasOutputDocument,
                     Id = s.Id,
                     IsDeleted = s.IsDeleted,
@@ -371,7 +377,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     CartNo = d.CartNo,
                     Color = d.Color,
                     Construction = d.Construction,
-
+                    Remark = d.Remark,
                     Motif = d.Motif,
                     ProductionOrder = new ProductionOrder()
                     {
@@ -523,7 +529,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     foreach (var detail in item)
                     {
-                        var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No, detail.ProductionOrder.Type, 
+                        var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No, detail.ProductionOrder.Type,
                             detail.ProductionOrder.OrderQuantity, detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction,
                             detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, false, detail.Remark, detail.Grade, detail.Status, detail.Balance, detail.BuyerId, detail.Id
                             , detail.MaterialProduct.Id, detail.MaterialProduct.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth);
@@ -540,7 +546,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += await _productionOrderRepository.InsertAsync(modelItem);
                         result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
                         result += await _movementRepository.InsertAsync(movementModel);
-                        
+
                         if (previousSummary == null)
                         {
 
@@ -566,10 +572,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var result = 0;
             //get bon data and check if it has document output
             var modelBon = _repository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any()).FirstOrDefault();
-            if(modelBon != null)
+            if (modelBon != null)
             {
                 var hasSPPwithOutput = modelBon.DyeingPrintingAreaInputProductionOrders.Where(x => x.HasOutputDocument);
-                if(hasSPPwithOutput.Count() > 0)
+                if (hasSPPwithOutput.Count() > 0)
                 {
                     throw new Exception("Bon Sudah Berada di Packing Keluar");
                 }
@@ -577,7 +583,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     //get prev bon id using first spp modelBon and search bonId
                     var firstSppBonModel = modelBon.DyeingPrintingAreaInputProductionOrders.FirstOrDefault();
-                    int sppIdPrevOutput = firstSppBonModel == null ? 0: firstSppBonModel.DyeingPrintingAreaOutputProductionOrderId ;
+                    int sppIdPrevOutput = firstSppBonModel == null ? 0 : firstSppBonModel.DyeingPrintingAreaOutputProductionOrderId;
                     var sppPrevOutput = _repositoryAreaProductionOrderOutput.ReadAll().Where(s => s.Id == sppIdPrevOutput).FirstOrDefault();
                     int bonIdPrevOutput = sppPrevOutput == null ? 0 : sppPrevOutput.DyeingPrintingAreaOutputId;
                     var bonPrevOutput = _repositoryAreaOutput.ReadAll().Where(x =>
@@ -606,8 +612,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             spp.SetHasNextAreaDocument(false, "PACKINGSERVICE", "SERVICE");
                             //update balance input spp from prev spp
-                            var inputSpp = _productionOrderRepository.ReadAll().Where(x=> x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
-                            foreach(var modifInputSpp in inputSpp)
+                            var inputSpp = _productionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
+                            foreach (var modifInputSpp in inputSpp)
                             {
                                 var newBalance = modifInputSpp.Balance + spp.Balance;
                                 modifInputSpp.SetBalanceRemains(newBalance, "PACKINGSERVICE", "SERVICE");
@@ -643,24 +649,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return result;
-            
+
         }
 
         public async Task<int> Update(int bonId, InputPackagingViewModel viewModel)
         {
             var result = 0;
             var bonInput = _repository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any());
-            foreach(var bon in bonInput)
+            foreach (var bon in bonInput)
             {
                 var sppInput = bon.DyeingPrintingAreaInputProductionOrders;
                 var sppDeleted = sppInput.Where(x => viewModel.PackagingProductionOrders.Any(s => x.Id != s.Id));
-                foreach(var spp in sppDeleted)
+                foreach (var spp in sppDeleted)
                 {
                     var prevOutput = _repositoryAreaProductionOrderOutput.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
-                    foreach(var prevOut in prevOutput)
+                    foreach (var prevOut in prevOutput)
                     {
                         var prevInput = _productionOrderRepository.ReadAll().Where(x => x.Id == prevOut.DyeingPrintingAreaInputProductionOrderId);
-                        foreach(var prevIn in prevInput)
+                        foreach (var prevIn in prevInput)
                         {
                             var newBalanceRemain = prevIn.BalanceRemains + prevOut.Balance;
                             var newBalance = prevIn.Balance + prevOut.Balance;
@@ -674,6 +680,124 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
             return result;
+        }
+        public MemoryStream GenerateExcelAll()
+        {
+            //var model = await _repository.ReadByIdAsync(id);
+            var modelAll = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d=>!d.HasOutputDocument)).ToList().Select(s =>
+                new
+                {
+                    SppList = s.DyeingPrintingAreaInputProductionOrders.Select(d => new
+                    {
+                        BonNo = s.BonNo,
+                        NoSPP = d.ProductionOrderNo,
+                        QtyOrder = d.ProductionOrderOrderQuantity,
+                        NoKreta = d.CartNo,
+                        Material = d.Construction,
+                        Unit = d.Unit,
+                        Buyer = d.Buyer,
+                        Warna = d.Color,
+                        Motif = d.Motif,
+                        Grade = d.Grade,
+                        QtyKeluar = d.Balance,
+                        SAT = d.UomUnit
+                    })
+                });
+            var model = modelAll.First();
+            //var query = model.DyeingPrintingAreaOutputProductionOrders;
+            var query = modelAll.SelectMany(s => s.SppList);
+
+            //var query = GetQuery(date, group, zona, timeOffSet);
+            DataTable dt = new DataTable();
+
+            #region Mapping Properties Class to Head excel
+            Dictionary<string, string> mappedClass = new Dictionary<string, string>
+            {
+                {"BonNo","NO BON" },
+                {"NoSPP","NO SP" },
+                {"QtyOrder","QTY ORDER" },
+                {"NoKreta","NO KRETA" },
+                {"Material","MATERIAL"},
+                {"Unit","UNIT"},
+                {"Buyer","BUYER"},
+                {"Warna","WARNA"},
+                {"Motif","MOTIF"},
+                {"Grade","GRADE"},
+                {"QtyKeluar","QTY KELUAR" },
+                {"SAT","SAT" },
+            };
+            var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
+            #endregion
+            #region Assign Column
+            foreach (var prop in mappedClass.Select((item, index) => new { Index = index, Items = item }))
+            {
+                string fieldName = prop.Items.Value;
+                dt.Columns.Add(new DataColumn() { ColumnName = fieldName, DataType = typeof(string) });
+            }
+            #endregion
+            #region Assign Data
+            foreach (var item in query)
+            {
+                List<string> data = new List<string>();
+                foreach (DataColumn column in dt.Columns)
+                {
+                    var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
+                    string valueClass = "";
+                    if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+                    {
+                        var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
+                        var searchValue = searchProperty.GetValue(item, null);
+                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                    }
+                    //else
+                    //{
+                    //    valueClass = "";
+                    //}
+                    data.Add(valueClass);
+                }
+                dt.Rows.Add(data.ToArray());
+            }
+            #endregion
+
+            #region Render Excel Header
+            ExcelPackage package = new ExcelPackage();
+            var sheet = package.Workbook.Worksheets.Add("PENERIMAAN PACKAGING");
+
+            int startHeaderColumn = 1;
+            int endHeaderColumn = mappedClass.Count;
+
+            sheet.Cells[1, 1, 1, endHeaderColumn].Style.Font.Bold = true;
+
+
+            sheet.Cells[1, startHeaderColumn].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[1, startHeaderColumn, 1, endHeaderColumn].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            sheet.Cells[1, startHeaderColumn, 1, endHeaderColumn].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Aqua);
+
+            foreach (DataColumn column in dt.Columns)
+            {
+
+                sheet.Cells[1, startHeaderColumn].Value = column.ColumnName;
+                sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                startHeaderColumn++;
+            }
+            #endregion
+
+            #region Insert Data To Excel
+            int tableRowStart = 2;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+            #endregion
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
         }
 
         //public ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo)

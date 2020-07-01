@@ -15,6 +15,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping
 {
@@ -150,10 +151,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
+        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
         {
-            return string.Format("{0}.{1}.{2}.{3}", SP, PJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            if (destinationArea == INSPECTIONMATERIAL)
+            {
+                return string.Format("{0}.{1}.{2}.{3}", SP, IM, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
+            }
+            else if (destinationArea == TRANSIT)
+            {
+                return string.Format("{0}.{1}.{2}.{3}", SP, TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else if (destinationArea == PACKING)
+            {
+                return string.Format("{0}.{1}.{2}.{3}", SP, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else if (destinationArea == GUDANGJADI)
+            {
+                return string.Format("{0}.{1}.{2}.{3}", SP, GJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            else
+            {
+                return string.Format("{0}.{1}.{2}.{3}", SP, PJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
 
         }
 
@@ -170,17 +190,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (model == null)
             {
                 int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING
-                    && s.DestinationArea == PENJUALAN && s.CreatedUtc.Year == viewModel.Date.Year);
-                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+                    && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year);
+                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
 
-                if (viewModel.DestinationArea == PENJUALAN)
+                if (viewModel.DestinationArea != BUYER)
                 {
                     model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group,
                         viewModel.DeliveryOrder.Id, viewModel.DeliveryOrder.No, viewModel.HasSalesInvoice,
                         viewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                        s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
-                       s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
+                       s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark)).ToList());
                 }
                 else
                 {
@@ -189,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                         s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
-                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
+                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark)).ToList());
                 }
 
 
@@ -197,7 +217,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
                     var itemVM = viewModel.ShippingProductionOrders.FirstOrDefault(s => s.Id == item.DyeingPrintingAreaInputProductionOrderId);
-                    if (model.DestinationArea == PENJUALAN)
+                    if (model.DestinationArea != BUYER)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(itemVM.Id, true);
@@ -236,10 +256,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.DeliveryOrder.Id, item.DeliveryOrder.No,
                         item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.Buyer, item.Construction,
                        item.Unit, item.Color, item.Motif, item.Grade, item.UomUnit, item.DeliveryNote, item.Qty, item.Id, item.Packing, item.PackingType, item.QtyPacking, item.BuyerId, item.HasSalesInvoice, item.ShippingGrade, item.ShippingRemark, item.Weight,
-                       item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
+                       item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.CartNo, item.Remark);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _productionOrderRepository.InsertAsync(modelItem);
-                    if (viewModel.DestinationArea == PENJUALAN)
+                    if (viewModel.DestinationArea != BUYER)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, true);
@@ -274,43 +294,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return result;
-        }
-
-        public async Task<MemoryStream> GenerateExcel(int id)
-        {
-            var model = await _repository.ReadByIdAsync(id);
-            var query = model.DyeingPrintingAreaOutputProductionOrders;
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. DO", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Packing", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "QTY Packing", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
-
-            if (query.Count() == 0)
-            {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, 0, "", "");
-            }
-            else
-            {
-                foreach (var item in query)
-                {
-                    dt.Rows.Add(item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.Buyer, item.Construction, "", item.Color, item.Motif, item.Grade, "", item.Remark, 0, 0,
-                        item.UomUnit, "");
-                }
-            }
-
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon Shipping Area Dyeing Printing") }, true);
         }
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
@@ -447,6 +430,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Unit = d.Unit,
                 UomUnit = d.UomUnit,
                 InputId = d.DyeingPrintingAreaInputId,
+                Remark = d.Remark,
                 QtyPacking = d.PackagingQty,
                 PackingType = d.PackagingType,
                 Packing = d.PackagingUnit,
@@ -601,21 +585,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, s.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id,
                         s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote,
                         s.Qty, s.DyeingPrintingAreaInputProductionOrderId, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
-                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth)
+                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark)
                         {
                             Id = s.Id
                         }).ToList());
-            //Dictionary<int, double> dictBalance = new Dictionary<int, double>();
-            //foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
-            //{
-            //    var lclModel = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
-            //    if (lclModel != null)
-            //    {
-            //        var diffBalance = lclModel.Balance - item.Balance;
-
-            //        dictBalance.Add(lclModel.Id, diffBalance);
-            //    }
-            //}
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !model.DyeingPrintingAreaOutputProductionOrders.Any(d => d.Id == s.Id)).ToList();
             if (model.DestinationArea == PENJUALAN && deletedData.Any(s => !s.HasNextAreaDocument && s.HasSalesInvoice))
@@ -623,23 +596,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 throw new Exception("Ada SPP yang Sudah Dibuat di Sales Invoice!");
             }
             result = await _repository.UpdateShippingArea(id, model, dbModel);
-            //foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument && !d.IsDeleted))
-            //{
-            //    double newBalance = 0;
-            //    if (!dictBalance.TryGetValue(item.Id, out newBalance))
-            //    {
-            //        newBalance = item.Balance;
-            //    }
-            //    if (newBalance != 0)
-            //    {
-            //        var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, TYPE, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-            //            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id);
 
-            //        result += await _movementRepository.InsertAsync(movementModel);
-            //    }
-
-
-            //}
             foreach (var item in deletedData)
             {
                 var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, TYPE, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
@@ -651,41 +608,91 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        //public List<OutputShippingViewModel> GetOutputShippingProductionOrdersByBon(int shippingOutputId)
-        //{
-        //    var productionOrders = _productionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-        //       .Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaOutputId == shippingOutputId && s.DestinationArea == PENJUALAN
-        //                && !s.HasNextAreaDocument);
-        //    var data = productionOrders.Select(d => new OutputShippingProductionOrderViewModel()
-        //    {
-        //        Buyer = d.Buyer,
-        //        CartNo = d.CartNo,
-        //        Color = d.Color,
-        //        Construction = d.Construction,
-        //        Motif = d.Motif,
-        //        ProductionOrder = new ProductionOrder()
-        //        {
-        //            Id = d.ProductionOrderId,
-        //            No = d.ProductionOrderNo,
-        //            Type = d.ProductionOrderType,
-        //            OrderQuantity = d.ProductionOrderOrderQuantity,
-        //        },
-        //        Grade = d.Grade,
-        //        Id = d.Id,
-        //        Unit = d.Unit,
-        //        UomUnit = d.UomUnit,
-        //        DeliveryOrder = new DeliveryOrderSales()
-        //        {
-        //            Id = d.DeliveryOrderSalesId,
-        //            No = d.DeliveryOrderSalesNo
-        //        },
-        //        Qty = d.Balance,
-        //        Remark = d.Remark,
-        //        DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
+        public MemoryStream GenerateExcel(OutputShippingViewModel viewModel)
+        {
+            var query = viewModel.ShippingProductionOrders.OrderBy(s => s.ProductionOrder.No);
+            DataTable dt = new DataTable();
 
-        //    });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade 1", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade 2", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Berat", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "SJ", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
 
-        //    return data.ToList();
-        //}
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var item in query)
+                {
+                    dt.Rows.Add(item.ProductionOrder.No, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.PackingType, item.Grade, item.ShippingGrade,
+                        item.ShippingRemark, item.QtyPacking.ToString("N2", CultureInfo.InvariantCulture), item.Packing, 
+                        item.Qty.ToString("N2", CultureInfo.InvariantCulture), item.Weight.ToString("N2", CultureInfo.InvariantCulture), item.DeliveryNote, "");
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Shipping") }, true);
+        }
+
+        public MemoryStream GenerateExcel()
+        {
+            var query = _repository.ReadAll()
+                .Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument))
+                .OrderBy(s => s.DestinationArea).ThenBy(d => d.BonNo);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Delivery Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SJ", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Zona Keluar", DataType = typeof(string) });
+
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var model in query)
+                {
+                    foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
+                    {
+                        dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark, 
+                            item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
+                            item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea);
+
+                    }
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Transit") }, true);
+        }
     }
 }

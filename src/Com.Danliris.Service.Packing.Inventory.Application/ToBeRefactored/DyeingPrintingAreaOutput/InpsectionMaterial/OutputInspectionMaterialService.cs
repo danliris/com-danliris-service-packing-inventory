@@ -15,6 +15,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System.Data;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial
 {
@@ -34,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GJ = "GJ";
         private const string GA = "GA";
         private const string SP = "SP";
+        private const string PR = "PR";
 
         private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
         private const string TRANSIT = "TRANSIT";
@@ -41,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GUDANGJADI = "GUDANG JADI";
         private const string GUDANGAVAL = "GUDANG AVAL";
         private const string SHIPPING = "SHIPPING";
+        private const string PRODUKSI = "PRODUKSI";
 
         private const string AVALA = "Aval A";
         private const string AVALB = "Aval B";
@@ -90,6 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Buyer = sppData.Buyer,
                     BuyerId = sppData.BuyerId,
                     CartNo = sppData.CartNo,
+                    Machine = sppData.Machine,
                     Color = sppData.Color,
                     Construction = sppData.Construction,
                     Motif = sppData.Motif,
@@ -154,10 +158,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 return string.Format("{0}.{1}.{2}.{3}", IM, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
-            else
+            else if (destinationArea == GUDANGAVAL)
             {
                 return string.Format("{0}.{1}.{2}.{3}", IM, GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
+            }
+            else
+            {
+                return string.Format("{0}.{1}.{2}.{3}", IM, PR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
 
         }
@@ -183,8 +191,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
                             item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType, 
-                            item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
+                            item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
+                            item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine);
                         productionOrders.Add(outputProductionOrder);
                     }
                 }
@@ -229,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
                          item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
-                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
+                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine);
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                         result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -305,45 +313,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        public async Task<MemoryStream> GenerateExcel(int id)
+        public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders(long productionOrderId)
         {
-            var model = await _repository.ReadByIdAsync(id);
-            var query = model.DyeingPrintingAreaOutputProductionOrders;
-            DataTable dt = new DataTable();
+            IQueryable<DyeingPrintingAreaInputProductionOrderModel> productionOrders;
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Saldo", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
-
-            if (query.Count() == 0)
+            if (productionOrderId == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, "");
+                productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                                    .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
             }
             else
             {
-                foreach (var item in query)
-                {
-                    dt.Rows.Add(item.ProductionOrderNo, item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark, item.Grade, item.UomUnit, item.Balance,
-                        "");
-                }
+                productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                                    .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId);
+
             }
 
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Bon IM Area Dyeing Printing") }, true);
-        }
 
-        public List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders()
-        {
-            var productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
             var data = productionOrders.Select(s => new InputInspectionMaterialProductionOrderViewModel()
             {
                 Balance = s.Balance,
@@ -386,15 +372,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return data.ToList();
         }
 
+        public ListResult<InputInspectionMaterialProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.Area == INSPECTIONMATERIAL && !s.HasOutputDocument);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ProductionOrderNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Order(query, OrderDictionary);
+            var data = query.Skip((page - 1) * size).Take(size)
+                .GroupBy(d => d.ProductionOrderId)
+                .Select(s => s.First())
+                .OrderBy(s => s.ProductionOrderNo)
+                .Select(s => new InputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+
+                    }
+                });
+
+            return new ListResult<InputInspectionMaterialProductionOrderViewModel>(data.ToList(), page, size, query.Count());
+        }
+
         public async Task<int> Delete(int id)
         {
             int result = 0;
             var model = await _repository.ReadByIdAsync(id);
-
-            //if (model.DyeingPrintingAreaOutputProductionOrders.Any(s => s.HasNextAreaDocument))
-            //{
-            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", model.DestinationArea));
-            //}
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -425,7 +441,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, detail.HasNextAreaDocument, item.ProductionOrder.Id,
                         item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
-                        item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth)
+                        item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine)
                     {
                         Id = detail.Id
                     };
@@ -448,10 +464,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !productionOrders.Any(d => d.Id == s.Id)).ToList();
 
-            //if (deletedData.Any(item => item.HasNextAreaDocument))
-            //{
-            //    throw new Exception(string.Format("Ada SPP yang Sudah Dibuat di Penerimaan Area {0}!", dbModel.DestinationArea));
-            //}
             result = await _repository.UpdateIMArea(id, model, dbModel);
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument && !d.IsDeleted))
             {
@@ -479,6 +491,94 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return result;
+        }
+
+        public MemoryStream GenerateExcel()
+        {
+            var query = _repository.ReadAll()
+                .Where(s => s.Area == INSPECTIONMATERIAL && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument))
+                .OrderBy(s => s.DestinationArea).ThenBy(d => d.BonNo);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan Transit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Mesin", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Zona Keluar", DataType = typeof(string) });
+
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var model in query)
+                {
+                    foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
+                    {
+                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                            item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Status, item.Remark, item.Machine, item.Grade, item.UomUnit,
+                            item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea);
+
+                    }
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Inspection Material") }, true);
+        }
+
+        public MemoryStream GenerateExcel(OutputInspectionMaterialViewModel viewModel)
+        {
+            var query = viewModel.InspectionMaterialProductionOrders.OrderBy(s => s.ProductionOrder.No);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Mesin", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan Transit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Aval", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
+
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var item in query)
+                {
+                    foreach (var detail in item.ProductionOrderDetails.Where(s => !s.HasNextAreaDocument))
+                    {
+                        dt.Rows.Add(item.ProductionOrder.No, item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.CartNo, item.Construction, item.Unit,
+                            item.Buyer, item.Color, item.Motif, item.Status, item.Machine, item.UomUnit, detail.Remark, detail.Grade, detail.AvalType,
+                            detail.Balance.ToString("N2", CultureInfo.InvariantCulture), "");
+                    }
+
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Inspection Material") }, true);
         }
     }
 }

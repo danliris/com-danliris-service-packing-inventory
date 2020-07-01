@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 ExportEstimationDate = model.ExportEstimationDate,
                 Omzet = model.Omzet,
                 Accounting = model.Accounting,
+                IsUsed=model.IsUsed,
                 Items = (model.Items ?? new List<GarmentPackingListItemModel>()).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,

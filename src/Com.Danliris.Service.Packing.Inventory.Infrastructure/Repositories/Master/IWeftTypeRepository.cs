@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mas
     {
         IQueryable<WeftTypeModel> GetDbSet();
         Task<int> MultipleInsertAsync(IEnumerable<WeftTypeModel> models);
+        int GetCodeByType(string type);
     }
 }

@@ -33,6 +33,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Mas
             return _dbContext.SaveChangesAsync();
         }
 
+        public int GetCodeByType(string type)
+        {
+            var data = _dbSet.FirstOrDefault(s => s.Type == type);
+
+            if (data == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return Convert.ToInt32(data.Code);
+            }
+        }
+
         public IQueryable<GradeModel> GetDbSet()
         {
             return _dbSet;

@@ -115,9 +115,28 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 VerifyUser();
                 byte[] xlsInBytes;
-                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = await _service.GenerateExcel(id);
-                string filename = "Shipping Area Note Dyeing/Printing.xlsx";
+                var data = await _service.ReadById(id);
+                var Result = _service.GenerateExcel(data);
+                string filename = $"Pencatatan Pengeluaran Area Shipping Dyeing/Printing - {data.BonNo}.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("xls")]
+        public IActionResult GetExcel()
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                var Result = _service.GenerateExcel();
+                string filename = "Pencatatan Pengeluaran Area Shipping Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;

@@ -34,19 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
 
         public async Task<int> Create(FormDto form)
         {
-            var code = CodeGenerator.Generate(8);
-
-            while (_productPackingRepository.ReadAll().Any(entity => entity.Code == code))
-            {
-                code = CodeGenerator.Generate(8);
-            }
-
-            var product = await _productSKURepository.ReadByIdAsync(form.ProductSKUId.GetValueOrDefault());
-            var uom = await _uomRepository.ReadByIdAsync(form.UOMId.GetValueOrDefault());
-
-            var name = product.Name + " " + uom.Unit;
-
-            if (_productPackingRepository.ReadAll().Any(entity => entity.Name == name))
+            if (_productPackingRepository.ReadAll().Any(entity => entity.Name == form.Name))
             {
                 var errorResult = new List<ValidationResult>()
                 {
@@ -56,17 +44,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
-            //var model = new ProductPackingModel(
-            //    product.Id,
-            //    uom.Id,
-            //    form.PackingSize.GetValueOrDefault(),
-            //    code,
-            //    name
-            //    );
+            if (_productPackingRepository.ReadAll().Any(entity => entity.Code == form.Code))
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode tidak boleh duplikat", new List<string> { "Code" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
 
-            //return await _productPackingRepository.InsertAsync(model);
+            if (_productPackingRepository.ReadAll().Any(entity => entity.ProductSKUId == form.ProductSKUId.GetValueOrDefault() && entity.PackingSize == form.PackingSize.GetValueOrDefault()))
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Sudah ada SKU dengan Kuantiti Per packing yang sama", new List<string> { "ProductSKU" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
 
-            throw new NotImplementedException();
+            var model = new ProductPackingModel(form.ProductSKUId.GetValueOrDefault(), form.UOMId.GetValueOrDefault(), form.PackingSize.GetValueOrDefault(), form.Code, form.Name, form.Description);
+
+            return await _productPackingRepository.InsertAsync(model);
         }
 
         public Task<int> Delete(int id)
@@ -80,9 +80,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
             if (productPacking != null)
             {
                 var uom = await _uomRepository.ReadByIdAsync(productPacking.UOMId);
-                var product = await _productSKURepository.ReadByIdAsync(productPacking.ProductSKUId);
+                var productSKU = await _productSKURepository.ReadByIdAsync(productPacking.ProductSKUId);
+                var skuUOM = await _uomRepository.ReadByIdAsync(productSKU.UOMId);
+                var skuCategory = await _categoryRepository.ReadByIdAsync(productSKU.CategoryId);
 
-                return new ProductPackingDto(productPacking, product, uom);
+                return new ProductPackingDto(productPacking, productSKU, uom, skuUOM, skuCategory);
             }
 
             return null;
@@ -118,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
                             Id = productPacking.Id
                         };
 
-            query = QueryHelper<ProductPackingIndexInfo>.Search(query, searchAttributes, queryParam.keyword);
+            query = QueryHelper<ProductPackingIndexInfo>.Search(query, searchAttributes, queryParam.keyword, true);
             query = QueryHelper<ProductPackingIndexInfo>.Order(query, order);
 
             var total = await query.CountAsync();
@@ -126,18 +128,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
             return new ProductPackingIndex(data, total, queryParam.page, queryParam.size);
         }
 
-        public Task<int> Update(int id, FormDto form)
+        public async Task<int> Update(int id, FormDto form)
         {
-            //var model = await _productPackingRepository.ReadByIdAsync(id);
+            var model = await _productPackingRepository.ReadByIdAsync(id);
 
-            //model.Set(form.Name);
-            //model.SetUOM(form.UOMId.GetValueOrDefault());
-            //model.SetCategory(form.CategoryId.GetValueOrDefault());
-            //model.SetDescription(form.Description);
+            if (_productPackingRepository.ReadAll().Any(entity => entity.Name == form.Name) && form.Name == model.Name)
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Nama tidak boleh duplikat", new List<string> { "Name" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
 
-            //return await _productPackingRepository.UpdateAsync(id, model);
+            if (_productPackingRepository.ReadAll().Any(entity => entity.Code == form.Code) && form.Code == model.Code)
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode tidak boleh duplikat", new List<string> { "Code" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
 
-            throw new NotImplementedException();
+            if (_productPackingRepository.ReadAll().Any(entity => entity.ProductSKUId == form.ProductSKUId.GetValueOrDefault() && entity.PackingSize == form.PackingSize.GetValueOrDefault()) && (form.ProductSKUId.GetValueOrDefault() != model.ProductSKUId && form.PackingSize.GetValueOrDefault() != model.PackingSize ))
+            {
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Sudah ada SKU dengan Kuantiti Per packing yang sama", new List<string> { "ProductSKU" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+            model.SetCode(form.Code);
+            model.SetName(form.Name);
+            model.SetProductSKU(form.ProductSKUId.GetValueOrDefault());
+            model.SetPackingSize(form.PackingSize.GetValueOrDefault());
+            model.SetUOM(form.UOMId.GetValueOrDefault());
+            model.SetDescription(form.Description);
+
+            return await _productPackingRepository.UpdateAsync(id, model);
         }
     }
 }

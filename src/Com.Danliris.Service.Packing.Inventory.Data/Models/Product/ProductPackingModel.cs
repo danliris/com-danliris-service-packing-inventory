@@ -1,4 +1,5 @@
 ﻿using Com.Moonlay.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
@@ -11,15 +12,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         }
 
         // UOM is packing type
-        public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, int createdYear, int createdMonth)
+        public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description)
         {
             ProductSKUId = productSKUId;
             UOMId = uomId;
             PackingSize = packingSize;
             Code = code;
             Name = name;
-            CreatedYear = createdYear;
-            CreatedMonth = createdMonth;
+            Description = description;
         }
 
         public int ProductSKUId { get; private set; }
@@ -29,7 +29,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         public string Code { get; private set; }
         [MaxLength(512)]
         public string Name { get; private set; }
-        public int CreatedYear { get; private set; }
-        public int CreatedMonth { get; private set; }
+        public string Description { get; private set; }
+
+        public void SetCode(string code)
+        {
+            Code = code;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
+        }
+
+        public void SetProductSKU(int productSKUId)
+        {
+            ProductSKUId = productSKUId;
+        }
+
+        public void SetPackingSize(double packingSize)
+        {
+            PackingSize = packingSize;
+        }
+
+        public void SetUOM(int uomId)
+        {
+            UOMId = uomId;
+        }
+
+        public void SetDescription(string description)
+        {
+            Description = description;
+        }
     }
 }

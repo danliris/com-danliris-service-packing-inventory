@@ -8,12 +8,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DTOs
 {
     public class ProductPackingDto
     {
-        public ProductPackingDto(ProductPackingModel productPacking, ProductSKUModel product, UnitOfMeasurementModel uom)
+        public ProductPackingDto(ProductPackingModel productPacking, ProductSKUModel product, UnitOfMeasurementModel uom, UnitOfMeasurementModel skuUOM, CategoryModel skuCategory)
         {
             Id = productPacking.Id;
             Code = productPacking.Code;
             Name = productPacking.Name;
             LasModifiedUtc = productPacking.LastModifiedUtc;
+            ProductSKU = new ProductSKUDto(product, skuUOM, skuCategory);
             UOM = new UnitOfMeasurementDto(uom);
             PackingSize = productPacking.PackingSize;
         }
@@ -22,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DTOs
         public string Code { get; }
         public string Name { get; }
         public DateTime LasModifiedUtc { get; }
+        public ProductSKUDto ProductSKU { get; }
         public UnitOfMeasurementDto UOM { get; }
         public double PackingSize { get; }
     }

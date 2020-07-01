@@ -717,6 +717,99 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_BonExist_Reject2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'"+DateTime.Now.Date.ToString("yyyy-MM-dd")+ "','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
+            var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]";
+            var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
+            ObjectTestPayload.Date = ViewModel.Date;
+            foreach (var item in ObjectTestPayload.AvalItems)
+            {
+                item.Material = new Material()
+                {
+                    Id = 1,
+                    Name = "a"
+                };
+                item.MaterialConstruction = new MaterialConstruction()
+                {
+                    Id = 1,
+                    Name = "a"
+                };
+                item.MaterialWidth = "1";
+            }
+            var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
+            //Mock for totalCurrentYear
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            Model.Id = 1;
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+            //Model.SetArea("PACKING","unittest","unittest");
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+            //Mock for Create New Row in Input and ProductionOrdersInput in Each Repository 
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            var avalItem = ViewModel.AvalItems.FirstOrDefault();
+            var areaMovement = ViewModel.DyeingPrintingMovementIds.FirstOrDefault();
+            var productionOrderId = areaMovement.ProductionOrderIds.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(
+                    new List<DyeingPrintingAreaSummaryModel>()
+                    {
+                        new DyeingPrintingAreaSummaryModel(ViewModel.Date,
+                                                           ViewModel.Area,
+                                                           "IN",
+                                                           areaMovement.DyeingPrintingAreaMovementId,
+                                                           ViewModel.BonNo,
+                                                           avalItem.AvalCartNo,
+                                                           avalItem.AvalUomUnit,
+                                                           avalItem.AvalQuantity)
+                    }
+                    .AsQueryable());
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            outputSppRepoMock.Setup(s => s.ReadAll())
+                .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            summaryRepoMock.Setup(s => s.UpdateToAvalAsync(It.IsAny<DyeingPrintingAreaSummaryModel>(), ViewModel.Date, ViewModel.Area, "IN"))
+                .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            inputSppMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
+                .ReturnsAsync(1);
+            inputSppMock.Setup(s => s.ReadAll())
+                .Returns(objectInputSppPrev.AsQueryable());
+            inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
+               .ReturnsAsync(1);
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+               .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+            var result = await service.Reject(ObjectTestPayload);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_Delete()
         {
             var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
@@ -726,7 +819,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'2020-06-12','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
+            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'2020-06-12','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
             var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':0,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2,}]";
             var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
@@ -824,7 +917,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "a"
                 },
-                MaterialWidth = "1"
+                MaterialWidth = "1",
+                Machine = "a"
             };
             var test1 = test.BuyerId;
             var test2 = test.ProductionOrder;
@@ -835,6 +929,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(test.Material);
             Assert.NotNull(test.MaterialConstruction);
             Assert.NotNull(test.MaterialWidth);
+            Assert.NotNull(test.Machine);
         }
     }
 }
