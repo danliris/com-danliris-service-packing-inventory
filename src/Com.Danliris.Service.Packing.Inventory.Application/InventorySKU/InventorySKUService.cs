@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
             {
                 foreach (var item in form.Items)
                 {
-                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId, item.UOMId, model.StorageId, item.Quantity, form.Type, item.Remark);
+                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId, item.UOMId, model.StorageId, model.StorageCode, model.StorageName, item.Quantity, form.Type, item.Remark);
                     await _queueService.SendMessage(movementItem);
                 }
             }
@@ -77,7 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
                 }
                 _unitOfWork.ProductSKUInventoryMovements.Insert(inventoryMovement);
 
-                summary = new ProductSKUInventorySummaryModel(inventoryMovement.ProductSKUId, inventoryMovement.StorageId, inventoryMovement.UOMId);
+                summary = new ProductSKUInventorySummaryModel(inventoryMovement.ProductSKUId, inventoryMovement.StorageId, inventoryMovement.StorageCode, inventoryMovement.StorageName, inventoryMovement.UOMId);
                 summary.SetBalance(inventoryMovement.CurrentBalance);
                 _unitOfWork.ProductSKUInventorySummaries.Insert(summary);
             }

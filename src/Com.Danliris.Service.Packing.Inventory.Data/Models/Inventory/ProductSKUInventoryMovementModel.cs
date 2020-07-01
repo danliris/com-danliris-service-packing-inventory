@@ -16,6 +16,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             int productSKUId,
             int uomId,
             int storageId,
+            string storageCode,
+            string storageName,
             double quantity,
             string type,
             string remark
@@ -24,6 +26,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             InventoryDocumentId = inventoryDocumentId;
             ProductSKUId = productSKUId;
             StorageId = storageId;
+            StorageCode = storageCode;
+            StorageName = storageName;
             UOMId = uomId;
             Quantity = quantity;
             Type = type;
@@ -34,6 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
         public int ProductSKUId { get; private set; }
         public int UOMId { get; private set; }
         public int StorageId { get; private set; }
+        public string StorageCode { get; private set; }
+        public string StorageName { get; private set; }
         public double Quantity { get; private set; }
         public double PreviousBalance { get; private set; }
         public double CurrentBalance { get; private set; }
