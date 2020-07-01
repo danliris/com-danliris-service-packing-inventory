@@ -15,14 +15,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 {
     public class GarmentInvoiceMonitoringServiceTest
     {
-        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository, IGarmentPackingListRepository packingListRepository)
+        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository)
         {
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repository);
-
-            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
-               .Returns(packingListRepository);
 
             spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider());
@@ -49,9 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
 
-            var repoMock1 = new Mock<IGarmentPackingListRepository>();
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+           var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = service.GetReportData(model.BuyerAgentCode, null, DateTime.MinValue, DateTime.MaxValue, 0);
 
@@ -71,9 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
 
-            var repoMock1 = new Mock<IGarmentPackingListRepository>();
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = service.GenerateExcel(model.BuyerAgentCode, null, DateTime.MinValue, DateTime.MaxValue, 7);
 
@@ -93,13 +86,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
-            var repoMock1 = new Mock<IGarmentPackingListRepository>();
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
             var result = service.GenerateExcel(null, null, null, null, 0);
 
-            Assert.NotNull(result);
+            Assert.Null(result);
         }
     }
 }
