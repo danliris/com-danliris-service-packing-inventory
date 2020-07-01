@@ -117,18 +117,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             //Setup
             var dataUtil = formDto;
             var serviceMock = new Mock<IProductSKUService>();
-            serviceMock
-                .Setup(s => s.Create(It.IsAny<FormDto>()))
-                .ReturnsAsync(1);
+            serviceMock.Setup(s => s.Create(It.IsAny<FormDto>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<FormDto>()))
-                .Verifiable();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
             var validateService = validateServiceMock.Object;
 
             //Act
@@ -145,10 +141,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
-            serviceMock
-                .Setup(s => s.Create(It.IsAny<FormDto>()))
-                .Throws(GetServiceValidationException());
+            serviceMock.Setup(s => s.Create(It.IsAny<FormDto>())).Throws(GetServiceValidationException());
 
             var service = serviceMock.Object;
 
@@ -175,9 +170,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             //Setup
             var dataUtil = formDto;
             var serviceMock = new Mock<IProductSKUService>();
-            serviceMock
-                .Setup(s => s.Create(It.IsAny<FormDto>()))
-                .Throws(new Exception());
+            serviceMock.Setup(s => s.Create(It.IsAny<FormDto>())).Throws(new Exception());
 
             var service = serviceMock.Object;
 
@@ -203,6 +196,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(productSKUDto);
             var service = serviceMock.Object;
@@ -228,6 +222,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(() => null);
             var service = serviceMock.Object;
@@ -252,6 +247,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).Throws(new Exception());
             var service = serviceMock.Object;
@@ -276,6 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetIndex(It.IsAny<IndexQueryParam>())).ReturnsAsync(produkSKUIndex);
             var service = serviceMock.Object;
@@ -301,6 +298,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetIndex(It.IsAny<IndexQueryParam>())).Throws(new Exception());
             var service = serviceMock.Object;
@@ -325,6 +323,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(1);
             var service = serviceMock.Object;
@@ -349,6 +348,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).ReturnsAsync(0);
             var service = serviceMock.Object;
@@ -373,6 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.Delete(It.IsAny<int>())).Throws(new Exception());
             var service = serviceMock.Object;
@@ -398,6 +399,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(productSKUDto);
 
@@ -424,9 +426,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(() => null);
-
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -449,24 +451,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
-            serviceMock
-                .Setup(s => s.GetById(It.IsAny<int>()))
-                .ReturnsAsync(productSKUDto);
-
-            serviceMock
-               .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<FormDto>()))
-               .Throws(GetServiceValidationException());
-
+            serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(productSKUDto);
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<FormDto>())).Throws(GetServiceValidationException());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<FormDto>()))
-                .Verifiable();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
             var validateService = validateServiceMock.Object;
 
             //Act
@@ -482,24 +477,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         {
             //Setup
             var dataUtil = formDto;
+
             var serviceMock = new Mock<IProductSKUService>();
-            serviceMock
-                .Setup(s => s.GetById(It.IsAny<int>()))
-                .ReturnsAsync(productSKUDto);
+            serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(productSKUDto);
 
-            serviceMock
-               .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<FormDto>()))
-               .Throws(new Exception());
-
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), It.IsAny<FormDto>())).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<FormDto>()))
-                .Verifiable();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
             var validateService = validateServiceMock.Object;
 
             //Act
