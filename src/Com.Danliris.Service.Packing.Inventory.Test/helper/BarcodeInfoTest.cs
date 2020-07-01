@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
             };
            
 
-            ProductPackingModel productPackingModel = new ProductPackingModel(1,1,1,"Code","Name",1,1)
+            ProductPackingModel productPackingModel = new ProductPackingModel(1,1,1,"Code","Name","description")
             {
                 
             };
@@ -51,8 +51,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
             {
 
             };
-
-            ProductPackingDto productPackingDto = new ProductPackingDto(productPackingModel, productSKUModel, uomModel);
+            UnitOfMeasurementModel skuUOM = new UnitOfMeasurementModel();
+            CategoryModel skuCategory = new CategoryModel();
+            ProductPackingDto productPackingDto = new ProductPackingDto(productPackingModel, productSKUModel, uomModel, skuUOM, skuCategory);
             
 
             BarcodeInfo barcode = new BarcodeInfo(productSKUDto, productPackingDto);

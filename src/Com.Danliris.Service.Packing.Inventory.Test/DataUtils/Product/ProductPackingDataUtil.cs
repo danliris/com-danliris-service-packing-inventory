@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Product
 
         public override ProductPackingModel GetModel()
         {
-            return new ProductPackingModel(1,1,1,"code","name",1,1);
+            return new ProductPackingModel(1,1,1,"code","name","description");
         }
       
     }

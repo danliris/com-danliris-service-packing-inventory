@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
         public Mock<IServiceProvider> GetServiceProvider(
            IRepository<ProductPackingModel> productPackingRepository,
            IRepository<ProductSKUModel> productSKURepository,
+           IRepository<CategoryModel> categoryRepository,
            IRepository<UnitOfMeasurementModel> unitOfMeasurementRepository
           )
         {
@@ -35,6 +36,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
 
             serviceProviderMock.Setup(s => s.GetService(typeof(IRepository<ProductSKUModel>)))
              .Returns(productSKURepository);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IRepository<CategoryModel>)))
+            .Returns(categoryRepository);
 
             serviceProviderMock.Setup(s => s.GetService(typeof(IRepository<UnitOfMeasurementModel>)))
              .Returns(unitOfMeasurementRepository);
@@ -63,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
         {
             get
             {
-                return new ProductPackingModel(1,1,1,"Code","Name",1,1);
+                return new ProductPackingModel(1,1,1,"Code","Name","description");
             }
         }
         private ProductSKUModel productSKUModel
@@ -82,6 +86,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             }
         }
 
+        private CategoryModel categoryModel
+        {
+            get
+            {
+                return new CategoryModel("name","code");
+            }
+        }
+        
+
         [Fact]
         public async Task Should_Success_Create()
         {
@@ -89,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
-
+            var categoryRepository =new Mock<IRepository<CategoryModel>>();
             productPackingRepository.Setup(s => s.ReadAll())
                .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
 
@@ -99,9 +112,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             unitOfMeasurementRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(unitOfMeasurementModel);
 
+            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(categoryModel);
+
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 
@@ -117,11 +134,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
 
             var newProductPackingModel = productPackingModel;
           
             productPackingRepository.Setup(s => s.ReadAll())
-               .Returns(new List<ProductPackingModel>() { new ProductPackingModel(1,1,1,"Code", " Unit", 2020,1) }.AsQueryable());
+               .Returns(new List<ProductPackingModel>() { new ProductPackingModel(1,1,1,"Code", " Unit","description") }.AsQueryable());
 
             productSKURepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
               .ReturnsAsync(productSKUModel);
@@ -129,9 +147,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             unitOfMeasurementRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(unitOfMeasurementModel);
 
+            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(categoryModel);
+
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 
@@ -145,8 +167,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
 
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
-
+            
             productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(productPackingModel);
 
@@ -156,9 +179,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             unitOfMeasurementRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
             .ReturnsAsync(unitOfMeasurementModel);
 
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(categoryModel);
+
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 
@@ -173,15 +201,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
 
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
 
             productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(()=>null);
 
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(categoryModel);
+
 
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 
@@ -196,15 +230,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
 
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
 
             productPackingRepository.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                .ReturnsAsync(1);
 
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(categoryModel);
 
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 
@@ -220,15 +259,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
             var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
 
-
-            var productPackingModel = new ProductPackingModel(1, 1, 1, "Code", "Name", 1, 1)
+            var productPackingModel = new ProductPackingModel(1, 1, 1, "Code", "Name","description")
             {
                 Id = 1,
                 Active = true,
 
             };
-
 
             productPackingRepository.Setup(s => s.ReadAll())
                .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable().BuildMock().Object);
@@ -256,6 +294,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             var service = GetService(GetServiceProvider(
                 productPackingRepository.Object,
                 productSKURepository.Object,
+                categoryRepository.Object,
                 unitOfMeasurementRepository.Object
                 ).Object);
 

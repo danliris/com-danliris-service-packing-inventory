@@ -28,7 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
 
             _productPackingRepository = serviceProvider.GetService<IRepository<ProductPackingModel>>();
             _productSKURepository = serviceProvider.GetService<IRepository<ProductSKUModel>>();
-
+            _categoryRepository = serviceProvider.GetService<IRepository<CategoryModel>>();
             _uomRepository = serviceProvider.GetService<IRepository<UnitOfMeasurementModel>>();
         }
 

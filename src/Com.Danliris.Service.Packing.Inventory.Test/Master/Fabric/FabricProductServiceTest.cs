@@ -112,7 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
                 return new ProductPackingDto(
                     new ProductPackingModel(),
                     new ProductSKUModel(),
-                    new UnitOfMeasurementModel()
+                    new UnitOfMeasurementModel(),
+                    new UnitOfMeasurementModel(),
+                    new CategoryModel()
                     );
             }
         }
