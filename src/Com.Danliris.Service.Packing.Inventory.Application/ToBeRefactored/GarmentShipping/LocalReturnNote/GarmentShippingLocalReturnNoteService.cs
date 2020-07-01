@@ -181,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "ReturnNoteNo", "SalesNote.BuyerCode", "SalesNote.BuyerName","SalesNote.DispositionNo"
+                "ReturnNoteNo","SalesNote.NoteNo", "SalesNote.BuyerCode", "SalesNote.BuyerName","SalesNote.DispositionNo"
             };
             query = QueryHelper<GarmentShippingLocalReturnNoteModel>.Search(query, SearchAttributes, keyword, ignoreDot: true);
 
@@ -198,6 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     id = model.Id,
                     returnNoteNo = model.ReturnNoteNo,
+                    returnDate=model.ReturnDate,
                     salesNote = new SalesNote
                     {
                         id = model.SalesNote.Id,

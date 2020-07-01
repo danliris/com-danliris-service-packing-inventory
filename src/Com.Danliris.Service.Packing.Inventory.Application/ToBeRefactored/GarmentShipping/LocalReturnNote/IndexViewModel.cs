@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string returnNoteNo { get; set; }
         public SalesNote salesNote { get; set; }
+        public DateTimeOffset? returnDate { get; set; }
     }
 
     public class SalesNote
