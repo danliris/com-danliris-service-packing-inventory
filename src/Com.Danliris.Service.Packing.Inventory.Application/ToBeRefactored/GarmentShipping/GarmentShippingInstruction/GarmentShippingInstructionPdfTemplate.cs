@@ -153,14 +153,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.CartonNo}", normal_font);
+            cellLeft.Phrase = new Phrase(viewModel.CartonNo, normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("MARKS", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.Marks}", normal_font);
+            cellLeft.Phrase = new Phrase(viewModel.Marks, normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("PORT OF LOADING", normal_font);
