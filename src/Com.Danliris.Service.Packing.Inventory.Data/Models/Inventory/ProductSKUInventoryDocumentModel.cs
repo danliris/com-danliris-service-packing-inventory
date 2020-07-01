@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             int storageId,
             string storageName,
             string storageCode,
-            string inventoryType,
+            string type,
             string remark
             )
         {
@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             StorageId = storageId;
             StorageName = storageName;
             StorageCode = storageCode;
-            InventoryType = inventoryType;
+            Type = type;
             Remark = remark;
         }
 
@@ -47,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
         [MaxLength(64)]
         public string StorageCode { get; private set; }
         [MaxLength(32)]
-        public string InventoryType { get; private set; }
+        public string Type { get; private set; }
         public string Remark { get; private set; }
     }
 }

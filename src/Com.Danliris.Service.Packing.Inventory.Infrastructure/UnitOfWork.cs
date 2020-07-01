@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         private IBaseRepository<ProductSKUInventoryDocumentModel> _productSKUInventoryDocuments;
         private IBaseRepository<ProductSKUInventoryMovementModel> _productSKUInventoryMovements;
         private IBaseRepository<ProductSKUInventorySummaryModel> _productSKUInventorySummaries;
-        
+        private IBaseRepository<ProductSKUModel> _productSKUs;
+        private IBaseRepository<UnitOfMeasurementModel> _uoms;
+        private IBaseRepository<CategoryModel> _categories;
         private readonly IServiceProvider _serviceProvider;
 
         public UnitOfWork(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
@@ -29,6 +32,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             _productSKUInventoryDocuments = serviceProvider.GetService<IBaseRepository<ProductSKUInventoryDocumentModel>>();
             _productSKUInventoryMovements = serviceProvider.GetService<IBaseRepository<ProductSKUInventoryMovementModel>>();
             _productSKUInventorySummaries = serviceProvider.GetService<IBaseRepository<ProductSKUInventorySummaryModel>>();
+            _productSKUs = serviceProvider.GetService<IBaseRepository<ProductSKUModel>>();
+            _uoms = serviceProvider.GetService<IBaseRepository<UnitOfMeasurementModel>>();
+            _categories = serviceProvider.GetService<IBaseRepository<CategoryModel>>();
 
             _serviceProvider = serviceProvider;
             
@@ -88,9 +94,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             }
         }
 
+        public IBaseRepository<ProductSKUModel> ProductSKUs
+        {
+            get
+            {
+                return _productSKUs ??
+                    (_productSKUs = new BaseRepository<ProductSKUModel>(_dbContext, _serviceProvider));
+            }
+        }
+
+        public IBaseRepository<UnitOfMeasurementModel> UOMs
+        {
+            get
+            {
+                return _uoms ??
+                    (_uoms = new BaseRepository<UnitOfMeasurementModel>(_dbContext, _serviceProvider));
+            }
+        }
+
+        public IBaseRepository<CategoryModel> Categories
+        {
+            get
+            {
+                return _categories ??
+                    (_categories = new BaseRepository<CategoryModel>(_dbContext, _serviceProvider));
+            }
+        }
+
         public void Commit()
         {
-            throw new NotImplementedException();
+            _dbContext.SaveChanges();
         }
     }
 }

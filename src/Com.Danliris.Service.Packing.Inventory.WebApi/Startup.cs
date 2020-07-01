@@ -91,6 +91,9 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
+using Com.Danliris.Service.Packing.Inventory.Application.QueueService;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
+using Com.Danliris.Service.Packing.Inventory.Application.InventorySKU;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -141,7 +144,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaInputProductionOrderRepository, DyeingPrintingAreaInputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
-            services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
 			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
 			services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
@@ -172,10 +174,17 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
             services.AddTransient<IRepository<ProductPackingModel>, ProductPackingRepository>();
+
+            services.AddTransient<IBaseRepository<ProductPackingInventoryDocumentModel>, BaseRepository<ProductPackingInventoryDocumentModel>>();
+            services.AddTransient<IBaseRepository<ProductPackingInventoryMovementModel>, BaseRepository<ProductPackingInventoryMovementModel>>();
+            services.AddTransient<IBaseRepository<ProductPackingInventorySummaryModel>, BaseRepository<ProductPackingInventorySummaryModel>>();
+            services.AddTransient<IBaseRepository<ProductSKUInventoryDocumentModel>, BaseRepository<ProductSKUInventoryDocumentModel>>();
+            services.AddTransient<IBaseRepository<ProductSKUInventoryMovementModel>, BaseRepository<ProductSKUInventoryMovementModel>>();
+            services.AddTransient<IBaseRepository<ProductSKUInventorySummaryModel>, BaseRepository<ProductSKUInventorySummaryModel>>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion
 
             #region Service
-            services.AddTransient<IFabricQualityControlService, FabricQualityControlService>();
             services.AddTransient<IInputInspectionMaterialService, InputInspectionMaterialService>();
             services.AddTransient<IOutputInspectionMaterialService, OutputInspectionMaterialService>();
             services.AddTransient<IInputTransitService, InputTransitService>();
@@ -191,7 +200,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IInputAvalTransformationService, InputAvalTransformationService>();
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
-            services.AddTransient<IGoodsWarehouseDocumentsService, GoodsWarehouseDocumentsService>();
             services.AddTransient<IGarmentShippingInvoiceService, GarmentShippingInvoiceService>();
             services.AddTransient<IIPWidthTypeService, IPWidthService>();
             services.AddTransient<IIPYarnTypeService, IPYarnTypeService>();
@@ -226,6 +234,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IProductSKUService, ProductSKUService>();
             services.AddTransient<IProductPackingService, ProductPackingService>();
 
+            services.AddTransient<IInventorySKUService, InventorySKUService>();
+
+            services.AddTransient<IAzureServiceBusSender<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            services.AddTransient<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
             #endregion
 
             // Register Provider

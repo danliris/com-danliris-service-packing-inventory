@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             _dbContext.Update(entityToDelete);
         }
 
-        public IEnumerable<TEntity> Get(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        public IEnumerable<TEntity> Get(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int page = 1, int size = 25)
         {
             IQueryable<TEntity> query = _dbSet;
 
@@ -59,11 +59,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             if (orderBy != null)
             {
-                return orderBy(query).ToList();
+                return orderBy(query).Skip((page -1) * size).Take(size).ToList();
             }
             else
             {
-                return query.ToList();
+                return query.Skip((page - 1) * size).Take(size).ToList();
             }
         }
 

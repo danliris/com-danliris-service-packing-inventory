@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
     {
         void Delete(TEntity entityToDelete);
         void Delete(int id);
-        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int page = 1, int size = 25);
         TEntity GetByID(int id);
         void Insert(TEntity entity);
         void Update(TEntity entityToUpdate);
