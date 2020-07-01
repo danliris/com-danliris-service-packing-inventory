@@ -125,6 +125,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public async Task ReadByInvoiceNo_Success()
+        {
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, sizes) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
+            var model = new GarmentPackingListModel("no", "", "", 1, "", DateTimeOffset.Now, "", "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", false);
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadByInvoiceNoAsync(It.IsAny<string>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadByInvoiceNo("no");
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task Update_Success()
         {
             var repoMock = new Mock<IGarmentPackingListRepository>();

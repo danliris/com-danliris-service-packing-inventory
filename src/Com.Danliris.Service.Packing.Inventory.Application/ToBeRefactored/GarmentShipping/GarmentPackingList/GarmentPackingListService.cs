@@ -291,7 +291,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-		public ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword)
+        public async Task<GarmentPackingListViewModel> ReadByInvoiceNo(string no)
+        {
+            var data = await _packingListRepository.ReadByInvoiceNoAsync(no);
+
+            var viewModel = MapToViewModel(data);
+
+            return viewModel;
+        }
+
+        public ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword)
 		{
 			var query = _packingListRepository.ReadAll();
 			List<string> SearchAttributes = new List<string>()
