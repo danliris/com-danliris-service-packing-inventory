@@ -44,12 +44,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     statusCode = General.OK_STATUS_CODE
                 });
             }
-            catch (Exception e)
+            //catch (Exception e)
+            //{
+            //    Dictionary<string, object> Result =
+            //        new ResultFormatterNew(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
+            //        .Fail();
+            //    return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+            //}
+            catch (Exception ex)
             {
-                Dictionary<string, object> Result =
-                    new ResultFormatterNew(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-                    .Fail();
-                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -72,12 +76,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return file;
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Dictionary<string, object> Result =
-                    new ResultFormatterNew(ApiVersion, General.INTERNAL_ERROR_STATUS_CODE, e.Message)
-                    .Fail();
-                return StatusCode(General.INTERNAL_ERROR_STATUS_CODE, Result);
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }     
     }
