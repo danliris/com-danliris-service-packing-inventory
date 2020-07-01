@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderLeft.Phrase = new Phrase("", normal_font);
             cellHeaderLeft.Rowspan = 1;
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase(viewModel.date.GetValueOrDefault().ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Order ", normal_font);

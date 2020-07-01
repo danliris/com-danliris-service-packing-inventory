@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeaderContent4 = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER };
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Fax, normal_font));
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.InvoiceNo, normal_font));
-            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Date.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Date.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             tableHeader.AddCell(cellHeaderContent4);
 
             document.Add(tableHeader);
