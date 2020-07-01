@@ -51,7 +51,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                       
                         select new GarmentInvoiceMonitoringViewModel
                         {
-                            Id = a.Id,
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = a.InvoiceDate,
                             BuyerAgentCode = a.BuyerAgentCode,
