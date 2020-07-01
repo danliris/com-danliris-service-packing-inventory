@@ -16,5 +16,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 		Task<int> Update(int id, GarmentPackingListViewModel viewModel);
         Task<int> Delete(int id);
+        Task<ExcelResult> ReadPdfById(int id);
     }
 }

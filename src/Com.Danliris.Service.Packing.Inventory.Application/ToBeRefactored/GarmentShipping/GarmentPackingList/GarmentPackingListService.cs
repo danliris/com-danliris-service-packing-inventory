@@ -1,7 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -15,10 +17,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentPackingListService : IGarmentPackingListService
     {
         private readonly IGarmentPackingListRepository _packingListRepository;
+        private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
 
         public GarmentPackingListService(IServiceProvider serviceProvider)
         {
             _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
+            _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
         }
 
         private GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
@@ -324,6 +328,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Delete(int id)
         {
             return await _packingListRepository.DeleteAsync(id);
+        }
+
+        public async Task<ExcelResult> ReadPdfById(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListPdfTemplate();
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
+
+            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);
+
+            return new ExcelResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
     }
 }
