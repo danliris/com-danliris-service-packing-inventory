@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableTitle.AddCell(cellTitle);
             cellTitle.Phrase = new Phrase("SURAT PENGANTAR", header_font_bold);
             tableTitle.AddCell(cellTitle);
-            cellTitle.Phrase = new Phrase($"{viewModel.invoiceNo}", header_font);
+            cellTitle.Phrase = new Phrase(viewModel.invoiceNo, header_font);
             tableTitle.AddCell(cellTitle);
 
             tableTitle.SpacingAfter = 10;
@@ -63,12 +63,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderLeft.Phrase = new Phrase("", normal_font);
             cellHeaderLeft.Rowspan = 1;
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.date.GetValueOrDefault().ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN"))}", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.date.GetValueOrDefault().ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Order ", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.order.Name}", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.order.Name, normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah ", normal_font);
@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderLeft.Phrase = new Phrase("Invoice No.", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.invoiceNo}", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.invoiceNo, normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             tableHeader.SpacingAfter = 10;
