@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellMark.Rowspan = 2;
             tableMark.AddCell(cellMark);
 
-            cellMark.Phrase = new Phrase(pl.ShippingMark", normal_font);
+            cellMark.Phrase = new Phrase(pl.ShippingMark, normal_font);
             tableMark.AddCell(cellMark);
 
             string sealType = "";
