@@ -282,36 +282,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 				this.FlagForUpdate(username, uSER_AGENT);
 			}
 		}
-
-        //
-        public void SetBuyerAgentId(int buyerAgentId, string username, string uSER_AGENT)
-        {
-            if (this.BuyerAgentId != buyerAgentId)
-            {
-                this.BuyerAgentId = buyerAgentId;
-                this.FlagForUpdate(username, uSER_AGENT);
-            }
-        }
-
-        public void SetBuyerAgentCode(string buyerAgentCode, string username, string uSER_AGENT)
-        {
-            if (this.BuyerAgentCode != buyerAgentCode)
-            {
-                this.BuyerAgentCode = buyerAgentCode;
-                this.FlagForUpdate(username, uSER_AGENT);
-            }
-        }
-
-        public void SetBuyerAgentName(string buyerAgentName, string username, string uSER_AGENT)
-        {
-            if (this.BuyerAgentName != buyerAgentName)
-            {
-                this.BuyerAgentName = buyerAgentName;
-                this.FlagForUpdate(username, uSER_AGENT);
-            }
-        }
-
-        //
+      
         public void SetShippingStaffId(int shippingStaffId, string username, string uSER_AGENT)
 		{
 			if (this.ShippingStaffId != shippingStaffId)

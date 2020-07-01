@@ -92,10 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				.FirstOrDefault(s => s.Id == id);
 
 			modelToUpdate.SetFrom(model.From, _identityProvider.Username, USER_AGENT);
-			modelToUpdate.SetTo(model.To, _identityProvider.Username, USER_AGENT);
-            modelToUpdate.SetBuyerAgentId(model.BuyerAgentId, _identityProvider.Username, USER_AGENT);
-            modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, USER_AGENT);
-            modelToUpdate.SetBuyerAgentName(model.BuyerAgentName, _identityProvider.Username, USER_AGENT);
+			modelToUpdate.SetTo(model.To, _identityProvider.Username, USER_AGENT);           
             modelToUpdate.SetConsignee(model.Consignee, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetShippingPer(model.ShippingPer, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetSailingDate(model.SailingDate, _identityProvider.Username, USER_AGENT);
