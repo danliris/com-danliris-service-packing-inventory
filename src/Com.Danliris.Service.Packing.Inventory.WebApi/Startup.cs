@@ -227,6 +227,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalReturnNoteService, GarmentShippingLocalReturnNoteService>();
             services.AddTransient<IGarmentShippingLocalPriceCuttingNoteService, GarmentShippingLocalPriceCuttingNoteService>();
 
+            services.AddTransient<IGarmentInvoiceMonitoringService, GarmentInvoiceMonitoringService>();
+
             #endregion
 
             // Register Provider
