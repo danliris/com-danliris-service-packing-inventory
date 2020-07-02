@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeaderContent4 = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER };
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Fax, normal_font));
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.InvoiceNo, normal_font));
-            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Date.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Date.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             tableHeader.AddCell(cellHeaderContent4);
 
             document.Add(tableHeader);
@@ -73,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("WE REQUEST YOU TO ARRANGE THE FOLLOWING SHIPMENT", normal_font));
 
             document.Add(new Paragraph("\n", normal_font));
+
             #region detail
             PdfPTable detailTable = new PdfPTable(3);
             detailTable.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -152,14 +153,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.CartonNo}", normal_font);
+            cellLeft.Phrase = new Phrase(viewModel.CartonNo, normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("MARKS", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.Marks}", normal_font);
+            cellLeft.Phrase = new Phrase(viewModel.Marks, normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("PORT OF LOADING", normal_font);

@@ -54,12 +54,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         if (item.returnQuantity <= 0)
                         {
-                            errorItem["returnQuantity"] = "Harga harus lebih dari 0";
+                            errorItem["returnQuantity"] = "Quantity harus lebih dari 0";
                             errorItemsCount++;
                         }
                         else if(item.returnQuantity > item.salesNoteItem.quantity)
                         {
-                            errorItem["returnQuantity"] = $"Harga tidak boleh lebih dari {item.salesNoteItem.quantity}";
+                            errorItem["returnQuantity"] = $"Quantity tidak boleh lebih dari {item.salesNoteItem.quantity}";
                             errorItemsCount++;
                         }
                     }
