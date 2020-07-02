@@ -323,6 +323,176 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
         }
 
         [Fact]
+        public async Task Update_success()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+
+            var productPackingModel = new ProductPackingModel();
+            productPackingModel.SetCode("code");
+            productPackingModel.SetName("name");
+            productPackingModel.SetDescription("description");
+            productPackingModel.SetPackingSize(1);
+            productPackingModel.SetProductSKU(1);
+            productPackingModel.SetUOM(1);
+
+            productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(productPackingModel);
+
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository
+                .Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductPackingModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            var newFormDto = new FormDto()
+            {
+                Name ="newName",
+                Code ="newCode",
+                ProductSKUId =2,
+                PackingSize =2,
+                Description ="new Description",
+                UOMId =2
+            };
+            var result = await service.Update(1, newFormDto);
+            Assert.True(0 < result);
+
+        }
+
+        [Fact]
+        public async Task Update_When_Code_Dupliacte_Throws_ValidationException()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+
+            
+            productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(productPackingModel);
+
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository
+                .Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductPackingModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            var newFormDto = new FormDto()
+            {
+                Name = "newName",
+                Code = "Code",
+                ProductSKUId = 2,
+                PackingSize = 2,
+                Description = "new Description",
+                UOMId = 2
+            };
+          
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Update(1, newFormDto));
+           
+        }
+
+        [Fact]
+        public async Task Update_When_Name_Dupliacte_Throws_ValidationException()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+
+            productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(productPackingModel);
+
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository
+                .Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductPackingModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            var newFormDto = new FormDto()
+            {
+                Name = "Name",
+                Code = "NewCode",
+                ProductSKUId = 2,
+                PackingSize = 2,
+                Description = "new Description",
+                UOMId = 2
+            };
+
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Update(1, newFormDto));
+
+        }
+
+        [Fact]
+        public async Task Update_When_ID_Dupliacte_Throws_ValidationException()
+        {
+
+            var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
+            var productSKURepository = new Mock<IRepository<ProductSKUModel>>();
+            var categoryRepository = new Mock<IRepository<CategoryModel>>();
+            var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
+
+            productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(productPackingModel);
+
+            productPackingRepository.Setup(s => s.ReadAll())
+               .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
+
+            productPackingRepository
+                .Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<ProductPackingModel>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(
+                productPackingRepository.Object,
+                productSKURepository.Object,
+                categoryRepository.Object,
+                unitOfMeasurementRepository.Object
+                ).Object);
+
+            var newFormDto = new FormDto()
+            {
+                Name = "NewName",
+                Code = "NewCode",
+                ProductSKUId = 1,
+                PackingSize = 1,
+                Description = "new Description",
+                UOMId = 1
+            };
+
+            await Assert.ThrowsAsync<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.Update(1, newFormDto));
+
+        }
+
+
+        [Fact]
         public async Task GetIndex_Return_success()
         {
 
