@@ -2,9 +2,9 @@
 {
     public class FormItemDto
     {
-        public int ProductSKUId { get; internal set; }
-        public int UOMId { get; internal set; }
-        public double Quantity { get; internal set; }
-        public string Remark { get; internal set; }
+        public int ProductSKUId { get;  set; }
+        public int UOMId { get;  set; }
+        public double Quantity { get;  set; }
+        public string Remark { get;  set; }
     }
 }
