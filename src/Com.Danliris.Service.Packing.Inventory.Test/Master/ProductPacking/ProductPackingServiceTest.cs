@@ -96,7 +96,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
                 return new CategoryModel("name","code");
             }
         }
-        
+
+        [Fact]
+        public void Validate_Default_FormDto()
+        {
+            FormDto dto = new FormDto();
+            var result = dto.Validate(null);
+            Assert.True(0 < result.Count());
+
+        }
+
+        [Fact]
+        public void ValidateFormDto_when_InvalidCode()
+        {
+            FormDto dto = new FormDto()
+            {
+                Code = "XXX"
+            };
+            var result = dto.Validate(null);
+            Assert.True(0 < result.Count());
+
+        }
 
         [Fact]
         public async Task Should_Success_Create()
