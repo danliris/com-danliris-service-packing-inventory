@@ -27,11 +27,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Category
 
         public Task<int> Create(FormDto form)
         {
-            var code = CodeGenerator.Generate(8);
+            var code = CodeGenerator.GenerateCode();
 
             while (_categoryRepository.ReadAll().Any(entity => entity.Code == code))
             {
-                code = CodeGenerator.Generate(8);
+                code = CodeGenerator.GenerateCode();
             }
 
             if (_categoryRepository.ReadAll().Any(entity => entity.Name == form.Name))

@@ -133,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<MaterialConstructionModel> IPMaterialConstructions { get; set; }
         public DbSet<GradeModel> IPGrades { get; set; }
         public DbSet<IPWidthTypeModel> IPWidthType { get; set; }
-        public DbSet<IPWarpTypeModel> IPWovenType { get; set; }
+        public DbSet<IPWovenTypeModel> IPWovenType { get; set; }
         public DbSet<IPYarnTypeModel> IPYarnType { get; set; }
         public DbSet<IPProcessTypeModel> IPProcessType { get; set; }
         #endregion
@@ -241,7 +241,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new IPYarnTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new IPProcessTypeEntityTypeConfiguration());
             modelBuilder.Entity<IPWidthTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
-            modelBuilder.Entity<IPWarpTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<IPWovenTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<IPYarnTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<IPProcessTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             #endregion

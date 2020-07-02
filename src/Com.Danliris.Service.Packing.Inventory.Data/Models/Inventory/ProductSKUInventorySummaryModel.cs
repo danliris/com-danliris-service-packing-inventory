@@ -15,8 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             int storageId,
             string storageCode,
             string storageName,
-            int uomId,
-            double quantity
+            int uomId
             )
         {
             ProductSKUId = productSKUId;
@@ -24,16 +23,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory
             StorageCode = storageCode;
             StorageName = storageName;
             UOMId = uomId;
-            Quantity = quantity;
         }
 
         public int ProductSKUId { get; private set; }
         public int StorageId { get; private set; }
         [MaxLength(64)]
         public string StorageCode { get; private set; }
-        [MaxLength(256)]
+        [MaxLength(512)]
         public string StorageName { get; private set; }
         public int UOMId { get; private set; }
-        public double Quantity { get; private set; }
+        public double Balance { get; private set; }
+
+        public void AddBalance(double quantity)
+        {
+            Balance += quantity;
+        }
+
+        public void ReduceBalance(double quantity)
+        {
+            Balance -= quantity;
+        }
+
+        public void AdjustBalance(double quantity)
+        {
+            Balance = quantity;
+        }
+
+        public void SetBalance(double quantity)
+        {
+            Balance = quantity;
+        }
     }
 }

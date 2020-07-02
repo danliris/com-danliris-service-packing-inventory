@@ -127,7 +127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Fabr
             int result = 0;
             do
             {
-                viewModel.Code = CodeGenerator.Generate(8);
+                viewModel.Code = CodeGenerator.GenerateCode();
             } while (_repository.GetDbSet().Any(entity => entity.Code == viewModel.Code));
 
             var model = new FabricQualityControlModel(viewModel.Code, viewModel.DateIm.GetValueOrDefault(), viewModel.Group, viewModel.IsUsed.GetValueOrDefault(), viewModel.InspectionMaterialId,

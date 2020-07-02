@@ -2,10 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;

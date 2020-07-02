@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Inventory
 
         public override ProductSKUInventorySummaryModel GetModel()
         {
-            return new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1, 1);
+            return new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1);
         }
     }
 }
