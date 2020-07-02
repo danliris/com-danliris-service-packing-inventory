@@ -144,40 +144,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
-        [Fact]
-        public void AddMovement_with_existing_data_return_success()
-        {
-            //Arrange
-            //var unitOfWorkMock = new Mock<IUnitOfWork>();
-            var unitOfWorkMock = new Mock<UnitOfWork>();
-            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+        //[Fact]
+        //public void AddMovement_with_existing_data_return_success()
+        //{
+        //    //Arrange
+        //    //var unitOfWorkMock = new Mock<IUnitOfWork>();
+        //    var unitOfWorkMock = new Mock<UnitOfWork>();
+        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<ProductSKUInventorySummaryModel>()
-                {
-                    new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
-                });
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+        //        .Returns(new List<ProductSKUInventorySummaryModel>()
+        //        {
+        //            new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
+        //        });
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventoryMovements
-                .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventoryMovements
+        //        .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries
-                .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries
+        //        .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
 
-            var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
 
 
-            //Act
-            var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
-            inventoryMovement.SetPreviousBalance(0);
-            inventoryMovement.SetCurrentBalance(0);
+        //    //Act
+        //    var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
+        //    inventoryMovement.SetPreviousBalance(0);
+        //    inventoryMovement.SetCurrentBalance(0);
 
-            service.AddMovement(inventoryMovement);
+        //    service.AddMovement(inventoryMovement);
 
-        }
+        //}
 
 
         [Fact]
@@ -331,7 +331,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                .Setup(s => s.ProductSKUInventoryMovements.Get(It.IsAny<Expression<Func<ProductSKUInventoryMovementModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryMovementModel>, IOrderedQueryable<ProductSKUInventoryMovementModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                .Returns(new List<ProductSKUInventoryMovementModel>()
                {
-                   new ProductSKUInventoryMovementModel(0,0,0,0,"storageCode","storageName",0,"IN","remark")
+                   new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "remark")
                });
 
             unitOfWorkMock
