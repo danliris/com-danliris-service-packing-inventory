@@ -14,9 +14,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
         public void shouldSuccessInstantiate()
         {
 
-            ProductSKUModel product = new ProductSKUModel()
+            ProductSKUModel product = new ProductSKUModel("Code","Name",1,1,"Description")
             {
-                Id =1
+                Id =1,
+                
             };
 
             UnitOfMeasurementModel uom = new UnitOfMeasurementModel()
@@ -58,6 +59,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
 
             BarcodeInfo barcode = new BarcodeInfo(productSKUDto, productPackingDto);
             Assert.NotNull(barcode);
+            Assert.Equal("Code", barcode.SKUCode);
+            Assert.Equal("Name", barcode.SKUName);
+            Assert.Equal("Code", barcode.PackingCode);
+            Assert.Equal(1, barcode.PackingSize);
+            Assert.Equal("Unit", barcode.PackingType);
         }
     }
 }

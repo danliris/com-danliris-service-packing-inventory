@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             
             Assert.Equal(1, dto.Quantity);
             Assert.Equal("remark", dto.Remark);
+            Assert.NotNull(dto.Product);
         }
     }
 }
