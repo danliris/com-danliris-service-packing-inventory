@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,6 +144,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Infrastructure
 
             unitOfWork.UOMs.Update(model);
             Assert.NotNull(unitOfWork.UOMs.GetByID(model.Id));
+        }
+
+        [Fact]
+        public void Should_Success_Generate_Code()
+        {
+            var result = CodeGenerator.GenerateCode();
+            Assert.NotNull(result);
         }
     }
 }
