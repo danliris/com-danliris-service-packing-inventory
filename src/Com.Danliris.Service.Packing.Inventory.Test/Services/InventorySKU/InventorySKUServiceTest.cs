@@ -5,11 +5,15 @@ using Com.Danliris.Service.Packing.Inventory.Application.QueueService;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -36,6 +40,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             return spMock;
         }
 
+        private static DbContextOptions<PackingInventoryDbContext> CreateNewContextOptions(string currentMethod)
+        {
+            // Create a fresh service provider, and therefore a fresh 
+            // InMemory database instance.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+
+            // Create a new options instance telling the context to use an
+            // InMemory database and the new service provider.
+            var builder = new DbContextOptionsBuilder<PackingInventoryDbContext>();
+            builder.UseInMemoryDatabase(currentMethod)
+                   .UseInternalServiceProvider(serviceProvider);
+
+            return builder.Options;
+        }
+
         [Fact]
         public async Task Should_Success_AddDocument()
         {
@@ -45,16 +66,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
             unitOfWorkMock
                 .Setup(s => s.ProductSKUInventoryDocuments.Get(It.IsAny<Expression<Func<ProductSKUInventoryDocumentModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryDocumentModel>, IOrderedQueryable<ProductSKUInventoryDocumentModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<ProductSKUInventoryDocumentModel>() { 
-                  
+                .Returns(new List<ProductSKUInventoryDocumentModel>()
+                {
+
                 });
 
             unitOfWorkMock
                 .Setup(s => s.ProductSKUInventoryDocuments
                 .Insert(It.IsAny<ProductSKUInventoryDocumentModel>())).Verifiable();
-                
+
             var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
-            
+
             var data = new FormDto();
             data.GetType().GetProperty("Date").SetValue(data, DateTimeOffset.Now);
             data.GetType().GetProperty("ReferenceNo").SetValue(data, "ReferenceNo");
@@ -72,8 +94,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                     {
                         Name = "Name"
                     },
-                    Name="Name",
-                } 
+                    Name = "Name",
+                }
             };
             data.Items = new List<FormItemDto>()
             {
@@ -85,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
             //Assertion
             Assert.True(-1 < result);
-          
+
         }
 
         [Fact]
@@ -111,10 +133,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
 
             var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
-           
-            
+
+
             //Act
-            var inventoryMovement = new ProductSKUInventoryMovementModel(0,0,0,0,"storageCode","storageName",0,"IN","Remark");
+            var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
             inventoryMovement.SetPreviousBalance(0);
             inventoryMovement.SetCurrentBalance(1);
 
@@ -122,40 +144,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
-        [Fact]
-        public void AddMovement_with_existing_data_return_success()
-        {
-            //Arrange
-            //var unitOfWorkMock = new Mock<IUnitOfWork>();
-            var unitOfWorkMock = new Mock<UnitOfWork>();
-            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+        //[Fact]
+        //public void AddMovement_with_existing_data_return_success()
+        //{
+        //    //Arrange
+        //    //var unitOfWorkMock = new Mock<IUnitOfWork>();
+        //    var unitOfWorkMock = new Mock<UnitOfWork>();
+        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<ProductSKUInventorySummaryModel>()
-                {
-                    new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
-                });
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+        //        .Returns(new List<ProductSKUInventorySummaryModel>()
+        //        {
+        //            new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
+        //        });
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventoryMovements
-                .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventoryMovements
+        //        .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries
-                .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries
+        //        .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
 
-            var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
 
 
-            //Act
-            var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
-            inventoryMovement.SetPreviousBalance(0);
-            inventoryMovement.SetCurrentBalance(0);
+        //    //Act
+        //    var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
+        //    inventoryMovement.SetPreviousBalance(0);
+        //    inventoryMovement.SetCurrentBalance(0);
 
-            service.AddMovement(inventoryMovement);
+        //    service.AddMovement(inventoryMovement);
 
-        }
+        //}
 
 
         [Fact]
@@ -192,29 +214,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
+        //[Fact]
+        //public void Should_Success_AddMovement_when_Type_ADJ()
+        //{
+        //    //Arrange
+        //    var unitOfWorkMock = new Mock<IUnitOfWork>();
+        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+        //        .Returns(new List<ProductSKUInventorySummaryModel>()
+        //        {
+        //            new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
+        //        });
+
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventoryMovements
+        //        .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
+
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventorySummaries
+        //        .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
+
+        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+
+
+        //    //Act
+        //    var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "ADJ", "Remark");
+        //    inventoryMovement.SetPreviousBalance(0);
+        //    inventoryMovement.SetCurrentBalance(1);
+
+        //    service.AddMovement(inventoryMovement);
+
+        //}
+
         [Fact]
         public void Should_Success_AddMovement_when_Type_ADJ()
         {
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+
             //Arrange
-            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+
             var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<ProductSKUInventorySummaryModel>()
-                {
-                    new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
-                });
+            //unitOfWorkMock
+            //    .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+            //    .Returns(new List<ProductSKUInventorySummaryModel>()
+            //    {
+            //        new ProductSKUInventorySummaryModel(0, 0, "storageCode","storageName",1)
+            //    });
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventoryMovements
-                .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
+            //unitOfWorkMock
+            //    .Setup(s => s.ProductSKUInventoryMovements
+            //    .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventorySummaries
-                .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
+            //unitOfWorkMock
+            //    .Setup(s => s.ProductSKUInventorySummaries
+            //    .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
 
-            var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
 
 
             //Act
@@ -247,7 +311,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             inventoryMovement.SetPreviousBalance(0);
             inventoryMovement.SetCurrentBalance(1);
 
-             Assert.Throws<Exception>(() => service.AddMovement(inventoryMovement));
+            Assert.Throws<Exception>(() => service.AddMovement(inventoryMovement));
         }
 
 
@@ -261,13 +325,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
             unitOfWorkMock
                 .Setup(s => s.ProductSKUInventoryDocuments.GetByID(It.IsAny<int>()))
-                .Returns(new ProductSKUInventoryDocumentModel("documentNo",DateTimeOffset.Now,"referenceNo", "referenceType",1,"storageName", "storageCode","type","remark"));
+                .Returns(new ProductSKUInventoryDocumentModel("documentNo", DateTimeOffset.Now, "referenceNo", "referenceType", 1, "storageName", "storageCode", "type", "remark"));
 
             unitOfWorkMock
                .Setup(s => s.ProductSKUInventoryMovements.Get(It.IsAny<Expression<Func<ProductSKUInventoryMovementModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryMovementModel>, IOrderedQueryable<ProductSKUInventoryMovementModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                .Returns(new List<ProductSKUInventoryMovementModel>()
                {
-                   new ProductSKUInventoryMovementModel(0,0,0,0,"storageCode","storageName",0,"IN","remark")
+                   new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "remark")
                });
 
             unitOfWorkMock
@@ -293,7 +357,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
             var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
             //Act
-            var result =  service.GetDocumentById(1);
+            var result = service.GetDocumentById(1);
 
             //Assertion
             Assert.NotNull(result);
@@ -315,10 +379,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             //Act
             IndexQueryParam query = new IndexQueryParam()
             {
-                page =1,
-                size =25,
-                keyword ="",
-                order ="{}",
+                page = 1,
+                size = 25,
+                keyword = "",
+                order = "{}",
             };
             var result = service.GetDocumentIndex(query);
 
@@ -356,4 +420,4 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
         }
 
     }
-    }
+}

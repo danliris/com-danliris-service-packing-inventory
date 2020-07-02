@@ -134,7 +134,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
                     page: query.page,
                     size: query.size);
 
-                return new DocumentIndexDto(documents, query.page, query.size);
+                var total = _unitOfWork.ProductSKUInventoryDocuments.Get(
+                    filter: entity => entity.DocumentNo.Contains(query.keyword) || entity.ReferenceNo.Contains(query.keyword) || entity.ReferenceType.Contains(query.keyword),
+                    size: int.MaxValue).Count();
+
+                return new DocumentIndexDto(documents, query.page, query.size, total);
             }
             else
             {
@@ -143,7 +147,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
                     page: query.page,
                     size: query.size);
 
-                return new DocumentIndexDto(documents, query.page, query.size);
+                var total = _unitOfWork.ProductSKUInventoryDocuments.Get(
+                    filter: entity => entity.DocumentNo.Contains(query.keyword) || entity.ReferenceNo.Contains(query.keyword) || entity.ReferenceType.Contains(query.keyword),
+                    size: int.MaxValue).Count();
+
+                return new DocumentIndexDto(documents, query.page, query.size, total);
             }
         }
 

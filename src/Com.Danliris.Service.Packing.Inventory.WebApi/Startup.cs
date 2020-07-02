@@ -89,11 +89,13 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
+
 using Com.Danliris.Service.Packing.Inventory.Application.QueueService;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
 using Com.Danliris.Service.Packing.Inventory.Application.InventorySKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWovenType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInvoice;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -238,6 +240,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IAzureServiceBusSender<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
             services.AddTransient<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+            services.AddTransient<IGarmentInvoiceMonitoringService, GarmentInvoiceMonitoringService>();
+
             #endregion
 
             // Register Provider

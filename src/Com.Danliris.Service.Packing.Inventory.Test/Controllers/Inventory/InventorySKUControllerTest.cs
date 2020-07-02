@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
             get
             {
                 return new FormDto();
-                
+
             }
         }
 
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
         {
             get
             {
-                var documents = new ProductSKUInventoryDocumentModel("documentNo",DateTimeOffset.Now, "referenceNo", "referenceType",0, "storageName", "storageCode","type","remark");
+                var documents = new ProductSKUInventoryDocumentModel("documentNo", DateTimeOffset.Now, "referenceNo", "referenceType", 0, "storageName", "storageCode", "type", "remark");
                 var items = new List<ProductSKUInventoryMovementModel>()
                 {
                     new ProductSKUInventoryMovementModel(0,0,0,0,"storageCode","storageName",0,"type","remark")
@@ -204,7 +204,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response =  controller.GetById(1);
+            var response = controller.GetById(1);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
@@ -228,7 +228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response =  controller.GetById(1);
+            var response = controller.GetById(1);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
@@ -252,7 +252,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response =  controller.GetById(1);
+            var response = controller.GetById(1);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
@@ -264,7 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
             //Setup
             var dataUtil = formDto;
             var serviceMock = new Mock<IInventorySKUService>();
-            serviceMock.Setup(s => s.GetDocumentIndex(It.IsAny<IndexQueryParam>())).Returns(new DocumentIndexDto(new List<ProductSKUInventoryDocumentModel>(),1,25));
+            serviceMock.Setup(s => s.GetDocumentIndex(It.IsAny<IndexQueryParam>())).Returns(new DocumentIndexDto(new List<ProductSKUInventoryDocumentModel>(), 1, 25, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -300,7 +300,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response =  controller.Get(new IndexQueryParam());
+            var response = controller.Get(new IndexQueryParam());
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -157,6 +158,46 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+
+            try
+            {
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
+
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    
+                    var PdfTemplate = new GarmentShippingExportSalesDOPdfTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, timeoffsset);
+
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName =model.exportSalesDONo + ".pdf"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }
