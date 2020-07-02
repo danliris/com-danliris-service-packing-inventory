@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType
+namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWovenType
 {
-    public interface IIPWarpTypeRepository : IRepository<IPWarpTypeModel>
+    public interface IIPWovenTypeRepository : IRepository<IPWovenTypeModel>
     {
         
     }

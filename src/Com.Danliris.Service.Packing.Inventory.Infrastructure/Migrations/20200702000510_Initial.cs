@@ -396,11 +396,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     BankAddress = table.Column<string>(maxLength: 1000, nullable: true),
                     CreditInterest = table.Column<double>(nullable: false),
                     BankCharges = table.Column<double>(nullable: false),
-                    DocumentPresente = table.Column<DateTimeOffset>(nullable: false)
+                    DocumentPresente = table.Column<DateTimeOffset>(nullable: false),
+                    Remark = table.Column<string>(maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GarmentShippingCreditAdvices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingExportSalesDOs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    ExportSalesDONo = table.Column<string>(maxLength: 50, nullable: true),
+                    InvoiceNo = table.Column<string>(maxLength: 50, nullable: true),
+                    PackingListId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTimeOffset>(nullable: false),
+                    BuyerAgentId = table.Column<int>(nullable: false),
+                    BuyerAgentCode = table.Column<string>(maxLength: 100, nullable: true),
+                    BuyerAgentName = table.Column<string>(maxLength: 255, nullable: true),
+                    To = table.Column<string>(maxLength: 255, nullable: true),
+                    UnitName = table.Column<string>(maxLength: 255, nullable: true),
+                    UnitId = table.Column<int>(nullable: false),
+                    UnitCode = table.Column<string>(maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingExportSalesDOs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -449,7 +484,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     BuyerAgentName = table.Column<string>(maxLength: 255, nullable: true),
                     BuyerAgentAddress = table.Column<string>(maxLength: 4000, nullable: true),
                     Notify = table.Column<string>(maxLength: 2000, nullable: true),
-                    SpecialInstruction = table.Column<string>(maxLength: 2000, nullable: true)
+                    SpecialInstruction = table.Column<string>(maxLength: 2000, nullable: true),
+                    LadingDate = table.Column<DateTimeOffset>(nullable: false),
+                    LadingBill = table.Column<string>(maxLength: 4000, nullable: true),
+                    Freight = table.Column<string>(maxLength: 1000, nullable: true),
+                    Marks = table.Column<string>(maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -556,6 +595,104 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalCoverLetters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LocalSalesNoteId = table.Column<int>(nullable: false),
+                    NoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    Date = table.Column<DateTimeOffset>(nullable: false),
+                    BuyerId = table.Column<int>(nullable: false),
+                    BuyerCode = table.Column<string>(maxLength: 100, nullable: true),
+                    BuyerName = table.Column<string>(maxLength: 255, nullable: true),
+                    BuyerAdddress = table.Column<string>(maxLength: 1000, nullable: true),
+                    Remark = table.Column<string>(maxLength: 1000, nullable: true),
+                    Truck = table.Column<string>(maxLength: 250, nullable: true),
+                    PlateNumber = table.Column<string>(maxLength: 250, nullable: true),
+                    Driver = table.Column<string>(maxLength: 250, nullable: true),
+                    ShippingStaffId = table.Column<int>(nullable: false),
+                    ShippingStaffName = table.Column<string>(maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalCoverLetters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalPriceCuttingNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    CuttingPriceNoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    Date = table.Column<DateTimeOffset>(nullable: false),
+                    BuyerId = table.Column<int>(nullable: false),
+                    BuyerCode = table.Column<string>(maxLength: 100, nullable: true),
+                    BuyerName = table.Column<string>(maxLength: 250, nullable: true),
+                    UseVat = table.Column<bool>(nullable: false),
+                    Remark = table.Column<string>(maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalPriceCuttingNotes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalSalesDOs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LocalSalesDONo = table.Column<string>(maxLength: 50, nullable: true),
+                    LocalSalesNoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    LocalSalesNoteId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTimeOffset>(nullable: false),
+                    BuyerId = table.Column<int>(nullable: false),
+                    BuyerCode = table.Column<string>(maxLength: 100, nullable: true),
+                    BuyerName = table.Column<string>(maxLength: 255, nullable: true),
+                    To = table.Column<string>(maxLength: 255, nullable: true),
+                    StorageDivision = table.Column<string>(maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalSalesDOs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GarmentShippingLocalSalesNotes",
                 columns: table => new
                 {
@@ -584,7 +721,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     Tempo = table.Column<int>(nullable: false),
                     DispositionNo = table.Column<string>(maxLength: 100, nullable: true),
                     UseVat = table.Column<bool>(nullable: false),
-                    Remark = table.Column<string>(maxLength: 1000, nullable: true)
+                    Remark = table.Column<string>(maxLength: 1000, nullable: true),
+                    IsUsed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -899,7 +1037,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedBy = table.Column<string>(nullable: true),
                     DeletedAgent = table.Column<string>(nullable: true),
                     Code = table.Column<string>(maxLength: 128, nullable: true),
-                    WarpType = table.Column<string>(maxLength: 1024, nullable: true)
+                    WovenType = table.Column<string>(maxLength: 1024, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -929,6 +1067,87 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IPYarnType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialDeliveryNote",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    Code = table.Column<string>(maxLength: 128, nullable: true),
+                    DateSJ = table.Column<DateTimeOffset>(maxLength: 128, nullable: true),
+                    BonCode = table.Column<string>(maxLength: 128, nullable: true),
+                    DateFrom = table.Column<DateTimeOffset>(maxLength: 128, nullable: true),
+                    DateTo = table.Column<DateTimeOffset>(maxLength: 128, nullable: true),
+                    DoNumberId = table.Column<long>(maxLength: 128, nullable: true),
+                    DONumber = table.Column<string>(maxLength: 128, nullable: true),
+                    FONumber = table.Column<string>(maxLength: 128, nullable: true),
+                    ReceiverId = table.Column<int>(maxLength: 128, nullable: true),
+                    ReceiverCode = table.Column<string>(maxLength: 128, nullable: true),
+                    ReceiverName = table.Column<string>(maxLength: 128, nullable: true),
+                    Remark = table.Column<string>(maxLength: 128, nullable: true),
+                    SCNumberId = table.Column<int>(maxLength: 128, nullable: true),
+                    SCNumber = table.Column<string>(maxLength: 128, nullable: true),
+                    SenderId = table.Column<int>(maxLength: 128, nullable: true),
+                    SenderCode = table.Column<string>(maxLength: 128, nullable: true),
+                    SenderName = table.Column<string>(maxLength: 128, nullable: true),
+                    StorageId = table.Column<int>(maxLength: 128, nullable: true),
+                    StorageCode = table.Column<string>(maxLength: 128, nullable: true),
+                    StorageName = table.Column<string>(maxLength: 128, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialDeliveryNote", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MaterialDeliveryNoteWeaving",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    Code = table.Column<string>(maxLength: 128, nullable: true),
+                    DateSJ = table.Column<DateTimeOffset>(maxLength: 128, nullable: false),
+                    DoSalesNumberId = table.Column<long>(maxLength: 128, nullable: false),
+                    DoSalesNumber = table.Column<string>(maxLength: 128, nullable: true),
+                    SendTo = table.Column<string>(maxLength: 128, nullable: true),
+                    UnitId = table.Column<int>(maxLength: 128, nullable: false),
+                    UnitName = table.Column<string>(maxLength: 128, nullable: true),
+                    BuyerId = table.Column<int>(maxLength: 128, nullable: false),
+                    BuyerCode = table.Column<string>(maxLength: 128, nullable: true),
+                    BuyerName = table.Column<string>(maxLength: 128, nullable: true),
+                    NumberOut = table.Column<string>(maxLength: 128, nullable: true),
+                    StorageId = table.Column<int>(maxLength: 128, nullable: true),
+                    StorageCode = table.Column<string>(maxLength: 128, nullable: true),
+                    StorageName = table.Column<string>(maxLength: 128, nullable: true),
+                    Remark = table.Column<string>(maxLength: 128, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialDeliveryNoteWeaving", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1078,8 +1297,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     PackingSize = table.Column<double>(nullable: false),
                     Code = table.Column<string>(maxLength: 64, nullable: true),
                     Name = table.Column<string>(maxLength: 512, nullable: true),
-                    CreatedYear = table.Column<int>(nullable: false),
-                    CreatedMonth = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1110,7 +1328,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     StorageId = table.Column<int>(nullable: false),
                     StorageName = table.Column<string>(maxLength: 512, nullable: true),
                     StorageCode = table.Column<string>(maxLength: 64, nullable: true),
-                    InventoryType = table.Column<string>(maxLength: 32, nullable: true),
+                    Type = table.Column<string>(maxLength: 32, nullable: true),
                     Remark = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -1138,7 +1356,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     InventoryDocumentId = table.Column<int>(nullable: false),
                     ProductSKUId = table.Column<int>(nullable: false),
                     UOMId = table.Column<int>(nullable: false),
+                    StorageId = table.Column<int>(nullable: false),
+                    StorageCode = table.Column<string>(nullable: true),
+                    StorageName = table.Column<string>(nullable: true),
                     Quantity = table.Column<double>(nullable: false),
+                    PreviousBalance = table.Column<double>(nullable: false),
+                    CurrentBalance = table.Column<double>(nullable: false),
+                    Type = table.Column<string>(maxLength: 32, nullable: true),
                     Remark = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -1166,9 +1390,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     ProductSKUId = table.Column<int>(nullable: false),
                     StorageId = table.Column<int>(nullable: false),
                     StorageCode = table.Column<string>(maxLength: 64, nullable: true),
-                    StorageName = table.Column<string>(maxLength: 256, nullable: true),
+                    StorageName = table.Column<string>(maxLength: 512, nullable: true),
                     UOMId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<double>(nullable: false)
+                    Balance = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1307,6 +1531,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     AvalConnectionLength = table.Column<double>(nullable: false),
                     AvalType = table.Column<string>(nullable: true),
                     AvalCartNo = table.Column<string>(nullable: true),
+                    Machine = table.Column<string>(maxLength: 32, nullable: true),
                     DeliveryOrderSalesId = table.Column<long>(nullable: false),
                     DeliveryOrderSalesNo = table.Column<string>(maxLength: 128, nullable: true),
                     PackagingUnit = table.Column<string>(maxLength: 128, nullable: true),
@@ -1381,6 +1606,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     AvalType = table.Column<string>(nullable: true),
                     AvalCartNo = table.Column<string>(nullable: true),
                     AvalQuantityKg = table.Column<double>(nullable: false),
+                    Machine = table.Column<string>(maxLength: 32, nullable: true),
                     HasNextAreaDocument = table.Column<bool>(nullable: false),
                     Area = table.Column<string>(maxLength: 64, nullable: true),
                     DestinationArea = table.Column<string>(maxLength: 64, nullable: true),
@@ -1390,6 +1616,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     ShippingGrade = table.Column<string>(maxLength: 128, nullable: true),
                     ShippingRemark = table.Column<string>(maxLength: 512, nullable: true),
                     Weight = table.Column<double>(nullable: false),
+                    PrevSppInJson = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     DyeingPrintingAreaInputProductionOrderId = table.Column<int>(maxLength: 128, nullable: false),
                     DyeingPrintingAreaOutputId = table.Column<int>(nullable: false)
                 },
@@ -1491,6 +1718,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GarmentShippingExportSalesDOItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    ExportSalesDOId = table.Column<int>(nullable: false),
+                    ComodityId = table.Column<int>(nullable: false),
+                    ComodityCode = table.Column<string>(maxLength: 100, nullable: true),
+                    ComodityName = table.Column<string>(maxLength: 500, nullable: true),
+                    Description = table.Column<string>(maxLength: 1000, nullable: true),
+                    Quantity = table.Column<double>(nullable: false),
+                    UomId = table.Column<int>(nullable: false),
+                    UomUnit = table.Column<string>(maxLength: 100, nullable: true),
+                    CartonQuantity = table.Column<double>(nullable: false),
+                    GrossWeight = table.Column<double>(nullable: false),
+                    NettWeight = table.Column<double>(nullable: false),
+                    Volume = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingExportSalesDOItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingExportSalesDOItems_GarmentShippingExportSalesDOs_ExportSalesDOId",
+                        column: x => x.ExportSalesDOId,
+                        principalTable: "GarmentShippingExportSalesDOs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GarmentShippingInvoiceAdjustments",
                 columns: table => new
                 {
@@ -1571,6 +1839,147 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalPriceCuttingNoteItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    PriceCuttingNoteId = table.Column<int>(nullable: false),
+                    SalesNoteId = table.Column<int>(nullable: false),
+                    SalesNoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    SalesAmount = table.Column<double>(nullable: false),
+                    CuttingAmount = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalPriceCuttingNoteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalPriceCuttingNoteItems_GarmentShippingLocalPriceCuttingNotes_PriceCuttingNoteId",
+                        column: x => x.PriceCuttingNoteId,
+                        principalTable: "GarmentShippingLocalPriceCuttingNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalSalesDOItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LocalSalesDOId = table.Column<int>(nullable: false),
+                    LocalSalesNoteItemId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    ProductCode = table.Column<string>(maxLength: 100, nullable: true),
+                    ProductName = table.Column<string>(maxLength: 500, nullable: true),
+                    Description = table.Column<string>(maxLength: 1000, nullable: true),
+                    Quantity = table.Column<double>(nullable: false),
+                    UomId = table.Column<int>(nullable: false),
+                    UomUnit = table.Column<string>(maxLength: 100, nullable: true),
+                    CartonQuantity = table.Column<double>(nullable: false),
+                    GrossWeight = table.Column<double>(nullable: false),
+                    NettWeight = table.Column<double>(nullable: false),
+                    Volume = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalSalesDOItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalSalesDOItems_GarmentShippingLocalSalesDOs_LocalSalesDOId",
+                        column: x => x.LocalSalesDOId,
+                        principalTable: "GarmentShippingLocalSalesDOs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalPriceCorrectionNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    CorrectionNoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    CorrectionDate = table.Column<DateTimeOffset>(nullable: false),
+                    SalesNoteId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalPriceCorrectionNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalPriceCorrectionNotes_GarmentShippingLocalSalesNotes_SalesNoteId",
+                        column: x => x.SalesNoteId,
+                        principalTable: "GarmentShippingLocalSalesNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalReturnNotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    ReturnNoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    SalesNoteId = table.Column<int>(nullable: false),
+                    ReturnDate = table.Column<DateTimeOffset>(nullable: false),
+                    Description = table.Column<string>(maxLength: 4000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalReturnNotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalReturnNotes_GarmentShippingLocalSalesNotes_SalesNoteId",
+                        column: x => x.SalesNoteId,
+                        principalTable: "GarmentShippingLocalSalesNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GarmentShippingLocalSalesNoteItems",
                 columns: table => new
                 {
@@ -1639,6 +2048,84 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         principalTable: "GarmentShippingNotes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IdSOP = table.Column<int>(maxLength: 128, nullable: true),
+                    NoSOP = table.Column<string>(maxLength: 128, nullable: true),
+                    MaterialName = table.Column<string>(maxLength: 128, nullable: true),
+                    InputLot = table.Column<string>(maxLength: 128, nullable: true),
+                    WeightBruto = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    WeightDOS = table.Column<string>(maxLength: 128, nullable: true),
+                    WeightCone = table.Column<string>(maxLength: 128, nullable: true),
+                    WeightBale = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    GetTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MaterialDeliveryNoteModelId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Items_MaterialDeliveryNote_MaterialDeliveryNoteModelId",
+                        column: x => x.MaterialDeliveryNoteModelId,
+                        principalTable: "MaterialDeliveryNote",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemsMaterialDeliveryNoteWeaving",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemNoSOP = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemMaterialName = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemGrade = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemType = table.Column<string>(maxLength: 128, nullable: true),
+                    ItemCode = table.Column<string>(maxLength: 128, nullable: true),
+                    InputBale = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputPiece = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputMeter = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InputKg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MaterialDeliveryNoteWeavingId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemsMaterialDeliveryNoteWeaving", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ItemsMaterialDeliveryNoteWeaving_MaterialDeliveryNoteWeaving_MaterialDeliveryNoteWeavingId",
+                        column: x => x.MaterialDeliveryNoteWeavingId,
+                        principalTable: "MaterialDeliveryNoteWeaving",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1723,6 +2210,82 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         principalTable: "GarmentPackingListItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalPriceCorrectionNoteItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    PriceCorrectionNoteId = table.Column<int>(nullable: false),
+                    SalesNoteItemId = table.Column<int>(nullable: false),
+                    PriceCorrection = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalPriceCorrectionNoteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalPriceCorrectionNoteItems_GarmentShippingLocalPriceCorrectionNotes_PriceCorrectionNoteId",
+                        column: x => x.PriceCorrectionNoteId,
+                        principalTable: "GarmentShippingLocalPriceCorrectionNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalPriceCorrectionNoteItems_GarmentShippingLocalSalesNoteItems_SalesNoteItemId",
+                        column: x => x.SalesNoteItemId,
+                        principalTable: "GarmentShippingLocalSalesNoteItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GarmentShippingLocalReturnNoteItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    CreatedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedUtc = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    LastModifiedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedUtc = table.Column<DateTime>(nullable: false),
+                    DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
+                    DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    ReturnNoteId = table.Column<int>(nullable: false),
+                    SalesNoteItemId = table.Column<int>(nullable: false),
+                    ReturnQuantity = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GarmentShippingLocalReturnNoteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalReturnNoteItems_GarmentShippingLocalReturnNotes_ReturnNoteId",
+                        column: x => x.ReturnNoteId,
+                        principalTable: "GarmentShippingLocalReturnNotes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GarmentShippingLocalReturnNoteItems_GarmentShippingLocalSalesNoteItems_SalesNoteItemId",
+                        column: x => x.SalesNoteItemId,
+                        principalTable: "GarmentShippingLocalSalesNoteItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1823,6 +2386,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 filter: "[IsDeleted]=(0)");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingExportSalesDOItems_ExportSalesDOId",
+                table: "GarmentShippingExportSalesDOItems",
+                column: "ExportSalesDOId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GarmentShippingInvoiceAdjustments_GarmentShippingInvoiceId",
                 table: "GarmentShippingInvoiceAdjustments",
                 column: "GarmentShippingInvoiceId");
@@ -1838,6 +2406,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 column: "DocumentCreditNo",
                 unique: true,
                 filter: "[IsDeleted]=(0)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCorrectionNoteItems_PriceCorrectionNoteId",
+                table: "GarmentShippingLocalPriceCorrectionNoteItems",
+                column: "PriceCorrectionNoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCorrectionNoteItems_SalesNoteItemId",
+                table: "GarmentShippingLocalPriceCorrectionNoteItems",
+                column: "SalesNoteItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCorrectionNotes_CorrectionNoteNo",
+                table: "GarmentShippingLocalPriceCorrectionNotes",
+                column: "CorrectionNoteNo",
+                unique: true,
+                filter: "[IsDeleted]=(0)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCorrectionNotes_SalesNoteId",
+                table: "GarmentShippingLocalPriceCorrectionNotes",
+                column: "SalesNoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCuttingNoteItems_PriceCuttingNoteId",
+                table: "GarmentShippingLocalPriceCuttingNoteItems",
+                column: "PriceCuttingNoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalPriceCuttingNotes_CuttingPriceNoteNo",
+                table: "GarmentShippingLocalPriceCuttingNotes",
+                column: "CuttingPriceNoteNo",
+                unique: true,
+                filter: "[IsDeleted]=(0)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalReturnNoteItems_ReturnNoteId",
+                table: "GarmentShippingLocalReturnNoteItems",
+                column: "ReturnNoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalReturnNoteItems_SalesNoteItemId",
+                table: "GarmentShippingLocalReturnNoteItems",
+                column: "SalesNoteItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalReturnNotes_ReturnNoteNo",
+                table: "GarmentShippingLocalReturnNotes",
+                column: "ReturnNoteNo",
+                unique: true,
+                filter: "[IsDeleted]=(0)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalReturnNotes_SalesNoteId",
+                table: "GarmentShippingLocalReturnNotes",
+                column: "SalesNoteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GarmentShippingLocalSalesDOItems_LocalSalesDOId",
+                table: "GarmentShippingLocalSalesDOItems",
+                column: "LocalSalesDOId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GarmentShippingLocalSalesNoteItems_LocalSalesNoteId",
@@ -1862,6 +2491,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 column: "NoteNo",
                 unique: true,
                 filter: "[IsDeleted]=(0)");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_MaterialDeliveryNoteModelId",
+                table: "Items",
+                column: "MaterialDeliveryNoteModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemsMaterialDeliveryNoteWeaving_MaterialDeliveryNoteWeavingId",
+                table: "ItemsMaterialDeliveryNoteWeaving",
+                column: "MaterialDeliveryNoteWeavingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NewCriterias_FabricGradeTestId",
@@ -1910,6 +2549,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 name: "GarmentShippingCreditAdvices");
 
             migrationBuilder.DropTable(
+                name: "GarmentShippingExportSalesDOItems");
+
+            migrationBuilder.DropTable(
                 name: "GarmentShippingInstructions");
 
             migrationBuilder.DropTable(
@@ -1922,7 +2564,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 name: "GarmentShippingLetterOfCredits");
 
             migrationBuilder.DropTable(
-                name: "GarmentShippingLocalSalesNoteItems");
+                name: "GarmentShippingLocalCoverLetters");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalPriceCorrectionNoteItems");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalPriceCuttingNoteItems");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalReturnNoteItems");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalSalesDOItems");
 
             migrationBuilder.DropTable(
                 name: "GarmentShippingNoteItems");
@@ -1962,6 +2616,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "IPYarnType");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "ItemsMaterialDeliveryNoteWeaving");
 
             migrationBuilder.DropTable(
                 name: "NewCriterias");
@@ -2006,19 +2666,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 name: "GarmentPackingListDetails");
 
             migrationBuilder.DropTable(
+                name: "GarmentShippingExportSalesDOs");
+
+            migrationBuilder.DropTable(
                 name: "GarmentShippingInvoices");
 
             migrationBuilder.DropTable(
-                name: "GarmentShippingLocalSalesNotes");
+                name: "GarmentShippingLocalPriceCorrectionNotes");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalPriceCuttingNotes");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalReturnNotes");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalSalesNoteItems");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalSalesDOs");
 
             migrationBuilder.DropTable(
                 name: "GarmentShippingNotes");
+
+            migrationBuilder.DropTable(
+                name: "MaterialDeliveryNote");
+
+            migrationBuilder.DropTable(
+                name: "MaterialDeliveryNoteWeaving");
 
             migrationBuilder.DropTable(
                 name: "NewFabricGradeTests");
 
             migrationBuilder.DropTable(
                 name: "GarmentPackingListItems");
+
+            migrationBuilder.DropTable(
+                name: "GarmentShippingLocalSalesNotes");
 
             migrationBuilder.DropTable(
                 name: "NewFabricQualityControls");

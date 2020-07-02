@@ -1,45 +1,35 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
-using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
-using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWovenType;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
 using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class IPWarpTypeServiceTest
+    public class IPWovenTypeServiceTest
     {
-        private IIPWarpTypeRepository _repoMock;
-        private IPWarpTypeService _serviceMock;
+        private IIPWovenTypeRepository _repoMock;
+        private IPWovenTypeService _serviceMock;
         private IServiceProvider _serviceProvider;
 
-        public IPWarpTypeService GetService(IServiceProvider serviceProvider)
+        public IPWovenTypeService GetService(IServiceProvider serviceProvider)
         {
-            return new IPWarpTypeService(serviceProvider);
+            return new IPWovenTypeService(serviceProvider);
         }
-        public IPWarpTypeService GetService()
+        public IPWovenTypeService GetService()
         {
             var spMock = new Mock<IServiceProvider>();
-            spMock.Setup(s => s.GetService(typeof(IIPWarpTypeRepository)))
+            spMock.Setup(s => s.GetService(typeof(IIPWovenTypeRepository)))
                 .Returns(_repoMock);
             _serviceProvider = spMock.Object;
-            _serviceMock = new IPWarpTypeService(_serviceProvider);
+            _serviceMock = new IPWovenTypeService(_serviceProvider);
             return _serviceMock;
         }
 
-        public IPWarpTypeServiceTest(bool isException = false)
+        public IPWovenTypeServiceTest(bool isException = false)
         {
             if (isException)
                 _repoMock = GetGlobalDefaulExceptionMock().Object;
@@ -51,46 +41,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
         }
 
-        private IPWarpTypeViewModel ViewModel
+        private IPWovenTypeViewModel ViewModel
         {
             get
             {
-                return new IPWarpTypeViewModel
+                return new IPWovenTypeViewModel
                 {
                     Id = 1,
                     Code = "1",
-                    WarpType = "Testing"
+                    WovenType = "Testing"
                 };
             }
         }
-        private IPWarpTypeViewModel NotValidViewModel
+        private IPWovenTypeViewModel NotValidViewModel
         {
             get
             {
-                return new IPWarpTypeViewModel
+                return new IPWovenTypeViewModel
                 {
                     Id = 1,
                     Code = "1",
-                    WarpType = null
+                    WovenType = null
                 };
             }
         }
-        private IPWarpTypeModel ModelDb
+        private IPWovenTypeModel ModelDb
         {
             get
             {
-                return new IPWarpTypeModel
+                return new IPWovenTypeModel
                 (
                     "1",
                     "Testing"
                 );
             }
         }
-        private IPWarpTypeModel NotValidModelDb
+        private IPWovenTypeModel NotValidModelDb
         {
             get
             {
-                return new IPWarpTypeModel
+                return new IPWovenTypeModel
                 (
                      "1",
                     null
@@ -98,25 +88,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             }
         }
 
-        private Mock<IIPWarpTypeRepository> GetGlobalDefaultMock()
+        private Mock<IIPWovenTypeRepository> GetGlobalDefaultMock()
         {
-            var repoMock = new Mock<IIPWarpTypeRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<IPWarpTypeModel>()))
+            var repoMock = new Mock<IIPWovenTypeRepository>();
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<IPWovenTypeModel>()))
                 .ReturnsAsync(1);
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<IPWarpTypeModel>{ ModelDb }.AsQueryable());
+                .Returns(new List<IPWovenTypeModel>{ ModelDb }.AsQueryable());
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelDb);
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<IPWarpTypeModel>()))
+            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<IPWovenTypeModel>()))
                 .ReturnsAsync(1);
             return repoMock;
         }
-        private Mock<IIPWarpTypeRepository> GetGlobalDefaulExceptionMock()
+        private Mock<IIPWovenTypeRepository> GetGlobalDefaulExceptionMock()
         {
-            var repoMock = new Mock<IIPWarpTypeRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<IPWarpTypeModel>()))
+            var repoMock = new Mock<IIPWovenTypeRepository>();
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<IPWovenTypeModel>()))
                 .Throws(new Exception());
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .Throws(new Exception());
@@ -124,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                 .Throws(new Exception());
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .Throws(new Exception());
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<IPWarpTypeModel>()))
+            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<IPWovenTypeModel>()))
                 .Throws(new Exception());
             return repoMock;
         }
@@ -133,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async void Should_Success_Create()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result = await service.Create(ViewModel);
 
@@ -143,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async void Should_Success_Delete()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result = await service.Delete(1);
 
@@ -153,7 +143,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public  void Should_Success_ReadAll()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result =  service.ReadAll();
 
@@ -163,7 +153,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async void Should_Success_ReadByID()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result = await service.ReadById(1);
 
@@ -173,7 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public  void Should_Success_ReadByPage()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result =  service.ReadByPage("1",null,1,1);
 
@@ -183,7 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public async void Should_Success_Update()
         {
             //v
-            var unittest = new IPWarpTypeServiceTest();
+            var unittest = new IPWovenTypeServiceTest();
             var service = unittest._serviceMock;
             var result = await service.Update(1, ViewModel);
             Assert.NotEqual(0,result);
@@ -191,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_Success_Validate()
         {
-            IPWarpTypeViewModelValidator validation = new IPWarpTypeViewModelValidator();
+            IPWovenTypeViewModelValidator validation = new IPWovenTypeViewModelValidator();
             FluentValidation.Results.ValidationResult valid = validation.Validate(ViewModel);
             Assert.True(valid.IsValid);
         }

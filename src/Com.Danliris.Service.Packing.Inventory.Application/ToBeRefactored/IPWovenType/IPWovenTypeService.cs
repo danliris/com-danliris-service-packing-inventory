@@ -1,70 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWovenType
 {
-    public class IPWarpTypeService : IIPWarpTypeService
+    public class IPWovenTypeService : IIPWovenTypeService
     {
-        private readonly IIPWarpTypeRepository _repository;
+        private readonly IIPWovenTypeRepository _repository;
 
-        public IPWarpTypeService(IServiceProvider _serviceProvider)
+        public IPWovenTypeService(IServiceProvider _serviceProvider)
         {
-            _repository = _serviceProvider.GetService<IIPWarpTypeRepository>();
+            _repository = _serviceProvider.GetService<IIPWovenTypeRepository>();
         }
 
         /// <summary>
         /// Used for viewmodel to dbmodel
         /// </summary>
-        private IPWarpTypeModel MappingDbModel(IPWarpTypeViewModel viewModel)
+        private IPWovenTypeModel MappingDbModel(IPWovenTypeViewModel viewModel)
         {
-            return new IPWarpTypeModel(viewModel.Code, viewModel.WarpType);
+            return new IPWovenTypeModel(viewModel.Code, viewModel.WovenType);
         }
         /// <summary>
         /// Used for dbmodel to viewmodel(indexViewModel)
         /// </summary>
-        private IPWarpTypeViewModel MappingIndexViewModel(IPWarpTypeModel modelDb)
+        private IPWovenTypeViewModel MappingIndexViewModel(IPWovenTypeModel modelDb)
         {
-            return new IPWarpTypeViewModel
+            return new IPWovenTypeViewModel
             {
                 Id = modelDb.Id,
                 Code = modelDb.Code,
-                WarpType = modelDb.WarpType,
+                WovenType = modelDb.WovenType,
             };
         }
         /// <summary>
         /// Used for listDbModel to listViewModel(indexViewModel)
         /// </summary>
-        private ListResult<IPWarpTypeViewModel> MappingIndexViewModel(List<IPWarpTypeModel> modelDb, int page, int size, int totalAllRow)
+        private ListResult<IPWovenTypeViewModel> MappingIndexViewModel(List<IPWovenTypeModel> modelDb, int page, int size, int totalAllRow)
         {
-            var listIndexViewModel = new List<IPWarpTypeViewModel>();
+            var listIndexViewModel = new List<IPWovenTypeViewModel>();
             foreach (var model in modelDb)
             {
                 listIndexViewModel.Add(MappingIndexViewModel(model));
             }
-            return new ListResult<IPWarpTypeViewModel>(listIndexViewModel, page, size, totalAllRow);
+            return new ListResult<IPWovenTypeViewModel>(listIndexViewModel, page, size, totalAllRow);
         }
         /// <summary>
         /// Used For dbModelto viewmodel
         /// </summary>
-        private IPWarpTypeViewModel MappingViewModel(IPWarpTypeModel modelDb)
+        private IPWovenTypeViewModel MappingViewModel(IPWovenTypeModel modelDb)
         {
-            return new IPWarpTypeViewModel
+            return new IPWovenTypeViewModel
             {
                 Id = modelDb.Id,
                 Code = modelDb.Code,
-                WarpType = modelDb.WarpType
+                WovenType = modelDb.WovenType
             };
         }
-        public Task<int> Create(IPWarpTypeViewModel model)
+        public Task<int> Create(IPWovenTypeViewModel model)
         {
             var mappingModel = MappingDbModel(model);
             return _repository.InsertAsync(mappingModel);
@@ -75,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
             return _repository.DeleteAsync(id);
         }
 
-        public ListResult<IPWarpTypeViewModel> ReadAll()
+        public ListResult<IPWovenTypeViewModel> ReadAll()
         {
             var data = _repository.ReadAll();
             var dataCount = data.Count();
@@ -86,20 +85,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
                             dataCount);
         }
 
-        public async Task<IPWarpTypeViewModel> ReadById(int id)
+        public async Task<IPWovenTypeViewModel> ReadById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
             return MappingViewModel(data);
         }
 
-        public ListResult<IPWarpTypeViewModel> ReadByPage(string keyword, string order, int page, int size)
+        public ListResult<IPWovenTypeViewModel> ReadByPage(string keyword, string order, int page, int size)
         {
             var data = _repository.ReadAll().Skip((page - 1) * size).Take(size);
             var dataCount = data.Count();
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                data = data.Where(entity => entity.WarpType.Contains(keyword) || entity.Code.Contains(keyword));
+                data = data.Where(entity => entity.WovenType.Contains(keyword) || entity.Code.Contains(keyword));
             }
 
             if (string.IsNullOrWhiteSpace(order))
@@ -107,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
                 order = "{}";
             }
             var orderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            data = QueryHelper<IPWarpTypeModel>.Order(data, orderDictionary);
+            data = QueryHelper<IPWovenTypeModel>.Order(data, orderDictionary);
 
 
             return MappingIndexViewModel(data.ToList(),
@@ -116,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWa
                             dataCount);
         }
 
-        public Task<int> Update(int id, IPWarpTypeViewModel model)
+        public Task<int> Update(int id, IPWovenTypeViewModel model)
         {
             return _repository.UpdateAsync(id,
                                MappingDbModel(model));

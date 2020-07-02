@@ -1,7 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.DTOs;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
 {

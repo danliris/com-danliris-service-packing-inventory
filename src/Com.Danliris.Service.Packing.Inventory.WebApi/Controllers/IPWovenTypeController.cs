@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWarpType;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -15,9 +14,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
     [Produces("application/json")]
     [Route("v1/master/ip-woven-type")]
     [Authorize]
-    public class IPWarpTypeController : ControllerBase
+    public class IPWovenTypeController : ControllerBase
     {
-        private readonly IIPWarpTypeService _service;
+        private readonly IIPWovenTypeService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService ValidateService;
 
@@ -27,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         //    _identityProvider = identityProvider;
         //}
 
-        public IPWarpTypeController(IIPWarpTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
+        public IPWovenTypeController(IIPWovenTypeService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -99,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] IPWarpTypeViewModel viewModel)
+        public IActionResult Post([FromBody] IPWovenTypeViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -135,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
         [HttpPost("{id}")]
-        public IActionResult Edit([FromRoute]int id, [FromBody] IPWarpTypeViewModel viewModel)
+        public IActionResult Edit([FromRoute]int id, [FromBody] IPWovenTypeViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {

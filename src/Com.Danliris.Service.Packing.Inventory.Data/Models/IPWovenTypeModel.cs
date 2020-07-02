@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models
 {
-    public class IPWarpTypeModel : StandardEntity
+    public class IPWovenTypeModel : StandardEntity
     {
         public string Code { get; private set; }
-        public string WarpType { get; private set; }
-        public IPWarpTypeModel()
+        public string WovenType { get; private set; }
+        public IPWovenTypeModel()
         {
 
         }
 
-        public IPWarpTypeModel(string code, string warpType)
+        public IPWovenTypeModel(string code, string wovenType)
         {
             Code = code;
-            WarpType = warpType;
+            WovenType = wovenType;
         }
 
         public void SetCode(string newCode, string username, string agent)
@@ -26,9 +26,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models
             this.FlagForUpdate(username, agent);
         }
 
-        public void SetWarpType(string newWarpType, string username , string agent)
+        public void SetWarpType(string newWovenType, string username , string agent)
         {
-            WarpType = newWarpType;
+            WovenType = newWovenType;
             this.FlagForUpdate(username, agent);
 
         }
