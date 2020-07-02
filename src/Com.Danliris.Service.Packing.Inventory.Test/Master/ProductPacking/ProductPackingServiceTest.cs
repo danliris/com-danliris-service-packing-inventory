@@ -452,7 +452,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
         }
 
         [Fact]
-        public async Task Update_When_ID_Dupliacte_Throws_ValidationException()
+        public async Task Update_When_SkuID_Duplicate_Throws_ValidationException()
         {
 
             var productPackingRepository = new Mock<IRepository<ProductPackingModel>>();
@@ -461,7 +461,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             var unitOfMeasurementRepository = new Mock<IRepository<UnitOfMeasurementModel>>();
 
             productPackingRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-               .ReturnsAsync(productPackingModel);
+               .ReturnsAsync(new ProductPackingModel(2,2,2,"Code","name","Description"));
 
             productPackingRepository.Setup(s => s.ReadAll())
                .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable());
