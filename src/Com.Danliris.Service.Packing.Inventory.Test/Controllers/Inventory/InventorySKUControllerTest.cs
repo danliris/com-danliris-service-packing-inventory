@@ -93,11 +93,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
         {
             get
             {
-                var documents = new ProductSKUInventoryDocumentModel();
-                var items = new List<ProductSKUInventoryMovementModel>();
-                var products = new List<ProductSKUModel>();
-                var uoms = new List<UnitOfMeasurementModel>();
-                var categories = new List<CategoryModel>();
+                var documents = new ProductSKUInventoryDocumentModel("documentNo",DateTimeOffset.Now, "referenceNo", "referenceType",0, "storageName", "storageCode","type","remark");
+                var items = new List<ProductSKUInventoryMovementModel>()
+                {
+                    new ProductSKUInventoryMovementModel(0,0,0,0,"storageCode","storageName",0,"type","remark")
+                };
+                var products = new List<ProductSKUModel>()
+                {
+                    new ProductSKUModel("code","name",0,0,"description")
+                };
+                var uoms = new List<UnitOfMeasurementModel>()
+                {
+                    new UnitOfMeasurementModel("unit")
+                };
+                var categories = new List<CategoryModel>()
+                {
+                    new CategoryModel("name","code")
+                };
                 return new DocumentDto(documents, items, products, uoms, categories);
             }
         }
