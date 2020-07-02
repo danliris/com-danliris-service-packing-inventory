@@ -46,10 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
             {
                 yield return new ValidationResult("Item harus diisi", new List<string> { "Item" });
             }
-            else
-            {
-                
-            }
+            
         }
     }
 }

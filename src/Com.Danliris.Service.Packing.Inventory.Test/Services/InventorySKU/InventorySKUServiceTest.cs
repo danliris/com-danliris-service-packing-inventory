@@ -58,6 +58,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
         }
 
         [Fact]
+        public void Should_Success_instantiateProductSKUInventorySummaryModel()
+        {
+            var model = new ProductSKUInventorySummaryModel(0, 0, "storageCode", "storageName", 1);
+            model.SetBalance(4);
+            model.AddBalance(1);
+            model.AdjustBalance(1);
+            model.ReduceBalance(1);
+            Assert.NotNull(model);
+        }
+          
+
+        [Fact]
         public async Task Should_Success_AddDocument()
         {
             //Arrange
@@ -209,6 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "OUT", "Remark");
             inventoryMovement.SetPreviousBalance(0);
             inventoryMovement.SetCurrentBalance(1);
+            inventoryMovement.AdjustCurrentBalance(1);
 
             service.AddMovement(inventoryMovement);
 
