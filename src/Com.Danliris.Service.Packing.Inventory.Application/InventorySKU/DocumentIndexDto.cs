@@ -5,15 +5,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
 {
     public class DocumentIndexDto
     {
-        public DocumentIndexDto(IEnumerable<ProductSKUInventoryDocumentModel> documents, int page, int size)
+        public DocumentIndexDto(IEnumerable<ProductSKUInventoryDocumentModel> documents, int page, int size, int total)
         {
-            Data = documents;
-            Page = page;
-            Size = size;
+            data = documents;
+            this.page = page;
+            this.size = size;
+            this.total = total;
         }
 
-        public IEnumerable<ProductSKUInventoryDocumentModel> Data { get; }
-        public int Page { get; }
-        public int Size { get; }
+        public IEnumerable<ProductSKUInventoryDocumentModel> data { get; private set; }
+        public int page { get; private set; }
+        public int size { get; private set; }
+        public int total { get; private set; }
     }
 }

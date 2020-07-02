@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
             {
                 yield return new ValidationResult("Kode harus diisi", new List<string> { "Code" });
             }
-            else if (!int.TryParse(Code, out int code))
+            else if (!long.TryParse(Code, out long code))
             {
                 yield return new ValidationResult("Kode harus berupa angka", new List<string> { "Code" });
             }
