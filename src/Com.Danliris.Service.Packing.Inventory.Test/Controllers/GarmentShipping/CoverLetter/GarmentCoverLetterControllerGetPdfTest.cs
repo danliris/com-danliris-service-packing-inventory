@@ -165,7 +165,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Setup(s => s.Validate(It.IsAny<GarmentCoverLetterViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -197,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Setup(s => s.Validate(It.IsAny<GarmentCoverLetterViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -229,7 +229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Setup(s => s.Validate(It.IsAny<GarmentCoverLetterViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
@@ -261,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Setup(s => s.Validate(It.IsAny<GarmentCoverLetterViewModel>()))
                 .Verifiable();
             var validateService = validateServiceMock.Object;
 
