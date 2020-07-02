@@ -32,6 +32,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GJ = "GJ";
         private const string GA = "GA";
         private const string SP = "SP";
+        private const string PJ = "PJ";
+        private const string BY = "BY";
+
 
         private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
         private const string TRANSIT = "TRANSIT";
@@ -39,6 +42,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string GUDANGJADI = "GUDANG JADI";
         private const string GUDANGAVAL = "GUDANG AVAL";
         private const string SHIPPING = "SHIPPING";
+        private const string PENJUALAN = "PENJUALAN";
+        private const string BUYER = "BUYER";
+
 
         public OutputAvalService(IServiceProvider serviceProvider)
         {
@@ -57,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Active = model.Active,
                 Id = model.Id,
                 Area = model.Area,
-                //BonNo = model.BonNo,
+                BonNo = model.BonNo,
                 CreatedAgent = model.CreatedAgent,
                 CreatedBy = model.CreatedBy,
                 CreatedUtc = model.CreatedUtc,
@@ -95,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalUomUnit = s.UomUnit,
                     AvalQuantity = s.AvalALength,
                     AvalQuantityKg = s.AvalBLength,
-
+                    DeliveryNote = s.DeliveryNote,
 
                     AvalOutSatuan = s.Balance,
                     AvalOutQuantity = s.AvalQuantityKg,
@@ -107,9 +113,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
+        public string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
         {
-            return string.Format("{0}.{1}.{2}.{3}", GA, SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            switch (destinationArea)
+            {
+                //case SHIPPING:
+                //    string.Format("{0}.{1}.{2}.{3}", GA, SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                //    break;
+                case PENJUALAN:
+                    return string.Format("{0}.{1}.{2}.{3}", GA, PJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                case BUYER:
+                    return string.Format("{0}.{1}.{2}.{3}", GA, BY, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                default:
+                    return string.Format("{0}.{1}.{2}.{3}", GA, GA, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
+            //return string.Format("{0}.{1}.{2}.{3}", GA, SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
         }
 
@@ -125,7 +143,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string bonNo = string.Empty;
             var bonExist = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
                                                                 s.Date.Date == viewModel.Date.Date &&
-                                                                s.Shift == viewModel.Shift);
+                                                                s.Shift == viewModel.Shift &&
+                                                                s.DestinationArea == viewModel.DestinationArea &&
+                                                                s.DeliveryOrderSalesNo == viewModel.DeliveryOrderSalesNo);
             int bonExistCount = bonExist.Count();
             if (bonExistCount == 0)
                 bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
@@ -153,7 +173,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                s.AvalOutSatuan,
                                                                                                                                                s.AvalOutQuantity,
                                                                                                                                                s.AvalQuantity,
-                                                                                                                                               s.AvalQuantityKg))
+                                                                                                                                               s.AvalQuantityKg,
+                                                                                                                                               viewModel.Area,
+                                                                                                                                               viewModel.DestinationArea,
+                                                                                                                                               s.DeliveryNote))
                                                                                  .ToList());
 
                 //Create New Row in Output and ProductionOrdersOutput in Each Repository 
@@ -177,7 +200,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                s.AvalOutQuantity,
                                                                                                                                                s.AvalQuantity,
                                                                                                                                                s.AvalQuantityKg,
-                                                                                                                                               bonExist.FirstOrDefault().Id))
+                                                                                                                                               bonExist.FirstOrDefault().Id,
+                                                                                                                                               viewModel.Area,
+                                                                                                                                               viewModel.DestinationArea,
+                                                                                                                                               s.DeliveryNote))
                                                                                  .ToList());
                 foreach (var avalitem in model.DyeingPrintingAreaOutputProductionOrders)
                 {
