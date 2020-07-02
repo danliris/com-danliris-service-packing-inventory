@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             DocumentItemDto dto = new DocumentItemDto(item,product,uom, category);
             
             Assert.Equal(1, dto.Quantity);
-            Assert.Equal("Remark", dto.Remark);
+            Assert.Equal("remark", dto.Remark);
         }
     }
 }
