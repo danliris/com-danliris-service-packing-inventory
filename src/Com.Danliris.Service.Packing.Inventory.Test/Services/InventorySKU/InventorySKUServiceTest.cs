@@ -156,40 +156,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
-        //[Fact]
-        //public void AddMovement_with_existing_data_return_success()
-        //{
-        //    //Arrange
-        //    //var unitOfWorkMock = new Mock<IUnitOfWork>();
-        //    var unitOfWorkMock = new Mock<UnitOfWork>();
-        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+        [Fact]
+        public void AddMovement_with_existing_data_and_with_Type_IN_return_success()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-        //        .Returns(new List<ProductSKUInventorySummaryModel>()
-        //        {
-        //            new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
-        //        });
+            var inventoryMovement = new ProductSKUInventoryMovementModel(1, 1, 1, 1, "storageCode", "storageName", 1, "IN", "Remark");
+            
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+           
+            dbContext
+                .ProductSKUInventorySummaries
+                .Add(new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1));
 
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventoryMovements
-        //        .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
+            dbContext.SaveChanges();
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
 
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventorySummaries
-        //        .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
+            //Act
+            service.AddMovement(inventoryMovement);
+        }
 
-        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+        [Fact]
+        public void AddMovement_with_existing_data_and_with_type_OUT_return_success()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
 
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
-        //    //Act
-        //    var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "IN", "Remark");
-        //    inventoryMovement.SetPreviousBalance(0);
-        //    inventoryMovement.SetCurrentBalance(0);
+            var inventoryMovement = new ProductSKUInventoryMovementModel(1, 1, 1, 1, "storageCode", "storageName", 1, "OUT", "Remark");
 
-        //    service.AddMovement(inventoryMovement);
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
 
-        //}
+            dbContext
+                .ProductSKUInventorySummaries
+                .Add(new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1));
+
+            dbContext.SaveChanges();
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
+
+            //Act
+            service.AddMovement(inventoryMovement);
+        }
+
+        [Fact]
+        public void AddMovement_with_existing_data_and_with_type_ADJ_return_success()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var inventoryMovement = new ProductSKUInventoryMovementModel(1, 1, 1, 1, "storageCode", "storageName", 1, "ADJ", "Remark");
+
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+
+            dbContext
+                .ProductSKUInventorySummaries
+                .Add(new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1));
+
+            dbContext.SaveChanges();
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
+
+            //Act
+            service.AddMovement(inventoryMovement);
+        }
+
+        [Fact]
+        public void AddMovement_with_existing_data_and_with_type_Invalid_return_success()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var inventoryMovement = new ProductSKUInventoryMovementModel(1, 1, 1, 1, "storageCode", "storageName", 1, "INVALID_TYPE", "Remark");
+
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+
+            dbContext
+                .ProductSKUInventorySummaries
+                .Add(new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1));
+
+            dbContext.SaveChanges();
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
+
+            //Act
+            Assert.Throws<Exception>(() => service.AddMovement(inventoryMovement));
+        }
 
 
         [Fact]
@@ -216,7 +293,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
             var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
 
-
             //Act
             var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "OUT", "Remark");
             inventoryMovement.SetPreviousBalance(0);
@@ -227,45 +303,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
-        //[Fact]
-        //public void Should_Success_AddMovement_when_Type_ADJ()
-        //{
-        //    //Arrange
-        //    var unitOfWorkMock = new Mock<IUnitOfWork>();
-        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
-
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-        //        .Returns(new List<ProductSKUInventorySummaryModel>()
-        //        {
-        //            new ProductSKUInventorySummaryModel(0,0,"storageCode","storageName",1)
-        //        });
-
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventoryMovements
-        //        .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
-
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventorySummaries
-        //        .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
-
-        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
-
-
-        //    //Act
-        //    var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "ADJ", "Remark");
-        //    inventoryMovement.SetPreviousBalance(0);
-        //    inventoryMovement.SetCurrentBalance(1);
-
-        //    service.AddMovement(inventoryMovement);
-
-        //}
+       
 
         [Fact]
         public void Should_Success_AddMovement_when_Type_ADJ()
         {
             var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
-
+            
             //Arrange
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
@@ -273,26 +317,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
             var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+           
 
             var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-            //unitOfWorkMock
-            //    .Setup(s => s.ProductSKUInventorySummaries.Get(It.IsAny<Expression<Func<ProductSKUInventorySummaryModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventorySummaryModel>, IOrderedQueryable<ProductSKUInventorySummaryModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-            //    .Returns(new List<ProductSKUInventorySummaryModel>()
-            //    {
-            //        new ProductSKUInventorySummaryModel(0, 0, "storageCode","storageName",1)
-            //    });
-
-            //unitOfWorkMock
-            //    .Setup(s => s.ProductSKUInventoryMovements
-            //    .Insert(It.IsAny<ProductSKUInventoryMovementModel>())).Verifiable();
-
-            //unitOfWorkMock
-            //    .Setup(s => s.ProductSKUInventorySummaries
-            //    .Insert(It.IsAny<ProductSKUInventorySummaryModel>())).Verifiable();
-
             var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
-
 
             //Act
             var inventoryMovement = new ProductSKUInventoryMovementModel(0, 0, 0, 0, "storageCode", "storageName", 0, "ADJ", "Remark");
@@ -327,6 +356,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             Assert.Throws<Exception>(() => service.AddMovement(inventoryMovement));
         }
 
+        [Fact]
+        public void GetMovementIndex_Throws_Exception()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
+
+            //Act
+            Assert.Throws<NotImplementedException>(() => service.GetMovementIndex(1,1,"IN",DateTime.Now,DateTime.Now));
+        }
+
+        [Fact]
+        public void GetSummaryIndex_Throws_Exception()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
+
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
+
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
+
+            //Act
+            Assert.Throws<NotImplementedException>(() => service.GetSummaryIndex(1, 1));
+        }
+
 
         [Fact]
         public void GetDocumentById_Return_Success()
@@ -334,7 +405,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             //Arrange
             var unitOfWorkMock = new Mock<IUnitOfWork>();
             var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
-
 
             unitOfWorkMock
                 .Setup(s => s.ProductSKUInventoryDocuments.GetByID(It.IsAny<int>()))

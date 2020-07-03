@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.InventorySKU;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,18 +20,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             {
                 new ProductSKUInventoryMovementModel()
             };
-            var products = new List<Data.Models.Product.ProductSKUModel>()
+            var products = new List<ProductSKUModel>()
             {
-                new Data.Models.Product.ProductSKUModel()
+                new ProductSKUModel()
             };
 
-            var uoms = new List<Data.Models.Product.UnitOfMeasurementModel>()
+            var uoms = new List<UnitOfMeasurementModel>()
             {
-                new Data.Models.Product.UnitOfMeasurementModel()
+                new UnitOfMeasurementModel()
             };
-            var categories = new List<Data.Models.Product.CategoryModel>()
+            var categories = new List<CategoryModel>()
             {
-                new Data.Models.Product.CategoryModel()
+                new CategoryModel()
             };
             DocumentDto dto = new DocumentDto(document, items, products, uoms, categories);
 
@@ -40,7 +41,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             Assert.Equal("DocumentNo", dto.DocumentNo);
             Assert.Equal("Type", dto.Type);
             Assert.Equal("Remark", dto.Remark);
-           
+            Assert.True(DateTimeOffset.MinValue < dto.Date);
+            Assert.NotNull(dto.Storage);
+            Assert.NotNull(dto.Items);
         }
         }
 }
