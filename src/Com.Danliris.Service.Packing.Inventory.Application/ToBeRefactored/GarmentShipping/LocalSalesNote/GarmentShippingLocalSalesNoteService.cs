@@ -108,6 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.product = i.product ?? new ProductViewModel();
                 i.uom = i.uom ?? new UnitOfMeasurement();
+                i.packageUom = i.packageUom ?? new UnitOfMeasurement();
                 return new GarmentShippingLocalSalesNoteItemModel(i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price,i.packageQuantity,i.packageUom.Id.GetValueOrDefault(), i.packageUom.Unit) { Id = i.Id };
             }).ToList();
 
