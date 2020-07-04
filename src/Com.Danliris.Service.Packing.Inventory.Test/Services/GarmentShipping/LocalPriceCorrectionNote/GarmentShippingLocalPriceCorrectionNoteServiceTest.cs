@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalPriceCorrectionNoteItemModel>() { new GarmentShippingLocalPriceCorrectionNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1), 1) };
+            var items = new List<GarmentShippingLocalPriceCorrectionNoteItemModel>() { new GarmentShippingLocalPriceCorrectionNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
             var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteRepository>();

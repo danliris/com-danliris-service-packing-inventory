@@ -9,5 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double quantity { get; set; }
         public UnitOfMeasurement uom { get; set; }
         public double price { get; set; }
+        public double packageQuantity { get; set; }
+        public UnitOfMeasurement packageUom { get; set; }
     }
 }

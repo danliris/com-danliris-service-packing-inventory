@@ -16,11 +16,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
 
         public double Price { get; private set; }
 
+        public double PackageQuantity { get; private set; }
+
+        public int PackageUomId { get; private set; }
+        public string PackageUomUnit { get; private set; }
         public GarmentShippingLocalSalesNoteItemModel()
         {
         }
 
-        public GarmentShippingLocalSalesNoteItemModel(int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price)
+        public GarmentShippingLocalSalesNoteItemModel(int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price, double packageQuantity, int packageUomId, string packageUomUnit)
         {
             ProductId = productId;
             ProductCode = productCode;
@@ -29,8 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             UomId = uomId;
             UomUnit = uomUnit;
             Price = price;
+            PackageQuantity = packageQuantity;
+            PackageUomId = packageUomId;
+            PackageUomUnit = packageUomUnit;
         }
-
 
         public void SetProductId(int productId, string userName, string userAgent)
         {
@@ -91,6 +97,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (Price != price)
             {
                 Price = price;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPackageQuantity(double packageQuantity, string userName, string userAgent)
+        {
+            if (PackageQuantity != packageQuantity)
+            {
+                PackageQuantity = packageQuantity;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPackageUomId(int packageUomId, string userName, string userAgent)
+        {
+            if (PackageUomId != packageUomId)
+            {
+                PackageUomId = packageUomId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPackageUomUnit(string packageUomUnit, string userName, string userAgent)
+        {
+            if (PackageUomUnit != packageUomUnit)
+            {
+                PackageUomUnit = packageUomUnit;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
