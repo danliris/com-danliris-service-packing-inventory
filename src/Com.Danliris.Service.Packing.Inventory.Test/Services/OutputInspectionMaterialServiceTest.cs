@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
@@ -48,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Area = "INSPECTION MATERIAL",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
+                    Type = "OUT",
                     Shift = "pas",
                     Group = "A",
                     HasNextAreaDocument = false,
@@ -177,19 +179,208 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
                 var model = new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   ViewModel.Group, productionOrderModels);
+                   ViewModel.Group, ViewModel.Type, productionOrderModels);
 
 
                 return model;
             }
         }
 
-        private DyeingPrintingAreaOutputModel EmptyDetailModel
+        private OutputInspectionMaterialViewModel ViewModelAdj
         {
             get
             {
-                return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                    ViewModel.Group, new List<DyeingPrintingAreaOutputProductionOrderModel>());
+                return new OutputInspectionMaterialViewModel()
+                {
+                    Area = "INSPECTION MATERIAL",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Type = "Adj",
+                    Shift = "pas",
+                    Group = "A",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "TRANSIT",
+                    InputInspectionMaterialId = 1,
+                    InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+                    {
+                        new OutputInspectionMaterialProductionOrderViewModel()
+                        {
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Id = 1,
+                            Construction = "sd",
+                            IsSave = true,
+                            Status = "Ok",
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            Machine = "a",
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d",
+                            ProductionOrderDetails = new List<OutputInspectionMaterialProductionOrderDetailViewModel>()
+                            {
+                                new OutputInspectionMaterialProductionOrderDetailViewModel()
+                                {
+                                    Balance = 1,
+                                    Id = 1,
+                                    Grade = "a",
+                                    HasNextAreaDocument = false,
+                                    Remark = "re",
+
+                                }
+                            },
+                            BuyerId = 1,
+                            InputId = 1,
+                        },
+                        new OutputInspectionMaterialProductionOrderViewModel()
+                        {
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            IsSave = true,
+                            Status = "Ok",
+                            Id = 2,
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            AdjDocumentNo = "ss",
+                            UomUnit = "d",
+                            ProductionOrderDetails = new List<OutputInspectionMaterialProductionOrderDetailViewModel>()
+                            {
+                                new OutputInspectionMaterialProductionOrderDetailViewModel()
+                                {
+                                    Balance = 1,
+                                    Grade = "a",
+                                    Id = 2,
+                                    HasNextAreaDocument = false,
+                                    Remark = "re",
+                                    AvalType = "type"
+                                }
+                            },
+                            BuyerId = 1,
+                            InputId = 1,
+
+                        }
+                    }
+                };
+            }
+        }
+
+        private DyeingPrintingAreaOutputModel ModelAdj
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModelAdj.Date, ViewModelAdj.Area, ViewModelAdj.Shift, ViewModelAdj.BonNo, ViewModelAdj.HasNextAreaDocument,
+                    ViewModelAdj.DestinationArea, ViewModelAdj.Group, ViewModelAdj.Type,
+                    ViewModelAdj.InspectionMaterialProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
+                            item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
+                            item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, "", "", item.Status, item.Balance, item.Id, item.BuyerId,
+                            "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine, item.AdjDocumentNo)
+                    {
+                        Id = item.Id
+                    }).ToList());
+            }
+        }
+
+        private InputInspectionMaterialViewModel ViewModelIN
+        {
+            get
+            {
+                return new InputInspectionMaterialViewModel()
+                {
+                    Area = "INSPECTION MATERIAL",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Group = "A",
+                    Shift = "pas",
+                    InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
+                    {
+                        new InputInspectionMaterialProductionOrderViewModel()
+                        {
+                            Id = 1,
+                            Balance = 1,
+                            Buyer = "s",
+                            BalanceRemains = 1,
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            HasOutputDocument = false,
+                            IsChecked = false,
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d"
+                        }
+                    }
+                };
+            }
+        }
+
+        private DyeingPrintingAreaInputModel ModelIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaInputModel(ViewModelIN.Date, ViewModelIN.Area, ViewModelIN.Shift, ViewModelIN.BonNo, ViewModelIN.Group, ViewModelIN.InspectionMaterialProductionOrders.Select(s =>
+                    new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.BalanceRemains, s.HasOutputDocument, s.BuyerId, 0, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth)
+                    { Id = s.Id }).ToList());
             }
         }
 
@@ -653,10 +844,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
             var vm = ViewModel;
             vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
-            
+
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            
+
             var result = service.GenerateExcel(vm);
 
             Assert.NotNull(result);
@@ -825,9 +1016,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-
+            var modelN = Model;
+            modelN.SetType(null, "", "");
             repoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
             var result = service.GenerateExcel();
@@ -850,6 +1042,89 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
             var result = service.GenerateExcel();
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GetDistinctAllProductionOrders()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            sppoutRepoMock.Setup(s => s.ReadAll()).Returns(Model.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
+            }.AsQueryable());
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelAdj()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var result = service.GenerateExcel(ViewModelAdj);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelNoType()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var vm = ViewModel;
+            vm.Type = null;
+
+            var result = service.GenerateExcel(vm);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Empty_GenerateExcelAdj()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var vm = ViewModelAdj;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+
+            var result = service.GenerateExcel(vm);
 
             Assert.NotNull(result);
         }
