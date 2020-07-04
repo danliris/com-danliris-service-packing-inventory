@@ -17,34 +17,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 		private readonly DbSet<GarmentShippingNoteItemModel> _dbSet;
 		private readonly IIdentityProvider _identityProvider;
 
-		public GarmentShippingNoteItemRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
-		{
-			_dbContext = dbContext;
+        public GarmentShippingNoteItemRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
+        {
+            _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingNoteItemModel>();
-			_identityProvider = serviceProvider.GetService<IIdentityProvider>();
-		}
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+        }
 
         public Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var model = _dbSet
+               .FirstOrDefault(s => s.Id == id);
+
+            model.FlagForDelete(_identityProvider.Username, USER_AGENT);
+
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> InsertAsync(GarmentShippingNoteItemModel model)
         {
-            throw new NotImplementedException();
+            model.FlagForCreate(_identityProvider.Username, USER_AGENT);
+
+            _dbSet.Add(model);
+
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<GarmentShippingNoteItemModel> ReadByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _dbSet
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<int> UpdateAsync(int id, GarmentShippingNoteItemModel model)
         {
-            throw new NotImplementedException();
+            var modelToUpdate = _dbSet
+                 .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetDescription(model.Description, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetCurrencyId(model.CurrencyId, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetCurrencyCode(model.CurrencyCode, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetAmount(model.Amount, _identityProvider.Username, USER_AGENT);
+
+            return _dbContext.SaveChangesAsync();
         }
 
-        IQueryable<GarmentShippingNoteItemModel> IRepository<GarmentShippingNoteItemModel>.ReadAll()
+        public IQueryable<GarmentShippingNoteItemModel> ReadAll()
         {
             return _dbSet.AsNoTracking();
         }
