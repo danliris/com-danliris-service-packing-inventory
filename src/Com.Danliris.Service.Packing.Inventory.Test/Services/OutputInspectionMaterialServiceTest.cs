@@ -1446,6 +1446,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 HasNextAreaDocument = false
             };
             Assert.False(detail.HasNextAreaDocument);
+
+            var adjvm = new AdjInspectionMaterialProductionOrderViewModel();
+            Assert.Null(adjvm.ProductionOrder);
+            Assert.Null(adjvm.Material);
+            Assert.Null(adjvm.MaterialConstruction);
+            Assert.Null(adjvm.MaterialWidth);
+            Assert.Null(adjvm.CartNo);
+            Assert.Null(adjvm.Construction);
+            Assert.Null(adjvm.Unit);
+            Assert.Equal(0,adjvm.BuyerId);
+            Assert.Null(adjvm.Buyer);
+            Assert.Null(adjvm.Color);
+            Assert.Null(adjvm.Motif);
+            Assert.Null(adjvm.UomUnit);
+
         }
 
         [Fact]
