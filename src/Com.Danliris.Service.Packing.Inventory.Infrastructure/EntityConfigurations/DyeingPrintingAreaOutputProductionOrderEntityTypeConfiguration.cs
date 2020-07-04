@@ -153,6 +153,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.PrevSppInJson)
                 .HasColumnType("varchar(MAX)");
+
+            builder
+             .Property(s => s.AdjDocumentNo)
+             .HasMaxLength(128);
         }
     }
 }

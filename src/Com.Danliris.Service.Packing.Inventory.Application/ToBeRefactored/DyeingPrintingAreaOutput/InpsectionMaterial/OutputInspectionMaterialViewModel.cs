@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public string Shift { get; set; }
+        public string Type { get; set; }
         public int InputInspectionMaterialId { get; set; }
         public string Group { get; set; }
 
@@ -30,13 +31,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Area))
                 yield return new ValidationResult("Area harus diisi", new List<string> { "Area" });
 
+            if (string.IsNullOrEmpty(Type))
+                yield return new ValidationResult("Jenis harus diisi", new List<string> { "Type" });
+
             if (Date == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal harus diisi", new List<string> { "Date" });
             }
             else
             {
-                if (!(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
+                if (Id == 0 && !(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
                 {
                     yield return new ValidationResult("Tanggal Harus Lebih Besar atau Sama Dengan Hari Ini", new List<string> { "Date" });
                 }
@@ -48,63 +52,102 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Group))
                 yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
-            if (string.IsNullOrEmpty(DestinationArea))
+            if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
 
             int Count = 0;
             string DetailErrors = "[";
 
-            if ((Id == 0 && InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && InspectionMaterialProductionOrders.Count() == 0))
+            if (Type == "OUT")
             {
-                yield return new ValidationResult("SPP harus Diisi", new List<string> { "InspectionMaterialProductionOrder" });
+                if ((Id == 0 && InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && InspectionMaterialProductionOrders.Count() == 0))
+                {
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "InspectionMaterialProductionOrder" });
+                }
+                else
+                {
+                    foreach (var item in InspectionMaterialProductionOrders)
+                    {
+                        DetailErrors += "{";
+
+                        if ((item.ProductionOrderDetails.Count == 0 && item.IsSave) || (Id != 0 && item.ProductionOrderDetails.Count == 0))
+                        {
+                            Count++;
+                            DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
+                        }
+                        else
+                        {
+                            DetailErrors += "ProductionOrderDetails : [ ";
+                            foreach (var detail in item.ProductionOrderDetails)
+                            {
+                                DetailErrors += "{";
+                                if (detail.Balance == 0)
+                                {
+                                    Count++;
+                                    DetailErrors += "Balance: 'Qty Keluar Harus Lebih dari 0!',";
+                                }
+
+                                if (DestinationArea == "GUDANG AVAL")
+                                {
+                                    if (string.IsNullOrEmpty(detail.AvalType))
+                                    {
+                                        Count++;
+                                        DetailErrors += "AvalType: 'Macam Barang Tidak Boleh Kosong',";
+                                    }
+
+
+                                }
+
+                                DetailErrors += "}, ";
+                            }
+                            DetailErrors += "], ";
+                        }
+                        DetailErrors += "}, ";
+                    }
+                }
             }
             else
             {
-                foreach (var item in InspectionMaterialProductionOrders)
+                if (InspectionMaterialProductionOrders.Count == 0)
                 {
-                    DetailErrors += "{";
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "InspectionMaterialProductionOrder" });
+                }
+                else
+                {
+                    var items = InspectionMaterialProductionOrders.Where(e => e.Balance != 0).Select(d => d.Balance);
 
-                    if ((item.ProductionOrderDetails.Count == 0 && item.IsSave) || (Id != 0 && item.ProductionOrderDetails.Count == 0))
+                    if(!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
-                        Count++;
-                        DetailErrors += "ProductionOrderDetail: 'SPP harus Diisi',";
+                        yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "InspectionMaterialProductionOrder" });
                     }
-                    else
+
+                    foreach (var item in InspectionMaterialProductionOrders)
                     {
-                        DetailErrors += "ProductionOrderDetails : [ ";
-                        foreach (var detail in item.ProductionOrderDetails)
+                        DetailErrors += "{";
+
+                        if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
                         {
-                            DetailErrors += "{";
-                            if (detail.Balance == 0)
-                            {
-                                Count++;
-                                DetailErrors += "Balance: 'Qty Keluar Harus Lebih dari 0!',";
-                            }
-
-                            //if (detail.Balance > item.BalanceRemains)
-                            //{
-                            //    Count++;
-                            //    DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
-                            //}
-
-                            if (DestinationArea == "GUDANG AVAL")
-                            {
-                                if (string.IsNullOrEmpty(detail.AvalType))
-                                {
-                                    Count++;
-                                    DetailErrors += "AvalType: 'Macam Barang Tidak Boleh Kosong',";
-                                }
-
-                                
-                            }
-                            
-                            DetailErrors += "}, ";
+                            Count++;
+                            DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
                         }
-                        DetailErrors += "], ";
+
+                        if (item.Balance == 0)
+                        {
+                            Count++;
+                            DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                        }
+
+                        if (string.IsNullOrEmpty(item.AdjDocumentNo))
+                        {
+                            Count++;
+                            DetailErrors += "AdjDocumentNo: 'No Dokumen Harus Diisi!',";
+                        }
+
+                        DetailErrors += "}, ";
                     }
-                    DetailErrors += "}, ";
                 }
             }
+
 
             DetailErrors += "]";
 

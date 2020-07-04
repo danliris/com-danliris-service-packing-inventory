@@ -37,6 +37,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public bool IsSave { get; set; }
 
+        public string AdjDocumentNo { get; set; }
+
+        public bool HasNextAreaDocument { get; set; }
+
         public ICollection<OutputInspectionMaterialProductionOrderDetailViewModel> ProductionOrderDetails { get; set; }
     }
 
