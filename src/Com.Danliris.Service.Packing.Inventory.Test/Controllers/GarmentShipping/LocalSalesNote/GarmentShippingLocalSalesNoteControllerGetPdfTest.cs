@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingLocalSalesNoteItemViewModel
                         {
-                            quantity=12.1,
+                            quantity=17642934623962.1,
                             uom=new UnitOfMeasurement
                             {
                                 Id=1,
