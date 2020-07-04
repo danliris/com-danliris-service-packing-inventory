@@ -46,6 +46,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetUomId(item.UomId + 1, data.LastModifiedBy, data.LastModifiedAgent);
                 item.SetUomUnit(item.UomUnit + 1, data.LastModifiedBy, data.LastModifiedAgent);
                 item.SetPrice(item.Price + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetPackageUomUnit(item.PackageUomUnit + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetPackageUomId(item.PackageUomId + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetPackageQuantity(item.PackageQuantity + 1, data.LastModifiedBy, data.LastModifiedAgent);
             }
 
             var result = await repo.UpdateAsync(data.Id, data);

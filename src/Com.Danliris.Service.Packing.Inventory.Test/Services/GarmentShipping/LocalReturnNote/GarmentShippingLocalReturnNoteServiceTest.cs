@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
