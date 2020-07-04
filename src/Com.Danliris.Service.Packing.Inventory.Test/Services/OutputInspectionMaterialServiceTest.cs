@@ -1412,7 +1412,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 InitLength = 1,
                 InputId = 1,
                 BalanceRemains = 1,
-                Balance = 1
+                Balance = 1,
+                HasNextAreaDocument = true
             };
 
             Assert.NotEqual(0, spp.PreviousBalance);
@@ -1420,6 +1421,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, spp.InputId);
             Assert.NotEqual(0, spp.BalanceRemains);
             Assert.NotEqual(0, spp.Balance);
+            Assert.True(spp.HasNextAreaDocument);
+
+            var date = DateTimeOffset.UtcNow;
+
+            var index = new Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial.IndexViewModel()
+            {
+                Date = date
+            };
+
+            Assert.Null(index.Area);
+            Assert.Equal(0, index.Id);
+            Assert.Null(index.BonNo);
+            Assert.Equal(date, index.Date);
+            Assert.Null(index.DestinationArea);
+            Assert.False(index.HasNextAreaDocument);
+            Assert.Null(index.Shift);
+            Assert.Null(index.Type);
+            Assert.Null(index.Group);
+            Assert.Empty(index.InspectionMaterialProductionOrders);
 
             var detail = new OutputInspectionMaterialProductionOrderDetailViewModel()
             {
@@ -1442,6 +1462,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(serviceProvider);
 
             var vm = new OutputInspectionMaterialViewModel();
+            vm.Type = "OUT";
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
@@ -1490,6 +1511,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
             vm.DestinationArea = "GUDANG AVAL";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = null;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    Balance = 1
+                }
+            };
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }

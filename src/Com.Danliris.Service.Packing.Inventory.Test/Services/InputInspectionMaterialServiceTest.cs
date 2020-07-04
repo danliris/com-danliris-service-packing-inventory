@@ -458,7 +458,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
+            vm.Id = 1;
             vm.Date = DateTimeOffset.UtcNow.AddHours(-2);
+            vm.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
+            {
+                new InputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Id = 1;
+            vm.Date = DateTimeOffset.UtcNow.AddHours(2);
             vm.InspectionMaterialProductionOrders = new List<InputInspectionMaterialProductionOrderViewModel>()
             {
                 new InputInspectionMaterialProductionOrderViewModel()
