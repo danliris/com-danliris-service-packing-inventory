@@ -84,14 +84,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         Id = 1,
                     },
                     date = DateTimeOffset.Now,
-                    useVat = true,
+                    useVat = false,
                     tempo = 6,
                     remark = "lsjhdalsdh",
                     items = new List<GarmentShippingLocalSalesNoteItemViewModel>()
                     {
                         new GarmentShippingLocalSalesNoteItemViewModel
                         {
-                            quantity=17642934623962.1,
+                            quantity=12.1,
                             uom=new UnitOfMeasurement
                             {
                                 Id=1,
@@ -107,6 +107,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                 Unit="ksljd"
                             },
                             price=-54.1
+                        }
+                    }
+                };
+            }
+        }
+
+        private GarmentShippingLocalSalesNoteViewModel ViewModel3
+        {
+            get
+            {
+                return new GarmentShippingLocalSalesNoteViewModel()
+                {
+                    noteNo = "jshdaj",
+                    buyer = new Buyer
+                    {
+                        Name = "sajd",
+                        Id = 1,
+                    },
+                    date = DateTimeOffset.Now,
+                    useVat = false,
+                    tempo = 6,
+                    remark = "lsjhdalsdh",
+                    items = new List<GarmentShippingLocalSalesNoteItemViewModel>()
+                    {
+                        new GarmentShippingLocalSalesNoteItemViewModel
+                        {
+                            quantity=1,
+                            uom=new UnitOfMeasurement
+                            {
+                                Id=1,
+                                Unit="asjd"
+                            },
+                            packageQuantity=12,
+                            product=new ProductViewModel
+                            {
+                                name="aksd",
+                            },
+                            packageUom= new UnitOfMeasurement
+                            {
+                                Unit="ksljd"
+                            },
+                            price=1123
                         }
                     }
                 };
@@ -141,6 +183,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentShippingLocalSalesNoteService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModelNegative);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingLocalSalesNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.GetPDF(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF3()
+        {
+            var serviceMock = new Mock<IGarmentShippingLocalSalesNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel3);
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
 
