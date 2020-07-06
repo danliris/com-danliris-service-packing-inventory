@@ -174,7 +174,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.PortOfDischarge}", normal_font);
+            cellLeft.Phrase = new Phrase(viewModel.PortOfDischarge, normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("PLACE OF DELIVERY", normal_font);
