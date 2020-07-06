@@ -47,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent1.AddElement(new Phrase("PO. Box. 166 Solo-57100 Indonesia", normal_font));
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("NOTA PENJUALAN GARMENT", normal_font));
+            cellHeaderContent1.AddElement(new Phrase("NOTA POTONGAN", normal_font));
             tableHeader.AddCell(cellHeaderContent1);
 
             cellHeaderContent2.AddElement(new Phrase("Sukoharjo, " + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
