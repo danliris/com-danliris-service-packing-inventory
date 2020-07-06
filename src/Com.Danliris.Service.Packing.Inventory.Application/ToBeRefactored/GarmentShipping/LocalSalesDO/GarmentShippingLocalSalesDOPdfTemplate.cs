@@ -167,23 +167,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRight.Colspan = 3;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalQty)}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalQty), normal_font);
             cellBodyRight.Colspan = 1;
             tableBody.AddCell(cellBodyRight);
 
             cellBodyRight.Phrase = new Phrase("", normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalCtn)}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalCtn), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalGW)}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalGW), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalNW)}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalNW), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", totalVol)}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalVol), normal_font);
             tableBody.AddCell(cellBodyRight);
 
             tableBody.SpacingAfter = 15;
