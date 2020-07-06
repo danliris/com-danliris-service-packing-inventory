@@ -202,7 +202,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             document.Add(tableSign);
             #endregion
-            document.Add(new Phrase("Model DL1", normal_font));
 
             document.Close();
             byte[] byteInfo = stream.ToArray();
