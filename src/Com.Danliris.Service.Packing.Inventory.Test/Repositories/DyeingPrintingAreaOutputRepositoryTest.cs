@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils;
@@ -252,6 +253,72 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var model = DataUtil(repo, dbContext).GetModel();
            
             var result = await repo2.UpdateIMArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateIMAdj()
+        {
+            string testName = GetCurrentMethod() + "UpdateIMAdj";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModel();
+
+            var result = await repo2.UpdateIMAdj(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateIMAdj_2()
+        {
+            string testName = GetCurrentMethod() + "UpdateIMAdj_2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+
+            data.DyeingPrintingAreaOutputProductionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
+
+            
+            var result = await repo2.UpdateIMAdj(data.Id, data, emptyData);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateIMAdj_3()
+        {
+            string testName = GetCurrentMethod() + "UpdateIMAdj_3";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var emptyData = DataUtil(repo, dbContext).GetModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+
+            var item = new DyeingPrintingAreaOutputProductionOrderModel();
+            item.Id = 0;
+            data.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+
+            var result = await repo2.UpdateIMAdj(data.Id, data, emptyData);
 
             Assert.NotEqual(0, result);
         }

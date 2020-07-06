@@ -198,6 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
+                    item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
                 }
             }
 
@@ -386,5 +387,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return result;
         }
+
+        public Task<int> UpdateIMAdj(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        {
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                }
+                else
+                {
+                    item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                    item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+                dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+            }
+            return _dbContext.SaveChangesAsync();
+
+        }
+
     }
 }

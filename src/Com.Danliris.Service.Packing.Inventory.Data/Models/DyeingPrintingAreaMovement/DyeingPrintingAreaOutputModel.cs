@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
+        public string Type { get; private set; }
+
 
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
@@ -41,6 +43,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
+
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders) 
+            : this(date, area, shift, bonNo, hasNextAreaDocument, destinationArea, group, dyeingPrintingAreaOutputProductionOrders)
+        {
+            Type = type;
+        }
+
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, int doId, bool hasNextAreaDocument,
             string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
@@ -134,6 +144,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if(newGroup != Group)
             {
                 Group = newGroup;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetType(string newType, string user, string agent)
+        {
+            if (newType != Type)
+            {
+                Type = newType;
                 this.FlagForUpdate(user, agent);
             }
         }

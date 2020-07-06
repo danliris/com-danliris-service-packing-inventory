@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200703063926_AddTypeInDPOutput")]
+    partial class AddTypeInDPOutput
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -580,9 +582,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
-
-                    b.Property<string>("AdjDocumentNo")
-                        .HasMaxLength(128);
 
                     b.Property<string>("Area")
                         .HasMaxLength(64);
@@ -2838,13 +2837,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<int>("LocalSalesNoteId");
-
-                    b.Property<double>("PackageQuantity");
-
-                    b.Property<int>("PackageUomId");
-
-                    b.Property<string>("PackageUomUnit")
-                        .HasMaxLength(250);
 
                     b.Property<double>("Price");
 

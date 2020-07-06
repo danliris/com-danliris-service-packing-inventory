@@ -62,6 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string PrevSppInJson { get; set; }
 
+        public string AdjDocumentNo { get; set; }
+
 
         /// <summary>
         /// ID SPP Input
@@ -79,10 +81,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             //DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
         }
 
-        //IM
+        /// <summary>
+        /// Area IM
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderQuantity"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="remark"></param>
+        /// <param name="grade"></param>
+        /// <param name="status"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaInputProductionOrderId"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="avalType"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
+        /// <param name="machine"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
-            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string adjDocumentNo) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -118,9 +150,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialWidth = materialWidth;
 
             Machine = machine;
+
+            AdjDocumentNo = adjDocumentNo;
         }
 
-        //Transit
+        /// <summary>
+        /// Area Transit
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderQuantity"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="remark"></param>
+        /// <param name="grade"></param>
+        /// <param name="status"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaInputProductonOrderId"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId, int buyerId,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth) : this()
@@ -157,7 +219,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialWidth = materialWidth;
         }
 
-        //Shipping
+        /// <summary>
+        /// Area Shipping
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="deliveryOrderSalesId"></param>
+        /// <param name="deliveryOrderSalesNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderQuantity"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="grade"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="deliveryNote"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaInputProductonOrderId"></param>
+        /// <param name="packingUnit"></param>
+        /// <param name="packingType"></param>
+        /// <param name="qtyPacking"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="hasSalesInvoice"></param>
+        /// <param name="shippingGrade"></param>
+        /// <param name="shippingRemark"></param>
+        /// <param name="weight"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="remark"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
            string unit, string color, string motif, string grade, string uomUnit, string deliveryNote, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, int buyerId, bool hasSalesInvoice, string shippingGrade, string shippingRemark, double weight,
            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string cartNo, string remark) : this()
@@ -992,6 +1090,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newMachine != Machine)
             {
                 Machine = newMachine;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAdjDocumentNo(string newAdjDocumentNo, string user, string agent)
+        {
+
+            if (newAdjDocumentNo != AdjDocumentNo)
+            {
+                AdjDocumentNo = newAdjDocumentNo;
                 this.FlagForUpdate(user, agent);
             }
         }
