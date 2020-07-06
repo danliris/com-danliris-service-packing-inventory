@@ -93,21 +93,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{qty}", normal_font);
+            cellLeft.Phrase = new Phrase($"{string.Format("{0:n2}", qty)}", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("GROSS WEIGHT", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{pl.GrossWeight} KGS", normal_font);
+            cellLeft.Phrase = new Phrase($"{string.Format("{0:n2}", pl.GrossWeight)} KGS", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("NETT WEIGHT", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{pl.NettWeight} KGS", normal_font);
+            cellLeft.Phrase = new Phrase($"{string.Format("{0:n2}", pl.NettWeight)} KGS", normal_font);
             detailTable.AddCell(cellLeft);
 
 
@@ -126,17 +126,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     double cbm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 1000000;
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Length} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase($"{string.Format("{0:n2}", m.Length)} X", normal_font);
                     cellMeasurement.PaddingLeft = 1;
                     tableMeasurement.AddCell(cellMeasurement);
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Width} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase($"{string.Format("{0:n2}", m.Width)} X", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Height} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase($"{string.Format("{0:n2}", m.Height)} X", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
-                    cellMeasurement.Phrase = new Phrase($"{m.CartonsQuantity} CTNS = ", normal_font);
+                    cellMeasurement.Phrase = new Phrase($"{string.Format("{0:n2}", m.CartonsQuantity)} CTNS = ", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
                     cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", cbm) + " CBM", normal_font);
@@ -230,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
 
             string ladingDate = viewModel.LadingDate == DateTimeOffset.MinValue ? "" :
-                                viewModel.LadingDate.GetValueOrDefault().ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN"));
+                                viewModel.LadingDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN"));
 
             cellLeft.Phrase = new Phrase("DATE OF BILL OF LADING", normal_font);
             detailTable.AddCell(cellLeft);

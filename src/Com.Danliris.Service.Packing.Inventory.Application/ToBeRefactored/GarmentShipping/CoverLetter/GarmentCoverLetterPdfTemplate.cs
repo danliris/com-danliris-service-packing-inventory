@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah ", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.pcsQuantity + viewModel.setsQuantity + viewModel.packQuantity} Pcs.", normal_font);
+            cellHeaderLeft.Phrase = new Phrase($"{viewModel.pcsQuantity + viewModel.setsQuantity + viewModel.packQuantity}", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah Collie", normal_font);
@@ -129,9 +129,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase(viewModel.driver, normal_font);
             tableDetail.AddCell(cellDetail);
-            Paragraph weight = new Paragraph($"GW  : {pl.GrossWeight} KGS \n\n" +
-                                           $"NW  : {pl.NettWeight} KGS \n\n" +
-                                           $"Volume : {cbmtotal} m", normal_font);
+            Paragraph weight = new Paragraph($"GW  : {string.Format("{0:n2}", pl.GrossWeight)} KGS \n\n" +
+                                           $"NW  : {string.Format("{0:n2}", pl.NettWeight)} KGS \n\n" +
+                                           $"Volume : {string.Format("{0:n2}", Math.Round(cbmtotal, 2))} m", normal_font);
             Chunk chunk = new Chunk("3", small_font);
             chunk.SetTextRise(2);
             Paragraph m2 = new Paragraph(chunk);
@@ -162,25 +162,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string seal = "";
             if (!string.IsNullOrEmpty(viewModel.shippingSeal))
             {
-                sealType += "Seal Pelayaran  :  \n";
-                seal += viewModel.shippingSeal + "\n";
+                sealType += "Seal Pelayaran \n";
+                seal += ": " + viewModel.shippingSeal + "\n";
             }
             if (!string.IsNullOrEmpty(viewModel.dlSeal))
             {
-                sealType += "Seal DL  :  \n";
-                seal += viewModel.dlSeal + "\n";
+                sealType += "Seal DL \n";
+                seal += ": " + viewModel.dlSeal + "\n";
             }
             if (!string.IsNullOrEmpty(viewModel.emklSeal))
             {
-                sealType += "Seal EMKL  :  \n";
-                seal += viewModel.emklSeal + "\n";
+                sealType += "Seal EMKL \n";
+                seal +=": "+ viewModel.emklSeal + "\n";
             }
 
 
             cellMark.Phrase = new Phrase(sealType, normal_font);
             cellMark.Rowspan = 1;
             cellMark.Border = Rectangle.NO_BORDER;
-            cellMark.HorizontalAlignment = Element.ALIGN_RIGHT;
+            cellMark.HorizontalAlignment = Element.ALIGN_LEFT;
             tableMark.AddCell(cellMark);
 
             cellMark.Phrase = new Phrase(seal, normal_font);
