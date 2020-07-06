@@ -138,22 +138,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeft.Phrase = new Phrase(item.description, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase($"{item.quantity}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
                 cellBodyLeft.Phrase = new Phrase(item.uom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase($"{item.cartonQuantity}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.cartonQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.grossWeight}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.grossWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.nettWeight}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.nettWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.volume}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.volume), normal_font);
                 tableBody.AddCell(cellBodyRight);
             }
 
@@ -167,23 +167,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRight.Colspan = 3;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalQty}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalQty), normal_font);
             cellBodyRight.Colspan = 1;
             tableBody.AddCell(cellBodyRight);
 
             cellBodyRight.Phrase = new Phrase("", normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalCtn}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalCtn), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalGW}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalGW), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalNW}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalNW), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalVol}", normal_font);
+            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalVol), normal_font);
             tableBody.AddCell(cellBodyRight);
 
             tableBody.SpacingAfter = 15;
