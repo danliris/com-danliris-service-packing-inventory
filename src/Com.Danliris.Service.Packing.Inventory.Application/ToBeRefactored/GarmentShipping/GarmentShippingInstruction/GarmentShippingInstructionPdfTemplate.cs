@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{string.Format("{0:n2}", qty)}", normal_font);
+            cellLeft.Phrase = new Phrase(string.Format("{0:n2}", qty), normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("GROSS WEIGHT", normal_font);
