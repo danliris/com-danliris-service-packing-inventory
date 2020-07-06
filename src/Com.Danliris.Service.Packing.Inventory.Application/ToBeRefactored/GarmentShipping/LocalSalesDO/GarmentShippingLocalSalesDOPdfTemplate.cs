@@ -138,22 +138,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeft.Phrase = new Phrase(item.description, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", item.quantity)}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
                 cellBodyLeft.Phrase = new Phrase(item.uom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", item.cartonQuantity)}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.cartonQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", item.grossWeight)}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.grossWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", item.nettWeight)}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.nettWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{string.Format("{0:n2}", item.volume)}", normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.volume), normal_font);
                 tableBody.AddCell(cellBodyRight);
             }
 
