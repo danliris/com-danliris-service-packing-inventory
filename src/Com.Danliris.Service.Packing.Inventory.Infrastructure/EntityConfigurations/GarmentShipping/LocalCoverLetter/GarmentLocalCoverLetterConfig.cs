@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder.Property(s => s.NoteNo).HasMaxLength(50);
+            builder.Property(s => s.LocalCoverLetterNo).HasMaxLength(50);
             builder.Property(s => s.BuyerCode).HasMaxLength(100);
             builder.Property(s => s.BuyerName).HasMaxLength(255);
             builder.Property(s => s.BuyerAdddress).HasMaxLength(1000);

@@ -7,6 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
     {
         public int LocalSalesNoteId { get; private set; }
         public string NoteNo { get; private set; }
+        public string LocalCoverLetterNo { get; private set; }
 
         public DateTimeOffset Date { get; private set; }
         public int BuyerId { get; private set; }
@@ -22,10 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public int ShippingStaffId { get; private set; }
         public string ShippingStaffName { get; private set; }
 
-        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
+        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo,string localCoverLetterNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
         {
             LocalSalesNoteId = localSalesNoteId;
             NoteNo = noteNo;
+            LocalCoverLetterNo = localCoverLetterNo;
             Date = date;
             BuyerId = buyerId;
             BuyerCode = buyerCode;
