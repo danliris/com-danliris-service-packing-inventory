@@ -990,6 +990,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(serviceProvider);
 
             var vm = new OutputTransitViewModel();
+            vm.Type = "OUT";
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
@@ -1006,6 +1007,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     IsSave = true,
                     Balance = 1,
                     BalanceRemains = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = null;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>();
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+                new OutputTransitProductionOrderViewModel()
+                {
+                    Balance = 1
                 }
             };
             validateService = new ValidateService(serviceProvider);
