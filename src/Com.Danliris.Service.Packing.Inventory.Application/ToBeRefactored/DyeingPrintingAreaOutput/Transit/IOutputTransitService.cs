@@ -19,5 +19,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<InputTransitProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
         MemoryStream GenerateExcel(OutputTransitViewModel viewModel);
         MemoryStream GenerateExcel();
+        ListResult<AdjTransitProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
     }
 }

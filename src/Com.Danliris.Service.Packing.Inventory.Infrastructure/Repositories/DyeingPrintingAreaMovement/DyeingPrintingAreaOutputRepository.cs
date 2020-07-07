@@ -388,7 +388,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return result;
         }
 
-        public Task<int> UpdateIMAdj(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        public Task<int> UpdateAdjustmentData(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
         {
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
@@ -407,6 +407,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
+                    item.SetBuyer(localItem.BuyerId, localItem.Buyer, _identityProvider.Username, UserAgent);
+                    item.SetCartNo(localItem.CartNo, _identityProvider.Username, UserAgent);
+                    item.SetColor(localItem.Color, _identityProvider.Username, UserAgent);
+                    item.SetConstruction(localItem.Construction, _identityProvider.Username, UserAgent);
+                    item.SetMotif(localItem.Motif, _identityProvider.Username, UserAgent);
+                    item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, localItem.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
+                    item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
+                    item.SetUnit(localItem.Unit, _identityProvider.Username, UserAgent);
+                    item.SetUomUnit(localItem.UomUnit, _identityProvider.Username, UserAgent);
+                    item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
+                    item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                 }
             }
 

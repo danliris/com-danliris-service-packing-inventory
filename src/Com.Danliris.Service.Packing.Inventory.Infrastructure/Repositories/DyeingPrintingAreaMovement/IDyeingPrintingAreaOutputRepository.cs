@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     public interface IDyeingPrintingAreaOutputRepository : IRepository<DyeingPrintingAreaOutputModel>
     {
         Task<int> UpdateIMArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
-        Task<int> UpdateIMAdj(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> UpdateAdjustmentData(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteIMArea(DyeingPrintingAreaOutputModel model);
         Task<int> DeleteTransitArea(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateTransitArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);

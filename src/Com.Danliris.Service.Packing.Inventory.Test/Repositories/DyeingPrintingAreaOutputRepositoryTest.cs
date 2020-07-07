@@ -274,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var dbModel = await repo.ReadByIdAsync(data.Id);
             var model = DataUtil(repo, dbContext).GetModel();
 
-            var result = await repo2.UpdateIMAdj(data.Id, model, dbModel);
+            var result = await repo2.UpdateAdjustmentData(data.Id, model, dbModel);
 
             Assert.NotEqual(0, result);
         }
@@ -295,7 +295,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             data.DyeingPrintingAreaOutputProductionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
 
             
-            var result = await repo2.UpdateIMAdj(data.Id, data, emptyData);
+            var result = await repo2.UpdateAdjustmentData(data.Id, data, emptyData);
 
             Assert.NotEqual(0, result);
         }
@@ -318,7 +318,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             data.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
 
-            var result = await repo2.UpdateIMAdj(data.Id, data, emptyData);
+            var result = await repo2.UpdateAdjustmentData(data.Id, data, emptyData);
 
             Assert.NotEqual(0, result);
         }
