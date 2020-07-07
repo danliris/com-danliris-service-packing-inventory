@@ -1288,7 +1288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(Model);
+                .ReturnsAsync(ModelAdj);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
