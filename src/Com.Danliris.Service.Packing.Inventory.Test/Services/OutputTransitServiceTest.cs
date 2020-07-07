@@ -1396,5 +1396,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEmpty(result.Data);
         }
+
+        [Fact]
+        public void Validate_VM()
+        {
+            var date = DateTimeOffset.UtcNow;
+
+            var index = new IndexViewModel()
+            {
+                Date = date
+            };
+
+            Assert.Null(index.Area);
+            Assert.Equal(0, index.Id);
+            Assert.Null(index.BonNo);
+            Assert.Equal(date, index.Date);
+            Assert.Null(index.DestinationArea);
+            Assert.False(index.HasNextAreaDocument);
+            Assert.Null(index.Shift);
+            Assert.Null(index.Type);
+            Assert.Null(index.Group);
+            Assert.Empty(index.TransitProductionOrders);
+
+
+            var adjvm = new AdjTransitProductionOrderViewModel();
+            Assert.Null(adjvm.ProductionOrder);
+            Assert.Null(adjvm.Material);
+            Assert.Null(adjvm.MaterialConstruction);
+            Assert.Null(adjvm.MaterialWidth);
+            Assert.Null(adjvm.Remark);
+            Assert.Null(adjvm.Construction);
+            Assert.Null(adjvm.Unit);
+            Assert.Equal(0, adjvm.BuyerId);
+            Assert.Null(adjvm.Buyer);
+            Assert.Null(adjvm.Color);
+            Assert.Null(adjvm.Motif);
+            Assert.Null(adjvm.UomUnit);
+
+        }
     }
 }
