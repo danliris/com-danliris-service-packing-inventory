@@ -202,7 +202,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else
             {
-                return null;
+                return new Buyer();
             }
         }
 
@@ -221,7 +221,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else
             {
-                return null;
+                return new BankAccount
+                {
+                    Currency = new Currency()
+                };
             }
         }
 
