@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingDebitNoteViewModel : GarmentShippingNoteViewModel, IValidatableObject
     {
+        public BankAccount bank { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (date == null || date == DateTimeOffset.MinValue)
@@ -17,6 +20,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (buyer == null || buyer.Id == 0)
             {
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
+            }
+
+            if (bank == null || bank.id == 0)
+            {
+                yield return new ValidationResult("Bank tidak boleh kosong", new List<string> { "bank" });
             }
 
             if (items == null || items.Count == 0)

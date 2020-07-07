@@ -1,10 +1,15 @@
-﻿    using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -59,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, "", DateTimeOffset.Now, 1, "", "", 1, new List<GarmentShippingNoteItemModel>());
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, "", DateTimeOffset.Now, 1, "", "", 0, null, null, 1, new List<GarmentShippingNoteItemModel>());
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -76,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadById_Success()
         {
             var items = new List<GarmentShippingNoteItemModel>() { new GarmentShippingNoteItemModel("", 1, "", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, "", DateTimeOffset.Now, 1, "", "", 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, "", DateTimeOffset.Now, 1, "", "", 0, null, null, 1, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -115,6 +120,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Success()
+        {
+            var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 1, "", 1) };
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, "", DateTimeOffset.Now, 1, "", "", 1, "", "", 1, items);
+
+            var repoMock = new Mock<IGarmentShippingNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.GetAsync(It.Is<string>(i => i.Contains("master/garment-buyers"))))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new Buyer() }))
+                });
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
         }
     }
 }

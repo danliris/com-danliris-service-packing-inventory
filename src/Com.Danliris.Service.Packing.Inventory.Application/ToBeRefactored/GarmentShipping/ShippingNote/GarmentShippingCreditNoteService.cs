@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
@@ -14,10 +15,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingCreditNoteService : IGarmentShippingCreditNoteService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IGarmentShippingNoteRepository _repository;
 
         public GarmentShippingCreditNoteService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _repository = serviceProvider.GetService<IGarmentShippingNoteRepository>();
         }
 
@@ -85,7 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }).ToList();
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, 0, null, null, viewModel.totalAmount, items);
 
             return model;
         }
@@ -157,6 +160,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var model = MapToModel(viewModel);
 
             return await _repository.UpdateAsync(id, model);
+        }
+
+        public async Task<ExcelResult> ReadPdfById(int id)
+        {
+            var data = await _repository.ReadByIdAsync(id);
+            var viewModel = MapToViewModel(data);
+            viewModel.buyer = await GetBuyer(viewModel.buyer.Id);
+
+            var PdfTemplate = new GarmentShippingCreditNotePdfTemplate();
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new ExcelResult(stream, "Nota Debet " + data.NoteNo + ".pdf");
+        }
+
+        async Task<Buyer> GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-buyers";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

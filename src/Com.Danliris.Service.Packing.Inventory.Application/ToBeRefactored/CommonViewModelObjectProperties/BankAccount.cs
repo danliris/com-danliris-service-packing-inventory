@@ -4,6 +4,7 @@
     {
         public int id { get; set; }
         public string accountName { get; set; }
+        public string bankName { get; set; }
         public string bankAddress { get; set; }
         public string swiftCode { get; set; }
         public string AccountNumber { get; set; }
