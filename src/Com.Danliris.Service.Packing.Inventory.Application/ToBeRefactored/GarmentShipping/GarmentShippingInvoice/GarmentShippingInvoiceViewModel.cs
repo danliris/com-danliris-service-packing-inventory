@@ -17,7 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public string To { get; set; }
 		public BuyerAgent BuyerAgent { get; set; }
 		public string Consignee { get; set; }
-		public string LCNo { get;  set; }
+        public string ConsigneeAddress { get; set; }
+        public string LCNo { get;  set; }
 		public string IssuedBy { get; set; }
 		public Section Section { get; set; }
 		public string ShippingPer { get; set; }
@@ -88,9 +89,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			if (string.IsNullOrEmpty(CPrice))
 				yield return new ValidationResult("CPrice harus diisi", new List<string> { "CPrice" });
- 
 
-			if (Items.Count == 0)
+            if (string.IsNullOrEmpty(ConsigneeAddress))
+                yield return new ValidationResult("ConsigneeAddress harus diisi", new List<string> { "ConsigneeAddress" });
+
+
+            if (Items.Count == 0)
 			{
 				yield return new ValidationResult("Detail  harus Diisi", new List<string> { "ItemsCount" });
 			}
