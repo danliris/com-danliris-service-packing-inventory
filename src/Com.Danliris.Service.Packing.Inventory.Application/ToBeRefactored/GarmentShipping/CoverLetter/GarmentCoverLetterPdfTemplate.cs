@@ -320,14 +320,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 
                 var branchOfficeY = height - marginTop + 70;
-                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "BRANCH OFFICE :", marginLeft, branchOfficeY, 0);
-                string[] branchOffices = {
-                "Equity Tower 15th Floor Suite C",
-                "Sudirman Central Business District (SCBD) Lot 9",
-                "Jl. Jend. Sudirman Kav 52-53 Jakarta 12190",
-                "Tel. : (62-21) 2903-5388. 2903-5389 (Hunting)",
-                "Fax. : (62-21) 2903-5398",
-            };
+                
                 byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_58_58);
                 Image imageDL = Image.GetInstance(imageByteDL);
                 imageDL.SetAbsolutePosition(marginLeft, branchOfficeY);
