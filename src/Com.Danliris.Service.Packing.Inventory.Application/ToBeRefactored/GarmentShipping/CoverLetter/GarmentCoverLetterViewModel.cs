@@ -59,15 +59,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Alamat tidak boleh kosong", new List<string> { "address" });
             }
 
-            if (string.IsNullOrEmpty(attn))
-            {
-                yield return new ValidationResult("ATTN tidak boleh kosong", new List<string> { "attn" });
-            }
+            //if (string.IsNullOrEmpty(attn))
+            //{
+            //    yield return new ValidationResult("ATTN tidak boleh kosong", new List<string> { "attn" });
+            //}
 
-            if (string.IsNullOrEmpty(phone))
-            {
-                yield return new ValidationResult("Telepon tidak boleh kosong", new List<string> { "phone" });
-            }
+            //if (string.IsNullOrEmpty(phone))
+            //{
+            //    yield return new ValidationResult("Telepon tidak boleh kosong", new List<string> { "phone" });
+            //}
 
             if (bookingDate == null || bookingDate == DateTimeOffset.MinValue)
             {
@@ -99,10 +99,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Driver tidak boleh kosong", new List<string> { "driver" });
             }
 
-            if (string.IsNullOrEmpty(containerNo))
-            {
-                yield return new ValidationResult("Container No tidak boleh kosong", new List<string> { "containerNo" });
-            }
+            //if (string.IsNullOrEmpty(containerNo))
+            //{
+            //    yield return new ValidationResult("Container No tidak boleh kosong", new List<string> { "containerNo" });
+            //}
 
             if (string.IsNullOrEmpty(freight))
             {
