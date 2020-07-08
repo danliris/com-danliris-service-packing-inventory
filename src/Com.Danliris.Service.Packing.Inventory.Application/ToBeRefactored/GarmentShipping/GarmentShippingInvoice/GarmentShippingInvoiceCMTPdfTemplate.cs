@@ -76,8 +76,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tabledetailOrders.AddCell(cellDetailContentRight);
 
             cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
-            cellDetailContentCenter.AddElement(new Phrase(buyer.Address, normal_font));
-            cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
+            cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
+            //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
             tabledetailOrders.AddCell(cellDetailContentCenter);
 
 
