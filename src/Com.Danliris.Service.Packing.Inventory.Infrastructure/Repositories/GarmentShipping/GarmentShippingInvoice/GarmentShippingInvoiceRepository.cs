@@ -119,9 +119,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 			modelToUpdate.SetAmountToBePaid(model.AmountToBePaid, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetMemo(model.Memo, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetTotalAmount(model.TotalAmount, _identityProvider.Username, USER_AGENT);
-			 
+            modelToUpdate.SetConsigneeAddress(model.ConsigneeAddress, _identityProvider.Username, USER_AGENT);
 
-			foreach (var itemToUpdate in modelToUpdate.Items)
+
+            foreach (var itemToUpdate in modelToUpdate.Items)
 			{
 				var item = model.Items.FirstOrDefault(i => i.Id == itemToUpdate.Id);
 				if (item != null)
