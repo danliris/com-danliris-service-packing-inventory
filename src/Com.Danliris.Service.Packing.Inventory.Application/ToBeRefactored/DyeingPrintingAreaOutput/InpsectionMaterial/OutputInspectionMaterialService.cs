@@ -530,9 +530,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Order(query, OrderDictionary);
-            var data = query.Skip((page - 1) * size).Take(size)
+            var data = query
                 .GroupBy(d => d.ProductionOrderId)
                 .Select(s => s.First())
+                .Skip((page - 1) * size).Take(size)
                 .OrderBy(s => s.ProductionOrderNo)
                 .Select(s => new InputInspectionMaterialProductionOrderViewModel()
                 {
@@ -708,7 +709,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !model.DyeingPrintingAreaOutputProductionOrders.Any(d => d.Id == s.Id)).ToList();
 
-            result = await _repository.UpdateIMAdj(id, model, dbModel);
+            result = await _repository.UpdateAdjustmentData(id, model, dbModel);
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.IsDeleted))
             {
                 double newBalance = 0;
