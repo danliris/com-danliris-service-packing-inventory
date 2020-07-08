@@ -152,7 +152,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetMemo("model.Memo", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetAmountToBePaid( 500, data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetTotalAmount(2, data.LastModifiedBy, data.LastModifiedAgent);
-			data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3));
+            data.SetConsigneeAddress("updated", data.LastModifiedBy, data.LastModifiedAgent);
+            data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3));
 			foreach (var item in data.Items)
 			{
 				
