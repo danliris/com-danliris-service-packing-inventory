@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200708035905_add_consigneeAddress_Invoice")]
+    partial class add_consigneeAddress_Invoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -565,9 +567,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(32);
-
                     b.HasKey("Id");
 
                     b.ToTable("DyeingPrintingAreaOutputs");
@@ -580,9 +579,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
-
-                    b.Property<string>("AdjDocumentNo")
-                        .HasMaxLength(128);
 
                     b.Property<string>("Area")
                         .HasMaxLength(64);
@@ -3015,14 +3011,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
-
-                    b.Property<string>("BankCurrencyCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("BankId");
-
-                    b.Property<string>("BankName")
-                        .HasMaxLength(250);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);

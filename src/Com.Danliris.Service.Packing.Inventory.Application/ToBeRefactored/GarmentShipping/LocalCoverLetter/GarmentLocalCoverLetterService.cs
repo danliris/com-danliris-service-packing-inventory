@@ -39,6 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedUtc = model.LastModifiedUtc,
 
                 localSalesNoteId = model.LocalSalesNoteId,
+                localCoverLetterNo = model.LocalCoverLetterNo,
                 noteNo = model.NoteNo,
                 date = model.Date,
                 buyer = new Buyer
@@ -66,9 +67,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
-            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo,GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.InsertAsync(model);
+        }
+
+        private string GenerateNo()
+        {
+            var year = DateTime.Now.ToString("yy");
+
+            var prefix = $"{year}/SPDL /";
+
+            var lastInvoiceNo = _repository.ReadAll().Where(w => w.LocalCoverLetterNo.StartsWith(prefix))
+                .OrderByDescending(o => o.LocalCoverLetterNo)
+                .Select(s => int.Parse(s.LocalCoverLetterNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var invoiceNo = $"{prefix}{(lastInvoiceNo + 1).ToString("D5")}";
+
+            return invoiceNo;
         }
 
         public async Task<int> Delete(int id)
@@ -80,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var query = _repository.ReadAll();
 
-            List<string> SearchAttributes = new List<string>() { "NoteNo", "BuyerCode", "BuyerName" };
+            List<string> SearchAttributes = new List<string>() { "NoteNo", "BuyerCode", "BuyerName","LocalCoverLetterNo" };
             query = QueryHelper<GarmentShippingLocalCoverLetterModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
@@ -96,6 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     id = model.Id,
                     noteNo = model.NoteNo,
+                    localCoverLetterNo=model.LocalCoverLetterNo,
                     date = model.Date,
                     buyer = new Buyer
                     {
@@ -120,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
-            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.localCoverLetterNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.UpdateAsync(id, model);
         }

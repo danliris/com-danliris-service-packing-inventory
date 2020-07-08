@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingLocalCoverLetterModel(1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "");
+            var model = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "");
 
             var repoMock = new Mock<IGarmentLocalCoverLetterRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var model = new GarmentShippingLocalCoverLetterModel(1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "");
+            var model = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "");
 
             var repoMock = new Mock<IGarmentLocalCoverLetterRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
