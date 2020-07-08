@@ -100,15 +100,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Carrier BY/DD tidak boleh kosong", new List<string> { "Carrier" });
             }
 
-            if (string.IsNullOrEmpty(Flight))
-            {
-                yield return new ValidationResult("Flight tidak boleh kosong", new List<string> { "Flight" });
-            }
+            //if (string.IsNullOrEmpty(Flight))
+            //{
+            //    yield return new ValidationResult("Flight tidak boleh kosong", new List<string> { "Flight" });
+            //}
 
-            if (string.IsNullOrEmpty(Transit))
-            {
-                yield return new ValidationResult("Transit tidak boleh kosong", new List<string> { "Transit" });
-            }
+            //if (string.IsNullOrEmpty(Transit))
+            //{
+            //    yield return new ValidationResult("Transit tidak boleh kosong", new List<string> { "Transit" });
+            //}
 
             if (string.IsNullOrEmpty(SpecialInstruction))
             {
