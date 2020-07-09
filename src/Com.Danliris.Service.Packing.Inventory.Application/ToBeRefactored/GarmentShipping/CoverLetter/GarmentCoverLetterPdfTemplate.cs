@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderLeft.Phrase = new Phrase("Kepada Yth.\n\n" +
                                                $"{viewModel.emkl.Name} \n" +
                                                $"{viewModel.emkl.address} \n" +
-                                               $"{viewModel.forwarder.name} \n\n" +
+                                               $"Forwarder : {viewModel.forwarder.name} \n\n" +
                                                $"ATTN  : {viewModel.emkl.attn} \n" +
                                                $"PHONE : {viewModel.emkl.phone}", normal_font);
             cellHeaderLeft.Rowspan = 5;
@@ -260,19 +260,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
-
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
             cellSign.Phrase = new Phrase($"{viewModel.unit} \n\n", normal_font);
-            cellSign.Colspan = 2;
             tableSign.AddCell(cellSign);
+
+
+            //cellSign.Phrase = new Phrase("", normal_font);
+            //tableSign.AddCell(cellSign);
+
+            //cellSign.Phrase = new Phrase("", normal_font);
+            //tableSign.AddCell(cellSign);
+
+            //cellSign.Phrase = new Phrase($"{viewModel.unit} \n\n", normal_font);
+            //cellSign.Colspan = 2;
+            //tableSign.AddCell(cellSign);
 
 
             cellSign.Phrase = new Phrase("CATATAN : \n" +
