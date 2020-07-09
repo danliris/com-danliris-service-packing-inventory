@@ -131,7 +131,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             configuration
 				.HasMany(shippingInvoice => shippingInvoice.Items)
 				.WithOne()
-				.HasForeignKey("GarmentShippingInvoiceId");
+				.HasForeignKey(s => s.GarmentShippingInvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
 			configuration
 			   .HasMany(shippingInvoice => shippingInvoice.GarmentShippingInvoiceAdjustment)
 			   .WithOne()
