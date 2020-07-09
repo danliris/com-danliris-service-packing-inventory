@@ -53,11 +53,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeaderLeft = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             cellHeaderLeft.Phrase = new Phrase("Kepada Yth.\n\n" +
-                                               $"{viewModel.name} \n" +
-                                               $"{viewModel.address} \n" +
-                                               $"{viewModel.forwarder.name} \n\n" +
-                                               $"ATTN  : {viewModel.attn} \n" +
-                                               $"PHONE : {viewModel.phone}", normal_font);
+                                               $"{viewModel.emkl.Name} \n" +
+                                               $"{viewModel.emkl.address} \n" +
+                                               $"Forwarder : {viewModel.forwarder.name} \n\n" +
+                                               $"ATTN  : {viewModel.emkl.attn} \n" +
+                                               $"PHONE : {viewModel.emkl.phone}", normal_font);
             cellHeaderLeft.Rowspan = 5;
             tableHeader.AddCell(cellHeaderLeft);
 
@@ -260,19 +260,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
-
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
-
             cellSign.Phrase = new Phrase($"{viewModel.unit} \n\n", normal_font);
-            cellSign.Colspan = 2;
             tableSign.AddCell(cellSign);
+
+
+            //cellSign.Phrase = new Phrase("", normal_font);
+            //tableSign.AddCell(cellSign);
+
+            //cellSign.Phrase = new Phrase("", normal_font);
+            //tableSign.AddCell(cellSign);
+
+            //cellSign.Phrase = new Phrase($"{viewModel.unit} \n\n", normal_font);
+            //cellSign.Colspan = 2;
+            //tableSign.AddCell(cellSign);
 
 
             cellSign.Phrase = new Phrase("CATATAN : \n" +

@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
@@ -23,10 +24,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font small_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 5);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 140, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
-
+            writer.PageEvent = new GarmentLocalCoverLetterPdfTemplatePageEvent();
             document.Open();
 
             #region title
@@ -36,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Paragraph no = new Paragraph(viewModel.localCoverLetterNo, bold_font);
             no.Alignment = Element.ALIGN_CENTER;
 
-            Paragraph date = new Paragraph(viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
+            Paragraph date = new Paragraph("Sukoharjo, "+viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
             date.Alignment = Element.ALIGN_RIGHT;
 
             document.Add(title);
@@ -93,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPTable tableDetail = new PdfPTable(3);
             tableDetail.WidthPercentage = 80;
             tableDetail.SetWidths(new float[] { 1f, 1f, 1f });
-            PdfPCell cellDetail = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            PdfPCell cellDetail = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
             double cbmtotal = 0;
 
@@ -183,7 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("Sat Pam", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("UnitKonveksi", normal_font);
+            cellSign.Phrase = new Phrase("Unit Konveksi", normal_font);
             tableSign.AddCell(cellSign);
 
             cellSign.Phrase = new Phrase("CATATAN : \n" +
@@ -212,6 +213,88 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             stream.Position = 0;
 
             return stream;
+        }
+
+        class GarmentLocalCoverLetterPdfTemplatePageEvent : iTextSharp.text.pdf.PdfPageEventHelper
+        {
+            public override void OnStartPage(PdfWriter writer, Document document)
+            {
+                PdfContentByte cb = writer.DirectContent;
+                cb.BeginText();
+
+                BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
+
+                float height = writer.PageSize.Height, width = writer.PageSize.Width;
+                float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
+
+                cb.SetFontAndSize(bf, 6);
+
+                #region LEFT
+
+
+                var branchOfficeY = height - marginTop + 70;
+
+                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_58_58);
+                Image imageDL = Image.GetInstance(imageByteDL);
+                imageDL.SetAbsolutePosition(marginLeft, branchOfficeY);
+                cb.AddImage(imageDL, inlineImage: true);
+                //for (int i = 0; i < branchOffices.Length; i++)
+                //{
+                //    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, branchOffices[i], marginLeft, branchOfficeY - 10 - (i * 8), 0);
+                //}
+
+                #endregion
+
+                #region CENTER
+
+                var headOfficeX = width / 2 - 200;
+                var headOfficeY = height - marginTop + 110;
+
+                byte[] imageByte = Convert.FromBase64String(Base64ImageStrings.LOGO_NAME);
+                Image image = Image.GetInstance(imageByte);
+                if (image.Width > 160)
+                {
+                    float percentage = 0.0f;
+                    percentage = 160 / image.Width;
+                    image.ScalePercent(percentage * 100);
+                }
+                image.SetAbsolutePosition(headOfficeX, headOfficeY);
+                cb.AddImage(image, inlineImage: true);
+
+                string[] headOffices = {
+                "Head Office : JL. MERAPI NO. 23 ",
+                "Banaran, Grogol, Sukoharjo 57193",
+                "Central Java, Indonesia",
+                "TELP.: (+62 271) 740888, 714400" ,
+                "FAX. : (+62 271) 735222, 740777" ,
+                "PO BOX 166 Solo, 57100",
+                "Website : www.danliris.com",
+            };
+                for (int i = 0; i < headOffices.Length; i++)
+                {
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, headOffices[i], headOfficeX, headOfficeY - image.ScaledHeight - (i * 10), 0);
+                }
+
+                #endregion
+
+                #region RIGHT
+
+                byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
+                Image imageIso = Image.GetInstance(imageByteIso);
+                if (imageIso.Width > 80)
+                {
+                    float percentage = 0.0f;
+                    percentage = 80 / imageIso.Width;
+                    imageIso.ScalePercent(percentage * 100);
+                }
+                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight - 30, branchOfficeY);
+                cb.AddImage(imageIso, inlineImage: true);
+                //cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight-30, headOfficeY, 0);
+
+                #endregion
+
+                cb.EndText();
+            }
         }
     }
 }

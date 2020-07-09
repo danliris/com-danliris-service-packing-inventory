@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder.Property(s => s.InvoiceNo).HasMaxLength(50);
+            builder.Property(s => s.EMKLCode).HasMaxLength(100);
             builder.Property(s => s.Name).HasMaxLength(250);
             builder.Property(s => s.Address).HasMaxLength(1000);
             builder.Property(s => s.ATTN).HasMaxLength(250);
