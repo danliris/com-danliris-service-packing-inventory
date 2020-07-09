@@ -152,6 +152,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.order = viewModel.order ?? new Buyer();
             viewModel.forwarder = viewModel.forwarder ?? new Forwarder();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
+            viewModel.emkl = viewModel.emkl ?? new EMKL();
             GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.emkl.address, viewModel.emkl.attn, viewModel.emkl.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.UpdateAsync(id, model);
