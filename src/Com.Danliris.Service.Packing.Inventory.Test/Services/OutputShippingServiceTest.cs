@@ -914,14 +914,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(spp.PackingType);
             Assert.Null(spp.Remark);
             Assert.Equal(0, spp.DyeingPrintingAreaInputProductionOrderId);
-
-            var indexVM = new IndexViewModel()
+            var date = DateTimeOffset.UtcNow;
+            var index = new IndexViewModel()
             {
+                Date = date,
                 HasSalesInvoice = false,
                 Group = "group"
             };
-            Assert.False(indexVM.HasSalesInvoice);
-            Assert.NotNull(indexVM.Group);
+            Assert.False(index.HasSalesInvoice);
+            Assert.NotNull(index.Group);
+            Assert.Null(index.Area);
+            Assert.Equal(0, index.Id);
+            Assert.Null(index.BonNo);
+            Assert.Equal(date, index.Date);
+            Assert.Null(index.DestinationArea);
+            Assert.False(index.HasNextAreaDocument);
+            Assert.Null(index.Shift);
+            Assert.Null(index.Type);
+            Assert.Empty(index.ShippingProductionOrders);
+
+            var adjvm = new AdjShippingProductionOrderViewModel();
+            Assert.Null(adjvm.ProductionOrder);
+            Assert.Null(adjvm.Material);
+            Assert.Null(adjvm.MaterialConstruction);
+            Assert.Null(adjvm.MaterialWidth);
+            Assert.Null(adjvm.Construction);
+            Assert.Null(adjvm.Unit);
+            Assert.Null(adjvm.Grade);
+            Assert.Null(adjvm.Packing);
+            Assert.Equal(0, adjvm.BuyerId);
+            Assert.Equal(0, adjvm.BuyerId);
+            Assert.Null(adjvm.Buyer);
+            Assert.Null(adjvm.Color);
+            Assert.Null(adjvm.Motif);
+            Assert.Null(adjvm.UomUnit);
         }
 
         [Fact]
@@ -1230,6 +1256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(serviceProvider);
 
             var vm = new OutputShippingViewModel();
+            vm.Type = "OUT";
             var validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
@@ -1240,6 +1267,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     IsSave = true,
                     Qty = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = null;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>();
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
+            {
+                new OutputShippingProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
+            {
+                new OutputShippingProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
+            {
+                new OutputShippingProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+                new OutputShippingProductionOrderViewModel()
+                {
+                    Balance = 1
                 }
             };
             validateService = new ValidateService(serviceProvider);
