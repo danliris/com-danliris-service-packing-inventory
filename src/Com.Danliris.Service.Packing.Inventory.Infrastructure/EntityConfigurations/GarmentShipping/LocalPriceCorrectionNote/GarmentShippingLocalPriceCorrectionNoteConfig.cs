@@ -29,6 +29,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasFilter("[IsDeleted]=(0)");
 
             builder
+                .Property(s => s.Remark)
+                .HasMaxLength(1000);
+
+            builder
                 .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.PriceCorrectionNoteId);

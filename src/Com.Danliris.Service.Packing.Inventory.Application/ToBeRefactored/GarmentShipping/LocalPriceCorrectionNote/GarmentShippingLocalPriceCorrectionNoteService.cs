@@ -80,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     remark = model.SalesNote.Remark,
                     isUsed = model.SalesNote.IsUsed,
                 },
+                remark = model.Remark,
 
                 items = (model.Items ?? new List<GarmentShippingLocalPriceCorrectionNoteItemModel>()).Select(i => new GarmentShippingLocalPriceCorrectionNoteItemViewModel
                 {
@@ -145,7 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }).ToList();
 
             vm.salesNote = vm.salesNote ?? new GarmentShippingLocalSalesNoteViewModel();
-            return new GarmentShippingLocalPriceCorrectionNoteModel(GenerateNo(), vm.correctionDate.GetValueOrDefault(), vm.salesNote.Id, null, items) { Id = vm.Id };
+            return new GarmentShippingLocalPriceCorrectionNoteModel(GenerateNo(), vm.correctionDate.GetValueOrDefault(), vm.salesNote.Id, null, vm.remark, items) { Id = vm.Id };
         }
 
         private string GenerateNo()
