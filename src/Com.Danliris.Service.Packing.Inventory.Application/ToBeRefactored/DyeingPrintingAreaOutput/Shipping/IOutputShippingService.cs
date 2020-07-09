@@ -21,5 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //List<OutputShippingProductionOrderViewModel> GetOutputShippingProductionOrdersByBon(int shippingInputId);
         MemoryStream GenerateExcel(OutputShippingViewModel viewModel);
         MemoryStream GenerateExcel();
+        ListResult<AdjShippingProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
     }
 }

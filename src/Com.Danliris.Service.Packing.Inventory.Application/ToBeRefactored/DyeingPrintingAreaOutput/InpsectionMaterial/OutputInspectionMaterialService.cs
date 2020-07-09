@@ -753,7 +753,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MemoryStream GenerateExcel()
         {
             var query = _repository.ReadAll().Where(s => s.Area == INSPECTIONMATERIAL &&
-                ((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument) || (s.Type != OUT && s.Type != null)))
+                (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)))
                 .OrderBy(s => s.Type).ThenBy(s => s.DestinationArea).ThenBy(d => d.BonNo);
             DataTable dt = new DataTable();
 
@@ -868,18 +868,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No Dokumen", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Paraf", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
                 foreach (var item in query)
                 {
                     dt.Rows.Add(item.ProductionOrder.No, item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.CartNo, item.Construction, item.Unit,
-                               item.Buyer, item.Color, item.Motif, item.UomUnit, item.Balance.ToString("N2", CultureInfo.InvariantCulture), "");
+                               item.Buyer, item.Color, item.Motif, item.UomUnit, item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AdjDocumentNo, "");
 
                 }
             }

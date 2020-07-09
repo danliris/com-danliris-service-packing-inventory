@@ -44,6 +44,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
 
+        /// <summary>
+        /// Adjustment Data
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
             string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders) 
             : this(date, area, shift, bonNo, hasNextAreaDocument, destinationArea, group, dyeingPrintingAreaOutputProductionOrders)
@@ -66,7 +78,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
 
-        //Shipping
+        /// <summary>
+        /// Area Shipping
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="deliveryOrderId"></param>
+        /// <param name="deliveryOrderNo"></param>
+        /// <param name="hasSalesInvoice"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
             string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
@@ -84,6 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             HasSalesInvoice = hasSalesInvoice;
         }
+
 
         public void SetArea(string newArea, string user, string agent)
         {
