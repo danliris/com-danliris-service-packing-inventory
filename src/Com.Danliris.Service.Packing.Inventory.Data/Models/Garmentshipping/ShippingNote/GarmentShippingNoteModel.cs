@@ -14,6 +14,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
 
+        public int BankId { get; private set; }
+        public string BankName { get; private set; }
+        public string BankCurrencyCode { get; private set; }
+
         public double TotalAmount { get; private set; }
 
         public ICollection<GarmentShippingNoteItemModel> Items { get; private set; }
@@ -22,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, double totalAmount, ICollection<GarmentShippingNoteItemModel> items)
+        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, int bankId, string bankName, string bankCurrencyCode, double totalAmount, ICollection<GarmentShippingNoteItemModel> items)
         {
             NoteType = noteType;
             NoteNo = noteNo;
@@ -30,6 +34,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BuyerId = buyerId;
             BuyerCode = buyerCode;
             BuyerName = buyerName;
+            BankId = bankId;
+            BankName = bankName;
+            BankCurrencyCode = bankCurrencyCode;
             TotalAmount = totalAmount;
             Items = items;
         }

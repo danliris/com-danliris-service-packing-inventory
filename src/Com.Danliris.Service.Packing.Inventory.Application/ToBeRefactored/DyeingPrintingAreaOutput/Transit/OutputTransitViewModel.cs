@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasNextAreaDocument { get; set; }
         public string Shift { get; set; }
         public int InputTransitId { get; set; }
+        public string Type { get; set; }
         public string Group { get; set; }
         public ICollection<OutputTransitProductionOrderViewModel> TransitProductionOrders { get; set; }
 
@@ -29,13 +30,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Area))
                 yield return new ValidationResult("Area harus diisi", new List<string> { "Area" });
 
+            if (string.IsNullOrEmpty(Type))
+                yield return new ValidationResult("Jenis harus diisi", new List<string> { "Type" });
+
             if (Date == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal harus diisi", new List<string> { "Date" });
             }
             else
             {
-                if (!(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
+                if (Id == 0 && !(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
                 {
                     yield return new ValidationResult("Tanggal Harus Lebih Besar atau Sama Dengan Hari Ini", new List<string> { "Date" });
                 }
@@ -47,41 +51,87 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Group))
                 yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
-            if (string.IsNullOrEmpty(DestinationArea))
+            if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
 
             int Count = 0;
             string DetailErrors = "[";
 
-            if ((Id == 0 && TransitProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && TransitProductionOrders.Count() == 0))
+            if(Type == "OUT")
             {
-                yield return new ValidationResult("SPP harus Diisi", new List<string> { "TransitProductionOrder" });
+                if ((Id == 0 && TransitProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && TransitProductionOrders.Count() == 0))
+                {
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "TransitProductionOrder" });
+                }
+                else
+                {
+                    foreach (var item in TransitProductionOrders)
+                    {
+                        DetailErrors += "{";
+
+                        if (item.IsSave)
+                        {
+                            if (item.Balance == 0)
+                            {
+                                Count++;
+                                DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                            }
+
+                            if (item.Balance > item.BalanceRemains)
+                            {
+                                Count++;
+                                DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
+                            }
+                        }
+
+
+                        DetailErrors += "}, ";
+                    }
+                }
             }
             else
             {
-                foreach (var item in TransitProductionOrders)
+                if (TransitProductionOrders.Count == 0)
                 {
-                    DetailErrors += "{";
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "TransitProductionOrder" });
+                }
+                else
+                {
+                    var items = TransitProductionOrders.Where(e => e.Balance != 0).Select(d => d.Balance);
 
-                    if (item.IsSave)
+                    if (!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
+                        yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "TransitProductionOrder" });
+                    }
+
+                    foreach (var item in TransitProductionOrders)
+                    {
+                        DetailErrors += "{";
+
+                        if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
+                        {
+                            Count++;
+                            DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
+                        }
+
                         if (item.Balance == 0)
                         {
                             Count++;
                             DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
                         }
 
-                        if (item.Balance > item.BalanceRemains)
+                        if (string.IsNullOrEmpty(item.AdjDocumentNo))
                         {
                             Count++;
-                            DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
+                            DetailErrors += "AdjDocumentNo: 'No Dokumen Harus Diisi!',";
                         }
+
+                        DetailErrors += "}, ";
                     }
-
-
-                    DetailErrors += "}, ";
                 }
             }
+
+            
 
             DetailErrors += "]";
 

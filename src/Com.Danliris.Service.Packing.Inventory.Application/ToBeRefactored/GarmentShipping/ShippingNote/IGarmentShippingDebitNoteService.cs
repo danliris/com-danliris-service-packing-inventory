@@ -10,5 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         ListResult<GarmentShippingDebitNoteViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Update(int id, GarmentShippingDebitNoteViewModel viewModel);
         Task<int> Delete(int id);
+        Task<ExcelResult> ReadPdfById(int id);
     }
 }

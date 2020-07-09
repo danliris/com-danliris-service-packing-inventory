@@ -171,7 +171,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 totalCtns += subCtns;
                 grandTotal += subTotal;
 
-                tableDetail.AddCell(new PdfPCell() {
+                tableDetail.AddCell(new PdfPCell()
+                {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = 18,
                     Padding = 5,
@@ -189,6 +190,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
+                tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
                 document.Add(tableDetail);
             }
@@ -245,7 +247,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             phraseSideMark.Add(chunkSideMark);
             phraseSideMark.Add(new Chunk("     :", normal_font));
             cellSideMark.AddElement(phraseSideMark);
-            cellSideMark.AddElement(new Paragraph(viewModel.SideMark, normal_font) {  });
+            cellSideMark.AddElement(new Paragraph(viewModel.SideMark, normal_font) { });
             tableMark.AddCell(cellSideMark);
 
             new PdfPCell(tableMark);
@@ -376,9 +378,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region REF
 
+            var signX = width - 140;
             var signY = marginBottom - 80;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", width - 140, signY, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", width - 140, signY - 10, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", signX, signY, 0);
+            cb.MoveTo(signX - 55, signY - 2);
+            cb.LineTo(signX + 55, signY - 2);
+            cb.Stroke();
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", signX, signY - 10, 0);
 
             #endregion
 

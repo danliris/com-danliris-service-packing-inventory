@@ -565,6 +565,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
+                    b.Property<string>("Type")
+                        .HasMaxLength(32);
+
                     b.HasKey("Id");
 
                     b.ToTable("DyeingPrintingAreaOutputs");
@@ -577,6 +580,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("AdjDocumentNo")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Area")
                         .HasMaxLength(64);
@@ -2019,7 +2025,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<int?>("GarmentShippingInvoiceId");
+                    b.Property<int>("GarmentShippingInvoiceId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -3014,6 +3020,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("BankCurrencyCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("BankId");
+
+                    b.Property<string>("BankName")
+                        .HasMaxLength(250);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
@@ -4211,7 +4225,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 {
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice.GarmentShippingInvoiceModel")
                         .WithMany("Items")
-                        .HasForeignKey("GarmentShippingInvoiceId");
+                        .HasForeignKey("GarmentShippingInvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote.GarmentShippingLocalReturnNoteItemModel", b =>
