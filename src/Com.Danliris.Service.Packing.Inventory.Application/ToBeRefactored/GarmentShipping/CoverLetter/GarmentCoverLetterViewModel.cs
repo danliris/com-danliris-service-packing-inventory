@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string invoiceNo { get; set; }
 
         public DateTimeOffset? date { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public string attn { get; set; }
-        public string phone { get; set; }
+        public EMKL emkl { get; set; }
         public DateTimeOffset? bookingDate { get; set; }
 
         public Buyer order { get; set; }
@@ -49,15 +47,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "date" });
             }
 
-            if (string.IsNullOrEmpty(name))
+            if (emkl == null || emkl.Id == 0)
             {
-                yield return new ValidationResult("Nama tidak boleh kosong", new List<string> { "name" });
+                yield return new ValidationResult("EMKL tidak boleh kosong", new List<string> { "emkl" });
             }
 
-            if (string.IsNullOrEmpty(address))
-            {
-                yield return new ValidationResult("Alamat tidak boleh kosong", new List<string> { "address" });
-            }
+            //if (string.IsNullOrEmpty(name))
+            //{
+            //    yield return new ValidationResult("Nama tidak boleh kosong", new List<string> { "name" });
+            //}
+
+            //if (string.IsNullOrEmpty(address))
+            //{
+            //    yield return new ValidationResult("Alamat tidak boleh kosong", new List<string> { "address" });
+            //}
 
             //if (string.IsNullOrEmpty(attn))
             //{

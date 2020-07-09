@@ -55,6 +55,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             var modelToUpdate = _dbSet.First(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetEMKLId(model.EMKLId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetEMKLCode(model.EMKLCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetName(model.Name, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAddress(model.Address, _identityProvider.Username, UserAgent);
             modelToUpdate.SetATTN(model.ATTN, _identityProvider.Username, UserAgent);
