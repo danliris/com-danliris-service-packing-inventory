@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
@@ -18,11 +19,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private readonly IGarmentPackingListRepository _packingListRepository;
         private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
+        private readonly IIdentityProvider _identityProvider;
 
         public GarmentPackingListService(IServiceProvider serviceProvider)
         {
             _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         private GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
@@ -343,7 +346,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
 
-            var PdfTemplate = new GarmentPackingListPdfTemplate();
+            var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
             var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
 
             var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);

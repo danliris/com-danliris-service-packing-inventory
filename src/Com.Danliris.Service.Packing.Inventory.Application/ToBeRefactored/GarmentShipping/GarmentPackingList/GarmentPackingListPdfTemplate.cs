@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +13,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentPackingListPdfTemplate
     {
         private const int SIZES_COUNT = 11;
+        private IIdentityProvider _identityProvider;
+
+        public GarmentPackingListPdfTemplate(IIdentityProvider identityProvider)
+        {
+            _identityProvider = identityProvider;
+        }
 
         public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob)
         {
@@ -23,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
-            writer.PageEvent = new GarmentPackingListPDFTemplatePageEvent(viewModel);
+            writer.PageEvent = new GarmentPackingListPDFTemplatePageEvent(_identityProvider, viewModel);
 
             document.Open();
 
@@ -85,7 +94,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 #endregion
 
-                var sizes = item.Details.SelectMany(s => s.Sizes.Select(d => d.Size)).OrderBy(o => o.Size).ToHashSet();
+                var sizes = new Dictionary<int, string>();
+                foreach (var detail in item.Details)
+                {
+                    foreach (var size in detail.Sizes)
+                    {
+                        sizes[size.Size.Id] = size.Size.Size;
+                    }
+                }
 
                 PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 8);
                 var width = new List<float> { 3f, 3f, 2f, 4f };
@@ -126,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
                     var size = sizes.ElementAtOrDefault(i);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(size == null ? "" : size.Size, normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(size.Key == 0 ? "" : size.Value, normal_font, 0.5f));
                     cellBorderBottomRight.Rowspan = 1;
                     tableDetail.AddCell(cellBorderBottomRight);
                 }
@@ -146,9 +162,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     for (int i = 0; i < SIZES_COUNT; i++)
                     {
                         var size = sizes.ElementAtOrDefault(i);
-                        if (size != null)
+                        if (size.Key != 0)
                         {
-                            cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Sizes.Where(w => w.Size.Id == size.Id).Select(s => s.Quantity.ToString()).FirstOrDefault() ?? "", normal_font, 0.5f));
+                            cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Sizes.Where(w => w.Size.Id == size.Key).Select(s => s.Quantity.ToString()).FirstOrDefault() ?? "", normal_font, 0.5f));
                         }
                         else
                         {
@@ -293,7 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase($"{((decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000)} CBM", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000), normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
             }
             new PdfPCell(tableMeasurementDetail);
@@ -332,10 +348,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
     class GarmentPackingListPDFTemplatePageEvent : PdfPageEventHelper
     {
+        private IIdentityProvider identityProvider;
         private GarmentPackingListViewModel viewModel;
 
-        public GarmentPackingListPDFTemplatePageEvent(GarmentPackingListViewModel viewModel)
+        public GarmentPackingListPDFTemplatePageEvent(IIdentityProvider identityProvider, GarmentPackingListViewModel viewModel)
         {
+            this.identityProvider = identityProvider;
             this.viewModel = viewModel;
         }
 
@@ -363,7 +381,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var infoY = height - marginTop + 5;
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Invoice No. : " + viewModel.InvoiceNo, marginLeft, infoY, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Date : " + viewModel.Date.GetValueOrDefault().ToString("MMM dd, yyyy."), width / 2, infoY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Date : " + viewModel.Date.GetValueOrDefault().ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("MMM dd, yyyy."), width / 2, infoY, 0);
             cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Page : " + writer.PageNumber, width - marginRight, infoY, 0);
 
             #endregion
