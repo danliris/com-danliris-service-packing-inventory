@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public int id { get; set; }
 
         public string correctionNoteNo { get; set; }
+        public DateTimeOffset? correctionDate { get; set; }
         public SalesNote salesNote { get; set; }
     }
 
@@ -19,7 +20,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string noteNo { get; set; }
         public Buyer buyer { get; set; }
-        public DateTimeOffset? date { get; set; }
         public int tempo { get; set; }
         public string dispositionNo { get; set; }
     }

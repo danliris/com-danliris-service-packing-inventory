@@ -182,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "CorrectionNoteNo", "SalesNote.BuyerCode", "SalesNote.BuyerName"
+                "CorrectionNoteNo", "SalesNote.NoteNo", "SalesNote.BuyerCode", "SalesNote.BuyerName", "SalesNote.DispositionNo"
             };
             query = QueryHelper<GarmentShippingLocalPriceCorrectionNoteModel>.Search(query, SearchAttributes, keyword, ignoreDot: true);
 
@@ -199,6 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     id = model.Id,
                     correctionNoteNo = model.CorrectionNoteNo,
+                    correctionDate = model.CorrectionDate,
                     salesNote = new SalesNote
                     {
                         id = model.SalesNote.Id,
@@ -208,7 +209,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Code = model.SalesNote.BuyerCode,
                             Name = model.SalesNote.BuyerName
                         },
-                        date = model.SalesNote.Date,
                         tempo = model.SalesNote.Tempo,
                         dispositionNo = model.SalesNote.DispositionNo
                     }
