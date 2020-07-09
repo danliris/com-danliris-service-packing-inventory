@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     Area = "SHIPPING",
                     BonNo = "s",
+                    Type = "OUT",
                     Date = DateTimeOffset.UtcNow,
                     Shift = "pas",
                     HasNextAreaDocument = false,
@@ -78,6 +79,83 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Weight = 1,
                             Motif = "sd",
                             
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            DeliveryOrder = new DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "sd"
+                            },
+                            Packing ="s",
+                            QtyPacking = 1,
+                            Qty = 1,
+                            Id = 1,
+                            PackingType = "sd",
+
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd",
+                                OrderQuantity = 100
+                            },
+                            Unit = "s",
+                            UomUnit = "d"
+                        }
+                    }
+                };
+            }
+        }
+
+        private OutputShippingViewModel ViewModelAdj
+        {
+            get
+            {
+                return new OutputShippingViewModel()
+                {
+                    Area = "SHIPPING",
+                    BonNo = "s",
+                    Type = "ADJ",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "pas",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "PENJUALAN",
+                    Group = "A",
+                    InputShippingId = 1,
+                    HasSalesInvoice = false,
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = 1,
+                        No = "no"
+                    },
+                    ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
+                    {
+                        new OutputShippingProductionOrderViewModel()
+                        {
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            DeliveryNote = "s",
+                            DyeingPrintingAreaInputProductionOrderId = 1,
+                            IsSave = true,
+                            Remark = "remar",
+                            ShippingRemark = "re",
+                            ShippingGrade = "gra",
+                            Weight = 1,
+                            Motif = "sd",
+                            HasNextAreaDocument = true,
                             Material = new Material()
                             {
                                 Id = 1,
@@ -212,6 +290,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModelPJ.Date, ViewModelPJ.Area, ViewModelPJ.Shift, ViewModelPJ.BonNo, ViewModelPJ.HasNextAreaDocument, ViewModelPJ.DestinationArea,
                    ViewModelPJ.Group, ViewModelPJ.DeliveryOrder.Id, ViewModelPJ.DeliveryOrder.No, ViewModelPJ.HasSalesInvoice, ViewModelPJ.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
+                    s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                    s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo)).ToList());
+            }
+        }
+
+        private DyeingPrintingAreaOutputModel ModelAdj
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModelAdj.Date, ViewModelAdj.Area, ViewModelAdj.Shift, ViewModelAdj.BonNo, ViewModelAdj.HasNextAreaDocument, ViewModelAdj.DestinationArea,
+                   ViewModelAdj.Group, ViewModelAdj.Type, ViewModelAdj.ShippingProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModelAdj.Area, ViewModelAdj.DestinationArea, ViewModelAdj.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                     s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo)).ToList());
             }
