@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Packing { get; set; }
         public decimal QtyPacking { get; set; }
         public double Qty { get; set; }
+        public double Balance { get; set; }
         public string PackingType { get; set; }
         public string Remark { get; set; }
         public string DeliveryNote { get; set; }
@@ -42,5 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string ShippingGrade { get; set; }
         public string ShippingRemark { get; set; }
         public double Weight { get; set; }
+
+        public string AdjDocumentNo { get; set; }
     }
 }
