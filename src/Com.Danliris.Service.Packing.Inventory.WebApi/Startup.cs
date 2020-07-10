@@ -344,8 +344,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
             services.AddSingleton<IValidator<InputAvalItemViewModel>, InputAvalItemValidator>();
-            services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
-            services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
+            //services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
+            //services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
             //services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
