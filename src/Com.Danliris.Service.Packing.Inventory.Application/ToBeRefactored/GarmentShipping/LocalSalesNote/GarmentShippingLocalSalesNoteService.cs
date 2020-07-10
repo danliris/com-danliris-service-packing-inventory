@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public Buyer GetBuyer(int id)
         {
-            string buyerUri = "master/garment-buyers";
+            string buyerUri = "master/garment-leftover-warehouse-buyers";
             IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
 
             var response = httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}").Result;
