@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
@@ -18,11 +19,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private readonly IGarmentPackingListRepository _packingListRepository;
         private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
+        private readonly IIdentityProvider _identityProvider;
 
         public GarmentPackingListService(IServiceProvider serviceProvider)
         {
             _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         private GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
@@ -51,6 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Code = model.SectionCode
                 },
                 Date = model.Date,
+                PaymentTerm = model.PaymentTerm,
                 LCNo = model.LCNo,
                 IssuedBy = model.IssuedBy,
                 BuyerAgent = new Buyer
@@ -229,7 +233,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Section = viewModel.Section ?? new Section();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
             viewModel.InvoiceNo = GenerateInvoiceNo(viewModel);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.IsUsed);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.IsUsed);
 
             return garmentPackingListModel;
         }
@@ -343,7 +347,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
 
-            var PdfTemplate = new GarmentPackingListPdfTemplate();
+            var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
             var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
 
             var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);

@@ -1,11 +1,17 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalPriceCorrectionNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalPriceCorrectionNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -63,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), new List<GarmentShippingLocalPriceCorrectionNoteItemModel>());
+            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), "", new List<GarmentShippingLocalPriceCorrectionNoteItemModel>());
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -80,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadById_Success()
         {
             var items = new List<GarmentShippingLocalPriceCorrectionNoteItemModel>() { new GarmentShippingLocalPriceCorrectionNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
-            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
+            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), null, items);
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -105,6 +111,81 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Success()
+        {
+            var salesNoteItem = new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, "");
+            var salesNoteItems = new List<GarmentShippingLocalSalesNoteItemModel>() { salesNoteItem };
+            var salesNoteModel = new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", false, salesNoteItems);
+
+            var items = new HashSet<GarmentShippingLocalPriceCorrectionNoteItemModel> { new GarmentShippingLocalPriceCorrectionNoteItemModel(1, salesNoteItem, 1) };
+            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, salesNoteModel, "", items);
+
+            var repoMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new Buyer() }))
+                });
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Master_Null()
+        {
+            var salesNoteItem = new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, "");
+            var salesNoteItems = new List<GarmentShippingLocalSalesNoteItemModel>() { salesNoteItem };
+            var salesNoteModel = new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", false, salesNoteItems);
+
+            var items = new HashSet<GarmentShippingLocalPriceCorrectionNoteItemModel> { new GarmentShippingLocalPriceCorrectionNoteItemModel(1, salesNoteItem, 1) };
+            var model = new GarmentShippingLocalPriceCorrectionNoteModel("", DateTimeOffset.Now, 1, salesNoteModel, "", items);
+
+            var repoMock = new Mock<IGarmentShippingLocalPriceCorrectionNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
         }
     }
 }

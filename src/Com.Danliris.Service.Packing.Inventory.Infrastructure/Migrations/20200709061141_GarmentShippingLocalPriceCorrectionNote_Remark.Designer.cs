@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200709061141_GarmentShippingLocalPriceCorrectionNote_Remark")]
+    partial class GarmentShippingLocalPriceCorrectionNote_Remark
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1106,11 +1108,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Driver")
                         .HasMaxLength(250);
 
-                    b.Property<string>("EMKLCode")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("EMKLId");
-
                     b.Property<string>("EMKLSeal")
                         .HasMaxLength(250);
 
@@ -1770,9 +1767,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("Omzet");
 
                     b.Property<string>("PackingListType")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("PaymentTerm")
                         .HasMaxLength(25);
 
                     b.Property<string>("Remark")
