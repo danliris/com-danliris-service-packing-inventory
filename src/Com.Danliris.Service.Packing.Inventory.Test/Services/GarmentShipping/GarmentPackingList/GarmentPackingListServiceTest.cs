@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Moq;
@@ -197,6 +198,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var spMock = GetServiceProvider(repoMock.Object);
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repoInvoiceMock.Object);
+
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
 
             var service = GetService(spMock.Object);
 
