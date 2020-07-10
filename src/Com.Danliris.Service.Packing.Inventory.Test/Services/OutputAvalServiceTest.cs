@@ -166,6 +166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
+                                                         ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
                                                              ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
             }
@@ -194,6 +195,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
+                                                         ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
                                                              ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
             }
@@ -209,6 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
+                                                         ViewModel.Type,
                                                          new List<DyeingPrintingAreaOutputProductionOrderModel>());
             }
         }
@@ -621,6 +624,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_Success_ReadByIdAdj()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(OutputModelAdj);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+
+            var result = await service.ReadById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadByIdNoType()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            var model = OutputModel;
+            model.SetType(null, "", "");
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        inputProductionOrdersRepoMock.Object).Object);
+            var result = await service.ReadById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task Should_Success_GenerateExcel()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
@@ -662,6 +713,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         inputProductionOrdersRepoMock.Object).Object);
 
             var result = await service.GenerateExcel(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelAdj()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(OutputModelAdj);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                       outputRepoMock.Object,
+                                                       movementRepoMock.Object,
+                                                       summaryRepoMock.Object,
+                                                       inputProductionOrdersRepoMock.Object).Object);
+            var result = service.GenerateExcel(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelOUT()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            var model = OutputModel;
+            model.SetType("OUT", "", "");
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                       outputRepoMock.Object,
+                                                       movementRepoMock.Object,
+                                                       summaryRepoMock.Object,
+                                                       inputProductionOrdersRepoMock.Object).Object);
+           
+            var result = service.GenerateExcel(1);
 
             Assert.NotNull(result);
         }
