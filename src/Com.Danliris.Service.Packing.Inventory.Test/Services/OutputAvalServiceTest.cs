@@ -967,5 +967,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
 
+        [Fact]
+        public void ValidateVM()
+        {
+            var index = new Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval.IndexViewModel()
+            {
+            };
+            Assert.Null(index.Type);
+
+            var adjvm = new AdjAvalItemViewModel();
+            Assert.Null(adjvm.AvalType);
+            Assert.Equal(0, adjvm.AvalQuantity);
+            Assert.Equal(0, adjvm.AvalQuantityKg);
+        }
+
     }
 }
