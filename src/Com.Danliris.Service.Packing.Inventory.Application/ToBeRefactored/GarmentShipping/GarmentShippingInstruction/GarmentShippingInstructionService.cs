@@ -46,13 +46,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Code = model.BuyerAgentCode,
                     Name = model.BuyerAgentName,
                 },
-                EMKL= new EMKL
+                forwarder= new Forwarder
                 {
-                    Id = model.EMKLId,
-                    Code = model.EMKLCode,
-                    Name = model.EMKLName,
+                    id=model.ForwarderId,
+                    address=model.ForwarderAddress,
+                    attn=model.ATTN,
+                    code=model.ForwarderCode,
+                    fax=model.Fax,
+                    name=model.ForwarderName,
+                    phone=model.ForwarderPhone
                 },
-                ATTN=model.ATTN,
                 BankAccountId= model.BankAccountId,
                 BankAccountName= model.BankAccountName,
                 BuyerAgentAddress= model.BuyerAgentAddress,
@@ -60,7 +63,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 CartonNo= model.CartonNo,
                 CC= model.CC,
                 Date= model.Date,
-                Fax= model.Fax,
                 FeederVessel= model.FeederVessel,
                 Flight= model.Flight,
                 InvoiceNo= model.InvoiceNo,
@@ -88,11 +90,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private GarmentShippingInstructionModel MapToModel(GarmentShippingInstructionViewModel viewModel)
         {
             
-            viewModel.EMKL = viewModel.EMKL ?? new EMKL();
+            viewModel.forwarder = viewModel.forwarder ?? new Forwarder();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
             GarmentShippingInstructionModel garmentShippingInstructionModel = new GarmentShippingInstructionModel(viewModel.InvoiceNo,viewModel.InvoiceId, 
-                viewModel.Date, viewModel.EMKL.Id, viewModel.EMKL.Code, viewModel.EMKL.Name, 
-                viewModel.ATTN, viewModel.Fax, viewModel.CC, viewModel.ShippingStaffId, 
+                viewModel.Date, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name,viewModel.forwarder.address,
+                viewModel.forwarder.phone, viewModel.forwarder.attn,viewModel.forwarder.fax,viewModel.CC, viewModel.ShippingStaffId, 
                 viewModel.ShippingStaffName, viewModel.Phone, viewModel.ShippedBy, viewModel.TruckingDate, 
                 viewModel.CartonNo, viewModel.PortOfDischarge, viewModel.PlaceOfDelivery, 
                 viewModel.FeederVessel, viewModel.OceanVessel, viewModel.Carrier, viewModel.Flight, 

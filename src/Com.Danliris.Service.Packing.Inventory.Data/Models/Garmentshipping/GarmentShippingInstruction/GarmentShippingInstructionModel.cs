@@ -10,9 +10,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string InvoiceNo { get; private set; }
         public int InvoiceId { get; private set; }
         public DateTimeOffset Date { get; private set; }
-        public int EMKLId { get; private set; }
-        public string EMKLCode { get; private set; }
-        public string EMKLName { get; private set; }
+        public int ForwarderId { get; private set; }
+        public string ForwarderCode { get; private set; }
+        public string ForwarderName { get; private set; }
+        public string ForwarderAddress { get; private set; }
+        public string ForwarderPhone { get; private set; }
         public string ATTN { get; private set; }
         public string Fax { get; private set; }
         public string CC { get; private set; }
@@ -49,14 +51,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         {
         }
 
-        public GarmentShippingInstructionModel(string invoiceNo, int invoiceId, DateTimeOffset date, int eMKLId, string eMKLCode, string eMKLName, string aTTN, string fax, string cC, int shippingStaffId, string shippingStaffName, string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge, string placeOfDelivery, string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction, DateTimeOffset ladingDate, string ladingBill, string freight, string marks)
+
+        public GarmentShippingInstructionModel(string invoiceNo, int invoiceId, DateTimeOffset date, int forwarderId, string forwarderCode, string forwarderName, string forwarderAddress, string forwarderPhone, string aTTN, string fax, string cC, int shippingStaffId, string shippingStaffName, string phone, string shippedBy, DateTimeOffset truckingDate, string cartonNo, string portOfDischarge, string placeOfDelivery, string feederVessel, string oceanVessel, string carrier, string flight, string transit, int bankAccountId, string bankAccountName, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string buyerAgentAddress, string notify, string specialInstruction, DateTimeOffset ladingDate, string ladingBill, string freight, string marks)
         {
             InvoiceNo = invoiceNo;
             InvoiceId = invoiceId;
             Date = date;
-            EMKLId = eMKLId;
-            EMKLCode = eMKLCode;
-            EMKLName = eMKLName;
+            ForwarderId = forwarderId;
+            ForwarderCode = forwarderCode;
+            ForwarderName = forwarderName;
+            ForwarderAddress = forwarderAddress;
+            ForwarderPhone = forwarderPhone;
             ATTN = aTTN;
             Fax = fax;
             CC = cC;
@@ -105,29 +110,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
-        public void SetEMKLId(int emklId, string userName, string userAgent)
+        public void SetForwarderId(int forwarderId, string userName, string userAgent)
         {
-            if (EMKLId != emklId)
+            if (ForwarderId != forwarderId)
             {
-                EMKLId = emklId;
+                ForwarderId = forwarderId;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
 
-        public void SetEMKLName(string emklName, string userName, string userAgent)
+        public void SetForwarderName(string forwarderName, string userName, string userAgent)
         {
-            if (EMKLName != emklName)
+            if (ForwarderName != forwarderName)
             {
-                EMKLName = emklName;
+                ForwarderName = forwarderName;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
 
-        public void SetEMKLCode(string emklCode, string userName, string userAgent)
+        public void SetForwarderCode(string forwarderCode, string userName, string userAgent)
         {
-            if (EMKLCode != emklCode)
+            if (ForwarderCode != forwarderCode)
             {
-                EMKLCode = emklCode;
+                ForwarderCode = forwarderCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetForwarderAddress(string forwarderAddress, string userName, string userAgent)
+        {
+            if (ForwarderAddress != forwarderAddress)
+            {
+                ForwarderAddress = forwarderAddress;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetForwarderPhone(string forwarderPhone, string userName, string userAgent)
+        {
+            if (ForwarderPhone != forwarderPhone)
+            {
+                ForwarderPhone = forwarderPhone;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

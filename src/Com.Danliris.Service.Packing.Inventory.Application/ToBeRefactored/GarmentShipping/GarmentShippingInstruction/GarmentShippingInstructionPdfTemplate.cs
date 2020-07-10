@@ -43,8 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableHeader.AddCell(cellHeaderContent1);
 
             PdfPCell cellHeaderContent2 = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER };
-            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.EMKL.Name, normal_font));
-            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.ATTN, normal_font));
+            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.forwarder.name, normal_font));
+            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.forwarder.attn, normal_font));
             cellHeaderContent2.AddElement(new Phrase(": " + viewModel.CC, normal_font));
             cellHeaderContent2.AddElement(new Phrase(": " + viewModel.ShippingStaffName + "/" + viewModel.Phone, normal_font));
             tableHeader.AddCell(cellHeaderContent2);
@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             PdfPCell cellHeaderContent4 = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER };
-            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Fax, normal_font));
+            cellHeaderContent4.AddElement(new Phrase(": " + viewModel.forwarder.fax, normal_font));
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.InvoiceNo, normal_font));
             cellHeaderContent4.AddElement(new Phrase(": " + viewModel.Date.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             tableHeader.AddCell(cellHeaderContent4);
