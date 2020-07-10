@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
@@ -18,11 +20,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingLocalPriceCorrectionNoteService : IGarmentShippingLocalPriceCorrectionNoteService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IGarmentShippingLocalPriceCorrectionNoteRepository _repository;
+        private readonly IIdentityProvider _identityProvider;
 
         public GarmentShippingLocalPriceCorrectionNoteService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _repository = serviceProvider.GetService<IGarmentShippingLocalPriceCorrectionNoteRepository>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         private GarmentShippingLocalPriceCorrectionNoteViewModel MapToViewModel(GarmentShippingLocalPriceCorrectionNoteModel model)
@@ -226,6 +232,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var viewModel = MapToViewModel(data);
 
             return viewModel;
+        }
+
+        public async Task<ExcelResult> ReadPdfById(int id)
+        {
+            var data = await _repository.ReadByIdAsync(id);
+            var viewModel = MapToViewModel(data);
+            var buyer = await GetBuyer(viewModel.salesNote.buyer.Id);
+
+            var PdfTemplate = new GarmentShippingLocalPriceCorrectionNotePdfTemplate();
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, buyer, _identityProvider.TimezoneOffset);
+
+            return new ExcelResult(stream, "Nota Koreksi " + data.CorrectionNoteNo + ".pdf");
+        }
+
+        async Task<Buyer> GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-leftover-warehouse-buyers";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return new Buyer();
+            }
         }
     }
 }
