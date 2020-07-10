@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository inputRepo,
-                                                         IDyeingPrintingAreaOutputRepository outputRepo, 
+                                                         IDyeingPrintingAreaOutputRepository outputRepo,
                                                          IDyeingPrintingAreaMovementRepository movementRepo,
                                                          IDyeingPrintingAreaSummaryRepository summaryRepo,
                                                          IDyeingPrintingAreaInputProductionOrderRepository inputProductionOrderRepo)
@@ -122,12 +122,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
-                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
-                                                                                                                                          s.AvalCartNo,
-                                                                                                                                          s.AvalUomUnit,
-                                                                                                                                          s.AvalQuantity,
-                                                                                                                                          s.AvalQuantityKg))
-                                                                            .ToList());
+                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModelExist
@@ -143,12 +139,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
-                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
-                                                                                                                                          s.AvalCartNo,
-                                                                                                                                          s.AvalUomUnit,
-                                                                                                                                          s.AvalQuantity,
-                                                                                                                                          s.AvalQuantityKg))
-                                                                            .ToList());
+                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputEmptyModel
@@ -161,7 +153,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.BonNo,
                                                          false,
                                                          ViewModel.DestinationArea,
-                                                         ViewModel.Group, 
+                                                         ViewModel.Group,
                                                          new List<DyeingPrintingAreaOutputProductionOrderModel>());
             }
         }
@@ -264,10 +256,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, 
-                                                        outputRepoMock.Object, 
-                                                        movementRepoMock.Object, 
-                                                        summaryRepoMock.Object, 
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
                                                         inputProductionOrdersRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
@@ -299,7 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             var test = ModelInput;
-            test.SetIsTransformedAval(true,"unittest","unittest");
+            test.SetIsTransformedAval(true, "unittest", "unittest");
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { test }.AsQueryable());
 
@@ -398,7 +390,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         summaryRepoMock.Object,
                                                         inputProductionOrdersRepoMock.Object).Object);
 
-            var result = service.ReadByBonAvailableAval(0,1, 25, "{}", "{}", null);
+            var result = service.ReadByBonAvailableAval(0, 1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
         }
@@ -412,11 +404,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
 
             var test = ModelInput;
-            test.SetIsTransformedAval( true,"unittest","unittest");
+            test.SetIsTransformedAval(true, "unittest", "unittest");
 
             inputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaInputModel>() { test }.AsQueryable());
-            
+
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         outputRepoMock.Object,
                                                         movementRepoMock.Object,
@@ -439,7 +431,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaInputModel>()
                  {
-                     new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, 
+                     new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow,
                                                       "GUDANG AVAL",
                                                       "PAGI",
                                                       "IM.GA.20.0001",
