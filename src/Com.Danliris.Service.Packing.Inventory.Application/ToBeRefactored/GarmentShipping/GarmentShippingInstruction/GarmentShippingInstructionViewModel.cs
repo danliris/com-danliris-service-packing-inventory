@@ -13,9 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string InvoiceNo { get; set; }
         public int InvoiceId { get; set; }
         public DateTimeOffset Date { get; set; }
-        public EMKL EMKL { get; set; }
-        public string ATTN { get; set; }
-        public string Fax { get; set; }
+        public Forwarder forwarder { get; set; }
         public string CC { get; set; }
         public int ShippingStaffId { get; set; }
         public string ShippingStaffName { get; set; }
@@ -120,9 +118,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Notify tidak boleh kosong", new List<string> { "Notify" });
             }
 
-            if (EMKL == null || EMKL.Id == 0)
+            if (forwarder == null || forwarder.id == 0)
             {
-                yield return new ValidationResult("Applicant tidak boleh kosong", new List<string> { "EMKL" });
+                yield return new ValidationResult("Forwarder tidak boleh kosong", new List<string> { "forwarder" });
             }
         }
     }

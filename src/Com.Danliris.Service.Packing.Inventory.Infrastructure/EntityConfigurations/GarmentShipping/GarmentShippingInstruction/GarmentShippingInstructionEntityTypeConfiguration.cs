@@ -43,12 +43,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .HasMaxLength(2000);
 
             builder
-               .Property(s => s.EMKLCode)
+               .Property(s => s.ForwarderCode)
                .HasMaxLength(50);
 
             builder
-               .Property(s => s.EMKLName)
+               .Property(s => s.ForwarderName)
                .HasMaxLength(255);
+
+            builder
+               .Property(s => s.ForwarderPhone)
+               .HasMaxLength(255);
+
+            builder
+               .Property(s => s.ForwarderAddress)
+               .HasMaxLength(4000);
 
             builder
                .Property(s => s.ATTN)

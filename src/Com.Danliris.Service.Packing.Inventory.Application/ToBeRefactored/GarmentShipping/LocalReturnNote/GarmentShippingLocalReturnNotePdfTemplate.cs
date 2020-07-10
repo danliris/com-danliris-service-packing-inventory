@@ -172,19 +172,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             string terbilang = NumberToTextIDN.terbilang(Math.Round(finalPrice, 2));
 
-            cellFooterContent1.Phrase = new Phrase("Tempo     :", normal_font);
-            tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = new Phrase(viewModel.salesNote.tempo + " Hari", normal_font);
-            tableFooter.AddCell(cellFooterContent2);
+            //cellFooterContent1.Phrase = new Phrase("Tempo     :", normal_font);
+            //tableFooter.AddCell(cellFooterContent1);
+            //cellFooterContent2.Phrase = new Phrase(viewModel.salesNote.tempo + " Hari", normal_font);
+            //tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase = (new Phrase("JT.       :", normal_font));
-            tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(viewModel.returnDate.GetValueOrDefault().AddDays(viewModel.salesNote.tempo).ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
-            tableFooter.AddCell(cellFooterContent2);
+            //cellFooterContent1.Phrase = (new Phrase("JT.       :", normal_font));
+            //tableFooter.AddCell(cellFooterContent1);
+            //cellFooterContent2.Phrase = (new Phrase(viewModel.returnDate.GetValueOrDefault().AddDays(viewModel.salesNote.tempo).ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
+            //tableFooter.AddCell(cellFooterContent2);
 
             cellFooterContent1.Phrase = (new Phrase("Terbilang :", normal_font));
             tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(terbilang, normal_font));
+            cellFooterContent2.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
             tableFooter.AddCell(cellFooterContent2);
 
             cellFooterContent1.Phrase = (new Phrase("Catatan   :", normal_font));

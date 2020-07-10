@@ -144,6 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
             try
             {
+                VerifyUser();
                 var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
                 int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var model = await _service.ReadById(Id);

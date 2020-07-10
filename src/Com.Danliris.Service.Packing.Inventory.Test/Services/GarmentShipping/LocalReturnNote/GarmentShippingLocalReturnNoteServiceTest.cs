@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
                 .ReturnsAsync(message);
 
             HttpClientService
-                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-buyers")))
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-leftover-warehouse-buyers")))
                 .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new
@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
                 .ReturnsAsync(message);
 
             HttpClientService
-               .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-buyers")))
+               .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-leftover-warehouse-buyers")))
                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
                {
                    Content = new StringContent(JsonConvert.SerializeObject(new

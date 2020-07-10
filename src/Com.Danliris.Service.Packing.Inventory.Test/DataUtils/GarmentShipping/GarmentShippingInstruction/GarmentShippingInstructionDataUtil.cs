@@ -15,13 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingInstructionModel GetModel()
         {
-            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "",DateTimeOffset.Now, "","","");
+            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "",DateTimeOffset.Now, "","","");
             return model;
         }
 
         public override GarmentShippingInstructionModel GetEmptyModel()
         {
-            var model = new GarmentShippingInstructionModel(null, 0, DateTimeOffset.MinValue, 0, null, null, null, null, null, 0, null, null, null, DateTimeOffset.MinValue, null, null, null, null, null, null, null, null, 0, null, 0, null, null, null, null, null, DateTimeOffset.MinValue,null,null,null);
+            var model = new GarmentShippingInstructionModel(null, 0, DateTimeOffset.MinValue, 0, null, null, null, null, null, null, null, 0, null, null, null, DateTimeOffset.MinValue, null, null, null, null, null, null, null, null, 0, null, 0, null, null, null, null, null, DateTimeOffset.MinValue,null,null,null);
             return model;
         }
     }

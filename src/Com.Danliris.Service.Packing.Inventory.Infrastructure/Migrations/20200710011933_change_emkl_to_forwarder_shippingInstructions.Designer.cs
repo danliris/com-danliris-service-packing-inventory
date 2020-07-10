@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200710011933_change_emkl_to_forwarder_shippingInstructions")]
+    partial class change_emkl_to_forwarder_shippingInstructions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1772,9 +1774,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PackingListType")
                         .HasMaxLength(25);
 
-                    b.Property<string>("PaymentTerm")
-                        .HasMaxLength(25);
-
                     b.Property<string>("Remark")
                         .HasMaxLength(2000);
 
@@ -2696,9 +2695,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(1000);
 
                     b.Property<int>("SalesNoteId");
 

@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellFooterContent1.Phrase = (new Phrase("Terbilang :", normal_font));
             tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(terbilang, normal_font));
+            cellFooterContent2.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
             tableFooter.AddCell(cellFooterContent2);
 
             cellFooterContent1.Phrase = (new Phrase("Catatan   :", normal_font));
