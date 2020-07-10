@@ -252,13 +252,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             var model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == TRANSIT && s.DestinationArea == viewModel.DestinationArea
-                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift);
+                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == OUT);
 
             viewModel.TransitProductionOrders = viewModel.TransitProductionOrders.Where(s => s.IsSave).ToList();
             if (model == null)
             {
                 int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == TRANSIT && s.DestinationArea == viewModel.DestinationArea
-                && s.CreatedUtc.Year == viewModel.Date.Year);
+                && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == OUT);
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
 
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.TransitProductionOrders.Select(s =>
@@ -389,7 +389,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _repository.ReadAll().Where(s => s.Area == TRANSIT &&
-            ((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument) || (s.Type != OUT && s.Type != null)));
+            (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"

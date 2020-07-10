@@ -415,7 +415,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _repository.ReadAll().Where(s => s.Area == INSPECTIONMATERIAL &&
-            ((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument) || (s.Type != OUT && s.Type != null)));
+            (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
