@@ -141,6 +141,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                 };
             }
         }
+        private PlainAdjPackagingProductionOrder ViewModelAdj1
+        {
+            get
+            {
+                return new PlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder =new ProductionOrder() {
+                        Code = "asf",
+                        Id =0 ,
+                        No ="asdf",
+                        OrderQuantity =10,
+                        Type="asdf"
+                    },
+                    Material =new Material() {
+                        Code="asdf",
+                        Id=0,
+                        Name="adsf"
+                    },
+                    MaterialConstruction =new MaterialConstruction (){
+                        Code="adsf",
+                        Id=0,
+                        Name="asdf"
+                    },
+                    MaterialWidth ="",
+                    Area ="",
+                    CartNo ="",
+                    PackingInstruction ="",
+                    Construction ="",
+                    Unit ="",
+                    BuyerId =1,
+                    Buyer ="",
+                    Color ="",
+                    Motif ="",
+                    UomUnit ="",
+                    Balance =1,
+                    HasOutputDocument =false,
+                    IsChecked =true,
+                    Grade ="",
+                    Remark ="",
+                    Status ="",
+
+                    BalanceRemains =1,
+
+                    PreviousBalance =1,
+
+                    OutputId =1,
+
+                    InputId =1,
+                    PackagingType ="",
+                    PackagingUnit ="",
+                    PackagingQTY =1,
+
+                    DyeingPrintingAreaInputProductionOrderId =1,
+
+                    DyeingPrintingAreaOutputProductionOrderId =1,
+                    AtQty =1,
+                };
+            }
+        }
 
         [Fact]
         public void Should_Validator_Success()
@@ -397,12 +456,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
         [Fact]
-        public void GetDistinctProductionOrder()
+        public void Should_Success_GetDistinctProductionOrder()
         {
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
             serviceMock.Setup(s => s.GetDistinctProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new ListResult<PlainAdjPackagingProductionOrder>(new List<PlainAdjPackagingProductionOrder>(), 1, 1, 1));
+                .Returns(new ListResult<PlainAdjPackagingProductionOrder>(new List<PlainAdjPackagingProductionOrder>() { ViewModelAdj1}, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
