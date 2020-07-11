@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new OutputPackagingViewModel()
                 {
+                    Type= "OUT",
                     Area = "PACKING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
@@ -91,7 +92,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                             PackagingType="WHITE",
                             PackagingUnit = "ROLLS"
                         }
-                    }
+                    },
+                };
+            }
+        }
+        private OutputPackagingViewModel ViewModelAdj
+        {
+            get
+            {
+                return new OutputPackagingViewModel()
+                {
+                    Type = "OUT",
+                    Area = "PACKING",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "pas",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "GUDANG JADI",
+                    InputPackagingId = 1,
+                    PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+                    {
+                        new InputPlainAdjPackagingProductionOrder()
+                        {
+                            Balance = 1,
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            Remark = "remar",
+                            Status = "Ok",
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d",
+                            PackagingQty = 1,
+                            PackagingType="WHITE",
+                            PackagingUnit = "ROLLS"
+                        }
+                    },
                 };
             }
         }
@@ -123,7 +169,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
+        [Fact]
+        public async Task Should_Success_Post_Adj()
+        {
+            var dataUtil = ViewModelAdj;
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<OutputPackagingViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
 
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
         [Fact]
         public async Task Should_NotValid_Post()
         {

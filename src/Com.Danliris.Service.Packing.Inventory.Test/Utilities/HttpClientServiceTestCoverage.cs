@@ -15,10 +15,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Utilities
         private HttpClientService HttpClientService => new HttpClientService(new IdentityProvider());
         private HttpContent HttpContent => new StringContent("");
 
-        [Fact]
-        public async Task Get()
-        {
-            await Assert.ThrowsAsync<HttpRequestException>(() => HttpClientService.GetAsync(url));
-        }
+        //[Fact]
+        //public async Task Get()
+        //{
+        //    await Assert.ThrowsAsync<HttpRequestException>(() => HttpClientService.GetAsync(url));
+        //}
     }
 }

@@ -130,6 +130,116 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 };
             }
         }
+        private OutputPackagingViewModel ViewModelAdj
+        {
+            get
+            {
+                return new OutputPackagingViewModel()
+                {
+                    Type="ADJ",
+                    Area = "PACKING",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "pas",
+                    Group = "A",
+                    BonNoInput = "s",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "TRANSIT",
+                    InputPackagingId = 1,
+                    PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+                    {
+                        new InputPlainAdjPackagingProductionOrder()
+                        {
+                            Balance = 1,
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            Remark = "remar",
+                            Status = "Ok",
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            MaterialObj = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d"
+                        }
+                    }
+                };
+            }
+        }
+        private OutputPackagingViewModel ViewModelAdjMin
+        {
+            get
+            {
+                return new OutputPackagingViewModel()
+                {
+                    Type = "ADJ",
+                    Area = "PACKING",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "pas",
+                    Group = "A",
+                    BonNoInput = "s",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "TRANSIT",
+                    InputPackagingId = 1,
+                    PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+                    {
+                        new InputPlainAdjPackagingProductionOrder()
+                        {
+                            Balance = -1,
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            Remark = "remar",
+                            Status = "Ok",
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            MaterialObj = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d"
+                        }
+                    }
+                };
+            }
+        }
 
         private DyeingPrintingAreaOutputModel Model
         {
@@ -305,6 +415,62 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object).Object);
 
             var result = service.ReadSppInFromPack(0,10,string.Empty,string.Empty,"s");
+
+            //Assert.NotEqual(0, result);
+            Assert.NotNull(result);
+        }
+        [Fact]
+        public void Should_Success_GetDistinctProductionOrder()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+            var item = ViewModel.PackagingProductionOrders.FirstOrDefault();
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaSummaryModel>() {
+                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", ViewModel.InputPackagingId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
+                 }.AsQueryable());
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            var inputspp = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, false, 10, "A", 1);
+            inputspp.Id = 1;
+            inputspp.DyeingPrintingAreaInputId = 1;
+            sppRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+            sppRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
+                    inputspp
+                }.AsQueryable());
+
+            var inputbon = new DyeingPrintingAreaInputModel(new DateTimeOffset(DateTime.Now), "PACKING", "PAGI", "s", "A",
+                    new List<DyeingPrintingAreaInputProductionOrderModel>{
+                        inputspp
+                    });
+            inputbon.Id = 1;
+
+            inputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>()
+                {
+                    inputbon
+                }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object).Object);
+            var order = new Dictionary<string, string>() { { "ProductionOrderNo", "desc" } };
+            var result = service.GetDistinctProductionOrder(0, 10, string.Empty, JsonConvert.SerializeObject(order), "s");
 
             //Assert.NotEqual(0, result);
             Assert.NotNull(result);
@@ -1058,6 +1224,78 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GenerateExcelAll();
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateBon()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaOutputModel> { Model }.AsQueryable());
+
+
+            var service = GetService(GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object);
+
+
+            var resultIM = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "INSPECTION MATERIAL");
+            var resultAV = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "GUDANG AVAL");
+            var resultSH = service.GenerateBonNo(1, DateTimeOffset.UtcNow, "SHIPPING");
+
+            Assert.NotNull(resultIM);
+            Assert.NotNull(resultAV);
+            Assert.NotNull(resultSH);
+        }
+        [Fact]
+        public void Should_Success_GenerateBonAdj()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaOutputModel> { Model }.AsQueryable());
+
+
+            var service = GetService(GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object);
+
+
+            var result = service.GenerateBonNoAdj(1, DateTimeOffset.UtcNow, "PACKING",new List<double> { 1, 2 });
+            var result2 = service.GenerateBonNoAdj(1, DateTimeOffset.UtcNow, "PACKING", new List<double> { -11, -2 });
+
+
+            Assert.NotNull(result);
+            Assert.NotNull(result2);
+        }
+        [Fact]
+        public async Task Should_Success_CreateAdj()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object);
+
+
+            var result = await service.CreateAdj(ViewModelAdj);
+
+            Assert.NotEqual(0, result);
         }
     }
 }
