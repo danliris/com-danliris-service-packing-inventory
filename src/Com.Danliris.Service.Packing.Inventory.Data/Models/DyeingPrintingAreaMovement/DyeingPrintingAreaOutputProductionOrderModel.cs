@@ -597,7 +597,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// </summary>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
             string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
-            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int dyeingPrintintOutputId, int dyeingPrintingAreaInputProductionOrderId, int buyerId,string prevSppInJson) : this()
+            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int dyeingPrintintOutputId, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string prevSppInJson) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -631,15 +631,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PrevSppInJson = prevSppInJson;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
-                                                            string avalCartNo,
-                                                            string avalUomUnit,
-                                                            double avalQuantity,
-                                                            double avalQuantityKg) : this()
+        /// <summary>
+        /// Aval Adj
+        /// </summary>
+        /// <param name="avalType"></param>
+        /// <param name="avalCartNo"></param>
+        /// <param name="avalUomUnit"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalQuantityKg"></param>
+        /// <param name="adjDocumentNo"></param>
+        /// <param name="area"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo) : this()
         {
+            Area = area;
+            HasNextAreaDocument = hasNextAreaDocument;
+            AdjDocumentNo = adjDocumentNo;
             AvalType = avalType;
-            AvalCartNo = avalCartNo;
-            UomUnit = avalUomUnit;
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
         }

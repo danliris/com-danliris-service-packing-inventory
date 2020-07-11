@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         }
 
         /// <summary>
-        /// Adjustment Data
+        /// New Constructor Output
         /// </summary>
         /// <param name="date"></param>
         /// <param name="area"></param>
@@ -63,8 +63,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Type = type;
         }
 
+        /// <summary>
+        /// Area Aval
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="donNo"></param>
+        /// <param name="doId"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, int doId, bool hasNextAreaDocument,
-            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -75,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DeliveryOrderSalesId = doId;
             DeliveryOrderSalesNo = donNo;
+            Type = type;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
 
@@ -92,14 +107,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="deliveryOrderNo"></param>
         /// <param name="hasSalesInvoice"></param>
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
+        /// <param name="type"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
             Shift = shift;
             BonNo = bonNo;
             Group = group;
+            Type = type;
             HasNextAreaDocument = hasNextAreaDocument;
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
