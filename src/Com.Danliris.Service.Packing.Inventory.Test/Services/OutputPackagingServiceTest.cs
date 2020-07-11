@@ -136,7 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new OutputPackagingViewModel()
                 {
-                    Type="ADJ",
+                    Type = "ADJ",
                     Area = "PACKING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
@@ -257,10 +257,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   ViewModel.Group,"ADJ IN", ViewModel.PackagingProductionOrders.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "")).ToList());
+                   ViewModel.Group, "ADJ IN", ViewModel.PackagingProductionOrders.Select(s =>
+                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                     s.MaterialWidth, "")).ToList());
             }
         }
 
@@ -324,6 +324,62 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
+        private PlainAdjPackagingProductionOrder InputModelPlain
+        {
+            get
+            {
+                return new PlainAdjPackagingProductionOrder
+                {
+                    Id = 1,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Code = "sd",
+                        Id = 1,
+                        Type = "sd",
+                        No = "sd"
+                    },
+                    Material = new Material()
+                    {
+                        Id = 1,
+                        Name = "name"
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = 1,
+                        Name = "name"
+                    },
+                    
+                    Construction = "",
+                    
+                    MaterialWidth = "",
+                    Area = "",
+                    CartNo = "",
+                    PackingInstruction = "",
+                    Unit = "",
+                    BuyerId = 1,
+                    Buyer = "",
+                    Color = "",
+                    Motif = "",
+                    UomUnit = "",
+                    Balance = 1,
+                    HasOutputDocument = false,
+                    IsChecked = true,
+                    Grade = "",
+                    Remark = "",
+                    Status = "",
+                    BalanceRemains = 1,
+                    PreviousBalance = 1,
+                    OutputId = 1,
+                    InputId = 1,
+                    PackagingType = "",
+                    PackagingUnit = "",
+                    PackagingQTY = 1,
+                    DyeingPrintingAreaInputProductionOrderId = 1,
+                    DyeingPrintingAreaOutputProductionOrderId = 1,
+                    AtQty = 1
+                };
+            }
+        }
         [Fact]
         public async Task Should_Success_Create()
         {
@@ -425,7 +481,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object).Object);
 
-            var result = service.ReadSppInFromPack(0,10,string.Empty,string.Empty,"s");
+            var result = service.ReadSppInFromPack(0, 10, string.Empty, string.Empty, "s");
 
             //Assert.NotEqual(0, result);
             Assert.NotNull(result);
@@ -585,7 +641,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputProductionOrderRepoMock.Setup(s => s.ReadAll())
                 .Returns(testinput.DyeingPrintingAreaInputProductionOrders.AsQueryable());
 
-            
+
 
             outputProductionOrderRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
                 .ReturnsAsync(1);
@@ -618,11 +674,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "")).ToList());
-            var tes3 = new List<DyeingPrintingAreaOutputModel>() { tes2};
+            var tes3 = new List<DyeingPrintingAreaOutputModel>() { tes2 };
             var json = JsonConvert.SerializeObject(tes3);
-            var tes =  new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, "PC.IM.2020.002", false, ViewModel.DestinationArea, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
-                          new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                          s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, 0, s.Id, s.BuyerId, json)).ToList());
+            var tes = new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, "PC.IM.2020.002", false, ViewModel.DestinationArea, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
+                         new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
+                         s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, 0, s.Id, s.BuyerId, json)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -714,7 +770,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputProductionOrderRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
             var testing = testinput.DyeingPrintingAreaInputProductionOrders.AsQueryable();
-            foreach(var i in testing)
+            foreach (var i in testing)
             {
                 i.Id = 0;
             }
@@ -817,7 +873,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
                  .ReturnsAsync(1);
 
-            var testModel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, false, 10, "A",Convert.ToDouble(10), 1);
+            var testModel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, false, 10, "A", Convert.ToDouble(10), 1);
             //testModel.SetBalanceRemains(10, "unittest", "unittest");
 
             sppRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
@@ -896,7 +952,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object).Object);
             var vm = ViewModel;
             vm.DestinationArea = "PACKING";
-            foreach(var t in vm.PackagingProductionOrders)
+            foreach (var t in vm.PackagingProductionOrders)
             {
                 t.QtyOut = 5;
             }
@@ -1135,7 +1191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputBonRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
             sppRepoMock.Setup(s => s.ReadAll())
-                .Returns( InputModel.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+                .Returns(InputModel.DyeingPrintingAreaInputProductionOrders.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputBonRepoMock.Object).Object);
 
@@ -1296,7 +1352,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object);
 
 
-            var result = service.GenerateBonNoAdj(1, DateTimeOffset.UtcNow, "PACKING",new List<double> { 1, 2 });
+            var result = service.GenerateBonNoAdj(1, DateTimeOffset.UtcNow, "PACKING", new List<double> { 1, 2 });
             var result2 = service.GenerateBonNoAdj(1, DateTimeOffset.UtcNow, "PACKING", new List<double> { -11, -2 });
 
 
@@ -1324,6 +1380,76 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.CreateAdj(ViewModelAdj);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public void Should_Success_Get_Set()
+        {
+            var test = InputModelPlain;
+            var testval9 = test.Material;
+            var testval = test.Construction;
+            testval = test.MaterialWidth;
+            testval = test.Area;
+            testval = test.CartNo;
+            testval = test.PackingInstruction;
+            testval = test.Unit;
+            var testval1 = test.BuyerId;
+            testval = test.Buyer;
+            testval = test.Color;
+            testval = test.Motif;
+            testval = test.UomUnit;
+            var testval2 = test.Balance;
+            var testval3 = test.HasOutputDocument;
+            testval3 = test.IsChecked;
+            testval = test.Grade;
+            testval = test.Remark;
+            testval = test.Status;
+            testval2 = test.BalanceRemains;
+            testval2 = test.PreviousBalance;
+            testval1 = test.OutputId;
+            testval1 = test.InputId;
+            testval = test.PackagingType;
+            testval = test.PackagingUnit;
+            testval2 = Convert.ToDouble(test.PackagingQTY);
+            testval1 = test.DyeingPrintingAreaInputProductionOrderId;
+            testval1 = test.DyeingPrintingAreaOutputProductionOrderId;
+            testval2 = test.AtQty;
+
+
+            var tes = ViewModelAdj.PackagingProductionOrdersAdj.FirstOrDefault();
+            var z = tes.Id;
+            var x = tes.ProductionOrder;
+            var y = tes.MaterialObj;
+            var f = tes.MaterialConstruction;
+            var a = tes.Material;
+            a = tes.Construction;
+            a = tes.NoDocument;
+            a = tes.MaterialWidth;
+            a = tes.Area;
+            a = tes.CartNo;
+            a = tes.PackingInstruction;
+            a = tes.Unit;
+            var b = tes.BuyerId;
+            a = tes.Buyer;
+            a = tes.Color;
+            a = tes.Motif;
+            a = tes.UomUnit;
+            var c = tes.Balance;
+            var d = tes.HasOutputDocument;
+            d = tes.IsChecked;
+            a = tes.Grade;
+            a = tes.Remark;
+            a = tes.Status;
+            c = tes.BalanceRemains;
+            c = tes.PreviousBalance;
+            b = tes.OutputId;
+            b = tes.InputId;
+            a = tes.PackagingType;
+            a = tes.PackagingUnit;
+            c = Convert.ToDouble(tes.PackagingQty);
+            b = tes.DyeingPrintingAreaInputProductionOrderId;
+            b = tes.DyeingPrintingAreaOutputProductionOrderId;
+            c = tes.AtQty;
         }
     }
 }
