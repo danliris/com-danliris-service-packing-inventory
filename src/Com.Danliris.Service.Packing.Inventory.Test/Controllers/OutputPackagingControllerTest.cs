@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new OutputPackagingViewModel()
                 {
-                    Type = "OUT",
+                    Type = "ADJ",
                     Area = "PACKING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
@@ -175,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModelAdj;
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
-            serviceMock.Setup(s => s.Create(It.IsAny<OutputPackagingViewModel>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.CreateAdj(It.IsAny<OutputPackagingViewModel>())).ReturnsAsync(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -393,6 +393,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
             var response = controller.GetBonInPacking();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+        [Fact]
+        public void GetDistinctProductionOrder()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.GetDistinctProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<PlainAdjPackagingProductionOrder>(new List<PlainAdjPackagingProductionOrder>(), 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetDistinctProductionOrder();
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
