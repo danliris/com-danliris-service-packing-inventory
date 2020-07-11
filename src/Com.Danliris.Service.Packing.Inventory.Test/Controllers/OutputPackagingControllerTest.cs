@@ -494,7 +494,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //controller.ModelState.IsValid == false;
             var response = controller.GetDistinctProductionOrder();
 
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
         [Fact]
         public void Should_Success_ReadSPPGrouped()
