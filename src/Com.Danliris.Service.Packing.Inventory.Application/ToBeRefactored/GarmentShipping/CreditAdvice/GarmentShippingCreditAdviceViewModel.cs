@@ -45,6 +45,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double bankCharges { get; set; }
         public DateTimeOffset? documentPresente { get; set; }
 
+        public string cargoPolicyNo { get; set; }
+        public DateTimeOffset? cargoPolicyDate { get; set; }
+        public string accountsReceivablePolicyNo { get; set; }
+        public DateTimeOffset? accountsReceivablePolicyDate { get; set; }
+        public DateTimeOffset? documentSendDate { get; set; }
+
         public string remark { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

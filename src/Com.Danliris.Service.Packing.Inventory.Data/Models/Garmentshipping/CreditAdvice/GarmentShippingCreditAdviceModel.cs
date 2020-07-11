@@ -6,54 +6,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
     public class GarmentShippingCreditAdviceModel : StandardEntity
     {
 
-        public int PackingListId { get; set; }
-        public int InvoiceId { get; set; }
-        public string InvoiceNo { get; set; }
-        public DateTimeOffset Date { get; set; }
-        public double Amount { get; set; }
-        public double AmountToBePaid { get; set; }
+        public int PackingListId { get; private set; }
+        public int InvoiceId { get; private set; }
+        public string InvoiceNo { get; private set; }
+        public DateTimeOffset Date { get; private set; }
+        public double Amount { get; private set; }
+        public double AmountToBePaid { get; private set; }
 
-        public bool Valas { get; set; }
-        public string LCType { get; set; }
-        public double Inkaso { get; set; }
-        public double Disconto { get; set; }
-        public string SRNo { get; set; }
-        public DateTimeOffset NegoDate { get; set; }
-        public string Condition { get; set; }
-        public double BankComission { get; set; }
-        public double DiscrepancyFee { get; set; }
-        public double NettNego { get; set; }
+        public bool Valas { get; private set; }
+        public string LCType { get; private set; }
+        public double Inkaso { get; private set; }
+        public double Disconto { get; private set; }
+        public string SRNo { get; private set; }
+        public DateTimeOffset NegoDate { get; private set; }
+        public string Condition { get; private set; }
+        public double BankComission { get; private set; }
+        public double DiscrepancyFee { get; private set; }
+        public double NettNego { get; private set; }
 
-        public DateTimeOffset BTBCADate { get; set; }
-        public double BTBAmount { get; set; }
-        public double BTBRatio { get; set; }
-        public double BTBRate { get; set; }
-        public double BTBTransfer { get; set; }
-        public double BTBMaterial { get; set; }
+        public DateTimeOffset BTBCADate { get; private set; }
+        public double BTBAmount { get; private set; }
+        public double BTBRatio { get; private set; }
+        public double BTBRate { get; private set; }
+        public double BTBTransfer { get; private set; }
+        public double BTBMaterial { get; private set; }
 
-        public double BillDays { get; set; }
-        public double BillAmount { get; set; }
-        public string BillCA { get; set; }
+        public double BillDays { get; private set; }
+        public double BillAmount { get; private set; }
+        public string BillCA { get; private set; }
 
-        public int BuyerId { get; set; }
-        public string BuyerName { get; set; }
-        public string BuyerAddress { get; set; }
+        public int BuyerId { get; private set; }
+        public string BuyerName { get; private set; }
+        public string BuyerAddress { get; private set; }
 
-        public int BankAccountId { get; set; }
-        public string BankAccountName { get; set; }
-        public string BankAddress { get; set; }
+        public int BankAccountId { get; private set; }
+        public string BankAccountName { get; private set; }
+        public string BankAddress { get; private set; }
 
-        public double CreditInterest { get; set; }
-        public double BankCharges { get; set; }
-        public DateTimeOffset DocumentPresente { get; set; }
+        public double CreditInterest { get; private set; }
+        public double BankCharges { get; private set; }
+        public DateTimeOffset DocumentPresente { get; private set; }
 
-        public string Remark { get; set; }
+        public string CargoPolicyNo { get; private set; }
+        public DateTimeOffset CargoPolicyDate { get; private set; }
+        public string AccountsReceivablePolicyNo { get; private set; }
+        public DateTimeOffset AccountsReceivablePolicyDate { get; private set; }
+        public DateTimeOffset DocumentSendDate { get; private set; }
+
+        public string Remark { get; private set; }
 
         public GarmentShippingCreditAdviceModel()
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, DateTimeOffset documentSendDate, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -89,6 +95,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             CreditInterest = creditInterest;
             BankCharges = bankCharges;
             DocumentPresente = documentPresente;
+            CargoPolicyNo = cargoPolicyNo;
+            CargoPolicyDate = cargoPolicyDate;
+            AccountsReceivablePolicyNo = accountsReceivablePolicyNo;
+            AccountsReceivablePolicyDate = accountsReceivablePolicyDate;
+            DocumentSendDate = documentSendDate;
             Remark = remark;
         }
 
