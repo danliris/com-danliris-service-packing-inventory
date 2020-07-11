@@ -179,7 +179,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "sd"
                             },
                             Unit = "s",
-                            UomUnit = "d"
+                            UomUnit = "d",
+                            Material = "test",
+                            Area="PACKING",
+                            HasOutputDocument = false,
+                            IsChecked= true,
+                            BalanceRemains=1,
+                            PreviousBalance=1,
+                            OutputId=1,
+                            InputId=1,
+                            DyeingPrintingAreaInputProductionOrderId=1,
+                            DyeingPrintingAreaOutputProductionOrderId=1,
+                            AtQty=1,
                         }
                     }
                 };
