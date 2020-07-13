@@ -280,6 +280,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetCargoPolicyNo(string cargoPolicyNo, string userName, string userAgent)
+        {
+            if (CargoPolicyNo != cargoPolicyNo)
+            {
+                CargoPolicyNo = cargoPolicyNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCargoPolicyDate(DateTimeOffset cargoPolicyDate, string userName, string userAgent)
+        {
+            if (CargoPolicyDate != cargoPolicyDate)
+            {
+                CargoPolicyDate = cargoPolicyDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAccountsReceivablePolicyNo(string accountsReceivablePolicyNo, string userName, string userAgent)
+        {
+            if (AccountsReceivablePolicyNo != accountsReceivablePolicyNo)
+            {
+                AccountsReceivablePolicyNo = accountsReceivablePolicyNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAccountsReceivablePolicyDate(DateTimeOffset accountsReceivablePolicyDate, string userName, string userAgent)
+        {
+            if (AccountsReceivablePolicyDate != accountsReceivablePolicyDate)
+            {
+                AccountsReceivablePolicyDate = accountsReceivablePolicyDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDocumentSendDate(DateTimeOffset documentSendDate, string userName, string userAgent)
+        {
+            if (DocumentSendDate != documentSendDate)
+            {
+                DocumentSendDate = documentSendDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetRemark(string remark, string userName, string userAgent)
         {
             if (Remark != remark)
