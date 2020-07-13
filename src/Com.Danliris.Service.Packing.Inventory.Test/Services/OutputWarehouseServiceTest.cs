@@ -76,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new OutputWarehouseViewModel()
                 {
                     Area = "GUDANG JADI",
+                    Type = "OUT",
                     BonNo = "GJ.SP.20.001",
                     Bon = new IndexViewModel
                     {
@@ -160,6 +161,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     HasNextAreaDocument = false,
                     Shift = "PAGI",
                     InputWarehouseId = 12,
+                    Type = "OUT",
                     Group = "A",
                     WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
                     {
@@ -248,7 +250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth,"")).ToList());
+                    s.MaterialWidth, "")).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModelToGAArea
@@ -457,6 +459,98 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         }
                     }
                 };
+            }
+        }
+
+        private OutputWarehouseViewModel ViewModelAdj
+        {
+            get
+            {
+                return new OutputWarehouseViewModel()
+                {
+                    Area = "GUDANG JADI",
+                    Type = "ADJ",
+                    BonNo = "GJ.SP.20.001",
+                    Bon = new IndexViewModel
+                    {
+                        Area = "GUDANG JADI",
+                        BonNo = "GJ.SP.20.001",
+                        Date = DateTimeOffset.UtcNow,
+                        DestinationArea = "GUDANG JADI",
+                        Group = "A",
+                        Id = 1,
+                        HasNextAreaDocument = false,
+                        Shift = "PAGI"
+                    },
+                    Date = DateTimeOffset.UtcNow,
+                    DestinationArea = "SHIPPING",
+                    HasNextAreaDocument = false,
+                    Shift = "PAGI",
+                    InputWarehouseId = 12,
+                    Group = "A",
+                    WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
+                    {
+                        new OutputWarehouseProductionOrderViewModel()
+                        {
+                            AdjDocumentNo = "a",
+                            Id = 1,
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "SLD",
+                                Id = 62,
+                                Type = "SOLID",
+                                No = "F/2020/000"
+                            },
+                            MaterialProduct = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialWidth = "1",
+                            CartNo = "5-11",
+                            PackingInstruction = "a",
+                            Construction = "a",
+                            Unit = "a",
+                            Buyer = "a",
+                            Color = "a",
+                            Motif = "a",
+                            UomUnit = "a",
+                            Remark = "a",
+                            Grade = "a",
+                            Status = "a",
+                            Balance = 50,
+                            PreviousBalance = 100,
+                            InputId = 2,
+                            ProductionOrderNo = "asd",
+                            HasNextAreaDocument = false,
+                            Material = "a",
+                            MtrLength = 10,
+                            YdsLength = 10,
+                            Quantity = 10,
+                            PackagingType = "s",
+                            PackagingUnit = "a",
+                            PackagingQty = 10,
+                            QtyOrder = 10
+                        }
+                    }
+                };
+            }
+        }
+
+        private DyeingPrintingAreaOutputModel ModelAdj
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModelAdj.Date, ViewModelAdj.Area, ViewModelAdj.Shift, ViewModelAdj.BonNo, ViewModelAdj.HasNextAreaDocument, ViewModelAdj.DestinationArea,
+                   ViewModelAdj.Group, ViewModelAdj.Type, ViewModelAdj.WarehousesProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade,
+                    s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo,
+                    true, ViewModelAdj.Area, "", 0, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo)).ToList());
             }
         }
 
