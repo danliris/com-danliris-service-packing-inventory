@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateTransitArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteShippingArea(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateShippingArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> DeleteWarehouseArea(DyeingPrintingAreaOutputModel model);
         IQueryable<DyeingPrintingAreaOutputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaOutputModel> ReadAllIgnoreQueryFilter();
         Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument);

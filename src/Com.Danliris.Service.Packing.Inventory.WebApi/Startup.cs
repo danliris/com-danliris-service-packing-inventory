@@ -349,7 +349,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
-            services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
+            //services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
             services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPWarpTypeViewModel>, IPWarpTypeViewModelValidator>();

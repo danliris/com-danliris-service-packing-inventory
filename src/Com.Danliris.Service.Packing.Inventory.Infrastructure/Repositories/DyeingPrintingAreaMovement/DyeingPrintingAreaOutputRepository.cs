@@ -115,6 +115,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return result;
         }
 
+        public async Task<int> DeleteWarehouseArea(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+
+            }
+
+            //model.FlagForDelete(_identityProvider.Username, UserAgent);
+            _dbSet.Update(model);
+
+            result += await _dbContext.SaveChangesAsync();
+            return result;
+        }
+
         public IQueryable<DyeingPrintingAreaOutputModel> GetDbSet()
         {
             return _dbSet;
