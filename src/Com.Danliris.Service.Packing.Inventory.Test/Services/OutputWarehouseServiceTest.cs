@@ -826,6 +826,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "")).ToList());
             tes.Id = 1;
+            tes.SetType("OUT", "", "");
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
                 i.Id = 1;
@@ -834,6 +835,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
             outputRepoMock.Setup(o => o.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(o => o.DeleteWarehouseArea(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            outputRepoMock.Setup(o => o.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(tes);
             outputRepoMock.Setup(o => o.ReadAll())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { tes }.AsQueryable());
             outputRepoMock.Setup(o => o.GetDbSet())
