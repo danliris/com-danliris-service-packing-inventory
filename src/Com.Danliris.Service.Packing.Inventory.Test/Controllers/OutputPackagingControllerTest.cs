@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             {
                 return new OutputPackagingViewModel()
                 {
+                    Type= "OUT",
                     Area = "PACKING",
                     BonNo = "s",
                     Date = DateTimeOffset.UtcNow,
@@ -91,7 +92,115 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                             PackagingType="WHITE",
                             PackagingUnit = "ROLLS"
                         }
-                    }
+                    },
+                };
+            }
+        }
+        private OutputPackagingViewModel ViewModelAdj
+        {
+            get
+            {
+                return new OutputPackagingViewModel()
+                {
+                    Type = "ADJ",
+                    Area = "PACKING",
+                    BonNo = "s",
+                    Date = DateTimeOffset.UtcNow,
+                    Shift = "pas",
+                    HasNextAreaDocument = false,
+                    DestinationArea = "GUDANG JADI",
+                    InputPackagingId = 1,
+                    Id = 1,
+                    Active = true,
+                    BonNoInput ="1" ,
+                    Group="a",
+                    PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+                    {
+                        new InputPlainAdjPackagingProductionOrder()
+                        {
+                            Balance = 1,
+                            Buyer = "s",
+                            CartNo = "1",
+                            Color = "red",
+                            Construction = "sd",
+                            Grade = "s",
+                            Remark = "remar",
+                            Status = "Ok",
+                            Motif = "sd",
+                            PackingInstruction = "d",
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Code = "sd",
+                                Id = 1,
+                                Type = "sd",
+                                No = "sd"
+                            },
+                            Unit = "s",
+                            UomUnit = "d",
+                            PackagingQty = 1,
+                            PackagingType="WHITE",
+                            PackagingUnit = "ROLLS"
+                        }
+                    },
+                };
+            }
+        }
+        private PlainAdjPackagingProductionOrder ViewModelAdj1
+        {
+            get
+            {
+                return new PlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder =new ProductionOrder() {
+                        Code = "asf",
+                        Id =0 ,
+                        No ="asdf",
+                        OrderQuantity =10,
+                        Type="asdf"
+                    },
+                    Material =new Material() {
+                        Code="asdf",
+                        Id=0,
+                        Name="adsf"
+                    },
+                    MaterialConstruction =new MaterialConstruction (){
+                        Code="adsf",
+                        Id=0,
+                        Name="asdf"
+                    },
+                    MaterialWidth ="",
+                    Area ="",
+                    CartNo ="",
+                    PackingInstruction ="",
+                    Construction ="",
+                    Unit ="",
+                    BuyerId =1,
+                    Buyer ="",
+                    Color ="",
+                    Motif ="",
+                    UomUnit ="",
+                    Balance =1,
+                    HasOutputDocument =false,
+                    IsChecked =true,
+                    Grade ="",
+                    Remark ="",
+                    Status ="",
+
+                    BalanceRemains =1,
+
+                    PreviousBalance =1,
+
+                    OutputId =1,
+
+                    InputId =1,
+                    PackagingType ="",
+                    PackagingUnit ="",
+                    PackagingQTY =1,
+
+                    DyeingPrintingAreaInputProductionOrderId =1,
+
+                    DyeingPrintingAreaOutputProductionOrderId =1,
+                    AtQty =1,
                 };
             }
         }
@@ -123,7 +232,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
+        [Fact]
+        public async Task Should_Success_Post_Adj()
+        {
+            var dataUtil = ViewModelAdj;
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.CreateAdj(It.IsAny<OutputPackagingViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
 
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
         [Fact]
         public async Task Should_NotValid_Post()
         {
@@ -332,6 +458,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var response = controller.GetBonInPacking();
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+        [Fact]
+        public void Should_Success_GetDistinctProductionOrder()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.GetDistinctProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<PlainAdjPackagingProductionOrder>(new List<PlainAdjPackagingProductionOrder>() { ViewModelAdj1}, 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetDistinctProductionOrder();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+        [Fact]
+        public void Should_Exceptions_GetDistinctProductionOrder()
+        {
+            //v
+            var serviceMock = new Mock<IOutputPackagingService>();
+            serviceMock.Setup(s => s.GetDistinctProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                //.Returns(new ListResult<PlainAdjPackagingProductionOrder>(new List<PlainAdjPackagingProductionOrder>() { ViewModelAdj1 }, 1, 1, 1));
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetDistinctProductionOrder();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
         [Fact]
         public void Should_Success_ReadSPPGrouped()

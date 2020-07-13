@@ -46,9 +46,19 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
-                var result = await _service.CreateV2(viewModel);
+                if (viewModel.Type == "OUT")
+                {
+                    var result = await _service.CreateV2(viewModel);
+                    return Created("/", result);
 
-                return Created("/", result);
+                }
+                else
+                {
+                    var result = await _service.CreateAdj(viewModel);
+                    return Created("/", result);
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -204,6 +214,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
 
                 var data = _service.ReadSppInFromPackSumBySPPNo(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+        [HttpGet("production-order-loader")]
+        public IActionResult GetDistinctProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.GetDistinctProductionOrder(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             PackagingProductionOrders = new HashSet<OutputPackagingProductionOrderViewModel>();
         }
-
+        public string Type { get; set; }
         public string Area { get; set; }
         public string BonNo { get; set; }
         public string BonNoInput { get; set; }
@@ -22,5 +22,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int InputPackagingId { get; set; }
         public string Group { get; set; }
         public ICollection<OutputPackagingProductionOrderViewModel> PackagingProductionOrders { get; set; }
+        public ICollection<InputPlainAdjPackagingProductionOrder> PackagingProductionOrdersAdj { get; set; }
     }
 }
