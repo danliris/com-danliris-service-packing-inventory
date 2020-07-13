@@ -190,7 +190,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     GarmentShippingLocalSalesNoteViewModel salesNote = await _salesNoteService.ReadById(model.localSalesNoteId);
                     Buyer buyer = _salesNoteService.GetBuyer(model.buyer.Id);
                     var PdfTemplate = new GarmentLocalCoverLetterPdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,salesNote, buyer, timeoffsset);
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,salesNote, model.buyer, timeoffsset);
 
                     return new FileStreamResult(stream, "application/pdf")
                     {
