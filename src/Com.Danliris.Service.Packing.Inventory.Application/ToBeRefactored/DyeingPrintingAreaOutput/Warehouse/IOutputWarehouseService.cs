@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<InputSppWarehouseViewModel> GetOutputSppWarehouseItemList(int bonId);
         MemoryStream GenerateExcelAll();
         Task<int> Delete(int bonId);
+        ListResult<AdjWarehouseProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
 
     }
 }
