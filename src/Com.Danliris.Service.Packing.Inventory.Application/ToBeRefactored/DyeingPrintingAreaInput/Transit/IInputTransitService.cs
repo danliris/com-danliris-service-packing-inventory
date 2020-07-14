@@ -17,6 +17,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<PreTransitIndexViewModel> ReadOutputPreTransit(int page, int size, string filter, string order, string keyword);
         List<OutputPreTransitProductionOrderViewModel> GetOutputPreTransitProductionOrders();
         Task<int> Reject(InputTransitViewModel viewModel);
-        MemoryStream GenerateExcel();
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }
 }

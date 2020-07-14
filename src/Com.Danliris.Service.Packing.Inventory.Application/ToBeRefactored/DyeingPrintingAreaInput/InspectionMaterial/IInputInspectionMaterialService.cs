@@ -15,6 +15,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<InputInspectionMaterialProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
         Task<int> Delete(int id);
-        MemoryStream GenerateExcel();
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }
 }
