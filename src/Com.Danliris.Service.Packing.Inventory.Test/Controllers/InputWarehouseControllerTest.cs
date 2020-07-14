@@ -554,11 +554,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Success_GetWarehouseAreaNoteExcelAll()
+        public void Should_Success_GetWarehouseAreaNoteExcelAll()
         {
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.GenerateExcelAll())
+            serviceMock.Setup(s => s.GenerateExcelAll(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -567,16 +567,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcelAll();
+            var response = controller.GetExcelAll("7");
 
             Assert.NotNull(response);
         }
+
         [Fact]
-        public async Task Should_Exception_GetWarehouseAreaNoteExcelAll()
+        public void Should_Exception_GetWarehouseAreaNoteExcelAll()
         {
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.GenerateExcelAll())
+            serviceMock.Setup(s => s.GenerateExcelAll(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -585,7 +586,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcelAll();
+            var response = controller.GetExcelAll("7");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
 
