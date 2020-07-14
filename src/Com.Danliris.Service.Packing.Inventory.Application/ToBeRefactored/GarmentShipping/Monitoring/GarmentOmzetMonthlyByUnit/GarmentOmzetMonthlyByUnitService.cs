@@ -178,10 +178,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         mergeCells.Add(($"B{rowPosition}:G{rowPosition}", ExcelHorizontalAlignment.Right, ExcelVerticalAlignment.Bottom));
 
-                        if (buyerFirstMergedRowPosition != buyerLastMergedRowPosition)
-                        {
-                            mergeCells.Add(($"B{buyerFirstMergedRowPosition}:B{buyerLastMergedRowPosition}", ExcelHorizontalAlignment.Left, ExcelVerticalAlignment.Top));
-                        }
+                        //if (buyerFirstMergedRowPosition != buyerLastMergedRowPosition)
+                        //{
+                        //    mergeCells.Add(($"B{buyerFirstMergedRowPosition}:B{buyerLastMergedRowPosition}", ExcelHorizontalAlignment.Left, ExcelVerticalAlignment.Top));
+                        //}
 
                         ucLastMergedRowPosition = rowPosition++;
                     }
@@ -204,7 +204,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                     else
                     {
-                        result.Rows.Add(null, null, grandTotalByUom[i].quantity, grandTotalByUom[i].uom, null, null, null, null, null, null, null);
+                        result.Rows.Add(null, null, grandTotalByUom[i].quantity, grandTotalByUom[i].uom, null, grandTotalByUom[i].amount, null, null, null, null, null);
                     }
                     mergeCells.Add(($"D{++rowPosition}:D{rowPosition}", ExcelHorizontalAlignment.Right, ExcelVerticalAlignment.Bottom));
                 }
