@@ -90,11 +90,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 GarmentShippingInvoiceId = 1
             };
 
-            var model11 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "SETS", 1, 1, 1, "", 1, "C10", 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
             var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", true)
             {
                 Id = 1
@@ -107,15 +102,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceItemModel>() { model1 }.AsQueryable());
 
-            var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
-            repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model11 }.AsQueryable());
-
             var repoMock2 = new Mock<IGarmentPackingListRepository>();
             repoMock2.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model2 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object, repoMock2.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
 
             var result = service.GenerateExcel(model1.UnitCode, DateTime.MinValue, DateTime.Now, 7);
 
