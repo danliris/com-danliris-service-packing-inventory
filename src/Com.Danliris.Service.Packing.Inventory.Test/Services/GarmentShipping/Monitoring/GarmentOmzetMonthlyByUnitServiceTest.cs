@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock2.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model2 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock11.Object, repoMock2.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object, repoMock2.Object).Object);
 
             var result = service.GenerateExcel(model1.UnitCode, DateTime.MinValue, DateTime.Now, 7);
 
