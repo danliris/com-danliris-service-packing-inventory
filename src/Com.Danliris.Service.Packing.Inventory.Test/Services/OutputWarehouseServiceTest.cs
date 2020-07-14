@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using System.Reflection;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 {
@@ -1491,7 +1492,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_ReadById_PackagingQtyZero()
+        public async Task Should_Success_ReadById_PackagingQtyNotZero()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -1500,13 +1501,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            foreach(var item in OutputModelToShippingArea.DyeingPrintingAreaOutputProductionOrders)
+            var model = OutputModelToShippingArea;
+
+            foreach(var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.SetPackagingQty(0, "", "");
             }
 
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(OutputModelToShippingArea);
+                .ReturnsAsync(model);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1579,13 +1582,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            foreach (var item in ModelAdj.DyeingPrintingAreaOutputProductionOrders)
+            var model = ModelAdj;
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.SetPackagingQty(0, "", "");
             }
 
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(ModelAdj);
+                .ReturnsAsync(model);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1705,7 +1710,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public void Should_Success_GenerateExcelAdj_PackagingQtyZero()
+        public void Should_Success_GenerateExcelAdj_PackagingQtyNotZero()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -1714,14 +1719,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            foreach (var item in ModelAdj.DyeingPrintingAreaOutputProductionOrders)
+            var model = ModelAdj;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                item.SetPackagingQty(0, "", "");
+                item.SetPackagingQty(10, "", "");
             }
 
 
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(ModelAdj);
+                .ReturnsAsync(model);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                          inputProductionOrderRepoMock.Object,
@@ -1903,8 +1909,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-
-            outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(OutputModelToShippingArea.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+            var model = OutputModelToShippingArea;
+            foreach(var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetPackagingQty(10, "", "");
+            }
+            outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(model.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
 
             inputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
@@ -1919,6 +1929,92 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var serviceProvider = GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new OutputWarehouseViewModel();
+            vm.Type = "OUT";
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
+            {
+                new OutputWarehouseProductionOrderViewModel()
+                {
+                    Balance = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = null;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            vm.WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>();
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
+            {
+                new OutputWarehouseProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
+            {
+                new OutputWarehouseProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.WarehousesProductionOrders = new List<OutputWarehouseProductionOrderViewModel>()
+            {
+                new OutputWarehouseProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+                new OutputWarehouseProductionOrderViewModel()
+                {
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }
