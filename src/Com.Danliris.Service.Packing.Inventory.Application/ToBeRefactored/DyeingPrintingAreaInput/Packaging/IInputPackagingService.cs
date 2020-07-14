@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<InputPackagingProductionOrdersViewModel> ReadInProducionOrders(int page, int size, string filter, string order, string keyword);
         //ListResult<InputPackagingProductionOrdersViewModel> ReadProductionOrderByBon(string bonNo);
         Task<int> Reject(InputPackagingViewModel viewModel);
-        MemoryStream GenerateExcelAll();
+        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         Task<int> Delete(int bonId);
         Task<int> Update(int bonId, InputPackagingViewModel viewModel);
     }
