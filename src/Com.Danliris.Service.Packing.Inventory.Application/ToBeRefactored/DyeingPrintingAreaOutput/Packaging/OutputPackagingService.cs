@@ -762,8 +762,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //        })
             //    });
 
-            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && !s.HasNextAreaDocument);
-
+            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
             if (dateFrom.HasValue && dateTo.HasValue)
             {
                 packingData = packingData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
