@@ -216,6 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Code = model.SalesNote.BuyerCode,
                             Name = model.SalesNote.BuyerName
                         },
+                        date = model.SalesNote.Date,
                         tempo = model.SalesNote.Tempo,
                         dispositionNo = model.SalesNote.DispositionNo
                     }
