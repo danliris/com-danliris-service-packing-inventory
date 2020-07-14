@@ -2016,5 +2016,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
+
+        [Fact]
+        public void ValidateVM()
+        {
+            
+            var date = DateTimeOffset.UtcNow;
+            var index = new IndexViewModel()
+            {
+                Date = date
+            };
+            Assert.Null(index.Group);
+            Assert.Null(index.Area);
+            Assert.Equal(0, index.Id);
+            Assert.Null(index.BonNo);
+            Assert.Equal(date, index.Date);
+            Assert.Null(index.DestinationArea);
+            Assert.False(index.HasNextAreaDocument);
+            Assert.Null(index.Shift);
+            Assert.Null(index.Type);
+
+            var adjvm = new AdjWarehouseProductionOrderViewModel();
+            Assert.Null(adjvm.ProductionOrder);
+            Assert.Null(adjvm.MaterialProduct);
+            Assert.Null(adjvm.MaterialConstruction);
+            Assert.Null(adjvm.MaterialWidth);
+            Assert.Null(adjvm.Construction);
+            Assert.Null(adjvm.Unit);
+            Assert.Null(adjvm.Grade);
+            Assert.Null(adjvm.PackagingUnit);
+            Assert.Equal(0, adjvm.BuyerId);
+            Assert.Null(adjvm.Buyer);
+            Assert.Null(adjvm.Color);
+            Assert.Null(adjvm.Motif);
+            Assert.Null(adjvm.UomUnit);
+            Assert.Equal(0, adjvm.PackagingQty);
+            Assert.Equal(0, adjvm.Quantity);
+        }
     }
 }

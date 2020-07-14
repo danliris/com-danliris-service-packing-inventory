@@ -1511,5 +1511,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.True(test);
             
         }
+
+        [Fact]
+        public void ValidateVM()
+        {
+
+            var vm = new InputWarehouseProductionOrderCreateViewModel()
+            {
+            };
+
+            Assert.Null(vm.MaterialProduct);
+            Assert.Null(vm.MaterialConstruction);
+            Assert.Null(vm.MaterialWidth);
+        }
     }
 }
