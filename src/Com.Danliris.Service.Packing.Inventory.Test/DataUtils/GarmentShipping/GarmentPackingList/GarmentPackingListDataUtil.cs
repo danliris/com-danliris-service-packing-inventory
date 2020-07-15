@@ -33,5 +33,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
             return model;
         }
+
+        public GarmentPackingListModel CopyModel(GarmentPackingListModel om)
+        {
+            var items = new HashSet<GarmentPackingListItemModel>();
+            foreach (var i in om.Items)
+            {
+                var details = new HashSet<GarmentPackingListDetailModel>();
+                foreach (var d in i.Details)
+                {
+                    var sizes = new HashSet<GarmentPackingListDetailSizeModel>();
+                    foreach (var s in d.Sizes)
+                    {
+                        sizes.Add(new GarmentPackingListDetailSizeModel(s.SizeId, s.Size, s.Quantity) { Id = s.Id });
+                    }
+                    details.Add(new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, sizes) { Id = d.Id });
+                }
+                items.Add(new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrandId, i.BuyerBrandName, i.ComodityId, i.ComodityCode, i.ComodityName, i.ComodityDescription, i.Quantity, i.UomId, i.UomUnit, i.PriceRO, i.Price, i.Amount, i.Valas, i.UnitId, i.UnitCode, i.Article, i.OrderNo, i.Description, details, i.AVG_GW, i.AVG_NW) { Id = i.Id });
+            }
+            var measurements = new HashSet<GarmentPackingListMeasurementModel>();
+            foreach (var measurement in om.Measurements)
+            {
+                measurements.Add(new GarmentPackingListMeasurementModel(measurement.Length, measurement.Width, measurement.Height, measurement.CartonsQuantity) { Id = measurement.Id });
+            }
+            var model = new GarmentPackingListModel(om.InvoiceNo, om.PackingListType, om.InvoiceType, om.SectionId, om.SectionCode, om.Date, om.PaymentTerm, om.LCNo, om.IssuedBy, om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.Destination, om.TruckingDate, om.ExportEstimationDate, om.Omzet, om.Accounting, items, om.GrossWeight, om.NettWeight, om.TotalCartons, measurements, om.ShippingMark, om.SideMark, om.Remark, om.IsUsed) { Id = om.Id };
+
+            return model;
+        }
+
     }
 }
