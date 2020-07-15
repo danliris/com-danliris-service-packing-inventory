@@ -74,9 +74,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public void SetRONo(string rONo, string userName, string userAgent)
         {
-            if (RONo != RONo)
+            if (RONo != rONo)
             {
-                RONo = RONo;
+                RONo = rONo;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
