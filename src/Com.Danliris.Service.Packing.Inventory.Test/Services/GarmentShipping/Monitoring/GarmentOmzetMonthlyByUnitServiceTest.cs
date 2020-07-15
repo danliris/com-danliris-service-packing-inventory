@@ -88,7 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                      new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
-                         },
+                         }
                 };
 
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
@@ -101,13 +101,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
 
             var repoMock1 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>().AsQueryable());
+                .Returns(items.AsQueryable());
 
             var repoMock2 = new Mock<IGarmentPackingListRepository>();
             repoMock2.Setup(s => s.ReadAll())
