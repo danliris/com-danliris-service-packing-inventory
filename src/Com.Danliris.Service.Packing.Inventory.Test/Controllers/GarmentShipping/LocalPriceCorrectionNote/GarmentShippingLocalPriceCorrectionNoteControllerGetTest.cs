@@ -42,6 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             id = IndexViewModel.salesNote.id,
                             noteNo = IndexViewModel.salesNote.noteNo,
                             buyer = IndexViewModel.salesNote.buyer,
+                            date = IndexViewModel.salesNote.date,
                             tempo = IndexViewModel.salesNote.tempo,
                             dispositionNo = IndexViewModel.salesNote.dispositionNo
                         }

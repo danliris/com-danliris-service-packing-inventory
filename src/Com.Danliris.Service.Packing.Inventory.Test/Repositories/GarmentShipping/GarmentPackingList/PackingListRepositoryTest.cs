@@ -29,11 +29,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new GarmentPackingListRepository(dbContext, serviceProvider);
 
-            var oldModel = DataUtil(repo, dbContext).GetModel();
+            var items = new HashSet<GarmentPackingListItemModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                        new GarmentPackingListDetailSizeModel(1, "", 1),
+                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                    }),
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                    })
+                }, 1, 1),
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                    })
+                }, 1, 1)
+            };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> {
+                new GarmentPackingListMeasurementModel(1, 1, 1, 1),
+                new GarmentPackingListMeasurementModel(1, 1, 1, 1)
+            };
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", false);
+
             await repo.InsertAsync(oldModel);
 
-            var model = repo.ReadAll().FirstOrDefault();
-            var data = await repo.ReadByIdAsync(model.Id);
+            var data = DataUtil(repo, dbContext).CopyModel(oldModel);
+
             data.SetAccounting(!data.Accounting, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetOmzet(!data.Omzet, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetIsUsed(!data.IsUsed, data.LastModifiedBy, data.LastModifiedAgent);
@@ -77,7 +98,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                         size.SetSizeId(1 + size.SizeId, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetSize(1 + size.Size, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetQuantity(1 + size.Quantity, size.LastModifiedBy, size.LastModifiedAgent);
+
+                        if (item.Id == 2 || detail.Id == 2 || size.Id == 2)
+                        {
+                            size.Id = 0;
+                        }
                     }
+
+                    if (item.Id == 2 || detail.Id == 2)
+                    {
+                        detail.Id = 0;
+                    }
+                }
+
+                if (item.Id == 2)
+                {
+                    item.Id = 0;
                 }
             }
 
@@ -87,6 +123,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 measurement.SetWidth(1 + measurement.Width, measurement.LastModifiedBy, measurement.LastModifiedAgent);
                 measurement.SetHeight(1 + measurement.Height, measurement.LastModifiedBy, measurement.LastModifiedAgent);
                 measurement.SetCartonsQuantity(1 + measurement.CartonsQuantity, measurement.LastModifiedBy, measurement.LastModifiedAgent);
+
+                if (measurement.Id == 2)
+                {
+                    measurement.Id = 0;
+                }
             }
 
             var result = await repo.UpdateAsync(data.Id, data);
