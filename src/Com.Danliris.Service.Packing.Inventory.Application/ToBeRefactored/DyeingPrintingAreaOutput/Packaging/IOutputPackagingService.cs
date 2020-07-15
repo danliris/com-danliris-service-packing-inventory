@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<PlainAdjPackagingProductionOrder> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
         Task<int> CreateAdj(OutputPackagingViewModel viewModel);
 
-        MemoryStream GenerateExcelAll();
+        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         Task<int> Delete(int bonId);
         Task<int> DeleteV2(int bonId);
 

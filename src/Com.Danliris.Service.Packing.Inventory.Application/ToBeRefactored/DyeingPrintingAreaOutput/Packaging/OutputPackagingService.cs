@@ -736,10 +736,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
-        public MemoryStream GenerateExcelAll()
+        public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
             //var model = await _repository.ReadByIdAsync(id);
-            var modelAll = _repository.ReadAll().Where(s => s.Area == PACKING && !s.HasNextAreaDocument).ToList().Select(s =>
+            //var modelAll = _repository.ReadAll().Where(s => s.Area == PACKING && !s.HasNextAreaDocument).ToList().Select(s =>
+            //    new
+            //    {
+            //        SppList = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new
+            //        {
+            //            BonNo = s.BonNo,
+            //            NoSPP = d.ProductionOrderNo,
+            //            QtyOrder = d.ProductionOrderOrderQuantity,
+            //            Material = d.Construction,
+            //            Unit = d.Unit,
+            //            Buyer = d.Buyer,
+            //            Warna = d.Color,
+            //            Motif = d.Motif,
+            //            Jenis = d.PackagingType,
+            //            Grade = d.Grade,
+            //            Ket = d.Description,
+            //            QtyPack = d.PackagingQty,
+            //            Pack = d.PackagingUnit,
+            //            Qty = d.Balance,
+            //            SAT = d.UomUnit
+            //        })
+            //    });
+
+            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                packingData = packingData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (!dateFrom.HasValue && dateTo.HasValue)
+            {
+                packingData = packingData.Where(s => s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (dateFrom.HasValue && !dateTo.HasValue)
+            {
+                packingData = packingData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date);
+            }
+
+            packingData = packingData.OrderBy(s => s.BonNo);
+
+            var modelAll = packingData.ToList().Select(s =>
                 new
                 {
                     SppList = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new
@@ -761,6 +801,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.UomUnit
                     })
                 });
+
             //var modelAll = _repository.ReadAll().Where(s => s.Area == PACKING && !s.HasNextAreaDocument).ToList().SelectMany(s =>
             //    new
             //    {

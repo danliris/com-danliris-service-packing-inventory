@@ -781,7 +781,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IOutputShippingService>();
 
-            serviceMock.Setup(s => s.GenerateExcel())
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -793,7 +793,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetExcel();
+            var response = controller.GetExcel("7");
 
             Assert.NotNull(response);
         }
@@ -804,7 +804,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IOutputShippingService>();
 
-            serviceMock.Setup(s => s.GenerateExcel())
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -816,7 +816,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetExcel();
+            var response = controller.GetExcel("7");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
