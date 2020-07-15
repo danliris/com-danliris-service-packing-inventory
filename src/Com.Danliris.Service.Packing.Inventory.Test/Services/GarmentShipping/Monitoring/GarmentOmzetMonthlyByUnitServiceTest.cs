@@ -88,7 +88,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                      new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
-                         }
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
                 };
 
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
