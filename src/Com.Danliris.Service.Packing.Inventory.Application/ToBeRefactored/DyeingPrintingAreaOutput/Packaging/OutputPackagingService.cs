@@ -447,13 +447,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 && s.CreatedUtc.Year == viewModel.Date.Year);
             string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
             viewModel.PackagingProductionOrders = viewModel.PackagingProductionOrders.Where(s => s.Balance > 0).ToList();
-
+            List<DyeingPrintingAreaOutputProductionOrderModel> productionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
+            //get BonNo with shift
+            var hasBonNoWithShift = _repository.ReadAll().Where(x => x.Shift == viewModel.Shift && x.Area == PACKING && x.Date.Date == viewModel.Date.Date).FirstOrDefault();
+            DyeingPrintingAreaOutputModel model = new DyeingPrintingAreaOutputModel();
             foreach (var item in viewModel.PackagingProductionOrders)
             {
-                //get BonNo with shift
-                var hasBonNoWithShift = _repository.ReadAll().Where(x => x.Shift == viewModel.Shift && x.Area == PACKING && x.Date.Date == viewModel.Date.Date).FirstOrDefault();
-                DyeingPrintingAreaOutputModel model = new DyeingPrintingAreaOutputModel();
-
                 //get spp in that will be decrease balance
                 var sppInDecrease = _inputProductionOrderRepository.ReadAll().Where(x => x.ProductionOrderId == item.ProductionOrder.Id && x.Area == PACKING && !x.HasOutputDocument && x.BalanceRemains > 0).OrderBy(x => x.Id).ToList();
                 List<DyeingPrintingAreaInputProductionOrderModel> listSppHasDescrease = new List<DyeingPrintingAreaInputProductionOrderModel>();
@@ -485,6 +484,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
                     }
                 }
+
                 var jsonSetting = new JsonSerializerSettings();
                 jsonSetting.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 jsonSetting.NullValueHandling = NullValueHandling.Ignore;
@@ -494,36 +494,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 jsonSetting.FloatParseHandling = FloatParseHandling.Double;
 
                 var jsonLIstSppHasDecrease = JsonConvert.SerializeObject(listSppHasDescrease, Formatting.Indented, jsonSetting);
-                if (hasBonNoWithShift == null)
-                {
 
-                    model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.PackagingProductionOrders.Select(s =>
-                         new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                         s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, 0, s.Id, s.BuyerId, jsonLIstSppHasDecrease)).ToList());
-                    result += await _repository.InsertAsync(model);
-                }
-                else
-                {
-                    model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, hasBonNoWithShift.BonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.PackagingProductionOrders.Select(s =>
-                         new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                         s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, hasBonNoWithShift.Id, s.Id, s.BuyerId, jsonLIstSppHasDecrease)).ToList());
-                    model.Id = hasBonNoWithShift.Id;
-                    bonNo = model.BonNo;
-                }
-
-                foreach (var items in model.DyeingPrintingAreaOutputProductionOrders)
-                {
-                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
-                        items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance, items.Id, items.ProductionOrderType, items.Grade, items.Description);
-
-                    if (hasBonNoWithShift != null)
-                        result += await _outputProductionOrderRepository.InsertAsync(items);
-
-                    result += await _movementRepository.InsertAsync(movementModel);
-
-
-                }
+                var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
+                     item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, item.Id, item.BuyerId, jsonLIstSppHasDecrease);
+                productionOrders.Add(productionOrder);
             }
+            if (hasBonNoWithShift == null)
+            {
+                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, productionOrders);
+                result += await _repository.InsertAsync(model);
+            }
+            else
+            {
+                foreach (var po in productionOrders)
+                {
+                    po.DyeingPrintingAreaOutputId = hasBonNoWithShift.Id;
+                }
+
+                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, hasBonNoWithShift.BonNo, false, viewModel.DestinationArea, viewModel.Group, productionOrders);
+                model.Id = hasBonNoWithShift.Id;
+                bonNo = model.BonNo;
+            }
+
+            foreach (var items in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
+                    items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance, items.Id, items.ProductionOrderType, items.Grade, items.Description);
+
+                if (hasBonNoWithShift != null)
+                    result += await _outputProductionOrderRepository.InsertAsync(items);
+
+                result += await _movementRepository.InsertAsync(movementModel);
+
+
+            }
+
             return result;
         }
 
@@ -1318,6 +1323,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             result += await _inputProductionOrderRepository.UpdateAsync(sppBck.Id, model);
                         }
                     }
+                }
+                foreach (var items in bonOutput.DyeingPrintingAreaOutputProductionOrders)
+                {
+                    var movementModel = new DyeingPrintingAreaMovementModel(bonOutput.Date, bonOutput.Area, TYPE, bonOutput.Id, bonOutput.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
+                        items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance * -1, items.Id, items.ProductionOrderType, items.Grade, items.Description);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
                 }
             }
             result += await _repository.DeleteAsync(bonId);
