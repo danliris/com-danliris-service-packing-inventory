@@ -29,6 +29,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double AvalWeightQuantity { get; private set; }
         public string AvalType { get; private set; }
 
+        public string Grade { get; private set; }
+        public string ProductionOrderType { get; private set; }
+        public string Remark { get; private set; }
+
         public DyeingPrintingAreaMovementModel()
         {
 
@@ -44,19 +48,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalWeightQuantity = avalWeightQuantity;
         }
 
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
-            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId) : this(date, area, type, dyeingPrintingAreaDocumentId, 
-                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance)
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, long productionOrderId, string productionOrderNo, string productionOrderType, string construction,
+            string color, string grade, string remark, string motif, string unit, string uomUnit, double balance)
         {
-            DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
+            Date = date;
+            Area = area;
+            Type = type;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            Construction = construction;
+            Color = color;
+            Grade = grade;
+            Remark = remark;
+            Motif = motif;
+            Unit = unit;
+            UomUnit = uomUnit;
+            Balance = balance;
         }
 
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, double avalQuantity, double avalWeightQuantity, string avalType) :
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType) : this(date, area, type, dyeingPrintingAreaDocumentId,
+                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance)
+        {
+            DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
+            ProductionOrderType = productionOrderType;
+        }
+
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, double avalQuantity, double avalWeightQuantity, string avalType) :
             this(date, area, type, dyeingPrintingAreaDocumentId,
-                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId)
+                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
         {
             AvalQuantity = avalQuantity;
             AvalWeightQuantity = avalWeightQuantity;

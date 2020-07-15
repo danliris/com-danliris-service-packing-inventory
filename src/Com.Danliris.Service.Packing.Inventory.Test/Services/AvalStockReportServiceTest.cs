@@ -54,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                    "unit", 1, 1, ViewModel.InAvalQuantity, ViewModel.InAvalWeightQuantity, ViewModel.AvalType);
+                    "unit", 1, 1, "type", ViewModel.InAvalQuantity, ViewModel.InAvalWeightQuantity, ViewModel.AvalType);
             }
         }
 
@@ -63,7 +63,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", 1, 1, ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
+                     "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAdjOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAdjIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
             }
         }
 
@@ -72,15 +90,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
+
+        private DyeingPrintingAreaMovementModel ModelAwalAdjOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAwalAdjIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+            }
+        }
+
         private DyeingPrintingAreaMovementModel ModelAwalTransform
         {
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
         private DyeingPrintingAreaMovementModel ModelAwalTransform2
@@ -88,7 +125,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
         private DyeingPrintingAreaMovementModel ModelAwalTransform3
@@ -96,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", 1, 1, ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
+                     "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
 
@@ -106,7 +143,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAwalTransform2, ModelAwalTransform3 };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAwalTransform2, ModelAwalTransform3, ModelAdjIn, ModelAdjOut,
+                ModelAwalAdjIn, ModelAwalAdjOut};
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 
@@ -123,7 +161,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
 
-            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut };
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalTransform, ModelTransform, ModelOut, ModelAdjIn, ModelAdjOut, ModelAwalAdjIn, ModelAwalAdjOut };
             movementRepoMock.Setup(s => s.ReadAll())
                  .Returns(data.AsQueryable());
 

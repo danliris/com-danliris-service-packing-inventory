@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Akhir = 0,
                     Awal = 0,
                     Color = "a",
-                    Contruction = "a",
+                    Construction = "a",
                     Grade = "a",
                     Jenis = "a",
                     Keluar = 0,
@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, false, "PACKING", ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, "PACKING", false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance,1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, 1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "")).ToList());
             }
         }
@@ -219,6 +219,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
+        private DyeingPrintingAreaMovementModel ModelOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Keluar, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAdjIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAdjOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ Out", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAwalOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Keluar, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAwalIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAwalAdjIn
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+        private DyeingPrintingAreaMovementModel ModelAwalAdjOut
+        {
+            get
+            {
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "PACKING", "ADJ Out", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                     "unit", ViewModel1.Masuk, 1, "type");
+            }
+        }
+
+
         public StockWarehouseService GetService(IServiceProvider serviceProvider)
         {
             return new StockWarehouseService(serviceProvider);
@@ -300,9 +373,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSpp.Setup(s => s.ReadAll())
                 .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object,outRepoMock.Object,outputSpp.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
 
-            var result = service.GetReportData(It.IsAny<DateTimeOffset>(),"PACKING");
+            var result = service.GetReportData(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), "PACKING", 7);
 
             Assert.Empty(result);
         }
@@ -320,7 +393,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var x = Model;
             x.Id = 1;
-            foreach(var y in x.DyeingPrintingAreaInputProductionOrders)
+            foreach (var y in x.DyeingPrintingAreaInputProductionOrders)
             {
                 y.Id = 1;
                 y.DyeingPrintingAreaInputId = 1;
@@ -330,7 +403,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaInputModel>() { x }.AsQueryable());
             var a = OutputModel;
             a.Id = 1;
-            foreach(var t in a.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var t in a.DyeingPrintingAreaOutputProductionOrders)
             {
                 t.Id = 1;
                 t.DyeingPrintingAreaOutputId = 1;
@@ -348,10 +421,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             testmodel.Id = 1;
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(
-                //new List<DyeingPrintingAreaInputProductionOrderModel> {
+                    //new List<DyeingPrintingAreaInputProductionOrderModel> {
                     x.DyeingPrintingAreaInputProductionOrders.ToList().AsQueryable()
-                //}.AsQueryable()
+            //}.AsQueryable()
             );
+
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut, ModelAwalIn, ModelIn, ModelOut, ModelAdjIn, ModelAdjOut, ModelAwalAdjIn, ModelAwalAdjOut };
+            movementRepoMock.Setup(s => s.ReadAll())
+                 .Returns(data.AsQueryable());
+
 
             outputSpp.Setup(s => s.ReadAll())
                 .Returns(a.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
@@ -361,8 +439,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
             //var service = new StockWarehouseService(serviceMock.Object);
 
-            var result = service.GenerateExcel(OutputModel.Date,"PACKING");
-            
+            var result = service.GenerateExcel(ModelIn.Date.AddDays(-1), ModelIn.Date.AddDays(1), "PACKING", 7);
+
 
             Assert.NotNull(result);
         }
