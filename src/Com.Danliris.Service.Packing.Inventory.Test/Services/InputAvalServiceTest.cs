@@ -318,9 +318,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public async Task Should_Success_Create()
         {
             var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             //Mock for totalCurrentYear
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
@@ -352,6 +354,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
+            outputSppRepoMock.Setup(s => s.ReadAll())
+                .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            inputSppMock.Setup(s => s.ReadAll())
+                .Returns(Model.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+
             summaryRepoMock.Setup(s => s.UpdateToAvalAsync(It.IsAny<DyeingPrintingAreaSummaryModel>(), ViewModel.Date, ViewModel.Area, "IN"))
                 .ReturnsAsync(1);
 
@@ -361,7 +369,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
 

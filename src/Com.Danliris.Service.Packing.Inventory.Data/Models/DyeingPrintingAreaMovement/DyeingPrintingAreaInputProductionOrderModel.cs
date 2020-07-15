@@ -723,7 +723,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            decimal packagingQty,
                                                            string area,
                                                            double balanceRemains,
-                                                           int dyeingPrintingAreaInputId,
+                                                           int dyeingPrintingAreaOutputProductionOrderId,
                                                            int buyerId)
         {
             ProductionOrderId = productionOrderId;
@@ -758,7 +758,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingQty = packagingQty;
             Area = area;
             BalanceRemains = balanceRemains;
-            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
+            DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
 
             BuyerId = buyerId;
         }

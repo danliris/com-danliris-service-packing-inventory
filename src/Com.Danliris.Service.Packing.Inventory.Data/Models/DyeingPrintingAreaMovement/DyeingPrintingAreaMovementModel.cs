@@ -38,6 +38,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
+        /// <summary>
+        /// Get For Aval Report
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="avalType"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalWeightQuantity"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, string avalType, double avalQuantity, double avalWeightQuantity)
         {
             Date = date;
@@ -48,6 +57,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalWeightQuantity = avalWeightQuantity;
         }
 
+        /// <summary>
+        /// Get For Non Aval Report
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="construction"></param>
+        /// <param name="color"></param>
+        /// <param name="grade"></param>
+        /// <param name="remark"></param>
+        /// <param name="motif"></param>
+        /// <param name="unit"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, long productionOrderId, string productionOrderNo, string productionOrderType, string construction,
             string color, string grade, string remark, string motif, string unit, string uomUnit, double balance)
         {
@@ -67,6 +93,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
         }
 
+        /// <summary>
+        /// Main Constructor
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType) : this(date, area, type, dyeingPrintingAreaDocumentId,
@@ -76,6 +122,90 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionOrderType = productionOrderType;
         }
 
+        /// <summary>
+        /// Constructor With Grade
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="grade"></param>
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade) : this(date, area, type,
+                dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
+        {
+            Grade = grade;
+        }
+
+        /// <summary>
+        /// Constructor With Grade and Remark
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="grade"></param>
+        /// <param name="remark"></param>
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark) : this(date, area, type,
+                dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade)
+        {
+            Remark = remark;
+        }
+
+        /// <summary>
+        /// Aval Constructor
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalWeightQuantity"></param>
+        /// <param name="avalType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, double avalQuantity, double avalWeightQuantity, string avalType) :
@@ -87,6 +217,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalType = avalType;
         }
 
+        /// <summary>
+        /// Aval Transform Constructor
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalWeightQuantity"></param>
+        /// <param name="avalType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
              double avalQuantity, double avalWeightQuantity, string avalType) : this()
         {
@@ -121,6 +262,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
         }
 
+        /// <summary>
+        /// Input Aval Create Constructor
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date,
                                                string area,
                                                string type,
