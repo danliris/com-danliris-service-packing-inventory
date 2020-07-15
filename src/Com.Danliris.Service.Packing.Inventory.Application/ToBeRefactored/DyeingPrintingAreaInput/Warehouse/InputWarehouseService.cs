@@ -256,7 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
-                var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id && s.ProductionOrderId == item.ProductionOrder.Id);
+                var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id);
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrderNo, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, itemModel.Id, item.ProductionOrder.Type, item.Grade);
@@ -492,7 +492,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     foreach (var detail in item)
                     {
-                        var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id && s.ProductionOrderId == detail.ProductionOrder.Id);
+                        var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id);
                         result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
 
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,

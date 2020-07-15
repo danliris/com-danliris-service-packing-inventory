@@ -21,15 +21,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new ReportStockWarehouseViewModel
                 {
-                    Akhir = 0,
-                    Awal = 0,
+                    Akhir = 1,
+                    Awal = 3,
                     Color = "a",
                     Construction = "a",
                     Grade = "a",
                     Jenis = "a",
-                    Keluar = 0,
+                    Keluar = 2,
                     Ket = "a",
-                    Masuk = 0,
+                    Masuk = 4,
                     Motif = "a",
                     NoSpp = "a",
                     Satuan = "a",

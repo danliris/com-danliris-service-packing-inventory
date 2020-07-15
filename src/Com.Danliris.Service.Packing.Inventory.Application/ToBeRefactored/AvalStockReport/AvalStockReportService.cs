@@ -133,7 +133,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                     + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0)
             });
 
-            return result;
+            return result.Where(s => s.StartAvalQuantity != 0 || s.InAvalQuantity != 0 || s.OutAvalQuantity != 0 || s.EndAvalQuantity != 0 ||
+                    s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0);
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset searchDate, int offset)

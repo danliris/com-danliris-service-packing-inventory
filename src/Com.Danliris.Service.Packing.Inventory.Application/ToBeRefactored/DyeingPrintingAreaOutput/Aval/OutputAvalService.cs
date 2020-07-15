@@ -313,24 +313,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Balance, item.AvalQuantityKg, item.AvalType);
 
                 result += await _movementRepository.InsertAsync(movementModel);
-
-                var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
-                                                                      viewModel.Area,
-                                                                      OUT,
-                                                                      model.Id,
-                                                                      model.BonNo,
-                                                                      item.ProductionOrderId,
-                                                                      item.ProductionOrderNo,
-                                                                      item.CartNo,
-                                                                      item.Buyer,
-                                                                      item.Construction,
-                                                                      item.Unit,
-                                                                      item.Color,
-                                                                      item.Motif,
-                                                                      item.UomUnit,
-                                                                      item.Balance);
-
-                result += await _summaryRepository.InsertAsync(summaryModel);
             }
 
             var groupedType = model.DyeingPrintingAreaOutputProductionOrders.GroupBy(s => s.AvalType,

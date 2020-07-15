@@ -115,9 +115,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="productionOrderType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType) : this(date, area, type, dyeingPrintingAreaDocumentId,
-                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance)
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType)
         {
+            Date = date;
+            Area = area;
+            Type = type;
+            DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
+            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
             DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
             ProductionOrderType = productionOrderType;
         }
@@ -241,26 +255,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalType = avalType;
         }
 
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
-            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance)
-        {
-            Date = date;
-            Area = area;
-            Type = type;
-            DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
-            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-        }
 
         /// <summary>
         /// Input Aval Create Constructor

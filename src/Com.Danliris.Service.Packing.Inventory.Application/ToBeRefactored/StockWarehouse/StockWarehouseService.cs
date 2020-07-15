@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).Quantity : 0)
             });
 
-            return result.ToList();
+            return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).ToList();
         }
 
 

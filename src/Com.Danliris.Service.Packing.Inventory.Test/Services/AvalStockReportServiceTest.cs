@@ -38,13 +38,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     AvalType = "type",
                     EndAvalQuantity = 1,
-                    EndAvalWeightQuantity = 1,
-                    InAvalQuantity = 2,
-                    InAvalWeightQuantity = 2,
-                    OutAvalQuantity = 1,
-                    OutAvalWeightQuantity = 1,
-                    StartAvalQuantity = 0,
-                    StartAvalWeightQuantity = 0
+                    EndAvalWeightQuantity = 2,
+                    InAvalQuantity = 5,
+                    InAvalWeightQuantity = 6,
+                    OutAvalQuantity = 3,
+                    OutAvalWeightQuantity = 4,
+                    StartAvalQuantity = 7,
+                    StartAvalWeightQuantity = 8
                 };
             }
         }
