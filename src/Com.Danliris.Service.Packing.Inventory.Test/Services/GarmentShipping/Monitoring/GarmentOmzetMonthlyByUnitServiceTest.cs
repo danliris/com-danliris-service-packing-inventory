@@ -79,15 +79,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Success()
         {
+            var items = new List<GarmentShippingInvoiceItemModel>
+                {
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "uom1", 1, 1, 1, "", 1, "C10", 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                };
+
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                "", DateTimeOffset.Now, "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
+                                                "", DateTimeOffset.Now, "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
             {
                 Id = 1
-            };
-
-            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "PCS", 1, 1, 1, "", 1, "C10", 1)
-            {
-                GarmentShippingInvoiceId = 1
             };
 
             var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", true)
@@ -100,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var repoMock1 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model1 }.AsQueryable());
+                .Returns(new List<GarmentShippingInvoiceItemModel>().AsQueryable());
 
             var repoMock2 = new Mock<IGarmentPackingListRepository>();
             repoMock2.Setup(s => s.ReadAll())
@@ -108,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
 
-            var result = service.GenerateExcel(model1.UnitCode, DateTime.MinValue, DateTime.Now, 7);
+            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.Now, 7);
 
             Assert.NotNull(result);
         }
