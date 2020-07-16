@@ -439,10 +439,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
             //var service = new StockWarehouseService(serviceMock.Object);
 
-            var result = service.GenerateExcel(ModelIn.Date.AddDays(-1), ModelIn.Date.AddDays(1), "PACKING", 7);
+            var result = service.GenerateExcel(ModelIn.Date.AddDays(-10), ModelIn.Date.AddDays(10), "PACKING", 7);
 
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void ValidateVM()
+        {
+            var simpleVM = new SimpleReportViewModel();
+            Assert.Equal(0, simpleVM.ProductionOrderId);
+
+            var reportVM = new ReportStockWarehouseViewModel();
+            Assert.Null(reportVM.Construction);
+            Assert.Null(reportVM.Unit);
+            Assert.Null(reportVM.Motif);
+            Assert.Null(reportVM.Color);
+            Assert.Null(reportVM.Jenis);
+            Assert.Null(reportVM.Ket);
+            Assert.Null(reportVM.Satuan);
         }
     }
 }

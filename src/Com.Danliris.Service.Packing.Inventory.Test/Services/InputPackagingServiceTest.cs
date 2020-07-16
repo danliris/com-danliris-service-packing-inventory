@@ -1140,5 +1140,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public void ValidateVM()
+        {
+            var inputSpp = new InputPackagingProductionOrdersViewModel();
+            Assert.False(inputSpp.IsChecked);
+            Assert.Null(inputSpp.Material);
+            Assert.Null(inputSpp.PackingType);
+        }
     }
 }

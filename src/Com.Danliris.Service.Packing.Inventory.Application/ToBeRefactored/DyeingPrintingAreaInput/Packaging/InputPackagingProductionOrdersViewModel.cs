@@ -28,8 +28,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Remark { get; set; }
         public string Status { get; set; }
         public string Material { get; set; }
-        public decimal MtrLength { get; set; }
-        public decimal YdsLength { get; set; }
         public string ProductionOrderNo { get; set; }
         public double QtyOrder { get; set; }
         public string Area { get; set; }
