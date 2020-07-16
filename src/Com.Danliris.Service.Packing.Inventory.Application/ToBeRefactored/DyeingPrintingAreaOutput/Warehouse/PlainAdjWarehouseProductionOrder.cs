@@ -40,5 +40,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public decimal PackagingQty { get; set; }
         public double Balance { get; set; }
+        public string PackagingType { get; set; }
     }
 }

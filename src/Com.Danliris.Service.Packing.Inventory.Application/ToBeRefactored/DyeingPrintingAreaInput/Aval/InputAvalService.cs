@@ -594,15 +594,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id);
                         result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
-                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                            detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type);
-
-                        //var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == detail.Id && s.ProductionOrderId == detail.ProductionOrder.Id);
-
-                        //var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                        //detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance);
-
-                        result += await _movementRepository.InsertAsync(movementModel);
+                        var movementModel = new DyeingPrintingAreaMovementModel();
+                        if (item.Key == INSPECTIONMATERIAL)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
+                        else if (item.Key == TRANSIT)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type, null, detail.Remark);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
+                        else if (item.Key == PACKING)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type, detail.Grade);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
                         //if (previousSummary == null)
                         //{
 
@@ -627,12 +637,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                         result += await _inputSppRepository.InsertAsync(modelItem);
                         result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
-
-                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                           detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrderType);
-
-                        //var previousSummary = _summaryRepository.ReadAll().F
-                        result += await _movementRepository.InsertAsync(movementModel);
+                        var movementModel = new DyeingPrintingAreaMovementModel();
+                        if (item.Key == INSPECTIONMATERIAL)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrder.Type);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
+                        else if (item.Key == TRANSIT)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrder.Type, null, detail.Remark);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
+                        else if (item.Key == PACKING)
+                        {
+                            movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrder.Type, detail.Grade);
+                            result += await _movementRepository.InsertAsync(movementModel);
+                        }
 
                         //if (previousSummary == null)
                         //{

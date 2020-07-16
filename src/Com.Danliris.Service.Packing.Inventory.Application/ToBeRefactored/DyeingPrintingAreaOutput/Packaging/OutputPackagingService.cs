@@ -431,7 +431,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade, item.Description);
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade);
 
                 result += await _movementRepository.InsertAsync(movementModel);
             }
@@ -518,11 +518,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var items in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
-                    items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance, items.Id, items.ProductionOrderType, items.Grade, items.Description);
-
                 if (hasBonNoWithShift != null)
                     result += await _outputProductionOrderRepository.InsertAsync(items);
+
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, TYPE, model.Id, model.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
+                    items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance, items.Id, items.ProductionOrderType, items.Grade);
 
                 result += await _movementRepository.InsertAsync(movementModel);
 
@@ -1327,7 +1327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var items in bonOutput.DyeingPrintingAreaOutputProductionOrders)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(bonOutput.Date, bonOutput.Area, TYPE, bonOutput.Id, bonOutput.BonNo, items.ProductionOrderId, items.ProductionOrderNo,
-                        items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance * -1, items.Id, items.ProductionOrderType, items.Grade, items.Description);
+                        items.CartNo, items.Buyer, items.Construction, items.Unit, items.Color, items.Motif, items.UomUnit, items.Balance * -1, items.Id, items.ProductionOrderType, items.Grade);
 
                     result += await _movementRepository.InsertAsync(movementModel);
                 }

@@ -59,15 +59,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
                     s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
 
-            var result = queryTransform.GroupBy(s => s.ProductionOrderId).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
-                ProductionOrderId = d.Key,
+                ProductionOrderId = d.Key.ProductionOrderId,
                 Type = AWAL,
                 Color = d.First().Color,
                 Construction = d.First().Construction,
-                Grade = d.First().Grade,
-                Jenis = d.First().ProductionOrderType,
-                Ket = d.First().Remark,
+                Grade = d.Key.Grade,
+                Jenis = d.Key.PackingType,
+                Ket = d.Key.Remark,
                 Motif = d.First().Motif,
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
@@ -89,15 +89,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
                         s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
 
-            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type }).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = d.Key.Type,
                 Color = d.First().Color,
                 Construction = d.First().Construction,
-                Grade = d.First().Grade,
-                Jenis = d.First().ProductionOrderType,
-                Ket = d.First().Remark,
+                Grade = d.Key.Grade,
+                Jenis = d.Key.PackingType,
+                Ket = d.Key.Remark,
                 Motif = d.First().Motif,
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
@@ -115,14 +115,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             var dataAwal = GetAwalData(dateFrom, zona, productionOrderIds, offset);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
-            var result = joinData2.GroupBy(d => d.NoSpp).Select(e => new ReportStockWarehouseViewModel()
+            var result = joinData2.GroupBy(d => new { d.NoSpp, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
             {
-                NoSpp = e.Key,
+                NoSpp = e.Key.NoSpp,
                 Color = e.First().Color,
                 Construction = e.First().Construction,
-                Grade = e.First().Grade,
-                Jenis = e.First().Jenis,
-                Ket = e.First().Ket,
+                Grade = e.Key.Grade,
+                Jenis = e.Key.Jenis,
+                Ket = e.Key.Ket,
                 Motif = e.First().Motif,
                 Satuan = e.First().Satuan,
                 Unit = e.First().Unit,

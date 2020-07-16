@@ -37,5 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string UomUnit { get; set; }
 
         public string Area { get; set; }
+
+        public string PackingType { get; set; }
     }
 }

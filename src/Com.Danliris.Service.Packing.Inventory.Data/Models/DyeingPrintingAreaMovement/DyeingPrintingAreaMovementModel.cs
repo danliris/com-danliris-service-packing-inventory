@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Grade { get; private set; }
         public string ProductionOrderType { get; private set; }
         public string Remark { get; private set; }
+        public string PackingType { get; private set; }
 
         public DyeingPrintingAreaMovementModel()
         {
@@ -195,6 +196,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade)
         {
             Remark = remark;
+        }
+
+        /// <summary>
+        /// Constructror With Grade and Remark and Packing Type
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="grade"></param>
+        /// <param name="remark"></param>
+        /// <param name="packingType"></param>
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType)
+            : this(date, area, type,
+                dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
+        {
+            PackingType = packingType;
         }
 
         /// <summary>
@@ -423,6 +457,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newId != DyeingPrintingAreaProductionOrderDocumentId)
             {
                 DyeingPrintingAreaProductionOrderDocumentId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetGrade(string newGrade, string user, string agent)
+        {
+            if (newGrade != Grade)
+            {
+                Grade = newGrade;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetRemark(string newRemark, string user, string agent)
+        {
+            if (newRemark != Remark)
+            {
+                Remark = newRemark;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingType(string newPackingType, string user, string agent)
+        {
+            if (newPackingType != PackingType)
+            {
+                PackingType = newPackingType;
                 this.FlagForUpdate(user, agent);
             }
         }
