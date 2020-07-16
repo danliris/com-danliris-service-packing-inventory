@@ -20,5 +20,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Color { get; set; }
         public string Motif { get; set; }
         public string UomUnit { get; set; }
+        public string PackingType { get; set; }
     }
 }

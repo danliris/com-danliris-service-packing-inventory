@@ -2127,6 +2127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(adjvm.UomUnit);
             Assert.Equal(0, adjvm.PackagingQty);
             Assert.Equal(0, adjvm.Quantity);
+            Assert.Null(adjvm.PackagingType);
         }
     }
 }

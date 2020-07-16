@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Data;
 using OfficeOpenXml;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
@@ -20,7 +21,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         private readonly IDyeingPrintingAreaInputRepository _inputBonRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputSppRepository;
 
-        private const string TYPE = "OUT";
+        private const string OUT = "OUT";
+        private const string IN = "IN";
+        private const string AWAL = "AWAL";
+        private const string TRANSFORM = "TRANSFORM";
+        private const string ADJ_IN = "ADJ IN";
+        private const string ADJ_OUT = "ADJ OUT";
 
         private const string IM = "IM";
         private const string TR = "TR";
@@ -46,11 +52,100 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
+        private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset)
+        {
+            var queryTransform = _movementRepository.ReadAll()
+                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId))
+                .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                    s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
 
-        public MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona)
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                Type = AWAL,
+                Color = d.First().Color,
+                Construction = d.First().Construction,
+                Grade = d.Key.Grade,
+                Jenis = d.Key.PackingType,
+                Ket = d.Key.Remark,
+                Motif = d.First().Motif,
+                NoSpp = d.First().ProductionOrderNo,
+                Satuan = d.First().UomUnit,
+                Unit = d.First().Unit,
+                Quantity = d.Where(e => e.Type == IN).Sum(e => e.Balance) - d.Where(e => e.Type == OUT).Sum(e => e.Balance)
+                    + d.Where(e => e.Type == ADJ_IN || e.Type == ADJ_OUT).Sum(e => e.Balance)
+
+            });
+
+            return result;
+        }
+
+        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTimeOffset dateFrom, DateTimeOffset dateTo, string area, int offset)
+        {
+            var queryTransform = _movementRepository.ReadAll()
+                   .Where(s => s.Area == area &&
+                        dateFrom.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Date)
+                    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                        s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
+
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                Type = d.Key.Type,
+                Color = d.First().Color,
+                Construction = d.First().Construction,
+                Grade = d.Key.Grade,
+                Jenis = d.Key.PackingType,
+                Ket = d.Key.Remark,
+                Motif = d.First().Motif,
+                NoSpp = d.First().ProductionOrderNo,
+                Satuan = d.First().UomUnit,
+                Unit = d.First().Unit,
+                Quantity = d.Sum(e => e.Balance)
+            });
+
+            return result;
+        }
+
+        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
+        {
+            var dataSearchDate = GetDataByDate(dateFrom, dateTo, zona, offset);
+            var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+            var dataAwal = GetAwalData(dateFrom, zona, productionOrderIds, offset);
+            var joinData2 = dataSearchDate.Concat(dataAwal);
+
+            var result = joinData2.GroupBy(d => new { d.NoSpp, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
+            {
+                NoSpp = e.Key.NoSpp,
+                Color = e.First().Color,
+                Construction = e.First().Construction,
+                Grade = e.Key.Grade,
+                Jenis = e.Key.Jenis,
+                Ket = e.Key.Ket,
+                Motif = e.First().Motif,
+                Satuan = e.First().Satuan,
+                Unit = e.First().Unit,
+                Awal = e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).Quantity : 0,
+                Masuk = e.FirstOrDefault(d => d.Type == IN) != null ? e.FirstOrDefault(d => d.Type == IN).Quantity : 0,
+                Keluar = (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).Quantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).Quantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).Quantity : 0),
+                Akhir = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).Quantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == IN) != null ? e.FirstOrDefault(d => d.Type == IN).Quantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).Quantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).Quantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).Quantity : 0)
+            });
+
+            return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).ToList();
+        }
+
+
+        public MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
         {
             //var model = await _repository.ReadByIdAsync(id);
-            var query = GetReportData(dateReport, zona);
+            var query = GetReportData(dateFrom, dateTo, zona, offset);
             //var query = GetQuery(date, group, zona, timeOffSet);
             DataTable dt = new DataTable();
 
@@ -99,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             #region Render Excel Header
             ExcelPackage package = new ExcelPackage();
-            var sheet = package.Workbook.Worksheets.Add("STOCK " + dateReport.ToString("ddMMMyyyy"));
+            var sheet = package.Workbook.Worksheets.Add("STOCK " + dateFrom.ToString("ddMMMyyyy") + " - " + dateTo.ToString("ddMMMyyyy"));
 
             int startHeaderColumn = 1;
             int endHeaderColumn = mappedClass.Count;
@@ -129,109 +224,108 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return stream;
         }
 
-        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona)
-        {
-            //var bonIdOutput = _outputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona);
-            //var bonIdInput = _inputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona);
+        //public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
+        //{
 
-            var outputGroupByNoSPP = _outputSppRepository.ReadAll()
-                                        .Join(_outputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona),
-                                            spp => spp.DyeingPrintingAreaOutputId,
-                                            bon => bon.Id,
-                                            (spp, bon) => spp
-                                        )
-                                        .Where(x => !x.HasNextAreaDocument)
-                                        .GroupBy(x => x.ProductionOrderId)
-                                        .Select(x =>
-                                            new ReportStockWarehouseViewModel
-                                            {
-                                                NoSpp = x.First().ProductionOrderNo,
-                                                Color = x.First().Color,
-                                                Satuan = x.First().UomUnit,
-                                                Unit = x.First().Unit,
-                                                Motif = x.First().Motif,
-                                                Grade = x.First().Grade,
-                                                Contruction = x.First().Construction,
-                                                Jenis = x.First().ProductionOrderType,
-                                                Ket = x.First().Description,
-                                                Awal = x.First().ProductionOrderOrderQuantity,
-                                                Keluar = x.Sum(t => t.Balance),
-                                                Masuk = 0, //will be provide later quering from input area
-                                                Akhir = 0 //will be provide after masuk has assign and will be recalculate
-                                            }
-                                        );
 
-            var inputGroupByNoSPP = _inputSppRepository.ReadAll()
-                                        .Join(_inputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona),
-                                            spp => spp.DyeingPrintingAreaInputId,
-                                            bon => bon.Id,
-                                            (spp, bon) => spp
-                                        )
-                                        .Where(x => !x.HasOutputDocument)
-                                        .GroupBy(x => x.ProductionOrderId)
-                                        .Select(x =>
-                                            new ReportStockWarehouseViewModel
-                                            {
-                                                NoSpp = x.First().ProductionOrderNo,
-                                                Color = x.First().Color,
-                                                Satuan = x.First().UomUnit,
-                                                Unit = x.First().Unit,
-                                                Motif = x.First().Motif,
-                                                Grade = x.First().Grade,
-                                                Contruction = x.First().Construction,
-                                                Jenis = x.First().ProductionOrderType,
-                                                Ket = string.Empty,
-                                                Awal = x.First().ProductionOrderOrderQuantity,
-                                                Keluar = 0, //will be provide later quering from output area
-                                                Masuk = x.Sum(t => t.Balance),
-                                                Akhir = 0 //will be provide after masuk has assign and will be recalculate
-                                            }
+        //    var outputGroupByNoSPP = _outputSppRepository.ReadAll()
+        //                                .Join(_outputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona),
+        //                                    spp => spp.DyeingPrintingAreaOutputId,
+        //                                    bon => bon.Id,
+        //                                    (spp, bon) => spp
+        //                                )
+        //                                .Where(x => !x.HasNextAreaDocument)
+        //                                .GroupBy(x => x.ProductionOrderId)
+        //                                .Select(x =>
+        //                                    new ReportStockWarehouseViewModel
+        //                                    {
+        //                                        NoSpp = x.First().ProductionOrderNo,
+        //                                        Color = x.First().Color,
+        //                                        Satuan = x.First().UomUnit,
+        //                                        Unit = x.First().Unit,
+        //                                        Motif = x.First().Motif,
+        //                                        Grade = x.First().Grade,
+        //                                        Contruction = x.First().Construction,
+        //                                        Jenis = x.First().ProductionOrderType,
+        //                                        Ket = x.First().Description,
+        //                                        Awal = x.First().ProductionOrderOrderQuantity,
+        //                                        Keluar = x.Sum(t => t.Balance),
+        //                                        Masuk = 0, //will be provide later quering from input area
+        //                                        Akhir = 0 //will be provide after masuk has assign and will be recalculate
+        //                                    }
+        //                                );
 
-                                        );
-            // recalculate for value akhir and join using no SPP
-            var recalculateReport = from x in outputGroupByNoSPP
-                                    from y in inputGroupByNoSPP //on x.NoSpp equals y.NoSpp
-                                    select new ReportStockWarehouseViewModel
-                                    {
-                                        NoSpp = string.IsNullOrEmpty(x.NoSpp) ? y.NoSpp : x.NoSpp,
-                                        Color = string.IsNullOrEmpty(x.Color) ? y.Color : x.Color,
-                                        Grade = string.IsNullOrEmpty(x.Grade) ? y.Grade : x.Grade,
-                                        Contruction = string.IsNullOrWhiteSpace(x.Contruction) ? y.Contruction : x.Contruction,
-                                        Satuan = string.IsNullOrWhiteSpace(x.Satuan) ? y.Satuan : x.Satuan,
-                                        Jenis = string.IsNullOrWhiteSpace(x.Jenis) ? y.Jenis : x.Jenis,
-                                        Motif = string.IsNullOrWhiteSpace(x.Motif) ? y.Motif : x.Motif,
-                                        Unit = string.IsNullOrWhiteSpace(x.Unit) ? y.Unit : x.Unit,
-                                        Ket = string.IsNullOrWhiteSpace(x.Ket) ? y.Ket : x.Ket,
-                                        Awal = y.Awal,
-                                        Masuk = y.Masuk,
-                                        Keluar = x.Keluar,
-                                        Akhir = Math.Abs(x.Keluar - y.Awal)
-                                    };
+        //    var inputGroupByNoSPP = _inputSppRepository.ReadAll()
+        //                                .Join(_inputBonRepository.ReadAll().Where(x => x.Date.Date == dateReport.Date && x.Area == zona),
+        //                                    spp => spp.DyeingPrintingAreaInputId,
+        //                                    bon => bon.Id,
+        //                                    (spp, bon) => spp
+        //                                )
+        //                                .Where(x => !x.HasOutputDocument)
+        //                                .GroupBy(x => x.ProductionOrderId)
+        //                                .Select(x =>
+        //                                    new ReportStockWarehouseViewModel
+        //                                    {
+        //                                        NoSpp = x.First().ProductionOrderNo,
+        //                                        Color = x.First().Color,
+        //                                        Satuan = x.First().UomUnit,
+        //                                        Unit = x.First().Unit,
+        //                                        Motif = x.First().Motif,
+        //                                        Grade = x.First().Grade,
+        //                                        Contruction = x.First().Construction,
+        //                                        Jenis = x.First().ProductionOrderType,
+        //                                        Ket = string.Empty,
+        //                                        Awal = x.First().ProductionOrderOrderQuantity,
+        //                                        Keluar = 0, //will be provide later quering from output area
+        //                                        Masuk = x.Sum(t => t.Balance),
+        //                                        Akhir = 0 //will be provide after masuk has assign and will be recalculate
+        //                                    }
 
-            var result = recalculateReport
-                            .GroupBy(x => x.NoSpp)
-                            .Select(x =>
-                                           new ReportStockWarehouseViewModel
-                                           {
-                                               NoSpp = x.First().NoSpp,
-                                               Color = x.First().Color,
-                                               Grade = x.First().Grade,
-                                               Contruction = x.First().Contruction,
-                                               Satuan = x.First().Satuan,
-                                               Jenis = x.First().Jenis,
-                                               Motif = x.First().Motif,
-                                               Unit = x.First().Unit,
-                                               Ket = x.First().Ket,
-                                               Awal = x.Sum(y=> y.Awal),
-                                               Masuk = x.Sum(y=>y.Masuk),
-                                               Keluar = x.Sum(y=>y.Keluar),
-                                               Akhir = Math.Abs(x.Sum(y=>y.Keluar) - x.Sum(y=> y.Awal))
-                                           }
-                            );
+        //                                );
+        //    // recalculate for value akhir and join using no SPP
+        //    var recalculateReport = from x in outputGroupByNoSPP
+        //                            from y in inputGroupByNoSPP //on x.NoSpp equals y.NoSpp
+        //                            select new ReportStockWarehouseViewModel
+        //                            {
+        //                                NoSpp = string.IsNullOrEmpty(x.NoSpp) ? y.NoSpp : x.NoSpp,
+        //                                Color = string.IsNullOrEmpty(x.Color) ? y.Color : x.Color,
+        //                                Grade = string.IsNullOrEmpty(x.Grade) ? y.Grade : x.Grade,
+        //                                Contruction = string.IsNullOrWhiteSpace(x.Contruction) ? y.Contruction : x.Contruction,
+        //                                Satuan = string.IsNullOrWhiteSpace(x.Satuan) ? y.Satuan : x.Satuan,
+        //                                Jenis = string.IsNullOrWhiteSpace(x.Jenis) ? y.Jenis : x.Jenis,
+        //                                Motif = string.IsNullOrWhiteSpace(x.Motif) ? y.Motif : x.Motif,
+        //                                Unit = string.IsNullOrWhiteSpace(x.Unit) ? y.Unit : x.Unit,
+        //                                Ket = string.IsNullOrWhiteSpace(x.Ket) ? y.Ket : x.Ket,
+        //                                Awal = y.Awal,
+        //                                Masuk = y.Masuk,
+        //                                Keluar = x.Keluar,
+        //                                Akhir = Math.Abs(x.Keluar - y.Awal)
+        //                            };
 
-            return result.ToList();
+        //    var result = recalculateReport
+        //                    .GroupBy(x => x.NoSpp)
+        //                    .Select(x =>
+        //                                   new ReportStockWarehouseViewModel
+        //                                   {
+        //                                       NoSpp = x.First().NoSpp,
+        //                                       Color = x.First().Color,
+        //                                       Grade = x.First().Grade,
+        //                                       Contruction = x.First().Contruction,
+        //                                       Satuan = x.First().Satuan,
+        //                                       Jenis = x.First().Jenis,
+        //                                       Motif = x.First().Motif,
+        //                                       Unit = x.First().Unit,
+        //                                       Ket = x.First().Ket,
+        //                                       Awal = x.Sum(y=> y.Awal),
+        //                                       Masuk = x.Sum(y=>y.Masuk),
+        //                                       Keluar = x.Sum(y=>y.Keluar),
+        //                                       Akhir = Math.Abs(x.Sum(y=>y.Keluar) - x.Sum(y=> y.Awal))
+        //                                   }
+        //                    );
 
-        }
+        //    return result.ToList();
+
+        //}
 
     }
 }

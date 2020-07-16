@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
         private const string IN = "IN";
         private const string AWAL = "AWAL";
         private const string TRANSFORM = "TRANSFORM";
+        private const string ADJ_IN = "ADJ IN";
+        private const string ADJ_OUT = "ADJ OUT";
 
         private const string GUDANGAVAL = "GUDANG AVAL";
 
@@ -41,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                     AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
                     Type = AWAL,
                     AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
+                        + d.Where(e => e.Type == ADJ_IN || e.Type == ADJ_OUT).Sum(e => e.Balance)
                 });
 
             return result;
@@ -112,17 +115,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 StartAvalWeightQuantity = e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantityWeight : 0,
                 InAvalQuantity = e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0,
                 InAvalWeightQuantity = e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0,
-                OutAvalQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0,
-                OutAvalWeightQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0,
+                OutAvalQuantity = (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantity : 0),
+                OutAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0),
                 EndAvalQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantity : 0)
                     + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0)
-                    - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0),
+                    - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0),
                 EndAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0)
                     - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0)
             });
 
-            return result;
+            return result.Where(s => s.StartAvalQuantity != 0 || s.InAvalQuantity != 0 || s.OutAvalQuantity != 0 || s.EndAvalQuantity != 0 ||
+                    s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0);
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset searchDate, int offset)

@@ -353,52 +353,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
 
-                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
-                                                                            viewModel.Area,
-                                                                            OUT,
-                                                                            model.Id,
-                                                                            model.BonNo,
-                                                                            item.ProductionOrder.Id,
-                                                                            item.ProductionOrder.No,
-                                                                            item.CartNo,
-                                                                            item.Buyer,
-                                                                            item.Construction,
-                                                                            item.Unit,
-                                                                            item.Color,
-                                                                            item.Motif,
-                                                                            item.UomUnit,
-                                                                            item.Balance);
-
-                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId &&
-                                                                                           s.ProductionOrderId == item.ProductionOrder.Id);
-
-                    var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
-                                                                          viewModel.Area,
-                                                                          OUT,
-                                                                          model.Id,
-                                                                          model.BonNo,
-                                                                          item.ProductionOrder.Id,
-                                                                          item.ProductionOrder.No,
-                                                                          item.CartNo,
-                                                                          item.Buyer,
-                                                                          item.Construction,
-                                                                          item.Unit,
-                                                                          item.Color,
-                                                                          item.Motif,
-                                                                          item.UomUnit,
-                                                                          item.Balance);
+                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
+                        item.PackagingType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
-                    if (previousSummary != null)
-                    {
-
-                        result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
-                    }
-                    else
-                    {
-
-                        result += await _summaryRepository.InsertAsync(summaryModel);
-                    }
+                    
                 }
             }
             else
@@ -439,55 +399,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         item.AdjDocumentNo);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
+                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
 
-                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,
-                                                                            viewModel.Area,
-                                                                            OUT,
-                                                                            model.Id,
-                                                                            model.BonNo,
-                                                                            item.ProductionOrder.Id,
-                                                                            item.ProductionOrder.No,
-                                                                            item.CartNo,
-                                                                            item.Buyer,
-                                                                            item.Construction,
-                                                                            item.Unit,
-                                                                            item.Color,
-                                                                            item.Motif,
-                                                                            item.UomUnit,
-                                                                            item.Balance);
-
-                    var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.DyeingPrintingAreaDocumentId == item.InputId &&
-                                                                                           s.ProductionOrderId == item.ProductionOrder.Id);
-
-                    var summaryModel = new DyeingPrintingAreaSummaryModel(viewModel.Date,
-                                                                          viewModel.Area,
-                                                                          OUT,
-                                                                          model.Id,
-                                                                          model.BonNo,
-                                                                          item.ProductionOrder.Id,
-                                                                          item.ProductionOrder.No,
-                                                                          item.CartNo,
-                                                                          item.Buyer,
-                                                                          item.Construction,
-                                                                          item.Unit,
-                                                                          item.Color,
-                                                                          item.Motif,
-                                                                          item.UomUnit,
-                                                                          item.Balance);
-
-                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
+                        item.PackagingType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
 
-                    if (previousSummary != null)
-                    {
-                        result += await _summaryRepository.UpdateAsync(previousSummary.Id, summaryModel);
-                    }
-                    else
-                    {
-                        result += await _summaryRepository.InsertAsync(summaryModel);
-                    }
                 }
 
             }
@@ -524,7 +444,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id);
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade, null,
+                        item.PackagingType);
 
                 result += await _movementRepository.InsertAsync(movementModel);
             }
@@ -1175,7 +1096,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (!item.HasNextAreaDocument)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id);
+                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade, null,
+                        item.PackagingType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
 
@@ -1201,7 +1123,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                   item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id);
+                   item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade, null,
+                        item.PackagingType);
 
                 result += await _movementRepository.InsertAsync(movementModel);
 
@@ -1397,7 +1320,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderOrderQuantity = d.ProductionOrderOrderQuantity,
                     ProductionOrderType = d.ProductionOrderType,
                     Unit = d.Unit,
-                    UomUnit = d.UomUnit
+                    UomUnit = d.UomUnit,
+                    PackagingType = d.PackagingType
                 })
                 .Union(_outputProductionOrderRepository.ReadAll()
                 .Where(s => s.Area == GUDANGJADI && !s.HasNextAreaDocument)
@@ -1423,7 +1347,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderOrderQuantity = d.ProductionOrderOrderQuantity,
                     ProductionOrderType = d.ProductionOrderType,
                     Unit = d.Unit,
-                    UomUnit = d.UomUnit
+                    UomUnit = d.UomUnit,
+                    PackagingType = d.PackagingType
                 }));
             List<string> SearchAttributes = new List<string>()
             {
@@ -1471,6 +1396,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Unit = s.Unit,
                     UomUnit = s.UomUnit,
                     PackagingQty = s.PackagingQty,
+                    PackagingType = s.PackagingType,
                     Quantity = s.PackagingQty == 0 ? 0 : s.Balance / Convert.ToDouble(s.PackagingQty),
                 });
 

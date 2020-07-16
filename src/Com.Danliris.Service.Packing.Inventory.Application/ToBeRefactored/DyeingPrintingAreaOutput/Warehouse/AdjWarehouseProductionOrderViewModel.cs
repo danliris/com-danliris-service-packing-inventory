@@ -22,5 +22,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string UomUnit { get; set; }
         public decimal PackagingQty { get; set; }
         public double Quantity { get; set; }
+        public string PackagingType { get; set; }
     }
 }

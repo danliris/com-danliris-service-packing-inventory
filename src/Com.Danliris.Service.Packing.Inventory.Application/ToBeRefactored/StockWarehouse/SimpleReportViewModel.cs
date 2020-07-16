@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
-    public class ReportStockWarehouseViewModel
+    public class SimpleReportViewModel
     {
+        public long ProductionOrderId { get; set; }
         public string NoSpp { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }
@@ -14,10 +15,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public string Grade { get; set; }
         public string Jenis { get; set; }
         public string Ket { get; set; }
-        public double Awal { get; set; }
-        public double Masuk { get; set; }
-        public double Keluar { get; set; }
-        public double Akhir { get; set; }
         public string Satuan { get; set; }
+        public string Type { get; set; }
+        public double Quantity { get; set; }
     }
 }

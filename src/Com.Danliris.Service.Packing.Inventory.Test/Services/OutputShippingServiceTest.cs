@@ -948,6 +948,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(adjvm.Color);
             Assert.Null(adjvm.Motif);
             Assert.Null(adjvm.UomUnit);
+            Assert.Null(adjvm.PackingType);
         }
 
         [Fact]
