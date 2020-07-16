@@ -59,6 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputTransitProductionOrderViewModel()
                         {
+                            PackingType = "a",
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
@@ -116,6 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputTransitProductionOrderViewModel()
                         {
+                            PackingType = "a",
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
@@ -173,6 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputTransitProductionOrderViewModel()
                         {
+                            PackingType = "a",
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
@@ -799,6 +802,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(outputPreTransitSPP.Material);
             Assert.Null(outputPreTransitSPP.MaterialConstruction);
             Assert.Null(outputPreTransitSPP.MaterialWidth);
+            Assert.Null(outputPreTransitSPP.Area);
+            Assert.Equal(0, outputPreTransitSPP.BuyerId);
+            Assert.Null(outputPreTransitSPP.PackingType);
+            Assert.Equal(0, outputPreTransitSPP.DyeingPrintingAreaInputProductionOrderId);
+
+            var inputSPP = new InputTransitProductionOrderViewModel();
+            Assert.False(inputSPP.IsChecked);
+            Assert.Equal(0, inputSPP.BalanceRemains);
+            Assert.Equal(0, inputSPP.PreviousBalance);
+            Assert.Equal(0, inputSPP.InputId);
+            Assert.Null(inputSPP.PackingType);
         }
 
         [Fact]
