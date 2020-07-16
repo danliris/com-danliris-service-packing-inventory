@@ -97,6 +97,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputAvalItemViewModel()
                         {
+                            ProductionOrder = new ProductionOrder()
+                            {
+                                Id = 1,
+                                No = "a",
+                                OrderQuantity = 1,
+                                Type ="a"
+                            },
+                            PackagingType = "a",
+                            Remark = "s",
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",
                             AvalUomUnit = "MTR",
@@ -543,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_Reject()
+        public async Task Should_Success_Reject_PC()
         {
             var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
             var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -629,6 +638,264 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 
             var result = await service.Reject(ObjectTestPayload);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_PC_Duplicate_Shift()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var vm = ViewModel;
+            vm.Area = "PACKING";
+            foreach (var spp in vm.AvalItems)
+            {
+                spp.Area = "PACKING";
+            }
+
+            var model = Model;
+            model.SetArea("PACKING", "", "");
+            foreach (var sppModel in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                sppModel.SetArea("PACKING", "", "");
+            }
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = vm.AvalItems.FirstOrDefault();
+
+            outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+            var result = await service.Reject(vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            var vm = ViewModel;
+            vm.Area = "INSPECTION MATERIAL";
+            foreach (var spp in vm.AvalItems)
+            {
+                spp.Area = "INSPECTION MATERIAL";
+            }
+
+            var model = Model;
+            model.SetArea("INSPECTION MATERIAL", "", "");
+            foreach (var sppModel in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                sppModel.SetArea("INSPECTION MATERIAL", "", "");
+            }
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = vm.AvalItems.FirstOrDefault();
+
+            outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+
+            var result = await service.Reject(vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_IM_Duplicate_Shift()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var vm = ViewModel;
+            vm.Area = "INSPECTION MATERIAL";
+            foreach (var spp in vm.AvalItems)
+            {
+                spp.Area = "INSPECTION MATERIAL";
+            }
+
+            var model = Model;
+            model.SetArea("INSPECTION MATERIAL", "", "");
+            foreach (var sppModel in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                sppModel.SetArea("INSPECTION MATERIAL", "", "");
+            }
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = vm.AvalItems.FirstOrDefault();
+
+            outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+            var result = await service.Reject(vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_TR()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            var vm = ViewModel;
+            vm.Area = "TRANSIT";
+            foreach (var spp in vm.AvalItems)
+            {
+                spp.Area = "TRANSIT";
+            }
+
+            var model = Model;
+            model.SetArea("TRANSIT", "", "");
+            foreach (var sppModel in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                sppModel.SetArea("TRANSIT", "", "");
+            }
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = vm.AvalItems.FirstOrDefault();
+
+            outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+
+            var result = await service.Reject(vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_Reject_TR_Duplicate_Shift()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var vm = ViewModel;
+            vm.Area = "TRANSIT";
+            foreach (var spp in vm.AvalItems)
+            {
+                spp.Area = "TRANSIT";
+            }
+
+            var model = Model;
+            model.SetArea("TRANSIT", "", "");
+            foreach (var sppModel in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                sppModel.SetArea("TRANSIT", "", "");
+            }
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var item = vm.AvalItems.FirstOrDefault();
+
+            outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+            var result = await service.Reject(vm);
 
             Assert.NotEqual(0, result);
         }
@@ -901,6 +1168,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = await service.Delete(0);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Exception_Delete()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputSppMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'2020-06-12','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
+            var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':0,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2,}]";
+            var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
+            var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
+            //Mock for totalCurrentYear
+            repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            var model = ModelDelete;
+            foreach(var item in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                item.SetHasOutputDocument(true, "", "");
+            }
+
+            //Model.Id = 1;
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { model }.AsQueryable());
+            //Model.SetArea("PACKING","unittest","unittest");
+            repoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { ModelPC }.AsQueryable());
+            //Mock for Create New Row in Input and ProductionOrdersInput in Each Repository 
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputModel>()))
+                .ReturnsAsync(1);
+
+            var avalItem = ViewModel.AvalItems.FirstOrDefault();
+            var areaMovement = ViewModel.DyeingPrintingMovementIds.FirstOrDefault();
+            var productionOrderId = areaMovement.ProductionOrderIds.FirstOrDefault();
+
+            summaryRepoMock.Setup(s => s.ReadAll())
+                 .Returns(
+                    new List<DyeingPrintingAreaSummaryModel>()
+                    {
+                        new DyeingPrintingAreaSummaryModel(ViewModel.Date,
+                                                           ViewModel.Area,
+                                                           "IN",
+                                                           areaMovement.DyeingPrintingAreaMovementId,
+                                                           ViewModel.BonNo,
+                                                           avalItem.AvalCartNo,
+                                                           avalItem.AvalUomUnit,
+                                                           avalItem.AvalQuantity)
+                    }
+                    .AsQueryable());
+
+            outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            foreach (var t in OutputModel.DyeingPrintingAreaOutputProductionOrders)
+            {
+                t.DyeingPrintingAreaOutputId = 0;
+            }
+            outputRepoMock.Setup(s => s.ReadAll())
+                    .Returns(new List<DyeingPrintingAreaOutputModel> { OutputModelDelete }.AsQueryable());
+            outputSppRepoMock.Setup(s => s.ReadAll())
+                .Returns(OutputModelDelete.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            summaryRepoMock.Setup(s => s.UpdateToAvalAsync(It.IsAny<DyeingPrintingAreaSummaryModel>(), ViewModel.Date, ViewModel.Area, "IN"))
+                .ReturnsAsync(1);
+
+            summaryRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaSummaryModel>()))
+                 .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+            inputSppMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
+                .ReturnsAsync(1);
+            inputSppMock.Setup(s => s.ReadAll())
+                .Returns(objectInputSppPrev.AsQueryable());
+            inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
+               .ReturnsAsync(1);
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+               .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(0));
+            
         }
 
         [Fact]
