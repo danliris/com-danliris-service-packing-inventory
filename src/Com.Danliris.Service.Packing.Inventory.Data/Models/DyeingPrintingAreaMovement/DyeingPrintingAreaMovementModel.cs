@@ -461,31 +461,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
-        public void SetGrade(string newGrade, string user, string agent)
-        {
-            if (newGrade != Grade)
-            {
-                Grade = newGrade;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetRemark(string newRemark, string user, string agent)
-        {
-            if (newRemark != Remark)
-            {
-                Remark = newRemark;
-                this.FlagForUpdate(user, agent);
-            }
-        }
-
-        public void SetPackingType(string newPackingType, string user, string agent)
-        {
-            if (newPackingType != PackingType)
-            {
-                PackingType = newPackingType;
-                this.FlagForUpdate(user, agent);
-            }
-        }
     }
 }
