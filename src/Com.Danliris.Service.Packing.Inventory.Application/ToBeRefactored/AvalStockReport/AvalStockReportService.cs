@@ -38,13 +38,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
 
             var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
-                {
-                    AvalType = d.Key,
-                    AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
-                    Type = AWAL,
-                    AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
+            {
+                AvalType = d.Key,
+                AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
+                Type = AWAL,
+                AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
                         + d.Where(e => e.Type == ADJ_IN || e.Type == ADJ_OUT).Sum(e => e.Balance)
-                });
+            });
 
             return result;
         }
@@ -82,14 +82,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date == searchDate.Date)
                    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
-            
+
             var result = queryTransform.GroupBy(s => new { s.AvalType, s.Type }).Select(d => new SimpleAvalViewModel()
-                {
-                    Type = d.Key.Type,
-                    AvalType = d.Key.AvalType,
-                    AvalQuantity = d.Sum(e => e.AvalQuantity),
-                    AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
-                });
+            {
+                Type = d.Key.Type,
+                AvalType = d.Key.AvalType,
+                AvalQuantity = d.Sum(e => e.AvalQuantity),
+                AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
+            });
 
             return result;
         }
@@ -155,7 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", 0, 0, 0, 0, 0, 0);
+                dt.Rows.Add("", 0, 0, 0, 0, 0, 0, 0, 0);
             }
             else
             {

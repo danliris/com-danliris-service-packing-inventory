@@ -9,6 +9,8 @@ using System.Linq;
 using System.Data;
 using OfficeOpenXml;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
@@ -52,14 +54,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
-        private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset)
+        private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
             var queryTransform = _movementRepository.ReadAll()
-                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId))
-                .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
-                    s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
+                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
 
-            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            if (!string.IsNullOrEmpty(unit))
+            {
+                queryTransform = queryTransform.Where(s => s.Unit == unit);
+            }
+            if (!string.IsNullOrEmpty(packingType))
+            {
+                queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+            }
+            if (!string.IsNullOrEmpty(construction))
+            {
+                queryTransform = queryTransform.Where(s => s.Construction == construction);
+            }
+            if (!string.IsNullOrEmpty(buyer))
+            {
+                queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+            }
+            if (productionOrderId != 0)
+            {
+                queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                   s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
+
+            var result = data.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = AWAL,
@@ -80,16 +104,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTimeOffset dateFrom, DateTimeOffset dateTo, string area, int offset)
+        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTimeOffset dateFrom, DateTimeOffset dateTo, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
                         dateFrom.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
-                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Date)
-                    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Date);
+
+            if (!string.IsNullOrEmpty(unit))
+            {
+                queryTransform = queryTransform.Where(s => s.Unit == unit);
+            }
+            if (!string.IsNullOrEmpty(packingType))
+            {
+                queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+            }
+            if (!string.IsNullOrEmpty(construction))
+            {
+                queryTransform = queryTransform.Where(s => s.Construction == construction);
+            }
+            if (!string.IsNullOrEmpty(buyer))
+            {
+                queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+            }
+            if (productionOrderId != 0)
+            {
+                queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
                         s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
 
-            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            var result = data.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = d.Key.Type,
@@ -108,11 +154,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
+        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
-            var dataSearchDate = GetDataByDate(dateFrom, dateTo, zona, offset);
+            var dataSearchDate = GetDataByDate(dateFrom, dateTo, zona, offset, unit, packingType, construction, buyer, productionOrderId);
             var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-            var dataAwal = GetAwalData(dateFrom, zona, productionOrderIds, offset);
+            var dataAwal = GetAwalData(dateFrom, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => new { d.NoSpp, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
@@ -141,88 +187,125 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).ToList();
         }
 
-
-        public MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
+        public MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
-            //var model = await _repository.ReadByIdAsync(id);
-            var query = GetReportData(dateFrom, dateTo, zona, offset);
-            //var query = GetQuery(date, group, zona, timeOffSet);
+            var data = GetReportData(dateFrom, dateTo, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+
             DataTable dt = new DataTable();
 
-            #region Mapping Properties Class to Head excel
-            Dictionary<string, string> mappedClass = new Dictionary<string, string>
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+
+            if (data.Count() == 0)
             {
-                {"NoSpp","No SPP" },
-                {"Grade","Grade"},
-                {"Awal","Awal"},
-                {"Masuk","Masuk"},
-                {"Keluar","Keluar"},
-                {"Akhir","Akhir"}
-            };
-            var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
-            #endregion
-            #region Assign Column
-            foreach (var prop in mappedClass.Select((item, index) => new { Index = index, Items = item }))
-            {
-                string fieldName = prop.Items.Value;
-                dt.Columns.Add(new DataColumn() { ColumnName = fieldName, DataType = typeof(string) });
+                dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
             }
-            #endregion
-            #region Assign Data
-            foreach (var item in query)
+            else
             {
-                List<string> data = new List<string>();
-                foreach (DataColumn column in dt.Columns)
+                foreach (var item in data)
                 {
-                    var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
-                    string valueClass = "";
-                    if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
-                    {
-                        var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
-                        var searchValue = searchProperty.GetValue(item, null);
-                        valueClass = searchValue == null ? "" : searchValue.ToString();
-                    }
-                    //else
-                    //{
-                    //    valueClass = "";
-                    //}
-                    data.Add(valueClass);
+                    dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis,
+                        item.Ket, item.Awal.ToString("N2",CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture),item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
+                        item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan);
                 }
-                dt.Rows.Add(data.ToArray());
             }
-            #endregion
 
-            #region Render Excel Header
-            ExcelPackage package = new ExcelPackage();
-            var sheet = package.Workbook.Worksheets.Add("STOCK " + dateFrom.ToString("ddMMMyyyy") + " - " + dateTo.ToString("ddMMMyyyy"));
-
-            int startHeaderColumn = 1;
-            int endHeaderColumn = mappedClass.Count;
-
-            sheet.Cells[1, 1, 1, endHeaderColumn].Style.Font.Bold = true;
-
-            foreach (DataColumn column in dt.Columns)
-            {
-
-                sheet.Cells[1, startHeaderColumn].Value = column.ColumnName;
-                sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                startHeaderColumn++;
-            }
-            #endregion
-
-            #region Insert Data To Excel
-            int tableRowStart = 2;
-            int tableColStart = 1;
-
-            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
-            #endregion
-
-            MemoryStream stream = new MemoryStream();
-            package.SaveAs(stream);
-
-            return stream;
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", zona)) }, true);
         }
+
+
+        //public MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        //{
+        //    //var model = await _repository.ReadByIdAsync(id);
+        //    var query = GetReportData(dateFrom, dateTo, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+        //    //var query = GetQuery(date, group, zona, timeOffSet);
+        //    DataTable dt = new DataTable();
+
+        //    #region Mapping Properties Class to Head excel
+        //    Dictionary<string, string> mappedClass = new Dictionary<string, string>
+        //    {
+        //        {"NoSpp","No SPP" },
+        //        {"Grade","Grade"},
+        //        {"Awal","Awal"},
+        //        {"Masuk","Masuk"},
+        //        {"Keluar","Keluar"},
+        //        {"Akhir","Akhir"}
+        //    };
+        //    var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
+        //    #endregion
+        //    #region Assign Column
+        //    foreach (var prop in mappedClass.Select((item, index) => new { Index = index, Items = item }))
+        //    {
+        //        string fieldName = prop.Items.Value;
+        //        dt.Columns.Add(new DataColumn() { ColumnName = fieldName, DataType = typeof(string) });
+        //    }
+        //    #endregion
+        //    #region Assign Data
+        //    foreach (var item in query)
+        //    {
+        //        List<string> data = new List<string>();
+        //        foreach (DataColumn column in dt.Columns)
+        //        {
+        //            var searchMappedClass = mappedClass.Where(x => x.Value == column.ColumnName && column.ColumnName != "Menyerahkan" && column.ColumnName != "Menerima");
+        //            string valueClass = "";
+        //            if (searchMappedClass != null && searchMappedClass != null && searchMappedClass.FirstOrDefault().Key != null)
+        //            {
+        //                var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
+        //                var searchValue = searchProperty.GetValue(item, null);
+        //                valueClass = searchValue == null ? "" : searchValue.ToString();
+        //            }
+        //            //else
+        //            //{
+        //            //    valueClass = "";
+        //            //}
+        //            data.Add(valueClass);
+        //        }
+        //        dt.Rows.Add(data.ToArray());
+        //    }
+        //    #endregion
+
+        //    #region Render Excel Header
+        //    ExcelPackage package = new ExcelPackage();
+        //    var sheet = package.Workbook.Worksheets.Add("STOCK " + dateFrom.ToString("ddMMMyyyy") + " - " + dateTo.ToString("ddMMMyyyy"));
+
+        //    int startHeaderColumn = 1;
+        //    int endHeaderColumn = mappedClass.Count;
+
+        //    sheet.Cells[1, 1, 1, endHeaderColumn].Style.Font.Bold = true;
+
+        //    foreach (DataColumn column in dt.Columns)
+        //    {
+
+        //        sheet.Cells[1, startHeaderColumn].Value = column.ColumnName;
+        //        sheet.Cells[1, startHeaderColumn].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //        sheet.Cells[1, startHeaderColumn].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+        //        startHeaderColumn++;
+        //    }
+        //    #endregion
+
+        //    #region Insert Data To Excel
+        //    int tableRowStart = 2;
+        //    int tableColStart = 1;
+
+        //    sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+        //    #endregion
+
+        //    MemoryStream stream = new MemoryStream();
+        //    package.SaveAs(stream);
+
+        //    return stream;
+        //}
 
         //public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset)
         //{
