@@ -98,6 +98,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentDebitNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByUnit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByBuyer;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyBySection;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -238,6 +240,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDebitNoteMonitoringService, GarmentDebitNoteMonitoringService>();
             services.AddTransient<IGarmentCreditNoteMonitoringService, GarmentCreditNoteMonitoringService>();
             services.AddTransient<IGarmentOmzetMonthlyByUnitService, GarmentOmzetMonthlyByUnitService>();
+            services.AddTransient<IGarmentOmzetMonthlyByBuyerService, GarmentOmzetMonthlyByBuyerService>();
+            services.AddTransient<IGarmentOmzetMonthlyBySectionService, GarmentOmzetMonthlyBySectionService>();
 
             #endregion
 
