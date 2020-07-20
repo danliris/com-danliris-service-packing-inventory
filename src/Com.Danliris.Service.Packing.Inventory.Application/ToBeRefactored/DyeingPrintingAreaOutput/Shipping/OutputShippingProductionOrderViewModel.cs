@@ -44,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string ShippingRemark { get; set; }
         public double Weight { get; set; }
 
+        public decimal PackingLength { get; set; }
+
         public string AdjDocumentNo { get; set; }
     }
 }

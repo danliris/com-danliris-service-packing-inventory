@@ -351,7 +351,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdateFromOutputWithQtyPackingAsync(item.Id, item.Balance, item.PackagingQty);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
@@ -400,7 +400,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdateFromOutputWithQtyPackingAsync(item.Id, item.Balance, item.PackagingQty);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,

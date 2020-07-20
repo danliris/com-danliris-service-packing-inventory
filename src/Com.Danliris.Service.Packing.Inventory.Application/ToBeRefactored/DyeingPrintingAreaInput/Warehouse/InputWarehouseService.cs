@@ -249,7 +249,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.ProductionOrder.OrderQuantity,
                                                                                                                                                                 s.BuyerId,
                                                                                                                                                                 s.Id,
-                                                                                                                                                                s.Remark))
+                                                                                                                                                                s.Remark,
+                                                                                                                                                                s.Balance))
                                                                                              .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
@@ -312,7 +313,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.ProductionOrder.OrderQuantity,
                                                                                            productionOrder.BuyerId,
                                                                                            productionOrder.Id,
-                                                                                           productionOrder.Remark)
+                                                                                           productionOrder.Remark,
+                                                                                           productionOrder.Balance)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,
                 };
