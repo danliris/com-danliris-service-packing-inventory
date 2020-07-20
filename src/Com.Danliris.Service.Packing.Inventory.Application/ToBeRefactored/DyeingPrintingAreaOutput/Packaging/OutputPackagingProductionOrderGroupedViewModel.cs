@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class OutputPackagingProductionOrderGroupedViewModel
     {
-        public string ProductionOrder { get; set; }
+        public string ProductionOrderNo { get; set; }
         public List<InputPackagingProductionOrdersViewModel> ProductionOrderList { get; set; }
     }
 }
