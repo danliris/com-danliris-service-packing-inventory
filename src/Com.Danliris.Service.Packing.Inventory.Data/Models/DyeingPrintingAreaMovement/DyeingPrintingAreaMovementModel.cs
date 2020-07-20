@@ -75,8 +75,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="unit"></param>
         /// <param name="uomUnit"></param>
         /// <param name="balance"></param>
+        /// <param name="packingType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, long productionOrderId, string productionOrderNo, string productionOrderType, string construction,
-            string color, string grade, string remark, string motif, string unit, string uomUnit, double balance)
+            string color, string grade, string remark, string motif, string unit, string uomUnit, double balance, string packingType)
         {
             Date = date;
             Area = area;
@@ -92,6 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Unit = unit;
             UomUnit = uomUnit;
             Balance = balance;
+            PackingType = packingType;
         }
 
         /// <summary>
