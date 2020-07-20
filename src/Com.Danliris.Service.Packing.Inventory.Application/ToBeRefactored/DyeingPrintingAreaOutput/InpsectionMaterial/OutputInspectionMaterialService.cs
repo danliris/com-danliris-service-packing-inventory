@@ -293,7 +293,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
                     var itemVM = viewModel.InspectionMaterialProductionOrders.FirstOrDefault(s => s.Id == item.DyeingPrintingAreaInputProductionOrderId);
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+
+                    if(viewModel.DestinationArea == PRODUKSI)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    }
                     
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType);
@@ -315,8 +323,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                         result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-
-                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, detail.Balance);
+                        if (viewModel.DestinationArea == PRODUKSI)
+                        {
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.Id, detail.Balance);
+                        }
+                        else
+                        {
+                            result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, detail.Balance);
+                        }
                         
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                             item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance, modelItem.Id, item.ProductionOrder.Type);

@@ -185,9 +185,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="materialConstructionName"></param>
         /// <param name="materialWidth"></param>
         /// <param name="adjDocumentNo"></param>
+        /// <param name="qtyPacking"></param>
+        /// <param name="packingType"></param>
+        /// <param name="packingUnit"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId, int buyerId,
-            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string adjDocumentNo) : this()
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string adjDocumentNo, decimal qtyPacking, string packingType,
+            string packingUnit) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -220,6 +224,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
             AdjDocumentNo = adjDocumentNo;
+
+            PackagingQty = qtyPacking;
+            PackagingType = packingType;
+            PackagingUnit = packingUnit;
         }
         /// <summary>
         /// Area Packing

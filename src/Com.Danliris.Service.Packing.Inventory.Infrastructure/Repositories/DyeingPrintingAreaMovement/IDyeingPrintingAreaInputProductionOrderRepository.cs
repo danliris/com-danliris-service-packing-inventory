@@ -18,5 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateFromOutputIMAsync(int id, double balance, double avalALength, double avalBLength, double avalConnectionLength);
         DyeingPrintingAreaInputProductionOrderModel GetInputProductionOrder(int id);
         Task<int> UpdateFromNextAreaInputAsync(int id, double balance);
+        Task<int> UpdateBalanceAndRemainsAsync(int id, double balance);
     }
 }

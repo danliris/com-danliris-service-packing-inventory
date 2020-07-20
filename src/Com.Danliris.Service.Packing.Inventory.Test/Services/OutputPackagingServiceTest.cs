@@ -260,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "")).ToList());
+                    s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel ModelAdj
@@ -271,7 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModel.Group, "ADJ IN", ViewModel.PackagingProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                     s.MaterialWidth, "")).ToList());
+                     s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit)).ToList());
             }
         }
 
@@ -359,9 +359,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         Id = 1,
                         Name = "name"
                     },
-                    
+
                     Construction = "",
-                    
+
                     MaterialWidth = "",
                     Area = "",
                     CartNo = "",
@@ -623,7 +623,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "")).ToList());
+                    s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -684,7 +684,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "")).ToList());
+                    s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit)).ToList());
             var tes3 = new List<DyeingPrintingAreaOutputModel>() { tes2 };
             var json = JsonConvert.SerializeObject(tes3);
             var tes = new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, "PC.IM.2020.002", false, ViewModel.DestinationArea, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
@@ -749,7 +749,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "")).ToList());
+                    s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit)).ToList());
             var tes3 = new List<DyeingPrintingAreaOutputModel>() { tes2 };
             var json = JsonConvert.SerializeObject(tes3);
             var tes = new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, "PC.IM.2020.002", false, ViewModel.DestinationArea, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
