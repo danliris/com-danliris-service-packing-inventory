@@ -314,6 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                           false,
                                                           viewModel.DestinationArea,
                                                           viewModel.Group,
+                                                          OUT,
                                                           viewModel.WarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id,
                                                                                                              s.ProductionOrder.No,
