@@ -1085,7 +1085,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(outputPreTransitSPP.Area);
             Assert.Equal(0, outputPreTransitSPP.BuyerId);
             Assert.Null(outputPreTransitSPP.PackingType);
+            Assert.Null(outputPreTransitSPP.PackingUnit);
             Assert.Equal(0, outputPreTransitSPP.DyeingPrintingAreaInputProductionOrderId);
+            Assert.Equal(0, outputPreTransitSPP.QtyPacking);
 
             var inputSPP = new InputTransitProductionOrderViewModel();
             Assert.False(inputSPP.IsChecked);
