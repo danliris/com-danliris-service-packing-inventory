@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Area { get; set; }
         public string BonNo { get; set; }
         public string Type { get; set; }
+        public string ShippingCode { get; set; }
         public DateTimeOffset Date { get; set; }
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
