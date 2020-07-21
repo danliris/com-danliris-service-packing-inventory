@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             ShippingGrade = "gra",
                             Weight = 1,
                             Motif = "sd",
-                            
+
                             Material = new Material()
                             {
                                 Id = 1,
@@ -772,7 +772,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(model);
 
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                 .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "grade", "status", "status", 0, 1, 1, 1, "nam", 1, "na", "1",1,"a","a"));
+                 .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "grade", "status", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a"));
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 

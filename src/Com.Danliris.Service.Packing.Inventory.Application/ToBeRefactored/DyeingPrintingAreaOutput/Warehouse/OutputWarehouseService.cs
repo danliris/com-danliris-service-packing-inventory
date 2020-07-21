@@ -356,7 +356,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (viewModel.DestinationArea == INSPECTIONMATERIAL)
                     {
 
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance, item.PackagingQty);
                     }
                     else
                     {
@@ -414,7 +414,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (viewModel.DestinationArea == INSPECTIONMATERIAL)
                     {
 
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance, item.PackagingQty);
                     }
                     else
                     {

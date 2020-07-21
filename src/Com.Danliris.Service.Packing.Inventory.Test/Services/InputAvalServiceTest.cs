@@ -197,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                                                         s.AvalQuantityKg,
                                                                                                                                         s.HasOutputDocument))
                                                                            .ToList());
-                foreach(var t in data.DyeingPrintingAreaInputProductionOrders)
+                foreach (var t in data.DyeingPrintingAreaInputProductionOrders)
                 {
                     t.SetHasOutputDocument(false, "unittest", "unittest");
                 }
@@ -314,10 +314,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
             inputSppMock.Setup(s => s.ReadAll())
                 .Returns(Model.DyeingPrintingAreaInputProductionOrders.AsQueryable());
-            inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(),It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
+            inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object,outputSppRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -448,7 +448,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             "a",
                                                                                                             1,
                                                                                                             "a",
-                                                                                                            "1","",1,"a","a")
+                                                                                                            "1","",1,"a","a",1,"a")
                      })
                  }.AsQueryable());
 
@@ -484,13 +484,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
-            OutputModel.SetDestinationArea("GUDANG AVAL","unittest","unittest");
+            OutputModel.SetDestinationArea("GUDANG AVAL", "unittest", "unittest");
             outputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaOutputModel> { OutputModel }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object).Object);
 
-            var result = service.ReadAllOutputPreAval(1,1,"{}", "{}", "{}");
+            var result = service.ReadAllOutputPreAval(1, 1, "{}", "{}", "{}");
 
             Assert.NotNull(result);
         }
@@ -530,13 +530,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object).Object);
 
-            var test = service.GenerateBonNo(1,new DateTimeOffset(DateTime.Now));
+            var test = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now));
 
             var test1 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), INSPECTIONMATERIAL);
             var test2 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), TRANSIT);
             var test3 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), PACKING);
             var test4 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), GUDANGAVAL);
-            var test5 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), GUDANGJADI );
+            var test5 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), GUDANGJADI);
             var test6 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), SHIPPING);
             var test7 = service.GenerateBonNo(1, new DateTimeOffset(DateTime.Now), "error");
 
@@ -564,7 +564,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'2020-06-12','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
             var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'PACKING','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]";
             var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
-            foreach(var item in ObjectTestPayload.AvalItems)
+            foreach (var item in ObjectTestPayload.AvalItems)
             {
                 item.Material = new Material()
                 {
@@ -579,7 +579,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 item.MaterialWidth = "1";
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
-            
+
             //Mock for totalCurrentYear
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
@@ -1003,7 +1003,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'"+DateTime.Now.Date.ToString("yyyy-MM-dd")+ "','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
+            var testPayloadReject = "{'Area':'GUDANG AVAL','Shift':'PAGI','Group':'A','Date':'" + DateTime.Now.Date.ToString("yyyy-MM-dd") + "','DyeingPrintingMovementIds':[{'DyeingPrintingAreaMovementId':82,'ProductionOrderIds':[202]}],'AvalItems':[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]}";
             var testinputPrevSPp = "[{'productionOrder':{'id':54,'code':null,'no':'F/2020/0001','type':'GRADE AB','orderQuantity':0},'cartNo':'12345','buyerId':521,'buyer':'IBU ELIZABETH SINDORO','construction':'TC CD OXFORD / TC CM OXF / 222','unit':'DYEING','color':'Purple','motif':null,'uomUnit':'MTR','remark':null,'grade':'A','status':null,'balance':4,'packingInstruction':'112','avalConnectionLength':0,'avalALength':0,'avalBLength':0,'qtyOrder':2,'avalType':null,'dyeingPrintingAreaInputProductionOrderId':50,'id':202,'active':false,'createdUtc':'0001-01-01T00:00:00','createdBy':null,'createdAgent':null,'lastModifiedUtc':'0001-01-01T00:00:00','lastModifiedBy':null,'lastModifiedAgent':null,'isDeleted':false,'deletedUtc':'0001-01-01T00:00:00','deletedBy':null,'deletedAgent':null,'area':'GUDANG AVAL','bonId':82,'IsSave':true,'AvalCartNo':'12345','AvalQuantity':0,'AvalQuantityKg':0,'productionOrderId':54,'productionOrderNo':'F/2020/0001','dyeingPrintingAreaOutputProductionOrderId':202,'productionOrderOrderQuantity':2}]";
             var ObjectTestPayload = JsonConvert.DeserializeObject<InputAvalViewModel>(testPayloadReject);
             ObjectTestPayload.Date = ViewModel.Date;
@@ -1136,7 +1136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            foreach(var t in OutputModel.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var t in OutputModel.DyeingPrintingAreaOutputProductionOrders)
             {
                 t.DyeingPrintingAreaOutputId = 0;
             }
@@ -1189,7 +1189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
 
             var model = ModelDelete;
-            foreach(var item in model.DyeingPrintingAreaInputProductionOrders)
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
             {
                 item.SetHasOutputDocument(true, "", "");
             }
@@ -1256,7 +1256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 
             await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(0));
-            
+
         }
 
         [Fact]
@@ -1271,7 +1271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 ProductionOrder = new ProductionOrder
                 {
                     Id = 1,
-                    No ="test1"
+                    No = "test1"
                 },
                 Material = new Material()
                 {
