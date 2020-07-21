@@ -699,6 +699,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
             outputRepoMock.Setup(o => o.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
+
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(tes);
+
             outputRepoMock.Setup(o => o.ReadAll())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { tes }.AsQueryable());
             outputRepoMock.Setup(o => o.GetDbSet())
@@ -764,6 +769,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
             outputRepoMock.Setup(o => o.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
+
+            outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(tes);
+
             outputRepoMock.Setup(o => o.ReadAll())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { tes }.AsQueryable());
             outputRepoMock.Setup(o => o.GetDbSet())
