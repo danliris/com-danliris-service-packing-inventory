@@ -119,6 +119,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public async Task Should_Success_UpdateFromOutputWithQtyPacking()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputWithQtyPacking";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputWithQtyPackingAsync(data.Id, 5,3);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputWithQtyPacking2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputWithQtyPacking2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateFromOutputWithQtyPackingAsync(data.Id, 1, 3);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_UpdateFromOutputAsyncBalance2()
         {
             string testName = GetCurrentMethod() + "UpdateFromOutputAsyncBalance2";

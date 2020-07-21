@@ -914,6 +914,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(spp.PackingType);
             Assert.Null(spp.Remark);
             Assert.Equal(0, spp.DyeingPrintingAreaInputProductionOrderId);
+            Assert.Equal(0, spp.PackingLength);
             var date = DateTimeOffset.UtcNow;
             var index = new IndexViewModel()
             {

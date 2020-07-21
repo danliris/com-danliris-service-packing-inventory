@@ -1223,6 +1223,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //var test = outPre.Grade;
             //var test2 = outPre.DeliveryOrder
             Assert.NotEqual(0, inputId);
+            Assert.Equal(0, outPre.ShippingProductionOrders.FirstOrDefault().PackingLength);
         }
 
         [Fact]
