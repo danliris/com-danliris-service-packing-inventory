@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             }
 
             var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
-                   s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
+                   s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType)).ToList();
 
             var result = data.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
@@ -133,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             }
 
             var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
-                        s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance)).ToList();
+                        s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType)).ToList();
 
             var result = data.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {

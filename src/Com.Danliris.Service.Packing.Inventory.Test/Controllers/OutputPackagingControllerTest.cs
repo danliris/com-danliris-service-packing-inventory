@@ -665,10 +665,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         public void GetSet_GrouppedSPP()
         {
             var model = new OutputPackagingProductionOrderGroupedViewModel();
-            model.ProductionOrder = "test";
+            model.ProductionOrderNo = "test";
             model.ProductionOrderList = new List<Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging.InputPackagingProductionOrdersViewModel>();
 
-            var test = model.ProductionOrder;
+            var test = model.ProductionOrderNo;
             var testlist = model.ProductionOrderList;
             Assert.True(true);
         }

@@ -1161,11 +1161,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         }
         public ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSppInFromPackGroup(int page, int size, string filter, string order, string keyword)
         {
-            var query2 = _inputRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => d.DyeingPrintingAreaInputId == s.Id)); ;
-            var query = _inputProductionOrderRepository.ReadAll().Join(query2,
-                                                                        s => s.DyeingPrintingAreaInputId,
-                                                                        s2 => s2.Id,
-                                                                        (s, s2) => s);
+            //var query2 = _inputRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => d.DyeingPrintingAreaInputId == s.Id)); ;
+            //var query = _inputProductionOrderRepository.ReadAll().Join(query2,
+            //                                                            s => s.DyeingPrintingAreaInputId,
+            //                                                            s2 => s2.Id,
+            //                                                            (s, s2) => s);
+
+            var query = _inputProductionOrderRepository.ReadAll().Where(s => s.Area == PACKING && !s.HasOutputDocument);
 
 
             List<string> SearchAttributes = new List<string>()
@@ -1186,15 +1188,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 CartNo = s.CartNo,
                 Color = s.Color,
                 Construction = s.Construction,
-                //HasOutputDocument = s.HasOutputDocument,
-                //IsChecked = s.IsChecked,
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Id = s.MaterialConstructionId,
+                    Name = s.MaterialConstructionName
+                },
+                PackingType = s.PackagingType,
+                MaterialWidth = s.MaterialWidth,
+                MaterialProduct = new Material()
+                {
+                    Name = s.MaterialName,
+                    Id = s.MaterialId
+                },
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = s.ProductionOrderId,
                     No = s.ProductionOrderNo,
-                    Type = s.ProductionOrderType
+                    Type = s.ProductionOrderType,
+                    OrderQuantity = s.ProductionOrderOrderQuantity
                 },
                 Unit = s.Unit,
                 UomUnit = s.UomUnit,
@@ -1210,7 +1223,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var data = datas.GroupBy(s => s.ProductionOrderNo).Select(s => new OutputPackagingProductionOrderGroupedViewModel
             {
-                ProductionOrder = s.Key,
+                ProductionOrderNo = s.Key,
                 ProductionOrderList = s.ToList()
             });
 
