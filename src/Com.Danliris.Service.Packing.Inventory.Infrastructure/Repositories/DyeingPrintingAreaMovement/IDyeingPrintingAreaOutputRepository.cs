@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> DeleteIMArea(DyeingPrintingAreaOutputModel model);
         Task<int> DeleteTransitArea(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateTransitArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> DeletePackingArea(DyeingPrintingAreaOutputModel model);
         Task<int> DeleteShippingArea(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateShippingArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteWarehouseArea(DyeingPrintingAreaOutputModel model);

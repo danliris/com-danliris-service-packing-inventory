@@ -632,7 +632,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(objectInputSppPrev.AsQueryable());
             inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
-            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
@@ -983,7 +983,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(objectInputSppPrev.AsQueryable());
             inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
-            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
@@ -1076,7 +1076,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(objectInputSppPrev.AsQueryable());
             inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
-            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
@@ -1160,7 +1160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(objectInputSppPrev.AsQueryable());
             inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
-            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
@@ -1250,7 +1250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(objectInputSppPrev.AsQueryable());
             inputSppMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaInputProductionOrderModel>()))
                .ReturnsAsync(1);
-            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);

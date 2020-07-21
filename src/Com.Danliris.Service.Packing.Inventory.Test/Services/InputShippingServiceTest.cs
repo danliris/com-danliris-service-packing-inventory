@@ -419,7 +419,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -468,7 +468,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -527,7 +527,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -577,7 +577,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -626,7 +626,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -800,7 +800,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGJ.ShippingProductionOrders.FirstOrDefault();
@@ -849,7 +849,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelPC.ShippingProductionOrders.FirstOrDefault();
@@ -898,7 +898,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGA.ShippingProductionOrders.FirstOrDefault();
@@ -947,7 +947,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGA.ShippingProductionOrders.FirstOrDefault();
@@ -996,7 +996,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelPC.ShippingProductionOrders.FirstOrDefault();

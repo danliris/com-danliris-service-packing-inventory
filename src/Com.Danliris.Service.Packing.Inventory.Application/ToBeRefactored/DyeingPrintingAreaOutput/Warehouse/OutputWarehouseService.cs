@@ -295,14 +295,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = _outputRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == GUDANGJADI &&
                                                                                         s.DestinationArea == viewModel.DestinationArea &&
                                                                                         s.Date.Date == viewModel.Date.Date &&
-                                                                                        s.Shift == viewModel.Shift);
+                                                                                        s.Shift == viewModel.Shift &&
+                                                                                        s.Type == OUT);
 
             if (model == null)
             {
                 int totalCurrentYearData = _outputRepository.ReadAllIgnoreQueryFilter()
                                                             .Count(s => s.Area == GUDANGJADI &&
                                                                         s.DestinationArea == viewModel.DestinationArea &&
-                                                                        s.CreatedUtc.Year == viewModel.Date.Year);
+                                                                        s.CreatedUtc.Year == viewModel.Date.Year && s.Type == OUT);
 
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
 
@@ -351,8 +352,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateFromOutputWithQtyPackingAsync(item.Id, item.Balance, item.PackagingQty);
+                    if (viewModel.DestinationArea == INSPECTIONMATERIAL)
+                    {
 
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance);
+                    }
+                    else
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                    }
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
                         item.PackagingType);
@@ -400,7 +409,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-                    result += await _inputProductionOrderRepository.UpdateFromOutputWithQtyPackingAsync(item.Id, item.Balance, item.PackagingQty);
+
+                    if (viewModel.DestinationArea == INSPECTIONMATERIAL)
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance);
+                    }
+                    else
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                    }
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
