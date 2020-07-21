@@ -85,16 +85,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var modelSpp in viewModel.PackagingProductionOrders)
             {
-                var modelOutputs = _repositoryAreaProductionOrderOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.Id == modelSpp.Id).FirstOrDefault();
-                modelOutputs.SetHasNextAreaDocument(true, "REPOSITORY", "");
-                if (modelOutputs != null)
-                {
-                    result += await _repositoryAreaProductionOrderOutput.UpdateAsync(modelOutputs.Id, modelOutputs);
-                };
-                //set saldo inputSPP from outputSPP id
-                var modelInput = _productionOrderRepository.ReadAll().First(x => x.Id == modelOutputs.DyeingPrintingAreaInputProductionOrderId);
-                modelInput.SetBalance(modelInput.Balance - modelSpp.Balance, "REPOSITORY", "");
-                result += await _productionOrderRepository.UpdateAsync(modelInput.Id, modelInput);
+                result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(modelSpp.DyeingPrintingAreaInputProductionOrderId, modelSpp.Balance, modelSpp.QtyPacking);
+                result += await _repositoryAreaProductionOrderOutput.UpdateFromInputNextAreaFlagAsync(modelSpp.Id, true);
+                //var modelOutputs = _repositoryAreaProductionOrderOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.Id == modelSpp.Id).FirstOrDefault();
+
+                //if (modelOutputs != null)
+                //{
+                //    modelOutputs.SetHasNextAreaDocument(true, "REPOSITORY", "");
+
+                //    result += await _repositoryAreaProductionOrderOutput.UpdateAsync(modelOutputs.Id, modelOutputs);
+
+                //    //set saldo inputSPP from outputSPP id
+                //    var modelInput = _productionOrderRepository.ReadAll().First(x => x.Id == modelOutputs.DyeingPrintingAreaInputProductionOrderId);
+                //    modelInput.SetBalance(modelInput.Balance - modelSpp.Balance, "REPOSITORY", "");
+                //    result += await _productionOrderRepository.UpdateAsync(modelInput.Id, modelInput);
+                //}
             }
             //var modelOutput = _repositoryAreaProductionOrderOutput.ReadAll().Join(viewModel.PackagingProductionOrders,
             //                                                                        s => s.Id,
@@ -171,7 +176,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackingInstruction = d.PackingInstruction,
                     UomUnit = d.UomUnit,
                     Material = d.Construction,
-                    QtyOrder = d.ProductionOrderOrderQuantity
+                    QtyOrder = d.ProductionOrderOrderQuantity,
+                    PackingType = d.PackagingType,
+                    PackingUnit = d.PackagingUnit,
+                    QtyPacking = d.PackagingQty
                 }).ToList()
             });
 
@@ -220,6 +228,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 IsChecked = s.IsChecked,
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
+                PackingUnit = s.PackagingUnit,
+                QtyPacking = s.PackagingQty,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = s.ProductionOrderId,
@@ -398,7 +408,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     UomUnit = d.UomUnit,
                     ProductionOrderNo = d.ProductionOrderNo,
                     QtyOrder = d.ProductionOrderOrderQuantity,
-
+                    PackingType = d.PackagingType,
+                    QtyPacking = d.PackagingQty,
+                    PackingUnit = d.PackagingUnit,
+                    DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
                 }).ToList()
             });
 
@@ -466,6 +479,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 UomUnit = s.UomUnit,
                 QtyOrder = s.ProductionOrderOrderQuantity,
                 Area = s.Area,
+                QtyPacking = s.PackagingQty,
+                PackingUnit = s.PackagingUnit,
                 DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
                 OutputId = s.DyeingPrintingAreaOutputId
             });
@@ -499,7 +514,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var detail in item)
                     {
                         var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id);
-                        result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance, detail.QtyPacking);
                         var movementModel = new DyeingPrintingAreaMovementModel();
                         if (item.Key == INSPECTIONMATERIAL)
                         {
@@ -533,7 +548,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
                         result += await _productionOrderRepository.InsertAsync(modelItem);
-                        result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance, detail.QtyPacking);
                         var movementModel = new DyeingPrintingAreaMovementModel();
                         if (item.Key == INSPECTIONMATERIAL)
                         {

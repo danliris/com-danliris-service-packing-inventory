@@ -274,12 +274,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var spp in model.DyeingPrintingAreaInputProductionOrders)
                 {
                     //update balance
-                    var prevOutput = _outputSppRepository.ReadAll().FirstOrDefault(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
-                    var prevInput = _inputSppRepository.ReadAll().FirstOrDefault(x => x.Id == prevOutput.DyeingPrintingAreaInputProductionOrderId);
-                    var newBalance = prevInput.Balance - spp.Balance;
+                    //var prevOutput = _outputSppRepository.ReadAll().FirstOrDefault(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    //var prevInput = _inputSppRepository.ReadAll().FirstOrDefault(x => x.Id == prevOutput.DyeingPrintingAreaInputProductionOrderId);
+                    //var newBalance = prevInput.Balance - spp.Balance;
 
-                    prevInput.SetBalance(newBalance, "CREATEAVAL", "SERVICE");
-                    result += await _inputSppRepository.UpdateAsync(prevInput.Id, prevInput);
+                    //prevInput.SetBalance(newBalance, "CREATEAVAL", "SERVICE");
+                    //result += await _inputSppRepository.UpdateAsync(prevInput.Id, prevInput);
+                    var itemVM = viewModel.AvalItems.FirstOrDefault(s => s.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    result += await _inputSppRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, spp.Balance, spp.PackagingQty);
+                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
                 }
 
                 //foreach (var spp in model.DyeingPrintingAreaInputProductionOrders)
@@ -299,12 +302,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     result += await _inputSppRepository.InsertAsync(spp);
                     //update balance
-                    var prevOutput = _outputSppRepository.ReadAll().FirstOrDefault(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
-                    var prevInput = _inputSppRepository.ReadAll().FirstOrDefault(x => x.Id == prevOutput.DyeingPrintingAreaInputProductionOrderId);
-                    var newBalance = prevInput.Balance - spp.Balance;
+                    //var prevOutput = _outputSppRepository.ReadAll().FirstOrDefault(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    //var prevInput = _inputSppRepository.ReadAll().FirstOrDefault(x => x.Id == prevOutput.DyeingPrintingAreaInputProductionOrderId);
+                    //var newBalance = prevInput.Balance - spp.Balance;
 
-                    prevInput.SetBalance(newBalance, "CREATEAVAL", "SERVICE");
-                    result += await _inputSppRepository.UpdateAsync(prevInput.Id, prevInput);
+                    //prevInput.SetBalance(newBalance, "CREATEAVAL", "SERVICE");
+                    //result += await _inputSppRepository.UpdateAsync(prevInput.Id, prevInput);
+
+                    var itemVM = viewModel.AvalItems.FirstOrDefault(s => s.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    result += await _inputSppRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, spp.Balance, spp.PackagingQty);
+                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
                 }
             }
 
@@ -492,6 +499,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalConnectionLength = d.AvalConnectionLength,
                     QtyOrder = d.ProductionOrderOrderQuantity,
                     DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
+                    PackagingUnit = d.PackagingUnit,
+                    PackagingQty = d.PackagingQty,
+                    PackagingType = d.PackagingType,
                     AvalType = d.AvalType
                 }).ToList()
             });
@@ -559,7 +569,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                        AvalConnectionLength = d.AvalConnectionLength,
                                                                        QtyOrder = d.ProductionOrderOrderQuantity,
                                                                        AvalType = d.AvalType,
-                                                                       DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId
+                                                                       DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
+                                                                       PackagingUnit = d.PackagingUnit,
+                                                                       PackagingQty = d.PackagingQty,
+                                                                       PackagingType = d.PackagingType
 
                                                                    }).ToList()
                                                                });
@@ -593,7 +606,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var detail in item)
                     {
                         var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id);
-                        result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance, detail.PackagingQty);
                         var movementModel = new DyeingPrintingAreaMovementModel();
                         if (item.Key == INSPECTIONMATERIAL)
                         {
@@ -637,7 +650,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
                         result += await _inputSppRepository.InsertAsync(modelItem);
-                        result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance);
+                        result += await _inputSppRepository.UpdateFromNextAreaInputAsync(detail.DyeingPrintingAreaInputProductionOrderId, detail.Balance, detail.PackagingQty);
                         var movementModel = new DyeingPrintingAreaMovementModel();
                         if (item.Key == INSPECTIONMATERIAL)
                         {
