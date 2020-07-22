@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -18,11 +19,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
     {
         private readonly IOutputPackagingService _service;
         private readonly IIdentityProvider _identityProvider;
+        private readonly IValidateService ValidateService;
 
-        public OutputPackagingController(IOutputPackagingService service, IIdentityProvider identityProvider)
+        public OutputPackagingController(IOutputPackagingService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
+            ValidateService = validateService;
         }
 
         protected void VerifyUser()
@@ -46,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
+                ValidateService.Validate(viewModel);
                 if (viewModel.Type == "OUT")
                 {
                     var result = await _service.CreateV2(viewModel);
@@ -59,6 +63,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
                 }
 
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
             }
             catch (Exception ex)
             {
