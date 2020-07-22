@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public OutputPackagingViewModel()
         {
             PackagingProductionOrders = new HashSet<OutputPackagingProductionOrderViewModel>();
+            PackagingProductionOrdersAdj = new HashSet<InputPlainAdjPackagingProductionOrder>();
         }
         public string Type { get; set; }
         public string Area { get; set; }

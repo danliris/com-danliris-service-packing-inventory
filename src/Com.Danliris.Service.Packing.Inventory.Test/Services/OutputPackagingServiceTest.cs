@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
@@ -1533,6 +1534,114 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             b = tes.DyeingPrintingAreaInputProductionOrderId;
             b = tes.DyeingPrintingAreaOutputProductionOrderId;
             c = tes.AtQty;
+        }
+
+        [Fact]
+        public void Should_Exception_ValidationVM()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var serviceProvider = GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+
+            var vm = new OutputPackagingViewModel();
+            vm.Type = "OUT";
+            var validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddDays(-1);
+            vm.PackagingProductionOrders = new List<OutputPackagingProductionOrderViewModel>()
+            {
+                new OutputPackagingProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = 1,
+                        No = "a"
+                    },
+                    IsSave = true,
+                    Balance = 0
+                },
+                new OutputPackagingProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = 1,
+                        No = "a"
+                    },
+                    IsSave = true,
+                    Balance = 0,
+                    QtyOut = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+            
+            vm.Type = null;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Type = "ADJ";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>();
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+            {
+                new InputPlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 0
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+            {
+                new InputPlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+            {
+                new InputPlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.PackagingProductionOrdersAdj = new List<InputPlainAdjPackagingProductionOrder>()
+            {
+                new InputPlainAdjPackagingProductionOrder()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+                new InputPlainAdjPackagingProductionOrder()
+                {
+                    Balance = 1
+                }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }
