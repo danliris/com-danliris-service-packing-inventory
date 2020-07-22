@@ -273,7 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //controller.ModelState.IsValid == false;
             var response = await controller.Post(dataUtil);
 
-            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
