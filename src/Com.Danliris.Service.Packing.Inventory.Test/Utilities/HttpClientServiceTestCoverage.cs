@@ -20,5 +20,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Utilities
         {
             await Assert.ThrowsAsync<HttpRequestException>(() => HttpClientService.GetAsync(url));
         }
+
+        [Fact]
+        public async Task Send()
+        {
+            await Assert.ThrowsAsync<HttpRequestException>(() => HttpClientService.SendAsync(HttpMethod.Get, url, HttpContent));
+        }
     }
 }

@@ -22,5 +22,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
         {
             return await _client.GetAsync(url);
         }
+
+        public async Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, HttpContent content)
+        {
+            var request = new HttpRequestMessage(method, url)
+            {
+                Content = content
+            };
+
+            return await _client.SendAsync(request);
+        }
     }
 }
