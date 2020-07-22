@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string Type { get; private set; }
 
+        public string ShippingCode { get; private set; }
 
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
@@ -31,8 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrders = new HashSet<DyeingPrintingAreaOutputProductionOrderModel>();
         }
 
-        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument, 
-            string destinationArea,string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -57,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders) 
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
             : this(date, area, shift, bonNo, hasNextAreaDocument, destinationArea, group, dyeingPrintingAreaOutputProductionOrders)
         {
             Type = type;
@@ -108,8 +109,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="hasSalesInvoice"></param>
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         /// <param name="type"></param>
+        /// <param name="shippingCode"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -125,6 +127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryOrderSalesNo = deliveryOrderNo;
 
             HasSalesInvoice = hasSalesInvoice;
+            ShippingCode = shippingCode;
         }
 
 
@@ -184,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetGroup(string newGroup, string user, string agent)
         {
-            if(newGroup != Group)
+            if (newGroup != Group)
             {
                 Group = newGroup;
                 this.FlagForUpdate(user, agent);
