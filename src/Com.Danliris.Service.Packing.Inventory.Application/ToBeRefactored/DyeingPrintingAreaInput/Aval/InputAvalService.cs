@@ -598,7 +598,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     model = new DyeingPrintingAreaInputModel(viewModel.Date, item.Key, viewModel.Shift, bonNo, viewModel.Group, viewModel.AvalItems.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrderOrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, false, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
-                     s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, 0,"")).ToList());
+                     s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, 0, "", s.AvalType)).ToList());
 
                     result = await _inputRepository.InsertAsync(model);
                     result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
@@ -646,7 +646,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             detail.ProductionOrder.OrderQuantity, detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction,
                             detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, false, detail.Remark, detail.Grade, detail.Status, detail.Balance, detail.BuyerId,
                             detail.Id, detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.PackagingQty,
-                            detail.PackagingUnit, detail.PackagingType, 0, "");
+                            detail.PackagingUnit, detail.PackagingType, 0, "", detail.AvalType);
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
                         result += await _inputSppRepository.InsertAsync(modelItem);
@@ -726,7 +726,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //delete entire packing bon and spp using model
                     result += await _inputRepository.DeleteAsync(bonId);
 
-                    foreach(var item in modelBon.DyeingPrintingAreaInputProductionOrders)
+                    foreach (var item in modelBon.DyeingPrintingAreaInputProductionOrders)
                     {
                         var movementModel = new DyeingPrintingAreaMovementModel(modelBon.Date, modelBon.Area, TYPE, modelBon.Id, modelBon.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                                 item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType);
@@ -737,7 +737,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var bon in bonPrevOutput)
                     {
                         var deletedBon = modelBon.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == bon.Id);
-                        if(deletedBon != null)
+                        if (deletedBon != null)
                         {
                             bon.SetHasNextAreaDocument(false, "AVALINSERVICE", "SERVICE");
                         }

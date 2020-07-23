@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     Shift = "PAGI",
                     OutputId = 2,
                     Group = "A",
-                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    MappedWarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
                     {
                         new RejectedInputWarehouseProductionOrderViewModel()
                         {

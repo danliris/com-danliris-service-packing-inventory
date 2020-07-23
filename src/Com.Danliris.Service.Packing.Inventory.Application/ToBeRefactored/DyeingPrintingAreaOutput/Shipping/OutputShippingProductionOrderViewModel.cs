@@ -47,5 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal PackingLength { get; set; }
 
         public string AdjDocumentNo { get; set; }
+
+        public double BalanceRemains { get; set; }
     }
 }
