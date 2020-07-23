@@ -98,6 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         {
                             Balance = 1,
                             Buyer = "s",
+                            IsSave = true,
                             CartNo = "1",
                             Color = "red",
                             Construction = "sd",
