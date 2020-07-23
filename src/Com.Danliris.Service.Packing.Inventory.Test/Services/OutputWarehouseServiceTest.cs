@@ -100,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
@@ -168,6 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
@@ -497,6 +499,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             AdjDocumentNo = "a",
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
@@ -803,6 +806,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
 
             outputRepoMock.Setup(o => o.GetDbSet())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelToShippingArea }.AsQueryable());
@@ -2035,6 +2041,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 new OutputWarehouseProductionOrderViewModel()
                 {
+                    ProductionOrder = new ProductionOrder(),
                     Balance = 0
                 }
             };

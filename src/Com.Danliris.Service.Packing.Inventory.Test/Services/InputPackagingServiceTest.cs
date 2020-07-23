@@ -88,6 +88,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputPackagingProductionOrdersViewModel()
                         {
+                            BuyerId = 1,
+                            DeliveryOrder = new Application.ToBeRefactored.CommonViewModelObjectProperties.DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "s"
+                            },
                             //Id = 1,
                             Area="INSPECTION MATERIAL",
                             Balance = 1,
@@ -205,6 +211,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputPackagingProductionOrdersViewModel()
                         {
+                            DeliveryOrder = new Application.ToBeRefactored.CommonViewModelObjectProperties.DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "a"
+                            },
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
