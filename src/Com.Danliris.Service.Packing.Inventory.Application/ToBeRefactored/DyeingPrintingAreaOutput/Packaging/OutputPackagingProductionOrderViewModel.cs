@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class OutputPackagingProductionOrderViewModel : BaseViewModel
     {
+        public bool IsSave { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material MaterialProduct { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }

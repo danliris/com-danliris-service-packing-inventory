@@ -301,7 +301,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AdjDocumentNo = adjDocumentNo;
             PackagingQty = packagingQty;
             PackagingType = packagingType;
-            PackagingUnit = PackagingUnit;
+            PackagingUnit = packagingUnit;
             
         }
         /// <summary>

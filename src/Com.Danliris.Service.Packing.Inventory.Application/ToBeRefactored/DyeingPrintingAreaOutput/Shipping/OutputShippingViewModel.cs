@@ -58,6 +58,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
 
+            if(Type == "OUT" && DestinationArea == "PENJUALAN" && string.IsNullOrEmpty(ShippingCode))
+                yield return new ValidationResult("Kode Harus Diisi!", new List<string> { "ShippingCode" });
+
             int Count = 0;
             string DetailErrors = "[";
 
