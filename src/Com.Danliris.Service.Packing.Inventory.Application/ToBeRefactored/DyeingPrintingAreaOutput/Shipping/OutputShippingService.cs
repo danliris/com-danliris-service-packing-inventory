@@ -464,16 +464,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 type = ADJ_OUT;
             }
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group,
-                        0, "", false, viewModel.Type, "", viewModel.ShippingProductionOrders.Select(s =>
+                        0, "", false, type, "", viewModel.ShippingProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, 0, "", s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
-                        s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, "", s.Balance, 0, s.Packing, "", s.QtyPacking, s.BuyerId, false, "", "", 0,
+                        s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, "", s.Balance, 0, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, false, "", "", 0,
                         s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "", "", s.AdjDocumentNo)).ToList());
 
             result = await _repository.InsertAsync(model);
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                              item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade,
                              null, item.PackagingType);
 

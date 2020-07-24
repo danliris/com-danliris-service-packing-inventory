@@ -84,6 +84,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             if (detail.IsSave)
                             {
+                                if (DestinationArea == "SHIPPING" && (detail.DeliveryOrderSalesId == 0 || string.IsNullOrEmpty(detail.DeliveryOrderSalesNo)))
+                                {
+                                    Count++;
+                                    DetailErrors += "DeliveryOrderSales: 'Nomor DO harus diisi!',";
+                                }
+
+                                if (detail.PackagingQty <= 0)
+                                {
+                                    Count++;
+                                    DetailErrors += "PackagingQty: 'Qty Packing Terima Harus Lebih dari 0!',";
+                                }
+
+                                if (string.IsNullOrEmpty(detail.PackagingUnit))
+                                {
+                                    Count++;
+                                    DetailErrors += "PackagingUnit: 'Unit Packaging Tidak Boleh Kosong!',";
+                                }
+
                                 if (detail.Balance <= 0)
                                 {
                                     Count++;
