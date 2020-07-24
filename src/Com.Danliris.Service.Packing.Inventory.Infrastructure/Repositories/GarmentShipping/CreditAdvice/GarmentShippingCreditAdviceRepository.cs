@@ -77,8 +77,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetDocumentPresente(model.DocumentPresente, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCargoPolicyNo(model.CargoPolicyNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCargoPolicyDate(model.CargoPolicyDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetCargoPolicyValue(model.CargoPolicyValue, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAccountsReceivablePolicyNo(model.AccountsReceivablePolicyNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAccountsReceivablePolicyDate(model.AccountsReceivablePolicyDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAccountsReceivablePolicyValue(model.AccountsReceivablePolicyValue, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDocumentSendDate(model.DocumentSendDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
 
