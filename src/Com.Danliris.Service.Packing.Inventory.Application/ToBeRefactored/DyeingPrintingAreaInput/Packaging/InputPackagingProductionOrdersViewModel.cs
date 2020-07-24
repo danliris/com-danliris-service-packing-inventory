@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class InputPackagingProductionOrdersViewModel :BaseViewModel
     {
+        public DeliveryOrderSales DeliveryOrder { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material MaterialProduct { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }

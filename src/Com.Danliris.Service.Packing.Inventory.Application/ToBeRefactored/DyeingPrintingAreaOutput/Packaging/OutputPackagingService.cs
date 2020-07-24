@@ -167,6 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         CartNo = s.CartNo,
                         Color = s.Color,
                         Construction = s.Construction,
+                        HasNextAreaDocument = s.HasNextAreaDocument,
                         CreatedAgent = s.CreatedAgent,
                         CreatedBy = s.CreatedBy,
                         CreatedUtc = s.CreatedUtc,
@@ -257,6 +258,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Active = s.Active,
                         LastModifiedUtc = s.LastModifiedUtc,
                         Balance = s.Balance,
+                        HasNextAreaDocument = s.HasNextAreaDocument,
                         Buyer = s.Buyer,
                         BuyerId = s.BuyerId,
                         CartNo = s.CartNo,
@@ -545,7 +547,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
+            var query = _repository.ReadAll().Where(s => s.Area == PACKING &&
+                (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"

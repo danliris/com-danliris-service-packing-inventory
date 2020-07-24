@@ -34,5 +34,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double QtyOrder { get; set; }
         public string Keterangan { get; set; }
         public double QtyOut { get; set; }
+        public bool HasNextAreaDocument { get; set; }
     }
 }

@@ -109,15 +109,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 Shift = model.Shift,
-                WarehousesProductionOrders = model.DyeingPrintingAreaInputProductionOrders.Select(s => new InputWarehouseProductionOrderDetailViewModel()
+                WarehousesProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy(item => item.ProductionOrderId).Select(item => new InputWarehouseProductionOrderDetailViewModel()
                 {
-                    Id = s.Id,
-                    ProductionOrderId = s.ProductionOrderId,
-                    ProductionOrderNo = s.ProductionOrderNo,
-                    ProductionOrderType = s.ProductionOrderType,
-                    ProductionOrderOrderQuantity = s.ProductionOrderOrderQuantity,
-                    ProductionOrderItems = model.DyeingPrintingAreaInputProductionOrders.Select(o => new ProductionOrderItemListDetailViewModel()
+                    ProductionOrderId = item.Key,
+                    ProductionOrderNo = item.First().ProductionOrderNo,
+                    ProductionOrderType = item.First().ProductionOrderType,
+                    ProductionOrderOrderQuantity = item.First().ProductionOrderOrderQuantity,
+                    ProductionOrderItems = item.Select(s => new ProductionOrderItemListDetailViewModel()
                     {
+                        Active = s.Active,
+                        CreatedAgent = s.CreatedAgent,
+                        CreatedBy = s.CreatedBy,
+                        CreatedUtc = s.CreatedUtc,
+                        DeletedAgent = s.DeletedAgent,
+                        DeletedBy = s.DeletedBy,
+                        DeletedUtc = s.DeletedUtc,
+                        Id = s.Id,
+                        IsDeleted = s.IsDeleted,
+                        LastModifiedAgent = s.LastModifiedAgent,
+                        LastModifiedBy = s.LastModifiedBy,
+                        LastModifiedUtc = s.LastModifiedUtc,
                         ProductionOrder = new ProductionOrder()
                         {
                             Id = s.ProductionOrderId,
@@ -149,26 +160,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         AvalType = s.AvalType,
                         AvalCartNo = s.AvalCartNo,
                         AvalQuantityKg = s.AvalQuantityKg,
-                        //Description = ,
-                        //DeliveryNote = ,
                         Area = s.Area,
                         HasOutputDocument = s.HasOutputDocument,
                         DyeingPrintingAreaInputId = s.DyeingPrintingAreaInputId,
                         Qty = s.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(s.Balance), s.PackagingQty)
-                    }).Distinct(new PackingComparer()).ToList(),
-                    Active = s.Active,
-                    LastModifiedUtc = s.LastModifiedUtc,
-                    CreatedAgent = s.CreatedAgent,
-                    CreatedBy = s.CreatedBy,
-                    CreatedUtc = s.CreatedUtc,
-                    DeletedAgent = s.DeletedAgent,
-                    DeletedBy = s.DeletedBy,
-                    DeletedUtc = s.DeletedUtc,
-                    IsDeleted = s.IsDeleted,
-                    LastModifiedAgent = s.LastModifiedAgent,
-                    LastModifiedBy = s.LastModifiedBy
+                    }).Distinct(new PackingComparer()).ToList()
                 }).ToList()
             };
+            
 
             return vm;
         }
@@ -439,7 +438,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            var groupedProductionOrders = viewModel.WarehousesProductionOrders.GroupBy(s => s.Area);
+            var groupedProductionOrders = viewModel.MappedWarehousesProductionOrders.GroupBy(s => s.Area);
             foreach (var item in groupedProductionOrders)
             {
                 var model = _inputRepository.GetDbSet().AsNoTracking()
@@ -458,7 +457,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              viewModel.Shift,
                                                              bonNo,
                                                              viewModel.Group,
-                                                             viewModel.WarehousesProductionOrders.Select(s =>
+                                                             viewModel.MappedWarehousesProductionOrders.Select(s =>
                                                                 new DyeingPrintingAreaInputProductionOrderModel(s.ProductionOrder.Id,
                                                                                                                 s.ProductionOrder.No,
                                                                                                                 s.CartNo,
@@ -519,7 +518,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         else if (item.Key == TRANSIT)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type, detail.Grade, detail.Remark);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, itemModel.Id, detail.ProductionOrder.Type, null, detail.Remark);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                     }
@@ -582,7 +581,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         else if (item.Key == TRANSIT)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, TYPE, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrder.Type, detail.Grade, detail.Remark);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.Balance, modelItem.Id, detail.ProductionOrder.Type, null, detail.Remark);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
 

@@ -492,11 +492,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="packingType"></param>
         /// <param name="deliveryOrderSalesId"></param>
         /// <param name="deliveryOrderSalesNo"></param>
+        /// <param name="avalType"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, 
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, 
             string remark, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, 
             int materialConstructionId, string materialConstructionName, string materialWidth, decimal qtyPacking, string packingUnit, string packingType, long deliveryOrderSalesId, 
-            string deliveryOrderSalesNo)
+            string deliveryOrderSalesNo, string avalType)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -536,6 +537,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
+
+            AvalType = avalType;
         }
 
         public DyeingPrintingAreaInputProductionOrderModel(string area,

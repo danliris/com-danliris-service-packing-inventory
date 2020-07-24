@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 if (detail.Balance == 0)
                                 {
                                     Count++;
-                                    DetailErrors += "Balance: 'Qty Keluar Harus Lebih dari 0!',";
+                                    DetailErrors += "Balance: 'Qty Keluar Tidak boleh sama dengan 0!',";
                                 }
 
                                 if (DestinationArea == "GUDANG AVAL")

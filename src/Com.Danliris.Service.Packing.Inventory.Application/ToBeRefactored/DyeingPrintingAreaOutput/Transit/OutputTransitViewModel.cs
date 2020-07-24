@@ -69,18 +69,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         DetailErrors += "{";
 
-                        if (item.IsSave)
+                        if (Id != 0 || item.IsSave)
                         {
                             if (item.Balance == 0)
                             {
                                 Count++;
                                 DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
                             }
-
-                            if (item.Balance > item.BalanceRemains)
+                            else
                             {
-                                Count++;
-                                DetailErrors += "Balance: 'Jumlah Qty Keluar tidak boleh melebihi Sisa Saldo',";
+                                if (item.Balance > item.BalanceRemains)
+                                {
+                                    Count++;
+                                    DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", item.BalanceRemains);
+                                }
                             }
                         }
 

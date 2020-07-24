@@ -65,18 +65,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
                 else
                 {
-                    foreach (var item in WarehousesProductionOrders)
+                    var Items = WarehousesProductionOrders.GroupBy(s => s.ProductionOrder.Id);
+
+                    //if (Items.Any(s => s.Count() > 1))
+                    //{
+                    //    yield return new ValidationResult("Tidak boleh duplikat SPP dalam satu Tabel!", new List<string> { "PackagingProductionOrder" });
+                    //}
+                    //else
+                    //{
+                    foreach (var item in Items)
                     {
                         DetailErrors += "{";
+                        DetailErrors += "WarehouseList : [ ";
 
-                        if (item.Balance <= 0)
+                        foreach (var detail in item)
                         {
-                            Count++;
-                            DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
-                        }
+                            DetailErrors += "{";
 
+                            if (detail.IsSave)
+                            {
+                                if (detail.Balance <= 0)
+                                {
+                                    Count++;
+                                    DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                                }
+                                else
+                                {
+                                    if (detail.Balance > detail.PreviousBalance)
+                                    {
+                                        Count++;
+                                        DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", detail.PreviousBalance);
+                                    }
+                                }
+
+                            }
+
+
+                            DetailErrors += "}, ";
+                        }
+                        DetailErrors += "], ";
                         DetailErrors += "}, ";
                     }
+
+                    //foreach (var item in WarehousesProductionOrders)
+                    //{
+                    //    DetailErrors += "{";
+
+                    //    if (item.Balance <= 0)
+                    //    {
+                    //        Count++;
+                    //        DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                    //    }
+                    //    else
+                    //    {
+                    //        if (item.Balance > item.PreviousBalance)
+                    //        {
+                    //            Count++;
+                    //            DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", item.PreviousBalance);
+                    //        }
+                    //    }
+                    //    DetailErrors += "}, ";
+                    //}
                 }
             }
             else

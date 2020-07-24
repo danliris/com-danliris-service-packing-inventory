@@ -88,6 +88,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputPackagingProductionOrdersViewModel()
                         {
+                            BuyerId = 1,
+                            DeliveryOrder = new Application.ToBeRefactored.CommonViewModelObjectProperties.DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "s"
+                            },
                             //Id = 1,
                             Area="INSPECTION MATERIAL",
                             Balance = 1,
@@ -145,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, true, "PACKING", ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, "PACKING", true, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                       s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId,
-                      s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "", 0, "", s.PackingType, 0, "")).ToList());
+                      s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "", 0, "", s.PackingType, 0, "", "")).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModel2
@@ -205,6 +211,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new InputPackagingProductionOrdersViewModel()
                         {
+                            DeliveryOrder = new Application.ToBeRefactored.CommonViewModelObjectProperties.DeliveryOrderSales()
+                            {
+                                Id = 1,
+                                No = "a"
+                            },
                             Balance = 1,
                             Buyer = "s",
                             CartNo = "1",
@@ -253,7 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaInputModel(ViewModelIM.Date, ViewModelIM.Area, ViewModelIM.Shift, ViewModelIM.BonNo, ViewModelIM.Group, ViewModelIM.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name,
-                    s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "")).ToList());
+                    s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "", "")).ToList());
             }
         }
 

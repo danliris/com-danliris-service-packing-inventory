@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public RejectedInputWarehouseViewModel()
         {
-            WarehousesProductionOrders = new HashSet<RejectedInputWarehouseProductionOrderViewModel>();
+            MappedWarehousesProductionOrders = new HashSet<RejectedInputWarehouseProductionOrderViewModel>();
         }
 
         public string Area { get; set; }
@@ -18,6 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public int OutputId { get; set; }
         public string Group { get; set; }
-        public ICollection<RejectedInputWarehouseProductionOrderViewModel> WarehousesProductionOrders { get; set; }
+        public ICollection<RejectedInputWarehouseProductionOrderViewModel> MappedWarehousesProductionOrders { get; set; }
     }
 }

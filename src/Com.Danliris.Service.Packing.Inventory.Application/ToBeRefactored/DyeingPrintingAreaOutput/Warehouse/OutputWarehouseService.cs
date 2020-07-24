@@ -297,7 +297,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         s.Date.Date == viewModel.Date.Date &&
                                                                                         s.Shift == viewModel.Shift &&
                                                                                         s.Type == OUT);
-
+            viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             if (model == null)
             {
                 int totalCurrentYearData = _outputRepository.ReadAllIgnoreQueryFilter()
@@ -826,6 +826,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var data = productionOrders.Select(s => new InputWarehouseProductionOrderCreateViewModel()
             {
                 Id = s.Id,
+                PreviousBalance = s.BalanceRemains,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = s.ProductionOrderId,
@@ -891,7 +892,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderType = s.Key.ProductionOrderType,
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
-
+                    PreviousBalance = p.BalanceRemains,
                     Id = p.Id,
                     ProductionOrder = new ProductionOrder()
                     {
@@ -931,8 +932,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalALength = p.AvalALength,
                     AvalBLength = p.AvalBLength,
                     AvalConnectionLength = p.AvalConnectionLength,
-                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
-                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    //DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    //DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
                     AvalType = p.AvalType,
                     AvalCartNo = p.AvalCartNo,
                     AvalQuantityKg = p.AvalQuantityKg,
@@ -970,7 +971,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderType = s.Key.ProductionOrderType,
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
-
+                    MaterialWidth = p.MaterialWidth,
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = p.MaterialConstructionId,
+                        Name = p.MaterialConstructionName
+                    },
+                    MaterialProduct = new Material()
+                    {
+                        Id = p.MaterialId,
+                        Name = p.MaterialName
+                    },
+                    PreviousBalance = p.BalanceRemains,
                     Id = p.Id,
                     ProductionOrder = new ProductionOrder()
                     {
@@ -999,8 +1011,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalALength = p.AvalALength,
                     AvalBLength = p.AvalBLength,
                     AvalConnectionLength = p.AvalConnectionLength,
-                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
-                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    //DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    //DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
                     AvalType = p.AvalType,
                     AvalCartNo = p.AvalCartNo,
                     AvalQuantityKg = p.AvalQuantityKg,
@@ -1039,7 +1051,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderType = s.Key.ProductionOrderType,
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
-
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = p.MaterialConstructionId,
+                        Name = p.MaterialConstructionName
+                    },
+                    MaterialProduct = new Material()
+                    {
+                        Id = p.MaterialId,
+                        Name = p.MaterialName
+                    },
+                    MaterialWidth = p.MaterialWidth,
                     Id = p.Id,
                     ProductionOrder = new ProductionOrder()
                     {

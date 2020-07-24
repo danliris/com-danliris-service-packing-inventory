@@ -100,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
@@ -168,6 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
                             {
@@ -252,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo)).ToList());
+                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "")).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModelToGAArea
@@ -289,7 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Balance,
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo)).ToList());
+                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "")).ToList());
             }
 
         }
@@ -327,7 +329,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Balance,
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo)).ToList());
+                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "")).ToList());
             }
 
         }
@@ -497,6 +499,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         new OutputWarehouseProductionOrderViewModel()
                         {
+                            IsSave = true,
                             AdjDocumentNo = "a",
                             Id = 1,
                             ProductionOrder = new ProductionOrder()
@@ -804,6 +807,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
+            outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
             outputRepoMock.Setup(o => o.GetDbSet())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelToShippingArea }.AsQueryable());
 
@@ -989,7 +995,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo)).ToList());
+                    s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "")).ToList());
             tes.Id = 1;
             tes.SetType("OUT", "", "");
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
@@ -2035,6 +2041,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 new OutputWarehouseProductionOrderViewModel()
                 {
+                    ProductionOrder = new ProductionOrder(),
                     Balance = 0
                 }
             };

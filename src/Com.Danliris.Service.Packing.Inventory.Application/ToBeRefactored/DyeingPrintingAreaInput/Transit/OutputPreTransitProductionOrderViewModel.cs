@@ -34,5 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public int OutputId { get; set; }
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+
+        public string AvalType { get; set; }
     }
 }

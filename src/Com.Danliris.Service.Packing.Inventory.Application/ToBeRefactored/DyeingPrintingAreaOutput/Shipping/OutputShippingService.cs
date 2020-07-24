@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _productionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
-        private OutputShippingViewModel MapToViewModel(DyeingPrintingAreaOutputModel model)
+        private async Task<OutputShippingViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
         {
             var vm = new OutputShippingViewModel();
             if (model.Type == null || model.Type == OUT)
@@ -155,6 +155,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         PackingLength = s.PackagingQty == 0 ? 0 : Convert.ToDecimal(s.Balance) / s.PackagingQty
                     }).ToList()
                 };
+
+                foreach (var item in vm.ShippingProductionOrders)
+                {
+                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                    if (inputData != null)
+                    {
+                        item.BalanceRemains = inputData.BalanceRemains + item.Qty;
+                    }
+                }
             }
             else
             {
@@ -526,6 +535,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 HasNextAreaDocument = s.HasNextAreaDocument,
                 ShippingProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputShippingProductionOrderViewModel()
                 {
+                    Balance = d.Balance,
+                    BalanceRemains = d.Balance,
                     DeliveryOrder = new DeliveryOrderSales()
                     {
                         Id = d.DeliveryOrderSalesId,
@@ -586,7 +597,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (model == null)
                 return null;
 
-            OutputShippingViewModel vm = MapToViewModel(model);
+            OutputShippingViewModel vm = await MapToViewModel(model);
 
             return vm;
         }
@@ -605,6 +616,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = d.Construction,
                 HasOutputDocument = d.HasOutputDocument,
                 Motif = d.Motif,
+                BalanceRemains = d.BalanceRemains,
                 ProductionOrder = new ProductionOrder()
                 {
                     Id = d.ProductionOrderId,
