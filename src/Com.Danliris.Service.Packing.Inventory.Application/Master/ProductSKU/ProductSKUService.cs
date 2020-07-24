@@ -108,6 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
                             Name = product.Name,
                             Code = product.Code,
                             UOMUnit = uomProduct.Unit,
+                            UOMId = uomProduct.Id,
                             CategoryName = categoryProduct.Name,
                             Id = product.Id
                         };

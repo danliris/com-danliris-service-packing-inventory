@@ -12,6 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DTOs
             Name = product.Name;
             Description = product.Description;
             LasModifiedUtc = product.LastModifiedUtc;
+            UOMId = uom.Id;
+            UOMUnit = uom.Unit;
             UOM = new UnitOfMeasurementDto(uom);
             Category = new CategoryDto(category);
         }
@@ -21,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.DTOs
         public string Name { get; }
         public string Description { get; }
         public DateTime LasModifiedUtc { get; }
+        public int UOMId { get; }
+        public string UOMUnit { get; }
         public UnitOfMeasurementDto UOM { get; }
         public CategoryDto Category { get; set; }
     }

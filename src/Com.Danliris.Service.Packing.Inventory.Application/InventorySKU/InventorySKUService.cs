@@ -35,9 +35,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
                 form.Date.GetValueOrDefault(),
                 form.ReferenceNo,
                 form.ReferenceType,
-                form.Storage.Id.GetValueOrDefault(),
-                form.Storage.Name,
-                form.Storage.Code,
+                form.Storage._id.GetValueOrDefault(),
+                form.Storage.name,
+                form.Storage.code,
                 form.Type,
                 form.Remark);
 
@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
             {
                 foreach (var item in form.Items)
                 {
-                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId, item.UOMId, model.StorageId, model.StorageCode, model.StorageName, item.Quantity, form.Type, item.Remark);
+                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId.GetValueOrDefault(), item.UOMId.GetValueOrDefault(), model.StorageId, model.StorageCode, model.StorageName, item.Quantity.GetValueOrDefault(), form.Type, item.Remark);
                     await _queueService.SendMessage(movementItem);
                 }
             }

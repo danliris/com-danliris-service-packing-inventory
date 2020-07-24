@@ -115,19 +115,27 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
         private void RegisterEndpoints()
         {
             APIEndpoint.Core = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
-            
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
+            services
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<PackingInventoryDbContext>(options =>
+                {
+                    options.UseSqlServer(connectionString);
+                });
+
             RegisterEndpoints();
 
             // Register Middleware
 
             #region Repository
             services.AddTransient<IDyeingPrintingAreaMovementRepository, DyeingPrintingAreaMovementRepository>();
-            
+
             services.AddTransient<IFabricQualityControlRepository, FabricQualityControlRepository>();
             services.AddTransient<IFabricGradeTestRepository, FabricGradeTestRepository>();
             services.AddTransient<ICriteriaRepository, CriteriaRepository>();
@@ -147,8 +155,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
-			services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
-			services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
+            services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
+            services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
@@ -171,7 +179,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalPriceCorrectionNoteRepository, GarmentShippingLocalPriceCorrectionNoteRepository>();
             services.AddTransient<IGarmentShippingLocalReturnNoteRepository, GarmentShippingLocalReturnNoteRepository>();
             services.AddTransient<IGarmentShippingLocalPriceCuttingNoteRepository, GarmentShippingLocalPriceCuttingNoteRepository>();
-            
+
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
@@ -221,7 +229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
             services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
 
-            services.AddTransient <IGarmentShippingExportSalesDOService, GarmentShippingExportSalesDOService>();
+            services.AddTransient<IGarmentShippingExportSalesDOService, GarmentShippingExportSalesDOService>();
             services.AddTransient<IGarmentShippingLocalSalesDOService, GarmentShippingLocalSalesDOService>();
             services.AddTransient<IGarmentLocalCoverLetterService, GarmentLocalCoverLetterService>();
 
@@ -249,16 +257,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddScoped<IValidateService, ValidateService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
 
-            var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
-            services
-                .AddEntityFrameworkSqlServer()
-                .AddDbContext<PackingInventoryDbContext>(options =>
-                {
-                    options.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
-                    {
-                        // sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    });
-                });
+
 
             var secret = Configuration.GetValue<string>("Secret") ?? Configuration["Secret"];
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
@@ -375,6 +374,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             {
                 var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
                 context.Database.Migrate();
+
+                var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+                bus.RegisterOnMessageHandlerAndReceiveMessages();
             }
 
             app.UseCors(PACKING_INVENTORY_POLICY);
@@ -384,6 +386,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             {
                 swagger.SwaggerEndpoint("/swagger/v1/swagger.json", "Packing Inventory API");
             });
+
+            //var bus = app.ApplicationServices.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+            //bus.RegisterOnMessageHandlerAndReceiveMessages();
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
