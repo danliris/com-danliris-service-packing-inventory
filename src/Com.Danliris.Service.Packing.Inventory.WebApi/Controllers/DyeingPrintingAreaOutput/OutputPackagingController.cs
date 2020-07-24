@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
+                VerifyUser();
                 var data = await _service.DeleteV2(id);
                 return Ok(new
                 {

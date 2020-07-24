@@ -332,11 +332,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             if (qtys.All(s => s > 0))
             {
-                return string.Format("{0}.{1}.{2}.{3}", ADJ_IN, TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", ADJ_IN, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
             else
             {
-                return string.Format("{0}.{1}.{2}.{3}", ADJ_OUT, TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", ADJ_OUT, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
         }
         public async Task<int> Create(OutputPackagingViewModel viewModel)
@@ -425,7 +425,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.PackagingProductionOrdersAdj.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, "", "", item.Balance, 0, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, 0, item.BuyerId,
                         item.MaterialObj.Id, item.MaterialObj.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.NoDocument, item.PackagingType, item.PackagingQty, item.PackagingUnit)).ToList());
 
             result = await _repository.InsertAsync(model);
