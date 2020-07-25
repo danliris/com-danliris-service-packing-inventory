@@ -47,8 +47,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string cargoPolicyNo { get; set; }
         public DateTimeOffset? cargoPolicyDate { get; set; }
+        public double cargoPolicyValue { get; set; }
         public string accountsReceivablePolicyNo { get; set; }
         public DateTimeOffset? accountsReceivablePolicyDate { get; set; }
+        public double accountsReceivablePolicyValue { get; set; }
         public DateTimeOffset? documentSendDate { get; set; }
 
         public string remark { get; set; }

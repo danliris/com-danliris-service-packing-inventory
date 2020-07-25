@@ -49,8 +49,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
 
         public string CargoPolicyNo { get; private set; }
         public DateTimeOffset CargoPolicyDate { get; private set; }
+        public double CargoPolicyValue { get; private set; }
         public string AccountsReceivablePolicyNo { get; private set; }
         public DateTimeOffset AccountsReceivablePolicyDate { get; private set; }
+        public double AccountsReceivablePolicyValue { get; private set; }
         public DateTimeOffset DocumentSendDate { get; private set; }
 
         public string Remark { get; private set; }
@@ -59,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, DateTimeOffset documentSendDate, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -97,8 +99,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             DocumentPresente = documentPresente;
             CargoPolicyNo = cargoPolicyNo;
             CargoPolicyDate = cargoPolicyDate;
+            CargoPolicyValue = cargoPolicyValue;
             AccountsReceivablePolicyNo = accountsReceivablePolicyNo;
             AccountsReceivablePolicyDate = accountsReceivablePolicyDate;
+            AccountsReceivablePolicyValue = accountsReceivablePolicyValue;
             DocumentSendDate = documentSendDate;
             Remark = remark;
         }
@@ -299,6 +303,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             }
         }
 
+        public void SetCargoPolicyValue(double cargoPolicyValue, string userName, string userAgent)
+        {
+            if (CargoPolicyValue != cargoPolicyValue)
+            {
+                CargoPolicyValue = cargoPolicyValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetAccountsReceivablePolicyNo(string accountsReceivablePolicyNo, string userName, string userAgent)
         {
             if (AccountsReceivablePolicyNo != accountsReceivablePolicyNo)
@@ -313,6 +326,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             if (AccountsReceivablePolicyDate != accountsReceivablePolicyDate)
             {
                 AccountsReceivablePolicyDate = accountsReceivablePolicyDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAccountsReceivablePolicyValue(double accountsReceivablePolicyValue, string userName, string userAgent)
+        {
+            if (AccountsReceivablePolicyValue != accountsReceivablePolicyValue)
+            {
+                AccountsReceivablePolicyValue = accountsReceivablePolicyValue;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
