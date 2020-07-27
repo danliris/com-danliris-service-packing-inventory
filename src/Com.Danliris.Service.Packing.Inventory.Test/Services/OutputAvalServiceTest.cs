@@ -933,9 +933,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             var modelN = OutputModel;
+            var model = OutputModel;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(false, "", "");
+            }
+
+            foreach (var item in modelN.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(false, "", "");
+            }
             modelN.SetType(null, "", "");
             outputRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel, OutputModelAdj, modelN }.AsQueryable());
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { model, OutputModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         outputRepoMock.Object,
@@ -958,9 +968,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             var modelN = OutputModel;
+            var model = OutputModel;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(false, "", "");
+            }
+
+            foreach (var item in modelN.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(false, "", "");
+            }
             modelN.SetType(null, "", "");
             outputRepoMock.Setup(s => s.ReadAll())
-                 .Returns(new List<DyeingPrintingAreaOutputModel>() {  }.AsQueryable());
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         outputRepoMock.Object,
