@@ -75,7 +75,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     Balance = table.Column<double>(nullable: false),
                     AvalQuantity = table.Column<double>(nullable: false),
                     AvalWeightQuantity = table.Column<double>(nullable: false),
-                    AvalType = table.Column<string>(maxLength: 128, nullable: true)
+                    AvalType = table.Column<string>(maxLength: 128, nullable: true),
+                    Grade = table.Column<string>(maxLength: 128, nullable: true),
+                    ProductionOrderType = table.Column<string>(maxLength: 512, nullable: true),
+                    Remark = table.Column<string>(maxLength: 4096, nullable: true),
+                    PackingType = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,7 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     Group = table.Column<string>(maxLength: 16, nullable: true),
                     HasSalesInvoice = table.Column<bool>(nullable: false),
                     DeliveryOrderSalesId = table.Column<long>(nullable: false),
-                    DeliveryOrderSalesNo = table.Column<string>(maxLength: 128, nullable: true)
+                    DeliveryOrderSalesNo = table.Column<string>(maxLength: 128, nullable: true),
+                    Type = table.Column<string>(maxLength: 32, nullable: true),
+                    ShippingCode = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,6 +246,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     SectionId = table.Column<int>(nullable: false),
                     SectionCode = table.Column<string>(maxLength: 100, nullable: true),
                     Date = table.Column<DateTimeOffset>(nullable: false),
+                    PaymentTerm = table.Column<string>(maxLength: 25, nullable: true),
                     LCNo = table.Column<string>(maxLength: 100, nullable: true),
                     IssuedBy = table.Column<string>(maxLength: 100, nullable: true),
                     BuyerAgentId = table.Column<int>(nullable: false),
@@ -313,6 +320,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     InvoiceId = table.Column<int>(nullable: false),
                     InvoiceNo = table.Column<string>(maxLength: 50, nullable: true),
                     Date = table.Column<DateTimeOffset>(nullable: false),
+                    EMKLId = table.Column<int>(nullable: false),
+                    EMKLCode = table.Column<string>(maxLength: 100, nullable: true),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
                     Address = table.Column<string>(maxLength: 1000, nullable: true),
                     ATTN = table.Column<string>(maxLength: 250, nullable: true),
@@ -397,6 +406,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     CreditInterest = table.Column<double>(nullable: false),
                     BankCharges = table.Column<double>(nullable: false),
                     DocumentPresente = table.Column<DateTimeOffset>(nullable: false),
+                    CargoPolicyNo = table.Column<string>(maxLength: 50, nullable: true),
+                    CargoPolicyDate = table.Column<DateTimeOffset>(nullable: false),
+                    CargoPolicyValue = table.Column<double>(nullable: false),
+                    AccountsReceivablePolicyNo = table.Column<string>(maxLength: 50, nullable: true),
+                    AccountsReceivablePolicyDate = table.Column<DateTimeOffset>(nullable: false),
+                    AccountsReceivablePolicyValue = table.Column<double>(nullable: false),
+                    DocumentSendDate = table.Column<DateTimeOffset>(nullable: false),
                     Remark = table.Column<string>(maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
@@ -458,9 +474,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     InvoiceNo = table.Column<string>(maxLength: 50, nullable: true),
                     InvoiceId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTimeOffset>(nullable: false),
-                    EMKLId = table.Column<int>(nullable: false),
-                    EMKLCode = table.Column<string>(maxLength: 50, nullable: true),
-                    EMKLName = table.Column<string>(maxLength: 255, nullable: true),
+                    ForwarderId = table.Column<int>(nullable: false),
+                    ForwarderCode = table.Column<string>(maxLength: 50, nullable: true),
+                    ForwarderName = table.Column<string>(maxLength: 255, nullable: true),
+                    ForwarderAddress = table.Column<string>(maxLength: 4000, nullable: true),
+                    ForwarderPhone = table.Column<string>(maxLength: 255, nullable: true),
                     ATTN = table.Column<string>(maxLength: 1000, nullable: true),
                     Fax = table.Column<string>(maxLength: 500, nullable: true),
                     CC = table.Column<string>(maxLength: 500, nullable: true),
@@ -521,6 +539,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     BuyerAgentCode = table.Column<string>(maxLength: 100, nullable: true),
                     BuyerAgentName = table.Column<string>(maxLength: 255, nullable: true),
                     Consignee = table.Column<string>(maxLength: 255, nullable: true),
+                    ConsigneeAddress = table.Column<string>(maxLength: 4000, nullable: true),
                     LCNo = table.Column<string>(maxLength: 100, nullable: true),
                     IssuedBy = table.Column<string>(maxLength: 100, nullable: true),
                     SectionId = table.Column<int>(nullable: false),
@@ -613,6 +632,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
                     LocalSalesNoteId = table.Column<int>(nullable: false),
                     NoteNo = table.Column<string>(maxLength: 50, nullable: true),
+                    LocalCoverLetterNo = table.Column<string>(maxLength: 50, nullable: true),
                     Date = table.Column<DateTimeOffset>(nullable: false),
                     BuyerId = table.Column<int>(nullable: false),
                     BuyerCode = table.Column<string>(maxLength: 100, nullable: true),
@@ -752,6 +772,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     BuyerId = table.Column<int>(nullable: false),
                     BuyerCode = table.Column<string>(maxLength: 100, nullable: true),
                     BuyerName = table.Column<string>(maxLength: 250, nullable: true),
+                    BankId = table.Column<int>(nullable: false),
+                    BankName = table.Column<string>(maxLength: 250, nullable: true),
+                    BankCurrencyCode = table.Column<string>(maxLength: 100, nullable: true),
                     TotalAmount = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
@@ -1617,6 +1640,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     ShippingRemark = table.Column<string>(maxLength: 512, nullable: true),
                     Weight = table.Column<double>(nullable: false),
                     PrevSppInJson = table.Column<string>(type: "varchar(MAX)", nullable: true),
+                    AdjDocumentNo = table.Column<string>(maxLength: 128, nullable: true),
                     DyeingPrintingAreaInputProductionOrderId = table.Column<int>(maxLength: 128, nullable: false),
                     DyeingPrintingAreaOutputId = table.Column<int>(nullable: false)
                 },
@@ -1807,6 +1831,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedUtc = table.Column<DateTime>(nullable: false),
                     DeletedBy = table.Column<string>(maxLength: 128, nullable: true),
                     DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
+                    GarmentShippingInvoiceId = table.Column<int>(nullable: false),
                     RONo = table.Column<string>(maxLength: 10, nullable: true),
                     SCNo = table.Column<string>(maxLength: 256, nullable: true),
                     BuyerBrandId = table.Column<int>(nullable: false),
@@ -1824,8 +1849,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     CurrencyCode = table.Column<string>(nullable: true),
                     UnitId = table.Column<int>(nullable: false),
                     UnitCode = table.Column<string>(maxLength: 10, nullable: true),
-                    CMTPrice = table.Column<decimal>(nullable: false),
-                    GarmentShippingInvoiceId = table.Column<int>(nullable: true)
+                    CMTPrice = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1933,7 +1957,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     DeletedAgent = table.Column<string>(maxLength: 128, nullable: true),
                     CorrectionNoteNo = table.Column<string>(maxLength: 50, nullable: true),
                     CorrectionDate = table.Column<DateTimeOffset>(nullable: false),
-                    SalesNoteId = table.Column<int>(nullable: false)
+                    SalesNoteId = table.Column<int>(nullable: false),
+                    Remark = table.Column<string>(maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2003,7 +2028,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     Quantity = table.Column<double>(nullable: false),
                     UomId = table.Column<int>(nullable: false),
                     UomUnit = table.Column<string>(maxLength: 250, nullable: true),
-                    Price = table.Column<double>(nullable: false)
+                    Price = table.Column<double>(nullable: false),
+                    PackageQuantity = table.Column<double>(nullable: false),
+                    PackageUomId = table.Column<int>(nullable: false),
+                    PackageUomUnit = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {

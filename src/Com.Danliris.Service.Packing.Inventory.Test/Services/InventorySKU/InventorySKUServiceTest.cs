@@ -69,58 +69,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
         }
           
 
-        [Fact]
-        public async Task Should_Success_AddDocument()
-        {
-            //Arrange
-            var unitOfWorkMock = new Mock<IUnitOfWork>();
-            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+        //[Fact]
+        //public async Task Should_Success_AddDocument()
+        //{
+        //    //Arrange
+        //    var unitOfWorkMock = new Mock<IUnitOfWork>();
+        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventoryDocuments.Get(It.IsAny<Expression<Func<ProductSKUInventoryDocumentModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryDocumentModel>, IOrderedQueryable<ProductSKUInventoryDocumentModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<ProductSKUInventoryDocumentModel>()
-                {
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventoryDocuments.Get(It.IsAny<Expression<Func<ProductSKUInventoryDocumentModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryDocumentModel>, IOrderedQueryable<ProductSKUInventoryDocumentModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+        //        .Returns(new List<ProductSKUInventoryDocumentModel>()
+        //        {
 
-                });
+        //        });
 
-            unitOfWorkMock
-                .Setup(s => s.ProductSKUInventoryDocuments
-                .Insert(It.IsAny<ProductSKUInventoryDocumentModel>())).Verifiable();
+        //    unitOfWorkMock
+        //        .Setup(s => s.ProductSKUInventoryDocuments
+        //        .Insert(It.IsAny<ProductSKUInventoryDocumentModel>())).Verifiable();
 
-            var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
 
-            var data = new FormDto();
-            data.GetType().GetProperty("Date").SetValue(data, DateTimeOffset.Now);
-            data.GetType().GetProperty("ReferenceNo").SetValue(data, "ReferenceNo");
-            data.GetType().GetProperty("ReferenceType").SetValue(data, "ReferenceType");
-            data.GetType().GetProperty("Type").SetValue(data, "Type");
-            data.GetType().GetProperty("Remark").SetValue(data, "Remark");
-            data.Storage = new Storage()
-            {
-                Id = 1,
-                Code = "Code",
-                Name = "Name",
-                Unit = new UnitStorage()
-                {
-                    Division = new DivisionStorage()
-                    {
-                        Name = "Name"
-                    },
-                    Name = "Name",
-                }
-            };
-            data.Items = new List<FormItemDto>()
-            {
-                new FormItemDto()
-            };
+        //    var data = new FormDto();
+        //    data.GetType().GetProperty("Date").SetValue(data, DateTimeOffset.Now);
+        //    data.GetType().GetProperty("ReferenceNo").SetValue(data, "ReferenceNo");
+        //    data.GetType().GetProperty("ReferenceType").SetValue(data, "ReferenceType");
+        //    data.GetType().GetProperty("Type").SetValue(data, "Type");
+        //    data.GetType().GetProperty("Remark").SetValue(data, "Remark");
+        //    data.Storage = new Storage()
+        //    {
+        //        Id = 1,
+        //        Code = "Code",
+        //        Name = "Name",
+        //        Unit = new UnitStorage()
+        //        {
+        //            Division = new DivisionStorage()
+        //            {
+        //                Name = "Name"
+        //            },
+        //            Name = "Name",
+        //        }
+        //    };
+        //    data.Items = new List<FormItemDto>()
+        //    {
+        //        new FormItemDto()
+        //    };
 
-            //Act
-            var result = await service.AddDocument(data);
+        //    //Act
+        //    var result = await service.AddDocument(data);
 
-            //Assertion
-            Assert.True(-1 < result);
+        //    //Assertion
+        //    Assert.True(-1 < result);
 
-        }
+        //}
 
         [Fact]
         public void Should_Success_AddMovement()
