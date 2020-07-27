@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
@@ -15,10 +16,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentShippingLocalPriceCuttingNoteService : IGarmentShippingLocalPriceCuttingNoteService
     {
         private readonly IGarmentShippingLocalPriceCuttingNoteRepository _repository;
+        private readonly IServiceProvider _serviceProvider;
 
         public GarmentShippingLocalPriceCuttingNoteService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            _serviceProvider = serviceProvider;
         }
 
         private GarmentShippingLocalPriceCuttingNoteViewModel MapToViewModel(GarmentShippingLocalPriceCuttingNoteModel model)
@@ -144,6 +147,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var viewModel = MapToViewModel(data);
 
             return viewModel;
+        }
+
+        public Buyer GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-leftover-warehouse-buyers";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

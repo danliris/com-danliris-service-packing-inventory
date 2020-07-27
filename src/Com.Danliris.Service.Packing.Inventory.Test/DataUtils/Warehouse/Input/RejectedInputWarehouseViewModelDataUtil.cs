@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
                     Shift = "PAGI",
                     OutputId = 2,
                     Group = "A",
-                    WarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
+                    MappedWarehousesProductionOrders = new List<RejectedInputWarehouseProductionOrderViewModel>()
                     {
                         new RejectedInputWarehouseProductionOrderViewModel()
                         {
@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Warehouse.Input
         public void Should_ValidatorWarehousesProductionOrders_Success()
         {
             var dataUtil = RejectedInputWarehouseViewModel;
-            Assert.NotEmpty(dataUtil.WarehousesProductionOrders);
+            Assert.NotEmpty(dataUtil.MappedWarehousesProductionOrders);
         }
     }
 }

@@ -3,3 +3,13 @@ ignore:
   - "src/Com.Danliris.Service.Packing.Inventory.Infrastructure/Migrations"
   - "src/Com.Danliris.Service.Packing.Inventory.WebApi/Startup.cs"
   - "src/Com.Danliris.Service.Packing.Inventory.Application/QueueService"  
+  - "src/Com.Danliris.Service.Packing.Inventory.WebApi/Startup.cs"
+  
+coverage:
+    status:
+        project:
+            default:
+                target: 90%
+        patch:
+            default:
+                target: 90%

@@ -187,7 +187,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
                             foreach (var size in detail.Sizes.Where(w => w.Id == 0))
                             {
-                                detail.Sizes.Add(size);
+                                size.FlagForCreate(_identityProvider.Username, UserAgent);
+                                detailToUpdate.Sizes.Add(size);
                             }
                         }
                         else
@@ -198,7 +199,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
                     foreach (var detail in item.Details.Where(w => w.Id == 0))
                     {
-                        item.Details.Add(detail);
+                        detail.FlagForCreate(_identityProvider.Username, UserAgent);
+                        foreach (var size in detail.Sizes)
+                        {
+                            size.FlagForCreate(_identityProvider.Username, UserAgent);
+                        }
+                        itemToUpdate.Details.Add(detail);
                     }
                 }
                 else
@@ -210,6 +216,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             foreach (var item in model.Items.Where(w => w.Id == 0))
             {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+                foreach (var detail in item.Details)
+                {
+                    detail.FlagForCreate(_identityProvider.Username, UserAgent);
+                    foreach (var size in detail.Sizes)
+                    {
+                        size.FlagForCreate(_identityProvider.Username, UserAgent);
+                    }
+                }
                 modelToUpdate.Items.Add(item);
             }
 
@@ -231,6 +246,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             foreach (var measurement in model.Measurements.Where(w => w.Id == 0))
             {
+                measurement.FlagForCreate(_identityProvider.Username, UserAgent);
                 modelToUpdate.Measurements.Add(measurement);
             }
 

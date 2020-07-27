@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string correctionNoteNo { get; set; }
         public GarmentShippingLocalSalesNoteViewModel salesNote { get; set; }
         public DateTimeOffset? correctionDate { get; set; }
+        public string remark { get; set; }
 
         public ICollection<GarmentShippingLocalPriceCorrectionNoteItemViewModel> items { get; set; }
 

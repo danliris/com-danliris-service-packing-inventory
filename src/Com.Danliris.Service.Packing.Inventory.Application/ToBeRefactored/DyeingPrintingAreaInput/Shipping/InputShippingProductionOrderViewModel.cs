@@ -31,6 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Area { get; set; }
         public string PackingInstruction { get; set; }
         public string Remark { get; set; }
+        public decimal PackingLength { get; set; }
 
         public int OutputId { get; set; }
 
@@ -38,5 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
+
+        public double BalanceRemains { get; set; }
     }
 }

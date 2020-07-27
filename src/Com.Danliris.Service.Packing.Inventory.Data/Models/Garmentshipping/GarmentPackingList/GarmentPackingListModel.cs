@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string SectionCode { get; private set; }
         public DateTimeOffset Date { get; private set; }
 
+        public string PaymentTerm { get; private set; }
         public string LCNo { get; private set; }
         public string IssuedBy { get; private set; }
 
@@ -60,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Measurements = new HashSet<GarmentPackingListMeasurementModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark, bool isUsed)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark, bool isUsed)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -68,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             SectionId = sectionId;
             SectionCode = sectionCode;
             Date = date;
+            PaymentTerm = paymentTerm;
             LCNo = lCNo;
             IssuedBy = issuedBy;
             BuyerAgentId = buyerAgentId;

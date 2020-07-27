@@ -79,6 +79,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItemsCount++;
                     }
 
+                    if (item.packageQuantity <= 0)
+                    {
+                        errorItem["packageQuantity"] = "Jumlah Kemasan harus lebih dari 0";
+                        errorItemsCount++;
+                    }
+
+                    if (item.packageUom == null || item.packageUom.Id == 0)
+                    {
+                        errorItem["packageUom"] = "Satuan Kemasan tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+
                     if (item.price <= 0)
                     {
                         errorItem["price"] = "Harga harus lebih dari 0";

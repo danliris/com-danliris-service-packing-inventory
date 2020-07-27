@@ -18,6 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<InputShippingProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
         List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders();
         Task<int> Reject(InputShippingViewModel viewModel);
-        MemoryStream GenerateExcel();
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }
 }

@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
     public class ReportStockWarehouseViewModel
     {
         public string NoSpp { get; set; }
-        public string Contruction { get; set; }
+        public string Construction { get; set; }
         public string Unit { get; set; }
         public string Motif { get; set; }
         public string Color { get; set; }

@@ -70,9 +70,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetCartonNo(model.CartonNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetEMKLCode(model.EMKLCode, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetEMKLId(model.EMKLId, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetEMKLName(model.EMKLName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetForwarderCode(model.ForwarderCode, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetForwarderId(model.ForwarderId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetForwarderName(model.ForwarderName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetForwarderAddress(model.ForwarderAddress, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetForwarderPhone(model.ForwarderPhone, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFeederVessel(model.FeederVessel, _identityProvider.Username, UserAgent);
             modelToUpdate.SetFlight(model.Flight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNotify(model.Notify, _identityProvider.Username, UserAgent);

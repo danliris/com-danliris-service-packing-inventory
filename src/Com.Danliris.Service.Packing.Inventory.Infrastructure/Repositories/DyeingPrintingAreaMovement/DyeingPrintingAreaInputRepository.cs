@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
                 var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
             }
 
             _dbSet.Update(model);
@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
                 var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
             }
 
             //model.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -297,7 +297,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
                     var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }
             }
 
@@ -330,7 +330,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
                     var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }
             }
 

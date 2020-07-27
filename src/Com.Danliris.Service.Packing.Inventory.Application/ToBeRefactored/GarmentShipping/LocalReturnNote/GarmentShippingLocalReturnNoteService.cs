@@ -11,16 +11,19 @@ using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalReturnNote
 {
     public class GarmentShippingLocalReturnNoteService : IGarmentShippingLocalReturnNoteService
     {
         private readonly IGarmentShippingLocalReturnNoteRepository _repository;
+        private readonly IServiceProvider _serviceProvider;
 
         public GarmentShippingLocalReturnNoteService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingLocalReturnNoteRepository>();
+            _serviceProvider = serviceProvider;
         }
 
         private GarmentShippingLocalReturnNoteViewModel MapToViewModel(GarmentShippingLocalReturnNoteModel model)
@@ -225,6 +228,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var viewModel = MapToViewModel(data);
 
             return viewModel;
+        }
+
+        public Buyer GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-leftover-warehouse-buyers";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

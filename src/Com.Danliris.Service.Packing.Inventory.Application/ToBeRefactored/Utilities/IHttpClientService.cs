@@ -9,5 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
     public interface IHttpClientService
     {
         Task<HttpResponseMessage> GetAsync(string url);
+        Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, HttpContent content);
     }
 }

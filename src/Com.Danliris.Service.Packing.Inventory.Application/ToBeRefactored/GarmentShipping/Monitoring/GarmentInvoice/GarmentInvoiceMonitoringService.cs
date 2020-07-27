@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             
             queryInv = queryInv.Where(w => w.InvoiceDate.AddHours(offset).Date >= DateFrom.Date && w.InvoiceDate.AddHours(offset).Date <= DateTo.Date);
 
-            queryInv = queryInv.OrderBy(w => w.InvoiceNo);
+            queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
             
             var newQ = (from a in queryInv
                       where (string.IsNullOrWhiteSpace(invoiceType) ? true : (invoiceType == "DL" ? a.InvoiceNo.Substring(0, 2) == "DL" : a.InvoiceNo.Substring(0, 2) == "SM"))
@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public List<GarmentInvoiceMonitoringViewModel> GetReportData(string buyerAgent, string invoiceType, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var Query = GetData(buyerAgent, invoiceType, dateFrom, dateTo, offset);
-            Query = Query.OrderBy(b => b.InvoiceNo).ThenBy(b => b.BuyerAgentCode);
+            Query = Query.OrderBy(b => b.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
             return Query.ToList();
         }
 

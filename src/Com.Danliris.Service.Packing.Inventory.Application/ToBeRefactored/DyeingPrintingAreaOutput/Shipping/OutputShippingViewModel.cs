@@ -16,7 +16,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         }
 
         public string Area { get; set; }
+        public string Type { get; set; }
         public string BonNo { get; set; }
+        public string ShippingCode { get; set; }
         public DateTimeOffset Date { get; set; }
         public string DestinationArea { get; set; }
         public bool HasNextAreaDocument { get; set; }
@@ -32,13 +34,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Area))
                 yield return new ValidationResult("Area harus diisi", new List<string> { "Area" });
 
+            if (string.IsNullOrEmpty(Type))
+                yield return new ValidationResult("Jenis harus diisi", new List<string> { "Type" });
+
             if (Date == default(DateTimeOffset))
             {
                 yield return new ValidationResult("Tanggal harus diisi", new List<string> { "Date" });
             }
             else
             {
-                if (!(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
+                if (Id == 0 && !(Date >= DateTimeOffset.UtcNow || ((DateTimeOffset.UtcNow - Date).TotalDays <= 1 && (DateTimeOffset.UtcNow - Date).TotalDays >= 0)))
                 {
                     yield return new ValidationResult("Tanggal Harus Lebih Besar atau Sama Dengan Hari Ini", new List<string> { "Date" });
                 }
@@ -50,36 +55,99 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Group))
                 yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
-            if (string.IsNullOrEmpty(DestinationArea))
+            if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
+
+            if(Type == "OUT" && DestinationArea == "PENJUALAN" && string.IsNullOrEmpty(ShippingCode))
+                yield return new ValidationResult("Kode Harus Diisi!", new List<string> { "ShippingCode" });
 
             int Count = 0;
             string DetailErrors = "[";
 
-            if ((Id == 0 && ShippingProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && ShippingProductionOrders.Count() == 0))
+            if(Type == "OUT")
             {
-                yield return new ValidationResult("SPP harus Diisi", new List<string> { "ShippingProductionOrder" });
+                if ((Id == 0 && ShippingProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && ShippingProductionOrders.Count() == 0))
+                {
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "ShippingProductionOrder" });
+                }
+                else
+                {
+                    foreach (var item in ShippingProductionOrders)
+                    {
+                        DetailErrors += "{";
+
+                        if (Id != 0 || item.IsSave)
+                        {
+                            if (item.Qty == 0)
+                            {
+                                Count++;
+                                DetailErrors += "Qty: 'Qty Terima Harus Lebih dari 0!',";
+                            }
+                            else
+                            {
+                                if (item.Qty > item.BalanceRemains)
+                                {
+                                    Count++;
+                                    DetailErrors += string.Format("Qty: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", item.BalanceRemains);
+                                }
+                            }
+
+                        }
+
+
+                        DetailErrors += "}, ";
+                    }
+                }
             }
             else
             {
-                foreach (var item in ShippingProductionOrders)
+                if (ShippingProductionOrders.Count == 0)
                 {
-                    DetailErrors += "{";
+                    yield return new ValidationResult("SPP harus Diisi", new List<string> { "ShippingProductionOrder" });
+                }
+                else
+                {
+                    var items = ShippingProductionOrders.Where(e => e.Balance != 0).Select(d => d.Balance);
 
-                    if (item.IsSave)
+                    if (!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
+                        yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "ShippingProductionOrder" });
+                    }
+
+                    foreach (var item in ShippingProductionOrders)
+                    {
+                        DetailErrors += "{";
+
+                        if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
+                        {
+                            Count++;
+                            DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
+                        }
+
                         if (item.Qty == 0)
                         {
                             Count++;
-                            DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                            DetailErrors += "Qty: 'Qty Harus Lebih dari 0!',";
                         }
 
+                        if (item.QtyPacking == 0)
+                        {
+                            Count++;
+                            DetailErrors += "QtyPacking: 'QtyPacking Harus Lebih dari 0!',";
+                        }
+
+                        if (string.IsNullOrEmpty(item.AdjDocumentNo))
+                        {
+                            Count++;
+                            DetailErrors += "AdjDocumentNo: 'No Dokumen Harus Diisi!',";
+                        }
+
+                        DetailErrors += "}, ";
                     }
-
-
-                    DetailErrors += "}, ";
                 }
             }
+
+            
 
             DetailErrors += "]";
 

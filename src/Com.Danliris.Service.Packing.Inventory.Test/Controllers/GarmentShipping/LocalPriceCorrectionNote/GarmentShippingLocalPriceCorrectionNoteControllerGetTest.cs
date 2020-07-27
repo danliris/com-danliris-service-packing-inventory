@@ -36,12 +36,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         id = IndexViewModel.id,
                         correctionNoteNo = IndexViewModel.correctionNoteNo,
+                        correctionDate = IndexViewModel.correctionDate,
                         salesNote = new SalesNote
                         {
                             id = IndexViewModel.salesNote.id,
                             noteNo = IndexViewModel.salesNote.noteNo,
                             buyer = IndexViewModel.salesNote.buyer,
-                            date = IndexViewModel.salesNote.date.GetValueOrDefault(),
+                            date = IndexViewModel.salesNote.date,
                             tempo = IndexViewModel.salesNote.tempo,
                             dispositionNo = IndexViewModel.salesNote.dispositionNo
                         }

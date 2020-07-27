@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,12 +23,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         private readonly IGarmentLocalCoverLetterService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
+        private readonly IGarmentShippingLocalSalesNoteService _salesNoteService;
 
-        public GarmentLocalCoverLetterController(IGarmentLocalCoverLetterService service, IIdentityProvider identityProvider, IValidateService validateService)
+        public GarmentLocalCoverLetterController(IGarmentLocalCoverLetterService service, IGarmentShippingLocalSalesNoteService salesNoteService, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
             _validateService = validateService;
+            _salesNoteService = salesNoteService;
         }
 
         protected void VerifyUser()
@@ -156,6 +161,47 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+
+            try
+            {
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
+
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    GarmentShippingLocalSalesNoteViewModel salesNote = await _salesNoteService.ReadById(model.localSalesNoteId);
+                    Buyer buyer = _salesNoteService.GetBuyer(model.buyer.Id);
+                    var PdfTemplate = new GarmentLocalCoverLetterPdfTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,salesNote, model.buyer, timeoffsset);
+
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = model.noteNo + ".pdf"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

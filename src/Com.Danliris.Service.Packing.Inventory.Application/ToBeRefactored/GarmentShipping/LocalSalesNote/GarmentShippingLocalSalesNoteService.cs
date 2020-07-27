@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
@@ -15,10 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentShippingLocalSalesNoteService : IGarmentShippingLocalSalesNoteService
     {
         private readonly IGarmentShippingLocalSalesNoteRepository _repository;
+        private readonly IServiceProvider serviceProvider;
 
         public GarmentShippingLocalSalesNoteService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingLocalSalesNoteRepository>();
+
+            this.serviceProvider = serviceProvider;
         }
 
         private GarmentShippingLocalSalesNoteViewModel MapToViewModel(GarmentShippingLocalSalesNoteModel model)
@@ -85,6 +89,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.UomId,
                         Unit = i.UomUnit
                     },
+                    packageQuantity = i.PackageQuantity,
+                    packageUom = new UnitOfMeasurement
+                    {
+                        Id = i.PackageUomId,
+                        Unit = i.PackageUomUnit
+                    },
                     price = i.Price
                 }).ToList()
             };
@@ -98,7 +108,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.product = i.product ?? new ProductViewModel();
                 i.uom = i.uom ?? new UnitOfMeasurement();
-                return new GarmentShippingLocalSalesNoteItemModel(i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price) { Id = i.Id };
+                i.packageUom = i.packageUom ?? new UnitOfMeasurement();
+                return new GarmentShippingLocalSalesNoteItemModel(i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price,i.packageQuantity,i.packageUom.Id.GetValueOrDefault(), i.packageUom.Unit) { Id = i.Id };
             }).ToList();
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
@@ -173,6 +184,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var model = MapToModel(viewModel);
 
             return await _repository.UpdateAsync(id, model);
+        }
+
+        public Buyer GetBuyer(int id)
+        {
+            string buyerUri = "master/garment-leftover-warehouse-buyers";
+            IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

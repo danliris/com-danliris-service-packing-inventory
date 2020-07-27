@@ -41,6 +41,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(250);
 
             builder
+                .Property(s => s.BankName)
+                .HasMaxLength(250);
+
+            builder
+                .Property(s => s.BankCurrencyCode)
+                .HasMaxLength(100);
+
+            builder
                 .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.ShippingNoteId);

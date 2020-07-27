@@ -70,6 +70,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
+                var accept = Request.Headers["Accept"];
+                if (accept == "application/pdf")
+                {
+                    VerifyUser();
+                    var result = await _service.ReadPdfById(id);
+
+                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                }
+
                 var data = await _service.ReadById(id);
 
                 return Ok(new

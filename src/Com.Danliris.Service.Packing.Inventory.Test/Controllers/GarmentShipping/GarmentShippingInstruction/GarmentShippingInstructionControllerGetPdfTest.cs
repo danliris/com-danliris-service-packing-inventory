@@ -26,13 +26,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     InvoiceId=1,
                     InvoiceNo="no",
                     Phone="11231321",
-                    EMKL=new EMKL
+                    forwarder=new Forwarder
                     {
-                        Id=1,
-                        Name="sdlka",
-                        Code="jsln"
+                        name="sdj",
+                        address="jlsdka",
+                        attn="sdjh",
+                        phone="sadjlhalk",
+                        fax="asjdklj"
                     },
-                    ATTN="ajs",
                     BankAccountId=1,
                     BankAccountName="salk",
                     BuyerAgent=new Buyer
@@ -46,7 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     CC="sna.",
                     Date=DateTimeOffset.Now,
                     LadingDate=DateTimeOffset.Now,
-                    Fax="0880980",
                     FeederVessel="dans.n",
                     Freight="skfaknf",
                     ShippingStaffName="adsadlkasjk"

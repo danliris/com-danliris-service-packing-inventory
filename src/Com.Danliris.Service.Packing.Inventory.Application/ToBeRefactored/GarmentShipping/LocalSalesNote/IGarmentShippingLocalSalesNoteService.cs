@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote
@@ -10,5 +11,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         ListResult<GarmentShippingLocalSalesNoteViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Update(int id, GarmentShippingLocalSalesNoteViewModel viewModel);
         Task<int> Delete(int id);
+        Buyer GetBuyer(int id);
     }
 }

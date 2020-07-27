@@ -473,6 +473,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("DyeingPrintingAreaProductionOrderDocumentId");
 
+                    b.Property<string>("Grade")
+                        .HasMaxLength(128);
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -486,10 +489,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Motif")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("PackingType")
+                        .HasMaxLength(128);
+
                     b.Property<long>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
                         .HasMaxLength(128);
+
+                    b.Property<string>("ProductionOrderType")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(4096);
 
                     b.Property<string>("Type")
                         .HasMaxLength(32);
@@ -565,6 +577,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
+                    b.Property<string>("ShippingCode")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(32);
+
                     b.HasKey("Id");
 
                     b.ToTable("DyeingPrintingAreaOutputs");
@@ -577,6 +595,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("AdjDocumentNo")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Area")
                         .HasMaxLength(64);
@@ -1100,6 +1121,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Driver")
                         .HasMaxLength(250);
 
+                    b.Property<string>("EMKLCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("EMKLId");
+
                     b.Property<string>("EMKLSeal")
                         .HasMaxLength(250);
 
@@ -1181,6 +1207,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTimeOffset>("AccountsReceivablePolicyDate");
+
+                    b.Property<string>("AccountsReceivablePolicyNo")
+                        .HasMaxLength(50);
+
+                    b.Property<double>("AccountsReceivablePolicyValue");
+
                     b.Property<bool>("Active");
 
                     b.Property<double>("Amount");
@@ -1226,6 +1259,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("BuyerName")
                         .HasMaxLength(255);
 
+                    b.Property<DateTimeOffset>("CargoPolicyDate");
+
+                    b.Property<string>("CargoPolicyNo")
+                        .HasMaxLength(50);
+
+                    b.Property<double>("CargoPolicyValue");
+
                     b.Property<string>("Condition")
                         .HasMaxLength(25);
 
@@ -1254,6 +1294,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double>("DiscrepancyFee");
 
                     b.Property<DateTimeOffset>("DocumentPresente");
+
+                    b.Property<DateTimeOffset>("DocumentSendDate");
 
                     b.Property<double>("Inkaso");
 
@@ -1761,6 +1803,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PackingListType")
                         .HasMaxLength(25);
 
+                    b.Property<string>("PaymentTerm")
+                        .HasMaxLength(25);
+
                     b.Property<string>("Remark")
                         .HasMaxLength(2000);
 
@@ -1842,14 +1887,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("EMKLCode")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("EMKLId");
-
-                    b.Property<string>("EMKLName")
-                        .HasMaxLength(255);
-
                     b.Property<string>("Fax")
                         .HasMaxLength(500);
 
@@ -1857,6 +1894,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("Flight")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ForwarderAddress")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("ForwarderCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("ForwarderId");
+
+                    b.Property<string>("ForwarderName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ForwarderPhone")
                         .HasMaxLength(255);
 
                     b.Property<string>("Freight")
@@ -2014,7 +2065,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<int?>("GarmentShippingInvoiceId");
+                    b.Property<int>("GarmentShippingInvoiceId");
 
                     b.Property<bool>("IsDeleted");
 
@@ -2100,6 +2151,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Consignee")
                         .HasMaxLength(255);
+
+                    b.Property<string>("ConsigneeAddress")
+                        .HasMaxLength(4000);
 
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
@@ -2320,6 +2374,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("LocalCoverLetterNo")
+                        .HasMaxLength(50);
 
                     b.Property<int>("LocalSalesNoteId");
 
@@ -2671,6 +2728,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<string>("Remark")
+                        .HasMaxLength(1000);
+
                     b.Property<int>("SalesNoteId");
 
                     b.HasKey("Id");
@@ -2832,6 +2892,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<int>("LocalSalesNoteId");
+
+                    b.Property<double>("PackageQuantity");
+
+                    b.Property<int>("PackageUomId");
+
+                    b.Property<string>("PackageUomUnit")
+                        .HasMaxLength(250);
 
                     b.Property<double>("Price");
 
@@ -2996,6 +3063,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<string>("BankCurrencyCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("BankId");
+
+                    b.Property<string>("BankName")
+                        .HasMaxLength(250);
 
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
@@ -4388,7 +4463,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 {
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice.GarmentShippingInvoiceModel")
                         .WithMany("Items")
-                        .HasForeignKey("GarmentShippingInvoiceId");
+                        .HasForeignKey("GarmentShippingInvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote.GarmentShippingLocalReturnNoteItemModel", b =>

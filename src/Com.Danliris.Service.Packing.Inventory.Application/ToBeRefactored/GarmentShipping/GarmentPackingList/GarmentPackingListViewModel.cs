@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Section Section { get; set; }
         public DateTimeOffset? Date { get; set; }
 
+        public string PaymentTerm { get; set; }
         public string LCNo { get; set; }
         public string IssuedBy { get; set; }
         public Buyer BuyerAgent { get; set; }
@@ -81,14 +82,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    yield return new ValidationResult("Tanggal tidak boleh lebih dari hari ini", new List<string> { "Date" });
             //}
 
-            if (string.IsNullOrEmpty(LCNo))
+            if (string.IsNullOrWhiteSpace(PaymentTerm))
             {
-                yield return new ValidationResult("LC No tidak boleh kosong", new List<string> { "LCNo" });
+                yield return new ValidationResult("Payment Term tidak boleh kosong", new List<string> { "PaymentTerm" });
             }
-
-            if (string.IsNullOrEmpty(IssuedBy))
+            else if (PaymentTerm.ToUpper() == "LC")
             {
-                yield return new ValidationResult("Issued By tidak boleh kosong", new List<string> { "IssuedBy" });
+                if (string.IsNullOrEmpty(LCNo))
+                {
+                    yield return new ValidationResult("LC No tidak boleh kosong", new List<string> { "LCNo" });
+                }
+
+                if (string.IsNullOrEmpty(IssuedBy))
+                {
+                    yield return new ValidationResult("Issued By tidak boleh kosong", new List<string> { "IssuedBy" });
+                }
             }
 
             if (BuyerAgent == null || BuyerAgent.Id == 0)
@@ -207,11 +215,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             errorItemsCount++;
                         }
 
-                        if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
-                        {
-                            errorItem["totalQty"] = "Harus sama dengan Qty";
-                            errorItemsCount++;
-                        }
+                        //if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
+                        //{
+                        //    errorItem["totalQty"] = "Harus sama dengan Qty";
+                        //    errorItemsCount++;
+                        //}
                     }
 
                     errorItems.Add(errorItem);
@@ -264,15 +272,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Shipping Mark tidak boleh kosong", new List<string> { "ShippingMark" });
             }
 
-            if (string.IsNullOrEmpty(SideMark))
-            {
-                yield return new ValidationResult("Side Mark tidak boleh kosong", new List<string> { "SideMark" });
-            }
+            //if (string.IsNullOrEmpty(SideMark))
+            //{
+            //    yield return new ValidationResult("Side Mark tidak boleh kosong", new List<string> { "SideMark" });
+            //}
 
-            if (string.IsNullOrEmpty(Remark))
-            {
-                yield return new ValidationResult("Remark tidak boleh kosong", new List<string> { "Remark" });
-            }
+            //if (string.IsNullOrEmpty(Remark))
+            //{
+            //    yield return new ValidationResult("Remark tidak boleh kosong", new List<string> { "Remark" });
+            //}
 
             #endregion
         }

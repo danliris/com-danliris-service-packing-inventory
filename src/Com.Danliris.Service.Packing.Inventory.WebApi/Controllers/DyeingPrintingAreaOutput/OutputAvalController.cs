@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -17,11 +18,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
     {
         private readonly IOutputAvalService _service;
         private readonly IIdentityProvider _identityProvider;
+        private readonly IValidateService ValidateService;
 
-        public OutputAvalController(IOutputAvalService service, IIdentityProvider identityProvider)
+        public OutputAvalController(IOutputAvalService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
             _identityProvider = identityProvider;
+            ValidateService = validateService;
         }
 
         protected void VerifyUser()
@@ -45,9 +48,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             try
             {
                 VerifyUser();
+                ValidateService.Validate(viewModel);
                 var result = await _service.Create(viewModel);
 
                 return Created("/", result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
             }
             catch (Exception ex)
             {
@@ -75,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
@@ -141,7 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("available-aval/{id}")]
-        public IActionResult GetAvailableByBonAval([FromRoute]int id,
+        public IActionResult GetAvailableByBonAval([FromRoute] int id,
                                               [FromQuery] string keyword = null,
                                               [FromQuery] int page = 1,
                                               [FromQuery] int size = 25,
@@ -161,7 +177,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 {
                     return Ok(data);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
@@ -169,7 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("aval-summary-by-type")]
-        public IActionResult GetSummaryAvalByType([FromQuery]string avalType,
+        public IActionResult GetSummaryAvalByType([FromQuery] string avalType,
                                               [FromQuery] string keyword = null,
                                               [FromQuery] int page = 1,
                                               [FromQuery] int size = 25,
@@ -187,7 +204,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 {
                     return Ok(data);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
 
@@ -211,6 +229,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("adj-production-order-loader")]
+        public IActionResult GetAdjProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+           [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.GetDistinctAllProductionOrder(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
             }
         }
     }

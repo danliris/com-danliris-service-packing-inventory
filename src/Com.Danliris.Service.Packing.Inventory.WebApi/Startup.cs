@@ -96,6 +96,13 @@ using Com.Danliris.Service.Packing.Inventory.Application.InventorySKU;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPWovenType;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInvoice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentDebitNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByUnit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByBuyer;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyBySection;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByCountry;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByComodity;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -180,6 +187,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalReturnNoteRepository, GarmentShippingLocalReturnNoteRepository>();
             services.AddTransient<IGarmentShippingLocalPriceCuttingNoteRepository, GarmentShippingLocalPriceCuttingNoteRepository>();
 
+            services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
+            services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
+
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
@@ -249,7 +259,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddTransient<IAzureServiceBusSender<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
             //services.AddTransient<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
             services.AddTransient<IGarmentInvoiceMonitoringService, GarmentInvoiceMonitoringService>();
-
+            services.AddTransient<IGarmentDebitNoteMonitoringService, GarmentDebitNoteMonitoringService>();
+            services.AddTransient<IGarmentCreditNoteMonitoringService, GarmentCreditNoteMonitoringService>();
+            services.AddTransient<IGarmentOmzetMonthlyByUnitService, GarmentOmzetMonthlyByUnitService>();
+            services.AddTransient<IGarmentOmzetMonthlyByBuyerService, GarmentOmzetMonthlyByBuyerService>();
+            services.AddTransient<IGarmentOmzetMonthlyBySectionService, GarmentOmzetMonthlyBySectionService>();
+            services.AddTransient<IRecapOmzetPerMonthMonitoringService, RecapOmzetPerMonthMonitoringService>();
+            services.AddTransient<IGarmentOmzetMonthlyByCountryService, GarmentOmzetMonthlyByCountryService>();
+            services.AddTransient<IGarmentOmzetMonthlyByComodityService, GarmentOmzetMonthlyByComodityService>();
             #endregion
 
             // Register Provider
@@ -339,15 +356,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //services.AddSingleton<IValidator<InputTransitViewModel>, InputTransitValidator>();
             //services.AddSingleton<IValidator<OutputTransitViewModel>, OutputTransitValidator>();
             services.AddSingleton<IValidator<InputPackagingViewModel>, InputPackagingValidator>();
-            services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
+            //services.AddSingleton<IValidator<OutputPackagingViewModel>, OutputPackagingValidator>();
             services.AddSingleton<IValidator<InputAvalViewModel>, InputAvalValidator>();
             services.AddSingleton<IValidator<InputAvalItemViewModel>, InputAvalItemValidator>();
-            services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
-            services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
+            //services.AddSingleton<IValidator<OutputAvalViewModel>, OutputAvalValidator>();
+            //services.AddSingleton<IValidator<OutputAvalItemViewModel>, OutputAvalItemValidator>();
             //services.AddSingleton<IValidator<InputShippingViewModel>, InputShippingValidator>();
             //services.AddSingleton<IValidator<OutputShippingViewModel>, OutputShippingValidator>();
             services.AddSingleton<IValidator<InputWarehouseCreateViewModel>, InputWarehouseCreateValidator>();
-            services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
+            //services.AddSingleton<IValidator<OutputWarehouseViewModel>, OutputWarehouseValidator>();
             services.AddSingleton<IValidator<IPWidthTypeViewModel>, IPWidthTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPYarnTypeViewModel>, IPYarnTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPWovenTypeViewModel>, IPWovenTypeViewModelValidator>();

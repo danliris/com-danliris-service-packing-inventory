@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "");
+            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "");
 
             var repoMock = new Mock<IGarmentShippingInstructionRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "");
+            var model = new GarmentShippingInstructionModel("no", 1, DateTimeOffset.Now, 1, "", "", "", "", "", "", "", 1, "", "", "", DateTimeOffset.Now, "", "", "", "", "", "", "", "", 1, "", 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "");
 
             var repoMock = new Mock<IGarmentShippingInstructionRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

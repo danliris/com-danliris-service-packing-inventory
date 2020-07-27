@@ -32,12 +32,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]DateTimeOffset dateReport,[FromQuery]string zona)
+        public IActionResult Get([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] string zona, [FromHeader(Name = "x-timezone-offset")] string timezone,
+            [FromQuery] string unit = null, [FromQuery] string packingType = null, [FromQuery] string construction = null, [FromQuery] string buyer = null, [FromQuery] long productionOrderId = 0)
         {
             try
             {
                 VerifyUser();
-                var data = _service.GetReportData(dateReport,zona);
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var data = _service.GetReportData(dateFrom, dateTo, zona, clientTimeZoneOffset, unit, packingType, construction, buyer, productionOrderId);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -46,15 +48,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
         [HttpGet("xls/")]
-        public IActionResult GetExcel([FromQuery]DateTimeOffset dateReport, [FromQuery]string zona)
+        public IActionResult GetExcel([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] string zona, [FromHeader(Name = "x-timezone-offset")] string timezone,
+            [FromQuery] string unit = null, [FromQuery] string packingType = null, [FromQuery] string construction = null, [FromQuery] string buyer = null, [FromQuery] long productionOrderId = 0)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
-                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = _service.GenerateExcel(dateReport,zona);
-                string filename = $"Stock {dateReport.ToString("yyyy MM dd")}.xlsx";
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var Result = _service.GenerateExcel(dateFrom, dateTo, zona, clientTimeZoneOffset, unit, packingType, construction, buyer, productionOrderId);
+                string filename = $"Stock {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;

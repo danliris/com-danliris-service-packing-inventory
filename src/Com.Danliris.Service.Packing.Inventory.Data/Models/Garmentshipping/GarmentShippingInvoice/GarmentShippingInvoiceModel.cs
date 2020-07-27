@@ -17,7 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public string BuyerAgentCode { get; set; }
 		public string BuyerAgentName { get; set; }
 		public string Consignee { get; set; }
-		public string LCNo { get; set; }
+        public string ConsigneeAddress { get; set; }
+        public string LCNo { get; set; }
 		public string IssuedBy { get; set; }
 		public int SectionId { get; set; }
 		public string SectionCode { get; set; }
@@ -55,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			GarmentShippingInvoiceAdjustment = new HashSet<GarmentShippingInvoiceAdjustmentModel>();
 		}
 
-		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount)
+		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount, string consigneeAddress)
 		{
 			this.PackingListId = PackingListId;
 			this.InvoiceNo = InvoiceNo;
@@ -99,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			this.GarmentShippingInvoiceAdjustment = GarmentShippingInvoiceAdjustment;
 			this.Items = Items;
 			this.TotalAmount = TotalAmount;
+            this.ConsigneeAddress = consigneeAddress;
 		}
 
 		public void SetConsignee(string consignee, string username, string uSER_AGENT)
@@ -110,7 +112,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			}
 		}
 
-		public void SetPaymentDue(int paymentDue, string username, string uSER_AGENT)
+        public void SetConsigneeAddress(string consigneeAddress, string username, string uSER_AGENT)
+        {
+            if (this.ConsigneeAddress != consigneeAddress)
+            {
+                this.ConsigneeAddress = consigneeAddress;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetPaymentDue(int paymentDue, string username, string uSER_AGENT)
 		{
 			if (this.PaymentDue != paymentDue)
 			{

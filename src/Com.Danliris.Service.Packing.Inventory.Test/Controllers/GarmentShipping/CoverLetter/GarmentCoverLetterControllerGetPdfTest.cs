@@ -24,8 +24,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                 return new GarmentCoverLetterViewModel()
                 {
                     invoiceId=1,
-                    address="asldhal",
-                    attn="sad",
+                    emkl=new EMKL
+                    {
+                        Id=1,
+                        address="lsad",
+                        Name="slkd",
+                        attn="lsajd",
+                        Code="sad",
+                        phone="8-8"
+                    },
                     bookingDate=DateTimeOffset.Now,
                     cartoonQuantity=23,
                     containerNo="ajsd",
@@ -40,7 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         id=2
                     },
                     emklSeal="kjashd",
-                    name="asjd",
                     order=new Buyer
                     {
                         Name="jshd",
@@ -59,7 +65,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     plateNumber="jaksj",
                     unit="asjhd",
                     pcsQuantity=83,
-                    phone="asdhlah"
                 };
             }
         }

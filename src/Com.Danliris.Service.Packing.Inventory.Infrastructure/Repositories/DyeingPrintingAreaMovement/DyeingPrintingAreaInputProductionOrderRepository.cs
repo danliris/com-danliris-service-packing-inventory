@@ -19,6 +19,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaInputProductionOrderModel> _dbSet;
 
+        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
+        private const string TRANSIT = "TRANSIT";
+        private const string PACKING = "PACKING";
+        private const string GUDANGJADI = "GUDANG JADI";
+        private const string GUDANGAVAL = "GUDANG AVAL";
+        private const string SHIPPING = "SHIPPING";
+
         public DyeingPrintingAreaInputProductionOrderRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
@@ -136,11 +143,111 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateFromNextAreaInputAsync(int id, double balance)
+        public Task<int> UpdateFromOutputIMAsync(int id, double balance)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newBalance = modelToUpdate.BalanceRemains - balance;
+                modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
+                if (newBalance == 0)
+                {
+                    modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateBalanceAndRemainsAsync(int id, double balance)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+                var newBalance = modelToUpdate.Balance - balance;
+                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                if (newBalance == 0)
+                {
+                    modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+                var newBalance = modelToUpdate.Balance - balance;
+                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                if (newBalance <= 0)
+                {
+                    modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance, decimal qtyPacking)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+                var newBalance = modelToUpdate.Balance - balance;
+                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+
+                var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
+                modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
+
+                if (newBalance <= 0)
+                {
+                    modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromNextAreaInputAsync(int id, double balance, decimal qtyPacking)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+
+            if (modelToUpdate.Area == GUDANGJADI || modelToUpdate.Area == SHIPPING)
+            {
+                var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
+                modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
+            }
 
             return _dbContext.SaveChangesAsync();
         }

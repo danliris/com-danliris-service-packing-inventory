@@ -124,10 +124,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 				.Property(shippingInvoice => shippingInvoice.Description)
 				.HasMaxLength(255);
 
-			configuration
+            configuration
+                .Property(shippingInvoice => shippingInvoice.ConsigneeAddress)
+                .HasMaxLength(4000);
+
+            configuration
 				.HasMany(shippingInvoice => shippingInvoice.Items)
 				.WithOne()
-				.HasForeignKey("GarmentShippingInvoiceId");
+				.HasForeignKey(s => s.GarmentShippingInvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
 			configuration
 			   .HasMany(shippingInvoice => shippingInvoice.GarmentShippingInvoiceAdjustment)
 			   .WithOne()

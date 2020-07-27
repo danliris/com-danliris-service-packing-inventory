@@ -21,6 +21,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
+        public string Type { get; private set; }
+
+        public string ShippingCode { get; private set; }
 
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
@@ -29,8 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrders = new HashSet<DyeingPrintingAreaOutputProductionOrderModel>();
         }
 
-        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument, 
-            string destinationArea,string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -41,8 +44,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
+
+        /// <summary>
+        /// New Constructor Output
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            : this(date, area, shift, bonNo, hasNextAreaDocument, destinationArea, group, dyeingPrintingAreaOutputProductionOrders)
+        {
+            Type = type;
+        }
+
+        /// <summary>
+        /// Area Aval
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="donNo"></param>
+        /// <param name="doId"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, int doId, bool hasNextAreaDocument,
-            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -53,18 +90,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DeliveryOrderSalesId = doId;
             DeliveryOrderSalesNo = donNo;
+            Type = type;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
 
-        //Shipping
+        /// <summary>
+        /// Area Shipping
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="deliveryOrderId"></param>
+        /// <param name="deliveryOrderNo"></param>
+        /// <param name="hasSalesInvoice"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
+        /// <param name="type"></param>
+        /// <param name="shippingCode"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
             Shift = shift;
             BonNo = bonNo;
             Group = group;
+            Type = type;
             HasNextAreaDocument = hasNextAreaDocument;
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
@@ -73,7 +127,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryOrderSalesNo = deliveryOrderNo;
 
             HasSalesInvoice = hasSalesInvoice;
+            ShippingCode = shippingCode;
         }
+
 
         public void SetArea(string newArea, string user, string agent)
         {
@@ -131,9 +187,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetGroup(string newGroup, string user, string agent)
         {
-            if(newGroup != Group)
+            if (newGroup != Group)
             {
                 Group = newGroup;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetType(string newType, string user, string agent)
+        {
+            if (newType != Type)
+            {
+                Type = newType;
                 this.FlagForUpdate(user, agent);
             }
         }

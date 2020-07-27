@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class InputPackagingProductionOrdersViewModel :BaseViewModel
     {
+        public DeliveryOrderSales DeliveryOrder { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material MaterialProduct { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
@@ -28,11 +30,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Remark { get; set; }
         public string Status { get; set; }
         public string Material { get; set; }
-        public decimal MtrLength { get; set; }
-        public decimal YdsLength { get; set; }
         public string ProductionOrderNo { get; set; }
         public double QtyOrder { get; set; }
         public string Area { get; set; }
+
+        public string PackingType { get; set; }
+        public decimal QtyPacking { get; set; }
+        public string PackingUnit { get; set; }
 
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         public int OutputId { get; set; }

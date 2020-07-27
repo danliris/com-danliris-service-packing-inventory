@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public int localSalesNoteId { get; set; }
         public string noteNo { get; set; }
+        public string localCoverLetterNo { get; set; }
 
         public DateTimeOffset? date { get; set; }
         public Buyer buyer { get; set; }

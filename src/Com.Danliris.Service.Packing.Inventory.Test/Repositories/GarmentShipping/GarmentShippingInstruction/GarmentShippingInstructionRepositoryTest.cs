@@ -167,9 +167,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetCarrier("model.Carrier", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetCartonNo("model.CartonNo", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetDate(model.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLCode("model.EMKLCode", data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLId(2, data.LastModifiedBy, data.LastModifiedAgent);
-            modelToUpdate.SetEMKLName("model.EMKLName", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetForwarderCode("model.ForwarderCode", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetForwarderId(2, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetForwarderName("model.ForwarderName", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetForwarderAddress("model.ForwarderName", data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetForwarderPhone("model.ForwarderName", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetFeederVessel("model.FeederVessel", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetFlight("model.Flight", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetNotify("model.Notify", data.LastModifiedBy, data.LastModifiedAgent);

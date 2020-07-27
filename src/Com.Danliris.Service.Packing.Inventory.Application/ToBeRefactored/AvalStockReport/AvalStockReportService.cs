@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
         private const string IN = "IN";
         private const string AWAL = "AWAL";
         private const string TRANSFORM = "TRANSFORM";
+        private const string ADJ_IN = "ADJ IN";
+        private const string ADJ_OUT = "ADJ OUT";
 
         private const string GUDANGAVAL = "GUDANG AVAL";
 
@@ -36,12 +38,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
 
             var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
-                {
-                    AvalType = d.Key,
-                    AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
-                    Type = AWAL,
-                    AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
-                });
+            {
+                AvalType = d.Key,
+                AvalQuantity = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalQuantity),
+                Type = AWAL,
+                AvalQuantityWeight = d.Where(e => e.Type == TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == OUT).Sum(e => e.AvalWeightQuantity)
+                        + d.Where(e => e.Type == ADJ_IN || e.Type == ADJ_OUT).Sum(e => e.Balance)
+            });
 
             return result;
         }
@@ -79,14 +82,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date == searchDate.Date)
                    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
-            
+
             var result = queryTransform.GroupBy(s => new { s.AvalType, s.Type }).Select(d => new SimpleAvalViewModel()
-                {
-                    Type = d.Key.Type,
-                    AvalType = d.Key.AvalType,
-                    AvalQuantity = d.Sum(e => e.AvalQuantity),
-                    AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
-                });
+            {
+                Type = d.Key.Type,
+                AvalType = d.Key.AvalType,
+                AvalQuantity = d.Sum(e => e.AvalQuantity),
+                AvalQuantityWeight = d.Sum(e => e.AvalWeightQuantity)
+            });
 
             return result;
         }
@@ -112,17 +115,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 StartAvalWeightQuantity = e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantityWeight : 0,
                 InAvalQuantity = e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0,
                 InAvalWeightQuantity = e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0,
-                OutAvalQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0,
-                OutAvalWeightQuantity = e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0,
+                OutAvalQuantity = (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantity : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantity : 0),
+                OutAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    - (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0),
                 EndAvalQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantity : 0)
                     + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantity : 0)
-                    - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0),
+                    - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0),
                 EndAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == AWAL) != null ? e.FirstOrDefault(d => d.Type == AWAL).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == TRANSFORM).AvalQuantityWeight : 0)
                     - (e.FirstOrDefault(d => d.Type == OUT) != null ? e.FirstOrDefault(d => d.Type == OUT).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == ADJ_IN).AvalQuantityWeight : 0)
+                    + (e.FirstOrDefault(d => d.Type == ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == ADJ_OUT).AvalQuantityWeight : 0)
             });
 
-            return result;
+            return result.Where(s => s.StartAvalQuantity != 0 || s.InAvalQuantity != 0 || s.OutAvalQuantity != 0 || s.EndAvalQuantity != 0 ||
+                    s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0);
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset searchDate, int offset)
@@ -143,7 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", 0, 0, 0, 0, 0, 0);
+                dt.Rows.Add("", 0, 0, 0, 0, 0, 0, 0, 0);
             }
             else
             {

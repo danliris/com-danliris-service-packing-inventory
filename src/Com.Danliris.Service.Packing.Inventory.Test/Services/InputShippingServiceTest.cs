@@ -419,7 +419,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -468,7 +468,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -527,7 +527,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -577,7 +577,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -626,7 +626,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModel.ShippingProductionOrders.FirstOrDefault();
@@ -720,7 +720,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "GUDANG JADI","pagi","no",false,
                     "SHIPPING","A", new List<DyeingPrintingAreaOutputProductionOrderModel>(){
-                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","sd","sd",1, 1,1,1,"a",1,"a","1")
+                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","sd","sd",1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a")
                     }) }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object);
@@ -763,7 +763,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputSPPRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG JADI", "SHIPPING", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1,1,1,"a",1,"a","1")
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG JADI", "SHIPPING", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a")
             }.AsQueryable());
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object);
 
@@ -800,7 +800,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGJ.ShippingProductionOrders.FirstOrDefault();
@@ -849,7 +849,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelPC.ShippingProductionOrders.FirstOrDefault();
@@ -898,7 +898,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGA.ShippingProductionOrders.FirstOrDefault();
@@ -947,7 +947,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelGA.ShippingProductionOrders.FirstOrDefault();
@@ -996,7 +996,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>()))
+            productionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                 .ReturnsAsync(1);
 
             var item = ViewModelPC.ShippingProductionOrders.FirstOrDefault();
@@ -1223,6 +1223,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             //var test = outPre.Grade;
             //var test2 = outPre.DeliveryOrder
             Assert.NotEqual(0, inputId);
+            Assert.Equal(0, outPre.ShippingProductionOrders.FirstOrDefault().PackingLength);
         }
 
         [Fact]
@@ -1247,6 +1248,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
+            vm.Date = DateTimeOffset.UtcNow.AddDays(3);
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddHours(-2);
+
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Date = DateTimeOffset.UtcNow.AddHours(2);
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.Id = 1;
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
 
         [Fact]
@@ -1264,7 +1281,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel();
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcel2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var productionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), null, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcel3()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var productionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+            var result = service.GenerateExcel(null, Model.Date.AddDays(1), 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcel4()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var productionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+            var result = service.GenerateExcel(null, null, 7);
 
             Assert.NotNull(result);
         }
@@ -1283,7 +1360,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel();
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
 
             Assert.NotNull(result);
         }

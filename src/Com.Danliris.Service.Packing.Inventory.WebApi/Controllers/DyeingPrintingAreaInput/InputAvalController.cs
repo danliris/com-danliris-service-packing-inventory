@@ -115,11 +115,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
-                var data = _service.Delete(id);
+                VerifyUser();
+                var data = await _service.Delete(id);
                 return Ok(data);
             }
             catch (Exception ex)

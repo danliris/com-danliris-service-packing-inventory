@@ -129,13 +129,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("xls")]
-        public IActionResult GetExcel()
+        public IActionResult GetExcel([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
-                var Result = _service.GenerateExcel();
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var Result = _service.GenerateExcel(dateFrom, dateTo, clientTimeZoneOffset);
                 string filename = "Pencatatan Pengeluaran Area Shipping Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
@@ -312,23 +313,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpGet("output-production-orders/{id}")]
-        //public IActionResult GetProductionOrdersByBon(int id)
-        //{
-        //    try
-        //    {
+        [HttpGet("adj-production-order-loader")]
+        public IActionResult GetAdjProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+           [FromQuery] string filter = "{}")
+        {
+            try
+            {
 
-        //        var data = _service.GetOutputShippingProductionOrdersByBon(id);
-        //        return Ok(new
-        //        {
-        //            data
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                var data = _service.GetDistinctAllProductionOrder(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
-        //    }
-        //}
+            }
+        }
+
     }
 }

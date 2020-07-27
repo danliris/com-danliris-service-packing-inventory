@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
+                VerifyUser();
                 var data = await _service.Update(id,viewModel);
                 return Ok(new
                 {
@@ -99,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         {
             try
             {
-
+                VerifyUser();
                 var data = await _service.Delete(id);
                 return Ok(new
                 {
@@ -173,14 +173,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
         [HttpGet("xls")]
-        public async Task<IActionResult> GetExcelAll()
+        public IActionResult GetExcelAll([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
-                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = _service.GenerateExcelAll();
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var Result = _service.GenerateExcelAll(dateFrom, dateTo, clientTimeZoneOffset);
                 string filename = "Penerimaan Gudang Jadi Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

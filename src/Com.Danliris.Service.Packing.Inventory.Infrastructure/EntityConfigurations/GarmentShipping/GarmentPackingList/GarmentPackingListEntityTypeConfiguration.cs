@@ -42,6 +42,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(100);
 
             builder
+                .Property(s => s.PaymentTerm)
+                .HasMaxLength(25);
+
+            builder
                 .Property(s => s.LCNo)
                 .HasMaxLength(100);
 

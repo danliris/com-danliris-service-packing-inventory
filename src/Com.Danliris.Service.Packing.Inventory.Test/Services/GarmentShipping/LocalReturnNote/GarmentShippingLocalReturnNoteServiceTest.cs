@@ -1,11 +1,15 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalReturnNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalReturnNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,10 +20,61 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
     {
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingLocalReturnNoteRepository repository)
         {
+            HttpResponseMessage message = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            var HttpClientService = new Mock<IHttpClientService>();
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(message);
+
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-leftover-warehouse-buyers")))
+                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        apiVersion = "1.0",
+                        statusCode = 200,
+                        message = "Ok",
+                        data = JsonConvert.SerializeObject(new Buyer { })
+                    }))
+                });
+
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingLocalReturnNoteRepository)))
                 .Returns(repository);
+            spMock
+                .Setup(x => x.GetService(typeof(IHttpClientService)))
+                .Returns(HttpClientService.Object);
+            return spMock;
+        }
 
+        public Mock<IServiceProvider> GetServiceProvider_Error(IGarmentShippingLocalReturnNoteRepository repository)
+        {
+            HttpResponseMessage message = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            var HttpClientService = new Mock<IHttpClientService>();
+            HttpClientService
+                .Setup(x => x.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(message);
+
+            HttpClientService
+               .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-leftover-warehouse-buyers")))
+               .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError)
+               {
+                   Content = new StringContent(JsonConvert.SerializeObject(new
+                   {
+                       apiVersion = "1.0",
+                       statusCode = 500,
+                       message = "Ok",
+                       data = JsonConvert.SerializeObject(new Buyer { })
+                   }))
+               });
+
+            var spMock = new Mock<IServiceProvider>();
+            spMock.Setup(s => s.GetService(typeof(IGarmentShippingLocalReturnNoteRepository)))
+                .Returns(repository);
+            spMock
+                .Setup(x => x.GetService(typeof(IHttpClientService)))
+                .Returns(HttpClientService.Object);
             return spMock;
         }
 
@@ -80,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
@@ -107,6 +162,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public void Should_Success_Get_BuyerViewModel()
+        {
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
+
+            var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var result = service.GetBuyer(It.IsAny<int>());
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Null_Get_BuyerViewModel()
+        {
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
+
+            var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+
+            var service = GetService(GetServiceProvider_Error(repoMock.Object).Object);
+            var result = service.GetBuyer(It.IsAny<int>());
+
+            Assert.Null(result);
         }
     }
 }
