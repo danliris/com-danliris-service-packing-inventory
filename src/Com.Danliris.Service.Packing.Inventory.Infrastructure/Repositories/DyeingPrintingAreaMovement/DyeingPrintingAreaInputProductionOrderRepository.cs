@@ -143,6 +143,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
+        public Task<int> UpdateFromOutputIMAsync(int id, double balance)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newBalance = modelToUpdate.BalanceRemains - balance;
+                modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
         public Task<int> UpdateBalanceAndRemainsAsync(int id, double balance)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
