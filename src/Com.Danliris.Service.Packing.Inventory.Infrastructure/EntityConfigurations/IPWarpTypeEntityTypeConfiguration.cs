@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 {
-    public class IPWarpTypeEntityTypeConfiguration : IEntityTypeConfiguration<IPWarpTypeModel>
+    public class IPWarpTypeEntityTypeConfiguration : IEntityTypeConfiguration<IPWovenTypeModel>
     {
-        public void Configure(EntityTypeBuilder<IPWarpTypeModel> builder)
+        public void Configure(EntityTypeBuilder<IPWovenTypeModel> builder)
         {
             builder
                 .HasKey(s => s.Id);
@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(s => s.Code)
                 .HasMaxLength(128);
             builder
-                .Property(s => s.WarpType)
+                .Property(s => s.WovenType)
                 .HasMaxLength(1024);
         }
     }

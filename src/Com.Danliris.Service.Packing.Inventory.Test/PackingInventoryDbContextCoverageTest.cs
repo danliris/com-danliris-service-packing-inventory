@@ -41,11 +41,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             string testName = GetCurrentMethod();
             var dbContext = DbContext(testName);
 
-            Assert.Empty(dbContext.InventoryDocumentPackingItems);
-            Assert.Empty(dbContext.InventoryDocumentPackings);
-            Assert.Empty(dbContext.InventoryDocumentSKUItems);
-            Assert.Empty(dbContext.InventoryDocumentSKUs);
-            Assert.Empty(dbContext.ProductSKUs);
             Assert.Empty(dbContext.ProductPackings);
             Assert.Empty(dbContext.NewFabricQualityControls);
             Assert.Empty(dbContext.NewFabricGradeTests);
@@ -56,11 +51,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
             Assert.Empty(dbContext.DyeingPrintingAreaOutputProductionOrders);
             Assert.Empty(dbContext.DyeingPrintingAreaOutputs);
             Assert.Empty(dbContext.DyeingPrintingAreaSummaries);
-            Assert.Empty(dbContext.PackagingStock);
             //Assert.Empty(dbContext.DyeingPrintingAreaOutputAvalItems);
             Assert.Empty(dbContext.IPCategories);
-            Assert.Empty(dbContext.IPPackings);
-            Assert.Empty(dbContext.IPProducts);
             Assert.Empty(dbContext.IPUnitOfMeasurements);
 
             Assert.Empty(dbContext.GarmentPackingLists);

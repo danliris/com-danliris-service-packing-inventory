@@ -4,8 +4,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 {
     public interface IFabricProductService
     {
-        // should return product code
-        Task<string> CreateProductFabric(FabricFormDto form);
-        Task<string> GetBarcodeByPackingCode(string code);
+        Task<string> GenerateProductSKUCodeByCompositeString(FabricProductSKUCompositeStringFormDto form);
+        Task<string> GenerateProductSKUCodeByCompositeId(FabricProductSKUCompositeIdFormDto form);
+        Task<string> GenerateProductPackingCodeByCompositeString(FabricProductPackingCompositeStringFormDto form);
+        Task<string> GenerateProductPackingCodeByCompositeId(FabricProductPackingCompositeIdFormDto form);
+        Task<PackingAndSKUCode> UpsertPackingSKU(FabricProductCompositeStringDto form);
     }
 }

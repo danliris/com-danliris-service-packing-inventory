@@ -1,7 +1,6 @@
 ﻿using Com.Moonlay.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
 {
@@ -17,6 +16,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             Unit = unit;
         }
 
-        public string Unit { get; set; }
+        [MaxLength(64)]
+        public string Unit { get; private set; }
+
+        public void SetUnit(string unit)
+        {
+            Unit = unit
+;        }
     }
 }
