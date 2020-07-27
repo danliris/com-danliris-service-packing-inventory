@@ -174,6 +174,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                 modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                if (newBalance == 0)
+                {
+                    modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+                }
             }
 
             return _dbContext.SaveChangesAsync();

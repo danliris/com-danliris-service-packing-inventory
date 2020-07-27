@@ -151,6 +151,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public async Task Should_Success_UpdateBalanceAndRemains2()
+        {
+            string testName = GetCurrentMethod() + "UpdateBalanceAndRemains2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateBalanceAndRemainsAsync(data.Id, 2);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_UpdateFromOutputAsyncBalance2()
         {
             string testName = GetCurrentMethod() + "UpdateFromOutputAsyncBalance2";

@@ -329,7 +329,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
                         else
                         {
-                            result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, detail.Balance);
+                            result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.Id, detail.Balance);
                         }
                         
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
