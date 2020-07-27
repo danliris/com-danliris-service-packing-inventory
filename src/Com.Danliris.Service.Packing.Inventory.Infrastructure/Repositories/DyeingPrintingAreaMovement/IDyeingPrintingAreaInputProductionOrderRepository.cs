@@ -21,5 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateBalanceAndRemainsAsync(int id, double balance);
         Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance);
         Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance, decimal qtyPacking);
+        Task<int> UpdateFromOutputIMAsync(int id, double balance);
     }
 }

@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
                 else
                 {
-                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                 }
 
             }
@@ -361,7 +361,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     }
                     else
                     {
-                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
 
                 }
@@ -374,7 +374,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     }
                     else
                     {
-                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
                     }
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
@@ -390,8 +390,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
-
+                if (model.DestinationArea == PRODUKSI)
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
+                else
+                {
+                    result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
             }
 
             result += await _dbContext.SaveChangesAsync();
