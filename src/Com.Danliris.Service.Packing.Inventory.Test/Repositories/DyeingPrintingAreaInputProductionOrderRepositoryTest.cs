@@ -91,6 +91,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public async Task Should_Success_UpdateFromOutputIMSimpleAsync()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMSimpleAsync";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 2);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateFromOutputIMSimpleAsync2()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromOutputIMSimpleAsync2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var result = await repo.UpdateFromOutputIMAsync(data.Id, 1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_UpdateFromOutputAsyncBalance()
         {
             string testName = GetCurrentMethod() + "UpdateFromOutputAsyncBalance";
