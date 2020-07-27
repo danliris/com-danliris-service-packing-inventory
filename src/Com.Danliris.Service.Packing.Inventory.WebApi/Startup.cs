@@ -246,8 +246,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IInventorySKUService, InventorySKUService>();
 
-            services.AddTransient<IAzureServiceBusSender<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
-            services.AddTransient<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+            //services.AddTransient<IAzureServiceBusSender<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            //services.AddTransient<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>, SKUInventoryAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
             services.AddTransient<IGarmentInvoiceMonitoringService, GarmentInvoiceMonitoringService>();
 
             #endregion
@@ -375,8 +375,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
                 context.Database.Migrate();
 
-                var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
-                bus.RegisterOnMessageHandlerAndReceiveMessages();
+                //var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+                //bus.RegisterOnMessageHandlerAndReceiveMessages();
             }
 
             app.UseCors(PACKING_INVENTORY_POLICY);
