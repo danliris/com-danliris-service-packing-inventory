@@ -4,7 +4,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
 {
     public class GarmentShippingLocalSalesNoteItemModel : StandardEntity
     {
-        public int LocalSalesNoteId { get; private set; }
+        public int LocalSalesNoteId { get; set; }
         public int ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
