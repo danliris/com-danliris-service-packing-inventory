@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval
@@ -25,5 +26,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             string keyword);
         Task<int> Reject(InputAvalViewModel viewModel);
         Task<int> Delete(int bonId);
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }
 }
