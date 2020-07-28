@@ -64,6 +64,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AdjDocumentNo { get; set; }
 
+        #region Product SKU Packing
+
+        public int ProductSKUId { get; private set; }
+
+        public string ProductSKUCode { get; private set; }
+
+        public int ProductPackingId { get; private set; }
+
+        public string ProductPackingCode { get; private set; }
+
+        public bool HasPrintingProductSKU { get; private set; }
+
+        public bool HasPrintingProductPacking { get; private set; }
+
+        #endregion
+
 
         /// <summary>
         /// ID SPP Input

@@ -59,6 +59,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double AvalQuantity { get; private set; }
         #endregion
 
+
+        #region Product SKU Packing
+
+        public int ProductSKUId { get; private set; }
+
+        public string ProductSKUCode { get; private set; }
+
+        public int ProductPackingId { get; private set; }
+
+        public string ProductPackingCode { get; private set; }
+
+        public bool HasPrintingProductSKU { get; private set; }
+
+        public bool HasPrintingProductPacking { get; private set; }
+
+        #endregion
+
         public int DyeingPrintingAreaInputId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
