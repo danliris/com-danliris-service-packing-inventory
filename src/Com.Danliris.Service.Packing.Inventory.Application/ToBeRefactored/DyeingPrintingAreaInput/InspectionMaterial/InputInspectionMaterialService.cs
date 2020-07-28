@@ -92,6 +92,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Grade = s.Grade,
                     InitLength = s.InitLength,
                     MaterialWidth = s.MaterialWidth,
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    },
                     Material = new Material()
                     {
                         Id = s.MaterialId,
@@ -146,7 +156,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                      s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, false, s.BuyerId, 0, s.Material.Id, s.Material.Name,
-                     s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth)).ToList());
+                     s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
@@ -165,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                         item.Motif, item.UomUnit, item.Balance, item.Balance, false, item.BuyerId, 0, item.Material.Id, item.Material.Name,
-                        item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth);
+                        item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name);
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
                     result += await _productionOrderRepository.InsertAsync(modelItem);
@@ -214,6 +224,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Construction = d.Construction,
                     HasOutputDocument = d.HasOutputDocument,
                     Motif = d.Motif,
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = d.YarnMaterialId,
+                        Name = d.YarnMaterialName
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = d.ProcessTypeId,
+                        Name = d.ProcessTypeName
+                    },
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = d.ProductionOrderId,
@@ -290,6 +310,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.MaterialId,
                     Name = s.MaterialName
                 },
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.YarnMaterialId,
+                    Name = s.YarnMaterialName
+                },
+                ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = s.ProcessTypeId,
+                    Name = s.ProcessTypeName
+                },
+                Grade = s.Grade,
                 MaterialConstruction = new MaterialConstruction()
                 {
                     Name = s.MaterialConstructionName,
@@ -343,7 +374,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                  new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                  s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.Balance, s.HasOutputDocument, s.BuyerId, 0, s.Material.Id,
-                 s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth)
+                 s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)
                  { Id = s.Id }).ToList());
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders)

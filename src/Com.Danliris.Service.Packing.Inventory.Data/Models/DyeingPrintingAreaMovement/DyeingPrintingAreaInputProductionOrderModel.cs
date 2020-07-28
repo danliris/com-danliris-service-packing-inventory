@@ -7,51 +7,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 {
     public class DyeingPrintingAreaInputProductionOrderModel : StandardEntity
     {
-        public long ProductionOrderId { get;  set; }
-        public string ProductionOrderNo { get;  set; }
-        public int MaterialId { get;  set; }
-        public string MaterialName { get;  set; }
-        public int MaterialConstructionId { get;  set; }
-        public string MaterialConstructionName { get;  set; }
-        public string MaterialWidth { get;  set; }
-        public string CartNo { get;  set; }
-        public int BuyerId { get;  set; }
-        public string Buyer { get;  set; }
-        public string Construction { get;  set; }
-        public string Unit { get;  set; }
-        public string Color { get;  set; }
-        public string Motif { get;  set; }
-        public string UomUnit { get;  set; }
-        public double Balance { get;  set; }
-        public bool HasOutputDocument { get;  set; }
-        public bool IsChecked { get;  set; }
-        public string PackingInstruction { get;  set; }
-        public string ProductionOrderType { get;  set; }
-        public double ProductionOrderOrderQuantity { get;  set; }
+        public long ProductionOrderId { get; set; }
+        public string ProductionOrderNo { get; set; }
+        public int MaterialId { get; set; }
+        public string MaterialName { get; set; }
+        public int MaterialConstructionId { get; set; }
+        public string MaterialConstructionName { get; set; }
+        public string MaterialWidth { get; set; }
 
-        public string Remark { get;  set; }
-        public string Grade { get;  set; }
-        public string Status { get;  set; }
-        public double InitLength { get;  set; }
-        public double AvalALength { get;  set; }
-        public double AvalBLength { get;  set; }
-        public double AvalConnectionLength { get;  set; }
+        public int ProcessTypeId { get; set; }
+        public string ProcessTypeName { get; set; }
 
-        public string AvalType { get;  set; }
-        public string AvalCartNo { get;  set; }
-        public string Machine { get;  set; }
+        public int YarnMaterialId { get; set; }
+        public string YarnMaterialName { get; set; }
 
-        public long DeliveryOrderSalesId { get;  set; }
-        public string DeliveryOrderSalesNo { get;  set; }
+        public string CartNo { get; set; }
+        public int BuyerId { get; set; }
+        public string Buyer { get; set; }
+        public string Construction { get; set; }
+        public string Unit { get; set; }
+        public string Color { get; set; }
+        public string Motif { get; set; }
+        public string UomUnit { get; set; }
+        public double Balance { get; set; }
+        public bool HasOutputDocument { get; set; }
+        public bool IsChecked { get; set; }
+        public string PackingInstruction { get; set; }
+        public string ProductionOrderType { get; set; }
+        public double ProductionOrderOrderQuantity { get; set; }
+
+        public string Remark { get; set; }
+        public string Grade { get; set; }
+        public string Status { get; set; }
+        public double InitLength { get; set; }
+        public double AvalALength { get; set; }
+        public double AvalBLength { get; set; }
+        public double AvalConnectionLength { get; set; }
+
+        public string AvalType { get; set; }
+        public string AvalCartNo { get; set; }
+        public string Machine { get; set; }
+
+        public long DeliveryOrderSalesId { get; set; }
+        public string DeliveryOrderSalesNo { get; set; }
 
 
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
 
-        public string Area { get;  set; }
+        public string Area { get; set; }
 
-        public double BalanceRemains { get;  set; }
+        public double BalanceRemains { get; set; }
 
         #region aval transformasi
         public string InputAvalBonNo { get; private set; }
@@ -85,11 +92,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         }
 
-        //IM
+        /// <summary>
+        /// Area IM
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderQuantity"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="balanceRemains"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrderId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
+        /// <param name="processTypeId"></param>
+        /// <param name="processTypeName"></param>
+        /// <param name="yarnMaterialId"></param>
+        /// <param name="yarnMaterialName"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -118,6 +154,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionName = materialConstructionName;
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
         }
 
         //FQC
@@ -445,7 +486,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// construtor for Gudang barang jadi With OutputSPP ID
         /// </summary>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade, 
+            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade,
             double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, string remark, double balanceRemains)
         {
             ProductionOrderId = productionOrderId;
@@ -510,10 +551,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="deliveryOrderSalesId"></param>
         /// <param name="deliveryOrderSalesNo"></param>
         /// <param name="avalType"></param>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, 
-            string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, 
-            string remark, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, 
-            int materialConstructionId, string materialConstructionName, string materialWidth, decimal qtyPacking, string packingUnit, string packingType, long deliveryOrderSalesId, 
+        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
+            string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,
+            string remark, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName,
+            int materialConstructionId, string materialConstructionName, string materialWidth, decimal qtyPacking, string packingUnit, string packingType, long deliveryOrderSalesId,
             string deliveryOrderSalesNo, string avalType)
         {
             ProductionOrderId = productionOrderId;
@@ -745,7 +786,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="remark"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
            string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains,
-           string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, 
+           string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth,
            string cartNo, string remark)
         {
             ProductionOrderId = productionOrderId;
@@ -885,7 +926,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="machine"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, string inputAvalBonNo, long productionOrderId, string productionOrderNo, string productionOrderType,
             double productionOrderQuantity, string cartNo, string construction, string unit, string buyer, int buyerId, string color, string motif, string avalType, string uomUnit,
-            double balance, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName, 
+            double balance, bool hasOutputDocument, int dyeingPrintingAreaInputProductionOrderId, int materialId, string materialName,
             int materialConstructionId, string materialConstructionName, string materialWidth, string machine) : this()
         {
             Area = area;

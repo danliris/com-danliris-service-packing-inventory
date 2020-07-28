@@ -15,6 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int MaterialConstructionId { get; private set; }
         public string MaterialConstructionName { get; private set; }
         public string MaterialWidth { get; private set; }
+
+        public int ProcessTypeId { get; private set; }
+        public string ProcessTypeName { get; private set; }
+
+        public int YarnMaterialId { get; private set; }
+        public string YarnMaterialName { get; private set; }
+
         public string CartNo { get; private set; }
         public int BuyerId { get; private set; }
         public string Buyer { get; private set; }
@@ -129,9 +136,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="materialWidth"></param>
         /// <param name="machine"></param>
         /// <param name="adjDocumentNo"></param>
+        /// <param name="processTypeId"></param>
+        /// <param name="processTypeName"></param>
+        /// <param name="yarnMaterialId"></param>
+        /// <param name="yarnMaterialName"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
-            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string adjDocumentNo) : this()
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string adjDocumentNo, 
+            int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -169,6 +181,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Machine = machine;
 
             AdjDocumentNo = adjDocumentNo;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
         }
 
         /// <summary>
