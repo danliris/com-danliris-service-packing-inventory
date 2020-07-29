@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200728022645_EnhanceDPAreaAddSKUPacking")]
+    partial class EnhanceDPAreaAddSKUPacking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -391,11 +393,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PackingInstruction")
                         .HasMaxLength(4096);
 
-                    b.Property<int>("ProcessTypeId");
-
-                    b.Property<string>("ProcessTypeName")
-                        .HasMaxLength(1024);
-
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(128);
 
@@ -427,11 +424,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(32);
-
-                    b.Property<int>("YarnMaterialId");
-
-                    b.Property<string>("YarnMaterialName")
-                        .HasMaxLength(1024);
 
                     b.HasKey("Id");
 
@@ -744,11 +736,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PrevSppInJson")
                         .HasColumnType("varchar(MAX)");
 
-                    b.Property<int>("ProcessTypeId");
-
-                    b.Property<string>("ProcessTypeName")
-                        .HasMaxLength(1024);
-
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(128);
 
@@ -788,11 +775,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(32);
 
                     b.Property<double>("Weight");
-
-                    b.Property<int>("YarnMaterialId");
-
-                    b.Property<string>("YarnMaterialName")
-                        .HasMaxLength(1024);
 
                     b.HasKey("Id");
 
@@ -4184,7 +4166,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(64);
 
-                    b.Property<int>("ConstructionId");
+                    b.Property<int>("ColorWayId");
+
+                    b.Property<int>("ConstructionTypeId");
 
                     b.Property<string>("CreatedAgent");
 
@@ -4210,19 +4194,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("ProcessTypeId");
 
-                    b.Property<int>("ProductSKUId");
+                    b.Property<int>("ProductSKUID");
 
                     b.Property<int>("UOMId");
 
-                    b.Property<int>("WarpId");
+                    b.Property<int>("WarpThreadId");
 
-                    b.Property<int>("WeftId");
+                    b.Property<int>("WeftThreadId");
 
                     b.Property<int>("WidthId");
 
                     b.Property<int>("WovenTypeId");
-
-                    b.Property<int>("YarnTypeId");
 
                     b.HasKey("Id");
 

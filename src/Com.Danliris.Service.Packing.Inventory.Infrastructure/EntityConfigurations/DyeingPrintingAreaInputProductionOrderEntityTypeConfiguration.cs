@@ -133,6 +133,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
              .Property(s => s.Machine)
              .HasMaxLength(32);
+
+            builder
+             .Property(s => s.ProductPackingCode)
+             .HasMaxLength(128);
+
+            builder
+             .Property(s => s.ProductSKUCode)
+             .HasMaxLength(128);
+
+            builder
+             .Property(s => s.ProcessTypeName)
+             .HasMaxLength(1024);
+
+            builder
+             .Property(s => s.YarnMaterialName)
+             .HasMaxLength(1024);
         }
     }
 }

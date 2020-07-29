@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
         public string MaterialWidth { get; set; }
+        public ProcessType ProcessType { get; set; }
+        public YarnMaterial YarnMaterial { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }

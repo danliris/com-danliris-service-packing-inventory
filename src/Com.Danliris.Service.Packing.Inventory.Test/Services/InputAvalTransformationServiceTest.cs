@@ -86,6 +86,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "sd",
                                 No = "sd"
                             },
+                            ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
                             Material = new Material()
                             {
                                 Id = 1,
@@ -110,11 +120,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.AvalType, ViewModel.IsTransformedAval,
-                    ViewModel.TotalQuantity,ViewModel.TotalWeight, ViewModel.AvalTransformationProductionOrders.Select(item => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
-                    item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,item.CartNo, item.Construction,item.Unit, item.Buyer,
-                    item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.HasOutputDocument, 
-                    item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, 
-                    item.Machine)).ToList());
+                    ViewModel.TotalQuantity, ViewModel.TotalWeight, ViewModel.AvalTransformationProductionOrders.Select(item => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
+                     item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.CartNo, item.Construction, item.Unit, item.Buyer,
+                     item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.HasOutputDocument,
+                     item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
+                     item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name)).ToList());
             }
         }
 
@@ -353,7 +363,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, result);
         }
 
-        
+
         [Fact]
         public async Task Should_Success_Update_Delete()
         {

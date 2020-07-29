@@ -136,6 +136,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             OrderQuantity = s.ProductionOrderOrderQuantity,
                             Type = s.ProductionOrderType
                         },
+                        MaterialWidth = s.MaterialWidth,
+                        MaterialProduct = new Material()
+                        {
+                            Id = s.MaterialId,
+                            Name = s.MaterialName
+                        },
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Name = s.MaterialConstructionName,
+                            Id = s.MaterialConstructionId
+                        },
+                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
                         CartNo = s.CartNo,
                         Buyer = s.Buyer,
                         BuyerId = s.BuyerId,
@@ -249,8 +270,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.BuyerId,
                                                                                                                                                                 s.Id,
                                                                                                                                                                 s.Remark,
-                                                                                                                                                                s.Balance))
-                                                                                             .ToList());
+                                                                                                                                                                s.Balance,
+                                                                                                                                                                s.MaterialProduct.Id,
+                                                                                                                                                                s.MaterialProduct.Name,
+                                                                                                                                                                s.MaterialConstruction.Id,
+                                                                                                                                                                s.MaterialConstruction.Name,
+                                                                                                                                                                s.MaterialWidth,
+                                                                                                                                                                s.ProcessType.Id,
+                                                                                                                                                                s.ProcessType.Name,
+                                                                                                                                                                s.YarnMaterial.Id,
+                                                                                                                                                                s.YarnMaterial.Name))
+                                                                                                                                                                .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
 
@@ -314,7 +344,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.BuyerId,
                                                                                            productionOrder.Id,
                                                                                            productionOrder.Remark,
-                                                                                           productionOrder.Balance)
+                                                                                           productionOrder.Balance,
+                                                                                           productionOrder.MaterialProduct.Id,
+                                                                                           productionOrder.MaterialProduct.Name, 
+                                                                                           productionOrder.MaterialConstruction.Id,
+                                                                                           productionOrder.MaterialConstruction.Name,
+                                                                                           productionOrder.MaterialWidth,
+                                                                                           productionOrder.ProcessType.Id,
+                                                                                           productionOrder.ProcessType.Name,
+                                                                                           productionOrder.YarnMaterial.Id,
+                                                                                           productionOrder.YarnMaterial.Name)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,
                 };
@@ -369,6 +408,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         No = s.Key.ProductionOrderNo,
                         Type = s.Key.ProductionOrderType,
                         OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    MaterialWidth = p.MaterialWidth,
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = p.MaterialConstructionId,
+                        Name = p.MaterialConstructionName
+                    },
+                    MaterialProduct = new Material()
+                    {
+                        Id = p.MaterialId,
+                        Name = p.MaterialName
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = p.ProcessTypeId,
+                        Name = p.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = p.YarnMaterialId,
+                        Name = p.YarnMaterialName
                     },
                     CartNo = p.CartNo,
                     Buyer = p.Buyer,
@@ -489,7 +549,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                 item.Key,
                                                                                                                 s.Balance,
                                                                                                                 s.Id,
-                                                                                                                s.BuyerId)).ToList());
+                                                                                                                s.BuyerId,
+                                                                                                                s.MaterialProduct.Id,
+                                                                                                                s.MaterialProduct.Name,
+                                                                                                                s.MaterialConstruction.Id,
+                                                                                                                s.MaterialConstruction.Name,
+                                                                                                                s.MaterialWidth,
+                                                                                                                s.ProcessType.Id,
+                                                                                                                s.ProcessType.Name,
+                                                                                                                s.YarnMaterial.Id,
+                                                                                                                s.YarnMaterial.Name)).ToList());
 
                     result = await _inputRepository.InsertAsync(model);
 
@@ -558,7 +627,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         item.Key,
                                                                                         detail.Balance,
                                                                                         detail.Id,
-                                                                                        detail.BuyerId);
+                                                                                        detail.BuyerId,
+                                                                                        detail.MaterialProduct.Id,
+                                                                                        detail.MaterialProduct.Name,
+                                                                                        detail.MaterialConstruction.Id,
+                                                                                        detail.MaterialConstruction.Name,
+                                                                                        detail.MaterialWidth,
+                                                                                        detail.ProcessType.Id,
+                                                                                        detail.ProcessType.Name,
+                                                                                        detail.YarnMaterial.Id,
+                                                                                        detail.YarnMaterial.Name);
 
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
