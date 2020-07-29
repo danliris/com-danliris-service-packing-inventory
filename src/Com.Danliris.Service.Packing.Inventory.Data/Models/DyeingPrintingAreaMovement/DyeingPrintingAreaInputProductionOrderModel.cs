@@ -71,9 +71,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public int ProductSKUId { get; private set; }
 
+        public int FabricSKUId { get; private set; }
+
         public string ProductSKUCode { get; private set; }
 
         public int ProductPackingId { get; private set; }
+
+        public int FabricPackingId { get; private set; }
 
         public string ProductPackingCode { get; private set; }
 

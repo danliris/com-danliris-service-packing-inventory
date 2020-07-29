@@ -381,6 +381,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAvalType(localItem.AvalType, _identityProvider.Username, UserAgent);
                     item.SetMachine(localItem.Machine, _identityProvider.Username, UserAgent);
+
+                    item.SetProductSKUId(localItem.ProductSKUId, _identityProvider.Username, UserAgent);
+                    item.SetFabricSKUId(localItem.FabricSKUId, _identityProvider.Username, UserAgent);
+                    item.SetProductSKUCode(localItem.ProductSKUCode, _identityProvider.Username, UserAgent);
+                    item.SetHasPrintingProductSKU(localItem.HasPrintingProductSKU, _identityProvider.Username, UserAgent);
                 }
             }
 

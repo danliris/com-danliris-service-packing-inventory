@@ -75,9 +75,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public int ProductSKUId { get; private set; }
 
+        public int FabricSKUId { get; private set; }
+
         public string ProductSKUCode { get; private set; }
 
         public int ProductPackingId { get; private set; }
+
+        public int FabricPackingId { get; private set; }
 
         public string ProductPackingCode { get; private set; }
 
@@ -143,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string adjDocumentNo,
-            int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName) : this()
+            int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -186,6 +190,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
         }
 
         /// <summary>
@@ -1176,6 +1185,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newAdjDocumentNo != AdjDocumentNo)
             {
                 AdjDocumentNo = newAdjDocumentNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductSKUId(int newId, string user, string agent)
+        {
+            if(newId != ProductSKUId)
+            {
+                ProductSKUId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetFabricSKUId(int newId, string user, string agent)
+        {
+            if (newId != FabricSKUId)
+            {
+                FabricSKUId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductSKUCode(string newProductSKUCode, string user, string agent)
+        {
+
+            if (newProductSKUCode != ProductSKUCode)
+            {
+                ProductSKUCode = newProductSKUCode;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetHasPrintingProductSKU(bool newHasPrintingProductSKU, string user, string agent)
+        {
+
+            if (newHasPrintingProductSKU != HasPrintingProductSKU)
+            {
+                HasPrintingProductSKU = newHasPrintingProductSKU;
                 this.FlagForUpdate(user, agent);
             }
         }

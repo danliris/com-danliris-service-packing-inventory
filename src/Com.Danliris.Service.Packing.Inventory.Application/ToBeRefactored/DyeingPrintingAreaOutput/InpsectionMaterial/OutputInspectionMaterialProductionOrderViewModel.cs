@@ -49,11 +49,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
     public class OutputInspectionMaterialProductionOrderDetailViewModel : BaseViewModel
     {
+        public int ProductSKUId { get; set; }
+        public int FabricSKUId { get; set; }
+        public string ProductSKUCode { get; set; }
+        public bool HasPrintingProductSKU { get; set; }
         public string AvalType { get; set; }
         public string Remark { get; set; }
         public string Grade { get; set; }
         public double Balance { get; set; }
         public bool HasNextAreaDocument { get; set; }
+
     }
 
     //public class AvalItem : BaseViewModel
