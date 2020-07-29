@@ -759,7 +759,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "GUDANG JADI","pagi","no",false,
-                    "SHIPPING","A", new List<DyeingPrintingAreaOutputProductionOrderModel>(){
+                    "SHIPPING","A","OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>(){
                         new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","sd","sd",1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a")
                     }) }.AsQueryable());
 

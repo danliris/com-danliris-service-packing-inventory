@@ -371,6 +371,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          true,
                                                          "GUDANG JADI",
                                                          ViewModelIM.Group,
+                                                         "OUT",
                                                          ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
@@ -726,6 +727,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          true,
                                                          "GUDANG JADI",
                                                          ViewModelIM.Group,
+                                                         "OUT",
                                                          ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
@@ -857,6 +859,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          true,
                                                          "GUDANG JADI",
                                                          ViewModelIM.Group,
+                                                         "OUT",
                                                          ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
@@ -988,6 +991,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          true,
                                                          "GUDANG JADI",
                                                          ViewModelIM.Group,
+                                                         "OUT",
                                                          ViewModelIM.MappedWarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",

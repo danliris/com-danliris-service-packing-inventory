@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputModel GetModel()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("TRANSIT","PACKING",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1, 1, "name", 1, "a", "1","a",1,"a","a",1,"a","a",1,"a",1,"a"),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","a",1,"a",1,"a"),
@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetModelForUpdateAfter()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","a",1,"a",1,"a"),
 
@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetModelForUpdateBefore()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","a",1,"a",1,"a"),
 
@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetModelForUpdateAfter2()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","a",1,"a",1,"a"),
 
@@ -90,7 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public DyeingPrintingAreaOutputModel GetEmptyModelBefore()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, false, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, false, null, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,0,null,0,null)
             });
@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputModel GetEmptyModel()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, true, null, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0,0,null,0,null,"0",null,0,null,null,0,null,null,0,null,0,null),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,0,null,0,null),

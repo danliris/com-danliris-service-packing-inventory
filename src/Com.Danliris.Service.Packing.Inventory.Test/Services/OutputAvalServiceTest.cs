@@ -230,7 +230,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     AvalItems = new List<InputAvalItemViewModel>()
                     {
                         new InputAvalItemViewModel()
-                        {
+                        {ProductionOrder = new ProductionOrder()
+                            {
+                                Id = 1,
+                                No = "a",
+                                OrderQuantity = 1,
+                                Type ="a"
+                            },
+                            PackagingType = "a",
+                            Remark = "s",
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",
                             AvalUomUnit = "MTR",
@@ -238,7 +246,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             AvalQuantityKg = 1,
                             HasOutputDocument = false,
                             IsChecked = false,
-                            Area = "INSPECTION MATERIAL"
+                            Area = "INSPECTION MATERIAL",
+                            ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
                         }
                     },
                     DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()

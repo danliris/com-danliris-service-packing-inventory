@@ -427,6 +427,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        false,
                                                        "GUDANG AVAL",
                                                        "A",
+                                                       "OUT",
                                                        new List<DyeingPrintingAreaOutputProductionOrderModel>()
                                                        {
                                                            new DyeingPrintingAreaOutputProductionOrderModel("IM",

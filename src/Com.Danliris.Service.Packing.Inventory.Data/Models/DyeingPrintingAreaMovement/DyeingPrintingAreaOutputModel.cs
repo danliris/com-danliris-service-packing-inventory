@@ -32,19 +32,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaOutputProductionOrders = new HashSet<DyeingPrintingAreaOutputProductionOrderModel>();
         }
 
-        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
-        {
-            Date = date;
-            Area = area;
-            Shift = shift;
-            BonNo = bonNo;
-            Group = group;
-            HasNextAreaDocument = hasNextAreaDocument;
-            DestinationArea = destinationArea;
-            DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
-        }
-
         /// <summary>
         /// New Constructor Output
         /// </summary>
@@ -59,8 +46,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
             string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
-            : this(date, area, shift, bonNo, hasNextAreaDocument, destinationArea, group, dyeingPrintingAreaOutputProductionOrders)
         {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            HasNextAreaDocument = hasNextAreaDocument;
+            DestinationArea = destinationArea;
+            DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
             Type = type;
         }
 
