@@ -721,6 +721,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <summary>
         /// Aval Insert Data Using SPP Entity
         /// </summary>
+        /// <param name="area"></param>
+        /// <param name="avalType"></param>
+        /// <param name="avalCartNo"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="quantity"></param>
+        /// <param name="avalQuantityKg"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="remark"></param>
+        /// <param name="grade"></param>
+        /// <param name="status"></param>
+        /// <param name="balance"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderOrderQuantity"></param>
+        /// <param name="packagingType"></param>
+        /// <param name="packagingQty"></param>
+        /// <param name="packagingUnit"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrderId"></param>
+        /// <param name="machine"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
+        /// <param name="processTypeId"></param>
+        /// <param name="processTypeName"></param>
+        /// <param name="yarnMaterialId"></param>
+        /// <param name="yarnMaterialName"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area,
                                                            string avalType,
                                                            string avalCartNo,
@@ -748,7 +785,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            decimal packagingQty,
                                                            string packagingUnit,
                                                            int dyeingPrintingAreaOutputProductionOrderId,
-                                                           string machine)
+                                                           string machine,
+                                                           int materialId, string materialName, int materialConstructionId, string materialConstructionName,
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -782,11 +821,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             Machine = machine;
 
-        }
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionName = materialConstructionName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialWidth = materialWidth;
 
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+
+        }
         /// <summary>
         /// Aval Insert Data Using SPP Entity and ID Bon existing
         /// </summary>
+        /// <param name="area"></param>
+        /// <param name="avalType"></param>
+        /// <param name="avalCartNo"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="quantity"></param>
+        /// <param name="avalQuantityKg"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="remark"></param>
+        /// <param name="grade"></param>
+        /// <param name="status"></param>
+        /// <param name="balance"></param>
+        /// <param name="balanceRemains"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderOrderQuantity"></param>
+        /// <param name="packagingType"></param>
+        /// <param name="packagingQty"></param>
+        /// <param name="packagingUnit"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrderId"></param>
+        /// <param name="dyeingPrintingAreaInputsId"></param>
+        /// <param name="machine"></param>
+        /// <param name="materialId"></param>
+        /// <param name="materialName"></param>
+        /// <param name="materialConstructionId"></param>
+        /// <param name="materialConstructionName"></param>
+        /// <param name="materialWidth"></param>
+        /// <param name="processTypeId"></param>
+        /// <param name="processTypeName"></param>
+        /// <param name="yarnMaterialId"></param>
+        /// <param name="yarnMaterialName"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area,
                                                            string avalType,
                                                            string avalCartNo,
@@ -816,7 +904,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            string packagingUnit,
                                                            int dyeingPrintingAreaOutputProductionOrderId,
                                                            int dyeingPrintingAreaInputsId,
-                                                           string machine)
+                                                           string machine,
+                                                           int materialId, string materialName, int materialConstructionId, string materialConstructionName,
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -850,6 +940,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
 
             Machine = machine;
+
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionName = materialConstructionName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialWidth = materialWidth;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
 
         }
 

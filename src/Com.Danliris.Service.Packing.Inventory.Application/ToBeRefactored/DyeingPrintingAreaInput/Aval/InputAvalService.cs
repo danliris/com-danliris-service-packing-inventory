@@ -103,6 +103,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = s.MaterialConstructionName,
                         Id = s.MaterialConstructionId
                     },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
+                    },
                     Id = s.Id,
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
@@ -227,7 +237,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingQty,
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.Id,
-                                                                                                                                            s.Machine))
+                                                                                                                                            s.Machine,
+                                                                                                                                            s.Material.Id, s.Material.Name,s.MaterialConstruction.Id,
+                                                                                                                                            s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
+                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                                .ToList());
                 result = await _inputRepository.InsertAsync(model);
             }
@@ -267,7 +280,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.Id,
                                                                                                                                             bonExist.First().Id,
-                                                                                                                                            s.Machine))
+                                                                                                                                            s.Machine,
+                                                                                                                                            s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
+                                                                                                                                            s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
+                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                                .ToList());
             }
 
@@ -484,6 +500,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = d.MaterialConstructionName,
                         Id = d.MaterialConstructionId
                     },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = d.ProcessTypeId,
+                        Name = d.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = d.YarnMaterialId,
+                        Name = d.YarnMaterialName
+                    },
                     BuyerId = d.BuyerId,
                     CartNo = d.CartNo,
                     Buyer = d.Buyer,
@@ -552,6 +578,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                        {
                                                                            Name = d.MaterialConstructionName,
                                                                            Id = d.MaterialConstructionId
+                                                                       },
+                                                                       ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                                                                       {
+                                                                           Id = d.ProcessTypeId,
+                                                                           Name = d.ProcessTypeName
+                                                                       },
+                                                                       YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                                                                       {
+                                                                           Id = d.YarnMaterialId,
+                                                                           Name = d.YarnMaterialName
                                                                        },
                                                                        Machine = d.Machine,
                                                                        BuyerId = d.BuyerId,
