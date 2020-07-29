@@ -17,6 +17,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int MaterialConstructionId { get; set; }
         public string MaterialConstructionName { get; set; }
 
+        public int ProcessTypeId { get; set; }
+        public string ProcessTypeName { get; set; }
+
+        public int YarnMaterialId { get; set; }
+        public string YarnMaterialName { get; set; }
+
         public string MaterialWidth { get; set; }
 
         public string Grade { get; set; }
