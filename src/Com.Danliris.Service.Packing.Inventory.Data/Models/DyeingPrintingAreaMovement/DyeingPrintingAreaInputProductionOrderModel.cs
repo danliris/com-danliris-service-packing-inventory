@@ -161,7 +161,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialName = yarnMaterialName;
         }
 
-        //FQC
+        /// <summary>
+        /// FQC
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="packingInstruction"></param>
+        /// <param name="cartNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="hasOutputDocument"></param>
+        /// <param name="buyerId"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, int buyerId)
         {
@@ -181,92 +198,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             Area = area;
 
-            BuyerId = buyerId;
-        }
-        /// <summary>
-        /// Constructor using by Packaging Area 
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="balance"></param>
-        /// <param name="hasOutputDocument"></param>
-        /// <param name="productionOrderQty"></param>
-        /// <param name="buyerId"></param>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQty;
-            Grade = grade;
-
-            Area = area;
-
-            BuyerId = buyerId;
-        }
-        /// <summary>
-        /// Constructor using by Packaging Area With Balance Remains
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="balance"></param>
-        /// <param name="hasOutputDocument"></param>
-        /// <param name="productionOrderQty"></param>
-        /// <param name="grade"></param>
-        /// <param name="balanceRemains"></param>
-        /// <param name="buyerId"></param>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQty;
-            Grade = grade;
-
-            Area = area;
-            BalanceRemains = balanceRemains;
             BuyerId = buyerId;
         }
 
@@ -342,96 +273,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         }
         
         /// <summary>
-        /// Constructor using by Packaging Area with prev Bon Einty
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="balance"></param>
-        /// <param name="hasOutputDocument"></param>
-        /// <param name="productionOrderQty"></param>
-        /// <param name="buyerId"></param>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQty;
-            Grade = grade;
-
-            Area = area;
-            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
-            BuyerId = buyerId;
-        }
-
-        /// <summary>
-        /// Constructor Using By Packaging Area WIth BalanceRemain and Bon ID
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="balance"></param>
-        /// <param name="hasOutputDocument"></param>
-        /// <param name="productionOrderQty"></param>
-        /// <param name="grade"></param>
-        /// <param name="dyeingPrintingAreaInputId"></param>
-        /// <param name="balanceRemains"></param>
-        /// <param name="buyerId"></param>
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, double balanceRemains, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQty;
-            Grade = grade;
-
-            Area = area;
-            DyeingPrintingAreaInputId = dyeingPrintingAreaInputId;
-            BalanceRemains = balanceRemains;
-            BuyerId = buyerId;
-        }
-
-        /// <summary>
         /// Constructor Using By Packaging Area WIth BalanceRemain and Bon ID and OutputSPP ID
         /// </summary>
         /// <param name="area"></param>
@@ -502,31 +343,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
-        }
-
-        public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
-            string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, int buyerId)
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Balance = balance;
-            HasOutputDocument = hasOutputDocument;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            PackagingUnit = packagingUnit;
-            PackagingQty = packagingQty;
-            PackagingType = packagingType;
-
-            Area = area;
-
-            BuyerId = buyerId;
         }
 
         /// <summary>
@@ -700,24 +516,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialName = yarnMaterialName;
         }
 
-        public DyeingPrintingAreaInputProductionOrderModel(string area,
-                                                           string avalType,
-                                                           string avalCartNo,
-                                                           string uomUnit,
-                                                           double quantity,
-                                                           double avalQuantityKg,
-                                                           bool hasOutputDocument)
-        {
-            AvalType = avalType;
-            AvalCartNo = avalCartNo;
-            UomUnit = uomUnit;
-            Balance = quantity;
-            AvalQuantityKg = avalQuantityKg;
-            HasOutputDocument = hasOutputDocument;
-
-            Area = area;
-        }
-
         /// <summary>
         /// Aval Insert Data Using SPP Entity
         /// </summary>
@@ -765,7 +563,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            double quantity,
                                                            double avalQuantityKg,
                                                            bool hasOutputDocument,
-                                                           int productionOrderId,
+                                                           long productionOrderId,
                                                            string productionOrderNo,
                                                            string cartNo,
                                                            int buyerId,
@@ -815,6 +613,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingType = packagingType;
             PackagingQty = packagingQty;
             PackagingUnit = packagingUnit;
+            PackingInstruction = packingInstruction;
             DyeingPrintingAreaOutputProductionOrderId = dyeingPrintingAreaOutputProductionOrderId;
 
             Area = area;
@@ -833,6 +632,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialName = yarnMaterialName;
 
         }
+
         /// <summary>
         /// Aval Insert Data Using SPP Entity and ID Bon existing
         /// </summary>
@@ -914,6 +714,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = quantity;
             AvalQuantityKg = avalQuantityKg;
             HasOutputDocument = hasOutputDocument;
+            BalanceRemains = balanceRemains;
+            PackingInstruction = packingInstruction;
 
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;

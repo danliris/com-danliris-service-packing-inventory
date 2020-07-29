@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             return controller;
         }
 
-        protected virtual GarmentShippingLocalPriceCuttingNoteViewModel ViewModel
+        public virtual GarmentShippingLocalPriceCuttingNoteViewModel ViewModel
         {
             get
             {

@@ -112,7 +112,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             PackagingQty = 10,
                             PackagingType ="WHITE",
                             QtyOrder = 2000,
-                            OutputId = 195
+                            OutputId = 195,
+
                             //InputId = 195
                         }
                     }
@@ -221,7 +222,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             }
         }
         private DyeingPrintingAreaInputModel InputModelExcel
@@ -251,7 +266,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             }
         }
 
@@ -282,7 +311,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             }
         }
 
@@ -744,7 +787,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -861,7 +918,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -978,7 +1049,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.PackagingUnit,
                                                                                                             s.PackagingType,
                                                                                                             s.PackagingQty,
-                                                                                                            s.BuyerId)).ToList());
+                                                                                                            s.Grade,
+                                                                                                            s.ProductionOrder.OrderQuantity,
+                                                                                                            s.BuyerId,
+                                                                                                            s.Id,
+                                                                                                            s.Remark,
+                                                                                                            s.Balance,
+                                                                                                            s.MaterialProduct.Id,
+                                                                                                            s.MaterialProduct.Name,
+                                                                                                            s.MaterialConstruction.Id,
+                                                                                                            s.MaterialConstruction.Name,
+                                                                                                            s.MaterialWidth,
+                                                                                                            s.ProcessType.Id,
+                                                                                                            s.ProcessType.Name,
+                                                                                                            s.YarnMaterial.Id,
+                                                                                                            s.YarnMaterial.Name)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {

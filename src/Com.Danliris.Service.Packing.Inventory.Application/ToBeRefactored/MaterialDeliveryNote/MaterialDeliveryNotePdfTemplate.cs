@@ -389,8 +389,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application
             }
 
             double balTotal = 0;
-            decimal pieceTotal = 0;
-            decimal meterTotal = 0;
+            //decimal pieceTotal = 0;
+            //decimal meterTotal = 0;
             double kgTotal = 0;
             int index = 1;
             foreach (var detail in model.Items)

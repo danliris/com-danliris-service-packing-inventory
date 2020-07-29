@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliv
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
             var model = DataUtil(repo, dbContext).GetModel();
-            int index = 0;
+            
             //foreach (var item in model.ItemsMaterialDeliveryNoteWeaving)
             //{
             //    var itemdetail = data.ItemsMaterialDeliveryNoteWeaving.ElementAtOrDefault(index++);
