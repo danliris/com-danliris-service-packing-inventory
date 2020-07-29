@@ -376,26 +376,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
                                                                                                              true,
-                                                                                                             s.ProductionOrder.Id,
-                                                                                                             s.ProductionOrder.No,
-                                                                                                             s.ProductionOrder.Type,
-                                                                                                             s.PackingInstruction,
-                                                                                                             s.CartNo,
-                                                                                                             s.Buyer,
-                                                                                                             s.Construction,
-                                                                                                             s.Unit,
-                                                                                                             s.Color,
-                                                                                                             s.Motif,
-                                                                                                             s.UomUnit,
-                                                                                                             s.Remark,
-                                                                                                             s.Balance,
-                                                                                                             s.Status,
-                                                                                                             s.ProductionOrder.Code,
-                                                                                                             s.ProductionOrder.OrderQuantity,
-                                                                                                             s.PackagingType,
-                                                                                                             s.PackagingQty,
-                                                                                                             s.PackagingUnit,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,
+                                                                                                             s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
+                                                                                                             s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name
+                                                                                                             )).ToList());
             }
         }
 
@@ -682,7 +669,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaInputModel(RejectedInputWarehouseViewModel_IM.Date, RejectedInputWarehouseViewModel_IM.Area, RejectedInputWarehouseViewModel_IM.Shift, RejectedInputWarehouseViewModel_IM.BonNo, RejectedInputWarehouseViewModel_IM.Group, RejectedInputWarehouseViewModel_IM.MappedWarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_IM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
-                    s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType, 
+                    s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
                     s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
             }
         }
@@ -732,26 +719,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
                                                                                                              true,
-                                                                                                             s.ProductionOrder.Id,
-                                                                                                             s.ProductionOrder.No,
-                                                                                                             s.ProductionOrder.Type,
-                                                                                                             s.PackingInstruction,
-                                                                                                             s.CartNo,
-                                                                                                             s.Buyer,
-                                                                                                             s.Construction,
-                                                                                                             s.Unit,
-                                                                                                             s.Color,
-                                                                                                             s.Motif,
-                                                                                                             s.UomUnit,
-                                                                                                             s.Remark,
-                                                                                                             s.Balance,
-                                                                                                             s.Status,
-                                                                                                             s.ProductionOrder.Code,
-                                                                                                             s.ProductionOrder.OrderQuantity,
-                                                                                                             s.PackagingType,
-                                                                                                             s.PackagingQty,
-                                                                                                             s.PackagingUnit,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,
+                                                                                                             s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
+                                                                                                             s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -864,26 +837,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
                                                                                                              true,
-                                                                                                             s.ProductionOrder.Id,
-                                                                                                             s.ProductionOrder.No,
-                                                                                                             s.ProductionOrder.Type,
-                                                                                                             s.PackingInstruction,
-                                                                                                             s.CartNo,
-                                                                                                             s.Buyer,
-                                                                                                             s.Construction,
-                                                                                                             s.Unit,
-                                                                                                             s.Color,
-                                                                                                             s.Motif,
-                                                                                                             s.UomUnit,
-                                                                                                             s.Remark,
-                                                                                                             s.Balance,
-                                                                                                             s.Status,
-                                                                                                             s.ProductionOrder.Code,
-                                                                                                             s.ProductionOrder.OrderQuantity,
-                                                                                                             s.PackagingType,
-                                                                                                             s.PackagingQty,
-                                                                                                             s.PackagingUnit,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,
+                                                                                                             s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
+                                                                                                             s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -996,26 +955,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelIM.Area,
                                                                                                              "GUDANG JADI",
                                                                                                              true,
-                                                                                                             s.ProductionOrder.Id,
-                                                                                                             s.ProductionOrder.No,
-                                                                                                             s.ProductionOrder.Type,
-                                                                                                             s.PackingInstruction,
-                                                                                                             s.CartNo,
-                                                                                                             s.Buyer,
-                                                                                                             s.Construction,
-                                                                                                             s.Unit,
-                                                                                                             s.Color,
-                                                                                                             s.Motif,
-                                                                                                             s.UomUnit,
-                                                                                                             s.Remark,
-                                                                                                             s.Balance,
-                                                                                                             s.Status,
-                                                                                                             s.ProductionOrder.Code,
-                                                                                                             s.ProductionOrder.OrderQuantity,
-                                                                                                             s.PackagingType,
-                                                                                                             s.PackagingQty,
-                                                                                                             s.PackagingUnit,
-                                                                                                             s.BuyerId)).ToList());
+                                                                                                             s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                                                                             s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,
+                                                                                                             s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
+                                                                                                             s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
+                                                                                                             s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
