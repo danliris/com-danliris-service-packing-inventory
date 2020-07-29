@@ -114,6 +114,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             HasOutputDocument = false,
                             IsChecked = false,
                             Area = "INSPECTION MATERIAL",
+                            ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
                             Material = new Material()
                             {
                                 Id = 1,
@@ -450,7 +460,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             "a",
                                                                                                             1,
                                                                                                             "a",
-                                                                                                            "1","",1,"a","a",1,"a","a")
+                                                                                                            "1","",1,"a","a",1,"a","a",1,"a",1,"a")
                      })
                  }.AsQueryable());
 
