@@ -189,6 +189,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             No = s.ProductionOrderNo,
                             Type = s.ProductionOrderType
                         },
+                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        MaterialProduct = new Material()
+                        {
+                            Name = s.MaterialName,
+                            Id = s.MaterialId
+                        },
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Id = s.MaterialConstructionId,
+                            Name = s.MaterialConstructionName
+                        },
                         Unit = s.Unit,
                         UomUnit = s.UomUnit,
                         PackagingQTY = s.PackagingQty,
@@ -218,6 +239,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = s.ProductionOrderId,
                             No = s.ProductionOrderNo,
                             Type = s.ProductionOrderType
+                        },
+                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        MaterialObj = new Material()
+                        {
+                            Name = s.MaterialName,
+                            Id = s.MaterialId
+                        },
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Id = s.MaterialConstructionId,
+                            Name = s.MaterialConstructionName
                         },
                         Unit = s.Unit,
                         UomUnit = s.UomUnit,
@@ -284,6 +326,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = s.ProductionOrderId,
                             No = s.ProductionOrderNo,
                             Type = s.ProductionOrderType
+                        },
+                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        MaterialProduct = new Material()
+                        {
+                            Name = s.MaterialName,
+                            Id = s.MaterialId
+                        },
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Id = s.MaterialConstructionId,
+                            Name = s.MaterialConstructionName
                         },
                         Unit = s.Unit,
                         UomUnit = s.UomUnit,
@@ -355,14 +418,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, OUT, viewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                      s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, 0, s.Id, s.BuyerId)).ToList());
+                      s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, 0, s.Id, s.BuyerId,
+                      s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name,
+                     s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
                 result += await _repository.InsertAsync(model);
             }
             else
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, hasBonNoWithShift.BonNo, false, viewModel.DestinationArea, viewModel.Group, OUT, viewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color,
-                      s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, hasBonNoWithShift.Id, s.Id, s.BuyerId)).ToList());
+                      s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.QtyOut, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQTY, s.PackagingUnit, s.QtyOrder, s.Keterangan, hasBonNoWithShift.Id, s.Id, s.BuyerId,
+                      s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name,
+                     s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
                 model.Id = hasBonNoWithShift.Id;
                 bonNo = model.BonNo;
             }
@@ -426,7 +493,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.PackagingProductionOrdersAdj.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
                         item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, 0, item.BuyerId,
-                        item.MaterialObj.Id, item.MaterialObj.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.NoDocument, item.PackagingType, item.PackagingQty, item.PackagingUnit)).ToList());
+                        item.MaterialObj.Id, item.MaterialObj.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.NoDocument,
+                        item.PackagingType, item.PackagingQty, item.PackagingUnit, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name)).ToList());
 
             result = await _repository.InsertAsync(model);
 
@@ -509,7 +577,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var jsonLIstSppHasDecrease = JsonConvert.SerializeObject(listSppHasDescrease, Formatting.Indented, jsonSetting);
 
                 var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
-                     item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, item.Id, item.BuyerId, jsonLIstSppHasDecrease);
+                     item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                     item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, item.Id, item.BuyerId, jsonLIstSppHasDecrease,
+                     item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
+                     item.YarnMaterial.Id, item.YarnMaterial.Name);
                 productionOrders.Add(productionOrder);
             }
             if (hasBonNoWithShift == null)
@@ -585,6 +656,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = d.ProductionOrderId,
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = d.ProcessTypeId,
+                        Name = d.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = d.YarnMaterialId,
+                        Name = d.YarnMaterialName
+                    },
+                    MaterialWidth = d.MaterialWidth,
+                    MaterialProduct = new Material()
+                    {
+                        Name = d.MaterialName,
+                        Id = d.MaterialId
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = d.MaterialConstructionId,
+                        Name = d.MaterialConstructionName
                     },
                     Id = d.Id,
                     Unit = d.Unit,
@@ -1000,6 +1092,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     No = s.ProductionOrderNo,
                     Type = s.ProductionOrderType
                 },
+                ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = s.ProcessTypeId,
+                    Name = s.ProcessTypeName
+                },
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.YarnMaterialId,
+                    Name = s.YarnMaterialName
+                },
+                MaterialWidth = s.MaterialWidth,
+                MaterialProduct = new Material()
+                {
+                    Name = s.MaterialName,
+                    Id = s.MaterialId
+                },
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Id = s.MaterialConstructionId,
+                    Name = s.MaterialConstructionName
+                },
+                PackingType = s.PackagingType,
                 Unit = s.Unit,
                 UomUnit = s.UomUnit,
                 ProductionOrderNo = s.ProductionOrderNo,
@@ -1072,6 +1186,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Name = s.MaterialConstructionName,
                         Id = s.MaterialConstructionId
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
                     },
                     MaterialWidth = s.MaterialWidth,
                     UomUnit = s.UomUnit,
@@ -1159,6 +1283,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     No = s.Items.First().ProductionOrderNo,
                     Type = s.Items.First().ProductionOrderType
                 },
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Id = s.Items.First().MaterialConstructionId,
+                    Name = s.Items.First().MaterialConstructionName
+                },
+                MaterialProduct = new Material()
+                {
+                    Id = s.Items.First().MaterialId,
+                    Name = s.Items.First().MaterialName
+                },
+                MaterialWidth = s.Items.First().MaterialWidth,
+                ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = s.Items.First().ProcessTypeId,
+                    Name = s.Items.First().ProcessTypeName
+                },
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.Items.First().YarnMaterialId,
+                    Name = s.Items.First().YarnMaterialName
+                },
                 Unit = s.Items.First().Unit,
                 UomUnit = s.Items.First().UomUnit,
                 ProductionOrderNo = s.Items.First().ProductionOrderNo,
@@ -1214,6 +1359,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Name = s.MaterialName,
                     Id = s.MaterialId
                 },
+                ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = s.ProcessTypeId,
+                    Name = s.ProcessTypeName
+                },
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.YarnMaterialId,
+                    Name = s.YarnMaterialName
+                },
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
@@ -1265,6 +1420,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = d.ProductionOrderId,
                         No = d.ProductionOrderNo,
                         Type = d.ProductionOrderType
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = d.ProcessTypeId,
+                        Name = d.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = d.YarnMaterialId,
+                        Name = d.YarnMaterialName
+                    },
+                    MaterialWidth = d.MaterialWidth,
+                    MaterialProduct = new Material()
+                    {
+                        Name = d.MaterialName,
+                        Id = d.MaterialId
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = d.MaterialConstructionId,
+                        Name = d.MaterialConstructionName
                     },
                     Grade = d.Grade,
                     Id = d.Id,
