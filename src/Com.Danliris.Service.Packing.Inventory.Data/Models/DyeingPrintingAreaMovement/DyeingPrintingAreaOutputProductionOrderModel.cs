@@ -866,7 +866,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalQuantityKg = avalQuantityKg;
             DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
         }
-        
+
         /// <summary>
         /// Area Gudang Jadi
         /// </summary>
@@ -902,11 +902,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="materialConstructionName"></param>
         /// <param name="materialWidth"></param>
         /// <param name="adjDocumentNo"></param>
+        /// <param name="processTypeId"></param>
+        /// <param name="processTypeName"></param>
+        /// <param name="yarnMaterialId"></param>
+        /// <param name="yarnMaterialName"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color, 
             string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity,
             string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area, 
             string destinationArea, int dyeingPrintingAreaInputProductionOrderId, int buyerId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, 
-            string materialWidth, string adjDocumentNo) : this()
+            string materialWidth, string adjDocumentNo, int processTypeId, string processTypeName,
+             int yarnMaterialId, string yarnMaterialName) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -943,6 +948,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialWidth = materialWidth;
 
             AdjDocumentNo = adjDocumentNo;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
         }
 
         //All Properties

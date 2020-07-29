@@ -90,6 +90,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "name"
                             },
+                            ProcessType = new ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
                             MaterialWidth = "1",
                             Packing = "s",
                             PackingType = "sd",
@@ -153,6 +163,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "name"
                             },
+                            ProcessType = new ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
                             MaterialWidth = "1",
                             Packing = "s",
                             PackingType = "sd",
@@ -215,6 +235,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             {
                                 Id = 1,
                                 Name = "name"
+                            },
+                            ProcessType = new ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
                             },
                             MaterialWidth = "1",
                             Packing = "s",
@@ -280,6 +310,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             {
                                 Id = 1,
                                 Name = "name"
+                            },
+                            ProcessType = new ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
                             },
                             MaterialWidth = "1",
                             Packing = "s",

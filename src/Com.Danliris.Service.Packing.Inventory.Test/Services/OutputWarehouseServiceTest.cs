@@ -588,7 +588,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                    ViewModelAdj.Group, ViewModelAdj.Type, ViewModelAdj.WarehousesProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade,
                     s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo,
-                    true, ViewModelAdj.Area, "", 0, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo)).ToList());
+                    true, ViewModelAdj.Area, "", 0, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo,
+                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
             }
         }
 
