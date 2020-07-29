@@ -12,42 +12,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
 
         public FabricProductSKUModel(
             string code,
-            int colorWayId,
-            int constructionTypeId,
-            int gradeId,
-            int processTypeId,
-            int uomId,
-            int warpThreadId,
-            int weftThreadId,
-            int widthId,
+            int productSKUId,
             int wovenTypeId,
-            int productSKUId
+            int constructionId,
+            int widthId,
+            int warpId,
+            int weftId,
+            int processTypeId,
+            int yarnTypeId,
+            int gradeId,
+            int uomId
             )
         {
             Code = code;
-            ColorWayId = colorWayId;
-            ConstructionTypeId = constructionTypeId;
-            GradeId = gradeId;
-            ProcessTypeId = processTypeId;
-            UOMId = uomId;
-            WarpThreadId = warpThreadId;
-            WeftThreadId = weftThreadId;
-            WidthId = widthId;
+            ProductSKUId = productSKUId;
             WovenTypeId = wovenTypeId;
-            ProductSKUID = productSKUId;
+            ConstructionId = constructionId;
+            WidthId = widthId;
+            WarpId = warpId;
+            WeftId = weftId;
+            ProcessTypeId = processTypeId;
+            YarnTypeId = yarnTypeId;
+            GradeId = gradeId;
+            UOMId = uomId;
         }
 
         [MaxLength(64)]
         public string Code { get; private set; }
-        public int ColorWayId { get; private set; }
-        public int ConstructionTypeId { get; private set; }
+        public int YarnTypeId { get; private set; }
+        public int ConstructionId { get; private set; }
         public int GradeId { get; private set; }
         public int ProcessTypeId { get; private set; }
         public int UOMId { get; private set; }
-        public int WarpThreadId { get; private set; }
-        public int WeftThreadId { get; private set; }
+        public int WarpId { get; private set; }
+        public int WeftId { get; private set; }
         public int WidthId { get; private set; }
         public int WovenTypeId { get; private set; }
-        public int ProductSKUID { get; private set; }
+        public int ProductSKUId { get; private set; }
     }
 }

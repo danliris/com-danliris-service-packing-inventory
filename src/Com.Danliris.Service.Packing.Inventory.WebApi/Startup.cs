@@ -103,6 +103,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyBySection;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByCountry;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByComodity;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -201,6 +203,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IBaseRepository<ProductSKUInventoryDocumentModel>, BaseRepository<ProductSKUInventoryDocumentModel>>();
             services.AddTransient<IBaseRepository<ProductSKUInventoryMovementModel>, BaseRepository<ProductSKUInventoryMovementModel>>();
             services.AddTransient<IBaseRepository<ProductSKUInventorySummaryModel>, BaseRepository<ProductSKUInventorySummaryModel>>();
+            services.AddTransient<IBaseRepository<FabricProductSKUModel>, BaseRepository<FabricProductSKUModel>>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion
 
@@ -253,6 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IUOMService, UOMService>();
             services.AddTransient<IProductSKUService, ProductSKUService>();
             services.AddTransient<IProductPackingService, ProductPackingService>();
+            services.AddTransient<IFabricPackingSKUService, FabricPackingSKUService>();
 
             services.AddTransient<IInventorySKUService, InventorySKUService>();
 

@@ -17,26 +17,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.QueueService
         where T : ProductSKUInventoryMovementModel
     {
         private const string QUEUE_NAME = "SKUInventory";
-        private readonly QueueClient _queueClient;
-        private readonly IInventorySKUService _service;
+        private readonly IQueueManager _queueManager;
+        private readonly IInventorySKUMovementService _service;
 
         public SKUInventoryAzureServiceBusConsumer(IServiceProvider serviceProvider)
         {
-            var configuration = serviceProvider.GetService<IConfiguration>();
-            _queueClient = new QueueClient(configuration["ServiceBusConnectionString"], QUEUE_NAME);
-            _service = serviceProvider.GetService<IInventorySKUService>();
+            _queueManager = serviceProvider.GetService<IQueueManager>();
+            _service = serviceProvider.GetService<IInventorySKUMovementService>();
         }
 
         public async Task CloseQueueAsync()
         {
-            await _queueClient.CloseAsync();
+            new NotImplementedException();
         }
 
         private async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
             var payload = JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(message.Body));
             _service.AddMovement(payload);
-            await _queueClient.CompleteAsync(message.SystemProperties.LockToken);
+            var queueClient = _queueManager.GetQueueClient(QUEUE_NAME);
+            await queueClient.CompleteAsync(message.SystemProperties.LockToken);
         }
 
         public void RegisterOnMessageHandlerAndReceiveMessages()
@@ -47,13 +47,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.QueueService
                 AutoComplete = false
             };
 
-            _queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+            var queueClient = _queueManager.GetQueueClient(QUEUE_NAME);
+            queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
         private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
             return Task.CompletedTask;
         }
-
     }
 }
