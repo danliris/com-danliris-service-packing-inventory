@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Master.Category;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.DTOs;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Category;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacking;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.UOM;
@@ -75,7 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
             if (fabricSKU != null)
             {
-                var sku = await _productPackingService.GetById(fabricSKU.ProductSKUID);
+                var sku = await _productPackingService.GetById(fabricSKU.ProductSKUId);
                 var uom = await _upsertMaster.UpsertUOM(form.PackingUOM);
                 var packingSizeRoundedString = Math.Round(form.PackingSize.GetValueOrDefault(), 2).ToString().Replace(".", "").Replace(",", "");
 
@@ -107,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             throw new NotImplementedException();
         }
 
-        public Task<PackingAndSKUCode> UpsertPackingSKU(FabricProductCompositeStringDto form)
+        public Task<IdAndCodeDto> UpsertProductSKU(FabricProductCompositeStringDto form)
         {
             throw new NotImplementedException();
         }

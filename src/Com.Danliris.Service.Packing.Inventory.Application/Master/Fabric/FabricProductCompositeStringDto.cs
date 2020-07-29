@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         public string ConstructionType { get; set; }
         public string Grade { get; set; }
         public double? PackingSize { get; set; }
-        // Packing UOM
+        // Packing Satuan
         public string PackingType { get; set; }
         public string ProcessType { get; set; }
         public string UOM { get; set; }

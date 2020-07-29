@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         private IBaseRepository<ProductSKUModel> _productSKUs;
         private IBaseRepository<UnitOfMeasurementModel> _uoms;
         private IBaseRepository<CategoryModel> _categories;
+        private IBaseRepository<FabricProductSKUModel> _fabricSKUProducts;
         private readonly IServiceProvider _serviceProvider;
 
         public UnitOfWork(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
@@ -35,6 +37,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             _productSKUs = serviceProvider.GetService<IBaseRepository<ProductSKUModel>>();
             _uoms = serviceProvider.GetService<IBaseRepository<UnitOfMeasurementModel>>();
             _categories = serviceProvider.GetService<IBaseRepository<CategoryModel>>();
+
+            _fabricSKUProducts = serviceProvider.GetService<IBaseRepository<FabricProductSKUModel>>();
 
             _serviceProvider = serviceProvider;
             
@@ -118,6 +122,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             {
                 return _categories ??
                     (_categories = new BaseRepository<CategoryModel>(_dbContext, _serviceProvider));
+            }
+        }
+
+        public IBaseRepository<FabricProductSKUModel> FabricSKUProducts
+        {
+            get
+            {
+                return _fabricSKUProducts ??
+                    (_fabricSKUProducts = new BaseRepository<FabricProductSKUModel>(_dbContext, _serviceProvider));
             }
         }
 

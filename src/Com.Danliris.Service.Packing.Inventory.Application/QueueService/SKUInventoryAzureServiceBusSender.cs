@@ -13,19 +13,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.QueueService
         where T : ProductSKUInventoryMovementModel
     {
         private const string QUEUE_NAME = "SKUInventory";
-        private readonly QueueClient _queueClient;
+        private readonly IQueueManager _queueManager;
 
-        public SKUInventoryAzureServiceBusSender(IConfiguration configuration)
+        public SKUInventoryAzureServiceBusSender(IQueueManager queueManager)
         {
-            _queueClient = new QueueClient(configuration["ServiceBusConnectionString"], QUEUE_NAME);
+            _queueManager = queueManager;
         }
 
         public async Task SendMessage(T payload)
         {
+            var queueClient = await _queueManager.GetOrCreateQueueClient(QUEUE_NAME);
             string data = JsonConvert.SerializeObject(payload);
             Message message = new Message(Encoding.UTF8.GetBytes(data));
 
-            await _queueClient.SendAsync(message);
+            await queueClient.SendAsync(message);
         }
     }
 }

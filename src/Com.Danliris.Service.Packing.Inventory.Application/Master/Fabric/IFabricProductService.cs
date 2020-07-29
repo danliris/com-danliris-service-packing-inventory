@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.DTOs;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 {
@@ -8,6 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         Task<string> GenerateProductSKUCodeByCompositeId(FabricProductSKUCompositeIdFormDto form);
         Task<string> GenerateProductPackingCodeByCompositeString(FabricProductPackingCompositeStringFormDto form);
         Task<string> GenerateProductPackingCodeByCompositeId(FabricProductPackingCompositeIdFormDto form);
-        Task<PackingAndSKUCode> UpsertPackingSKU(FabricProductCompositeStringDto form);
+        Task<IdAndCodeDto> UpsertProductSKU(FabricProductCompositeStringDto form);
     }
 }
