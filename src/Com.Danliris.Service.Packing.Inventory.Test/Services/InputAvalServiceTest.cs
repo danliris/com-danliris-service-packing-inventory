@@ -589,6 +589,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Name = "a"
                 };
                 item.MaterialWidth = "1";
+                item.ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
+                item.YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
 
@@ -939,6 +949,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Name = "a"
                 };
                 item.MaterialWidth = "1";
+                item.ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
+                item.YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
             //Mock for totalCurrentYear
@@ -1032,6 +1052,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Name = "a"
                 };
                 item.MaterialWidth = "1";
+                item.ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
+                item.YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = 1,
+                    Name = "s"
+                };
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
             //Mock for totalCurrentYear
