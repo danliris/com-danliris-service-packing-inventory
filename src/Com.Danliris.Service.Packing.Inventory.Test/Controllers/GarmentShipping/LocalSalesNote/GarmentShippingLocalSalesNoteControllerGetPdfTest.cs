@@ -29,23 +29,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             }
         }
 
-        private GarmentShippingLocalSalesNoteViewModel ViewModel
+        public override GarmentShippingLocalSalesNoteViewModel ViewModel
         {
             get
             {
                 return new GarmentShippingLocalSalesNoteViewModel()
                 {
-                    noteNo="jshdaj",
+                    noteNo = "jshdaj",
                     buyer = new Buyer
                     {
-                        Name="sajd",
-                        Id=1,
+                        Name = "sajd",
+                        Id = 1,
                     },
-                    date=DateTimeOffset.Now,
-                    useVat=true,
-                    tempo=6,
-                    remark="lsjhdalsdh",
-                    items= new List<GarmentShippingLocalSalesNoteItemViewModel>()
+                    date = DateTimeOffset.Now,
+                    useVat = true,
+                    tempo = 6,
+                    remark = "lsjhdalsdh",
+                    items = new List<GarmentShippingLocalSalesNoteItemViewModel>()
                     {
                         new GarmentShippingLocalSalesNoteItemViewModel
                         {
@@ -172,7 +172,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service,  identityProvider, validateService);
+            var controller = GetController(service, identityProvider, validateService);
             var response = await controller.GetPDF(1);
 
             Assert.NotNull(response);
@@ -264,7 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service,  identityProvider, validateService);
+            var controller = GetController(service, identityProvider, validateService);
             var response = await controller.GetPDF(1);
 
             Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));

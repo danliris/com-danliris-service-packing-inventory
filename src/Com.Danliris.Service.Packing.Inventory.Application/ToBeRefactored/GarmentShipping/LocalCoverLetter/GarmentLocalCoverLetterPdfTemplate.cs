@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDetail.SetWidths(new float[] { 1f, 1f, 1f });
             PdfPCell cellDetail = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            double cbmtotal = 0;
+            //double cbmtotal = 0;
 
 
             cellDetail.Phrase = new Phrase("Truck", normal_font);

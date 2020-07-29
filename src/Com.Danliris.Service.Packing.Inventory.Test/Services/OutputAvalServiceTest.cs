@@ -230,7 +230,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     AvalItems = new List<InputAvalItemViewModel>()
                     {
                         new InputAvalItemViewModel()
-                        {
+                        {ProductionOrder = new ProductionOrder()
+                            {
+                                Id = 1,
+                                No = "a",
+                                OrderQuantity = 1,
+                                Type ="a"
+                            },
+                            PackagingType = "a",
+                            Remark = "s",
                             AvalType = "KAIN KOTOR",
                             AvalCartNo = "5",
                             AvalUomUnit = "MTR",
@@ -238,7 +246,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             AvalQuantityKg = 1,
                             HasOutputDocument = false,
                             IsChecked = false,
-                            Area = "INSPECTION MATERIAL"
+                            Area = "INSPECTION MATERIAL",
+                            ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
+                            {
+                                Id = 1,
+                                Name = "s"
+                            },
+                            Material = new Material()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
+                            MaterialConstruction = new MaterialConstruction()
+                            {
+                                Id = 1,
+                                Name = "name"
+                            },
                         }
                     },
                     DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()
@@ -269,13 +297,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         true,
                                                         10,
                                                         10,
-                                                        ViewModelInput.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModelInput.Area,
-                                                                                                                                        s.AvalType,
-                                                                                                                                        s.AvalCartNo,
-                                                                                                                                        s.AvalUomUnit,
-                                                                                                                                        s.AvalQuantity,
-                                                                                                                                        s.AvalQuantityKg,
-                                                                                                                                        false))
+                                                        ViewModelInput.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModelInput.Area, s.AvalType, s.AvalCartNo, s.UomUnit,
+                                                        s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
+                                                        s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                        s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                            .ToList());
             }
         }
@@ -298,13 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<int>(),
-                                                                         It.IsAny<int>(),
-                                                                         It.IsAny<bool>()));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a"));
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -357,13 +377,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel(It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<string>(),
-                                                                         It.IsAny<int>(),
-                                                                         It.IsAny<int>(),
-                                                                         It.IsAny<bool>()));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a"));
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -564,13 +578,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                       "A",
                                                       new List<DyeingPrintingAreaInputProductionOrderModel>()
                                                       {
-                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL",
-                                                                                                          "SAMBUNGAN",
-                                                                                                          "5-11",
-                                                                                                          "KRG",
-                                                                                                          1,
-                                                                                                          10,
-                                                                                                          false)
+                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a")
                      })
                  }.AsQueryable());
 

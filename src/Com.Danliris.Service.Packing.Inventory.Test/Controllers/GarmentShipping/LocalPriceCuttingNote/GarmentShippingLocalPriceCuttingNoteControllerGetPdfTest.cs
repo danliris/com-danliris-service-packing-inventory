@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             }
         }
 
-        private GarmentShippingLocalPriceCuttingNoteViewModel ViewModel
+        public override GarmentShippingLocalPriceCuttingNoteViewModel ViewModel
         {
             get
             {

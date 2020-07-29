@@ -1003,6 +1003,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModelToIM.HasNextAreaDocument,
                                                          ViewModelToIM.DestinationArea,
                                                          ViewModelToIM.Group,
+                                                         ViewModelToIM.Type,
                                                          ViewModelToIM.WarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingAreaOutputProductionOrderModel(ViewModelToIM.Area,
                                                                                                              ViewModelToIM.DestinationArea,

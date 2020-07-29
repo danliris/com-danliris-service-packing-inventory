@@ -459,158 +459,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialName = yarnMaterialName;
         }
 
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
-            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
-            string packagingType, decimal packagingQty, string packagingUnit, int buyerId) : this()
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Remark = remark;
-            Grade = grade;
-            Status = status;
-            Balance = balance;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQuantity;
-            PackagingType = packagingType;
-            PackagingQty = packagingQty;
-            PackagingUnit = packagingUnit;
-
-            Area = area;
-            DestinationArea = destinationArea;
-            HasNextAreaDocument = hasNextAreaDocument;
-
-            BuyerId = buyerId;
-        }
-        /// <summary>
-        /// this Constructor for insert data OutputPackagingArea
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="destinationArea"></param>
-        /// <param name="hasNextAreaDocument"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="remark"></param>
-        /// <param name="grade"></param>
-        /// <param name="status"></param>
-        /// <param name="balance"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="productionOrderQuantity"></param>
-        /// <param name="packagingType"></param>
-        /// <param name="packagingQty"></param>
-        /// <param name="packagingUnit"></param>
-        /// <param name="productionOrderOrderQuantity"></param>
-        /// <param name="description"></param>
-        /// <param name="buyerId"></param>
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
-            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
-            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int buyerId) : this()
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Remark = remark;
-            Grade = grade;
-            Status = status;
-            Balance = balance;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQuantity;
-            PackagingType = packagingType;
-            PackagingQty = packagingQty;
-            PackagingUnit = packagingUnit;
-
-            Area = area;
-            DestinationArea = destinationArea;
-            HasNextAreaDocument = hasNextAreaDocument;
-            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
-            Description = description;
-
-            BuyerId = buyerId;
-        }
-        /// <summary>
-        /// this Constructor for insert data OutputPackagingArea if has ID dyeing Printing on it
-        /// </summary>
-        /// <param name="area"></param>
-        /// <param name="destinationArea"></param>
-        /// <param name="hasNextAreaDocument"></param>
-        /// <param name="productionOrderId"></param>
-        /// <param name="productionOrderNo"></param>
-        /// <param name="cartNo"></param>
-        /// <param name="buyer"></param>
-        /// <param name="construction"></param>
-        /// <param name="unit"></param>
-        /// <param name="color"></param>
-        /// <param name="motif"></param>
-        /// <param name="uomUnit"></param>
-        /// <param name="remark"></param>
-        /// <param name="grade"></param>
-        /// <param name="status"></param>
-        /// <param name="balance"></param>
-        /// <param name="packingInstruction"></param>
-        /// <param name="productionOrderType"></param>
-        /// <param name="productionOrderQuantity"></param>
-        /// <param name="packagingType"></param>
-        /// <param name="packagingQty"></param>
-        /// <param name="packagingUnit"></param>
-        /// <param name="productionOrderOrderQuantity"></param>
-        /// <param name="description"></param>
-        ///  <param name="buyerId"></param>
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit,
-            string color, string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderQuantity,
-            string packagingType, decimal packagingQty, string packagingUnit, double productionOrderOrderQuantity, string description, int dyeingPrintintOutputId, int buyerId) : this()
-        {
-            ProductionOrderId = productionOrderId;
-            ProductionOrderNo = productionOrderNo;
-            CartNo = cartNo;
-            Buyer = buyer;
-            Construction = construction;
-            Unit = unit;
-            Color = color;
-            Motif = motif;
-            UomUnit = uomUnit;
-            Remark = remark;
-            Grade = grade;
-            Status = status;
-            Balance = balance;
-            PackingInstruction = packingInstruction;
-            ProductionOrderType = productionOrderType;
-            ProductionOrderOrderQuantity = productionOrderQuantity;
-            PackagingType = packagingType;
-            PackagingQty = packagingQty;
-            PackagingUnit = packagingUnit;
-
-            Area = area;
-            DestinationArea = destinationArea;
-            HasNextAreaDocument = hasNextAreaDocument;
-            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
-            Description = description;
-            DyeingPrintingAreaOutputId = dyeingPrintintOutputId;
-
-            BuyerId = buyerId;
-        }
-
         /// <summary>
         /// Using For Packaging Area when you want to set with SPP input
         /// </summary>
@@ -807,9 +655,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
         }
+
         /// <summary>
         /// insert aval using prev total weight
         /// </summary>
+        /// <param name="avalType"></param>
+        /// <param name="avalCartNo"></param>
+        /// <param name="avalUomUnit"></param>
+        /// <param name="avalQuantityOut"></param>
+        /// <param name="avalQuantityKgOut"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalQuantityTotal"></param>
+        /// <param name="area"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="deliveryNote"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
                                                             string avalCartNo,
                                                             string avalUomUnit,
@@ -832,9 +691,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DeliveryNote = deliveryNote;
         }
+
         /// <summary>
-        /// Insert Aval with existing bon using prev total weight
+        ///  Insert Aval with existing bon using prev total weight
         /// </summary>
+        /// <param name="avalType"></param>
+        /// <param name="avalCartNo"></param>
+        /// <param name="avalUomUnit"></param>
+        /// <param name="avalQuantityOut"></param>
+        /// <param name="avalQuantityKgOut"></param>
+        /// <param name="avalQuantity"></param>
+        /// <param name="avalQuantityTotal"></param>
+        /// <param name="dyeingPrintingOutputId"></param>
+        /// <param name="area"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="deliveryNote"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
                                                             string avalCartNo,
                                                             string avalUomUnit,
@@ -858,24 +729,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DestinationArea = destinationArea;
             DeliveryNote = deliveryNote;
-        }
-
-        /// <summary>
-        /// Insert Aval with existing bon
-        /// </summary>
-        public DyeingPrintingAreaOutputProductionOrderModel(string avalType,
-                                                            string avalCartNo,
-                                                            string avalUomUnit,
-                                                            double avalQuantity,
-                                                            double avalQuantityKg,
-                                                            int dyeingPrintingOutputId) : this()
-        {
-            AvalType = avalType;
-            AvalCartNo = avalCartNo;
-            UomUnit = avalUomUnit;
-            Balance = avalQuantity;
-            AvalQuantityKg = avalQuantityKg;
-            DyeingPrintingAreaOutputId = dyeingPrintingOutputId;
         }
 
         /// <summary>
@@ -965,78 +818,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
         }
-
-        //All Properties
-        //public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, 
-        //                                                    string productionOrderNo, 
-        //                                                    string cartNo, 
-        //                                                    string buyer, 
-        //                                                    string construction, 
-        //                                                    string unit, 
-        //                                                    string color, 
-        //                                                    string motif, 
-        //                                                    string uomUnit, 
-        //                                                    string remark, 
-        //                                                    string grade, 
-        //                                                    string status, 
-        //                                                    double balance, 
-        //                                                    string packingInstruction, 
-        //                                                    string productionOrderType, 
-        //                                                    double productionOrderOrderQuantity, 
-        //                                                    string packagingType, 
-        //                                                    decimal packagingQty, 
-        //                                                    string packagingUnit, 
-        //                                                    double avalALength, 
-        //                                                    double avalBLength, 
-        //                                                    double avalConnectionLength, 
-        //                                                    long deliveryOrderSalesId, 
-        //                                                    string deliveryOrderSalesNo, 
-        //                                                    string avalType, 
-        //                                                    string avalCartNo, 
-        //                                                    double avalQuantityKg, 
-        //                                                    bool hasNextAreaDocument, 
-        //                                                    string area, 
-        //                                                    string destinationArea, 
-        //                                                    string description, 
-        //                                                    string deliveryNote, 
-        //                                                    int dyeingPrintingAreaInputProductionOrderId, 
-        //                                                    int dyeingPrintingAreaOutputId)
-        //{
-        //    ProductionOrderId = productionOrderId;
-        //    ProductionOrderNo = productionOrderNo;
-        //    CartNo = cartNo;
-        //    Buyer = buyer;
-        //    Construction = construction;
-        //    Unit = unit;
-        //    Color = color;
-        //    Motif = motif;
-        //    UomUnit = uomUnit;
-        //    Remark = remark;
-        //    Grade = grade;
-        //    Status = status;
-        //    Balance = balance;
-        //    PackingInstruction = packingInstruction;
-        //    ProductionOrderType = productionOrderType;
-        //    ProductionOrderOrderQuantity = productionOrderOrderQuantity;
-        //    PackagingType = packagingType;
-        //    PackagingQty = packagingQty;
-        //    PackagingUnit = packagingUnit;
-        //    AvalALength = avalALength;
-        //    AvalBLength = avalBLength;
-        //    AvalConnectionLength = avalConnectionLength;
-        //    DeliveryOrderSalesId = deliveryOrderSalesId;
-        //    DeliveryOrderSalesNo = deliveryOrderSalesNo;
-        //    AvalType = avalType;
-        //    AvalCartNo = avalCartNo;
-        //    AvalQuantityKg = avalQuantityKg;
-        //    HasNextAreaDocument = hasNextAreaDocument;
-        //    Area = area;
-        //    DestinationArea = destinationArea;
-        //    Description = description;
-        //    DeliveryNote = deliveryNote;
-        //    DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
-        //    DyeingPrintingAreaOutputId = dyeingPrintingAreaOutputId;
-        //}
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
         {

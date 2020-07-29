@@ -161,13 +161,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.Shift,
                                                         ViewModel.BonNo,
                                                         ViewModel.Group,
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area,
-                                                                                                                                        s.AvalType,
-                                                                                                                                        s.AvalCartNo,
-                                                                                                                                        s.AvalUomUnit,
-                                                                                                                                        s.AvalQuantity,
-                                                                                                                                        s.AvalQuantityKg,
-                                                                                                                                        s.HasOutputDocument))
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.AvalType, s.AvalCartNo, s.UomUnit,
+                                                        s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
+                                                        s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                        s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                            .ToList());
             }
         }
@@ -180,13 +178,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.Shift,
                                                         ViewModel.BonNo,
                                                         ViewModel.Group,
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel("PACKING",
-                                                                                                                                        s.AvalType,
-                                                                                                                                        s.AvalCartNo,
-                                                                                                                                        s.AvalUomUnit,
-                                                                                                                                        s.AvalQuantity,
-                                                                                                                                        s.AvalQuantityKg,
-                                                                                                                                        s.HasOutputDocument))
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.AvalType, s.AvalCartNo, s.UomUnit,
+                                                        s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
+                                                        s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                        s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                            .ToList());
             }
         }
@@ -199,13 +195,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         ViewModel.Shift,
                                                         ViewModel.BonNo,
                                                         ViewModel.Group,
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel("PACKING",
-                                                                                                                                        s.AvalType,
-                                                                                                                                        s.AvalCartNo,
-                                                                                                                                        s.AvalUomUnit,
-                                                                                                                                        s.AvalQuantity,
-                                                                                                                                        s.AvalQuantityKg,
-                                                                                                                                        s.HasOutputDocument))
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(ViewModel.Area, s.AvalType, s.AvalCartNo, s.UomUnit,
+                                                        s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
+                                                        s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
+                                                        s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
                                                                            .ToList());
                 foreach (var t in data.DyeingPrintingAreaInputProductionOrders)
                 {
@@ -231,12 +225,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         true,
                                                         "OUT",
                                                         "A",
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
-                                                                                                                                               s.AvalCartNo,
-                                                                                                                                               s.AvalUomUnit,
-                                                                                                                                               s.AvalQuantity,
-                                                                                                                                               s.AvalQuantityKg,
-                                                                                                                                               1))
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalQuantity,
+                                                        s.AvalQuantityKg, s.AvalQuantity, s.AvalQuantity, ViewModel.Id, ViewModel.Area, "SHIPPING", "note"))
                                                                            .ToList());
             }
         }
@@ -256,12 +246,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         true,
                                                         "OUT",
                                                         "A",
-                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType,
-                                                                                                                                               s.AvalCartNo,
-                                                                                                                                               s.AvalUomUnit,
-                                                                                                                                               s.AvalQuantity,
-                                                                                                                                               s.AvalQuantityKg,
-                                                                                                                                               0))
+                                                        ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalQuantity,
+                                                        s.AvalQuantityKg, s.AvalQuantity, s.AvalQuantity, ViewModel.Id, ViewModel.Area, "SHIPPING", "note"))
                                                                            .ToList());
             }
         }
@@ -433,6 +419,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        false,
                                                        "GUDANG AVAL",
                                                        "A",
+                                                       "OUT",
                                                        new List<DyeingPrintingAreaOutputProductionOrderModel>()
                                                        {
                                                            new DyeingPrintingAreaOutputProductionOrderModel("IM",
