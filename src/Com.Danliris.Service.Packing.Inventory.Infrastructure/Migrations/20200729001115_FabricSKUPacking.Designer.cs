@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729001115_FabricSKUPacking")]
+    partial class FabricSKUPacking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,10 +341,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("HasOutputDocument");
 
-                    b.Property<bool>("HasPrintingProductPacking");
-
-                    b.Property<bool>("HasPrintingProductSKU");
-
                     b.Property<double>("InitLength");
 
                     b.Property<string>("InputAvalBonNo")
@@ -391,21 +389,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PackingInstruction")
                         .HasMaxLength(4096);
 
-                    b.Property<int>("ProcessTypeId");
-
-                    b.Property<string>("ProcessTypeName")
-                        .HasMaxLength(1024);
-
-                    b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("ProductPackingId");
-
-                    b.Property<string>("ProductSKUCode")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("ProductSKUId");
-
                     b.Property<long>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
@@ -427,11 +410,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(32);
-
-                    b.Property<int>("YarnMaterialId");
-
-                    b.Property<string>("YarnMaterialName")
-                        .HasMaxLength(1024);
 
                     b.HasKey("Id");
 
@@ -694,10 +672,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("HasNextAreaDocument");
 
-                    b.Property<bool>("HasPrintingProductPacking");
-
-                    b.Property<bool>("HasPrintingProductSKU");
-
                     b.Property<bool>("HasSalesInvoice");
 
                     b.Property<bool>("IsDeleted");
@@ -744,21 +718,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("PrevSppInJson")
                         .HasColumnType("varchar(MAX)");
 
-                    b.Property<int>("ProcessTypeId");
-
-                    b.Property<string>("ProcessTypeName")
-                        .HasMaxLength(1024);
-
-                    b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("ProductPackingId");
-
-                    b.Property<string>("ProductSKUCode")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("ProductSKUId");
-
                     b.Property<long>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
@@ -788,11 +747,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(32);
 
                     b.Property<double>("Weight");
-
-                    b.Property<int>("YarnMaterialId");
-
-                    b.Property<string>("YarnMaterialName")
-                        .HasMaxLength(1024);
 
                     b.HasKey("Id");
 
