@@ -75,10 +75,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaOutputProductionOrderModel("PACKING", "GUDANG JADI", true, ViewModel.ProductionOrder.Id, ViewModel.ProductionOrder.No, ViewModel.ProductionOrder.Type, ViewModel.ProductionOrder.OrderQuantity, "", "", "", "",
-                     "", ViewModel.Color, ViewModel.Motif, ViewModel.UomUnit, "", "", "", 0, ViewModel.Id,0, ViewModel.Material.Id, ViewModel.Material.Name, ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Name,
+                var model = new DyeingPrintingAreaOutputProductionOrderModel("PACKING", "GUDANG JADI", true, ViewModel.ProductionOrder.Id, ViewModel.ProductionOrder.No, ViewModel.ProductionOrder.Type, ViewModel.ProductionOrder.OrderQuantity, "", "", "", "",
+                     "", ViewModel.Color, ViewModel.Motif, ViewModel.UomUnit, "", "", "", 0, ViewModel.Id, 0, ViewModel.Material.Id, ViewModel.Material.Name, ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Name,
                      ViewModel.MaterialWidth, "", 0, "", ViewModel.ProductPackingType, 0, "", "", 0, "", ViewModel.YarnMaterial.Id, ViewModel.YarnMaterial.Name, ViewModel.ProductSKUId, ViewModel.FabricSKUId, ViewModel.ProductSKUCode,
                     ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, ViewModel.ProductPackingCode, ViewModel.HasPrintingProductPacking);
+
+
+                model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "PACKING", "s", "s", false, "GUDANG JADI", "S", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>() { model });
+
+                return model;
             }
         }
 
@@ -91,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { Model }.AsQueryable());
 
-            repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(),It.IsAny<bool>()))
+            repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
                  .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
