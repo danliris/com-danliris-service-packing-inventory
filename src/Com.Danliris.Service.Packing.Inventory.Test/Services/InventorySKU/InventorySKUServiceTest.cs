@@ -67,60 +67,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             model.ReduceBalance(1);
             Assert.NotNull(model);
         }
-          
 
-        //[Fact]
-        //public async Task Should_Success_AddDocument()
-        //{
-        //    //Arrange
-        //    var unitOfWorkMock = new Mock<IUnitOfWork>();
-        //    var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventoryDocuments.Get(It.IsAny<Expression<Func<ProductSKUInventoryDocumentModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUInventoryDocumentModel>, IOrderedQueryable<ProductSKUInventoryDocumentModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-        //        .Returns(new List<ProductSKUInventoryDocumentModel>()
-        //        {
+        [Fact]
+        public async Task Should_Success_AddDocument()
+        {
+            //Arrange
+            var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
+            var serviceProviderMock = new Mock<IServiceProvider>();
 
-        //        });
+            serviceProviderMock
+                .Setup(serviceProvider => serviceProvider
+                .GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
-        //    unitOfWorkMock
-        //        .Setup(s => s.ProductSKUInventoryDocuments
-        //        .Insert(It.IsAny<ProductSKUInventoryDocumentModel>())).Verifiable();
 
-        //    var service = GetService(GetServiceProvider(unitOfWorkMock.Object, azureServiceBusSenderMock.Object).Object);
+            var productSKUInventoryDocument = new ProductSKUInventoryDocumentModel("documentNo",DateTimeOffset.Now, "ReferenceNo", "ReferenceType", 1, "storagename", "storagecode","type","remark");
+            dbContext.ProductSKUInventoryDocuments.Add(productSKUInventoryDocument);
 
-        //    var data = new FormDto();
-        //    data.GetType().GetProperty("Date").SetValue(data, DateTimeOffset.Now);
-        //    data.GetType().GetProperty("ReferenceNo").SetValue(data, "ReferenceNo");
-        //    data.GetType().GetProperty("ReferenceType").SetValue(data, "ReferenceType");
-        //    data.GetType().GetProperty("Type").SetValue(data, "Type");
-        //    data.GetType().GetProperty("Remark").SetValue(data, "Remark");
-        //    data.Storage = new Storage()
-        //    {
-        //        Id = 1,
-        //        Code = "Code",
-        //        Name = "Name",
-        //        Unit = new UnitStorage()
-        //        {
-        //            Division = new DivisionStorage()
-        //            {
-        //                Name = "Name"
-        //            },
-        //            Name = "Name",
-        //        }
-        //    };
-        //    data.Items = new List<FormItemDto>()
-        //    {
-        //        new FormItemDto()
-        //    };
+            dbContext.SaveChanges();
 
-        //    //Act
-        //    var result = await service.AddDocument(data);
+            var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
+           
+           
+            var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
 
-        //    //Assertion
-        //    Assert.True(-1 < result);
+            var data = new FormDto()
+            {
+                
+                Date = DateTimeOffset.Now,
+                ReferenceNo = "ReferenceNo",
+                ReferenceType = "ReferenceType",
+                Remark = "Remark",
+                Storage = new Application.DTOs.StorageDto()
+                {
+                    _id=1,
+                    code = "storagecode",
+                    name = "storagename",
+                },
+                Items = new List<FormItemDto>()
+                {
+                    new FormItemDto()
+                    {
+                        ProductSKUId=1,
+                        Quantity =1,
+                        Remark ="Remark",
+                        UOMId =1
+                    }
+                },
+                Type= "Type",
+                
+            };
 
-        //}
+
+            //Act
+            var result = await service.AddDocument(data);
+
+            //Assertion
+            Assert.True(-1 < result);
+
+        }
 
         [Fact]
         public void Should_Success_AddMovement()
@@ -162,16 +169,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             //Arrange
             var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
             var serviceProviderMock = new Mock<IServiceProvider>();
-            
+
             serviceProviderMock
                 .Setup(serviceProvider => serviceProvider
                 .GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
             var inventoryMovement = new ProductSKUInventoryMovementModel(1, 1, 1, 1, "storageCode", "storageName", 1, "IN", "Remark");
-            
+
             var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
-           
+
             dbContext
                 .ProductSKUInventorySummaries
                 .Add(new ProductSKUInventorySummaryModel(1, 1, "storageCode", "storageName", 1));
@@ -303,13 +310,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
         }
 
-       
+
 
         [Fact]
         public void Should_Success_AddMovement_when_Type_ADJ()
         {
             var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
-            
+
             //Arrange
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
@@ -317,7 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
             var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
-           
+
 
             var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
 
@@ -374,7 +381,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
 
             //Act
-            Assert.Throws<NotImplementedException>(() => service.GetMovementIndex(1,1,"IN",DateTime.Now,DateTime.Now));
+            Assert.Throws<NotImplementedException>(() => service.GetMovementIndex(1, 1, "IN", DateTime.Now, DateTime.Now));
         }
 
         [Fact]
@@ -494,6 +501,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 size = 25,
                 keyword = "documentNo",
                 order = "{}",
+                
             };
             var result = service.GetDocumentIndex(query);
 
