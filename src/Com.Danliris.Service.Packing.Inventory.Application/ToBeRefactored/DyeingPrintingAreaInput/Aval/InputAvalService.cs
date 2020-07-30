@@ -143,7 +143,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     IsChecked = s.IsChecked,
                     Area = s.Area,
                     QtyOrder = s.ProductionOrderOrderQuantity,
-                    UomUnit = s.UomUnit
+                    UomUnit = s.UomUnit,
+                    ProductSKUId = s.ProductSKUId,
+                    FabricSKUId = s.FabricSKUId,
+                    ProductSKUCode = s.ProductSKUCode,
+                    HasPrintingProductSKU = s.HasPrintingProductSKU,
+                    ProductPackingId = s.ProductPackingId,
+                    FabricPackingId = s.FabricPackingId,
+                    ProductPackingCode = s.ProductPackingCode,
+                    HasPrintingProductPacking = s.HasPrintingProductPacking
                 }).ToList()
             };
 
@@ -240,7 +248,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.Machine,
                                                                                                                                             s.Material.Id, s.Material.Name,s.MaterialConstruction.Id,
                                                                                                                                             s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
-                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
+                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 
+                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking))
                                                                                .ToList());
                 result = await _inputRepository.InsertAsync(model);
             }
@@ -283,7 +292,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.Machine,
                                                                                                                                             s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
                                                                                                                                             s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
-                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
+                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
+                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking))
                                                                                .ToList());
             }
 
@@ -531,7 +541,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackagingUnit = d.PackagingUnit,
                     PackagingQty = d.PackagingQty,
                     PackagingType = d.PackagingType,
-                    AvalType = d.AvalType
+                    AvalType = d.AvalType,
+                    ProductSKUId = d.ProductSKUId,
+                    FabricSKUId = d.FabricSKUId,
+                    ProductSKUCode = d.ProductSKUCode,
+                    HasPrintingProductSKU = d.HasPrintingProductSKU,
+                    ProductPackingId = d.ProductPackingId,
+                    FabricPackingId = d.FabricPackingId,
+                    ProductPackingCode = d.ProductPackingCode,
+                    HasPrintingProductPacking = d.HasPrintingProductPacking
                 }).ToList()
             });
 
@@ -611,7 +629,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                        DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
                                                                        PackagingUnit = d.PackagingUnit,
                                                                        PackagingQty = d.PackagingQty,
-                                                                       PackagingType = d.PackagingType
+                                                                       PackagingType = d.PackagingType,
+                                                                       ProductSKUId = d.ProductSKUId,
+                                                                       FabricSKUId = d.FabricSKUId,
+                                                                       ProductSKUCode = d.ProductSKUCode,
+                                                                       HasPrintingProductSKU = d.HasPrintingProductSKU,
+                                                                       ProductPackingId = d.ProductPackingId,
+                                                                       FabricPackingId = d.FabricPackingId,
+                                                                       ProductPackingCode = d.ProductPackingCode,
+                                                                       HasPrintingProductPacking = d.HasPrintingProductPacking
 
                                                                    }).ToList()
                                                                });
