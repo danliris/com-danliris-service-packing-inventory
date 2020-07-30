@@ -85,5 +85,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var result = await repo.UpdateHasSalesInvoice(data.Id, true);
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateHasProductPacking()
+        {
+            string testName = GetCurrentMethod() + "UpdateHasProductPacking";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaOutputProductionOrderRepository(dbContext, GetServiceProviderMock(dbContext).Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+
+            var result = await repo.UpdateHasPrintingProductPacking(data.Id, true);
+            Assert.NotEqual(0, result);
+        }
     }
 }

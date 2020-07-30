@@ -32,13 +32,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet("packing")]
-        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+        public async Task<IActionResult> Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
             {
 
-                var data = _service.GetDataProductPacking(page, size, filter, order, keyword);
+                var data = await _service.GetDataProductPacking(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpPut("packing/status/{id}")]
-        public async Task<IActionResult> UpdateHasSalesInvoice([FromRoute] int id, [FromBody] bool hasProductPacking)
+        public async Task<IActionResult> UpdatePrintingStatusProductPacking([FromRoute] int id, [FromBody] bool hasProductPacking)
         {
             try
             {

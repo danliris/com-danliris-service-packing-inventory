@@ -131,11 +131,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> UpdateHasPrintingProduct(int id, bool hasPrintingProduct)
+        public Task<int> UpdateHasPrintingProductPacking(int id, bool hasPrintingProductPacking)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
-            modelToUpdate.SetHasPrintingProductSKU(hasPrintingProduct, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetHasPrintingProductPacking(hasPrintingProduct, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetHasPrintingProductPacking(hasPrintingProductPacking, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

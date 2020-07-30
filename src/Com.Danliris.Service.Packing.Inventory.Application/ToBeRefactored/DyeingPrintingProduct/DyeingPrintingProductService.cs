@@ -80,7 +80,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = s.YarnMaterialId,
                     Name = s.YarnMaterialName
-                }
+                },
+                ProductPackingQuantity = s.PackagingQty == 0 ? 0 : s.Balance / Convert.ToDouble(s.PackagingQty),
+                ProductPackingType = s.PackagingUnit
             });
 
             int result = 0;
@@ -92,9 +94,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<DyeingPrintingProductPackingViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public Task<int> UpdatePrintingStatusProductPacking(int id, bool hasPrintingProduct)
+        public Task<int> UpdatePrintingStatusProductPacking(int id, bool hasPrintingProductPacking)
         {
-            return _outputProductionOrderRepository.UpdateHasPrintingProduct(id, hasPrintingProduct);
+            return _outputProductionOrderRepository.UpdateHasPrintingProductPacking(id, hasPrintingProductPacking);
         }
     }
 }
