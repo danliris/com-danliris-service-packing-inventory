@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 {
     public class GarmentShippingInvoiceControllerGetPdfTest : GarmentShippingInvoiceControllerTest
     {
-        private GarmentShippingInvoiceViewModel ViewModel
+        public override GarmentShippingInvoiceViewModel ViewModel
         {
             get
             {

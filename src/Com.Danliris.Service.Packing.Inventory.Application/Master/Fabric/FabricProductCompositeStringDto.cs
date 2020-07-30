@@ -5,17 +5,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 {
     public class FabricProductCompositeStringDto : IValidatableObject
     {
+        // warna
         public string ColorWay { get; set; }
+        // material konstruksi
         public string ConstructionType { get; set; }
+        // grade
         public string Grade { get; set; }
+        // panjang per packing
         public double? PackingSize { get; set; }
-        // Packing Satuan
+        // Packing UOM jenis packing
         public string PackingType { get; set; }
+        // jenis proses
         public string ProcessType { get; set; }
+        // satuan
         public string UOM { get; set; }
+        // lusi
         public string WarpThread { get; set; }
+        // pakan
         public string WeftThread { get; set; }
+        // material width
         public string Width { get; set; }
+        // material
         public string WovenType { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

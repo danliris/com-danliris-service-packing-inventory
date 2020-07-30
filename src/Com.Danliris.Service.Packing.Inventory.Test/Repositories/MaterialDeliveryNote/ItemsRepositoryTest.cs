@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliv
         public override async Task Should_Success_Update()
         {
             string testName = ENTITY + GetCurrentAsyncMethod();
+            await Task.CompletedTask;
             var dbContext = DbContext(testName);
 
             ItemsRepository itemsRepository = new ItemsRepository(dbContext, GetServiceProviderMock(dbContext).Object);

@@ -30,6 +30,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrders = new HashSet<DyeingPrintingAreaInputProductionOrderModel>();
         }
 
+        /// <summary>
+        /// Main Constructor
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="group"></param>
+        /// <param name="dyeingPrintingAreaInputProductionOrders"></param>
         public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group,
             ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
         {
@@ -41,7 +50,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 
-        //aval transformation
+        /// <summary>
+        /// Aval Transformasi
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="group"></param>
+        /// <param name="avalType"></param>
+        /// <param name="isTransformedAval"></param>
+        /// <param name="totalAvalQuantity"></param>
+        /// <param name="totalAvalWeight"></param>
+        /// <param name="dyeingPrintingAreaInputProductionOrders"></param>
         public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string avalType, bool isTransformedAval, double totalAvalQuantity,
             double totalAvalWeight, ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
         {

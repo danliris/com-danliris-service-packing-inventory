@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.MaterialDeliv
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
             var model = DataUtil(repo, dbContext).GetModel();
-            int index = 0;
+            
             
             var result = await repo2.UpdateAsync(data.Id, model);
 
