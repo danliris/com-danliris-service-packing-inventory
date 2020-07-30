@@ -50,17 +50,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public IQueryable<DyeingPrintingAreaOutputProductionOrderModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutput).AsNoTracking();
         }
 
         public IQueryable<DyeingPrintingAreaOutputProductionOrderModel> ReadAllIgnoreQueryFilter()
         {
-            return _dbSet.IgnoreQueryFilters().AsNoTracking();
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutput).IgnoreQueryFilters().AsNoTracking();
         }
 
         public Task<DyeingPrintingAreaOutputProductionOrderModel> ReadByIdAsync(int id)
         {
-            return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
+            return _dbSet.Include(s => s.DyeingPrintingAreaOutput).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<int> UpdateAsync(int id, DyeingPrintingAreaOutputProductionOrderModel model)
@@ -127,6 +127,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
             modelToUpdate.SetHasSalesInvoice(hasSalesInvoice, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateHasPrintingProduct(int id, bool hasPrintingProduct)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+            modelToUpdate.SetHasPrintingProductSKU(hasPrintingProduct, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetHasPrintingProductPacking(hasPrintingProduct, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }
