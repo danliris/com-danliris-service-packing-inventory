@@ -229,7 +229,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
-            return new FabricPackingIdCodeDto() { FabricPackingId = 1, ProductPackingCode = "code", ProductPackingId = 1 };
+            return new FabricPackingIdCodeDto() { FabricPackingId = 1, ProductPackingCode = "code", ProductPackingId = 1, FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
+        }
+
+        public FabricSKUIdCodeDto AutoCreateSKU(NewFabricSKUAutoCreateFormDto form)
+        {
+            return new FabricSKUIdCodeDto() { FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
         }
     }
 }
