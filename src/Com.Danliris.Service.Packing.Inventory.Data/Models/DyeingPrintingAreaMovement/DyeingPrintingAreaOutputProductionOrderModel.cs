@@ -348,7 +348,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId, int buyerId,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string adjDocumentNo, string packagingType, decimal packagingQty,
-            string packagingUnit, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName) : this()
+            string packagingUnit, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -390,6 +391,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
 
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductPacking = hasPrintingProductPacking;
         }
 
         /// <summary>
