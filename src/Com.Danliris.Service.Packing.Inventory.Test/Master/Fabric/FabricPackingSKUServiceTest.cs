@@ -364,5 +364,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             //assert
            // Assert.NotEqual(0,result);
         }
+
+        [Fact]
+        public void AutoCreateSKU_with_NewFabricSKUAutoCreateFormDto_Return_Success()
+        {
+            //Setup
+            PackingInventoryDbContext dbContext = GetDbContext(Entity);
+
+            //act
+            var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
+            var form = new NewFabricSKUAutoCreateFormDto();
+            FabricSKUIdCodeDto result = service.AutoCreateSKU(form);
+
+            //assert
+            Assert.NotNull(result);
+        }
+
     }
 }

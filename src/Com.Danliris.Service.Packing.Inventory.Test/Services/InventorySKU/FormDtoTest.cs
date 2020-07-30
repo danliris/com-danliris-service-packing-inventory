@@ -16,9 +16,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
             {
                 Items = new List<FormItemDto>()
             };
-           
+
+            var result = dto.Validate(null);
+            Assert.True(result.Count() > 0);
+        }
+
+        [Fact]
+        public void Validate_items()
+        {
+            FormDto dto = new FormDto()
+            {
+                Items = new List<FormItemDto>()
+                {
+                    new FormItemDto()
+                }
+            };
+
             var result = dto.Validate(null);
             Assert.True(result.Count() > 0);
         }
     }
+
 }
+

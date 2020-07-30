@@ -15,12 +15,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             {
                 FabricPackingId =1,
                 ProductPackingCode ="code",
-                ProductPackingId =1
+                ProductPackingId =1,
+                FabricSKUId =1,
+                ProductSKUCode = "ProductSKUCode",
+                ProductSKUId=1,
+                
             };
 
             Assert.Equal(1, dto.FabricPackingId);
             Assert.Equal("code", dto.ProductPackingCode);
             Assert.Equal(1, dto.ProductPackingId);
+            Assert.Equal(1, dto.FabricSKUId);
+            Assert.Equal("ProductSKUCode", dto.ProductSKUCode);
+            Assert.Equal(1, dto.ProductSKUId);
         }
     }
 }

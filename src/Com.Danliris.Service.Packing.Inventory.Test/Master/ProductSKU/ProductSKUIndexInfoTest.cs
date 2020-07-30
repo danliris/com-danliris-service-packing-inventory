@@ -19,13 +19,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductSKU
                 LastModifiedUtc =date,
                 Name ="Name",
                 Id =1,
-                UOMUnit = "UOMUnit"
+                UOMUnit = "UOMUnit",
+                UOMId =1
             };
             Assert.Equal("Code", indexInfo.Code);
             Assert.Equal("CategoryName", indexInfo.CategoryName);
             Assert.Equal(date, indexInfo.LastModifiedUtc);
             Assert.Equal("Name", indexInfo.Name);
             Assert.Equal(1, indexInfo.Id);
+            Assert.Equal(1, indexInfo.UOMId);
             Assert.Equal("UOMUnit", indexInfo.UOMUnit);
         }
         }

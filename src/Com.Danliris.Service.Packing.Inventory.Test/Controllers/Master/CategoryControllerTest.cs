@@ -428,6 +428,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         }
 
         [Fact]
+        public async Task Put_Return_NotFound()
+        {
+            //Setup
+            var dataUtil = formDto;
+            var serviceMock = new Mock<ICategoryService>();
+            serviceMock
+                .Setup(s => s.GetById(It.IsAny<int>()))
+                .ReturnsAsync(()=>null);
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<FormDto>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            //Act
+            var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
+            var response = await controller.Put(1, formDto);
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task Put_Return_InternalServerError()
         {
             //Setup

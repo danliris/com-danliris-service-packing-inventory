@@ -20,6 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DTOs
             Assert.True(DateTime.MinValue < dto.LasModifiedUtc);
             Assert.NotNull(dto.UOM);
             Assert.NotNull(dto.Category);
+            Assert.Equal(0, dto.UOMId);
+            Assert.Equal("unit", dto.UOMUnit);
         }
         }
 }

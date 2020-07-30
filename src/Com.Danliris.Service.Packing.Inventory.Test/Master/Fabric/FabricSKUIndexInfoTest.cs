@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
         {
             FabricSKUIndexInfo dto = new FabricSKUIndexInfo()
             {
+                Id=1,
                 Code = "Code",
                 Construction = "Construction",
                 Grade="A",
@@ -22,9 +23,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
                 Weft = "Weft",
                 Width = "Width",
                 WovenType = "WovenType",
-                YarnType = "YarnType"
+                YarnType = "YarnType",
+                LastModifiedUtc =DateTime.Now,
+
             };
 
+            Assert.Equal(1, dto.Id);
+            Assert.True(DateTime.MinValue < dto.LastModifiedUtc);
             Assert.Equal("Construction", dto.Construction);
             Assert.Equal("Code", dto.Code);
             Assert.Equal("Construction", dto.Construction);
