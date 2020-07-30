@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.InpsectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
@@ -22,7 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaOutputRepository repository, IDyeingPrintingAreaMovementRepository movementRepo,
-           IDyeingPrintingAreaSummaryRepository summaryRepo, IDyeingPrintingAreaInputProductionOrderRepository sppRepo, IDyeingPrintingAreaOutputProductionOrderRepository outSppRepo)
+           IDyeingPrintingAreaSummaryRepository summaryRepo, IDyeingPrintingAreaInputProductionOrderRepository sppRepo, IDyeingPrintingAreaOutputProductionOrderRepository outSppRepo,
+           IFabricPackingSKUService fabricService)
         {
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputRepository)))
@@ -36,6 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(sppRepo);
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
                 .Returns(outSppRepo);
+
+            spMock.Setup(s => s.GetService(typeof(IFabricPackingSKUService)))
+                .Returns(fabricService);
 
             return spMock;
         }
@@ -190,7 +195,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
                             detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,
-                            item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name)
+                            item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 1, 1, "a", false)
                         {
                             Id = detail.Id
                         };
@@ -354,7 +359,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, "", "", item.Status, item.Balance, item.Id, item.BuyerId,
                             "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine, item.AdjDocumentNo,
-                            item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name)
+                            item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false)
                     {
                         Id = item.Id
                     }).ToList());
@@ -370,6 +375,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -396,8 +402,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -412,13 +426,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModelAdj);
 
@@ -434,13 +449,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var vm = ViewModelAdj;
             foreach (var item in vm.InspectionMaterialProductionOrders)
@@ -462,6 +478,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -486,8 +503,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -501,6 +525,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -527,8 +552,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
             sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -543,6 +576,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -577,8 +611,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
             sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(vm);
 
@@ -593,6 +635,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -619,8 +662,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
             sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -635,6 +686,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -660,7 +712,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.Create(ViewModel);
 
@@ -675,6 +735,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -700,7 +761,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var vm = ViewModel;
             vm.DestinationArea = "PACKING";
             var result = await service.Create(vm);
@@ -716,6 +785,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -741,7 +811,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var vm = ViewModel;
             vm.DestinationArea = "GUDANG AVAL";
             var result = await service.Create(vm);
@@ -757,6 +835,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -782,10 +861,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
                  .ReturnsAsync(1);
 
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Create(vm);
 
             Assert.NotEqual(0, result);
@@ -799,6 +886,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
@@ -826,7 +914,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
             sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var vm = ViewModel;
             vm.DestinationArea = "GUDANG AVAL";
             var result = await service.Create(vm);
@@ -842,11 +938,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.Read(1, 25, "{}", "{}", null);
 
@@ -861,6 +958,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
@@ -868,7 +966,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a"));
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.ReadById(1);
 
@@ -883,11 +981,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelAdj);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.ReadById(1);
 
@@ -902,6 +1001,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var model = Model;
             model.SetType(null, "", "");
@@ -912,7 +1012,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a"));
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.ReadById(1);
 
@@ -927,11 +1027,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(default(DyeingPrintingAreaOutputModel));
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = await service.ReadById(1);
 
@@ -946,11 +1047,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GenerateExcel(ViewModel);
 
@@ -965,10 +1067,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var vm = ViewModel;
             vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
 
             var result = service.GenerateExcel(vm);
@@ -984,12 +1087,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
                 new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
             }.AsQueryable());
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GetInputInspectionMaterialProductionOrders(1);
 
@@ -1004,12 +1108,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
                 new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
             }.AsQueryable());
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GetInputInspectionMaterialProductionOrders(0);
 
@@ -1025,6 +1130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
@@ -1035,7 +1141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
 
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
@@ -1049,6 +1155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var model = Model;
             model.SetDestinationArea("PRODUKSI", "", "");
@@ -1064,7 +1171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
@@ -1078,6 +1185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelAdj);
@@ -1088,7 +1196,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
 
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
@@ -1102,6 +1210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var model = ModelAdj;
 
@@ -1119,7 +1228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
 
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
@@ -1133,6 +1242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var model = Model;
             model.SetType(null, "", "");
@@ -1145,7 +1255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
 
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
@@ -1160,6 +1270,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = Model;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
 
@@ -1179,7 +1290,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1193,6 +1312,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = Model;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
             model.SetDestinationArea("PRODUKSI", "", "");
@@ -1211,8 +1331,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
-
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1226,6 +1352,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = ModelAdj;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
 
@@ -1245,7 +1372,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1259,6 +1386,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = ModelAdj;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
 
@@ -1275,7 +1403,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1289,6 +1417,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = Model;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
@@ -1312,7 +1441,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1326,6 +1463,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = Model;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
@@ -1337,7 +1475,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var detail = vm.InspectionMaterialProductionOrders.FirstOrDefault();
             detail.Id = 0;
             vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>() { detail };
-
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
             repoMock.Setup(s => s.UpdateIMArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputModel>(), It.IsAny<DyeingPrintingAreaOutputModel>()))
@@ -1349,7 +1493,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1363,6 +1507,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var model = ModelAdj;
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetBalance(2, "", "");
             model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().SetHasNextAreaDocument(true, "", "");
@@ -1384,7 +1529,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .ReturnsAsync(1);
 
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = await service.Update(1, vm);
 
             Assert.NotEqual(0, result);
@@ -1398,6 +1543,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
@@ -1405,7 +1551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
             }.AsQueryable());
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GetDistinctProductionOrder(1, 25, "{}", "{}", null);
 
@@ -1420,13 +1566,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var modelN = Model;
             modelN.SetType(null, "", "");
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
 
             Assert.NotNull(result);
@@ -1440,13 +1587,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var modelN = Model;
             modelN.SetType(null, "", "");
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = service.GenerateExcel(Model.Date.AddDays(-1), null, 7);
 
             Assert.NotNull(result);
@@ -1460,13 +1608,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var modelN = Model;
             modelN.SetType(null, "", "");
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = service.GenerateExcel(null, Model.Date.AddDays(1), 7);
 
             Assert.NotNull(result);
@@ -1480,13 +1629,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             var modelN = Model;
             modelN.SetType(null, "", "");
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = service.GenerateExcel(null, null, 7);
 
             Assert.NotNull(result);
@@ -1500,12 +1650,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
 
             repoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
 
             Assert.NotNull(result);
@@ -1519,6 +1670,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
 
             sppoutRepoMock.Setup(s => s.ReadAll()).Returns(Model.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
@@ -1527,7 +1679,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 new DyeingPrintingAreaInputProductionOrderModel("INSPECTION MATERIAL", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
             }.AsQueryable());
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null);
 
@@ -1542,11 +1694,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelAdj);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var result = service.GenerateExcel(ViewModelAdj);
 
@@ -1561,11 +1714,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(Model);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
             var vm = ViewModel;
             vm.Type = null;
@@ -1583,10 +1737,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
             var vm = ViewModelAdj;
             vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>();
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
 
 
             var result = service.GenerateExcel(vm);
@@ -1663,9 +1818,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var fabricService = new Mock<IFabricPackingSKUService>();
 
 
-            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object;
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object;
             var service = GetService(serviceProvider);
 
             var vm = new OutputInspectionMaterialViewModel();

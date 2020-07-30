@@ -71,9 +71,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public int ProductSKUId { get; private set; }
 
+        public int FabricSKUId { get; private set; }
+
         public string ProductSKUCode { get; private set; }
 
         public int ProductPackingId { get; private set; }
+
+        public int FabricPackingId { get; private set; }
 
         public string ProductPackingCode { get; private set; }
 
@@ -236,7 +240,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, double balanceRemains, int buyerId, int prevSppOutputID, string remark, 
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -270,6 +275,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductPacking = hasPrintingProductPacking;
         }
         
         /// <summary>
@@ -308,7 +323,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, double productionOrderQty, string grade, int dyeingPrintingAreaInputId, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId,
             string remark, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -343,6 +359,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductPacking = hasPrintingProductPacking;
         }
 
         /// <summary>
@@ -463,11 +489,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="processTypeName"></param>
         /// <param name="yarnMaterialId"></param>
         /// <param name="yarnMaterialName"></param>
+        /// <param name="productSKUId"></param>
+        /// <param name="fabricSKUId"></param>
+        /// <param name="productSKUCode"></param>
+        /// <param name="hasPrintingProductSKU"></param>
+        /// <param name="productPackingId"></param>
+        /// <param name="fabricPackingId"></param>
+        /// <param name="productPackingCode"></param>
+        /// <param name="hasPrintingProductPacking"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,
             string remark, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName,
             int materialConstructionId, string materialConstructionName, string materialWidth, decimal qtyPacking, string packingUnit, string packingType, long deliveryOrderSalesId,
-            string deliveryOrderSalesNo, string avalType, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
+            string deliveryOrderSalesNo, string avalType, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -514,6 +549,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductPacking = hasPrintingProductPacking;
         }
 
         /// <summary>

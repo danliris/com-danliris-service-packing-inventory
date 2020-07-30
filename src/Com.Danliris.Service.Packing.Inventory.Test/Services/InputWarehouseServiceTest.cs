@@ -381,7 +381,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                                                              s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                                                              s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false
                                                                                                              )).ToList());
             }
         }
@@ -670,7 +670,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_IM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                     s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
-                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             }
         }
 
@@ -682,7 +682,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_PC.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                     s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
-                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             }
         }
 
@@ -694,7 +694,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaInputProductionOrderModel(RejectedInputWarehouseViewModel_TR.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                     s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                     s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
-                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             }
         }
         [Fact]
@@ -724,7 +724,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                                                              s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                                                              s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -842,7 +842,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                                                              s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                                                              s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -960,7 +960,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                                                              s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                                                              s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false)).ToList());
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -1387,7 +1387,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1, 1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "rem", "a", "a", 1, 1, 1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false)
             }.AsQueryable());
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
