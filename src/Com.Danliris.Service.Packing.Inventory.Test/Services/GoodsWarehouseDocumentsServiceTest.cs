@@ -49,6 +49,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
         }
 
         [Fact]
+        public void Should_Success_GetExcel()
+        {
+            //setup
+            var repoMock = new Mock<IGoodsWarehouseDocumentsService>();
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            //act
+            var result = service.GetExcel(new DateTimeOffset(new DateTime(2020, 04, 04)), "PAGI", "PROD", 7);
+
+            //assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public void Should_Success_GetData()
         {
             List<IndexViewModel> resultData = new List<IndexViewModel>();
