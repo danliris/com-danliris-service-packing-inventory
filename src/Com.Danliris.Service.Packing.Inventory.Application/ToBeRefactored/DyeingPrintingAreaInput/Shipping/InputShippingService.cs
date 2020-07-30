@@ -502,7 +502,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     item.Select(s => new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id,
                                         s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit,
                                         s.Qty, false, s.Packing, s.PackingType, s.QtyPacking, s.Grade, s.ProductionOrder.OrderQuantity, s.BuyerId, s.Id, s.Remark, s.Qty,
-                                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name)).ToList());
+                                        s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
 
                     result = await _repository.InsertAsync(model);
                     result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
@@ -525,7 +526,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit,
                                         detail.Qty, false, detail.Packing, detail.PackingType, detail.QtyPacking, detail.Grade, detail.ProductionOrder.OrderQuantity, detail.BuyerId,
                                         detail.Id, detail.Remark, detail.Qty,
-                                        detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.ProcessType.Id, detail.ProcessType.Name, detail.YarnMaterial.Id, detail.YarnMaterial.Name);
+                                        detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.ProcessType.Id, detail.ProcessType.Name, detail.YarnMaterial.Id, detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode,
+                     detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId, detail.ProductPackingCode, detail.HasPrintingProductPacking);
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
                         result += await _productionOrderRepository.InsertAsync(modelItem);

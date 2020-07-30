@@ -113,7 +113,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             PackagingType ="WHITE",
                             QtyOrder = 2000,
                             OutputId = 195,
-
+                            ProductSKUId = 1,
+                            FabricSKUId = 1,
+                            ProductSKUCode = "c",
+                            HasPrintingProductSKU = false,
+                            ProductPackingId = 1,
+                            FabricPackingId = 1,
+                            ProductPackingCode = "c",
+                            HasPrintingProductPacking = false
                             //InputId = 195
                         }
                     }
@@ -187,7 +194,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             PackagingQty = 10,
                             PackagingType ="WHITE",
                             QtyOrder = 2000,
-                            OutputId = 195
+                            OutputId = 195,
+                            ProductSKUId = 1,
+                            FabricSKUId = 1,
+                            ProductSKUCode = "c",
+                            HasPrintingProductSKU = false,
+                            ProductPackingId = 1,
+                            FabricPackingId = 1,
+                            ProductPackingCode = "c",
+                            HasPrintingProductPacking = false
                             //InputId = 195
                         }
                     }
@@ -236,7 +251,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             }
         }
         private DyeingPrintingAreaInputModel InputModelExcel
@@ -280,7 +296,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             }
         }
 
@@ -325,7 +342,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             }
         }
 
@@ -776,7 +794,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -894,7 +913,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -1012,7 +1032,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             s.ProcessType.Id,
                                                                                                             s.ProcessType.Name,
                                                                                                             s.YarnMaterial.Id,
-                                                                                                            s.YarnMaterial.Name)).ToList());
+                                                                                                            s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                    s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
