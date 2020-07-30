@@ -506,7 +506,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Area = "INSPECTION MATERIAL",
                             InputId = 12,
                             OutputId = 10,
-                            DyeingPrintingAreaInputProductionOrderId = 4
+                            DyeingPrintingAreaInputProductionOrderId = 4,
+                            ProductSKUId = 1,
+                            FabricSKUId = 1,
+                            ProductSKUCode = "c",
+                            HasPrintingProductSKU = false,
+                            ProductPackingId = 1,
+                            FabricPackingId = 1,
+                            ProductPackingCode = "c",
+                            HasPrintingProductPacking = false
                         }
                     }
                 };

@@ -1261,6 +1261,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(outPre.MaterialConstruction);
             Assert.NotNull(outPre.MaterialWidth);
             Assert.NotNull(outPre.Remark);
+
+            Assert.Null(outPre.ProductPackingCode);
+            Assert.Null(outPre.ProductSKUCode);
+            Assert.Equal(0, outPre.ProductSKUId);
+            Assert.Equal(0, outPre.FabricSKUId);
+            Assert.Equal(0, outPre.ProductPackingId);
+            Assert.Equal(0, outPre.FabricPackingId);
+            Assert.False(outPre.HasPrintingProductPacking);
+            Assert.False(outPre.HasPrintingProductSKU);
         }
 
         [Fact]
