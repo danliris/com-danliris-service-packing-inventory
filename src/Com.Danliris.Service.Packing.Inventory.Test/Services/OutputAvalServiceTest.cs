@@ -267,6 +267,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "name"
                             },
+                            ProductSKUId = 1,
+                            FabricSKUId = 1,
+                            ProductSKUCode = "c",
+                            HasPrintingProductSKU = false,
+                            ProductPackingId = 1,
+                            FabricPackingId = 1,
+                            ProductPackingCode = "c",
+                            HasPrintingProductPacking = false
                         }
                     },
                     DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()
@@ -301,7 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
                                                         s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                                                         s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
-                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name))
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking))
                                                                            .ToList());
             }
         }
@@ -324,7 +332,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a"));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false));
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -377,7 +385,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a"));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false));
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -578,7 +586,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                       "A",
                                                       new List<DyeingPrintingAreaInputProductionOrderModel>()
                                                       {
-                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a")
+                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false)
                      })
                  }.AsQueryable());
 
