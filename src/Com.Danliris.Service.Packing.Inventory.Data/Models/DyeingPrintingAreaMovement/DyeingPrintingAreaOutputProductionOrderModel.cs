@@ -1299,6 +1299,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
+        public void SetProductPackingId(int newId, string user, string agent)
+        {
+            if (newId != ProductPackingId)
+            {
+                ProductPackingId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetFabricPackingId(int newId, string user, string agent)
+        {
+            if (newId != FabricPackingId)
+            {
+                FabricPackingId = newId;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetProductPackingCode(string newProductPackingCode, string user, string agent)
+        {
+
+            if (newProductPackingCode != ProductPackingCode)
+            {
+                ProductPackingCode = newProductPackingCode;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetHasPrintingProductPacking(bool newHasPrintingProductPacking, string user, string agent)
         {
 

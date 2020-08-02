@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         Task<int> Delete(int bonId);
         Task<int> DeleteV2(int bonId);
+        Task<int> Update(int id, OutputPackagingViewModel viewModel);
 
     }
 }
