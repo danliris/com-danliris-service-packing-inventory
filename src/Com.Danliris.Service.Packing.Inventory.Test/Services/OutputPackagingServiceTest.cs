@@ -546,6 +546,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
 
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
             var item = ViewModel.PackagingProductionOrders.FirstOrDefault();
@@ -1807,7 +1810,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(outputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object).Object);
 
 
-            var result = await service.CreateAdj(ViewModelAdj);
+            var result = await service.CreateAdj(vm);
 
             Assert.NotEqual(0, result);
         }

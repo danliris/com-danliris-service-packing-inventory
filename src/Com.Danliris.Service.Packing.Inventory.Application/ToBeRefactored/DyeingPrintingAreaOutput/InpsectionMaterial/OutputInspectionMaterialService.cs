@@ -1071,6 +1071,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 .OrderBy(s => s.ProductionOrderNo)
                 .Select(s => new AdjInspectionMaterialProductionOrderViewModel()
                 {
+                    Id = s.Id,
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = s.ProductionOrderId,
