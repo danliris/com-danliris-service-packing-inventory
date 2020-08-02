@@ -540,8 +540,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
-               (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            //var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
+            //   (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI);
+
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -1124,14 +1126,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public List<InputSppWarehouseViewModel> GetOutputSppWarehouseItemList(int bonId)
         {
+            //var query = _outputProductionOrderRepository.ReadAll()
+            //                                            .Join(_outputRepository.ReadAll().Where(x => x.Id == bonId),
+            //                                            spp => spp.DyeingPrintingAreaOutputId,
+            //                                            bon => bon.Id,
+            //                                            (spp, bon) => spp)
+            //                                            .OrderByDescending(s => s.LastModifiedUtc)
+            //                                            .Where(s => s.Area == GUDANGJADI &&
+            //                                                        !s.HasNextAreaDocument);
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .Join(_outputRepository.ReadAll().Where(x => x.Id == bonId),
                                                         spp => spp.DyeingPrintingAreaOutputId,
                                                         bon => bon.Id,
                                                         (spp, bon) => spp)
                                                         .OrderByDescending(s => s.LastModifiedUtc)
-                                                        .Where(s => s.Area == GUDANGJADI &&
-                                                                    !s.HasNextAreaDocument);
+                                                        .Where(s => s.Area == GUDANGJADI);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
@@ -1202,6 +1211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Area = p.Area,
                     //DestinationArea = p.DestinationArea,
                     HasOutputDocument = p.HasNextAreaDocument,
+                    HasNextAreaDocument = p.HasNextAreaDocument,
                     //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
                     Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
                     ProductSKUId = p.ProductSKUId,
@@ -1303,8 +1313,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
             //var model = await _repository.ReadByIdAsync(id);
-            var warehouseData = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
-               (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            //var warehouseData = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
+            //   (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            var warehouseData = _outputRepository.ReadAll().Where(s => s.Area == GUDANGJADI);
+
             if (dateFrom.HasValue && dateTo.HasValue)
             {
                 warehouseData = warehouseData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&

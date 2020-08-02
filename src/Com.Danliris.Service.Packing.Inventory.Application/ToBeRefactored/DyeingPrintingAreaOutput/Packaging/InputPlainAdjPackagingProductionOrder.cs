@@ -51,6 +51,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public double AtQty { get; set; }
 
+        public bool HasNextAreaDocument { get; set; }
+
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }
         public string ProductSKUCode { get; set; }

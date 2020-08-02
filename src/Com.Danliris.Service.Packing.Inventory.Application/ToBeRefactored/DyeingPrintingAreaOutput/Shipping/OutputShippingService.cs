@@ -346,10 +346,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private async Task<int> CreateOut(OutputShippingViewModel viewModel)
         {
             int result = 0;
+            DyeingPrintingAreaOutputModel model = null;
 
-            var model = _repository.GetDbSet().AsNoTracking()
+            if(viewModel.DestinationArea == PENJUALAN)
+            {
+                model = _repository.GetDbSet().AsNoTracking()
+                .FirstOrDefault(s => s.Area == SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == OUT && s.ShippingCode == viewModel.ShippingCode);
+            }
+            else
+            {
+                model = _repository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == SHIPPING && s.DestinationArea == viewModel.DestinationArea
                 && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == OUT);
+            }
 
             viewModel.ShippingProductionOrders = viewModel.ShippingProductionOrders.Where(s => s.IsSave).ToList();
 
@@ -543,8 +553,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
-            (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            //var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
+            //(((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -827,6 +838,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DyeingPrintingAreaInputProductionOrderId = d.DyeingPrintingAreaInputProductionOrderId,
                     Qty = d.Balance,
                     InputId = d.DyeingPrintingAreaOutputId,
+                    HasNextAreaDocument = d.HasNextAreaDocument,
                     PackingLength = d.PackagingQty == 0 ? 0 : Convert.ToDecimal(d.Balance) / d.PackagingQty,
                     AdjDocumentNo = d.AdjDocumentNo,
                     ProductSKUId = d.ProductSKUId,
@@ -1161,8 +1173,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
-                   (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)));
+            //var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
+            //       (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)));
+            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING);
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {
@@ -1213,7 +1226,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     if (model.Type == null || model.Type == OUT)
                     {
-                        foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
+                        //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
+                        foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
                             dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
