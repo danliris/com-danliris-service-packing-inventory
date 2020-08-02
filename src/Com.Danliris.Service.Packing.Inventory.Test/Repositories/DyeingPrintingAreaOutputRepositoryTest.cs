@@ -722,9 +722,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
-                item.SetProductPackingId(0, "", "");
+                item.SetProductPackingId(item.ProductPackingId + 1, "", "");
                 item.SetProductPackingCode(item.ProductPackingCode + "01", "", "");
-                item.SetFabricPackingId(0, "", "");
+                item.SetFabricPackingId(item.FabricPackingId + 1, "", "");
+                item.SetDescription(item.Description + "ss", "", "");
             }
             var result = await repo2.UpdatePackingArea(data.Id, model, dbModel);
 
