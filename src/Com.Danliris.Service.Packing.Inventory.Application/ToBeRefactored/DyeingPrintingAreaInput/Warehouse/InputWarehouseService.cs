@@ -59,8 +59,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //Get All (List)
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
-                                                         s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument && d.Balance > 0));
+            //var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI &&
+            //                                             s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument && d.Balance > 0));
+            var query = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI);
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -798,7 +799,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
-            var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            //var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI);
+
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {

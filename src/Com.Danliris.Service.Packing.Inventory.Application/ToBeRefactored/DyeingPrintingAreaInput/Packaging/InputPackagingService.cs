@@ -135,7 +135,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument && d.BalanceRemains > 0));
+            //var query = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument && d.BalanceRemains > 0));
+            var query = _repository.ReadAll().Where(s => s.Area == PACKING);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -806,7 +807,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
             //var model = await _repository.ReadByIdAsync(id);
-            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            //var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING);
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {

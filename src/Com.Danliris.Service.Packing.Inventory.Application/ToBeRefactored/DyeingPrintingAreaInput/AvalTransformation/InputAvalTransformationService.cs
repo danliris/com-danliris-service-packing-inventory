@@ -285,7 +285,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<InputAvalTransformationViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval && s.TotalAvalQuantity != 0 && s.TotalAvalWeight != 0);
+            //var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval && s.TotalAvalQuantity != 0 && s.TotalAvalWeight != 0);
+            var query = _repository.ReadAll().Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"

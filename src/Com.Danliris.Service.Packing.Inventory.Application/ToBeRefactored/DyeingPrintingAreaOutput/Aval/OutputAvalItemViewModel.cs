@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double AvalOutQuantity { get; set; }
         public string DeliveryNote { get; set; }
         public string AdjDocumentNo { get; set; }
+        public bool HasNextAreaDocument { get; set; }
     }
 }

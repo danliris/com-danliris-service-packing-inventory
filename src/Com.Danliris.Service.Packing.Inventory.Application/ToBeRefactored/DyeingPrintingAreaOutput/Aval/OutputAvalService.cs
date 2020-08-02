@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         IsDeleted = s.IsDeleted,
                         LastModifiedAgent = s.LastModifiedAgent,
                         LastModifiedBy = s.LastModifiedBy,
-
+                        HasNextAreaDocument = s.HasNextAreaDocument,
                         Id = s.Id,
                         AvalType = s.AvalType,
                         AvalCartNo = s.AvalCartNo,
@@ -153,7 +153,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         IsDeleted = s.IsDeleted,
                         LastModifiedAgent = s.LastModifiedAgent,
                         LastModifiedBy = s.LastModifiedBy,
-
+                        HasNextAreaDocument = s.HasNextAreaDocument,
                         Id = s.Id,
                         AvalType = s.AvalType,
 
@@ -395,8 +395,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                string order,
                                                string keyword)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
-            ((s.Type == OUT || s.Type == null) && !s.HasNextAreaDocument || (s.Type != OUT && s.Type != null)));
+            //var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
+            //((s.Type == OUT || s.Type == null) && !s.HasNextAreaDocument || (s.Type != OUT && s.Type != null)));
+            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -869,8 +870,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
         {
-            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
-                (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)));
+            //var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL &&
+            //    (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)));
+            var query = _outputRepository.ReadAll().Where(s => s.Area == GUDANGAVAL);
+
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {
@@ -909,7 +912,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     if (model.Type == null || model.Type == OUT)
                     {
-                        foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.AvalType))
+                        //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.AvalType))
+                        foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.AvalType))
                         {
                             dt.Rows.Add(model.BonNo, item.AvalType, item.AvalALength.ToString("N2", CultureInfo.InvariantCulture), item.AvalBLength.ToString("N2", CultureInfo.InvariantCulture),
                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AvalQuantityKg.ToString("N2", CultureInfo.InvariantCulture), OUT);
