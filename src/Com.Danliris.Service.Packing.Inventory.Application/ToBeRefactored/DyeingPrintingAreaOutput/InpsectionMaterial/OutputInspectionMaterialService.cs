@@ -137,6 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Status = sppData.Status,
                         Unit = sppData.Unit,
                         UomUnit = sppData.UomUnit,
+                        DyeingPrintingAreaInputProductionOrderId = sppData.DyeingPrintingAreaInputProductionOrderId,
                         Balance = inputData == null ? 0 : inputData.Balance,
                         BalanceRemains = inputData == null ? item.Sum(d => d.Balance) : inputData.BalanceRemains + item.Sum(d => d.Balance),
                         ProductionOrderDetails = item.Select(d => new OutputInspectionMaterialProductionOrderDetailViewModel()
@@ -242,7 +243,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Type = s.ProductionOrderType
                         },
                         Unit = s.Unit,
-                        UomUnit = s.UomUnit
+                        UomUnit = s.UomUnit,
+                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId
                     }).ToList()
                 };
             }
@@ -410,13 +412,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.InspectionMaterialProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id,
                     item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
-                    item.Motif, item.UomUnit, "", "", "", item.Balance, 0, item.BuyerId, "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
+                    item.Motif, item.UomUnit, "", "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                     "", item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false)).ToList());
 
             result = await _repository.InsertAsync(model);
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
+                var itemVM = viewModel.InspectionMaterialProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaInputProductionOrderId == item.DyeingPrintingAreaInputProductionOrderId);
+
+                result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+
+
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType);
 
@@ -631,7 +638,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
             }
-            result += await _repository.DeleteAsync(model.Id);
+            result += await _repository.DeleteAdjustment(model);
 
             return result;
         }
@@ -1071,7 +1078,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 .OrderBy(s => s.ProductionOrderNo)
                 .Select(s => new AdjInspectionMaterialProductionOrderViewModel()
                 {
-                    Id = s.Id,
+                    DyeingPrintingAreaInputProductionOrderId = s.Id,
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = s.ProductionOrderId,
