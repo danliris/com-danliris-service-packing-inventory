@@ -244,6 +244,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Remark = s.Remark,
                         Status = s.Status,
                         Id = s.Id,
+                        HasNextAreaDocument = s.HasNextAreaDocument,
                         Motif = s.Motif,
                         ProductionOrder = new ProductionOrder()
                         {
@@ -646,8 +647,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == PACKING &&
-                (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            //var query = _repository.ReadAll().Where(s => s.Area == PACKING &&
+            //    (((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
+            var query = _repository.ReadAll().Where(s => s.Area == PACKING);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -901,7 +903,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //        })
             //    });
 
-            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
+            //var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
+            var packingData = _repository.ReadAll().Where(s => s.Area == PACKING);
             if (dateFrom.HasValue && dateTo.HasValue)
             {
                 packingData = packingData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
