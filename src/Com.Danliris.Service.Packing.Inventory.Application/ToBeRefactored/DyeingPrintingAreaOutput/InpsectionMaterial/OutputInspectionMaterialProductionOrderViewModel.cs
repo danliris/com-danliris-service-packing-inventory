@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string AdjDocumentNo { get; set; }
 
         public bool HasNextAreaDocument { get; set; }
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
 
         public ICollection<OutputInspectionMaterialProductionOrderDetailViewModel> ProductionOrderDetails { get; set; }
     }

@@ -6,6 +6,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class PlainAdjTransitProductionOrder
     {
+        public int Id { get; set; }
+        public double BalanceRemains { get; set; }
         public long ProductionOrderId { get; set; }
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
