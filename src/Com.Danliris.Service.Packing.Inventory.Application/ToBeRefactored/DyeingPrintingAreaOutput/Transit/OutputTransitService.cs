@@ -176,6 +176,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Area = model.Area,
                     HasNextAreaDocument = model.HasNextAreaDocument,
                     Type = ADJ,
+                    AdjType = model.Type,
                     Group = model.Group,
                     BonNo = model.BonNo,
                     CreatedAgent = model.CreatedAgent,
@@ -257,9 +258,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = s.ProductPackingId,
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
-                        HasPrintingProductPacking = s.HasPrintingProductPacking
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId
                     }).ToList()
                 };
+                foreach (var item in vm.TransitProductionOrders)
+                {
+                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                    if (inputData != null)
+                    {
+                        item.BalanceRemains = inputData.BalanceRemains + (item.Balance * -1);
+                    }
+                }
             }
 
             return vm;
@@ -400,7 +410,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.TransitProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, "", "", item.Balance, 0, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AdjDocumentNo,
                         item.QtyPacking, item.PackingType, item.PackingUnit, 0, "", "", item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
                         item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking)).ToList());
@@ -409,6 +419,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
+                var itemVM = viewModel.TransitProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaInputProductionOrderId == item.DyeingPrintingAreaInputProductionOrderId);
+
+                result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, null, item.Remark);
 
@@ -664,7 +678,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
             }
-            result += await _repository.DeleteAsync(model.Id);
+            result += await _repository.DeleteAdjustment(model);
 
             return result;
         }
@@ -761,7 +775,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group, type,
                     viewModel.TransitProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, "", "", item.Balance, 0, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AdjDocumentNo, item.QtyPacking,
                         item.PackingType, item.PackingUnit, 0, "", "", item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
                         item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking)

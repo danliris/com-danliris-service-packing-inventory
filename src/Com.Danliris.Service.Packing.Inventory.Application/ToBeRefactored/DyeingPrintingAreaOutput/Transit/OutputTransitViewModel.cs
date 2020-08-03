@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public int InputTransitId { get; set; }
         public string Type { get; set; }
+        public string AdjType { get; set; }
         public string Group { get; set; }
         public ICollection<OutputTransitProductionOrderViewModel> TransitProductionOrders { get; set; }
 
@@ -104,6 +105,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
                         yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "TransitProductionOrder" });
+                    }
+                    else
+                    {
+                        if (Id != 0 && !string.IsNullOrEmpty(AdjType))
+                        {
+                            if (items.All(d => d > 0))
+                            {
+                                if (AdjType != "ADJ IN")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "InspectionMaterialProductionOrder" });
+                                }
+                            }
+                            else
+                            {
+                                if (AdjType != "ADJ OUT")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "InspectionMaterialProductionOrder" });
+                                }
+                            }
+                        }
                     }
 
                     foreach (var item in TransitProductionOrders)
