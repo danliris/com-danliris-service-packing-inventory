@@ -38,6 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Keterangan { get; set; }
         public double QtyOut { get; set; }
         public bool HasNextAreaDocument { get; set; }
+        public double BalanceRemains { get; set; }
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
 
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }

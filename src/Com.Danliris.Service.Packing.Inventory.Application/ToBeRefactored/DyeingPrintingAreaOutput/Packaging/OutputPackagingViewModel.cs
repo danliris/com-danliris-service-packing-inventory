@@ -87,7 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             DetailErrors += "{";
 
-                            if (detail.IsSave)
+                            if (Id != 0 || detail.IsSave)
                             {
                                 if (detail.PackagingQTY <= 0)
                                 {
@@ -114,14 +114,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 }
                                 else
                                 {
-                                    if (detail.QtyOut > detail.Balance)
+                                    //if (detail.QtyOut > detail.BalanceRemains)
+                                    //{
+                                    //    Count++;
+                                    //    DetailErrors += "QtyOut: 'Qty Keluar Tidak Boleh lebih dari saldo!',";
+                                    //}
+                                    if (detail.BalanceRemains < 0)
                                     {
                                         Count++;
-                                        DetailErrors += "QtyOut: 'Qty Keluar Tidak Boleh lebih dari saldo!',";
+                                        DetailErrors += $"BalanceRemains: 'Saldo tidak boleh negatif!\nSisa Saldo={detail.BalanceRemains}',";
                                     }
                                 }
                             }
-                            
+
 
                             DetailErrors += "}, ";
                         }
