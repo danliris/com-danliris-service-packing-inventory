@@ -106,6 +106,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearBuyer;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -272,6 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IRecapOmzetPerMonthMonitoringService, RecapOmzetPerMonthMonitoringService>();
             services.AddTransient<IGarmentOmzetMonthlyByCountryService, GarmentOmzetMonthlyByCountryService>();
             services.AddTransient<IGarmentOmzetMonthlyByComodityService, GarmentOmzetMonthlyByComodityService>();
+            services.AddTransient<IOmzetYearBuyerService, OmzetYearBuyerService>();
 
             services.AddTransient<IDyeingPrintingProductService, DyeingPrintingProductService>();
             #endregion
