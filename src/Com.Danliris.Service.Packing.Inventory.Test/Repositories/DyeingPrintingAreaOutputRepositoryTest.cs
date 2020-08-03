@@ -965,5 +965,99 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_DeletePackingArea()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.DeletePackingArea(data);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_DeletePackingArea_ToIM()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
+               .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            data.SetDestinationArea("INSPECTION MATERIAL", "", "");
+            var result = await repo.DeletePackingArea(data);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_DeleteAdjustment()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.DeleteAdjustment(data);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }

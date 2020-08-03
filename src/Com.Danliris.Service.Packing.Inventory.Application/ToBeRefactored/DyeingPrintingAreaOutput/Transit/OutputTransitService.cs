@@ -1096,6 +1096,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 .Select(d => new PlainAdjTransitProductionOrder()
                 {
                     Id = d.Id,
+                    BalanceRemains = d.BalanceRemains,
                     Area = d.Area,
                     Buyer = d.Buyer,
                     BuyerId = d.BuyerId,
@@ -1138,12 +1139,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<PlainAdjTransitProductionOrder>.Filter(query, FilterDictionary);
 
             var data = query.ToList()
-                .GroupBy(d => d.ProductionOrderId)
-                .Select(s => s.First())
-                .Skip((page - 1) * size).Take(size)
+                //.GroupBy(d => d.ProductionOrderId)
+                //.Select(s => s.First())
                 .OrderBy(s => s.ProductionOrderNo)
+                .Skip((page - 1) * size).Take(size)
                 .Select(s => new AdjTransitProductionOrderViewModel()
                 {
+                    DyeingPrintingAreaInputProductionOrderId = s.Id,
+                    BalanceRemains = s.BalanceRemains,
                     ProductionOrder = new ProductionOrder()
                     {
                         Id = s.ProductionOrderId,
