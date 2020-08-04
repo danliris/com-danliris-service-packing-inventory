@@ -174,7 +174,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                 modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-                if (newBalance == 0)
+                if (newBalanceRemains == 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }
@@ -197,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                 modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-                if (newBalance <= 0)
+                if (newBalanceRemains <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }
@@ -224,7 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
                 modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
 
-                if (newBalance <= 0)
+                if (newBalanceRemains <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }

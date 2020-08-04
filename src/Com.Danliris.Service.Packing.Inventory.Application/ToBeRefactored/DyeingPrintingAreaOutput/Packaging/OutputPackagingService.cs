@@ -141,6 +141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var vm = new OutputPackagingViewModel()
                 {
                     Type = model.Type.Contains("ADJ") ? "ADJ" : "OUT",
+                    AdjType = model.Type,
                     Active = model.Active,
                     Id = model.Id,
                     Area = model.Area,
@@ -274,7 +275,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Name = s.MaterialConstructionName
                         },
                         Unit = s.Unit,
+                        AtQty = s.PackagingQty == 0 ? 0 : s.Balance / Convert.ToDouble(s.PackagingQty),
                         UomUnit = s.UomUnit,
+                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
                         PackagingQty = s.PackagingQty,
                         PackagingType = s.PackagingType,
                         PackagingUnit = s.PackagingUnit,
@@ -289,6 +292,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         HasPrintingProductPacking = s.HasPrintingProductPacking
                     }).ToList()
                 };
+
+                foreach (var item in vm.PackagingProductionOrdersAdj)
+                {
+                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                    if (inputData != null)
+                    {
+                        item.BalanceRemains = inputData.BalanceRemains + (item.Balance * -1);
+                    }
+                }
+
                 return vm;
             }
             else
@@ -348,6 +361,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             No = s.ProductionOrderNo,
                             Type = s.ProductionOrderType
                         },
+                        PackingLength = s.PackagingQty == 0 ? 0 : Convert.ToDecimal(s.Balance) / s.PackagingQty,
                         ProcessType = new CommonViewModelObjectProperties.ProcessType()
                         {
                             Id = s.ProcessTypeId,
@@ -389,13 +403,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }).ToList()
                 };
 
-                foreach (var item in vm.PackagingProductionOrders)
+                foreach (var item in vm.PackagingProductionOrders.GroupBy(s => s.DyeingPrintingAreaInputProductionOrderId))
                 {
-                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.Key);
+                    var sumQtyOut = item.Sum(s => s.QtyOut);
                     if (inputData != null)
                     {
-                        item.Balance = inputData.Balance;
-                        item.BalanceRemains = inputData.BalanceRemains;
+                        foreach(var detail in item)
+                        {
+                            detail.Balance = inputData.Balance;
+                            detail.BalanceRemains = inputData.BalanceRemains;
+                            detail.PreviousBalance = inputData.BalanceRemains + sumQtyOut;
+                        }
+                        
                     }
                 }
 
@@ -532,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.PackagingProductionOrdersAdj.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, 0, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.MaterialObj.Id, item.MaterialObj.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.NoDocument,
                         item.PackagingType, item.PackagingQty, item.PackagingUnit, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
                         item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking)).ToList());
@@ -541,6 +561,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
+                var itemVM = viewModel.PackagingProductionOrdersAdj.FirstOrDefault(s => s.DyeingPrintingAreaInputProductionOrderId == item.DyeingPrintingAreaInputProductionOrderId);
+
+                result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade);
 
@@ -1429,6 +1452,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Buyer = s.Buyer,
                 CartNo = s.CartNo,
                 BalanceRemains = s.BalanceRemains,
+                PreviousBalance = s.BalanceRemains,
                 Color = s.Color,
                 Construction = s.Construction,
                 MaterialConstruction = new MaterialConstruction()
@@ -1667,7 +1691,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
             }
-            result += await _repository.DeleteAsync(model.Id);
+            result += await _repository.DeleteAdjustment(model);
 
             return result;
         }
@@ -1779,7 +1803,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group, type,
                    viewModel.PackagingProductionOrdersAdj.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                        item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                       item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, 0, item.BuyerId,
+                       item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                        item.MaterialObj.Id, item.MaterialObj.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.NoDocument,
                        item.PackagingType, item.PackagingQty, item.PackagingUnit, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking)

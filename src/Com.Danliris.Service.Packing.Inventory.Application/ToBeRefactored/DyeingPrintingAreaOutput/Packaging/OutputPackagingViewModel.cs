@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             PackagingProductionOrdersAdj = new HashSet<InputPlainAdjPackagingProductionOrder>();
         }
         public string Type { get; set; }
+        public string AdjType { get; set; }
         public string Area { get; set; }
         public string BonNo { get; set; }
         public string BonNoInput { get; set; }
@@ -188,6 +189,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
                         yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "PackagingProductionOrderAdj" });
+                    }
+                    else
+                    {
+                        if (Id != 0 && !string.IsNullOrEmpty(AdjType))
+                        {
+                            if (items.All(d => d > 0))
+                            {
+                                if (AdjType != "ADJ IN")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "PackagingProductionOrderAdj" });
+                                }
+                            }
+                            else
+                            {
+                                if (AdjType != "ADJ OUT")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "PackagingProductionOrderAdj" });
+                                }
+                            }
+                        }
                     }
 
                     foreach (var item in PackagingProductionOrdersAdj)
