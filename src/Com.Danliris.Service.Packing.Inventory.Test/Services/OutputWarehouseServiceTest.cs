@@ -1477,8 +1477,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             Assert.NotEmpty(result);
         }
+
         [Fact]
-        public void Should_Success_GetOutputSppWarehouseItemListByBonId()
+        public async Task Should_Success_GetOutputSppWarehouseItemListByBonId()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
             var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
@@ -1503,7 +1504,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GetOutputSppWarehouseItemList(0);
+            var result = await service.GetOutputSppWarehouseItemListAsync(0);
 
             Assert.NotEmpty(result);
         }

@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public int InputWarehouseId { get; set; }
         public string Type { get; set; }
+        public string AdjType { get; set; }
         public string Group { get; set; }
         public ICollection<OutputWarehouseProductionOrderViewModel> WarehousesProductionOrders { get; set; }
 
@@ -59,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (Type == "OUT")
             {
-                if (WarehousesProductionOrders.Count() == 0)
+                if ((Id == 0 && WarehousesProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && WarehousesProductionOrders.Count() == 0))
                 {
                     yield return new ValidationResult("SPP harus Diisi", new List<string> { "WarehousesProductionOrder" });
                 }
@@ -82,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             DetailErrors += "{";
 
-                            if (detail.IsSave)
+                            if (Id != 0 || detail.IsSave)
                             {
                                 if (DestinationArea == "SHIPPING" && (detail.DeliveryOrderSalesId == 0 || string.IsNullOrEmpty(detail.DeliveryOrderSalesNo)))
                                 {
@@ -159,6 +160,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (!(items.All(d => d > 0) || items.All(d => d < 0)))
                     {
                         yield return new ValidationResult("Quantity SPP harus Positif semua atau Negatif Semua", new List<string> { "WarehousesProductionOrder" });
+                    }
+                    else
+                    {
+                        if (Id != 0 && !string.IsNullOrEmpty(AdjType))
+                        {
+                            if (items.All(d => d > 0))
+                            {
+                                if (AdjType != "ADJ IN")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "TransitProductionOrder" });
+                                }
+                            }
+                            else
+                            {
+                                if (AdjType != "ADJ OUT")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "TransitProductionOrder" });
+                                }
+                            }
+                        }
                     }
 
                     foreach (var item in WarehousesProductionOrders)

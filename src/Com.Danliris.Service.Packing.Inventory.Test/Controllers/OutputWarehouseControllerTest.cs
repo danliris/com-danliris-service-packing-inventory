@@ -435,12 +435,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public void Should_Success_GetOutputProductionOrdersv2WithBonID()
+        public async Task Should_Success_GetOutputProductionOrdersv2WithBonID()
         {
             //v
             var serviceMock = new Mock<IOutputWarehouseService>();
-            serviceMock.Setup(s => s.GetOutputSppWarehouseItemList(1))
-                .Returns(new List<InputSppWarehouseViewModel>());
+            serviceMock.Setup(s => s.GetOutputSppWarehouseItemListAsync(1))
+                .ReturnsAsync(new List<InputSppWarehouseViewModel>());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -450,18 +450,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetOutputProductionOrdersv2(1);
+            var response = await controller.GetOutputProductionOrdersv2(1);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public void Should_Exception_GetOutputProductionOrdersv2WithBonID()
+        public async Task Should_Exception_GetOutputProductionOrdersv2WithBonID()
         {
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IOutputWarehouseService>();
-            serviceMock.Setup(s => s.GetOutputSppWarehouseItemList(1)).Throws(new Exception());
+            serviceMock.Setup(s => s.GetOutputSppWarehouseItemListAsync(1)).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -471,7 +471,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetOutputProductionOrdersv2(1);
+            var response = await controller.GetOutputProductionOrdersv2(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

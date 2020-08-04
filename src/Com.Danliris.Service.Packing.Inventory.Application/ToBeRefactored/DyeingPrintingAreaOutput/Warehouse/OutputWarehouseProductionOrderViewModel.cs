@@ -43,6 +43,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string DeliveryOrderSalesNo { get; set; }
         public string AdjDocumentNo { get; set; }
 
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+        public double BalanceRemains { get; set; }
+
         public bool IsSave { get; set; }
 
         public int ProductSKUId { get; set; }

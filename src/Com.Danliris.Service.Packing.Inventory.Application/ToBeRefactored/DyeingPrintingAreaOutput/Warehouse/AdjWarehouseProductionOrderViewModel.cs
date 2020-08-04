@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class AdjWarehouseProductionOrderViewModel
     {
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+        public double BalanceRemains { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material MaterialProduct { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
