@@ -1780,6 +1780,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(inputSpp.Material);
             Assert.Null(inputSpp.PackingType);
             Assert.Equal(0, inputSpp.BalanceRemains);
+            inputSpp.QtyOut = 0;
+            Assert.Equal(0, inputSpp.PreviousBalance);
+            Assert.Equal(0, inputSpp.QtyOut);
         }
     }
 }

@@ -2096,6 +2096,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public void ValidateVM()
+        {
+            var spp = new OutputPackagingProductionOrderViewModel();
+            Assert.Equal(0, spp.PreviousBalance);
+            Assert.Equal(0, spp.PackingLength);
+        }
+
+        [Fact]
         public void Should_Exception_ValidationVM()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
