@@ -621,21 +621,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var outSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
+
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
 
             repoMock.Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { ModelIM }.AsQueryable());
 
             repoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { ModelIM }.AsQueryable());
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
-            var item = ViewModel.TransitProductionOrders.FirstOrDefault();
+            var item = ViewModelIM.TransitProductionOrders.FirstOrDefault();
             summaryRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaSummaryModel>() {
-                     new DyeingPrintingAreaSummaryModel(ViewModel.Date, ViewModel.Area, "IN", item.InputId, ViewModel.BonNo, item.ProductionOrder.Id,
+                     new DyeingPrintingAreaSummaryModel(ViewModelIM.Date, ViewModelIM.Area, "IN", item.InputId, ViewModelIM.BonNo, item.ProductionOrder.Id,
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
@@ -647,7 +648,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSppRepoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Create(ViewModelIM);
 
             Assert.NotEqual(0, result);
         }
@@ -872,6 +873,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelAdj);
+            sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "grade", "status", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false));
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
@@ -1149,6 +1152,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     Balance = 1
                 }
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.AdjType = "ADJ IN";
+            vm.Id = 1;
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.AdjType = "ADJ OUT";
+            vm.Id = 1;
+            vm.TransitProductionOrders = new List<OutputTransitProductionOrderViewModel>()
+            {
+                new OutputTransitProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                },
             };
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));

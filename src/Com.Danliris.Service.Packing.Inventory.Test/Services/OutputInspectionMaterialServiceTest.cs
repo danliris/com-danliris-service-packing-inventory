@@ -1930,6 +1930,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             };
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.AdjType = "ADJ IN";
+            vm.Id = 1;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = -1
+                },
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
+            vm.AdjType = "ADJ OUT";
+            vm.Id = 1;
+            vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>()
+            {
+                new OutputInspectionMaterialProductionOrderViewModel()
+                {
+                    ProductionOrder = new ProductionOrder(),
+                    Balance = 1
+                },
+            };
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
         }
     }
 }

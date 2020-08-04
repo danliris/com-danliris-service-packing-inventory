@@ -177,6 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Area = model.Area,
                     HasNextAreaDocument = model.HasNextAreaDocument,
                     Type = ADJ,
+                    AdjType = model.Type,
                     Group = model.Group,
                     BonNo = model.BonNo,
                     CreatedAgent = model.CreatedAgent,
