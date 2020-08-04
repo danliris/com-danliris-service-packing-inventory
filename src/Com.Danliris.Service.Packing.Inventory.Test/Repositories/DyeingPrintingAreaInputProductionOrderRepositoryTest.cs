@@ -215,9 +215,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
-            var data = await DataUtil(repo, dbContext).GetTestData();
-
+            var data = DataUtil(repo, dbContext).GetModelShipping();
+            await repo.InsertAsync(data);
             var result = await repo.UpdateFromNextAreaInputAsync(data.Id, 1, 1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateBalanceAndRemainsWithFlagAsync()
+        {
+            string testName = GetCurrentMethod() + "UpdateBalanceAndRemainsWithFlagAsync";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateBalanceAndRemainsWithFlagAsync(data.Id, 5);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateBalanceAndRemainsWithFlagAsyncQtyPacking()
+        {
+            string testName = GetCurrentMethod() + "Should_Success_UpdateBalanceAndRemainsWithFlagAsyncQtyPacking";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = await DataUtil(repo, dbContext).GetTestData();
+            var result = await repo.UpdateBalanceAndRemainsWithFlagAsync(data.Id, 5, 2);
 
             Assert.NotEqual(0, result);
         }
