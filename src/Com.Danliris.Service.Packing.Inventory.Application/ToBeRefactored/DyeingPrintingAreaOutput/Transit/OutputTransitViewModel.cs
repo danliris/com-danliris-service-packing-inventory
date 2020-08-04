@@ -114,14 +114,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             {
                                 if (AdjType != "ADJ IN")
                                 {
-                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "InspectionMaterialProductionOrder" });
+                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "TransitProductionOrder" });
                                 }
                             }
                             else
                             {
                                 if (AdjType != "ADJ OUT")
                                 {
-                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "InspectionMaterialProductionOrder" });
+                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "TransitProductionOrder" });
                                 }
                             }
                         }
