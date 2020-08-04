@@ -107,6 +107,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearBuyer;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesReportByBuyer;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzet;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -193,6 +195,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
             services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteItemRepository, GarmentShippingLocalSalesNoteItemRepository>();
 
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
@@ -274,6 +277,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentOmzetMonthlyByCountryService, GarmentOmzetMonthlyByCountryService>();
             services.AddTransient<IGarmentOmzetMonthlyByComodityService, GarmentOmzetMonthlyByComodityService>();
             services.AddTransient<IOmzetYearBuyerService, OmzetYearBuyerService>();
+            services.AddTransient<IGarmentLocalSalesReportByBuyerService, GarmentLocalSalesReportByBuyerService>();
+            services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
 
             services.AddTransient<IDyeingPrintingProductService, DyeingPrintingProductService>();
             #endregion
