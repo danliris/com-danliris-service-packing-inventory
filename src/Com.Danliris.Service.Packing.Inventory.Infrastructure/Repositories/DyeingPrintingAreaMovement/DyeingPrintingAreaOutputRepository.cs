@@ -60,7 +60,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                if (model.Area == GUDANGJADI || model.Area == SHIPPING)
+                {
+
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                }
+                else
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
 
@@ -642,12 +650,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    }
                 }
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
+                    var diffQtyPacking = item.PackagingQty - localItem.PackagingQty;
+                    if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                    {
+
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance, diffQtyPacking);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
+                    }
                     
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
@@ -674,8 +699,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
-                result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
-                
+                if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                {
+
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                }
+                else
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                }
 
             }
             return result;
