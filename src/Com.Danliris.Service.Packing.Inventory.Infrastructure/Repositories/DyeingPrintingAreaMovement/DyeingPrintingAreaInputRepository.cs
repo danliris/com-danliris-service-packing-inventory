@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
-            
+
             //model.FlagForDelete(_identityProvider.Username, UserAgent);
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
@@ -222,6 +222,62 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             result += await _dbContext.SaveChangesAsync();
             return result;
+        }
+
+        public Task<int> UpdateAvalTransformationFromOut(string avalType, double avalQuantity, double weightQuantity)
+        {
+            var data = _dbSet.Where(s => s.Area == GUDANGAVAL && s.AvalType == avalType && s.IsTransformedAval && (s.TotalAvalQuantity != 0 || s.TotalAvalWeight != 0)).OrderBy(s => s.Date).ToList();
+
+            int index = 0;
+            while (avalQuantity > 0 || weightQuantity > 0)
+            {
+                var item = data.ElementAtOrDefault(index);
+                if (item != null)
+                {
+                    if (avalQuantity > 0)
+                    {
+                        var tempTotalQuantity = item.TotalAvalQuantity - avalQuantity;
+                        if (tempTotalQuantity < 0)
+                        {
+                            avalQuantity = tempTotalQuantity * -1;
+
+                            item.SetTotalAvalQuantity(0, _identityProvider.Username, UserAgent);
+
+                        }
+                        else
+                        {
+                            item.SetTotalAvalQuantity(0, _identityProvider.Username, UserAgent);
+
+                            item.SetTotalAvalQuantity(tempTotalQuantity, _identityProvider.Username, UserAgent);
+                            avalQuantity = 0;
+                        }
+                    }
+
+                    if (weightQuantity > 0)
+                    {
+                        var tempTotalWeight = item.TotalAvalWeight - weightQuantity;
+                        if (tempTotalWeight < 0)
+                        {
+                            weightQuantity = tempTotalWeight * -1;
+                            item.SetTotalAvalWeight(0, _identityProvider.Username, UserAgent);
+
+                        }
+                        else
+                        {
+                            item.SetTotalAvalWeight(tempTotalWeight, _identityProvider.Username, UserAgent);
+                            weightQuantity = 0;
+                        }
+                    }
+
+                    index++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> UpdateHeaderAvalTransform(DyeingPrintingAreaInputModel model, double avalQuantity, double weightQuantity)

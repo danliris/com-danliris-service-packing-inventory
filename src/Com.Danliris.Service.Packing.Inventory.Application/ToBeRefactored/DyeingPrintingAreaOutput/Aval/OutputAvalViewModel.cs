@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Area { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Type { get; set; }
+        public string AdjType { get; set; }
         public string DestinationArea { get; set; }
         public string Shift { get; set; }
         public string BonNo { get; set; }
@@ -70,11 +71,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         DetailErrors += "{";
 
-                        if(item.AvalOutQuantity == 0)
+                        if (item.AvalOutQuantity == 0)
                         {
                             Count++;
                             DetailErrors += "AvalOutQuantity: 'Harus Memiliki Qty Kg!',";
 
+                        }
+                        else
+                        {
+                            if (item.AvalOutQuantity > item.AvalQuantityKg)
+                            {
+                                Count++;
+                                DetailErrors += "AvalOutQuantity: 'Tidak Boleh Keluar Melebihi Saldo Berat!',";
+                            }
                         }
 
                         if (item.AvalOutSatuan == 0)
@@ -82,6 +91,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Count++;
                             DetailErrors += "AvalOutSatuan: 'Harus Memiliki Qty Satuan!',";
 
+                        }
+                        else
+                        {
+                            if (item.AvalOutSatuan > item.AvalQuantity)
+                            {
+                                Count++;
+                                DetailErrors += "AvalOutSatuan: 'Tidak Boleh Keluar Melebihi Saldo Satuan!',";
+                            }
                         }
 
 
@@ -102,6 +119,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (!(items.All(d => d.AvalQuantity > 0 && d.AvalQuantityKg > 0) || items.All(d => d.AvalQuantity < 0 && d.AvalQuantityKg < 0)))
                     {
                         yield return new ValidationResult("Quantity Keluar Satuan dan Qty Keluar Berat harus Positif semua atau Negatif Semua", new List<string> { "AvalItem" });
+                    }
+                    else
+                    {
+                        if (Id != 0 && !string.IsNullOrEmpty(AdjType))
+                        {
+                            if (items.All(d => d.AvalQuantity > 0 && d.AvalQuantityKg > 0))
+                            {
+                                if (AdjType != "ADJ IN")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "AvalItem" });
+                                }
+                            }
+                            else
+                            {
+                                if (AdjType != "ADJ OUT")
+                                {
+                                    yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "AvalItem" });
+                                }
+                            }
+                        }
                     }
 
                     foreach (var item in AvalItems)
