@@ -100,27 +100,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "B U Y E R", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "QTY - PCS", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "QTY - SETS", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "%", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BULAN", DataType = typeof(string) });
+            foreach (var unit in data.units)
+            {
+                dt.Columns.Add(new DataColumn() { ColumnName = unit, DataType = typeof(double) });
+            }
 
-            //if (data.Items.Count() == 0)
-            //{
-            //    dt.Rows.Add(null, null, null, null, null, null);
-            //}
-            //else
-            //{
-            //    int i = 0;
-            //    foreach (var d in data.Items)
-            //    {
-            //        dt.Rows.Add(++i, d.unit, d.pcsQuantity, d.setsQuantity, d.amount, d.percentage);
-            //    }
-            //}
+            if (data.tables.Count() == 0)
+            {
+                var values = new List<object> { null };
+                foreach (var unit in data.units)
+                {
+                    values.Add(null);
+                }
 
-            //dt.Rows.Add(null, "J U M L A H", null, null, data.totalAmount, 100);
+                dt.Rows.Add(values.ToArray());
+            }
+            else
+            {
+                foreach (var d in data.tables)
+                {
+                    var values = new List<object> { d.month };
+                    foreach (var unit in data.units)
+                    {
+                        values.Add(d.items[unit]);
+                    }
+
+                    dt.Rows.Add(values.ToArray());
+                }
+            }
+
+            var totalValues = new List<object> { "J U M L A H" };
+            foreach (var unit in data.units)
+            {
+                totalValues.Add(data.totals[unit]);
+            }
+            dt.Rows.Add(totalValues.ToArray());
+
+            var averageValues = new List<object> { "AVERAGE" };
+            foreach (var unit in data.units)
+            {
+                averageValues.Add(data.averages[unit]);
+            }
+            dt.Rows.Add(averageValues.ToArray());
 
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "OmzetPerUnit") }, false);
             var filename = $"Report Omzet Per Unit {year}.xlsx";
