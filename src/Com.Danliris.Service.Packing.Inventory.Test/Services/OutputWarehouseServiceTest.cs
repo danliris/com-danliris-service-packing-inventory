@@ -969,6 +969,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
 
+            outputProductionOrderRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
+               .ReturnsAsync(1);
+
             var model = ModelAdj;
             model.SetType("ADJ IN", "", "");
             outputRepoMock.Setup(o => o.GetDbSet())
