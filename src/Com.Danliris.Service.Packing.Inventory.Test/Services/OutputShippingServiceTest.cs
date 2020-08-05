@@ -421,10 +421,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             model.SetType("ADJ OUT", "", "");
 
             repoMock.Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { ModelAdj }.AsQueryable());
+                .Returns(new List<DyeingPrintingAreaOutputModel>() { model }.AsQueryable());
 
             repoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
                 .ReturnsAsync(1);
+
+            outSppRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
+               .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
