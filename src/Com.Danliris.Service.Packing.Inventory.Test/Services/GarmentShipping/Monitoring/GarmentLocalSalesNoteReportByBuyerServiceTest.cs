@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GenerateExcel(model.BuyerCode, model.TransactionTypeCode, DateTime.MinValue, DateTime.Now, 7);
+            var result = service.GenerateExcel(model.BuyerCode, null, DateTime.MinValue, DateTime.Now, 7);
 
             Assert.NotNull(result);
         }
