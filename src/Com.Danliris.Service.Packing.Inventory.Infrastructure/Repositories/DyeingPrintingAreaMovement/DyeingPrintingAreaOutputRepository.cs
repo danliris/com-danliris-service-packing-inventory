@@ -682,5 +682,68 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         }
 
+        public async Task<int> UpdateWarehouseArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        {
+            int result = 0;
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    }
+
+                }
+                else
+                {
+                    var diffBalance = item.Balance - localItem.Balance;
+
+                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
+                    }
+                    item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
+                    item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
+                    item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+                if (model.DestinationArea == INSPECTIONMATERIAL)
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
+                else
+                {
+                    result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
+            }
+
+            result += await _dbContext.SaveChangesAsync();
+
+            return result;
+        }
     }
 }

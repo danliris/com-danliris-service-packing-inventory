@@ -19,9 +19,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
-        List<InputSppWarehouseViewModel> GetOutputSppWarehouseItemList(int bonId);
+        Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsync(int bonId);
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         Task<int> Delete(int bonId);
+        Task<int> Update(int id, OutputWarehouseViewModel viewModel);
         ListResult<AdjWarehouseProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
 
     }

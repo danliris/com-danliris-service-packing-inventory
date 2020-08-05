@@ -198,12 +198,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
         [HttpGet("output-production-orders/{bonId}")]
-        public IActionResult GetOutputProductionOrdersv2(int bonId)
+        public async Task<IActionResult> GetOutputProductionOrdersv2(int bonId)
         {
             try
             {
 
-                var data = _service.GetOutputSppWarehouseItemList(bonId);
+                var data = await _service.GetOutputSppWarehouseItemListAsync(bonId);
                 return Ok(new
                 {
                     data
@@ -268,6 +268,50 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] OutputWarehouseViewModel viewModel)
+        {
+            VerifyUser();
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+
+            try
+            {
+                VerifyUser();
+                ValidateService.Validate(viewModel);
+                await _service.Update(id, viewModel);
+
+                return NoContent();
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                var error = new
+                {
+                    statusCode = HttpStatusCode.InternalServerError,
+                    error = ex.Message
+                };
+                return StatusCode((int)HttpStatusCode.InternalServerError, error);
             }
         }
     }
