@@ -6,6 +6,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class PlainAdjShippingProductionOrder
     {
+        public int Id { get; set; }
+        public double BalanceRemains { get; set; }
+        public double Balance { get; set; }
         public long ProductionOrderId { get; set; }
         public string ProductionOrderNo { get; set; }
         public string ProductionOrderType { get; set; }
@@ -28,6 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Grade { get; set; }
 
         public string Packing { get; set; }
+        public decimal PackagingQty { get; set; }
 
         public int BuyerId { get; set; }
         public string Buyer { get; set; }

@@ -8,6 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class AdjShippingProductionOrderViewModel
     {
+        public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+        public double BalanceRemains { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
@@ -24,7 +26,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public string PackingType { get; set; }
-
+        public decimal QtyPacking { get; set; }
+        public double Qty { get; set; }
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }
         public string ProductSKUCode { get; set; }
