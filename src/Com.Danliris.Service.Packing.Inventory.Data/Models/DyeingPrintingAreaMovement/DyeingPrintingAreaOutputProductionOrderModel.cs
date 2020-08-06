@@ -751,7 +751,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             string area,
                                                             string destinationArea,
                                                             string deliveryNote,
-                                                            string prevAval) : this()
+                                                            string prevAval,
+                                                            int dyeingPrintingAreaInputProductionOrderId) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -764,6 +765,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DeliveryNote = deliveryNote;
             PrevSppInJson = prevAval;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
         }
 
         /// <summary>
@@ -1015,6 +1017,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newBalance != Balance)
             {
                 Balance = newBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAvalQuantityKg(double newAvalQuantityKg, string user, string agent)
+        {
+            if (newAvalQuantityKg != AvalQuantityKg)
+            {
+                AvalQuantityKg = newAvalQuantityKg;
                 this.FlagForUpdate(user, agent);
             }
         }

@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                         AvalOutSatuan = s.Balance,
                         AvalOutQuantity = s.AvalQuantityKg,
-
+                        PrevAval = s.PrevSppInJson,
                     }).ToList()
                 };
 
@@ -191,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         AvalCartNo = s.CartNo,
                         AvalQuantity = s.Balance,
                         AvalQuantityKg = s.AvalQuantityKg,
-
+                        PrevAval = s.PrevSppInJson
                     }).ToList()
                 };
 
@@ -266,14 +266,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0);
                         productionOrders.Add(productionOrder);
                     }
                     else
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id);
                         productionOrders.Add(productionOrder);
                     }
                 }
@@ -305,20 +305,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0);
                     }
                     else
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id);
 
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                           modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
 
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
-                    
+
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                 }
@@ -359,7 +359,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
                     var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
-                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance, item.AvalQuantityKg);
+                    if (avalTransform != null)
+                    {
+
+                        result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance, item.AvalQuantityKg);
+                    }
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Balance, item.AvalQuantityKg, item.AvalType);
@@ -377,7 +381,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
 
                     var avalTransform = await _inputRepository.ReadByIdAsync(item.AvalTransformationId);
-                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.AvalQuantity, item.AvalQuantityKg);
+                    if (avalTransform != null)
+                    {
+
+                        result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.AvalQuantity, item.AvalQuantityKg);
+                    }
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                       modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
@@ -963,6 +971,217 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Inspection Material") }, true);
+        }
+
+        private async Task<int> UpdateOut(int id, OutputAvalViewModel viewModel)
+        {
+            int result = 0;
+            var dbModel = await _outputRepository.ReadByIdAsync(id);
+
+
+            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.DeliveryOrderSalesNo, viewModel.DeliveryOrdeSalesId, false,
+                    viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.AvalItems.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalOutSatuan, s.AvalOutQuantity, s.AvalQuantity,
+                            s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote, s.PrevAval, 0)
+                    {
+                        Id = s.Id
+                    }).ToList());
+
+            Dictionary<int, double> dictBalance = new Dictionary<int, double>();
+            Dictionary<int, double> dictWeight = new Dictionary<int, double>();
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var lclModel = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+                if (lclModel != null)
+                {
+                    var diffBalance = lclModel.Balance - item.Balance;
+                    var diffWeight = lclModel.AvalQuantityKg - item.AvalQuantityKg;
+                    dictBalance.Add(lclModel.Id, diffBalance);
+                    dictWeight.Add(lclModel.Id, diffWeight);
+                }
+            }
+
+            var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !model.DyeingPrintingAreaOutputProductionOrders.Any(d => d.Id == s.Id)).ToList();
+
+            result = await _outputRepository.UpdateAvalArea(id, model, dbModel);
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument && !d.IsDeleted))
+            {
+                double newBalance = 0;
+                double newWeight = 0;
+                if (!dictBalance.TryGetValue(item.Id, out newBalance))
+                {
+                    newBalance = item.Balance;
+                }
+                if (!dictWeight.TryGetValue(item.Id, out newWeight))
+                {
+                    newWeight = item.AvalQuantityKg;
+                }
+                if ((newBalance != 0 || newWeight != 0) && dbModel.DestinationArea != PENJUALAN)
+                {
+
+                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                           item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id, item.ProductionOrderType, newBalance, newWeight, item.AvalType);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
+                }
+
+
+            }
+            foreach (var item in deletedData)
+            {
+                if (dbModel.DestinationArea != PENJUALAN)
+                {
+                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
+                }
+
+            }
+
+            return result;
+        }
+
+        private async Task<int> UpdateAdj(int id, OutputAvalViewModel viewModel)
+        {
+            string type;
+            int result = 0;
+            var dbModel = await _outputRepository.ReadByIdAsync(id);
+            if (viewModel.AvalItems.All(d => d.AvalQuantity > 0 && d.AvalQuantityKg > 0))
+            {
+                type = ADJ_IN;
+            }
+            else
+            {
+                type = ADJ_OUT;
+            }
+            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group,
+                       type, viewModel.AvalItems.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)
+                    {
+                        Id = s.Id
+                    }).ToList());
+            Dictionary<int, double> dictBalance = new Dictionary<int, double>();
+            Dictionary<int, double> dictWeight = new Dictionary<int, double>();
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var lclModel = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+                if (lclModel != null)
+                {
+                    var diffBalance = lclModel.Balance - item.Balance;
+                    var diffWeight = lclModel.AvalQuantityKg - item.AvalQuantityKg;
+
+                    dictBalance.Add(lclModel.Id, diffBalance);
+                    dictWeight.Add(lclModel.Id, diffWeight);
+                }
+            }
+
+            var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !model.DyeingPrintingAreaOutputProductionOrders.Any(d => d.Id == s.Id)).ToList();
+
+            result = await _outputRepository.UpdateAdjustmentDataAval(id, model, dbModel);
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.IsDeleted))
+            {
+                double newBalance = 0;
+                double newWeight = 0;
+                if (!dictBalance.TryGetValue(item.Id, out newBalance))
+                {
+                    newBalance = item.Balance;
+                }
+
+                if (!dictWeight.TryGetValue(item.Id, out newWeight))
+                {
+                    newWeight = item.AvalQuantityKg;
+                }
+
+                if (newBalance != 0 || newWeight != 0)
+                {
+                    var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id, item.ProductionOrderType, newBalance, newWeight, item.AvalType);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
+                }
+
+
+            }
+            foreach (var item in deletedData)
+            {
+                var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+
+                result += await _movementRepository.InsertAsync(movementModel);
+            }
+
+            return result;
+        }
+
+        public async Task<int> Update(int id, OutputAvalViewModel viewModel)
+        {
+            if (viewModel.Type == OUT)
+            {
+                return await UpdateOut(id, viewModel);
+            }
+            else
+            {
+                return await UpdateAdj(id, viewModel);
+            }
+        }
+
+        private async Task<int> DeleteOut(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                if (!item.HasNextAreaDocument && model.DestinationArea != PENJUALAN)
+                {
+                    var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
+
+                }
+            }
+            result += await _outputRepository.DeleteAvalArea(model);
+
+            return result;
+        }
+
+        private async Task<int> DeleteAdj(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+            string type;
+            if (model.DyeingPrintingAreaOutputProductionOrders.All(d => d.Balance > 0))
+            {
+                type = ADJ_IN;
+            }
+            else
+            {
+                type = ADJ_OUT;
+            }
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+                result += await _movementRepository.InsertAsync(movementModel);
+
+
+            }
+            result += await _outputRepository.DeleteAdjustmentAval(model);
+
+            return result;
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var model = await _outputRepository.ReadByIdAsync(id);
+            if (model.Type == null || model.Type == OUT)
+            {
+                return await DeleteOut(model);
+            }
+            else
+            {
+                return await DeleteAdj(model);
+            }
         }
     }
 }

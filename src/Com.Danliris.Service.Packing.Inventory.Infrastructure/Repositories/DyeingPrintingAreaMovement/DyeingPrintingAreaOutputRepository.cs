@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using Newtonsoft.Json;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -18,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaOutputModel> _dbSet;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
+        private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
         private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
@@ -36,6 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             _dbSet = dbContext.Set<DyeingPrintingAreaOutputModel>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -57,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteAdjustment(DyeingPrintingAreaOutputModel model)
         {
             int result = 0;
-            
+
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 if (model.Area == GUDANGJADI || model.Area == SHIPPING)
@@ -673,7 +677,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
                     }
-                    
+
+                    item.DyeingPrintingAreaInputProductionOrderId = localItem.DyeingPrintingAreaInputProductionOrderId;
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
                     item.SetBuyer(localItem.BuyerId, localItem.Buyer, _identityProvider.Username, UserAgent);
@@ -770,6 +775,180 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 else
                 {
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
+            }
+
+            result += await _dbContext.SaveChangesAsync();
+
+            return result;
+        }
+
+        public async Task<int> DeleteAdjustmentAval(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+
+                if (avalTransform != null)
+                {
+                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance * -1, item.AvalQuantityKg * -1);
+                }
+
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+            }
+
+            model.FlagForDelete(_identityProvider.Username, UserAgent);
+            _dbSet.Update(model);
+            result += await _dbContext.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<int> DeleteAvalArea(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                if (model.DestinationArea == PENJUALAN)
+                {
+                    var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
+
+                    result += await _inputRepository.RestoreAvalTransformation(avalData);
+                }
+                else
+                {
+                    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                }
+            }
+
+            //model.FlagForDelete(_identityProvider.Username, UserAgent);
+            _dbSet.Update(model);
+
+            result += await _dbContext.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<int> UpdateAdjustmentDataAval(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        {
+            int result = 0;
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+                    var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+
+                    if (avalTransform != null)
+                    {
+                        result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance * -1, item.AvalQuantityKg * -1);
+                    }
+                }
+                else
+                {
+                    var diffBalance = item.Balance - localItem.Balance;
+                    var diffWeight = item.AvalQuantityKg - localItem.AvalQuantityKg;
+                    var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+
+                    if (avalTransform != null)
+                    {
+                        result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, diffBalance * -1, diffWeight * -1);
+                    }
+
+                    item.DyeingPrintingAreaInputProductionOrderId = localItem.DyeingPrintingAreaInputProductionOrderId;
+                    item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                    item.SetAdjDocumentNo(localItem.AdjDocumentNo, _identityProvider.Username, UserAgent);
+                    item.SetAvalQuantityKg(localItem.AvalQuantityKg, _identityProvider.Username, UserAgent);
+
+                }
+            }
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+                dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+                var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+
+                if (avalTransform != null)
+                {
+
+                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance, item.AvalQuantityKg);
+                }
+
+
+            }
+            return result;
+        }
+
+        public async Task<int> UpdateAvalArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel)
+        {
+            int result = 0;
+            dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
+            dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+
+            foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
+            {
+                var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
+
+                if (localItem == null)
+                {
+                    item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                    if (model.DestinationArea == PENJUALAN)
+                    {
+                        var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
+
+                        result += await _inputRepository.RestoreAvalTransformation(avalData);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, false);
+                    }
+
+                }
+                else
+                {
+
+                    if (model.DestinationArea == PENJUALAN)
+                    {
+                        var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
+
+                        result += await _inputRepository.RestoreAvalTransformation(avalData);
+
+                        var transform = await _inputRepository.UpdateAvalTransformationFromOut(localItem.AvalType, localItem.Balance, localItem.AvalQuantityKg);
+                        result += transform.Item1;
+                        var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                        item.PrevSppInJson = prevAval;
+                    }
+
+                    item.SetAvalQuantityKg(localItem.AvalQuantityKg, _identityProvider.Username, UserAgent);
+                    item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                    item.SetDeliveryNote(localItem.DeliveryNote, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
+            {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+                if (dbModel.DestinationArea == PENJUALAN)
+                {
+                    var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.Balance, item.AvalQuantityKg);
+                    result += transform.Item1;
+                    var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                    item.PrevSppInJson = prevAval;
                 }
             }
 

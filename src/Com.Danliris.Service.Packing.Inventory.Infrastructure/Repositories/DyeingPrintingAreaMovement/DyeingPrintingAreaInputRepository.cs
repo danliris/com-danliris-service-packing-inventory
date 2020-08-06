@@ -146,6 +146,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbSet.Include(s => s.DyeingPrintingAreaInputProductionOrders).FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public Task<int> RestoreAvalTransformation(List<AvalData> avalData)
+        {
+            foreach (var item in avalData)
+            {
+                var model = _dbSet.FirstOrDefault(s => s.Id == item.Id);
+                if (model != null)
+                {
+                    var newAvalQuantity = model.TotalAvalQuantity + item.AvalQuantity;
+                    var newWeightQuantity = model.TotalAvalWeight + item.AvalQuantityKg;
+
+                    model.SetTotalAvalQuantity(newAvalQuantity, _identityProvider.Username, UserAgent);
+                    model.SetTotalAvalWeight(newWeightQuantity, _identityProvider.Username, UserAgent);
+                }
+
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
         public Task<int> UpdateAsync(int id, DyeingPrintingAreaInputModel model)
         {
             var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingAreaInputProductionOrders).FirstOrDefault(s => s.Id == id);
@@ -234,7 +253,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             while (avalQuantity > 0 || weightQuantity > 0)
             {
                 var item = data.ElementAtOrDefault(index);
-                
+
                 if (item != null)
                 {
                     var previousAval = new AvalData()

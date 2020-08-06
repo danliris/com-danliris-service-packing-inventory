@@ -13,6 +13,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         Task<int> UpdateAdjustmentData(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteAdjustment(DyeingPrintingAreaOutputModel model);
+        Task<int> UpdateAdjustmentDataAval(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> DeleteAdjustmentAval(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateIMArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteIMArea(DyeingPrintingAreaOutputModel model);
         Task<int> DeleteTransitArea(DyeingPrintingAreaOutputModel model);
@@ -23,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateShippingArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
         Task<int> DeleteWarehouseArea(DyeingPrintingAreaOutputModel model);
         Task<int> UpdateWarehouseArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> UpdateAvalArea(int id, DyeingPrintingAreaOutputModel model, DyeingPrintingAreaOutputModel dbModel);
+        Task<int> DeleteAvalArea(DyeingPrintingAreaOutputModel model);
         IQueryable<DyeingPrintingAreaOutputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaOutputModel> ReadAllIgnoreQueryFilter();
         Task<int> UpdateFromInputAsync(int id, bool hasNextAreaDocument);
