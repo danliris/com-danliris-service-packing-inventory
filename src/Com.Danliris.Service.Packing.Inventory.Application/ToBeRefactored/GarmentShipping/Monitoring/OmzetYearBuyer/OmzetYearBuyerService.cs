@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,11 +14,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class OmzetYearBuyerService : IOmzetYearBuyerService
     {
         private readonly IGarmentShippingInvoiceRepository shippingInvoiceRepository;
+        private readonly IGarmentPackingListRepository packingListRepository;
         private readonly IIdentityProvider _identityProvider;
 
         public OmzetYearBuyerService(IServiceProvider serviceProvider)
         {
             shippingInvoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
+            packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -26,20 +29,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTimeOffset dateFrom = new DateTimeOffset(year, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
             DateTimeOffset dateTo = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
 
-            var query = shippingInvoiceRepository.ReadAll()
-                .Where(w => w.InvoiceDate >= dateFrom && w.InvoiceDate < dateTo);
+            var invoiceQuery = shippingInvoiceRepository.ReadAll();
 
-            var groupedQuery = from q in query
-                               group q by q.BuyerAgentCode into g
-                               select new OmzetYearBuyerItemViewModel
-                               {
-                                   buyer = g.Key,
-                                   pcsQuantity = g.SelectMany(s => s.Items.Where(i => i.UomUnit == "PCS")).Sum(i => i.Quantity),
-                                   setsQuantity = g.SelectMany(s => s.Items.Where(i => i.UomUnit == "SETS")).Sum(i => i.Quantity),
-                                   amount = g.SelectMany(s => s.Items).Sum(i => i.Amount)
-                               };
+            var packingListQuery = packingListRepository.ReadAll()
+                .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
 
-            var data = groupedQuery.ToList();
+            var joinedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
+            {
+                buyer = invoice.BuyerAgentCode,
+                items = invoice.Items.Select(i => new JoinedDataItem
+                {
+                    uom = i.UomUnit,
+                    quantity = i.Quantity,
+                    amount = i.Amount
+                }).ToList()
+            }).ToList();
+
+            //var joinedData = (from packingList in packingListQuery
+            //                  join invoice in invoiceQuery on packingList.Id equals invoice.PackingListId
+            //                  select new JoinedData
+            //                  {
+            //                      buyer = invoice.BuyerAgentCode,
+            //                      items = invoice.Items.Select(i => new JoinedDataItem
+            //                      {
+            //                          uom = i.UomUnit,
+            //                          quantity = i.Quantity,
+            //                          amount = i.Amount
+            //                      }).ToList()
+            //                  }).ToList();
+
+            var groupedData = joinedData.GroupBy(g => g.buyer).Select(g => new OmzetYearBuyerItemViewModel
+            {
+                buyer = g.Key,
+                pcsQuantity = g.SelectMany(s => s.items.Where(i => i.uom == "PCS")).Sum(i => i.quantity),
+                setsQuantity = g.SelectMany(s => s.items.Where(i => i.uom == "SETS")).Sum(i => i.quantity),
+                amount = g.SelectMany(s => s.items).Sum(i => i.amount)
+            });
+
+            var data = groupedData.ToList();
 
             var result = new OmzetYearBuyerViewModel
             {
