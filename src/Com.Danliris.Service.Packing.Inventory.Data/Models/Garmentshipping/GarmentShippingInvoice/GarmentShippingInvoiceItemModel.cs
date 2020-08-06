@@ -51,11 +51,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			
 		}
 
+		public void SetQuantity(double quantity, string username, string uSER_AGENT)
+		{
+			if (this.Quantity != quantity)
+			{
+				this.Quantity = quantity;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+
 		public void SetPrice(decimal price, string username, string uSER_AGENT)
 		{
 			if (this.Price != price)
 			{
 				this.Price = price;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+
+		public void SetAmount(decimal amount, string username, string uSER_AGENT)
+		{
+			if (this.Amount != amount)
+			{
+				this.Amount = amount;
 				this.FlagForUpdate(username, uSER_AGENT);
 			}
 		}
