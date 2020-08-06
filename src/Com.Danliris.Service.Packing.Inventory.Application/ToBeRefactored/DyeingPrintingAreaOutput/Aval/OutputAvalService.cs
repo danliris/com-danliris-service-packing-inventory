@@ -153,6 +153,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = model.Id,
                     Type = ADJ,
                     Area = model.Area,
+                    AdjType = model.Type,
                     BonNo = model.BonNo,
                     CreatedAgent = model.CreatedAgent,
                     CreatedBy = model.CreatedBy,

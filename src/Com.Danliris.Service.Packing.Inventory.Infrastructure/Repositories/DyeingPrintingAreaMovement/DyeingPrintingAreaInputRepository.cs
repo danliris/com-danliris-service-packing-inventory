@@ -246,8 +246,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                         }
                         else
                         {
-                            item.SetTotalAvalQuantity(0, _identityProvider.Username, UserAgent);
-
                             item.SetTotalAvalQuantity(tempTotalQuantity, _identityProvider.Username, UserAgent);
                             avalQuantity = 0;
                         }
