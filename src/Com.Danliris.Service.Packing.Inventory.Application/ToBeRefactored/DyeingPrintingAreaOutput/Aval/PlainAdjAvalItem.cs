@@ -6,6 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class PlainAdjAvalItem
     {
+        public int Id { get; set; }
         public string AvalType { get; set; }
         public double AvalQuantity { get; set; }
         public double AvalQuantityKg { get; set; }

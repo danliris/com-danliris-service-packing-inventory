@@ -717,7 +717,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="adjDocumentNo"></param>
         /// <param name="area"></param>
         /// <param name="hasNextAreaDocument"></param>
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo) : this()
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo, int avalTransformationId) : this()
         {
             Area = area;
             HasNextAreaDocument = hasNextAreaDocument;
@@ -725,6 +725,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             AvalType = avalType;
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
+            DyeingPrintingAreaInputProductionOrderId = avalTransformationId;
         }
 
         /// <summary>
