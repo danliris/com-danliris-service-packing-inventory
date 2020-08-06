@@ -41,5 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<MemoryStream> GenerateExcel(int id);
         ListResult<AdjAvalItemViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
         MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+
+        Task<int> Update(int id, OutputAvalViewModel viewModel);
+        Task<int> Delete(int id);
     }
 }

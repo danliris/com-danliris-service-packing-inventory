@@ -106,7 +106,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
             
-            modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+            if(modelToUpdate != null)
+            {
+                modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+            }
 
             return _dbContext.SaveChangesAsync();
         }

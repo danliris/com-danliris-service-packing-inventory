@@ -266,14 +266,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0);
                         productionOrders.Add(productionOrder);
                     }
                     else
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id);
                         productionOrders.Add(productionOrder);
                     }
                 }
@@ -305,20 +305,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval,0);
                     }
                     else
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id);
 
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                           modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
 
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
-                    
+
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                 }
@@ -963,6 +963,86 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Inspection Material") }, true);
+        }
+
+        private async Task<int> UpdateOut(int id, OutputAvalViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<int> UpdateAdj(int id, OutputAvalViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> Update(int id, OutputAvalViewModel viewModel)
+        {
+            if (viewModel.Type == OUT)
+            {
+                return await UpdateOut(id, viewModel);
+            }
+            else
+            {
+                return await UpdateAdj(id, viewModel);
+            }
+        }
+
+        private async Task<int> DeleteOut(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                if (!item.HasNextAreaDocument && model.DestinationArea != PENJUALAN)
+                {
+                    var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+
+                    result += await _movementRepository.InsertAsync(movementModel);
+
+                }
+            }
+            result += await _outputRepository.DeleteAvalArea(model);
+
+            return result;
+        }
+
+        private async Task<int> DeleteAdj(DyeingPrintingAreaOutputModel model)
+        {
+            int result = 0;
+            string type;
+            if (model.DyeingPrintingAreaOutputProductionOrders.All(d => d.Balance > 0))
+            {
+                type = ADJ_IN;
+            }
+            else
+            {
+                type = ADJ_OUT;
+            }
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Balance * -1, item.AvalQuantityKg * -1, item.AvalType);
+                result += await _movementRepository.InsertAsync(movementModel);
+
+
+            }
+            result += await _outputRepository.DeleteAdjustmentAval(model);
+
+            return result;
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var model = await _outputRepository.ReadByIdAsync(id);
+            if (model.Type == null || model.Type == OUT)
+            {
+                return await DeleteOut(model);
+            }
+            else
+            {
+                return await DeleteAdj(model);
+            }
         }
     }
 }
