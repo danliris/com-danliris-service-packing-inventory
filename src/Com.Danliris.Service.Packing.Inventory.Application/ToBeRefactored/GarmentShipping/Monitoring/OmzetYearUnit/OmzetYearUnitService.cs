@@ -1,25 +1,34 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearUnit
 {
     public class OmzetYearUnitService : IOmzetYearUnitService
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IGarmentShippingInvoiceRepository shippingInvoiceRepository;
+        private readonly IGarmentPackingListRepository packingListRepository;
         private readonly IIdentityProvider _identityProvider;
 
         public static readonly string[] MONTH_NAMES = { "JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER" };
 
         public OmzetYearUnitService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             shippingInvoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
+            packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -28,23 +37,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTimeOffset dateFrom = new DateTimeOffset(year, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
             DateTimeOffset dateTo = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
 
-            var query = shippingInvoiceRepository.ReadAll()
-                .Where(w => w.InvoiceDate >= dateFrom && w.InvoiceDate < dateTo);
+            var invoiceQuery = shippingInvoiceRepository.ReadAll();
 
-            var queriedData = query.Select(s => new QueriedData
+            var packingListQuery = packingListRepository.ReadAll()
+                .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+
+            var queriedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
             {
-                month = s.InvoiceDate,
-                items = s.Items.Select(i => new QueriedDataItem
+                month = invoice.InvoiceDate,
+                items = invoice.Items.Select(i => new JoinedDataItem
                 {
-                    unit = i.UnitCode,
+                    unit = i.UnitId,
                     amount = i.Amount
-                })
+                }).ToList()
             }).ToList();
+
+            var filterUnit = new Dictionary<string, string>()
+            {
+                { "(" + string.Join(" || ", queriedData.SelectMany(s => s.items.Select(i => "Id==\"" + i.unit + "\"")).Distinct().OrderBy(o => o).ToHashSet()) + ")", "true" },
+            };
+
+            var masterUnits = GetUnits(filterUnit).Result;
 
             var selectedData = queriedData.SelectMany(s => s.items.Select(i => new SelectedData
             {
                 month = MONTH_NAMES[s.month.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).Month - 1],
-                unit = i.unit,
+                unit = masterUnits.Where(w => w.Id == i.unit).Select(a => a.Name).FirstOrDefault() ?? "-",
                 amount = i.amount
             })).ToList();
 
@@ -85,6 +103,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             };
 
             return result;
+        }
+
+        private async Task<List<Unit>> GetUnits(object filter)
+        {
+            string uri = "master/garment-units";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{uri}?filter={JsonConvert.SerializeObject(filter)}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                List<Unit> viewModel = JsonConvert.DeserializeObject<List<Unit>>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return new List<Unit>();
+            }
         }
 
         public OmzetYearUnitViewModel GetReportData(int year)

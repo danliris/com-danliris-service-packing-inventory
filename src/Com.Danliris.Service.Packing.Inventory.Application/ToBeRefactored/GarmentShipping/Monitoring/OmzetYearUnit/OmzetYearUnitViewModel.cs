@@ -17,15 +17,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Dictionary<string, decimal> items { get; set; }
     }
 
-    class QueriedData
+    class JoinedData
     {
         public DateTimeOffset month { get; set; }
-        public IEnumerable<QueriedDataItem> items { get; set; }
+        public List<JoinedDataItem> items { get; set; }
     }
 
-    class QueriedDataItem
+    class JoinedDataItem
     {
-        public string unit { get; set; }
+        public int unit { get; set; }
         public decimal amount { get; set; }
     }
 
