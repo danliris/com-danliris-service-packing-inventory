@@ -1386,5 +1386,271 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAdj_Aval()
+        {
+            string testName = GetCurrentMethod() + "UpdateAdj_Aval";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            inputMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new DyeingPrintingAreaInputModel());
+
+            inputMock.Setup(s => s.UpdateHeaderAvalTransform(It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsWithFlagAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
+                .ReturnsAsync(1);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData.SetArea("GUDANG AVAL", "", "");
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModel();
+            model.SetArea("GUDANG AVAL", "", "");
+            var result = await repo2.UpdateAdjustmentDataAval(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAdj_2_AVAL()
+        {
+            string testName = GetCurrentMethod() + "UpdateAdj_2_AVAL";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            inputMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new DyeingPrintingAreaInputModel());
+
+            inputMock.Setup(s => s.UpdateHeaderAvalTransform(It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsWithFlagAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
+                .ReturnsAsync(1);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetModel();
+            emptyData.SetArea("SHIPPING", "", "");
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+
+            data.DyeingPrintingAreaOutputProductionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
+
+
+            var result = await repo2.UpdateAdjustmentDataAval(data.Id, data, emptyData);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAdj_3_AVAL()
+        {
+            string testName = GetCurrentMethod() + "UpdateAdj_3_AVAl";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            inputMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new DyeingPrintingAreaInputModel());
+
+            inputMock.Setup(s => s.UpdateHeaderAvalTransform(It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsWithFlagAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
+                .ReturnsAsync(1);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetModel();
+            emptyData.SetArea("SHIPPING", "", "");
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+
+            var item = new DyeingPrintingAreaOutputProductionOrderModel();
+            item.Id = 0;
+            data.DyeingPrintingAreaOutputProductionOrders.Add(item);
+
+
+            var result = await repo2.UpdateAdjustmentDataAval(data.Id, data, emptyData);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAval()
+        {
+            string testName = GetCurrentMethod() + "UpdateAval";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            outputSPPMock.Setup(s => s.UpdateFromInputNextAreaFlagAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            inputMock.Setup(s => s.UpdateAvalTransformationFromOut(It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<AvalData>>(1,new List<AvalData>()));
+
+            inputMock.Setup(s => s.RestoreAvalTransformation(It.IsAny<List<AvalData>>()))
+                .ReturnsAsync(1);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetModelShippingPenjualan();
+            foreach(var item in emptyData.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.PrevSppInJson = "[]";
+            }
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModelShippingPenjualanAfter();
+
+            var result = await repo2.UpdateAvalArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAvalBuyer()
+        {
+            string testName = GetCurrentMethod() + "UpdateAvalBuyer";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            outputSPPMock.Setup(s => s.UpdateFromInputNextAreaFlagAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            inputMock.Setup(s => s.UpdateAvalTransformationFromOut(It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<AvalData>>(1, new List<AvalData>()));
+
+            inputMock.Setup(s => s.RestoreAvalTransformation(It.IsAny<List<AvalData>>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetModelShippingBuyer();
+
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModelShippingBuyerAfter();
+
+            var result = await repo2.UpdateAvalArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAvalBuyerUpdateItem()
+        {
+            string testName = GetCurrentMethod() + "UpdateAvalBuyerUpdateItem";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            Mock<IDyeingPrintingAreaInputRepository> inputMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            outputSPPMock.Setup(s => s.UpdateFromInputNextAreaFlagAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+            inputMock.Setup(s => s.UpdateAvalTransformationFromOut(It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<AvalData>>(1, new List<AvalData>()));
+
+            inputMock.Setup(s => s.RestoreAvalTransformation(It.IsAny<List<AvalData>>()))
+                .ReturnsAsync(1);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputMock.Object);
+            var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetModelShippingBuyer();
+
+            await repo.InsertAsync(emptyData);
+            var data = repo.ReadAll().FirstOrDefault();
+            var dbModel = await repo.ReadByIdAsync(data.Id);
+            var model = DataUtil(repo, dbContext).GetModelShippingBuyerAfter();
+
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
+            }
+
+            var result = await repo2.UpdateAvalArea(data.Id, model, dbModel);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
