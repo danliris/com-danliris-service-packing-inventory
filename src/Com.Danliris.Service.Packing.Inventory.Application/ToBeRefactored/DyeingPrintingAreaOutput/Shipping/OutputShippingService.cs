@@ -170,18 +170,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = s.ProductPackingId,
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
-                        HasPrintingProductPacking = s.HasPrintingProductPacking
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        BalanceRemains = s.Balance
                     }).ToList()
                 };
 
-                foreach (var item in vm.ShippingProductionOrders)
+                if(vm.DestinationArea != BUYER)
                 {
-                    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
-                    if (inputData != null)
+                    foreach (var item in vm.ShippingProductionOrders)
                     {
-                        item.BalanceRemains = inputData.BalanceRemains + item.Qty;
+                        var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                        if (inputData != null)
+                        {
+                            item.BalanceRemains = inputData.BalanceRemains + item.Qty;
+                        }
                     }
                 }
+                
             }
             else
             {

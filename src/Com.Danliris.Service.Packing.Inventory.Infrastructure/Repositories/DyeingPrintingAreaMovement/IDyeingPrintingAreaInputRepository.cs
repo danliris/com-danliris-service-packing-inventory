@@ -22,5 +22,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateAvalTransformationArea(int id, DyeingPrintingAreaInputModel model, DyeingPrintingAreaInputModel dbModel);
         IQueryable<DyeingPrintingAreaInputModel> GetDbSet();
         IQueryable<DyeingPrintingAreaInputModel> ReadAllIgnoreQueryFilter();
+        Task<int> UpdateAvalTransformationFromOut(string avalType, double avalQuantity, double weightQuantity);
     }
 }

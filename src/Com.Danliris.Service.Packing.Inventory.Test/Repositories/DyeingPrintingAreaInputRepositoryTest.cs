@@ -469,5 +469,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateAvalTrasnfromFromOut()
+        {
+            string testName = GetCurrentMethod() + "UpdateAvalTrasnfromFromOut";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputSPPMock.Object);
+
+            serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputSPPMock.Object);
+
+            var repo = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetAvalTransformModel();
+            await repo.InsertAsync(emptyData);
+            var result = await repo2.UpdateAvalTransformationFromOut(emptyData.AvalType, 5, 5);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
