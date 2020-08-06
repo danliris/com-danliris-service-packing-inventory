@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -224,28 +225,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return result;
         }
 
-        public Task<int> UpdateAvalTransformationFromOut(string avalType, double avalQuantity, double weightQuantity)
+        public async Task<Tuple<int, List<AvalData>>> UpdateAvalTransformationFromOut(string avalType, double avalQuantity, double weightQuantity)
         {
             var data = _dbSet.Where(s => s.Area == GUDANGAVAL && s.AvalType == avalType && s.IsTransformedAval && (s.TotalAvalQuantity != 0 || s.TotalAvalWeight != 0)).OrderBy(s => s.Date).ToList();
 
             int index = 0;
+            var avalData = new List<AvalData>();
             while (avalQuantity > 0 || weightQuantity > 0)
             {
                 var item = data.ElementAtOrDefault(index);
+                
                 if (item != null)
                 {
+                    var previousAval = new AvalData()
+                    {
+                        Id = item.Id
+                    };
+
+                    double diffQuantity = 0;
+                    double diffWeight = 0;
+
                     if (avalQuantity > 0)
                     {
                         var tempTotalQuantity = item.TotalAvalQuantity - avalQuantity;
                         if (tempTotalQuantity < 0)
                         {
                             avalQuantity = tempTotalQuantity * -1;
-
+                            diffQuantity = item.TotalAvalQuantity;
                             item.SetTotalAvalQuantity(0, _identityProvider.Username, UserAgent);
-
                         }
                         else
                         {
+                            diffQuantity = avalQuantity;
                             item.SetTotalAvalQuantity(tempTotalQuantity, _identityProvider.Username, UserAgent);
                             avalQuantity = 0;
                         }
@@ -257,15 +268,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                         if (tempTotalWeight < 0)
                         {
                             weightQuantity = tempTotalWeight * -1;
+                            diffWeight = item.TotalAvalWeight;
                             item.SetTotalAvalWeight(0, _identityProvider.Username, UserAgent);
 
                         }
                         else
                         {
+                            diffWeight = weightQuantity;
                             item.SetTotalAvalWeight(tempTotalWeight, _identityProvider.Username, UserAgent);
                             weightQuantity = 0;
                         }
                     }
+
+                    previousAval.AvalQuantity = diffQuantity;
+                    previousAval.AvalQuantityKg = diffWeight;
+
+                    avalData.Add(previousAval);
 
                     index++;
                 }
@@ -275,7 +293,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
             }
 
-            return _dbContext.SaveChangesAsync();
+            int result = await _dbContext.SaveChangesAsync();
+
+            return new Tuple<int, List<AvalData>>(result, avalData);
         }
 
         public Task<int> UpdateHeaderAvalTransform(DyeingPrintingAreaInputModel model, double avalQuantity, double weightQuantity)

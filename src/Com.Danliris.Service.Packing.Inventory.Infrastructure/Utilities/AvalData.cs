@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Aval
+namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 {
-    public class PlainAdjAvalItem
+    public class AvalData
     {
         public int Id { get; set; }
-        public string AvalType { get; set; }
         public double AvalQuantity { get; set; }
         public double AvalQuantityKg { get; set; }
     }

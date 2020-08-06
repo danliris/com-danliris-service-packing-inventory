@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
-        private OutputAvalViewModel MapToViewModel(DyeingPrintingAreaOutputModel model)
+        private async Task<OutputAvalViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
         {
             var vm = new OutputAvalViewModel();
             if (model.Type == null || model.Type == OUT)
@@ -186,12 +186,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         HasNextAreaDocument = s.HasNextAreaDocument,
                         Id = s.Id,
                         AvalType = s.AvalType,
-
+                        AvalTransformationId = s.DyeingPrintingAreaInputProductionOrderId,
+                        AvalUomUnit = s.UomUnit,
+                        AvalCartNo = s.CartNo,
                         AvalQuantity = s.Balance,
                         AvalQuantityKg = s.AvalQuantityKg,
 
                     }).ToList()
                 };
+
+                foreach (var item in vm.AvalItems)
+                {
+                    var avalTransform = await _inputRepository.ReadByIdAsync(item.AvalTransformationId);
+                    if (avalTransform != null)
+                    {
+                        item.AvalQuantityBalance = avalTransform.TotalAvalQuantity - item.AvalQuantity;
+                        item.AvalWeightBalance = avalTransform.TotalAvalWeight - item.AvalQuantityKg;
+                    }
+                }
             }
 
 
@@ -243,10 +255,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                s.CreatedUtc.Year == viewModel.Date.Year &&
                                                                                                s.Type == OUT);
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
+
+                List<DyeingPrintingAreaOutputProductionOrderModel> productionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
+
+                foreach (var item in viewModel.AvalItems)
+                {
+                    if (viewModel.DestinationArea == PENJUALAN)
+                    {
+                        var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.AvalOutSatuan, item.AvalOutQuantity);
+                        result += transform.Item1;
+                        var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                        var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                        productionOrders.Add(productionOrder);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
+                        var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                        productionOrders.Add(productionOrder);
+                    }
+                }
+
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.DeliveryOrderSalesNo, viewModel.DeliveryOrdeSalesId, false,
-                    viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo,
-                    s.AvalUomUnit, s.AvalOutSatuan, s.AvalOutQuantity, s.AvalQuantity, s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote)).ToList());
-                result = await _outputRepository.InsertAsync(model);
+                    viewModel.DestinationArea, viewModel.Group, viewModel.Type, productionOrders);
+                result += await _outputRepository.InsertAsync(model);
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
@@ -264,42 +298,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in viewModel.AvalItems)
                 {
-                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType,
-                       item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity, item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote);
-                    modelItem.DyeingPrintingAreaOutputId = model.Id;
-
-                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-                    if (viewModel.DestinationArea == BUYER)
+                    DyeingPrintingAreaOutputProductionOrderModel modelItem = null;
+                    if (viewModel.DestinationArea == PENJUALAN)
                     {
+                        var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.AvalOutSatuan, item.AvalOutQuantity);
+                        result += transform.Item1;
+                        var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                        modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
+                        modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                           modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
 
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
-
+                    
+                    modelItem.DyeingPrintingAreaOutputId = model.Id;
+                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                 }
             }
-
-            if (viewModel.DestinationArea == PENJUALAN)
-            {
-                var groupAvalItems = viewModel.AvalItems.GroupBy(s => s.AvalType);
-
-                foreach (var item in groupAvalItems)
-                {
-                    var totalQuantity = item.Sum(s => s.AvalOutSatuan);
-                    var totalKg = item.Sum(s => s.AvalOutQuantity);
-                    result += await _inputRepository.UpdateAvalTransformationFromOut(item.Key, totalQuantity, totalKg);
-
-                }
-            }
-            else
-            {
-                foreach (var item in viewModel.AvalItems)
-                {
-                    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
-                }
-            }
-
 
             return result;
         }
@@ -329,12 +352,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group,
                        type, viewModel.AvalItems.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
+                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
 
                 result = await _outputRepository.InsertAsync(model);
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
+                    var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.Balance, item.AvalQuantityKg);
+
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Balance, item.AvalQuantityKg, item.AvalType);
                     result += await _movementRepository.InsertAsync(movementModel);
@@ -345,10 +371,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in viewModel.AvalItems)
                 {
-                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, item.AvalType, item.AvalQuantity, item.AvalQuantityKg, item.AdjDocumentNo);
+                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, item.AvalType, item.AvalQuantity, item.AvalQuantityKg, item.AdjDocumentNo, item.AvalTransformationId);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+
+                    var avalTransform = await _inputRepository.ReadByIdAsync(item.AvalTransformationId);
+                    result += await _inputRepository.UpdateHeaderAvalTransform(avalTransform, item.AvalQuantity, item.AvalQuantityKg);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                       modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
@@ -359,32 +388,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 }
             }
-            var groupAvalItems = viewModel.AvalItems.GroupBy(s => s.AvalType);
-            if (type == ADJ_IN)
-            {
-                foreach (var item in groupAvalItems)
-                {
-                    var totalQuantity = item.Sum(s => s.AvalQuantity);
-                    var totalKg = item.Sum(s => s.AvalQuantityKg);
-                    var lastDataAvalType = _inputRepository.GetDbSet().OrderByDescending(s => s.Date).FirstOrDefault(s => s.Area == GUDANGAVAL && s.AvalType == item.Key && s.IsTransformedAval);
-                    if (lastDataAvalType != null)
-                    {
-                        result += await _inputRepository.UpdateHeaderAvalTransform(lastDataAvalType, totalQuantity, totalKg);
-                    }
-                }
-
-            }
-            else
-            {
-                foreach (var item in groupAvalItems)
-                {
-                    var totalQuantity = item.Sum(s => s.AvalQuantity);
-                    var totalKg = item.Sum(s => s.AvalQuantityKg);
-                    result += await _inputRepository.UpdateAvalTransformationFromOut(item.Key, totalQuantity * -1, totalKg * -1);
-
-                }
-            }
-
 
             return result;
         }
@@ -499,7 +502,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (model == null)
                 return null;
 
-            OutputAvalViewModel vm = MapToViewModel(model);
+            OutputAvalViewModel vm = await MapToViewModel(model);
 
             return vm;
         }
@@ -864,6 +867,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                  .Where(s => s.Area == GUDANGAVAL && s.IsTransformedAval && (s.TotalAvalQuantity != 0 || s.TotalAvalWeight != 0))
                  .Select(d => new PlainAdjAvalItem()
                  {
+                     Id = d.Id,
                      AvalType = d.AvalType,
                      AvalQuantity = d.TotalAvalQuantity,
                      AvalQuantityKg = d.TotalAvalWeight
@@ -879,13 +883,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<PlainAdjAvalItem>.Filter(query, FilterDictionary);
 
             var data = query.ToList()
-                .GroupBy(d => d.AvalType)
-                .Skip((page - 1) * size).Take(size)
+                //.GroupBy(d => d.AvalType)
+                //.Skip((page - 1) * size).Take(size)
+                .OrderBy(s => s.AvalType)
                 .Select(s => new AdjAvalItemViewModel()
                 {
-                    AvalType = s.Key,
-                    AvalQuantity = s.Sum(d => d.AvalQuantity),
-                    AvalQuantityKg = s.Sum(d => d.AvalQuantityKg)
+                    AvalTransformationId = s.Id,
+                    AvalType = s.AvalType,
+                    AvalQuantity = s.AvalQuantity,
+                    AvalQuantityKg = s.AvalQuantityKg
                 });
 
             return new ListResult<AdjAvalItemViewModel>(data.ToList(), page, size, query.Count());

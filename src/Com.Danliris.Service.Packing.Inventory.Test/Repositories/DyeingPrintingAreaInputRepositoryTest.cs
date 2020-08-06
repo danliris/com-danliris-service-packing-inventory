@@ -494,7 +494,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             await repo.InsertAsync(emptyData);
             var result = await repo2.UpdateAvalTransformationFromOut(emptyData.AvalType, 5, 5);
 
-            Assert.NotEqual(0, result);
+            Assert.NotEqual(0, result.Item1);
         }
     }
 }
