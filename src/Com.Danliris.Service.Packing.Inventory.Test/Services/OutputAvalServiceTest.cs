@@ -322,6 +322,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             //Mock for totalCurrentYear
             outputRepoMock.Setup(s => s.ReadAllIgnoreQueryFilter())
@@ -347,7 +348,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
-                                                        inputProductionOrdersRepoMock.Object).Object);
+                                                        inputProductionOrdersRepoMock.Object, outputProductionOrdersRepoMock.Object).Object);
 
             var result = await service.Create(ViewModel);
 
