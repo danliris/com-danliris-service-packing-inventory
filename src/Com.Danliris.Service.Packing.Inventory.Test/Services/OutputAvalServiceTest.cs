@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -513,7 +514,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             var model = OutputModelAdj;
-            model.SetType("ADJ IN", "", "");
+            model.SetType("ADJ OUT", "", "");
 
             outputRepoMock.Setup(s => s.GetDbSet())
                 .Returns(new List<DyeingPrintingAreaOutputModel>() { model }.AsQueryable());
@@ -549,7 +550,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var inputProductionOrdersRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var outputSppRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
+            var modelInput = ModelInput;
+            modelInput.SetIsTransformedAval(true, "", "");
             outputRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            inputRepoMock.Setup(s => s.GetDbSet())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { modelInput }.AsQueryable());
+
+            inputRepoMock.Setup(s => s.UpdateHeaderAvalTransform(It.IsAny<DyeingPrintingAreaInputModel>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
