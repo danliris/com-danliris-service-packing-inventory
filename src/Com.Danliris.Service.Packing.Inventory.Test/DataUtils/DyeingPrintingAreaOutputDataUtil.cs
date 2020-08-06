@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel("TRANSIT","PACKING",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1, 1, "name", 1, "a", "1","a",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","a",1,"a",1,"a",1,1,"s",false),
                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1, 1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false),
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no")
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1)
 
             });
         }
@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0,0,null,0,null,"0",null,0,null,null,0,null,null,0,null,0,null,0,0,null,true,0,0,null,true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,0,null,0,null,0,0,null,true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1, null, null, 0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true),
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1)
 
             });
         }
@@ -114,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1,1, "name", 1, "a", "1","a",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","a","a",1,"a",1,"a",1,1,"a",false),
                 new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type,",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false),
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no")
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1)
 
             });
         }
@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,null,0,null,null,null,null,null,null,null,null,null,null,null,1,1,0,0,null,0,null,"0",null,0,null,null,0,null,null,0,null,0,null,0,0,null,true,0,0,null,true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,0,null,0,null,0,0,null,true),
                 new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1,null,null,0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true),
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1)
 
             });
         }

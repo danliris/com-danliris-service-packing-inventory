@@ -255,10 +255,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                s.CreatedUtc.Year == viewModel.Date.Year &&
                                                                                                s.Type == OUT);
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
+
+                List<DyeingPrintingAreaOutputProductionOrderModel> productionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
+
+                foreach (var item in viewModel.AvalItems)
+                {
+                    if (viewModel.DestinationArea == PENJUALAN)
+                    {
+                        var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.AvalOutSatuan, item.AvalOutQuantity);
+                        result += transform.Item1;
+                        var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                        var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                        productionOrders.Add(productionOrder);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
+                        var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+                        productionOrders.Add(productionOrder);
+                    }
+                }
+
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.DeliveryOrderSalesNo, viewModel.DeliveryOrdeSalesId, false,
-                    viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo,
-                    s.AvalUomUnit, s.AvalOutSatuan, s.AvalOutQuantity, s.AvalQuantity, s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote)).ToList());
-                result = await _outputRepository.InsertAsync(model);
+                    viewModel.DestinationArea, viewModel.Group, viewModel.Type, productionOrders);
+                result += await _outputRepository.InsertAsync(model);
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
@@ -276,42 +298,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in viewModel.AvalItems)
                 {
-                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType,
-                       item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity, item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote);
-                    modelItem.DyeingPrintingAreaOutputId = model.Id;
-
-                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
-                    if (viewModel.DestinationArea == BUYER)
+                    DyeingPrintingAreaOutputProductionOrderModel modelItem = null;
+                    if (viewModel.DestinationArea == PENJUALAN)
                     {
+                        var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.AvalOutSatuan, item.AvalOutQuantity);
+                        result += transform.Item1;
+                        var prevAval = JsonConvert.SerializeObject(transform.Item2);
+                        modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval);
+                    }
+                    else
+                    {
+                        result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
+                        modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]");
+
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                           modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
 
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
-
+                    
+                    modelItem.DyeingPrintingAreaOutputId = model.Id;
+                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                 }
             }
-
-            if (viewModel.DestinationArea == PENJUALAN)
-            {
-                var groupAvalItems = viewModel.AvalItems.GroupBy(s => s.AvalType);
-
-                foreach (var item in groupAvalItems)
-                {
-                    var totalQuantity = item.Sum(s => s.AvalOutSatuan);
-                    var totalKg = item.Sum(s => s.AvalOutQuantity);
-                    result += await _inputRepository.UpdateAvalTransformationFromOut(item.Key, totalQuantity, totalKg);
-
-                }
-            }
-            else
-            {
-                foreach (var item in viewModel.AvalItems)
-                {
-                    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
-                }
-            }
-
 
             return result;
         }

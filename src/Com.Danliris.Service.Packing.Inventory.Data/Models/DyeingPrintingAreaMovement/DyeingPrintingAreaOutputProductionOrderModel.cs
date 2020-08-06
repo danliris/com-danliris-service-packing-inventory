@@ -750,7 +750,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             double avalQuantityTotal,
                                                             string area,
                                                             string destinationArea,
-                                                            string deliveryNote) : this()
+                                                            string deliveryNote,
+                                                            string prevAval) : this()
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
@@ -762,6 +763,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Area = area;
             DestinationArea = destinationArea;
             DeliveryNote = deliveryNote;
+            PrevSppInJson = prevAval;
         }
 
         /// <summary>

@@ -170,7 +170,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.Group,
                                                          ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
             }
         }
 
@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModelAdj.Date, ViewModelAdj.Area, ViewModelAdj.Shift, ViewModelAdj.BonNo, ViewModelAdj.HasNextAreaDocument, ViewModelAdj.DestinationArea,
                     ViewModelAdj.Group, ViewModelAdj.Type, ViewModelAdj.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModelAdj.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
+                                                             ViewModelAdj.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
             }
         }
 
@@ -199,7 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.Group,
                                                          ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo)).ToList());
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputEmptyModel
