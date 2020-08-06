@@ -860,6 +860,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(OutputModelAdj);
 
+            inputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(ModelInput);
+
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         outputRepoMock.Object,
                                                         movementRepoMock.Object,
@@ -1246,6 +1249,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var model = OutputModel;
             model.SetDestinationArea("BUYER", "", "");
+            foreach(var item in model.DyeingPrintingAreaOutputProductionOrders)
+            {
+                item.SetHasNextAreaDocument(false, "", "");
+            }
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
