@@ -18,12 +18,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<MemoryStream> GenerateExcel(int id);
         List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList();
+        List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
         Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsync(int bonId);
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         Task<int> Delete(int bonId);
         Task<int> Update(int id, OutputWarehouseViewModel viewModel);
         ListResult<AdjWarehouseProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
+        ListResult<InputWarehouseProductionOrderCreateViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
 
     }
 }
