@@ -107,7 +107,7 @@ file launchSettings.json look like this :
 
 ### Visual Studio
 - Download Visual Studio 2019 (any edition) from https://www.visualstudio.com/downloads/ .
-- Open `DanLiris.Spinning.sln` and wait for Visual Studio to restore all Nuget packages.
+- Open `Com.Danliris.Service.Packing.Inventory.sln` and wait for Visual Studio to restore all Nuget packages.
 - Create empty database.
 - Setting connection to database using Connection Strings in appsettings.json. Your appsettings.json look like this:
 
