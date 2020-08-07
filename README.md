@@ -296,9 +296,14 @@ DataUtils:
 
 This package contains models. The Model is a collection of objects that Representation of data structure which hold the application data and it may contain the associated business logic.
 
+
 **Com.Danliris.Service.Packing.Inventory.Infrastructure**
 
 This package contains migrations classes, identity providers and repository design paterns. Migration classes are classes that used by  by EF Framework to run sql queries to generate database schema. identity provider are classes to authentication users. Repository pattern is  designed patern to access databases.
+
+**Com.Danliris.Service.Packing.Inventory.WebApi**
+
+This package contains Controller. The controller has responsibility to processing data and  HTTP requests and then send it to a web page. All responses from the HTTP requests API are formatted as JSON (JavaScript Object Notation) objects containing information related to the request, and any status.
 
 ## command to add migration and update database
 
