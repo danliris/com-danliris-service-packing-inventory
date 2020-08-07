@@ -2298,6 +2298,90 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public void Should_Success_GetInputSppWarehouseItemListV2()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelToShippingArea }.AsQueryable());
+            inputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { InputModelToShippingArea }.AsQueryable());
+
+            inputProductionOrderRepoMock.Setup(s => s.ReadAll())
+                .Returns(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = service.GetInputSppWarehouseItemListV2(0);
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Success_GetInputSppWarehouseItemListV2WithSPP()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelToShippingArea }.AsQueryable());
+            inputRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { InputModelToShippingArea }.AsQueryable());
+
+            inputProductionOrderRepoMock.Setup(s => s.ReadAll())
+                .Returns(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                        inputProductionOrderRepoMock.Object,
+                                                        movementRepoMock.Object,
+                                                        summaryRepoMock.Object,
+                                                        outputRepoMock.Object,
+                                                        outputProductionOrderRepoMock.Object).Object);
+
+            var result = service.GetInputSppWarehouseItemListV2(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.FirstOrDefault().ProductionOrderId);
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Success_GetDistinctProductionOrders()
+        {
+            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            outputRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModelToShippingArea }.AsQueryable());
+            inputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+            var service = GetService(GetServiceProvider(inputRepoMock.Object,
+                                                       inputProductionOrderRepoMock.Object,
+                                                       movementRepoMock.Object,
+                                                       summaryRepoMock.Object,
+                                                       outputRepoMock.Object,
+                                                       outputProductionOrderRepoMock.Object).Object);
+            var result = service.GetDistinctProductionOrder(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
         public void Should_Exception_ValidationVM()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
