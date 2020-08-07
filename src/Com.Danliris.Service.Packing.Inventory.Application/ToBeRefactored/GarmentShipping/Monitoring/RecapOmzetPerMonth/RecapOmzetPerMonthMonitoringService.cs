@@ -67,12 +67,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             foreach (var data in orderedData)
             {
                 data.items = from od in data.items
-                             group od by new { od.comodity, od.currency } into groupedItem
+                             group od by new { od.comodity, od.currency, od.uom } into groupedItem
                              select new JoinedDataItem
                              {
                                  comodity = groupedItem.Key.comodity,
                                  quantity = groupedItem.Sum(i => i.quantity),
-                                 uom = groupedItem.Select(s => s.uom).FirstOrDefault(),
+                                 uom = groupedItem.Key.uom,
                                  amount = groupedItem.Sum(i => i.amount),
                                  currency = groupedItem.Key.currency,
                              };
