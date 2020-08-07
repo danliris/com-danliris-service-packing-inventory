@@ -479,6 +479,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetDescription(localItem.Description, _identityProvider.Username, UserAgent);
+                    item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
 
                     item.SetProductPackingId(localItem.ProductPackingId, _identityProvider.Username, UserAgent);
                     item.SetFabricPackingId(localItem.FabricPackingId, _identityProvider.Username, UserAgent);
