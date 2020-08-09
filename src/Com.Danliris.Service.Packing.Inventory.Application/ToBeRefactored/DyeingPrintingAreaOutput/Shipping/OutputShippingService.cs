@@ -776,7 +776,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 },
                 Qty = d.Balance,
                 PackingInstruction = d.PackingInstruction,
-                PackingLength = d.PackagingQty == 0 ? 0 : Convert.ToDecimal(d.Balance) / d.PackagingQty,
+                PackingLength = d.PackagingLength,
                 ProductSKUId = d.ProductSKUId,
                 FabricSKUId = d.FabricSKUId,
                 ProductSKUCode = d.ProductSKUCode,

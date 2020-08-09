@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //public string DestinationArea { get; set; }
         public bool HasOutputDocument { get; set; }
         public int DyeingPrintingAreaInputId { get; set; }
-        public decimal Qty { get; set; }
+        public double Qty { get; set; }
 
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }

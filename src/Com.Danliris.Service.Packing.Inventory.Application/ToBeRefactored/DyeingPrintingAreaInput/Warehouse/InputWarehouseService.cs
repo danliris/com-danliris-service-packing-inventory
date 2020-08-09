@@ -185,7 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Area = s.Area,
                         HasOutputDocument = s.HasOutputDocument,
                         DyeingPrintingAreaInputId = s.DyeingPrintingAreaInputId,
-                        Qty = s.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(s.Balance), s.PackagingQty),
+                        Qty = s.PackagingLength,
                         ProductSKUId = s.ProductSKUId,
                         FabricSKUId = s.FabricSKUId,
                         ProductSKUCode = s.ProductSKUCode,
@@ -289,7 +289,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.ProcessType.Name,
                                                                                                                                                                 s.YarnMaterial.Id,
                                                                                                                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking))
+                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty))
                                                                                                                                                                 .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
@@ -364,7 +364,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.ProcessType.Name,
                                                                                            productionOrder.YarnMaterial.Id,
                                                                                            productionOrder.YarnMaterial.Name, productionOrder.ProductSKUId, productionOrder.FabricSKUId, productionOrder.ProductSKUCode,
-                     productionOrder.HasPrintingProductSKU, productionOrder.ProductPackingId, productionOrder.FabricPackingId, productionOrder.ProductPackingCode, productionOrder.HasPrintingProductPacking)
+                     productionOrder.HasPrintingProductSKU, productionOrder.ProductPackingId, productionOrder.FabricPackingId, productionOrder.ProductPackingCode, productionOrder.HasPrintingProductPacking, productionOrder.Qty)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,
                 };
@@ -472,7 +472,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DestinationArea = p.DestinationArea,
                     HasNextAreaDocument = p.HasNextAreaDocument,
                     DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
-                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
+                    Qty = p.PackagingLength,
                     ProductSKUId = p.ProductSKUId,
                     FabricSKUId = p.FabricSKUId,
                     ProductSKUCode = p.ProductSKUCode,
@@ -577,7 +577,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                 s.ProcessType.Id,
                                                                                                                 s.ProcessType.Name,
                                                                                                                 s.YarnMaterial.Id,
-                                                                                                                s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
+                                                                                                                s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty)).ToList());
 
                     result = await _inputRepository.InsertAsync(model);
 
@@ -655,7 +655,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         detail.ProcessType.Id,
                                                                                         detail.ProcessType.Name,
                                                                                         detail.YarnMaterial.Id,
-                                                                                        detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode, detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId, detail.ProductPackingCode, detail.HasPrintingProductPacking);
+                                                                                        detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode, detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId, detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.Qty);
 
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 

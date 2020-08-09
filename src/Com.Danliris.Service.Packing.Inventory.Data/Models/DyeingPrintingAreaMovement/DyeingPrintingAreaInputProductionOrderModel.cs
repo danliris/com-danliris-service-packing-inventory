@@ -55,6 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
+        public double PackagingLength { get; private set; }
 
         public string Area { get; set; }
 
@@ -411,7 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, string remark, double balanceRemains,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking)
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -459,6 +460,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             FabricPackingId = fabricPackingId;
             ProductPackingCode = productPackingCode;
             HasPrintingProductPacking = hasPrintingProductPacking;
+
+            PackagingLength = packingLength;
         }
 
         /// <summary>
@@ -1005,7 +1008,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                            int dyeingPrintingAreaOutputProductionOrderId,
                                                            int buyerId,
                                                            int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -1063,6 +1066,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             FabricPackingId = fabricPackingId;
             ProductPackingCode = productPackingCode;
             HasPrintingProductPacking = hasPrintingProductPacking;
+
+            PackagingLength = packingLength;
         }
 
         /// <summary>
@@ -1432,7 +1437,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetMaterialWidth(string newMaterialWidth, string user, string agent)
         {
-
             if (newMaterialWidth != MaterialWidth)
             {
                 MaterialWidth = newMaterialWidth;
@@ -1442,11 +1446,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public void SetMachine(string newMachine, string user, string agent)
         {
-
-
             if (newMachine != Machine)
             {
                 Machine = newMachine;
+
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingLength(double newPackagingLength, string user, string agent)
+        {
+            if (newPackagingLength != PackagingLength)
+            {
+                PackagingLength = newPackagingLength;
 
                 this.FlagForUpdate(user, agent);
             }

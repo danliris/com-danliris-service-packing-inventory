@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double BalanceRemains { get; set; }
         public double PreviousBalance { get; set; }
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
-        public decimal PackingLength { get; set; } 
+        public double PackingLength { get; set; } 
 
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }

@@ -160,7 +160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DeliveryOrderSalesId = s.DeliveryOrderSalesId,
                         DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
                         AdjDocumentNo = s.AdjDocumentNo,
-                        Quantity = s.PackagingQty == 0 ? 0 : Convert.ToDecimal(s.Balance) / s.PackagingQty,
+                        Quantity = s.PackagingLength,
                         ProductSKUId = s.ProductSKUId,
                         FabricSKUId = s.FabricSKUId,
                         ProductSKUCode = s.ProductSKUCode,
@@ -224,7 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Balance = s.Balance,
                         Buyer = s.Buyer,
                         AdjDocumentNo = s.AdjDocumentNo,
-                        Quantity = s.PackagingQty == 0 ? 0 : Convert.ToDecimal(s.Balance) / s.PackagingQty,
+                        Quantity = s.PackagingLength,
                         MaterialWidth = s.MaterialWidth,
                         MaterialProduct = new Material()
                         {
@@ -403,7 +403,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                              s.MaterialConstruction.Name,
                                                                                                              s.MaterialWidth,
                                                                                                              s.AdjDocumentNo,
-                                                                                                              s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
+                                                                                                              s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity)).ToList());
 
                 result = await _outputRepository.InsertAsync(model);
 
@@ -463,7 +463,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         item.MaterialConstruction.Name,
                                                                                         item.MaterialWidth,
                                                                                         item.AdjDocumentNo,
-                                                                                         item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking);
+                                                                                         item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.Quantity);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -520,8 +520,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type,
                         s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, true, viewModel.Area,
                         "", s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                        s.MaterialWidth, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, 
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking)).ToList());
+                        s.MaterialWidth, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity)).ToList());
 
                 result = await _outputRepository.InsertAsync(model);
 
@@ -544,7 +544,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.ProductionOrder.OrderQuantity, item.PackagingType, item.PackagingQty, item.PackagingUnit, item.DeliveryOrderSalesId, item.DeliveryOrderSalesNo, true, viewModel.Area,
                         "", item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name,
                         item.MaterialWidth, item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode,
-                        item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking);
+                        item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.Quantity);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -560,7 +560,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
-            
+
 
             return result;
         }
@@ -889,10 +889,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in query)
                 {
-                    var qty = item.PackagingQty == 0 ? 0 : Convert.ToDecimal(item.Balance) / item.PackagingQty;
                     dt.Rows.Add(item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.ProductionOrderType,
                         item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Grade, item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture),
-                        item.PackagingUnit, item.UomUnit, qty.ToString("N2", CultureInfo.InvariantCulture), item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AdjDocumentNo, "");
+                        item.PackagingUnit, item.UomUnit, item.PackagingLength.ToString("N2", CultureInfo.InvariantCulture), item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AdjDocumentNo, "");
 
                 }
             }
@@ -971,6 +970,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 PackagingType = s.PackagingType,
                 PackagingUnit = s.PackagingUnit,
                 PackagingQty = s.PackagingQty,
+                Qty = s.PackagingLength,
+                Quantity = s.PackagingLength,
                 QtyOrder = s.ProductionOrderOrderQuantity,
                 InputId = s.DyeingPrintingAreaInputId,
                 ProductSKUId = s.ProductSKUId,
@@ -1065,7 +1066,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //DestinationArea = p.DestinationArea,
                     HasOutputDocument = p.HasOutputDocument,
                     //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
-                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
+                    Qty = p.PackagingLength,
+                    Quantity = p.PackagingLength,
                     ProductSKUId = p.ProductSKUId,
                     FabricSKUId = p.FabricSKUId,
                     ProductSKUCode = p.ProductSKUCode,
@@ -1163,7 +1165,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //DestinationArea = p.DestinationArea,
                     HasOutputDocument = p.HasOutputDocument,
                     //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
-                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
+                    Qty = p.PackagingLength,
+                    Quantity = p.PackagingLength,
                     ProductSKUId = p.ProductSKUId,
                     FabricSKUId = p.FabricSKUId,
                     ProductSKUCode = p.ProductSKUCode,
@@ -1268,7 +1271,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     HasOutputDocument = p.HasNextAreaDocument,
                     HasNextAreaDocument = p.HasNextAreaDocument,
                     //DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
-                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
+                    Qty = p.PackagingLength,
+                    Quantity = p.PackagingLength,
                     ProductSKUId = p.ProductSKUId,
                     FabricSKUId = p.FabricSKUId,
                     ProductSKUCode = p.ProductSKUCode,
@@ -1636,6 +1640,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     YarnMaterialName = d.YarnMaterialName,
                     Unit = d.Unit,
                     UomUnit = d.UomUnit,
+                    PackagingLength = d.PackagingLength,
                     PackagingType = d.PackagingType,
                     ProductSKUId = d.ProductSKUId,
                     FabricSKUId = d.FabricSKUId,
@@ -1705,7 +1710,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     UomUnit = s.UomUnit,
                     PackagingQty = s.PackagingQty,
                     PackagingType = s.PackagingType,
-                    Quantity = s.PackagingQty == 0 ? 0 : s.Balance / Convert.ToDouble(s.PackagingQty),
+                    Quantity = s.PackagingLength,
                     ProductSKUId = s.ProductSKUId,
                     FabricSKUId = s.FabricSKUId,
                     ProductSKUCode = s.ProductSKUCode,
@@ -1743,7 +1748,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.HasNextAreaDocument, viewModel.Area, viewModel.DestinationArea,
                     s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo, s.ProcessType.Id,
                     s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId,
-                    s.ProductPackingCode, s.HasPrintingProductPacking)
+                    s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity)
                     {
                         Id = s.Id
                     }).ToList());
@@ -1813,7 +1818,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, true, viewModel.Area, "",
                     s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo, s.ProcessType.Id,
                     s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId,
-                    s.ProductPackingCode, s.HasPrintingProductPacking)
+                    s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity)
                     {
                         Id = s.Id
                     }).ToList());
@@ -1866,7 +1871,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             IQueryable<DyeingPrintingAreaInputProductionOrderModel> query;
 
-            if(productionOrderId == 0)
+            if (productionOrderId == 0)
             {
 
                 query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == GUDANGJADI && !s.HasOutputDocument);
@@ -1940,7 +1945,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AvalQuantityKg = p.AvalQuantityKg,
                     Area = p.Area,
                     HasOutputDocument = p.HasOutputDocument,
-                    Qty = p.PackagingQty.Equals(0) ? 0 : Decimal.Divide(Convert.ToDecimal(p.Balance), p.PackagingQty),
+                    Qty = p.PackagingLength,
+                    Quantity = p.PackagingLength,
                     ProductSKUId = p.ProductSKUId,
                     FabricSKUId = p.FabricSKUId,
                     ProductSKUCode = p.ProductSKUCode,
