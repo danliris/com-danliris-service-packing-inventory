@@ -207,6 +207,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                     item.SetMachine(localItem.Machine, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                 }
             }
 

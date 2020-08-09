@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Grade { get; set; }
         public string Remark { get; set; }
         public string Status { get; set; }
+        public double PackingLength { get; set; }
 
         public double BalanceRemains { get; set; }
 
