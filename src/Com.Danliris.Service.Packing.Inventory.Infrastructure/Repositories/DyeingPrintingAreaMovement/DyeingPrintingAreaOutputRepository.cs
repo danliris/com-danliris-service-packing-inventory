@@ -479,6 +479,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetDescription(localItem.Description, _identityProvider.Username, UserAgent);
+                    item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
 
                     item.SetProductPackingId(localItem.ProductPackingId, _identityProvider.Username, UserAgent);
                     item.SetFabricPackingId(localItem.FabricPackingId, _identityProvider.Username, UserAgent);
@@ -627,6 +629,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                         }
                     }
                     item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetShippingGrade(localItem.ShippingGrade, _identityProvider.Username, UserAgent);
                     item.SetShippingRemark(localItem.ShippingRemark, _identityProvider.Username, UserAgent);
@@ -696,6 +699,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
 
                 }
             }
@@ -758,6 +762,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
                     item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                 }
             }

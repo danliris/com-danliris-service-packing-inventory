@@ -38,6 +38,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double QtyOrder { get; set; }
         public string DeliveryOrderSalesNo { get; set; }
 
+        public double Qty { get; set; }
+        public double Quantity { get; set; }
         public int OutputId { get; set; }
 
         public int InputId { get; set; }

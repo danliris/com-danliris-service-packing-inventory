@@ -81,12 +81,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.YarnMaterialId,
                     Name = s.YarnMaterialName
                 },
-                ProductPackingQuantity = s.PackagingQty == 0 ? 0 : s.Balance / Convert.ToDouble(s.PackagingQty),
+                ProductPackingQuantity = s.PackagingLength,
                 ProductPackingType = s.PackagingUnit
             });
 
             int result = 0;
-            foreach(var item in data)
+            foreach (var item in data)
             {
                 result += await UpdatePrintingStatusProductPacking(item.Id, true);
             }

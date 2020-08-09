@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public string Packing { get; set; }
         public decimal PackagingQty { get; set; }
+        public double PackagingLength { get; set; }
 
         public int BuyerId { get; set; }
         public string Buyer { get; set; }

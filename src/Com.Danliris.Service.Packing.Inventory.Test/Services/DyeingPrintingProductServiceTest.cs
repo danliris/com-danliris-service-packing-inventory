@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 var model = new DyeingPrintingAreaOutputProductionOrderModel("PACKING", "GUDANG JADI", true, ViewModel.ProductionOrder.Id, ViewModel.ProductionOrder.No, ViewModel.ProductionOrder.Type, ViewModel.ProductionOrder.OrderQuantity, "", "", "", "",
                      "", ViewModel.Color, ViewModel.Motif, ViewModel.UomUnit, "", "", "", 0, ViewModel.Id, 0, ViewModel.Material.Id, ViewModel.Material.Name, ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Name,
                      ViewModel.MaterialWidth, "", 0, "", ViewModel.ProductPackingType, 0, "", "", 0, "", ViewModel.YarnMaterial.Id, ViewModel.YarnMaterial.Name, ViewModel.ProductSKUId, ViewModel.FabricSKUId, ViewModel.ProductSKUCode,
-                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, ViewModel.ProductPackingCode, ViewModel.HasPrintingProductPacking);
+                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, ViewModel.ProductPackingCode, ViewModel.HasPrintingProductPacking, ViewModel.ProductPackingQuantity);
 
 
                 model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "PACKING", "s", "s", false, "GUDANG JADI", "S", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>() { model });
