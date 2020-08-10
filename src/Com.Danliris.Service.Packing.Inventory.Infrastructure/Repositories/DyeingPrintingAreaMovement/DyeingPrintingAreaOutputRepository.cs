@@ -635,6 +635,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetShippingRemark(localItem.ShippingRemark, _identityProvider.Username, UserAgent);
                     item.SetWeight(localItem.Weight, _identityProvider.Username, UserAgent);
                     item.SetDeliveryNote(localItem.DeliveryNote, _identityProvider.Username, UserAgent);
+                    item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                 }
             }
 
@@ -764,6 +765,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
                     item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                    item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                 }
             }
 
