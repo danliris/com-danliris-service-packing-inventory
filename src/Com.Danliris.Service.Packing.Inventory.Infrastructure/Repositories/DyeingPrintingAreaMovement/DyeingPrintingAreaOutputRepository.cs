@@ -550,6 +550,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
+                    item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
 
                 }
             }
