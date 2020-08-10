@@ -127,7 +127,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				var item = model.Items.FirstOrDefault(i => i.Id == itemToUpdate.Id);
 				if (item != null)
 				{
+					itemToUpdate.SetQuantity(item.Quantity, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetPrice(item.Price, _identityProvider.Username, USER_AGENT);
+					itemToUpdate.SetAmount(item.Amount, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetUomId(item.UomId, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetCMTPrice(item.CMTPrice, _identityProvider.Username, USER_AGENT);

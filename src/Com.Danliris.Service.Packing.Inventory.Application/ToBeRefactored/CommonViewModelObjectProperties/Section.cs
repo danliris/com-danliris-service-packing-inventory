@@ -8,5 +8,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObje
     {
         public int Id { get; set; }
         public string Code { get; set; }
+        public string Name { get; set; }
     }
 }

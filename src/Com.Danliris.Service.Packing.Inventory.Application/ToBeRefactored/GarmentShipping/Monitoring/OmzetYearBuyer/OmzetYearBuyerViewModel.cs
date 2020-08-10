@@ -16,4 +16,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal amount { get; set; }
         public decimal percentage { get; set; }
     }
+
+    class JoinedData
+    {
+        public string buyer { get; set; }
+        public List<JoinedDataItem> items { get; set; }
+    }
+
+    class JoinedDataItem
+    {
+        public string uom { get; set; }
+        public double quantity { get; set; }
+        public decimal amount { get; set; }
+    }
 }
