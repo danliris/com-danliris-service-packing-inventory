@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var joinedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
             {
-                month = invoice.InvoiceDate,
+                month = packingList.TruckingDate,
                 sectionId = invoice.SectionId,
                 section = invoice.SectionCode,
                 items = invoice.Items.Select(i => new JoinedDataItem
