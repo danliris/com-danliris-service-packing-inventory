@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int Count = 0;
             string DetailErrors = "[";
 
-            if(Type == "OUT")
+            if (Type == "OUT")
             {
                 if ((Id == 0 && TransitProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && TransitProductionOrders.Count() == 0))
                 {
@@ -83,6 +83,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 {
                                     Count++;
                                     DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", item.BalanceRemains);
+                                }
+                            }
+
+                            if (DestinationArea == "GUDANG JADI")
+                            {
+                                if (item.QtyPacking == 0)
+                                {
+                                    Count++;
+                                    DetailErrors += "QtyPacking: 'Qty Packing Harus Lebih dari 0!',";
+                                }
+
+                                if (string.IsNullOrEmpty(item.PackingUnit))
+                                {
+                                    Count++;
+                                    DetailErrors += "PackingUnit: 'Hanya Barang yang berupa Packing yang bisa dikeluarkan!',";
                                 }
                             }
                         }
@@ -154,7 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
-            
+
 
             DetailErrors += "]";
 

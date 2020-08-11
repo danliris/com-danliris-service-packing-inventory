@@ -1136,6 +1136,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
+            vm.DestinationArea = "GUDANG JADI";
+            validateService = new ValidateService(serviceProvider);
+            Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
+
             vm.Type = "ADJ";
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
@@ -1642,7 +1646,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(adjvm.Color);
             Assert.Null(adjvm.Motif);
             Assert.Null(adjvm.UomUnit);
-
+            Assert.Equal(0, adjvm.QtyPacking);
+            Assert.Equal(0, adjvm.PackingLength);
+            Assert.Null(adjvm.PackingUnit);
         }
     }
 }

@@ -18,6 +18,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string MaterialWidth { get; set; }
         public string Remark { get; set; }
         public string Construction { get; set; }
+        public decimal QtyPacking { get; set; }
+        public string PackingUnit { get; set; }
+        public double PackingLength { get; set; }
         public string Unit { get; set; }
         public int BuyerId { get; set; }
         public string Buyer { get; set; }

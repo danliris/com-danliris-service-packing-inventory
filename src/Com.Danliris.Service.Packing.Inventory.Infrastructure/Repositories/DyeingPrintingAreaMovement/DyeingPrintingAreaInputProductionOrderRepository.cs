@@ -243,7 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
 
-            if (modelToUpdate.Area == GUDANGJADI || modelToUpdate.Area == SHIPPING)
+            if (modelToUpdate.Area == GUDANGJADI || modelToUpdate.Area == SHIPPING || modelToUpdate.Area == TRANSIT)
             {
                 var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
                 modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);

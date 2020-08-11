@@ -238,6 +238,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public async Task Should_Success_UpdateFromNextAreaInputAsyncTR()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromNextAreaInputAsyncTR";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
+            var data = DataUtil(repo, dbContext).GetModelTransit();
+            await repo.InsertAsync(data);
+            var result = await repo.UpdateFromNextAreaInputAsync(data.Id, 1, 1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
         public async Task Should_Success_UpdateBalanceAndRemainsWithFlagAsync2()
         {
             string testName = GetCurrentMethod() + "UpdateBalanceAndRemainsWithFlagAsync2";
