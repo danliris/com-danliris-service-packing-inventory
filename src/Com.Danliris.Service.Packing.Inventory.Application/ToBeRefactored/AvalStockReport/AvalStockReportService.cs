@@ -31,10 +31,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
         }
 
-        private IEnumerable<SimpleAvalViewModel> GetAwalData(DateTimeOffset searchDate, IEnumerable<string> avalTypes, int offset)
+        private IEnumerable<SimpleAvalViewModel> GetAwalData(DateTime startDate, IEnumerable<string> avalTypes, int offset)
         {
             var queryTransform = _movementRepository.ReadAll()
-                .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < searchDate.Date && avalTypes.Contains(s.AvalType))
+                .Where(s => s.Area == GUDANGAVAL && 
+                        s.Type != IN && 
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < startDate.Date && 
+                        avalTypes.Contains(s.AvalType))
                 .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
 
             var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
@@ -77,10 +80,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
         //    return queryTransform;
         //}
 
-        private IEnumerable<SimpleAvalViewModel> GetDataByDate(DateTimeOffset searchDate, int offset)
+        private IEnumerable<SimpleAvalViewModel> GetDataByDate(DateTime startDate, DateTimeOffset searchDate, int offset)
         {
             var queryTransform = _movementRepository.ReadAll()
-                   .Where(s => s.Area == GUDANGAVAL && s.Type != IN && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date == searchDate.Date)
+                   .Where(s => s.Area == GUDANGAVAL && 
+                        s.Type != IN &&
+                        startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= searchDate.Date)
                    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
 
             var result = queryTransform.GroupBy(s => new { s.AvalType, s.Type }).Select(d => new SimpleAvalViewModel()
@@ -103,9 +109,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             //var dataOutput = await dataOutpuFunc;
             //var joinData1 = dataTransform.Concat(dataOutput);
 
-            var dataSearchDate = GetDataByDate(searchDate, offset);
+            var startDate = new DateTime(searchDate.Year, searchDate.Month, 1);
+            var dataSearchDate = GetDataByDate(startDate, searchDate, offset);
             var listAvalType = dataSearchDate.Select(d => d.AvalType).Distinct();
-            var dataAwal = GetAwalData(searchDate, listAvalType, offset);
+            var dataAwal = GetAwalData(startDate, listAvalType, offset);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => d.AvalType).Select(e => new AvalStockReportViewModel()

@@ -8,8 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 {
     public interface IStockWarehouseService
     {
-        List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
-        MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
+        List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport,string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
+        MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
 
     }
 }
