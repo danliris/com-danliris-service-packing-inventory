@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IStockWarehouseService>();
-            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .Returns(new List<ReportStockWarehouseViewModel>(new List<ReportStockWarehouseViewModel>() { ViewModel }));
             var service = serviceMock.Object;
 
@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
 
-            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(),It.IsAny<string>());
+            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -95,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IStockWarehouseService>();
-            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            serviceMock.Setup(s => s.GetReportData(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                  .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -104,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
 
-            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
 
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
@@ -114,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IStockWarehouseService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
 
             Assert.NotNull(response);
         }
@@ -133,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IStockWarehouseService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -142,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
