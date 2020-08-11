@@ -104,12 +104,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTimeOffset dateFrom, DateTimeOffset dateTo, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
-                        dateFrom.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
-                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Date);
+                        startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
 
             if (!string.IsNullOrEmpty(unit))
             {
@@ -154,11 +154,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport,  string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
-            var dataSearchDate = GetDataByDate(dateFrom, dateTo, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+            var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+            var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId);
             var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-            var dataAwal = GetAwalData(dateFrom, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId);
+            var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => new { d.NoSpp, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
@@ -187,9 +188,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).ToList();
         }
 
-        public MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        public MemoryStream GenerateExcel(DateTimeOffset dateReport,  string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
         {
-            var data = GetReportData(dateFrom, dateTo, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+            var data = GetReportData(dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId);
 
             DataTable dt = new DataTable();
 
