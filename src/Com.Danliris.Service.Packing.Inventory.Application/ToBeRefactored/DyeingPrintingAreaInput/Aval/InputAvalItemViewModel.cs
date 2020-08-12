@@ -36,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double ProductionOrderOrderQuantity { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
+        public decimal InputPackagingQty { get; set; }
         public string PackagingUnit { get; set; }
         public double PackingLength { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
