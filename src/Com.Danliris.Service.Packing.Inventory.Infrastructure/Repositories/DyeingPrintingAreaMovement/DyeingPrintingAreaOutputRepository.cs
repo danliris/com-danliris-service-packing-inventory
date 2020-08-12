@@ -23,16 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
-        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        private const string TRANSIT = "TRANSIT";
-        private const string PACKING = "PACKING";
-        private const string GUDANGJADI = "GUDANG JADI";
-        private const string GUDANGAVAL = "GUDANG AVAL";
-        private const string SHIPPING = "SHIPPING";
-        private const string PENJUALAN = "PENJUALAN";
-        private const string BUYER = "BUYER";
-        private const string PRODUKSI = "PRODUKSI";
-
         public DyeingPrintingAreaOutputRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
@@ -64,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                if (model.Area == GUDANGJADI || model.Area == SHIPPING)
+                if (model.Area == DyeingPrintingArea.GUDANGJADI || model.Area == DyeingPrintingArea.SHIPPING)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
@@ -89,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == PRODUKSI)
+                if (model.DestinationArea == DyeingPrintingArea.PRODUKSI)
                 {
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                 }
@@ -114,9 +104,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea != BUYER)
+                if (model.DestinationArea != DyeingPrintingArea.BUYER)
                 {
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
@@ -154,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
@@ -181,7 +171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
@@ -208,7 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
@@ -383,7 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    if (model.DestinationArea == PRODUKSI)
+                    if (model.DestinationArea == DyeingPrintingArea.PRODUKSI)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
@@ -396,7 +386,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
-                    if (model.DestinationArea == PRODUKSI)
+                    if (model.DestinationArea == DyeingPrintingArea.PRODUKSI)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
                     }
@@ -423,7 +413,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                if (model.DestinationArea == PRODUKSI)
+                if (model.DestinationArea == DyeingPrintingArea.PRODUKSI)
                 {
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                 }
@@ -452,7 +442,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
@@ -466,7 +456,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     var diffBalance = item.Balance - localItem.Balance;
 
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
                     }
@@ -495,7 +485,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                 }
@@ -525,7 +515,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
@@ -539,7 +529,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     var diffBalance = item.Balance - localItem.Balance;
 
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
                     }
@@ -562,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                 }
@@ -592,9 +582,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                    if (model.DestinationArea != BUYER)
+                    if (model.DestinationArea != DyeingPrintingArea.BUYER)
                     {
-                        if (model.DestinationArea == INSPECTIONMATERIAL)
+                        if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
                             result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                         }
@@ -616,12 +606,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
                 else
                 {
-                    if (model.DestinationArea != BUYER)
+                    if (model.DestinationArea != DyeingPrintingArea.BUYER)
                     {
                         var diffBalance = item.Balance - localItem.Balance;
                         var diffQtyPackking = item.PackagingQty - localItem.PackagingQty;
 
-                        if (model.DestinationArea == INSPECTIONMATERIAL)
+                        if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
                             result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1, diffQtyPackking * -1);
                         }
@@ -660,7 +650,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                    if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
@@ -674,7 +664,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     var diffBalance = item.Balance - localItem.Balance;
                     var diffQtyPacking = item.PackagingQty - localItem.PackagingQty;
-                    if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                    if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
                     {
 
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance, diffQtyPacking);
@@ -711,7 +701,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
-                if (dbModel.Area == GUDANGJADI || dbModel.Area == SHIPPING)
+                if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
                 {
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
@@ -740,7 +730,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
@@ -754,7 +744,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     var diffBalance = item.Balance - localItem.Balance;
 
-                    if (model.DestinationArea == INSPECTIONMATERIAL)
+                    if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
                     }
@@ -777,7 +767,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                if (model.DestinationArea == INSPECTIONMATERIAL)
+                if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                 }
@@ -821,7 +811,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                if (model.DestinationArea == PENJUALAN)
+                if (model.DestinationArea == DyeingPrintingArea.PENJUALAN)
                 {
                     var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
 
@@ -913,7 +903,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
 
-                    if (model.DestinationArea == PENJUALAN)
+                    if (model.DestinationArea == DyeingPrintingArea.PENJUALAN)
                     {
                         var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
 
@@ -928,7 +918,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 else
                 {
 
-                    if (model.DestinationArea == PENJUALAN)
+                    if (model.DestinationArea == DyeingPrintingArea.PENJUALAN)
                     {
                         var avalData = JsonConvert.DeserializeObject<List<AvalData>>(item.PrevSppInJson);
 
@@ -952,7 +942,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
 
-                if (dbModel.DestinationArea == PENJUALAN)
+                if (dbModel.DestinationArea == DyeingPrintingArea.PENJUALAN)
                 {
                     var transform = await _inputRepository.UpdateAvalTransformationFromOut(item.AvalType, item.Balance, item.AvalQuantityKg);
                     result += transform.Item1;

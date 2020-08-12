@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public double Balance { get; set; }
+        public double InputQuantity { get; private set; }
         public bool HasOutputDocument { get; set; }
         public bool IsChecked { get; set; }
         public string PackingInstruction { get; set; }
@@ -130,7 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -164,6 +165,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProcessTypeName = processTypeName;
             YarnMaterialId = yarnMaterialId;
             YarnMaterialName = yarnMaterialName;
+
+            InputQuantity = inputQuantity;
         }
 
         /// <summary>
@@ -517,7 +520,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             int materialConstructionId, string materialConstructionName, string materialWidth, decimal qtyPacking, string packingUnit, string packingType, long deliveryOrderSalesId,
             string deliveryOrderSalesNo, string avalType, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking,
-            double packingLength)
+            double packingLength, double inputQuantity)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -576,6 +579,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasPrintingProductPacking = hasPrintingProductPacking;
 
             PackagingLength = packingLength;
+
+            InputQuantity = inputQuantity;
         }
 
         /// <summary>
@@ -1468,6 +1473,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newPackagingLength != PackagingLength)
             {
                 PackagingLength = newPackagingLength;
+
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetInputQuantity(double newInputQuantity, string user, string agent)
+        {
+            if (newInputQuantity != InputQuantity)
+            {
+                InputQuantity = newInputQuantity;
 
                 this.FlagForUpdate(user, agent);
             }

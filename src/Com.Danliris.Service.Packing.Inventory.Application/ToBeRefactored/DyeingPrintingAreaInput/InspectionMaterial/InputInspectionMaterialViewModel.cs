@@ -68,10 +68,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
                     }
 
-                    if (item.Balance == 0)
+                    if (item.InputQuantity == 0)
                     {
                         Count++;
-                        DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                        DetailErrors += "InputQuantity: 'Qty Terima Harus Lebih dari 0!',";
                     }
 
                     DetailErrors += "}, ";

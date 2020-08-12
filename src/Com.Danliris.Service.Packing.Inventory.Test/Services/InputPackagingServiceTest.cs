@@ -257,6 +257,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             HasOutputDocument = false,
                             IsChecked = false,
                             Motif = "sd",
+                            InputQuantity = 1,
                             PackingInstruction = "d",
                             Remark = "RE",
                             Status = "s",
@@ -301,9 +302,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModelIM.Date, ViewModelIM.Area, ViewModelIM.Shift, ViewModelIM.BonNo, ViewModelIM.Group, ViewModelIM.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name,
+                    s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.HasOutputDocument, s.Remark, s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name,
                     s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.PackingLength)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.PackingLength, s.InputQuantity)).ToList());
             }
         }
 
