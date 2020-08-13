@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string AvalType { get; set; }
         public string UomUnit { get; set; }
         public double Quantity { get; set; }
+        public double InputQuantity { get; set; }
         public bool HasOutputDocument { get; set; }
         public string Machine { get; set; }
 
