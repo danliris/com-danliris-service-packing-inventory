@@ -86,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Type = "sd",
                                 No = "sd"
                             },
+                            InputQuantity = 1,
                             ProcessType = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProcessType()
                             {
                                 Id = 1,
@@ -133,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.HasOutputDocument,
                      item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                      item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode,
-                    item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking)).ToList());
+                    item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity)).ToList());
             }
         }
 

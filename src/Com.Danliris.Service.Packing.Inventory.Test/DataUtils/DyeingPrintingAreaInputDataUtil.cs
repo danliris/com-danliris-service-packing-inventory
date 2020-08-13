@@ -39,8 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "shif", "np", "gr", "typ", true, 5, 5, new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
-                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,false,1,1,"name",1,"a","1","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false),
-                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,false,1,1,"name",1,"a","1","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false)
+                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,false,1,1,"name",1,"a","1","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1),
+                new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","no",1,"no","no",1,"car","cs","as","asf",11,"col","mo","sd","sf",1,false,1,1,"name",1,"a","1","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1)
             });
         }
 
@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaInputModel(DateTimeOffset.UtcNow.AddDays(-1), null, null, null, null, null, false, 0, 0, new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
-                new DyeingPrintingAreaInputProductionOrderModel(null,null,0,null,null,0,null,null,null,null,0,null,null,null,null,0,true,0,0,null,0,null,"0",null,0,null,0,null,0,0,null,true,0,0,null,true)
+                new DyeingPrintingAreaInputProductionOrderModel(null,null,0,null,null,0,null,null,null,null,0,null,null,null,null,0,true,0,0,null,0,null,"0",null,0,null,0,null,0,0,null,true,0,0,null,true,0)
             });
         }
     }
