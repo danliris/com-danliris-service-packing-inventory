@@ -44,6 +44,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalRe
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCuttingNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBPayment;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.VBPayment;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -140,6 +142,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingCreditAdviceModel> GarmentShippingCreditAdvices { get; set; }
 
+        public DbSet<GarmentShippingVBPaymentModel> GarmentShippingVBPayments { get; set; }
+        public DbSet<GarmentShippingVBPaymentInvoiceModel> GarmentShippingVBPaymentInvoices { get; set; }
+        public DbSet<GarmentShippingVBPaymentUnitModel> GarmentShippingVBPaymentUnits { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -198,6 +204,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCuttingNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCuttingNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentInvoiceConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentUnitConfig());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

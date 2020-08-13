@@ -109,6 +109,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearBuyer;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearUnit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearSection;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.VBPayment;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.VBPayment;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -196,6 +198,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
             services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
 
+            services.AddTransient<IGarmentShippingVBPaymentRepository, GarmentShippingVBPaymentRepository>();
+
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
@@ -255,6 +259,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalPriceCorrectionNoteService, GarmentShippingLocalPriceCorrectionNoteService>();
             services.AddTransient<IGarmentShippingLocalReturnNoteService, GarmentShippingLocalReturnNoteService>();
             services.AddTransient<IGarmentShippingLocalPriceCuttingNoteService, GarmentShippingLocalPriceCuttingNoteService>();
+
+            services.AddTransient<IGarmentShippingVBPaymentService, GarmentShippingVBPaymentService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();
