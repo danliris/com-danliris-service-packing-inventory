@@ -14,13 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 {
     public class DyeingPrintingAreaInputRepository : IDyeingPrintingAreaInputRepository
     {
-        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        private const string TRANSIT = "TRANSIT";
-        private const string PACKING = "PACKING";
-        private const string GUDANGJADI = "GUDANG JADI";
-        private const string GUDANGAVAL = "GUDANG AVAL";
-        private const string SHIPPING = "SHIPPING";
-
         private const string UserAgent = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
@@ -247,7 +240,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public async Task<Tuple<int, List<AvalData>>> UpdateAvalTransformationFromOut(string avalType, double avalQuantity, double weightQuantity)
         {
-            var data = _dbSet.Where(s => s.Area == GUDANGAVAL && s.AvalType == avalType && s.IsTransformedAval && (s.TotalAvalQuantity != 0 || s.TotalAvalWeight != 0)).OrderBy(s => s.Date).ToList();
+            var data = _dbSet.Where(s => s.Area == DyeingPrintingArea.GUDANGAVAL && s.AvalType == avalType && s.IsTransformedAval && (s.TotalAvalQuantity != 0 || s.TotalAvalWeight != 0)).OrderBy(s => s.Date).ToList();
 
             int index = 0;
             var avalData = new List<AvalData>();
@@ -349,10 +342,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 else
                 {
                     item.SetCartNo(localItem.CartNo, _identityProvider.Username, UserAgent);
-                    var diffBalance = localItem.Balance - item.Balance;
+                    var diffBalance = localItem.InputQuantity - item.InputQuantity;
 
                     var newBalanceRemains = item.BalanceRemains + diffBalance;
                     var newBalance = item.Balance + diffBalance;
+                    
                     if (newBalanceRemains <= 0)
                     {
                         item.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
@@ -363,6 +357,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     }
                     item.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                     item.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                    item.SetInputQuantity(localItem.InputQuantity, _identityProvider.Username, UserAgent);
                 }
             }
 

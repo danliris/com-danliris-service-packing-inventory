@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public double Balance { get; set; }
+        public double InputQuantity { get; set; }
         public bool HasOutputDocument { get; set; }
         public bool IsChecked { get; set; }
         public string Grade { get; set; }
@@ -48,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public string PackingType { get; set; }
         public decimal QtyPacking { get; set; }
+        public decimal InputQtyPacking { get; set; }
         public string PackingUnit { get; set; }
 
         public string AvalType { get; set; }

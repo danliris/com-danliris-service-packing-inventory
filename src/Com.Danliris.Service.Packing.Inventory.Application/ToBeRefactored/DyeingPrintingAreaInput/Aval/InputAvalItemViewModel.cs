@@ -30,11 +30,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Grade { get; set; }
         public string Status { get; set; }
         public double Balance { get; set; }
+        public double InputQuantity { get; set; }
         public string PackingInstruction { get; set; }
         public string ProductionOrderType { get; set; }
         public double ProductionOrderOrderQuantity { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
+        public decimal InputPackagingQty { get; set; }
         public string PackagingUnit { get; set; }
         public double PackingLength { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }

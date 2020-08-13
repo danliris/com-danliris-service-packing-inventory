@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -18,13 +19,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaInputProductionOrderModel> _dbSet;
-
-        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        private const string TRANSIT = "TRANSIT";
-        private const string PACKING = "PACKING";
-        private const string GUDANGJADI = "GUDANG JADI";
-        private const string GUDANGAVAL = "GUDANG AVAL";
-        private const string SHIPPING = "SHIPPING";
 
         public DyeingPrintingAreaInputProductionOrderRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
@@ -243,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             var newBalance = modelToUpdate.Balance - balance;
             modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
 
-            if (modelToUpdate.Area == GUDANGJADI || modelToUpdate.Area == SHIPPING || modelToUpdate.Area == TRANSIT)
+            if (modelToUpdate.Area == DyeingPrintingArea.GUDANGJADI || modelToUpdate.Area == DyeingPrintingArea.SHIPPING || modelToUpdate.Area == DyeingPrintingArea.TRANSIT)
             {
                 var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
                 modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
