@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBP
         }
 
 
-        public void SetIncomeTaxRate(double billValue, string userName, string userAgent)
+        public void SetBillValue(double billValue, string userName, string userAgent)
         {
             if (BillValue != billValue)
             {
