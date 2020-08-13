@@ -42,9 +42,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var packingListQuery = packingListRepository.ReadAll()
                 .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
 
-            var queriedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
+            var joinedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
             {
-                month = invoice.InvoiceDate,
+                month = packingList.TruckingDate,
                 items = invoice.Items.Select(i => new JoinedDataItem
                 {
                     unit = i.UnitId,
@@ -54,12 +54,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var filterUnit = new Dictionary<string, string>()
             {
-                { "(" + string.Join(" || ", queriedData.SelectMany(s => s.items.Select(i => "Id==\"" + i.unit + "\"")).Distinct().OrderBy(o => o).ToHashSet()) + ")", "true" },
+                { "(" + string.Join(" || ", joinedData.SelectMany(s => s.items.Select(i => "Id==\"" + i.unit + "\"")).Distinct().OrderBy(o => o).ToHashSet()) + ")", "true" },
             };
 
             var masterUnits = GetUnits(filterUnit).Result;
 
-            var selectedData = queriedData.SelectMany(s => s.items.Select(i => new SelectedData
+            var selectedData = joinedData.SelectMany(s => s.items.Select(i => new SelectedData
             {
                 month = MONTH_NAMES[s.month.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).Month - 1],
                 unit = masterUnits.Where(w => w.Id == i.unit).Select(a => a.Name).FirstOrDefault() ?? "-",
