@@ -36,10 +36,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.V
 
             GarmentShippingVBPaymentViewModel viewModel2 = new GarmentShippingVBPaymentViewModel
             {
-                paymentType = "forwarder",
+                paymentType = "Forwarder",
                 forwarder = new Forwarder { id = 0 },
-                buyer = new Buyer { Id = 0 }
-
+                buyer = new Buyer { Id = 0 },
+                incomeTax=new IncomeTax { id=0 }
+                
             };
 
             var result2 = viewModel2.Validate(null);
