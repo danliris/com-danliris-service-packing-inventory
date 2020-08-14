@@ -162,14 +162,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     for (int i = 0; i < SIZES_COUNT; i++)
                     {
                         var size = sizes.ElementAtOrDefault(i);
+                        double quantity = 0;
                         if (size.Key != 0)
                         {
-                            cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Sizes.Where(w => w.Size.Id == size.Key).Select(s => s.Quantity.ToString()).FirstOrDefault() ?? "", normal_font, 0.5f));
+                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity);
                         }
-                        else
-                        {
-                            cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
-                        }
+
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(quantity == 0 ? "" : quantity.ToString(), normal_font, 0.5f));
+
                         tableDetail.AddCell(cellBorderBottomRight);
                     }
                     subCtns += detail.CartonQuantity;
