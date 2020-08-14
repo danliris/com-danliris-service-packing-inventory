@@ -198,7 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Keluar, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Keluar, 1, "type", "gr", "rem", "type",1,"unit",1);
             }
         }
 
@@ -207,7 +207,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -216,7 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -225,7 +225,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -234,7 +234,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-3), "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Keluar, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Keluar, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -243,7 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-3), "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -252,7 +252,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-3), "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 
@@ -261,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-3), "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type");
+                     "unit", ViewModel1.Masuk, 1, "type", "gr", "rem", "type", 1, "unit", 1);
             }
         }
 

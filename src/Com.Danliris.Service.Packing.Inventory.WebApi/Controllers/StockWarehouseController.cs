@@ -67,5 +67,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("packing")]
+        public IActionResult GetPackingData([FromQuery] DateTimeOffset dateReport, [FromQuery] string zona, [FromHeader(Name = "x-timezone-offset")] string timezone,
+            [FromQuery] string unit, [FromQuery] string packingType, [FromQuery] string construction, [FromQuery] string buyer, [FromQuery] long productionOrderId,
+            [FromQuery] string grade)
+        {
+            try
+            {
+                VerifyUser();
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var data = _service.GetPackingData(dateReport, zona, clientTimeZoneOffset, unit, packingType, construction, buyer, productionOrderId, grade);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

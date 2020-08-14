@@ -34,6 +34,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Remark { get; private set; }
         public string PackingType { get; private set; }
 
+        public decimal PackagingQty { get; private set; }
+        public string PackagingUnit { get; private set; }
+        public double PackagingLength { get; private set; }
+
         public DyeingPrintingAreaMovementModel()
         {
 
@@ -94,6 +98,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             UomUnit = uomUnit;
             Balance = balance;
             PackingType = packingType;
+        }
+
+        /// <summary>
+        /// Get For Packing
+        /// </summary>
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, long productionOrderId, decimal qtyPacking, string packingUnit, double packingLength, double balance)
+        {
+            Date = date;
+            Area = area;
+            Type = type;
+            ProductionOrderId = productionOrderId;
+            PackagingQty = qtyPacking;
+            PackagingUnit = packingUnit;
+            PackagingLength = packingLength;
+            Balance = balance;
         }
 
         /// <summary>
@@ -201,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         }
 
         /// <summary>
-        /// Constructror With Grade and Remark and Packing Type
+        /// Constructror With Grade and Remark and Packing Data
         /// </summary>
         /// <param name="date"></param>
         /// <param name="area"></param>
@@ -225,12 +244,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="packingType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType)
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType,
+            decimal qtyPacking, string packingUnit, double packingLength)
             : this(date, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
         {
             PackingType = packingType;
+            PackagingQty = qtyPacking;
+            PackagingUnit = packingUnit;
+            PackagingLength = packingLength;
         }
 
         /// <summary>
