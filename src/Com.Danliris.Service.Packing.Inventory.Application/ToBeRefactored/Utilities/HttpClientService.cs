@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
         public HttpClientService(IIdentityProvider identityService)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, identityService.Token);
+            _client.DefaultRequestHeaders.Add("x-timezone-offset", identityService.TimezoneOffset.ToString());
         }
 
         public async Task<HttpResponseMessage> GetAsync(string url)
