@@ -123,7 +123,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             foreach (var unitToUpdate in modelToUpdate.Units)
             {
-                var unit = model.Invoices.FirstOrDefault(m => m.Id == unitToUpdate.Id);
+                var unit = model.Units.FirstOrDefault(m => m.Id == unitToUpdate.Id);
+                unitToUpdate.SetBillValue(unitToUpdate.BillValue, _identityProvider.Username, UserAgent);
                 if (unit == null)
                 {
                     unitToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);

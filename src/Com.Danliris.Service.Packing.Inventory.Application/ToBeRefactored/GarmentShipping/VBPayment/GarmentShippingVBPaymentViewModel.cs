@@ -38,6 +38,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
             }
+            if (incomeTax == null || incomeTax.id == 0)
+            {
+                yield return new ValidationResult("PPH tidak boleh kosong", new List<string> { "incomeTax" });
+            }
             if (paymentType == "EMKL")
             {
                 if (string.IsNullOrEmpty(emklInvoiceNo))
@@ -46,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
                 if (emkl == null || emkl.Id == 0)
                 {
-                    yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "emkl" });
+                    yield return new ValidationResult("EMKL tidak boleh kosong", new List<string> { "emkl" });
                 }
             }
             else

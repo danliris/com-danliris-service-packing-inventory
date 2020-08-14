@@ -36,14 +36,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.V
 
             GarmentShippingVBPaymentViewModel viewModel2 = new GarmentShippingVBPaymentViewModel
             {
-                paymentType = "forwarder",
+                paymentType = "Forwarder",
                 forwarder = new Forwarder { id = 0 },
-                buyer = new Buyer { Id = 0 }
-
+                buyer = new Buyer { Id = 0 },
+                incomeTax=new IncomeTax { id=0 }
+                
             };
 
             var result2 = viewModel2.Validate(null);
             Assert.NotEmpty(result2.ToList());
+
+            GarmentShippingVBPaymentViewModel viewModel3 = new GarmentShippingVBPaymentViewModel
+            {
+                paymentType = "EMKL",
+                buyer = new Buyer { Id = 0 }
+
+            };
+
+            var result3 = viewModel3.Validate(null);
+            Assert.NotEmpty(result3.ToList());
         }
 
         [Fact]
