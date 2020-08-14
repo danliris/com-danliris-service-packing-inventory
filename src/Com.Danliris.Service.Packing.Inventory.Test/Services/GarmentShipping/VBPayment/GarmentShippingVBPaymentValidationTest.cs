@@ -45,6 +45,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.V
 
             var result2 = viewModel2.Validate(null);
             Assert.NotEmpty(result2.ToList());
+
+            GarmentShippingVBPaymentViewModel viewModel3 = new GarmentShippingVBPaymentViewModel
+            {
+                paymentType = "EMKL",
+                buyer = new Buyer { Id = 0 }
+
+            };
+
+            var result3 = viewModel3.Validate(null);
+            Assert.NotEmpty(result3.ToList());
         }
 
         [Fact]
