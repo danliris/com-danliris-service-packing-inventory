@@ -111,6 +111,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearSection;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.VBPayment;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.VBPayment;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesReportByBuyer;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzet;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearCountry;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearBuyerComodity;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -197,7 +201,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
             services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
-
+            services.AddTransient<IGarmentShippingLocalSalesNoteItemRepository, GarmentShippingLocalSalesNoteItemRepository>();
             services.AddTransient<IGarmentShippingVBPaymentRepository, GarmentShippingVBPaymentRepository>();
 
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
@@ -284,7 +288,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearBuyerService, OmzetYearBuyerService>();
             services.AddTransient<IOmzetYearUnitService, OmzetYearUnitService>();
             services.AddTransient<IOmzetYearSectionService, OmzetYearSectionService>();
-
+            services.AddTransient<IGarmentLocalSalesReportByBuyerService, GarmentLocalSalesReportByBuyerService>();
+            services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
+            services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
+            services.AddTransient<IOmzetYearBuyerComodityService, OmzetYearBuyerComodityService>();
             services.AddTransient<IDyeingPrintingProductService, DyeingPrintingProductService>();
             #endregion
 

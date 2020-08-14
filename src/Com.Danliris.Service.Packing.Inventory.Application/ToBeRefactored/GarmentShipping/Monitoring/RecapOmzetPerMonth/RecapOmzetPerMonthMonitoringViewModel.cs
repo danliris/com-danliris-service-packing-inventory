@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset truckingDate { get; set; }
         public string buyerAgentName { get; set; }
         public string buyerAgentCode { get; set; }
-
+        public string destination { get; set; }
         public int invoiceId { get; set; }
         public string invoiceNo { get; set; }
         public DateTimeOffset invoiceDate { get; set; }
