@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
         public static readonly string GA = "GA";
         public static readonly string SP = "SP";
         public static readonly string PJ = "PJ";
+        public static readonly string BY = "BY";
         public static readonly string ADJ_IN = "ADJ IN";
         public static readonly string ADJ_OUT = "ADJ OUT";
 
