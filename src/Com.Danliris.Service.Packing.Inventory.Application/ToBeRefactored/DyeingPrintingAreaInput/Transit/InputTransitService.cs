@@ -559,7 +559,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         else if (item.Key == DyeingPrintingArea.GUDANGJADI || item.Key == DyeingPrintingArea.SHIPPING)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, 
+                                detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                     }
@@ -595,7 +596,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         else if (item.Key == DyeingPrintingArea.GUDANGJADI || item.Key == DyeingPrintingArea.SHIPPING)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, 
+                                detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                     }

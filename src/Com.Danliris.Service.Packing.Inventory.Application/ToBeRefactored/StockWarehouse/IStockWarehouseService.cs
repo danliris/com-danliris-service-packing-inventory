@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
     {
         List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport,string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
         MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId);
+        List<PackingDataViewModel> GetPackingData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string grade);
 
     }
 }

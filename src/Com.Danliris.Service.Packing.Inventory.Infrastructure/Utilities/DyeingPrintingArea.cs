@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
         public static readonly string IN = "IN";
         public static readonly string OUT = "OUT";
         public static readonly string ADJ = "ADJ";
+        public static readonly string AWAL = "AWAL";
         public static readonly string TRANSFORM = "TRANSFORM";
 
         public static readonly string IM = "IM";
@@ -18,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
         public static readonly string GA = "GA";
         public static readonly string SP = "SP";
         public static readonly string PJ = "PJ";
+        public static readonly string BY = "BY";
         public static readonly string ADJ_IN = "ADJ IN";
         public static readonly string ADJ_OUT = "ADJ OUT";
 
