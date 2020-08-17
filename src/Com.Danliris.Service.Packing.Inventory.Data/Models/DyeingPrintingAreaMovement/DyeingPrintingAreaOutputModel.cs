@@ -250,5 +250,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        public void SetAdjItemCategory(string newAdjItemCategory, string user, string agent)
+        {
+            if (newAdjItemCategory != AdjItemCategory)
+            {
+                AdjItemCategory = newAdjItemCategory;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 }
