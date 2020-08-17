@@ -1672,6 +1672,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(0, adjvm.QtyPacking);
             Assert.Equal(0, adjvm.PackingLength);
             Assert.Null(adjvm.PackingUnit);
+            Assert.Null(adjvm.PackingType);
+            Assert.Equal(0, adjvm.DyeingPrintingAreaInputProductionOrderId);
+            Assert.Equal(0, adjvm.BalanceRemains);
+            Assert.Null(adjvm.ProcessType);
+            Assert.Null(adjvm.YarnMaterial);
+            Assert.Equal(0, adjvm.FabricSKUId);
+            Assert.Equal(0, adjvm.ProductSKUId);
+            Assert.Null(adjvm.ProductSKUCode);
+            Assert.False(adjvm.HasPrintingProductSKU);
+            Assert.Equal(0, adjvm.ProductPackingId);
+            Assert.Equal(0, adjvm.FabricPackingId);
+            Assert.Null(adjvm.ProductPackingCode);
+            Assert.False(adjvm.HasPrintingProductPacking);
         }
     }
 }
