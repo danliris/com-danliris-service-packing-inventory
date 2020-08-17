@@ -656,7 +656,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GetDistinctAllProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            serviceMock.Setup(s => s.GetDistinctAllProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new ListResult<AdjTransitProductionOrderViewModel>(new List<AdjTransitProductionOrderViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
 
@@ -668,7 +668,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetAdjProductionOrder();
+            var response = controller.GetAdjProductionOrder("KAIN");
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -679,7 +679,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GetDistinctAllProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            serviceMock.Setup(s => s.GetDistinctAllProductionOrder(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -690,7 +690,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = controller.GetAdjProductionOrder();
+            var response = controller.GetAdjProductionOrder("KAIN");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

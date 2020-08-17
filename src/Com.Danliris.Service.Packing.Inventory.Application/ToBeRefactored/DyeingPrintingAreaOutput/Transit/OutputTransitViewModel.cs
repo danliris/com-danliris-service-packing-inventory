@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int InputTransitId { get; set; }
         public string Type { get; set; }
         public string AdjType { get; set; }
+        public string AdjItemCategory { get; set; }
         public string Group { get; set; }
         public ICollection<OutputTransitProductionOrderViewModel> TransitProductionOrders { get; set; }
 
@@ -52,13 +54,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Group))
                 yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
-            if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
+            if (Type == DyeingPrintingArea.OUT && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
 
             int Count = 0;
             string DetailErrors = "[";
 
-            if (Type == "OUT")
+            if (Type == DyeingPrintingArea.OUT)
             {
                 if ((Id == 0 && TransitProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && TransitProductionOrders.Count() == 0))
                 {
@@ -86,7 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 }
                             }
 
-                            if (DestinationArea == "GUDANG JADI")
+                            if (DestinationArea == DyeingPrintingArea.GUDANGJADI)
                             {
                                 if (item.QtyPacking == 0)
                                 {
@@ -109,6 +111,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
+                if(string.IsNullOrEmpty(AdjItemCategory))
+                    yield return new ValidationResult("Jenis Barang harus diisi", new List<string> { "AdjItemCategory" });
+
                 if (TransitProductionOrders.Count == 0)
                 {
                     yield return new ValidationResult("SPP harus Diisi", new List<string> { "TransitProductionOrder" });
@@ -127,14 +132,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             if (items.All(d => d > 0))
                             {
-                                if (AdjType != "ADJ IN")
+                                if (AdjType != DyeingPrintingArea.ADJ_IN)
                                 {
                                     yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "TransitProductionOrder" });
                                 }
                             }
                             else
                             {
-                                if (AdjType != "ADJ OUT")
+                                if (AdjType != DyeingPrintingArea.ADJ_OUT)
                                 {
                                     yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "TransitProductionOrder" });
                                 }
@@ -155,8 +160,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         if (item.Balance == 0)
                         {
                             Count++;
-                            DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                            DetailErrors += "Balance: 'Qty Total tidak boleh sama dengan 0!',";
                         }
+
+                        if (AdjItemCategory == DyeingPrintingArea.PACK)
+                        {
+                            if (item.PackingLength == 0)
+                            {
+                                Count++;
+                                DetailErrors += "Qty: 'Qty  tidak boleh sama dengan 0!',";
+                            }
+
+                            if (item.QtyPacking == 0)
+                            {
+                                Count++;
+                                DetailErrors += "QtyPacking: 'QtyPacking  tidak boleh sama dengan 0!',";
+                            }
+                        }
+
 
                         if (string.IsNullOrEmpty(item.AdjDocumentNo))
                         {
