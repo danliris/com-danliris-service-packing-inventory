@@ -1606,7 +1606,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }.AsQueryable());
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null);
+            var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null, "KAIN");
+
+            Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_GetDistinctAllProductionOrders_PACK()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            sppoutRepoMock.Setup(s => s.ReadAll()).Returns(Model.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
+            {
+                new DyeingPrintingAreaInputProductionOrderModel("TRANSIT",1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,false,"s","s","s",1,1,1,1,"name",1,"a","1",1,"a","a",1,"a","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1, 1)
+            }.AsQueryable());
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+
+            var result = service.GetDistinctAllProductionOrder(1, 25, "{}", "{}", null, "PACK");
 
             Assert.NotEmpty(result.Data);
         }
@@ -1649,6 +1672,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(0, adjvm.QtyPacking);
             Assert.Equal(0, adjvm.PackingLength);
             Assert.Null(adjvm.PackingUnit);
+            Assert.Null(adjvm.PackingType);
+            Assert.Equal(0, adjvm.DyeingPrintingAreaInputProductionOrderId);
+            Assert.Equal(0, adjvm.BalanceRemains);
+            Assert.Null(adjvm.ProcessType);
+            Assert.Null(adjvm.YarnMaterial);
+            Assert.Equal(0, adjvm.FabricSKUId);
+            Assert.Equal(0, adjvm.ProductSKUId);
+            Assert.Null(adjvm.ProductSKUCode);
+            Assert.False(adjvm.HasPrintingProductSKU);
+            Assert.Equal(0, adjvm.ProductPackingId);
+            Assert.Equal(0, adjvm.FabricPackingId);
+            Assert.Null(adjvm.ProductPackingCode);
+            Assert.False(adjvm.HasPrintingProductPacking);
         }
     }
 }

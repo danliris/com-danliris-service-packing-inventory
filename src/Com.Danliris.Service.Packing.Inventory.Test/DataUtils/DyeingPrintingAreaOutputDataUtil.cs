@@ -14,10 +14,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaOutputModel GetModel()
         {
-            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
+            return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "INSPECTION MATERIAL", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
                 new DyeingPrintingAreaOutputProductionOrderModel("TRANSIT","PACKING",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2, 1,1, 1, "name", 1, "a", "1","a",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1),
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","a",1,"a",1,"a",1,1,"s",false),
+                new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","a",1,"a",1,"a",1,1,"s",false),
                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1, 1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1),
                 new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1)
 

@@ -54,14 +54,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                if (model.Area == DyeingPrintingArea.GUDANGJADI || model.Area == DyeingPrintingArea.SHIPPING)
+                if (model.Area == DyeingPrintingArea.PACKING)
                 {
 
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                }
+                else if (model.Area == DyeingPrintingArea.TRANSIT)
+                {
+                    if (model.AdjItemCategory == DyeingPrintingArea.KAIN)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                    }
+                }
+                else if (model.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                 }
                 else
                 {
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
                 }
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
@@ -650,28 +665,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
+                    if (dbModel.Area == DyeingPrintingArea.PACKING)
                     {
 
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    }
+                    else if (model.Area == DyeingPrintingArea.TRANSIT)
+                    {
+                        if (model.AdjItemCategory == DyeingPrintingArea.KAIN)
+                        {
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                        }
+                        else
+                        {
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
+                        }
+                    }
+                    else if (model.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                     }
                     else
                     {
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
                     }
                 }
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
                     var diffQtyPacking = item.PackagingQty - localItem.PackagingQty;
-                    if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
+                    if (dbModel.Area == DyeingPrintingArea.PACKING)
                     {
 
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance, diffQtyPacking);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
+                    }
+                    else if (model.Area == DyeingPrintingArea.TRANSIT)
+                    {
+                        if (model.AdjItemCategory == DyeingPrintingArea.KAIN)
+                        {
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
+                        }
+                        else
+                        {
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance, diffQtyPacking);
+                        }
+                    }
+                    else if (model.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
                     }
                     else
                     {
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance, diffQtyPacking);
                     }
 
                     item.DyeingPrintingAreaInputProductionOrderId = localItem.DyeingPrintingAreaInputProductionOrderId;
@@ -701,14 +746,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
                 dbModel.DyeingPrintingAreaOutputProductionOrders.Add(item);
-                if (dbModel.Area == DyeingPrintingArea.GUDANGJADI || dbModel.Area == DyeingPrintingArea.SHIPPING)
+                if (dbModel.Area == DyeingPrintingArea.PACKING)
                 {
 
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                }
+                else if (model.Area == DyeingPrintingArea.TRANSIT)
+                {
+                    if (model.AdjItemCategory == DyeingPrintingArea.KAIN)
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    }
+                    else
+                    {
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                    }
+                }
+                else if (model.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
+                {
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                 }
                 else
                 {
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }
 
             }

@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string ShippingCode { get; private set; }
 
+        public string AdjItemCategory { get; private set; }
+
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
         public DyeingPrintingAreaOutputModel()
@@ -56,6 +58,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
             Type = type;
+        }
+
+        /// <summary>
+        /// Area Transit
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="hasNextAreaDocument"></param>
+        /// <param name="destinationArea"></param>
+        /// <param name="group"></param>
+        /// <param name="type"></param>
+        /// <param name="adjItemCategory"></param>
+        /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+            string destinationArea, string group, string type, string adjItemCategory, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            HasNextAreaDocument = hasNextAreaDocument;
+            DestinationArea = destinationArea;
+            DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
+            Type = type;
+            AdjItemCategory = adjItemCategory;
         }
 
         /// <summary>
@@ -217,6 +247,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newFlagHasSalesInvoice != HasSalesInvoice)
             {
                 HasSalesInvoice = newFlagHasSalesInvoice;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetAdjItemCategory(string newAdjItemCategory, string user, string agent)
+        {
+            if (newAdjItemCategory != AdjItemCategory)
+            {
+                AdjItemCategory = newAdjItemCategory;
                 this.FlagForUpdate(user, agent);
             }
         }
