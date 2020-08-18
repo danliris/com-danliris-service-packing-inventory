@@ -105,6 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetVatValue(model.VatValue, _identityProvider.Username, UserAgent);
             modelToUpdate.SetVBDate(model.VBDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPaymentDate(model.PaymentDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPaymentType(model.PaymentType, _identityProvider.Username, UserAgent);
 
             foreach (var invoiceToUpdate in modelToUpdate.Invoices)
             {

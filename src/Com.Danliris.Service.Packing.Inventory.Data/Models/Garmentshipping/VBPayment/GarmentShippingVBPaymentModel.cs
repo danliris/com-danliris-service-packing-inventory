@@ -83,6 +83,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBP
             }
         }
 
+        public void SetPaymentType(string paymentType, string userName, string userAgent)
+        {
+            if (PaymentType != paymentType)
+            {
+                PaymentType = paymentType;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetBuyerId(int buyerId, string userName, string userAgent)
         {
             if (BuyerId != buyerId)
