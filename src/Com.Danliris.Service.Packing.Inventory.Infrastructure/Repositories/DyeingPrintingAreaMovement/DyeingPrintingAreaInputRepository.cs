@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteShippingArea(DyeingPrintingAreaInputModel model)
         {
             int result = 0;
-            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false);
+            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false, null);
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteTransitArea(DyeingPrintingAreaInputModel model)
         {
             int result = 0;
-            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false);
+            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false, null);
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -384,7 +384,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
+                    result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false, null);
                     var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
                     result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }
@@ -417,7 +417,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false);
+                    result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false, null);
                     var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
                     result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }

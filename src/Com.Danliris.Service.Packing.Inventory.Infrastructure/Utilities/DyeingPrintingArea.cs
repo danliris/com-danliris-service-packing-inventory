@@ -37,5 +37,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 
         public static readonly string KAIN = "KAIN";
         public static readonly string PACK = "PACK";
+
+        public static readonly string TERIMA = "DITERIMA";
+        public static readonly string TOLAK = "DITOLAK";
     }
 }

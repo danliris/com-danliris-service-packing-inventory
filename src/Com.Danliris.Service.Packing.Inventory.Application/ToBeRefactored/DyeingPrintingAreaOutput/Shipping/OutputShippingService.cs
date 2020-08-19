@@ -1050,7 +1050,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (dbModel.DestinationArea != PENJUALAN)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, OUT, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade, 
+                       item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade,
                        null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
 
                     result += await _movementRepository.InsertAsync(movementModel);
@@ -1118,7 +1118,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (newQtyPacking != 0 && newBalance != 0)
                 {
                     var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, type, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id, item.ProductionOrderType, 
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id, item.ProductionOrderType,
                         item.Grade, null, item.PackagingType, newQtyPacking, item.PackagingUnit, item.PackagingLength);
 
                     result += await _movementRepository.InsertAsync(movementModel);
@@ -1129,7 +1129,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in deletedData)
             {
                 var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, type, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, 
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType,
                         item.Grade, null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
                 result += await _movementRepository.InsertAsync(movementModel);
             }
@@ -1284,10 +1284,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "No SJ", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Zona Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Status", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -1301,7 +1302,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, OUT);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, OUT, item.NextAreaInputStatus);
 
                         }
                     }
@@ -1312,7 +1313,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, ADJ);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, ADJ, "");
 
                         }
                     }

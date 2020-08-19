@@ -1424,6 +1424,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          QtyPack = d.PackagingQty,
                          Pack = d.PackagingUnit,
                          Qty = d.Balance,
+                         d.NextAreaInputStatus,
                          SAT = d.UomUnit
                      })
                  });
@@ -1454,6 +1455,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"Pack","PACK"},
                 {"Qty","QTY" },
                 {"SAT","SAT" },
+                {"NextAreaInputStatus","Status" }
             };
             var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
             #endregion

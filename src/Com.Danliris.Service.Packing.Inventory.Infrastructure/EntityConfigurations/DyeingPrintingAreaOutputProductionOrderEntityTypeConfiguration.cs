@@ -173,6 +173,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
              .Property(s => s.YarnMaterialName)
              .HasMaxLength(1024);
+
+            builder
+             .Property(s => s.NextAreaInputStatus)
+             .HasMaxLength(16);
         }
     }
 }

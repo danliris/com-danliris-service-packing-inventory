@@ -433,7 +433,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
-                    if(viewModel.AdjItemCategory == DyeingPrintingArea.KAIN)
+                    if (viewModel.AdjItemCategory == DyeingPrintingArea.KAIN)
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
                     }
@@ -441,7 +441,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                     }
-                    
+
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                             item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, null, item.Remark);
@@ -1049,10 +1049,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Zona Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Status", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -1065,7 +1066,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark, item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, OUT);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, OUT, item.NextAreaInputStatus);
 
                         }
 
@@ -1076,7 +1077,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark, item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, ADJ);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, ADJ, "");
 
                         }
                     }
@@ -1161,7 +1162,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var categoryQuery = _inputProductionOrderRepository.ReadAll();
 
-            if(adjItemCategory == DyeingPrintingArea.KAIN)
+            if (adjItemCategory == DyeingPrintingArea.KAIN)
             {
                 categoryQuery = categoryQuery.Where(s => s.PackagingUnit == null);
             }
@@ -1170,47 +1171,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 categoryQuery = categoryQuery.Where(s => s.PackagingUnit != null);
             }
 
-           var query = categoryQuery
-                .Where(s => s.Area == TRANSIT && !s.HasOutputDocument)
-                .Select(d => new PlainAdjTransitProductionOrder()
-                {
-                    Id = d.Id,
-                    BalanceRemains = d.BalanceRemains,
-                    Area = d.Area,
-                    Buyer = d.Buyer,
-                    BuyerId = d.BuyerId,
-                    Remark = d.Remark,
-                    Color = d.Color,
-                    Construction = d.Construction,
-                    MaterialConstructionId = d.MaterialConstructionId,
-                    MaterialConstructionName = d.MaterialConstructionName,
-                    MaterialId = d.MaterialId,
-                    MaterialName = d.MaterialName,
-                    MaterialWidth = d.MaterialWidth,
-                    PackagingLength = d.PackagingLength,
-                    PackagingQty = d.PackagingQty,
-                    PackagingType = d.PackagingType,
-                    PackagingUnit = d.PackagingUnit,
-                    Motif = d.Motif,
-                    ProductionOrderId = d.ProductionOrderId,
-                    ProductionOrderNo = d.ProductionOrderNo,
-                    ProductionOrderOrderQuantity = d.ProductionOrderOrderQuantity,
-                    ProductionOrderType = d.ProductionOrderType,
-                    ProcessTypeId = d.ProcessTypeId,
-                    ProcessTypeName = d.ProcessTypeName,
-                    YarnMaterialId = d.YarnMaterialId,
-                    YarnMaterialName = d.YarnMaterialName,
-                    Unit = d.Unit,
-                    UomUnit = d.UomUnit,
-                    ProductSKUId = d.ProductSKUId,
-                    FabricSKUId = d.FabricSKUId,
-                    ProductSKUCode = d.ProductSKUCode,
-                    HasPrintingProductSKU = d.HasPrintingProductSKU,
-                    ProductPackingId = d.ProductPackingId,
-                    FabricPackingId = d.FabricPackingId,
-                    ProductPackingCode = d.ProductPackingCode,
-                    HasPrintingProductPacking = d.HasPrintingProductPacking
-                });
+            var query = categoryQuery
+                 .Where(s => s.Area == TRANSIT && !s.HasOutputDocument)
+                 .Select(d => new PlainAdjTransitProductionOrder()
+                 {
+                     Id = d.Id,
+                     BalanceRemains = d.BalanceRemains,
+                     Area = d.Area,
+                     Buyer = d.Buyer,
+                     BuyerId = d.BuyerId,
+                     Remark = d.Remark,
+                     Color = d.Color,
+                     Construction = d.Construction,
+                     MaterialConstructionId = d.MaterialConstructionId,
+                     MaterialConstructionName = d.MaterialConstructionName,
+                     MaterialId = d.MaterialId,
+                     MaterialName = d.MaterialName,
+                     MaterialWidth = d.MaterialWidth,
+                     PackagingLength = d.PackagingLength,
+                     PackagingQty = d.PackagingQty,
+                     PackagingType = d.PackagingType,
+                     PackagingUnit = d.PackagingUnit,
+                     Motif = d.Motif,
+                     ProductionOrderId = d.ProductionOrderId,
+                     ProductionOrderNo = d.ProductionOrderNo,
+                     ProductionOrderOrderQuantity = d.ProductionOrderOrderQuantity,
+                     ProductionOrderType = d.ProductionOrderType,
+                     ProcessTypeId = d.ProcessTypeId,
+                     ProcessTypeName = d.ProcessTypeName,
+                     YarnMaterialId = d.YarnMaterialId,
+                     YarnMaterialName = d.YarnMaterialName,
+                     Unit = d.Unit,
+                     UomUnit = d.UomUnit,
+                     ProductSKUId = d.ProductSKUId,
+                     FabricSKUId = d.FabricSKUId,
+                     ProductSKUCode = d.ProductSKUCode,
+                     HasPrintingProductSKU = d.HasPrintingProductSKU,
+                     ProductPackingId = d.ProductPackingId,
+                     FabricPackingId = d.FabricPackingId,
+                     ProductPackingCode = d.ProductPackingCode,
+                     HasPrintingProductPacking = d.HasPrintingProductPacking
+                 });
             List<string> SearchAttributes = new List<string>()
             {
                 "ProductionOrderNo"

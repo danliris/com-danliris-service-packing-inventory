@@ -114,6 +114,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
+        public Task<int> UpdateFromInputNextAreaFlagAsync(int id, bool hasNextAreaDocument, string nextAreaInputStatus)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetNextAreaInputStatus(nextAreaInputStatus,_identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
         public Task<int> UpdateFromInputAsync(IEnumerable<int> ids, bool hasNextAreaDocument)
         {
             var modelToUpdate = _dbSet.Where(s => ids.Contains(s.Id));
@@ -121,6 +134,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             foreach (var item in modelToUpdate)
             {
                 item.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateFromInputAsync(IEnumerable<int> ids, bool hasNextAreaDocument, string nextAreaInputStatus)
+        {
+            var modelToUpdate = _dbSet.Where(s => ids.Contains(s.Id));
+
+            foreach (var item in modelToUpdate)
+            {
+                item.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
+                item.SetNextAreaInputStatus(nextAreaInputStatus, _identityProvider.Username, UserAgent);
             }
 
             return _dbContext.SaveChangesAsync();

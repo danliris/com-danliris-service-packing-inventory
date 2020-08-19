@@ -420,7 +420,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DyeingPrintingAreaOutputModel model = _repository.GetDbSet().AsNoTracking()
                   .FirstOrDefault(s => s.Area == INSPECTIONMATERIAL && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == type);
 
-            if(model == null)
+            if (model == null)
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.InspectionMaterialProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id,
@@ -462,7 +462,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 }
             }
-            
+
 
             return result;
         }
@@ -882,10 +882,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Zona Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Status", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -898,7 +899,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Status, item.Remark, item.Machine, item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, OUT);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, OUT, item.NextAreaInputStatus);
 
                         }
                     }
@@ -908,7 +909,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Status, item.Remark, item.Machine, item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, ADJ);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, ADJ, "");
 
                         }
                     }
