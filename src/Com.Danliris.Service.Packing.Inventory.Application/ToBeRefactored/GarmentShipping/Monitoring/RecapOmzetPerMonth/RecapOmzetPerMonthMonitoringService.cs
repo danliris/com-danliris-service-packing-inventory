@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var currencyFilters = selectedData
                 .GroupBy(o => new { o.truckingDate, o.currency })
-                .Select(o => new CurrencyFilter { date = o.Key.truckingDate, code = o.Key.currency })
+                .Select(o => new CurrencyFilter { date = o.Key.truckingDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).Date, code = o.Key.currency })
                 .ToList();
 
             var currencies = GetCurrecncies(currencyFilters).Result;

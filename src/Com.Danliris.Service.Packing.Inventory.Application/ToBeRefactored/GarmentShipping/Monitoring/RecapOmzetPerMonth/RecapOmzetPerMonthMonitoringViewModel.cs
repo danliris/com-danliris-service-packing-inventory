@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
     class CurrencyFilter
     {
-        public DateTimeOffset date { get; set; }
+        public DateTime date { get; set; }
         public string code { get; set; }
     }
 }
