@@ -193,7 +193,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputId, true);
 
-                result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id), true);
+                result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TERIMA);
                 foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
                 {
                     var itemVM = viewModel.TransitProductionOrders.FirstOrDefault(s => s.Id == item.DyeingPrintingAreaOutputProductionOrderId);
@@ -225,7 +225,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += await _movementRepository.InsertAsync(movementModel);
 
                 }
-                result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id), true);
+                result += await _outputSPPRepository.UpdateFromInputAsync(viewModel.TransitProductionOrders.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TERIMA);
             }
 
 
@@ -538,7 +538,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     //result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputId, true);
 
-                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
                     foreach (var detail in item)
                     {
                         var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == detail.Id);
@@ -601,7 +601,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                     }
-                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _outputSPPRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
                 }
             }
 

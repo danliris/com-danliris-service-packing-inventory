@@ -60,6 +60,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationArea { get; private set; }
         public string Description { get; set; }
 
+        public string NextAreaInputStatus { get; private set; }
+
 
         public string DeliveryNote { get; private set; }
 
@@ -1370,6 +1372,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             {
                 PackagingLength = newPackagingLength;
 
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetNextAreaInputStatus(string newNextAreaInputStatus, string user, string agent)
+        {
+
+            if (newNextAreaInputStatus != NextAreaInputStatus)
+            {
+                NextAreaInputStatus = newNextAreaInputStatus;
                 this.FlagForUpdate(user, agent);
             }
         }

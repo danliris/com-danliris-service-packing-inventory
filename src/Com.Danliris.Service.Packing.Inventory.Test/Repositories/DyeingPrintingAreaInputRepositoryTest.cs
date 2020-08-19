@@ -176,14 +176,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         [Fact]
         public virtual async Task Should_Success_DeleteTransitArea()
         {
-            string testName = GetCurrentMethod();
+            string testName = GetCurrentMethod() + "DeleteTransitArea";
             var dbContext = DbContext(testName);
 
             var serviceProvider = GetServiceProviderMock(dbContext);
 
             Mock<IDyeingPrintingAreaOutputProductionOrderRepository> outputSPPMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            outputSPPMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+            outputSPPMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>(), It.IsAny<string>()))
                 .ReturnsAsync(1);
             outputSPPMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new DyeingPrintingAreaOutputProductionOrderModel());

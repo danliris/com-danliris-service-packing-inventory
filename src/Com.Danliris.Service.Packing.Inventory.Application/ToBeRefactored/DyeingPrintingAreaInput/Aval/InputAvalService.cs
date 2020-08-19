@@ -299,7 +299,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //result += await _inputSppRepository.UpdateAsync(prevInput.Id, prevInput);
                     var itemVM = viewModel.AvalItems.FirstOrDefault(s => s.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
                     result += await _inputSppRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, spp.InputQuantity, spp.InputPackagingQty);
-                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
+                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true, DyeingPrintingArea.TERIMA);
                 }
 
                 //foreach (var spp in model.DyeingPrintingAreaInputProductionOrders)
@@ -328,7 +328,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     var itemVM = viewModel.AvalItems.FirstOrDefault(s => s.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
                     result += await _inputSppRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, spp.InputQuantity, spp.InputPackagingQty);
-                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
+                    result += await _outputSppRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true, DyeingPrintingArea.TERIMA);
                 }
             }
 
@@ -663,7 +663,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty)).ToList());
 
                     result = await _inputRepository.InsertAsync(model);
-                    result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
 
                     foreach (var detail in item)
                     {
@@ -747,7 +747,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //}
 
                     }
-                    result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
                 }
             }
 
@@ -809,6 +809,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         foreach (var spp in bon.DyeingPrintingAreaOutputProductionOrders)
                         {
                             spp.SetHasNextAreaDocument(false, "AVALINSERVICE", "SERVICE");
+                            spp.SetNextAreaInputStatus(null, "AVALINSERVICE", "SERVICE");
                             //update balance input spp from prev spp
                             var inputSpp = _inputSppRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
                             foreach (var modifInputSpp in inputSpp)

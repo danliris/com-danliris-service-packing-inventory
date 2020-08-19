@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -53,13 +54,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (string.IsNullOrEmpty(Group))
                 yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
-            if (Type == "OUT" && string.IsNullOrEmpty(DestinationArea))
+            if (Type == DyeingPrintingArea.OUT && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
 
             int Count = 0;
             string DetailErrors = "[";
 
-            if (Type == "OUT")
+            if (Type == DyeingPrintingArea.OUT)
             {
                 if ((Id == 0 && InspectionMaterialProductionOrders.Where(s => s.IsSave).Count() == 0) || (Id != 0 && InspectionMaterialProductionOrders.Count() == 0))
                 {
@@ -88,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     DetailErrors += "Balance: 'Qty Keluar Tidak boleh sama dengan 0!',";
                                 }
 
-                                if (DestinationArea == "GUDANG AVAL")
+                                if (DestinationArea == DyeingPrintingArea.GUDANGAVAL)
                                 {
                                     if (string.IsNullOrEmpty(detail.AvalType))
                                     {
@@ -129,14 +130,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             if (items.All(d => d > 0))
                             {
-                                if (AdjType != "ADJ IN")
+                                if (AdjType != DyeingPrintingArea.ADJ_IN)
                                 {
                                     yield return new ValidationResult("Quantity SPP harus Negatif semua", new List<string> { "InspectionMaterialProductionOrder" });
                                 }
                             }
                             else
                             {
-                                if (AdjType != "ADJ OUT")
+                                if (AdjType != DyeingPrintingArea.ADJ_OUT)
                                 {
                                     yield return new ValidationResult("Quantity SPP harus Positif Semua", new List<string> { "InspectionMaterialProductionOrder" });
                                 }

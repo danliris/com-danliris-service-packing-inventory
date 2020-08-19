@@ -25,31 +25,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
-        //private const string OUT = "OUT";
-        //private const string ADJ = "ADJ";
-
-        //private const string IM = "IM";
-        //private const string TR = "TR";
-        //private const string PC = "PC";
-        //private const string GJ = "GJ";
-        //private const string GA = "GA";
-        //private const string SP = "SP";
-        //private const string PJ = "PJ";
-        //private const string BY = "BY";
-        //private const string ADJ_IN = "ADJ IN";
-        //private const string ADJ_OUT = "ADJ OUT";
-
-
-        //private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        //private const string TRANSIT = "TRANSIT";
-        //private const string PACKING = "PACKING";
-        //private const string GUDANGJADI = "GUDANG JADI";
-        //private const string GUDANGAVAL = "GUDANG AVAL";
-        //private const string SHIPPING = "SHIPPING";
-        //private const string PENJUALAN = "PENJUALAN";
-        //private const string BUYER = "BUYER";
-
-
         public OutputAvalService(IServiceProvider serviceProvider)
         {
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -539,7 +514,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     dt.Rows.Add(indexNumber,
                                 item.AvalType,
                                 item.Balance,
-                                item.UomUnit,
+                                "KRG",
                                 item.AvalQuantityKg);
                     indexNumber++;
                 }

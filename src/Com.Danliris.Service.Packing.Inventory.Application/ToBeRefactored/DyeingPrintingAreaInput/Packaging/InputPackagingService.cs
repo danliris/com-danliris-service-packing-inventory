@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var modelSpp in viewModel.PackagingProductionOrders)
             {
                 result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(modelSpp.DyeingPrintingAreaInputProductionOrderId, modelSpp.InputQuantity, modelSpp.InputQtyPacking);
-                result += await _repositoryAreaProductionOrderOutput.UpdateFromInputNextAreaFlagAsync(modelSpp.Id, true);
+                result += await _repositoryAreaProductionOrderOutput.UpdateFromInputNextAreaFlagAsync(modelSpp.Id, true, DyeingPrintingArea.TERIMA);
                 //var modelOutputs = _repositoryAreaProductionOrderOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.Id == modelSpp.Id).FirstOrDefault();
 
                 //if (modelOutputs != null)
@@ -630,7 +630,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking)).ToList());
 
                     result = await _repository.InsertAsync(model);
-                    result += await _repositoryAreaProductionOrderOutput.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _repositoryAreaProductionOrderOutput.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
 
                     foreach (var detail in item)
                     {
@@ -696,7 +696,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
 
                     }
-                    result += await _repositoryAreaProductionOrderOutput.UpdateFromInputAsync(item.Select(s => s.Id), true);
+                    result += await _repositoryAreaProductionOrderOutput.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
                 }
             }
 
@@ -755,6 +755,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         foreach (var spp in bon.DyeingPrintingAreaOutputProductionOrders)
                         {
                             spp.SetHasNextAreaDocument(false, "PACKINGSERVICE", "SERVICE");
+                            spp.SetNextAreaInputStatus(null, "PACKINGSERVICE", "SERVICE");
                             //update balance input spp from prev spp
                             var inputSpp = _productionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
                             foreach (var modifInputSpp in inputSpp)
@@ -797,6 +798,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             prevIn.SetBalance(newBalance, "UPDATEPACKING", "SERVICE");
                         }
                         prevOut.SetHasNextAreaDocument(false, "UPDATEPACKING", "SERVICE");
+                        prevOut.SetNextAreaInputStatus(null, "UPDATEPACKING", "SERVICE");
                         result += await _repositoryAreaProductionOrderOutput.UpdateAsync(prevOut.Id, prevOut);
                     }
                     result += await _productionOrderRepository.DeleteAsync(spp.Id);
