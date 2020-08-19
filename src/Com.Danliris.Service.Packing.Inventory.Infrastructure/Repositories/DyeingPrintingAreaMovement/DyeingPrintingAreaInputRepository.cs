@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteShippingArea(DyeingPrintingAreaInputModel model)
         {
             int result = 0;
-            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false, null);
+            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId).ToList(), false, null);
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteTransitArea(DyeingPrintingAreaInputModel model)
         {
             int result = 0;
-            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId), false, null);
+            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId).ToList(), false, null);
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
