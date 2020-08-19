@@ -1893,7 +1893,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
-            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>(), It.IsAny<string>()))
                 .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
@@ -1944,7 +1944,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction,item.Unit, item.Color,item.Motif,item.UomUnit, item.Balance)
                  }.AsQueryable());
 
-            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+            outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>(), It.IsAny<string>()))
                 .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
