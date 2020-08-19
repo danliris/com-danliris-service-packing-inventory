@@ -15,13 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class DyeingPrintingProductService : IDyeingPrintingProductService
     {
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
-        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        private const string TRANSIT = "TRANSIT";
-        private const string PACKING = "PACKING";
-        private const string GUDANGJADI = "GUDANG JADI";
-        private const string GUDANGAVAL = "GUDANG AVAL";
-        private const string SHIPPING = "SHIPPING";
-        private const string OUT = "OUT";
+        
 
         public DyeingPrintingProductService(IServiceProvider serviceProvider)
         {
@@ -30,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public async Task<ListResult<DyeingPrintingProductPackingViewModel>> GetDataProductPacking(int page, int size, string filter, string order, string keyword)
         {
-            var query = _outputProductionOrderRepository.ReadAll().Where(s => s.Area == PACKING && s.DyeingPrintingAreaOutput.Type == OUT);
+            var query = _outputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT);
             List<string> SearchAttributes = new List<string>()
             {
                 "ProductionOrderNo"

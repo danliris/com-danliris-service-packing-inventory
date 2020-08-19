@@ -27,29 +27,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _productionOrderRepository;
 
-        private const string OUT = "OUT";
-        private const string ADJ = "ADJ";
-
-        private const string IM = "IM";
-        private const string TR = "TR";
-        private const string PC = "PC";
-        private const string GJ = "GJ";
-        private const string GA = "GA";
-        private const string SP = "SP";
-        private const string PJ = "PJ";
-        private const string ADJ_IN = "ADJ IN";
-        private const string ADJ_OUT = "ADJ OUT";
-
-        private const string INSPECTIONMATERIAL = "INSPECTION MATERIAL";
-        private const string TRANSIT = "TRANSIT";
-        private const string PACKING = "PACKING";
-        private const string GUDANGJADI = "GUDANG JADI";
-        private const string GUDANGAVAL = "GUDANG AVAL";
-        private const string SHIPPING = "SHIPPING";
-        private const string PENJUALAN = "PENJUALAN";
-        private const string BUYER = "BUYER";
-
-        private const string BuyerId = "BuyerId";
 
         public OutputShippingService(IServiceProvider serviceProvider)
         {
@@ -63,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private async Task<OutputShippingViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
         {
             var vm = new OutputShippingViewModel();
-            if (model.Type == null || model.Type == OUT)
+            if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
             {
                 vm = new OutputShippingViewModel()
                 {
@@ -75,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     CreatedAgent = model.CreatedAgent,
                     CreatedBy = model.CreatedBy,
                     CreatedUtc = model.CreatedUtc,
-                    Type = OUT,
+                    Type = DyeingPrintingArea.OUT,
                     Date = model.Date,
                     DeletedAgent = model.DeletedAgent,
                     DeletedBy = model.DeletedBy,
@@ -175,7 +152,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }).ToList()
                 };
 
-                if (vm.DestinationArea != BUYER)
+                if (vm.DestinationArea != DyeingPrintingArea.BUYER)
                 {
                     foreach (var item in vm.ShippingProductionOrders)
                     {
@@ -200,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     AdjType = model.Type,
                     CreatedBy = model.CreatedBy,
                     CreatedUtc = model.CreatedUtc,
-                    Type = ADJ,
+                    Type = DyeingPrintingArea.ADJ,
                     Date = model.Date,
                     DeletedAgent = model.DeletedAgent,
                     DeletedBy = model.DeletedBy,
@@ -314,26 +291,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string destinationArea)
         {
-            if (destinationArea == INSPECTIONMATERIAL)
+            if (destinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
             {
-                return string.Format("{0}.{1}.{2}.{3}", SP, IM, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.SP, DyeingPrintingArea.IM, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
 
             }
-            else if (destinationArea == TRANSIT)
+            else if (destinationArea == DyeingPrintingArea.TRANSIT)
             {
-                return string.Format("{0}.{1}.{2}.{3}", SP, TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.SP, DyeingPrintingArea.TR, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
-            else if (destinationArea == PACKING)
+            else if (destinationArea == DyeingPrintingArea.PACKING)
             {
-                return string.Format("{0}.{1}.{2}.{3}", SP, PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.SP, DyeingPrintingArea.PC, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
-            else if (destinationArea == GUDANGJADI)
+            else if (destinationArea == DyeingPrintingArea.GUDANGJADI)
             {
-                return string.Format("{0}.{1}.{2}.{3}", SP, GJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.SP, DyeingPrintingArea.GJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
             else
             {
-                return string.Format("{0}.{1}.{2}.{3}", SP, PJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.SP, DyeingPrintingArea.PJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
 
         }
@@ -347,11 +324,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             if (qtys.All(s => s > 0))
             {
-                return string.Format("{0}.{1}.{2}.{3}", ADJ_IN, SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.ADJ_IN, DyeingPrintingArea.SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
             else
             {
-                return string.Format("{0}.{1}.{2}.{3}", ADJ_OUT, SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+                return string.Format("{0}.{1}.{2}.{3}", DyeingPrintingArea.ADJ_OUT, DyeingPrintingArea.SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
             }
         }
 
@@ -360,38 +337,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             DyeingPrintingAreaOutputModel model = null;
 
-            if (viewModel.DestinationArea == PENJUALAN)
+            if (viewModel.DestinationArea == DyeingPrintingArea.PENJUALAN)
             {
                 model = _repository.GetDbSet().AsNoTracking()
-                .FirstOrDefault(s => s.Area == SHIPPING && s.DestinationArea == viewModel.DestinationArea
-                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == OUT && s.ShippingCode == viewModel.ShippingCode);
+                .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
             }
             else
             {
                 model = _repository.GetDbSet().AsNoTracking()
-                .FirstOrDefault(s => s.Area == SHIPPING && s.DestinationArea == viewModel.DestinationArea
-                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == OUT);
+                .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT);
             }
 
             viewModel.ShippingProductionOrders = viewModel.ShippingProductionOrders.Where(s => s.IsSave).ToList();
 
             if (model == null)
             {
-                if (viewModel.DestinationArea != BUYER)
+                if (viewModel.DestinationArea != DyeingPrintingArea.BUYER)
                 {
                     int totalCurrentYearData = 0;
                     string bonNo = "";
 
-                    if (viewModel.DestinationArea == PENJUALAN)
+                    if (viewModel.DestinationArea == DyeingPrintingArea.PENJUALAN)
                     {
-                        totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING
-                            && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == OUT && s.ShippingCode == viewModel.ShippingCode);
+                        totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.SHIPPING
+                            && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
                         bonNo = GenerateBonNoPenjualan(totalCurrentYearData + 1, viewModel.Date, viewModel.ShippingCode);
                     }
                     else
                     {
-                        totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING
-                            && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == OUT);
+                        totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.SHIPPING
+                            && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT);
                         bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
                     }
 
@@ -420,9 +397,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
                     var itemVM = viewModel.ShippingProductionOrders.FirstOrDefault(s => s.Id == item.DyeingPrintingAreaInputProductionOrderId);
-                    if (model.DestinationArea != BUYER)
+                    if (model.DestinationArea != DyeingPrintingArea.BUYER)
                     {
-                        if (model.DestinationArea == INSPECTIONMATERIAL)
+                        if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
 
                             result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
@@ -433,9 +410,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                         }
 
-                        if (model.DestinationArea != PENJUALAN)
+                        if (model.DestinationArea != DyeingPrintingArea.PENJUALAN)
                         {
-                            var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                            var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                             item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade,
                             null, item.PackagingType, item.PackagingQty, item.PackagingUnit, item.PackagingLength);
 
@@ -448,7 +425,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += await _productionOrderRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
                         result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
 
-                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                             item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType, item.Grade,
                             null, item.PackagingType, item.PackagingQty, item.PackagingUnit, item.PackagingLength);
 
@@ -469,9 +446,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _productionOrderRepository.InsertAsync(modelItem);
-                    if (viewModel.DestinationArea != BUYER)
+                    if (viewModel.DestinationArea != DyeingPrintingArea.BUYER)
                     {
-                        if (viewModel.DestinationArea == INSPECTIONMATERIAL)
+                        if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
 
                             result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance, item.QtyPacking);
@@ -482,9 +459,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                         }
 
-                        if (viewModel.DestinationArea != PENJUALAN)
+                        if (viewModel.DestinationArea != DyeingPrintingArea.PENJUALAN)
                         {
-                            var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                            var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, modelItem.Id, item.ProductionOrder.Type, item.Grade,
                            null, item.PackingType, item.QtyPacking, item.Packing, item.PackingLength);
 
@@ -496,7 +473,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         result += await _productionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Qty, item.QtyPacking);
-                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                        var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Qty, modelItem.Id, item.ProductionOrder.Type, item.Grade,
                            null, item.PackingType, item.QtyPacking, item.Packing, item.PackingLength);
 
@@ -515,19 +492,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string bonNo = "";
             if (viewModel.ShippingProductionOrders.All(d => d.Balance > 0))
             {
-                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.Type == ADJ_IN && s.CreatedUtc.Year == viewModel.Date.Year);
+                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.SHIPPING && s.Type == DyeingPrintingArea.ADJ_IN && s.CreatedUtc.Year == viewModel.Date.Year);
                 bonNo = GenerateBonNoAdj(totalCurrentYearData + 1, viewModel.Date, viewModel.Area, viewModel.ShippingProductionOrders.Select(d => d.Balance));
-                type = ADJ_IN;
+                type = DyeingPrintingArea.ADJ_IN;
             }
             else
             {
-                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == SHIPPING && s.Type == ADJ_OUT && s.CreatedUtc.Year == viewModel.Date.Year);
+                int totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.SHIPPING && s.Type == DyeingPrintingArea.ADJ_OUT && s.CreatedUtc.Year == viewModel.Date.Year);
                 bonNo = GenerateBonNoAdj(totalCurrentYearData + 1, viewModel.Date, viewModel.Area, viewModel.ShippingProductionOrders.Select(d => d.Balance));
-                type = ADJ_OUT;
+                type = DyeingPrintingArea.ADJ_OUT;
             }
 
             DyeingPrintingAreaOutputModel model = _repository.GetDbSet().AsNoTracking()
-                    .FirstOrDefault(s => s.Area == SHIPPING && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == type);
+                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == type);
 
             if (model == null)
             {
@@ -584,7 +561,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            if (viewModel.Type == OUT)
+            if (viewModel.Type == DyeingPrintingArea.OUT)
             {
                 result = await CreateOut(viewModel);
             }
@@ -600,7 +577,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             //var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
             //(((s.Type == OUT || s.Type == null) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != OUT && s.Type != null)));
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING);
+            var query = _repository.ReadAll().Where(s => s.Area == DyeingPrintingArea.SHIPPING);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -621,7 +598,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Id = s.Id,
                 Group = s.Group,
                 ShippingCode = s.ShippingCode,
-                Type = s.Type == null || s.Type == OUT ? OUT : ADJ,
+                Type = s.Type == null || s.Type == DyeingPrintingArea.OUT ? DyeingPrintingArea.OUT : DyeingPrintingArea.ADJ,
                 Shift = s.Shift,
                 HasSalesInvoice = s.HasSalesInvoice,
                 DestinationArea = s.DestinationArea,
@@ -722,7 +699,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var productionOrders = _inputProductionOrderRepository.ReadAll();
 
-            productionOrders = productionOrders.Where(s => s.Area == SHIPPING && !s.HasOutputDocument && s.DeliveryOrderSalesId == deliveryOrderId).OrderByDescending(s => s.LastModifiedUtc);
+            productionOrders = productionOrders.Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.DeliveryOrderSalesId == deliveryOrderId).OrderByDescending(s => s.LastModifiedUtc);
             var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
             {
                 Buyer = d.Buyer,
@@ -794,7 +771,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING && s.DestinationArea == PENJUALAN && (s.Type == null || s.Type == OUT));
+            var query = _repository.ReadAll().Where(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == DyeingPrintingArea.PENJUALAN && (s.Type == null || s.Type == DyeingPrintingArea.OUT));
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -803,10 +780,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             query = QueryHelper<DyeingPrintingAreaOutputModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            var parentFilterDictionary = FilterDictionary.Where(s => s.Key != BuyerId).ToDictionary(s => s.Key, s => s.Value);
+            var parentFilterDictionary = FilterDictionary.Where(s => s.Key != DyeingPrintingArea.BuyerId).ToDictionary(s => s.Key, s => s.Value);
             object buyerData;
             int buyerId = 0;
-            if (FilterDictionary.TryGetValue(BuyerId, out buyerData))
+            if (FilterDictionary.TryGetValue(DyeingPrintingArea.BuyerId, out buyerData))
             {
                 buyerId = Convert.ToInt32(buyerData);
             }
@@ -919,16 +896,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            if (model.DestinationArea == PENJUALAN && model.DyeingPrintingAreaOutputProductionOrders.Any(s => !s.HasNextAreaDocument && s.HasSalesInvoice))
+            if (model.DestinationArea == DyeingPrintingArea.PENJUALAN && model.DyeingPrintingAreaOutputProductionOrders.Any(s => !s.HasNextAreaDocument && s.HasSalesInvoice))
             {
                 throw new Exception("Ada SPP yang Sudah Dibuat di Sales Invoice!");
             }
 
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
-                if (!item.HasNextAreaDocument && model.DestinationArea != PENJUALAN)
+                if (!item.HasNextAreaDocument && model.DestinationArea != DyeingPrintingArea.PENJUALAN)
                 {
-                    var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                    var movementModel = new DyeingPrintingAreaMovementModel(model.Date, model.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade,
                        null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
 
@@ -947,11 +924,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string type;
             if (model.DyeingPrintingAreaOutputProductionOrders.All(d => d.Balance > 0))
             {
-                type = ADJ_IN;
+                type = DyeingPrintingArea.ADJ_IN;
             }
             else
             {
-                type = ADJ_OUT;
+                type = DyeingPrintingArea.ADJ_OUT;
             }
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -971,7 +948,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Delete(int id)
         {
             var model = await _repository.ReadByIdAsync(id);
-            if (model.Type == null || model.Type == OUT)
+            if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
             {
                 return await DeleteOut(model);
             }
@@ -1014,7 +991,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             var deletedData = dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument && !model.DyeingPrintingAreaOutputProductionOrders.Any(d => d.Id == s.Id)).ToList();
-            if (model.DestinationArea == PENJUALAN && deletedData.Any(s => !s.HasNextAreaDocument && s.HasSalesInvoice))
+            if (model.DestinationArea == DyeingPrintingArea.PENJUALAN && deletedData.Any(s => !s.HasNextAreaDocument && s.HasSalesInvoice))
             {
                 throw new Exception("Ada SPP yang Sudah Dibuat di Sales Invoice!");
             }
@@ -1033,10 +1010,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     newQtyPacking = item.PackagingQty;
                 }
 
-                if (newQtyPacking != 0 && newBalance != 0 && dbModel.DestinationArea != PENJUALAN)
+                if (newQtyPacking != 0 && newBalance != 0 && dbModel.DestinationArea != DyeingPrintingArea.PENJUALAN)
                 {
 
-                    var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, OUT, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                    var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, DyeingPrintingArea.OUT, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, newBalance, item.Id, item.ProductionOrderType,
                            item.Grade, null, item.PackagingType, newQtyPacking, item.PackagingUnit, item.PackagingLength);
 
@@ -1047,9 +1024,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             foreach (var item in deletedData)
             {
-                if (dbModel.DestinationArea != PENJUALAN)
+                if (dbModel.DestinationArea != DyeingPrintingArea.PENJUALAN)
                 {
-                    var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, OUT, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+                    var movementModel = new DyeingPrintingAreaMovementModel(dbModel.Date, dbModel.Area, DyeingPrintingArea.OUT, dbModel.Id, dbModel.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade,
                        null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
 
@@ -1068,11 +1045,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var dbModel = await _repository.ReadByIdAsync(id);
             if (viewModel.ShippingProductionOrders.All(d => d.Balance > 0))
             {
-                type = ADJ_IN;
+                type = DyeingPrintingArea.ADJ_IN;
             }
             else
             {
-                type = ADJ_OUT;
+                type = DyeingPrintingArea.ADJ_OUT;
             }
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group, type,
                     viewModel.ShippingProductionOrders.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, 0, "", s.ProductionOrder.Id,
@@ -1139,7 +1116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public async Task<int> Update(int id, OutputShippingViewModel viewModel)
         {
-            if (viewModel.Type == OUT)
+            if (viewModel.Type == DyeingPrintingArea.OUT)
             {
                 return await UpdateOut(id, viewModel);
             }
@@ -1230,7 +1207,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public MemoryStream GenerateExcel(OutputShippingViewModel viewModel)
         {
-            if (viewModel.Type == null || viewModel.Type == OUT)
+            if (viewModel.Type == null || viewModel.Type == DyeingPrintingArea.OUT)
             {
                 return GenerateExcelOut(viewModel);
             }
@@ -1244,7 +1221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             //var query = _repository.ReadAll().Where(s => s.Area == SHIPPING &&
             //       (((s.Type == null || s.Type == OUT) && s.DyeingPrintingAreaOutputProductionOrders.Any(d => !d.HasNextAreaDocument)) || (s.Type != null && s.Type != OUT)));
-            var query = _repository.ReadAll().Where(s => s.Area == SHIPPING);
+            var query = _repository.ReadAll().Where(s => s.Area == DyeingPrintingArea.SHIPPING);
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {
@@ -1294,7 +1271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var model in query)
                 {
-                    if (model.Type == null || model.Type == OUT)
+                    if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
                     {
                         //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
@@ -1302,7 +1279,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, OUT, item.NextAreaInputStatus);
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, DyeingPrintingArea.OUT, item.NextAreaInputStatus);
 
                         }
                     }
@@ -1313,7 +1290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, ADJ, "");
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, DyeingPrintingArea.ADJ, "");
 
                         }
                     }
@@ -1402,7 +1379,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    }));
 
             var query = _inputProductionOrderRepository.ReadAll()
-               .Where(s => s.Area == SHIPPING && !s.HasOutputDocument)
+               .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument)
                .Select(d => new PlainAdjShippingProductionOrder()
                {
                    Balance = d.Balance,
