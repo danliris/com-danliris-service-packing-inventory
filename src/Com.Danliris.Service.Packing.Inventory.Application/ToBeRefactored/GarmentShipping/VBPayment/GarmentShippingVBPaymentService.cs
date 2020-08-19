@@ -208,6 +208,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Id=model.Id,
                     vbNo=model.VBNo,
                     vbDate=model.VBDate,
+                    paymentDate=model.PaymentDate,
+                    paymentType=model.PaymentType,
                     buyer=new Buyer
                     {
 
