@@ -578,7 +578,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     //result += await _outputRepository.UpdateFromInputAsync(viewModel.OutputId, true);
 
-                    result += await _outputProductionOrderRepository.UpdateFromInputAsync(item.Select(s => s.Id), true, DyeingPrintingArea.TOLAK);
+                    result += await _outputProductionOrderRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
 
                     foreach (var detail in item)
                     {
@@ -683,7 +683,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
 
                     }
-                    result += await _outputProductionOrderRepository.UpdateFromInputAsync(item.Select(s => s.Id), true, DyeingPrintingArea.TOLAK);
+                    result += await _outputProductionOrderRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
                 }
             }
 
