@@ -539,7 +539,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     dt.Rows.Add(indexNumber,
                                 item.AvalType,
                                 item.Balance,
-                                item.UomUnit,
+                                "KRG",
                                 item.AvalQuantityKg);
                     indexNumber++;
                 }
