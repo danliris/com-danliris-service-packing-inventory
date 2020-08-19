@@ -828,9 +828,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             //result += await _movementRepository.InsertAsync(movementModel);
 
                             //update summary spp if exist create new when it null
-                            //var summaryModel = new DyeingPrintingAreaSummaryModel(bon.Date, bon.Area, "OUT", bon.Id, bon.BonNo, spp.Id, spp.ProductionOrderNo,
-                            //spp.CartNo, spp.Buyer, spp.Construction, spp.Unit, spp.Color, spp.Motif, spp.UomUnit, spp.Balance);
-
+                            
                             //var previousSummary = _summaryRepository.ReadAll().FirstOrDefault(s => s.ProductionOrderId == spp.Id);
                             //if (previousSummary == null)
                             //{

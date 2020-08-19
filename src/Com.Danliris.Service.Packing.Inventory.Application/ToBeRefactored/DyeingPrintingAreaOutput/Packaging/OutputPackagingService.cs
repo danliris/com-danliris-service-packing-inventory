@@ -911,7 +911,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //        })
             //    });
 
-            //var packingData = _repository.ReadAll().Where(s => s.Area == PACKING && (!s.HasNextAreaDocument || s.Type == "ADJ IN" || s.Type == "ADJ OUT"));
             var packingData = _repository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING);
             if (dateFrom.HasValue && dateTo.HasValue)
             {

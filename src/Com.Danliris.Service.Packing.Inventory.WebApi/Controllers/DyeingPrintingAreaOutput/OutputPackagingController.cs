@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 VerifyUser();
                 ValidateService.Validate(viewModel);
-                if (viewModel.Type == "OUT")
+                if (viewModel.Type == DyeingPrintingArea.OUT)
                 {
                     var result = await _service.CreateV2(viewModel);
                     return Created("/", result);
