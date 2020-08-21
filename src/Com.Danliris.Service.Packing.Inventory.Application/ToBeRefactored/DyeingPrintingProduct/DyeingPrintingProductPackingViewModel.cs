@@ -35,8 +35,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         // SPP
         public ProductionOrder ProductionOrder { get; set; }
         // Panjang Per Packing
-        public double ProductPackingQuantity { get; set; }
+        public double ProductPackingLength { get; set; }
         // Satuan Packing
         public string ProductPackingType { get; set; }
+        // Quantity Packing
+        public decimal Quantity { get; set; }
     }
 }
