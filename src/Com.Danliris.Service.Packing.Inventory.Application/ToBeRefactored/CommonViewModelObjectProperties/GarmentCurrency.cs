@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObje
         public int? id { get; set; }
         public string code { get; set; }
         public string symbol { get; set; }
-        public DateTimeOffset date { get; set; }
+        public DateTime date { get; set; }
         public double rate { get; set; }
     }
 }
