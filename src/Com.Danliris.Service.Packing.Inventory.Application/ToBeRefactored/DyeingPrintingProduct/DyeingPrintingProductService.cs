@@ -75,7 +75,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.YarnMaterialId,
                     Name = s.YarnMaterialName
                 },
-                ProductPackingQuantity = s.PackagingLength,
+                Quantity = s.PackagingQty,
+                ProductPackingLength = s.PackagingLength,
                 ProductPackingType = s.PackagingUnit
             });
 
