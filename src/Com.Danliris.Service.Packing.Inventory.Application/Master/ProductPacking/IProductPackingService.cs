@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
         Task<int> Update(int id, FormDto form);
         Task<int> Delete(int id);
         Task<ProductPackingDto> GetById(int id);
+        Task<ProductPackingDto> GetByCode(string code);
         Task<ProductPackingIndex> GetIndex(IndexQueryParam filter);
     }
 }

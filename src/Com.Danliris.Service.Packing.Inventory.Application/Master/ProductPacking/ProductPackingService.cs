@@ -74,6 +74,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
             return _productPackingRepository.DeleteAsync(id);
         }
 
+        public async Task<ProductPackingDto> GetByCode(string code)
+        {
+            var productPacking = await _productPackingRepository.ReadAll().FirstOrDefaultAsync(entity => entity.Code == code);
+            if (productPacking != null)
+            {
+                var uom = await _uomRepository.ReadByIdAsync(productPacking.UOMId);
+                var productSKU = await _productSKURepository.ReadByIdAsync(productPacking.ProductSKUId);
+                var skuUOM = await _uomRepository.ReadByIdAsync(productSKU.UOMId);
+                var skuCategory = await _categoryRepository.ReadByIdAsync(productSKU.CategoryId);
+
+                return new ProductPackingDto(productPacking, productSKU, uom, skuUOM, skuCategory);
+            }
+
+            return null;
+        }
+
         public async Task<ProductPackingDto> GetById(int id)
         {
             var productPacking = await _productPackingRepository.ReadByIdAsync(id);
@@ -152,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacki
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
-            if (_productPackingRepository.ReadAll().Any(entity => entity.ProductSKUId == form.ProductSKUId.GetValueOrDefault() && entity.PackingSize == form.PackingSize.GetValueOrDefault()) && (form.ProductSKUId.GetValueOrDefault() != model.ProductSKUId && form.PackingSize.GetValueOrDefault() != model.PackingSize ))
+            if (_productPackingRepository.ReadAll().Any(entity => entity.ProductSKUId == form.ProductSKUId.GetValueOrDefault() && entity.PackingSize == form.PackingSize.GetValueOrDefault()) && (form.ProductSKUId.GetValueOrDefault() != model.ProductSKUId && form.PackingSize.GetValueOrDefault() != model.PackingSize))
             {
                 var errorResult = new List<ValidationResult>()
                 {

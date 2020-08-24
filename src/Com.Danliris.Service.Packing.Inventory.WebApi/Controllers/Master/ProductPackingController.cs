@@ -90,6 +90,29 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
             }
         }
 
+        [HttpGet("by-code/{code}")]
+        public async Task<IActionResult> GetByCode([FromRoute] string code)
+        {
+            try
+            {
+
+                var data = await _service.GetByCode(code);
+
+                if (data == null)
+                    return NotFound();
+
+                return Ok(new
+                {
+                    data,
+                    statusCode = HttpStatusCode.OK
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] IndexQueryParam queryParam)
         {

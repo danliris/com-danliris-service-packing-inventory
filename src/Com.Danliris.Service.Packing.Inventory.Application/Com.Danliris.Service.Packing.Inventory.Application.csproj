@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.5" />
     <Compile Remove="Com\**" />
-    <Compile Remove="InventoryPacking\**" />
     <Compile Remove="Master\DyeingPrinting\**" />
     <Compile Remove="ToBeRefactored\AreaNote\**" />
     <Compile Remove="ToBeRefactored\AvalInput\**" />
@@ -19,7 +18,6 @@
     <Compile Remove="ToBeRefactored\ShipmentInput\**" />
     <Compile Remove="ToBeRefactored\TransitInput\**" />
     <EmbeddedResource Remove="Com\**" />
-    <EmbeddedResource Remove="InventoryPacking\**" />
     <EmbeddedResource Remove="Master\DyeingPrinting\**" />
     <EmbeddedResource Remove="ToBeRefactored\AreaNote\**" />
     <EmbeddedResource Remove="ToBeRefactored\AvalInput\**" />
@@ -29,7 +27,6 @@
     <EmbeddedResource Remove="ToBeRefactored\ShipmentInput\**" />
     <EmbeddedResource Remove="ToBeRefactored\TransitInput\**" />
     <None Remove="Com\**" />
-    <None Remove="InventoryPacking\**" />
     <None Remove="Master\DyeingPrinting\**" />
     <None Remove="ToBeRefactored\AreaNote\**" />
     <None Remove="ToBeRefactored\AvalInput\**" />
@@ -63,6 +60,7 @@
   <ItemGroup>
     <Folder Include="Master\Greige\" />
     <Folder Include="Master\Yarn\" />
+    <Folder Include="InventoryPacking\" />
   </ItemGroup>
 
 </Project>
