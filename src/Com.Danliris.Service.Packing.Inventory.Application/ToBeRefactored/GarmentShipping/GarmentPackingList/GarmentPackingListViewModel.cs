@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string PaymentTerm { get; set; }
         public string LCNo { get; set; }
+        public DateTimeOffset LCDate { get; set; }
         public string IssuedBy { get; set; }
         public Buyer BuyerAgent { get; set; }
 
@@ -41,6 +42,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double NettWeight { get; set; }
         public double TotalCartons { get; set; }
         public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
+
+        public string SayUnit { get; set; }
 
         #endregion
 

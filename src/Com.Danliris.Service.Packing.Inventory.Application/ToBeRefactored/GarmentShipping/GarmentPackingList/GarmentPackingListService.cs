@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Date = model.Date,
                 PaymentTerm = model.PaymentTerm,
                 LCNo = model.LCNo,
+                LCDate = model.LCDate,
                 IssuedBy = model.IssuedBy,
                 BuyerAgent = new Buyer
                 {
@@ -192,6 +193,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     CartonsQuantity = m.CartonsQuantity,
 
                 }).ToList(),
+                SayUnit = model.SayUnit,
 
                 ShippingMark = model.ShippingMark,
                 SideMark = model.SideMark,
@@ -233,7 +235,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Section = viewModel.Section ?? new Section();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
             viewModel.InvoiceNo = GenerateInvoiceNo(viewModel);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.IsUsed);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate, viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.TruckingDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.IsUsed);
 
             return garmentPackingListModel;
         }

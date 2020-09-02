@@ -112,6 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLCNo(model.LCNo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetLCDate(model.LCDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIssuedBy(model.IssuedBy, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentId(model.BuyerAgentId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, UserAgent);
@@ -125,6 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSayUnit(model.SayUnit, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetShippingMark(model.ShippingMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);
