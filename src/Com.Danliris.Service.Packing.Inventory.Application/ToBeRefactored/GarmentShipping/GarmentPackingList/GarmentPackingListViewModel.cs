@@ -271,6 +271,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
+            if (string.IsNullOrEmpty(SayUnit))
+            {
+                yield return new ValidationResult("Unit SAY tidak boleh kosong", new List<string> { "SayUnit" });
+            }
+
             #endregion
 
             #region Mark
