@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string PaymentTerm { get; set; }
         public string LCNo { get; set; }
-        public DateTimeOffset LCDate { get; set; }
+        public DateTimeOffset? LCDate { get; set; }
         public string IssuedBy { get; set; }
         public Buyer BuyerAgent { get; set; }
 
@@ -94,6 +94,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 if (string.IsNullOrEmpty(LCNo))
                 {
                     yield return new ValidationResult("LC No tidak boleh kosong", new List<string> { "LCNo" });
+                }
+
+                if (LCDate == null || LCDate == DateTimeOffset.MinValue)
+                {
+                    yield return new ValidationResult("Tgl. LC harus diisi", new List<string> { "LCDate" });
                 }
 
                 if (string.IsNullOrEmpty(IssuedBy))
