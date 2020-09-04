@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var result = await service.Create(ViewModel);
 
-            Assert.NotEqual(0, result);
+            Assert.NotEmpty(result);
         }
 
         [Fact]

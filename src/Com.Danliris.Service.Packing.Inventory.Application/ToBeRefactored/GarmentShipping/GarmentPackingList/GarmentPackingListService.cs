@@ -240,13 +240,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return garmentPackingListModel;
         }
 
-        public async Task<int> Create(GarmentPackingListViewModel viewModel)
+        public async Task<string> Create(GarmentPackingListViewModel viewModel)
         {
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 
-            int Created = await _packingListRepository.InsertAsync(garmentPackingListModel);
+            await _packingListRepository.InsertAsync(garmentPackingListModel);
 
-            return Created;
+            return garmentPackingListModel.InvoiceNo;
         }
 
         private string GenerateInvoiceNo(GarmentPackingListViewModel viewModel)
