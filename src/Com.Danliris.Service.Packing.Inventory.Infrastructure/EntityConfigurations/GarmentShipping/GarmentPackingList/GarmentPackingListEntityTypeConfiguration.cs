@@ -66,6 +66,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.SayUnit)
+                .HasMaxLength(50);
+
+            builder
                 .Property(s => s.ShippingMark)
                 .HasMaxLength(2000);
 
