@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Date = date;
             PaymentTerm = paymentTerm;
             LCNo = lCNo;
-            LCDate = LCDate;
+            LCDate = lCDate;
             IssuedBy = issuedBy;
             BuyerAgentId = buyerAgentId;
             BuyerAgentCode = buyerAgentCode;

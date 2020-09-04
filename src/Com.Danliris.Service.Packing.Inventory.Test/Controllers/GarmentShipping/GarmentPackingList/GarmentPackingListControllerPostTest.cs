@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
                 .Setup(s => s.Create(It.IsAny<GarmentPackingListViewModel>()))
-                .ReturnsAsync(1);
+                .ReturnsAsync("InvoiceNo");
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();

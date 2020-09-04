@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDescription.AddCell(cellDescription);
                 cellDescription.Phrase = new Phrase(":", normal_font);
                 tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(viewModel.LCDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
+                cellDescription.Phrase = new Phrase(viewModel.LCDate.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
                 tableDescription.AddCell(cellDescription);
                 cellDescription.Phrase = new Phrase("ISSUED BY", normal_font);
                 tableDescription.AddCell(cellDescription);
