@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string PaymentTerm { get; private set; }
         public string LCNo { get; private set; }
+        public DateTimeOffset LCDate { get; private set; }
         public string IssuedBy { get; private set; }
 
         public int BuyerAgentId { get; private set; }
@@ -43,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public double TotalCartons { get; private set; }
         public ICollection<GarmentPackingListMeasurementModel> Measurements { get; private set; }
 
+        public string SayUnit { get; private set; }
+
         #endregion
 
         #region Mark
@@ -61,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Measurements = new HashSet<GarmentPackingListMeasurementModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string shippingMark, string sideMark, string remark, bool isUsed)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -71,6 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Date = date;
             PaymentTerm = paymentTerm;
             LCNo = lCNo;
+            LCDate = lCDate;
             IssuedBy = issuedBy;
             BuyerAgentId = buyerAgentId;
             BuyerAgentCode = buyerAgentCode;
@@ -85,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             NettWeight = nettWeight;
             TotalCartons = totalCartons;
             Measurements = measurements;
+            SayUnit = sayUnit;
             ShippingMark = shippingMark;
             SideMark = sideMark;
             Remark = remark;
@@ -132,6 +137,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (LCNo != lCNo)
             {
                 LCNo = lCNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetLCDate(DateTimeOffset lcDate, string userName, string userAgent)
+        {
+            if (LCDate != lcDate)
+            {
+                LCDate = lcDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
@@ -260,6 +274,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         //        this.FlagForUpdate(userName, userAgent);
         //    }
         //}
+
+        public void SetSayUnit(string sayUnit, string userName, string userAgent)
+        {
+            if (SayUnit != sayUnit)
+            {
+                SayUnit = sayUnit;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
 
         public void SetShippingMark(string shippingMark, string userName, string userAgent)
         {

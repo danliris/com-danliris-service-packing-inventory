@@ -48,18 +48,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDescription.AddCell(cellDescription);
             cellDescription.Phrase = new Phrase(fob, normal_font);
             tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase("LC No.", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(":", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(viewModel.LCNo, normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase("ISSUED BY", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(":", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(viewModel.IssuedBy, normal_font);
-            tableDescription.AddCell(cellDescription);
+            if (viewModel.PaymentTerm == "LC")
+            {
+                cellDescription.Phrase = new Phrase("LC No.", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(":", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(viewModel.LCNo, normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase("Tgl. LC", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(":", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(viewModel.LCDate.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase("ISSUED BY", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(":", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(viewModel.IssuedBy, normal_font);
+                tableDescription.AddCell(cellDescription);
+            }
+            else
+            {
+                cellDescription.Phrase = new Phrase("Payment Term", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(":", normal_font);
+                tableDescription.AddCell(cellDescription);
+                cellDescription.Phrase = new Phrase(viewModel.PaymentTerm, normal_font);
+                tableDescription.AddCell(cellDescription);
+            }
 
             new PdfPCell(tableDescription);
             tableDescription.ExtendLastRow = false;
@@ -201,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = 19,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub G.N. = {item.AVG_NW}", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}", normal_font)
                 });
 
                 new PdfPCell(tableDetail);
@@ -225,12 +243,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Phrase = new Phrase($"GRAND TOTAL ...............................................................................        {grandTotal.ToString()}", normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
-            var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper());
+            var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.NO_BORDER,
                 Padding = 5,
-                Phrase = new Phrase($"{totalCtns} CTNS [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} CARTOONS OF {string.Join(" AND ", comodities)}]", normal_font)
+                Phrase = new Phrase($"{totalCtns} {viewModel.SayUnit} [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} {viewModel.SayUnit} OF {string.Join(" AND ", comodities)}]", normal_font)
             });
 
             new PdfPCell(tableGrandTotal);
@@ -298,7 +316,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable tableMeasurementDetail = new PdfPTable(5);
             tableMeasurementDetail.SetWidths(new float[] { 1f, 1f, 1f, 1.5f, 2f });
-            PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Rectangle.ALIGN_RIGHT };
+            PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            decimal totalCbm = 0;
             foreach (var measurement in viewModel.Measurements)
             {
                 cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " X ", normal_font);
@@ -309,9 +328,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000), normal_font);
+                var cbm = (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000;
+                totalCbm += cbm;
+                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", cbm), normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
             }
+
+            cellMeasurementDetail.Border = Rectangle.TOP_BORDER;
+            cellMeasurementDetail.Phrase = new Phrase("", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+
             new PdfPCell(tableMeasurementDetail);
             tableMeasurementDetail.ExtendLastRow = false;
             tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = 100 });
