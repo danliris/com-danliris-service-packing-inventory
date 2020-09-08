@@ -22,10 +22,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Document Credit No tidak boleh kosong", new List<string> { "documentCreditNo" });
             }
 
-            if (amount <= 0)
-            {
-                yield return new ValidationResult("Amount tidak boleh kosong", new List<string> { "amount" });
-            }
+            //if (amount <= 0)
+            //{
+            //    yield return new ValidationResult("Amount tidak boleh kosong", new List<string> { "amount" });
+            //}
 
             if (date == null || date == DateTimeOffset.MinValue)
             {
