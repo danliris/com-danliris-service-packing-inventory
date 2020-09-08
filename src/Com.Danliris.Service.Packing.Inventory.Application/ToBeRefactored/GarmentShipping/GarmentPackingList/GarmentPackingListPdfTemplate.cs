@@ -12,7 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentPackingListPdfTemplate
     {
-        private const int SIZES_COUNT = 11;
         private IIdentityProvider _identityProvider;
 
         public GarmentPackingListPdfTemplate(IIdentityProvider identityProvider)
@@ -22,13 +21,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob)
         {
+            int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
+
             Font header_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
             Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font body_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, 20, 20, 170, 170);
+            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 170);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -208,7 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = 18,
+                    Colspan = SIZES_COUNT + 7,
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ................................................................................. ", normal_font)
                 });
@@ -218,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = 19,
+                    Colspan = SIZES_COUNT + 8,
                     Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}", normal_font)
                 });
 
@@ -231,22 +233,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region GrandTotal
 
-            PdfPTable tableGrandTotal = new PdfPTable(1);
-            tableGrandTotal.SetWidths(new float[] { 1f });
-            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 3, Padding = 0.5f, Phrase = new Phrase("") };
+            PdfPTable tableGrandTotal = new PdfPTable(2);
+            tableGrandTotal.SetWidths(new float[] { 18f + SIZES_COUNT * 1f, 3f });
+            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 2, Padding = 0.5f, Phrase = new Phrase("") };
 
             tableGrandTotal.AddCell(cellHeaderLine);
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.BOTTOM_BORDER,
                 Padding = 5,
-                Phrase = new Phrase($"GRAND TOTAL ...............................................................................        {grandTotal.ToString()}", normal_font)
+                Phrase = new Phrase("GRAND TOTAL ...............................................................................", normal_font)
+            });
+            tableGrandTotal.AddCell(new PdfPCell()
+            {
+                Border = Rectangle.BOTTOM_BORDER,
+                Padding = 5,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Phrase = new Phrase(grandTotal.ToString(), normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
             var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.NO_BORDER,
+                Colspan = 2,
                 Padding = 5,
                 Phrase = new Phrase($"{totalCtns} {viewModel.SayUnit} [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} {viewModel.SayUnit} OF {string.Join(" AND ", comodities)}]", normal_font)
             });
@@ -398,6 +408,90 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin, marginTop = document.TopMargin, marginRight = document.RightMargin, marginBottom = document.BottomMargin;
 
+            int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+
+            if (maxSizesCount > 11)
+            {
+                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 6);
+
+                #region LEFT
+
+                var logoY = height - marginTop + 65;
+
+                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_211_200_BW);
+                Image imageDL = Image.GetInstance(imageByteDL);
+                imageDL.ScaleAbsolute(60f, 60f);
+                var newColor = System.Drawing.Color.Red;
+                imageDL.SetAbsolutePosition(marginLeft, logoY);
+                cb.AddImage(imageDL, inlineImage: true);
+
+                #endregion
+
+                #region CENTER
+
+                var headOfficeX = marginLeft + 75;
+                var headOfficeY = height - marginTop + 105;
+
+                byte[] imageByte = Convert.FromBase64String(Base64ImageStrings.LOGO_NAME);
+                Image image = Image.GetInstance(imageByte);
+                if (image.Width > 160)
+                {
+                    float percentage = 0.0f;
+                    percentage = 160 / image.Width;
+                    image.ScalePercent(percentage * 100);
+                }
+                image.SetAbsolutePosition(headOfficeX, headOfficeY);
+                cb.AddImage(image, inlineImage: true);
+
+                string[] headOffices = {
+                    "Head Office : Kelurahan Banaran, Kecamatan Grogol,",
+                    "Sukoharjo - Indonesia",
+                    "PO BOX 166 Solo 57100",
+                    "Telp. (62 271) 740888, 714400 (HUNTING)",
+                    "Fax. (62 271) 735222, 740777",
+                    "Website : www.danliris.com",
+                };
+                for (int i = 0; i < headOffices.Length; i++)
+                {
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, headOffices[i], headOfficeX, headOfficeY + 10 - image.ScaledHeight - (i * 6), 0);
+                }
+
+                #endregion
+
+                #region RIGHT
+
+                byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
+                Image imageIso = Image.GetInstance(imageByteIso);
+                if (imageIso.Width > 80)
+                {
+                    float percentage = 0.0f;
+                    percentage = 80 / imageIso.Width;
+                    imageIso.ScalePercent(percentage * 100);
+                }
+                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight, height - imageIso.ScaledHeight - marginTop + 120);
+                cb.AddImage(imageIso, inlineImage: true);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight, height - imageIso.ScaledHeight - marginTop + 120 - 5, 0);
+
+                #endregion
+
+                #region LINE
+
+                cb.MoveTo(marginLeft, height - marginTop + 60);
+                cb.LineTo(width - marginRight, height - marginTop + 60);
+                cb.Stroke();
+
+                #endregion
+
+                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 16);
+
+                #region TITLE
+
+                var titleY = height - marginTop + 40;
+                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "PACKING LIST", width / 2, titleY, 0);
+
+                #endregion
+            }
+
             cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
 
             #region REF
@@ -427,7 +521,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
 
-            #region REF
+            #region SIGNATURE
 
             var signX = width - 140;
             var signY = marginBottom - 80;
