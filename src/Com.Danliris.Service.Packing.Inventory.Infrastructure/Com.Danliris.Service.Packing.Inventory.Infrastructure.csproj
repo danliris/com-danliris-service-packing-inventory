@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Compile Remove="EntityConfigurations\DyeingPrintingAreaMovementHistoryEntityTypeConfiguration.cs" />
+    <Compile Remove="EntityConfigurations\DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration.cs" />
+    <Compile Remove="EntityConfigurations\OldDyeingPrintingAreaMovementEntityTypeConfiguration.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaOutputAvalItemRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\OldDyeingPrintingAreaMovementRepository.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovement\OldIDyeingPrintingAreaMovementRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Data\Com.Danliris.Service.Packing.Inventory.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Com.Moonlay.Data.EntityFrameworkCore" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.1.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+</Project>
