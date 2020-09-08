@@ -48,10 +48,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public string COTP { get; set; }
 		public DateTimeOffset? COTPDate { get; set; }
 		public decimal TotalAmount { get; set; }
-		public ICollection<GarmentShippingInvoiceItemViewModel> Items { get;  set; }
+        public string DeliverTo { get; set; }
+        public ICollection<GarmentShippingInvoiceItemViewModel> Items { get;  set; }
 		public ICollection<GarmentShippingInvoiceAdjustmentViewModel> GarmentShippingInvoiceAdjustments { get; set; }
+        public ICollection<GarmentShippingInvoiceUnitViewModel> GarmentShippingInvoiceUnits { get; set; }
 
-		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			if (string.IsNullOrEmpty(InvoiceNo))
 				yield return new ValidationResult("InvoiceNo harus diisi", new List<string> { "InvoiceNo" });
@@ -72,8 +74,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			if (string.IsNullOrEmpty(ShippingPer))
 				yield return new ValidationResult("ShippingPer harus diisi", new List<string> { "ShippingPer" });
 
-			if (string.IsNullOrEmpty(ConfirmationOfOrderNo))
-				yield return new ValidationResult("ConfirmationOfOrderNo harus diisi", new List<string> { "ConfirmationOfOrderNo" });
+			//if (string.IsNullOrEmpty(ConfirmationOfOrderNo))
+			//	yield return new ValidationResult("ConfirmationOfOrderNo harus diisi", new List<string> { "ConfirmationOfOrderNo" });
 
 			if (string.IsNullOrEmpty(ShippingStaff))
 				yield return new ValidationResult("ShippingStaff harus diisi", new List<string> { "ShippingStaff" });
@@ -81,8 +83,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			if (string.IsNullOrEmpty(FabricType))
 				yield return new ValidationResult("FabricType harus diisi", new List<string> { "FabricType" });
 
-			if (string.IsNullOrEmpty(BankAccount))
-				yield return new ValidationResult("BankDetail harus diisi", new List<string> { "BankAccount" });
+			//if (string.IsNullOrEmpty(BankAccount))
+			//	yield return new ValidationResult("BankDetail harus diisi", new List<string> { "BankAccount" });
 
 			if (PaymentDue.Equals(0))
 				yield return new ValidationResult("PaymentDue harus diisi", new List<string> { "PaymentDue" });

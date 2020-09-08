@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         public void GetReportData_Success()
         {
              var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                  "", DateTimeOffset.Now, "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
+                                                  "", DateTimeOffset.Now, "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "","",null)
             {
                 Id = 1
             };
@@ -94,9 +94,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                            GarmentShippingInvoiceId = 1
                          },
                 };
-
+            var invoiceUnitModels = new HashSet<GarmentShippingInvoiceUnitModel> {
+                new GarmentShippingInvoiceUnitModel(1,"unitcode", 3,1)
+                {
+                    Id = 1
+                }
+            };
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                "", DateTimeOffset.Now, "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
+                                                "", DateTimeOffset.Now, "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "","",invoiceUnitModels)
             {
                 Id = 1
             };

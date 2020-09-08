@@ -17,7 +17,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public string ComodityCode { get; set; }
 		public string ComodityName { get; set; }
 		public string ComodityDesc { get; set; }
-		public int UomId { get; set; }
+        public string Desc2 { get; set; }
+        public string Desc3 { get; set; }
+        public string Desc4 { get; set; }
+        public int UomId { get; set; }
 		public string UomUnit { get; set; }
 		public decimal Price { get; set; }
 		public decimal PriceRO { get; set; }
