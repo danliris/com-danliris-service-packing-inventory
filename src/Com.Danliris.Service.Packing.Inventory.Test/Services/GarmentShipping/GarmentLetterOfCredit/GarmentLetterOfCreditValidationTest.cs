@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public void Validate_DefaultValue()
         {
             GarmentLetterOfCreditViewModel viewModel = new GarmentLetterOfCreditViewModel();
+            viewModel.Quantity = -1;
 
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
