@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         IBaseRepository<ProductSKUInventoryMovementModel> ProductSKUInventoryMovements { get; }
         IBaseRepository<ProductSKUInventorySummaryModel> ProductSKUInventorySummaries { get; }
         IBaseRepository<ProductSKUModel> ProductSKUs { get; }
+        IBaseRepository<ProductPackingModel> ProductPackings { get; }
         IBaseRepository<UnitOfMeasurementModel> UOMs { get; }
         IBaseRepository<CategoryModel> Categories { get; }
 

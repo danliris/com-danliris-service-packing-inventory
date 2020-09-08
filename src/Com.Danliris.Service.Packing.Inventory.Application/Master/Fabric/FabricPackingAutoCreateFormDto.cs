@@ -3,7 +3,8 @@
     public class FabricPackingAutoCreateFormDto
     {
         public int FabricSKUId { get; set; }
-        public double Quantity { get; set; }
+        public int Quantity { get; set; }
         public string PackingType { get; set; }
+        public double Length { get; set; }
     }
 }

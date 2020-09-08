@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         private IBaseRepository<ProductSKUModel> _productSKUs;
         private IBaseRepository<UnitOfMeasurementModel> _uoms;
         private IBaseRepository<CategoryModel> _categories;
+        private IBaseRepository<ProductPackingModel> _productPackings;
         private IBaseRepository<FabricProductSKUModel> _fabricSKUProducts;
         private readonly IServiceProvider _serviceProvider;
 
@@ -37,6 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             _productSKUs = serviceProvider.GetService<IBaseRepository<ProductSKUModel>>();
             _uoms = serviceProvider.GetService<IBaseRepository<UnitOfMeasurementModel>>();
             _categories = serviceProvider.GetService<IBaseRepository<CategoryModel>>();
+            _productPackings = serviceProvider.GetService<IBaseRepository<ProductPackingModel>>();
 
             _fabricSKUProducts = serviceProvider.GetService<IBaseRepository<FabricProductSKUModel>>();
 
@@ -131,6 +133,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             {
                 return _fabricSKUProducts ??
                     (_fabricSKUProducts = new BaseRepository<FabricProductSKUModel>(_dbContext, _serviceProvider));
+            }
+        }
+
+        public IBaseRepository<ProductPackingModel> ProductPackings
+        {
+            get
+            {
+                return _productPackings ??
+                    (_productPackings = new BaseRepository<ProductPackingModel>(_dbContext, _serviceProvider));
             }
         }
 

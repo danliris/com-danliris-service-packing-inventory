@@ -1,7 +1,9 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.Helper;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Com.Moonlay.Models;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -224,11 +227,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
         public FabricSKUIdCodeDto AutoCreateSKU(FabricSKUAutoCreateFormDto form)
         {
-            return new FabricSKUIdCodeDto() { FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
+            var code = "";
+            var processType = _dbContext.IPProcessType.FirstOrDefault(entity => entity.ProcessType == form.ProcessType);
+            if (processType != null)
+                code += processType.Code;
+            else
+                code += "0";
+            var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
+            code += yearCode;
+
+            var sppNo = form.ProductionOrderNo.Substring(form.ProductionOrderNo.Length - 4);
+            code += sppNo;
+
+            var grade = _dbContext.IPGrades.FirstOrDefault(entity => entity.Type == form.Grade);
+            if (grade != null)
+                code += grade.Code;
+            else
+                code += "0";
+
+            var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.UOM);
+            var category = _dbContext.IPCategories.FirstOrDefault(entity => entity.Name == "FABRIC");
+
+            var model = new ProductSKUModel();
+            var productFabricSKU = new FabricProductSKUModel();
+            if (uom != null && category!= null)
+            {
+                model = new ProductSKUModel(code, code, uom.Id, category.Id, "");
+                _unitOfWork.ProductSKUs.Insert(model);
+                _unitOfWork.Commit();
+
+                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processType.Id, 0, grade.Id, uom.Id);
+                _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
+                _unitOfWork.Commit();
+            }
+            return new FabricSKUIdCodeDto() { FabricSKUId = productFabricSKU.Id, ProductSKUCode = code, ProductSKUId = model.Id };
         }
 
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
+            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
+            var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
+
+            for (var i = 0; i < form.Quantity; i++)
+            {
+                var code = productSKU.Code + i.ToString().PadLeft(4, '0');
+                var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
+                var packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
+                _unitOfWork.ProductPacking
+            }
+
             return new FabricPackingIdCodeDto() { FabricPackingId = 1, ProductPackingCode = "code", ProductPackingId = 1, FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
         }
 
