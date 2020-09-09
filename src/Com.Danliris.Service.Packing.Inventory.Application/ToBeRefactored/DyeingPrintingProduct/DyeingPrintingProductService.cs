@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
-        public async Task<ListResult<DyeingPrintingProductPackingViewModel>> GetDataProductPacking(int page, int size, string filter, string order, string keyword)
+        public ListResult<DyeingPrintingProductPackingViewModel> GetDataProductPacking(int page, int size, string filter, string order, string keyword)
         {
             var query = _outputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT);
             List<string> SearchAttributes = new List<string>()
@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 },
                 MaterialWidth = s.MaterialWidth,
                 Motif = s.Motif,
-                ProductPackingCode = s.ProductPackingCode,
+                ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
                 ProductPackingId = s.ProductPackingId,
                 ProductSKUCode = s.ProductSKUCode,
                 ProductSKUId = s.ProductSKUId,
@@ -80,11 +80,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductPackingType = s.PackagingUnit
             });
 
-            int result = 0;
-            foreach (var item in data)
-            {
-                result += await UpdatePrintingStatusProductPacking(item.Id, true);
-            }
+            //int result = 0;
+            //foreach (var item in data)
+            //{
+            //    result += await UpdatePrintingStatusProductPacking(item.Id, true);
+            //}
 
             return new ListResult<DyeingPrintingProductPackingViewModel>(data.ToList(), page, size, query.Count());
         }
