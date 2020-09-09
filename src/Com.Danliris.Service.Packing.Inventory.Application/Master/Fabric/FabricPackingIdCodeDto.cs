@@ -1,4 +1,7 @@
-﻿namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
+﻿using iTextSharp.text;
+using System.Collections.Generic;
+
+namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 {
     public class FabricPackingIdCodeDto
     {
@@ -8,5 +11,6 @@
         public int FabricSKUId { get; set; }
         public string ProductSKUCode { get; set; }
         public int ProductSKUId { get; set; }
+        public List<string> ProductPackingCodes { get; set; }
     }
 }
