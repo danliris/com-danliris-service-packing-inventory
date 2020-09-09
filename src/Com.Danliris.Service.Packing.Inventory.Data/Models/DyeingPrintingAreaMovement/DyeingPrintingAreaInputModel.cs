@@ -23,6 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public bool IsTransformedAval { get; private set; }
         #endregion
 
+        #region Shipping
+
+        public string ShippingType { get; private set; }
+        #endregion
+
         public ICollection<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaInputModel()

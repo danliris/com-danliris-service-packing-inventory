@@ -41,5 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 
         public static readonly string TERIMA = "DITERIMA";
         public static readonly string TOLAK = "DITOLAK";
+
+        public static readonly string ZONAGUDANG = "ZONA GUDANG";
+        public static readonly string RETURBARANG = "RETUR BARANG";
     }
 }

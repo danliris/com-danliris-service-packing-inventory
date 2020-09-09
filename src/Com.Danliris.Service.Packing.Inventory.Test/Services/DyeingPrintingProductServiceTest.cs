@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         Id = 1,
                         No = "s"
                     },
-                    ProductPackingCode = "s",
+                    ProductPackingCodes = new List<string>() { "s" },
                     ProductPackingId = 1,
                     ProductSKUCode = "s",
                     ProductSKUId = 1,
@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 var model = new DyeingPrintingAreaOutputProductionOrderModel("PACKING", "GUDANG JADI", true, ViewModel.ProductionOrder.Id, ViewModel.ProductionOrder.No, ViewModel.ProductionOrder.Type, ViewModel.ProductionOrder.OrderQuantity, "", "", "", "",
                      "", ViewModel.Color, ViewModel.Motif, ViewModel.UomUnit, "", "", "", 0, ViewModel.Id, 0, ViewModel.Material.Id, ViewModel.Material.Name, ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Name,
                      ViewModel.MaterialWidth, "", ViewModel.Quantity, "", ViewModel.ProductPackingType, 0, "", "", 0, "", ViewModel.YarnMaterial.Id, ViewModel.YarnMaterial.Name, ViewModel.ProductSKUId, ViewModel.FabricSKUId, ViewModel.ProductSKUCode,
-                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, ViewModel.ProductPackingCode, ViewModel.HasPrintingProductPacking, ViewModel.ProductPackingLength);
+                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, string.Join(',', ViewModel.ProductPackingCodes), ViewModel.HasPrintingProductPacking, ViewModel.ProductPackingLength);
 
 
                 model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "PACKING", "s", "s", false, "GUDANG JADI", "S", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>() { model });
@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
-        public async Task Should_Success_Read()
+        public void Should_Success_Read()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
@@ -104,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = await service.GetDataProductPacking(1, 25, "{}", "{}", null);
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null);
 
             Assert.NotEmpty(result.Data);
         }
