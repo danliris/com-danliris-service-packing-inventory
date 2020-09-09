@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         IBaseRepository<CategoryModel> Categories { get; }
 
         IBaseRepository<FabricProductSKUModel> FabricSKUProducts { get; }
+        IBaseRepository<FabricProductPackingModel> FabricPackingProducts { get; }
         void Commit();
     }
 }

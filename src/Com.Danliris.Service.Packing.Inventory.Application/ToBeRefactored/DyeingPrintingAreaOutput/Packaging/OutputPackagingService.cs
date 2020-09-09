@@ -609,7 +609,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     FabricSKUId = item.FabricSKUId,
                     PackingType = item.PackagingUnit,
-                    Quantity = item.PackagingQTY == 0 ? 0 : item.Balance / Convert.ToDouble(item.PackagingQTY)
+                    Quantity = (int)item.PackagingQTY,
+                    Length = item.PackingLength
                 });
 
 
@@ -1691,7 +1692,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     FabricSKUId = item.FabricSKUId,
                     PackingType = item.PackagingUnit,
-                    Quantity = item.PackagingQTY == 0 ? 0 : item.Balance / Convert.ToDouble(item.PackagingQTY)
+                    Quantity = (int)item.PackagingQTY,
+                    Length = item.PackingLength
                 });
 
                 var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, item.HasNextAreaDocument, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,

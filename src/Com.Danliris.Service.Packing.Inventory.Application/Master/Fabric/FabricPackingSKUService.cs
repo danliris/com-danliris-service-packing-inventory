@@ -250,7 +250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
             var model = new ProductSKUModel();
             var productFabricSKU = new FabricProductSKUModel();
-            if (uom != null && category!= null)
+            if (uom != null && category != null)
             {
                 model = new ProductSKUModel(code, code, uom.Id, category.Id, "");
                 _unitOfWork.ProductSKUs.Insert(model);
@@ -266,17 +266,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
             var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
-            var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
+            var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == form.ProductSKUId);
 
-            for (var i = 0; i < form.Quantity; i++)
+            if (fabric != null && productSKU != null)
             {
-                var code = productSKU.Code + i.ToString().PadLeft(4, '0');
-                var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                var packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
-                _unitOfWork.ProductPacking
-            }
+                var packingModel = new ProductPackingModel();
+                var fabricPackingProduct = new FabricProductPackingModel();
+                var packingCodes = new List<string>();
+                for (var i = 0; i < form.Quantity; i++)
+                {
+                    var code = productSKU.Code + i.ToString().PadLeft(4, '0');
+                    var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
+                    packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
+                    _unitOfWork.ProductPackings.Insert(packingModel);
+                    _unitOfWork.Commit();
+                    packingCodes.Add(code);
 
-            return new FabricPackingIdCodeDto() { FabricPackingId = 1, ProductPackingCode = "code", ProductPackingId = 1, FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
+                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length);
+                    _dbContext.FabricProductPackings.Add(fabricPackingProduct);
+                }
+
+                _dbContext.SaveChanges();
+
+
+                return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
+            }
+            else
+            {
+                return new FabricPackingIdCodeDto();
+            }
         }
 
         public FabricSKUIdCodeDto AutoCreateSKU(NewFabricSKUAutoCreateFormDto form)
