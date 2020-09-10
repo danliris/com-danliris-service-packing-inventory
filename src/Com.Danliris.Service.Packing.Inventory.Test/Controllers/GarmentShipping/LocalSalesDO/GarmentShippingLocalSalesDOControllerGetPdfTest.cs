@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingLocalSalesDOItemViewModel
                         {
                             quantity=1,
-                            cartonQuantity=1,
+                            packQuantity=1,
                             product=new ProductViewModel
                             {
                                 name="akdh"
@@ -94,7 +94,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             {
                                 Unit="kjshd",
                             },
-                            volume=1,
+                            packUom=new UnitOfMeasurement
+                            {
+                                Unit="kjshd",
+                            },
                             description="asjhd",
                         }
                     }

@@ -14,9 +14,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public int localSalesDOId { get; set; }
         public int localSalesNoteItemId { get; set; }
         public string description { get; set; }
-        public double cartonQuantity { get; set; }
+        public double packQuantity { get; set; }
+        public UnitOfMeasurement packUom { get; set; }
         public double grossWeight { get; set; }
         public double nettWeight { get; set; }
-        public double volume { get; set; }
     }
 }

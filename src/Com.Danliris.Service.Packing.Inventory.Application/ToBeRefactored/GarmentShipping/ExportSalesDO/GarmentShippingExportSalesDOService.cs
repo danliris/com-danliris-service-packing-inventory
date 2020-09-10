@@ -51,6 +51,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 exportSalesDONo=model.ExportSalesDONo,
                 packingListId=model.PackingListId,
                 to=model.To,
+                shipmentMode=model.ShipmentMode,
+                deliverTo=model.DeliverTo,
+                remark=model.Remark,
                 unit=new Unit
                 {
                     Id = model.UnitId,
@@ -111,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.unit = viewModel.unit ?? new Unit();
             viewModel.buyerAgent = viewModel.buyerAgent ?? new Buyer();
             viewModel.exportSalesDONo = GenerateNo(viewModel);
-            GarmentShippingExportSalesDOModel garmentPackingListModel = new GarmentShippingExportSalesDOModel(viewModel.exportSalesDONo,viewModel.invoiceNo, viewModel.packingListId, viewModel.date, viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.to, viewModel.unit.Name, viewModel.unit.Id, viewModel.unit.Code, items);
+            GarmentShippingExportSalesDOModel garmentPackingListModel = new GarmentShippingExportSalesDOModel(viewModel.exportSalesDONo,viewModel.invoiceNo, viewModel.packingListId, viewModel.date, viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.to, viewModel.unit.Name, viewModel.unit.Id, viewModel.unit.Code,viewModel.shipmentMode,viewModel.deliverTo,viewModel.remark, items);
 
             return garmentPackingListModel;
         }

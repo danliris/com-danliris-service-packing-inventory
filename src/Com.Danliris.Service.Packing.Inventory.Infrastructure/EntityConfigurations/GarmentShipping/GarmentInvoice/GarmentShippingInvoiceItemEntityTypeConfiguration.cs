@@ -61,8 +61,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 			configuration
 				.Property(inventoryDocument => inventoryDocument.ComodityDesc)
 				.HasMaxLength(128);
+            configuration
+                .Property(inventoryDocument => inventoryDocument.Desc2)
+                .HasMaxLength(128);
+            configuration
+                .Property(inventoryDocument => inventoryDocument.Desc3)
+                .HasMaxLength(128);
+            configuration
+                .Property(inventoryDocument => inventoryDocument.Desc4)
+                .HasMaxLength(128);
 
-			configuration
+            configuration
 			.Property(inventoryDocument => inventoryDocument.UomUnit)
 			.HasMaxLength(10);
 

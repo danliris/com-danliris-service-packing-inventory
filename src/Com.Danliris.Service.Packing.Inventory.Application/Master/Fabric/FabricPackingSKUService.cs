@@ -229,10 +229,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         {
             var code = "";
             var processType = _dbContext.IPProcessType.FirstOrDefault(entity => entity.ProcessType == form.ProcessType);
+            var processTypeId = 0;
             if (processType != null)
+            {
                 code += processType.Code;
+                processTypeId = processType.Id;
+            }
             else
-                code += "0";
+            {
+                code += "00";
+                processTypeId = 0;
+            }
+                
             var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
             code += yearCode;
 
@@ -240,10 +248,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             code += sppNo;
 
             var grade = _dbContext.IPGrades.FirstOrDefault(entity => entity.Type == form.Grade);
+            var gradeId = 0;
             if (grade != null)
+            {
                 code += grade.Code;
+                gradeId = grade.Id;
+            }
             else
+            {
                 code += "0";
+                gradeId = 0;
+            }
 
             var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.UOM);
             var category = _dbContext.IPCategories.FirstOrDefault(entity => entity.Name == "FABRIC");
@@ -256,7 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 _unitOfWork.ProductSKUs.Insert(model);
                 _unitOfWork.Commit();
 
-                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processType.Id, 0, grade.Id, uom.Id);
+                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, 0, gradeId, uom.Id);
                 _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                 _unitOfWork.Commit();
             }

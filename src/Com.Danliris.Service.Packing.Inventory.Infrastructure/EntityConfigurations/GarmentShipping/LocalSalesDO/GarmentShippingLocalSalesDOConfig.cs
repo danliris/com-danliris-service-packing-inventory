@@ -47,6 +47,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                  .HasMaxLength(255);
 
             builder
+                 .Property(s => s.Remark)
+                 .HasMaxLength(3000);
+
+            builder
                 .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.LocalSalesDOId);

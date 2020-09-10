@@ -88,7 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }).ToList();
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.NK, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, 0, null, null, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, 0, null, null, viewModel.totalAmount, items);
 
             return model;
         }
@@ -97,7 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var year = DateTime.Now.ToString("yy");
 
-            var prefix = $"{year}NK";
+            var prefix = $"{year}CN";
 
             var lastInvoiceNo = _repository.ReadAll().Where(w => w.NoteNo.StartsWith(prefix))
                 .OrderByDescending(o => o.NoteNo)
@@ -124,7 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public ListResult<GarmentShippingCreditNoteViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(w => w.NoteType == GarmentShippingNoteTypeEnum.NK);
+            var query = _repository.ReadAll().Where(w => w.NoteType == GarmentShippingNoteTypeEnum.CN);
             List<string> SearchAttributes = new List<string>()
             {
                 "NoteNo", "BuyerCode", "BuyerName"
@@ -172,7 +172,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
-            return new ExcelResult(stream, "Nota Debet " + data.NoteNo + ".pdf");
+            return new ExcelResult(stream, "Credit Note " + data.NoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)

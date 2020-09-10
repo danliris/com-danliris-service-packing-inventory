@@ -52,7 +52,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent1.AddElement(new Phrase("www.danliris.com", small_font));
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase(viewModel.localSalesDONo, bold_font));
-            cellHeaderContent1.AddElement(new Phrase(viewModel.buyer.Name, normal_font));
             tableHeader.AddCell(cellHeaderContent1);
 
             cellHeaderContent2.AddElement(new Phrase("Surakarta, " + viewModel.date.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
@@ -73,9 +72,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region tableBody
-            PdfPTable tableBody = new PdfPTable(9);
+            PdfPTable tableBody = new PdfPTable(8);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1f, 5f, 3f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f });
+            tableBody.SetWidths(new float[] { 1f, 5f, 3f, 2.5f, 2.5f, 3f, 2.5f, 2.5f });
 
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -93,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellBodyCenter.Phrase = new Phrase("BANYAKNYA", normal_font);
             cellBodyCenter.Rowspan = 1;
-            cellBodyCenter.Colspan = 6;
+            cellBodyCenter.Colspan = 5;
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Jumlah", normal_font);
@@ -104,17 +103,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyCenter.Phrase = new Phrase("Satuan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            cellBodyCenter.Phrase = new Phrase("Carton", normal_font);
+            cellBodyCenter.Phrase = new Phrase("Jumlah\nKemasan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Weight", normal_font);
             cellBodyCenter.Rowspan = 1;
             cellBodyCenter.Colspan = 2;
-            tableBody.AddCell(cellBodyCenter);
-
-            cellBodyCenter.Phrase = new Phrase("Volume", normal_font);
-            cellBodyCenter.Rowspan = 2;
-            cellBodyCenter.Colspan = 1;
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Gross", normal_font);
@@ -144,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeft.Phrase = new Phrase(item.uom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.cartonQuantity), normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.packQuantity) + " " + item.packUom.Unit, normal_font);
                 tableBody.AddCell(cellBodyRight);
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.grossWeight), normal_font);
@@ -152,16 +146,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.nettWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
-
-                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.volume), normal_font);
-                tableBody.AddCell(cellBodyRight);
             }
 
             double totalQty = viewModel.items.Sum(a => a.quantity);
-            double totalCtn = viewModel.items.Sum(a => a.cartonQuantity);
+            double totalCtn = viewModel.items.Sum(a => a.packQuantity);
             double totalGW = viewModel.items.Sum(a => a.grossWeight);
             double totalNW = viewModel.items.Sum(a => a.nettWeight);
-            double totalVol = viewModel.items.Sum(a => a.volume);
 
             cellBodyRight.Phrase = new Phrase("Jumlah", normal_font);
             cellBodyRight.Colspan = 3;
@@ -183,16 +173,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalNW), normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalVol), normal_font);
-            tableBody.AddCell(cellBodyRight);
-
             tableBody.SpacingAfter = 15;
             document.Add(tableBody);
             #endregion
 
-            document.Add(new Paragraph("Untuk bagian / dikirim kepada __________________________________________________________", normal_font));
+            document.Add(new Paragraph("Untuk bagian / dikirim kepada " + viewModel.buyer.Name, normal_font));
 
-            document.Add(new Paragraph("Keterangan __________________________________________________________________", normal_font));
+            document.Add(new Paragraph("Keterangan : \n" + viewModel.remark, normal_font));
             document.Add(new Paragraph("\n", normal_font));
             #region sign
             PdfPTable tableSign = new PdfPTable(4);
