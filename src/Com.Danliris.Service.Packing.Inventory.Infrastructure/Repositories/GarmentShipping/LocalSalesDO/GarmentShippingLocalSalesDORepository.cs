@@ -83,6 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTo(model.To, _identityProvider.Username, UserAgent);
             modelToUpdate.SetStorageDivision(model.StorageDivision, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
@@ -91,9 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 {
                     itemToUpdate.SetGrossWeight(item.GrossWeight, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetNettWeight(item.NettWeight, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetCartonQuantity(item.CartonQuantity, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetVolume(item.Volume, _identityProvider.Username, UserAgent);
 
                 }
                 else

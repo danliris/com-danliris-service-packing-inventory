@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200910034550_GarmentShippingLocalSalesDO_Remark_DLL")]
+    partial class GarmentShippingLocalSalesDO_Remark_DLL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,9 +257,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
-                    b.Property<string>("ShippingType")
-                        .HasMaxLength(128);
-
                     b.Property<double>("TotalAvalQuantity");
 
                     b.Property<double>("TotalAvalWeight");
@@ -410,7 +409,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(128);
 
                     b.Property<int>("ProductPackingId");
 
@@ -783,7 +782,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(128);
 
                     b.Property<int>("ProductPackingId");
 
