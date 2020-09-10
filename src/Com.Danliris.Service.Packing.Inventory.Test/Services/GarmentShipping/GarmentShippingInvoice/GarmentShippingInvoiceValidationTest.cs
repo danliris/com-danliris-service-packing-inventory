@@ -77,7 +77,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 					},
 					TotalAmount = 0,
 					Say = "",
-					Memo = ""
+					Memo = "",
+                    GarmentShippingInvoiceUnits=new List<GarmentShippingInvoiceUnitViewModel>
+                    {
+                        new GarmentShippingInvoiceUnitViewModel
+                        {
+                            Unit=new Unit
+                            {
+                                Id=1,
+                                Code="asd",
+                                Name="asda"
+                            },
+                            AmountPercentage=12,
+                            QuantityPercentage=11
+                        }
+                    }
 				};
 			}
 		}
@@ -96,6 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 			GarmentShippingInvoiceViewModel viewModel = ViewModel;
 			viewModel.InvoiceDate = DateTimeOffset.Now.AddDays(1);
 			viewModel.Items = new List<GarmentShippingInvoiceItemViewModel>();
+            viewModel.GarmentShippingInvoiceUnits = new List<GarmentShippingInvoiceUnitViewModel>();
 			viewModel.GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>();
 
 			var result = viewModel.Validate(null);
@@ -110,8 +125,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 			{
 				new GarmentShippingInvoiceItemViewModel()
 			};
+            viewModel.GarmentShippingInvoiceUnits = new List<GarmentShippingInvoiceUnitViewModel>();
 
-			var result = viewModel.Validate(null);
+            var result = viewModel.Validate(null);
 			Assert.NotEmpty(result.ToList());
 		}
 
@@ -162,8 +178,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 					AdjustmentValue = 0
 				}
 			};
+            viewModel.GarmentShippingInvoiceUnits = new List<GarmentShippingInvoiceUnitViewModel>
+            {
+                new GarmentShippingInvoiceUnitViewModel
+                        {
+                            Unit=new Unit
+                            {
+                                Id=1,
+                                Code="asd",
+                                Name="asda"
+                            },
+                            AmountPercentage=12,
+                            QuantityPercentage=11
+                        }
+            };
 
-			var result = viewModel.Validate(null);
+            var result = viewModel.Validate(null);
 			Assert.NotEmpty(result.ToList());
 		}
 	}

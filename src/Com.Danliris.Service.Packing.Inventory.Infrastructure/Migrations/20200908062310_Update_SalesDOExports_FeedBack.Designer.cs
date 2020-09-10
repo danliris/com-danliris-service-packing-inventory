@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200908062310_Update_SalesDOExports_FeedBack")]
+    partial class Update_SalesDOExports_FeedBack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,9 +257,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
-                    b.Property<string>("ShippingType")
-                        .HasMaxLength(128);
-
                     b.Property<double>("TotalAvalQuantity");
 
                     b.Property<double>("TotalAvalWeight");
@@ -410,7 +409,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(128);
 
                     b.Property<int>("ProductPackingId");
 
@@ -783,7 +782,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(4096);
+                        .HasMaxLength(128);
 
                     b.Property<int>("ProductPackingId");
 
@@ -1199,8 +1198,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<string>("Destination");
-
                     b.Property<string>("Driver")
                         .HasMaxLength(250);
 
@@ -1254,8 +1251,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double>("PACKQuantity");
 
                     b.Property<double>("PCSQuantity");
-
-                    b.Property<string>("PIC");
 
                     b.Property<int>("PackingListId");
 
@@ -2677,6 +2672,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<double>("CartonQuantity");
+
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
 
@@ -2714,13 +2711,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("NettWeight");
 
-                    b.Property<double>("PackQuantity");
-
-                    b.Property<int>("PackUomId");
-
-                    b.Property<string>("PackUomUnit")
-                        .HasMaxLength(100);
-
                     b.Property<string>("ProductCode")
                         .HasMaxLength(100);
 
@@ -2735,6 +2725,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(100);
+
+                    b.Property<double>("Volume");
 
                     b.HasKey("Id");
 
@@ -2794,9 +2786,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("LocalSalesNoteNo")
                         .HasMaxLength(50);
-
-                    b.Property<string>("Remark")
-                        .HasMaxLength(3000);
 
                     b.Property<string>("StorageDivision")
                         .HasMaxLength(255);

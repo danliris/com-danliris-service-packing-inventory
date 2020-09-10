@@ -125,6 +125,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 						Name = i.ComodityName
 					},
 					ComodityDesc = i.ComodityDesc,
+                    Desc2=i.Desc2,
+                    Desc3=i.Desc3,
+                    Desc4=i.Desc4,
 					Uom = new UnitOfMeasurement
 					{
 						Id= i.UomId,
@@ -142,9 +145,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 						Code = i.UnitCode
 					}
 				}).ToList(),
-				
+				GarmentShippingInvoiceUnits= model.GarmentShippingInvoiceUnit.Select(i => new GarmentShippingInvoiceUnitViewModel
+                {
+                    Unit = new Unit
+                    {
+                        Id = i.UnitId,
+                        Code = i.UnitCode
+                    },
+                    Id = i.Id,
+                    GarmentShippingInvoiceId = i.GarmentShippingInvoiceId,
 
-			};
+                }).ToList(),
+
+            };
 			return vm;
 		}
 		private GarmentShippingInvoiceModel MapToModel(GarmentShippingInvoiceViewModel viewModel)
@@ -156,7 +169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 				i.Uom = i.Uom ?? new UnitOfMeasurement();
 				i.Unit = i.Unit ?? new Unit();
 				i.Comodity = i.Comodity ?? new Comodity();
-				return new GarmentShippingInvoiceItemModel( i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Quantity, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDesc, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.Price, i.PriceRO, i.Amount, i.CurrencyCode, i.Unit.Id, i.Unit.Code, i.CMTPrice) {
+				return new GarmentShippingInvoiceItemModel( i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Quantity, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDesc,i.Desc2,i.Desc3, i.Desc4, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.Price, i.PriceRO, i.Amount, i.CurrencyCode, i.Unit.Id, i.Unit.Code, i.CMTPrice) {
 					Id = i.Id
 				};
 
@@ -166,8 +179,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			viewModel.Section = viewModel.Section ?? new Section();
 			viewModel.BuyerAgent = viewModel.BuyerAgent ?? new BuyerAgent();
 			var garmentshippinginvoiceadjustment = (viewModel.GarmentShippingInvoiceAdjustments ?? new List<GarmentShippingInvoiceAdjustmentViewModel>()).Select(m => new GarmentShippingInvoiceAdjustmentModel(m.GarmentShippingInvoiceId, m.AdjustmentDescription, m.AdjustmentValue) { Id = m.Id }).ToList();
+            var garmentshippinginvoiceUnit = (viewModel.GarmentShippingInvoiceUnits ?? new List<GarmentShippingInvoiceUnitViewModel>()).Select(m => {
 
-			GarmentShippingInvoiceModel garmentShippingInvoiceModel = new GarmentShippingInvoiceModel(viewModel.PackingListId,viewModel.InvoiceNo, viewModel.InvoiceDate,viewModel.From,viewModel.To,viewModel.BuyerAgent.Id,viewModel.BuyerAgent.Code,viewModel.BuyerAgent.Name,viewModel.Consignee,viewModel.LCNo,viewModel.IssuedBy,viewModel.Section.Id,viewModel.Section.Code,viewModel.ShippingPer,viewModel.SailingDate,viewModel.ConfirmationOfOrderNo,viewModel.ShippingStaffId,viewModel.ShippingStaff,viewModel.FabricTypeId,viewModel.FabricType,viewModel.BankAccountId,viewModel.BankAccount,viewModel.PaymentDue,viewModel.PEBNo,viewModel.PEBDate.GetValueOrDefault(),viewModel.NPENo,viewModel.NPEDate.GetValueOrDefault(),viewModel.Description,items,viewModel.AmountToBePaid,viewModel.CPrice,viewModel.Say,viewModel.Memo,viewModel.IsUsed,viewModel.BL,viewModel.BLDate.GetValueOrDefault(),viewModel.CO,viewModel.CODate.GetValueOrDefault(),viewModel.COTP,viewModel.COTPDate.GetValueOrDefault(), garmentshippinginvoiceadjustment,viewModel.TotalAmount,viewModel.ConsigneeAddress);
+                m.Unit = m.Unit ?? new Unit();
+                return new GarmentShippingInvoiceUnitModel(m.Unit.Id,m.Unit.Code, m.AmountPercentage,m.QuantityPercentage)
+                {
+                    Id = m.Id
+                };
+            }).ToList();
+
+            GarmentShippingInvoiceModel garmentShippingInvoiceModel = new GarmentShippingInvoiceModel(viewModel.PackingListId,viewModel.InvoiceNo, viewModel.InvoiceDate,viewModel.From,viewModel.To,viewModel.BuyerAgent.Id,viewModel.BuyerAgent.Code,viewModel.BuyerAgent.Name,viewModel.Consignee,viewModel.LCNo,viewModel.IssuedBy,viewModel.Section.Id,viewModel.Section.Code,viewModel.ShippingPer,viewModel.SailingDate,viewModel.ConfirmationOfOrderNo,viewModel.ShippingStaffId,viewModel.ShippingStaff,viewModel.FabricTypeId,viewModel.FabricType,viewModel.BankAccountId,viewModel.BankAccount,viewModel.PaymentDue,viewModel.PEBNo,viewModel.PEBDate.GetValueOrDefault(),viewModel.NPENo,viewModel.NPEDate.GetValueOrDefault(),viewModel.Description,items,viewModel.AmountToBePaid,viewModel.CPrice,viewModel.Say,viewModel.Memo,viewModel.IsUsed,viewModel.BL,viewModel.BLDate.GetValueOrDefault(),viewModel.CO,viewModel.CODate.GetValueOrDefault(),viewModel.COTP,viewModel.COTPDate.GetValueOrDefault(), garmentshippinginvoiceadjustment,viewModel.TotalAmount,viewModel.ConsigneeAddress, viewModel.DeliverTo, garmentshippinginvoiceUnit);
 			 
 			return garmentShippingInvoiceModel;
 		}

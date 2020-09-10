@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingExportSalesDOModel GetModel()
         {
             var item = new HashSet<GarmentShippingExportSalesDOItemModel> { new GarmentShippingExportSalesDOItemModel(1, "", "", "", 1, 1, "", 1, 1, 1, 1) };
-            var model = new GarmentShippingExportSalesDOModel("","",1,DateTimeOffset.Now,1,"","","","",1,"",item);
+            var model = new GarmentShippingExportSalesDOModel("","",1,DateTimeOffset.Now,1,"","","","",1,"", "", "", "", item);
 
             return model;
         }
@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingExportSalesDOModel GetEmptyModel()
         {
             var item = new HashSet<GarmentShippingExportSalesDOItemModel> { new GarmentShippingExportSalesDOItemModel(0, null, null, null, 0, 0, null, 0, 0, 0, 0) };
-            var model = new GarmentShippingExportSalesDOModel( null, null, 0, DateTimeOffset.MinValue,0, null, null, null, null,0, null,item);
+            var model = new GarmentShippingExportSalesDOModel( null, null, 0, DateTimeOffset.MinValue,0, null, null, null, null,0, null, "", "", "", item);
 
             return model;
         }

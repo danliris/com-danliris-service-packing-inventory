@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region tableBody
             PdfPTable tableBody = new PdfPTable(9);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1f, 5f, 3f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f });
+            tableBody.SetWidths(new float[] { 1f, 5f, 4.2f, 2.3f, 2.3f, 2.3f, 2.3f, 2.3f, 2.3f });
 
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment=Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -145,6 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellBodyCenter);
 
             int index = 0;
+            Dictionary<string, double> total = new Dictionary<string, double>();
             foreach (var item in viewModel.items)
             {
                 index++;
@@ -166,14 +167,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyRight.Phrase = new Phrase($"{item.cartonQuantity}", normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.grossWeight}", normal_font);
+                cellBodyRight.Phrase = new Phrase(item.grossWeight == 0 ? "" : $"{item.grossWeight}", normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.nettWeight}", normal_font);
+                cellBodyRight.Phrase = new Phrase(item.nettWeight == 0 ? "" : $"{item.nettWeight}", normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyRight.Phrase = new Phrase($"{item.volume}", normal_font);
+                cellBodyRight.Phrase = new Phrase(item.volume == 0 ? "" : $"{item.volume}", normal_font);
                 tableBody.AddCell(cellBodyRight);
+
+                if (total.ContainsKey(item.uom.Unit))
+                {
+                    total[item.uom.Unit] += item.quantity;
+                }
+                else
+                {
+                    total.Add(item.uom.Unit, item.quantity);
+                }
             }
 
             double totalQty = viewModel.items.Sum(a => a.quantity);
@@ -184,34 +194,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellBodyRight.Phrase = new Phrase("Jumlah", normal_font);
             cellBodyRight.Colspan = 3;
+            cellBodyRight.VerticalAlignment = Element.ALIGN_CENTER;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalQty}", normal_font);
+            var val1 = total.Select(x => String.Format("{0}", x.Value.ToString()));
+            var result1 = String.Join("\n", val1);
+
+            var key1 = total.Select(x => String.Format("{0}", x.Key));
+            var result2 = String.Join("\n", key1);
+
+            cellBodyRight.Phrase = new Phrase($"{result1}", normal_font);
             cellBodyRight.Colspan = 1;
+            cellBodyRight.HorizontalAlignment = Element.ALIGN_RIGHT;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase("", normal_font);
-            tableBody.AddCell(cellBodyRight);
+            cellBodyLeft.Phrase = new Phrase($"{result2}", normal_font);
+            tableBody.AddCell(cellBodyLeft);
 
             cellBodyRight.Phrase = new Phrase($"{totalCtn}", normal_font);
+            cellBodyRight.VerticalAlignment = Element.ALIGN_CENTER;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalGW}", normal_font);
+            cellBodyRight.Phrase = new Phrase(totalGW == 0 ? "" : $"{totalGW}", normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalNW}", normal_font);
+            cellBodyRight.Phrase = new Phrase(totalNW == 0 ? "" : $"{totalNW}", normal_font);
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRight.Phrase = new Phrase($"{totalVol}", normal_font);
+            cellBodyRight.Phrase = new Phrase(totalVol == 0 ? "" : $"{totalVol}", normal_font);
             tableBody.AddCell(cellBodyRight);
 
             tableBody.SpacingAfter = 15;
             document.Add(tableBody);
             #endregion
 
-            document.Add(new Paragraph("Untuk bagian / dikirim kepada __________________________________________________________",normal_font));
+            document.Add(new Paragraph($"Untuk bagian / dikirim kepada {viewModel.deliverTo}",normal_font));
 
-            document.Add(new Paragraph("Keterangan __________________________________________________________________", normal_font));
+            document.Add(new Paragraph($"Keterangan {viewModel.remark}", normal_font));
             document.Add(new Paragraph("\n",normal_font));
             #region sign
             PdfPTable tableSign = new PdfPTable(4);
