@@ -34,14 +34,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeadOffice = new PdfPCell { Border = Rectangle.NO_BORDER };
             cellHeadOffice.Phrase = new Phrase("Head Office : ", normal_font);
             tableHeadOffice.AddCell(cellHeadOffice);
-            cellHeadOffice.Phrase = new Phrase("Kel. Banaran Kec. Grogol Kab. Sukoharjo\nTelp.(0271)714400, Fax.(0271)735222\ne-Mail:", normal_font);
+            cellHeadOffice.Phrase = new Phrase("Jl. Merapi No. 23, Kel. Banaran Kec. Grogol Kab. Sukoharjo\nTelp.(0271)714400, Fax.(0271)735222\ne-Mail:", normal_font);
             cellHeadOffice.Phrase.Add(new Chunk("shipadm.gmt@danliris.com", underlined_font));
             tableHeadOffice.AddCell(cellHeadOffice);
             Chunk chunkAddress = new Chunk("MESSRS :\n" + viewModel.buyer.Name + "\n" + viewModel.buyer.Address, normal_font);
             chunkAddress.SetHorizontalScaling(0.8f);
             Phrase phraseBuyerHeader = new Phrase(chunkAddress);
+
+            //phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
+            //phraseBuyerHeader.Add(new Chunk("DEBIT NOTE", normal_font));
+
             phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
-            phraseBuyerHeader.Add(new Chunk("DEBIT NOTE", normal_font));
+            phraseBuyerHeader.Add(new Chunk("DATE : " + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy"), normal_font));
+      
             tableHeadOffice.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
@@ -54,6 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableHeadOffice.ExtendLastRow = false;
             tableHeadOffice.SpacingAfter = 5f;
             document.Add(tableHeadOffice);
+
+            document.Add(new Paragraph("DEBIT NOTE", big_font) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 5f });
 
             document.Add(new Paragraph(viewModel.noteNo, big_font) { Alignment = Element.ALIGN_RIGHT, SpacingAfter = 5f });
 
@@ -84,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Phrase = new Phrase(item.description, normal_font)
                 });
                 Phrase phraseAmount = new Phrase();
-                phraseAmount.Add(new Chunk("US$", normal_font));
+                phraseAmount.Add(new Chunk(viewModel.bank.Currency.Code, normal_font));
                 phraseAmount.Add(new Chunk(new VerticalPositionMark()));
                 phraseAmount.Add(new Chunk(item.amount.ToString("n"), normal_font));
                 tableItemsContent.AddCell(new PdfPCell
@@ -126,15 +133,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Colspan = 2,
                 PaddingBottom = 10f,
                 Border = Rectangle.NO_BORDER,
-                Phrase = new Phrase("Say : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY", normal_font)
+                Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
             });
 
-            tableItems.AddCell(new PdfPCell
-            {
-                Border = Rectangle.NO_BORDER,
-                PaddingRight = 10f,
-                Phrase = new Phrase("Please TT the above payment to our correspondence bank as follow :", normal_font)
-            });
+            //tableItems.AddCell(new PdfPCell
+            //{
+            //    Border = Rectangle.NO_BORDER,
+            //    PaddingRight = 10f,
+            //    Phrase = new Phrase("Please TT the above payment to our correspondence bank as follow :", normal_font)
+            //});
             Phrase phraseSign = new Phrase();
             phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy") + "\n\n\n\n", normal_font));
             Chunk chunkSignName = new Chunk("A M U M P U N I", normal_font);

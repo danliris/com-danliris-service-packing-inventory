@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public int InvoiceId { get; set; }
         public DateTimeOffset Date { get; set; }
         public Forwarder forwarder { get; set; }
+        public string ATTN { get; set; }
         public string CC { get; set; }
         public int ShippingStaffId { get; set; }
         public string ShippingStaffName { get; set; }
@@ -53,6 +54,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "Date" });
             }
 
+            if (string.IsNullOrEmpty(ATTN))
+            {
+                yield return new ValidationResult("ATTN  tidak boleh kosong", new List<string> { "ATTN" });
+            }
+
             if (string.IsNullOrEmpty(CC))
             {
                 yield return new ValidationResult("CC  tidak boleh kosong", new List<string> { "CC" });
@@ -83,20 +89,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Place Of Delivery tidak boleh kosong", new List<string> { "PlaceOfDelivery" });
             }
 
-            if (string.IsNullOrEmpty(FeederVessel))
-            {
-                yield return new ValidationResult("Feeder Vessel BY/DD tidak boleh kosong", new List<string> { "FeederVessel" });
-            }
+            //if (string.IsNullOrEmpty(FeederVessel))
+            //{
+            //    yield return new ValidationResult("Feeder Vessel BY/DD tidak boleh kosong", new List<string> { "FeederVessel" });
+            //}
 
-            if (string.IsNullOrEmpty(OceanVessel))
-            {
-                yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "OceanVessel" });
-            }
+            //if (string.IsNullOrEmpty(OceanVessel))
+            //{
+            //    yield return new ValidationResult("Ocean Vessel BY/DD tidak boleh kosong", new List<string> { "OceanVessel" });
+            //}
 
-            if (string.IsNullOrEmpty(Carrier))
-            {
-                yield return new ValidationResult("Carrier BY/DD tidak boleh kosong", new List<string> { "Carrier" });
-            }
+            //if (string.IsNullOrEmpty(Carrier))
+            //{
+            //    yield return new ValidationResult("Carrier BY/DD tidak boleh kosong", new List<string> { "Carrier" });
+            //}
 
             //if (string.IsNullOrEmpty(Flight))
             //{
@@ -108,10 +114,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    yield return new ValidationResult("Transit tidak boleh kosong", new List<string> { "Transit" });
             //}
 
-            if (string.IsNullOrEmpty(SpecialInstruction))
-            {
-                yield return new ValidationResult("Special Instruction tidak boleh kosong", new List<string> { "SpecialInstruction" });
-            }
+            //if (string.IsNullOrEmpty(SpecialInstruction))
+            //{
+            //    yield return new ValidationResult("Special Instruction tidak boleh kosong", new List<string> { "SpecialInstruction" });
+            //}
 
             if (string.IsNullOrEmpty(Notify))
             {

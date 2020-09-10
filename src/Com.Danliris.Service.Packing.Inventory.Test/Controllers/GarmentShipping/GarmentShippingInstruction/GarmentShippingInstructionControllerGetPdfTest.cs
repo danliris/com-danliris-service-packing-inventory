@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
@@ -122,6 +123,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             }
         }
 
+        private GarmentCoverLetterViewModel coverLetterVM
+        {
+            get
+            {
+                return new GarmentCoverLetterViewModel()
+                {
+                    invoiceId = 1,
+                    containerNo = "Test CO No",                    
+                };
+            }
+        }
+
         [Fact]
         public async Task Should_Success_GetPDF()
         {
@@ -137,6 +150,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
             var invoiceService = invoiceServiceMock.Object;
 
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
+            coverletterServiceMock.Setup(s => s.ReadByInvoiceId(It.IsAny<int>())).ReturnsAsync(coverLetterVM);
+            var coverletterService = coverletterServiceMock.Object;
+
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
                 .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
@@ -146,7 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service,  identityProvider, validateService, packingListService,invoiceService);
+            var controller = GetController(service,  identityProvider, validateService, coverletterService, packingListService, invoiceService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetPDF(1);
 
@@ -168,6 +185,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
             var invoiceService = invoiceServiceMock.Object;
 
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
+            coverletterServiceMock.Setup(s => s.ReadByInvoiceId(It.IsAny<int>())).ReturnsAsync(coverLetterVM);
+            var coverletterService = coverletterServiceMock.Object;
+
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
                 .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
@@ -177,7 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListService, invoiceService);
+            var controller = GetController(service, identityProvider, validateService, coverletterService, packingListService, invoiceService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetPDF(1);
 
@@ -199,6 +220,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
             var invoiceService = invoiceServiceMock.Object;
 
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
+            coverletterServiceMock.Setup(s => s.ReadByInvoiceId(It.IsAny<int>())).ReturnsAsync(coverLetterVM);
+            var coverletterService = coverletterServiceMock.Object;
+
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
                 .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
@@ -208,7 +233,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListService, invoiceService);
+            var controller = GetController(service, identityProvider, validateService, coverletterService, packingListService, invoiceService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetPDF(1);
 
@@ -230,6 +255,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
             var invoiceService = invoiceServiceMock.Object;
 
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
+            coverletterServiceMock.Setup(s => s.ReadByInvoiceId(It.IsAny<int>())).ReturnsAsync(coverLetterVM);
+            var coverletterService = coverletterServiceMock.Object;
+
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
                 .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
@@ -239,7 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListService, invoiceService);
+            var controller = GetController(service, identityProvider, validateService, coverletterService, packingListService, invoiceService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.GetPDF(1);

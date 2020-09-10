@@ -48,10 +48,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Name=model.Name,
                     Id=model.EMKLId,
                     Code=model.EMKLCode,
-                    attn=model.ATTN,
-                    address=model.Address,
-                    phone=model.Phone
+                    //attn=model.ATTN,
+                    //address=model.Address,
+                    //phone=model.Phone
                 },
+                destination = model.Destination,
+                address = model.Address,
+                pic = model.PIC,
+                attn = model.ATTN,
+                phone = model.Phone,
                 bookingDate = model.BookingDate,
 
                 order = new Buyer
@@ -96,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.forwarder = viewModel.forwarder ?? new Forwarder();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             viewModel.emkl = viewModel.emkl ?? new EMKL();
-            GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(),viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.emkl.address, viewModel.emkl.attn, viewModel.emkl.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(),viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.destination, viewModel.address, viewModel.pic, viewModel.attn, viewModel.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.InsertAsync(model);
         }
@@ -147,13 +152,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
+        public async Task<GarmentCoverLetterViewModel> ReadByInvoiceId(int invoiceId)
+        {
+            var data = await _repository.ReadByInvoiceIdAsync(invoiceId);
+            var viewModel = MapToViewModel(data);
+
+            return viewModel;
+        }
+
         public async Task<int> Update(int id, GarmentCoverLetterViewModel viewModel)
         {
             viewModel.order = viewModel.order ?? new Buyer();
             viewModel.forwarder = viewModel.forwarder ?? new Forwarder();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             viewModel.emkl = viewModel.emkl ?? new EMKL();
-            GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.emkl.address, viewModel.emkl.attn, viewModel.emkl.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.destination, viewModel.address, viewModel.pic, viewModel.attn, viewModel.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.UpdateAsync(id, model);
         }

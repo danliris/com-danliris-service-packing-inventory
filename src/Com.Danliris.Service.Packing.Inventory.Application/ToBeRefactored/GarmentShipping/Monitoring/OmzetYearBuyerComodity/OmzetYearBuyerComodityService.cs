@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public IQueryable<OmzetYearBuyerComodityViewModel> GetData(int year)
         {
-            DateTimeOffset dateFrom = new DateTimeOffset(year, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
+            DateTimeOffset dateFrom = new DateTimeOffset(year - 1, 12, 31, 17, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
             DateTimeOffset dateTo = new DateTimeOffset(year + 1, 1, 1, 0, 0, 0, new TimeSpan(_identityProvider.TimezoneOffset, 0, 0));
 
             var invoicequery = shippingInvoiceRepository.ReadAll();
