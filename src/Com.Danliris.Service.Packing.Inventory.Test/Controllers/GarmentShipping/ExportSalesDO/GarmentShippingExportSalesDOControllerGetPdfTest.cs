@@ -52,6 +52,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             },
                             volume=1,
                             description="asjhd",
+                        },
+                        new GarmentShippingExportSalesDOItemViewModel
+                        {
+                            quantity=1,
+                            cartonQuantity=1,
+                            comodity=new Comodity
+                            {
+                                Name="qqq",
+                            },
+                            grossWeight=0,
+                            nettWeight=0,
+                            uom=new UnitOfMeasurement
+                            {
+                                Unit="kjshd",
+                            },
+                            volume=0,
+                            description="asjhd",
                         }
                     }
                 };
