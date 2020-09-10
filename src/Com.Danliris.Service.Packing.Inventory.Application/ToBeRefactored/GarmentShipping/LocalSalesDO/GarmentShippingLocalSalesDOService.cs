@@ -53,6 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 localSalesNoteId = model.LocalSalesNoteId,
                 to = model.To,
                 storageDivision = model.StorageDivision,
+                remark = model.Remark,
                 items = model.Items == null ? new List<GarmentShippingLocalSalesDOItemViewModel>() : model.Items.Select(i => new GarmentShippingLocalSalesDOItemViewModel
                 {
                     Active = i.Active,
@@ -81,11 +82,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.UomId,
                         Unit = i.UomUnit
                     },
-                    cartonQuantity = i.CartonQuantity,
+                    packQuantity = i.PackQuantity,
+                    packUom = new UnitOfMeasurement
+                    {
+                        Id = i.PackUomId,
+                        Unit = i.PackUomUnit
+                    },
                     localSalesDOId = i.LocalSalesDOId,
                     grossWeight = i.GrossWeight,
                     nettWeight = i.NettWeight,
-                    volume = i.Volume,
                     localSalesNoteItemId=i.LocalSalesNoteItemId
 
                 }).ToList()
@@ -99,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.uom = i.uom ?? new UnitOfMeasurement();
                 i.product = i.product ?? new ProductViewModel();
-                return new GarmentShippingLocalSalesDOItemModel(i.localSalesDOId,i.localSalesNoteItemId,i.product.id,i.product.code,i.product.name,i.description,i.quantity,i.uom.Id.GetValueOrDefault(),i.uom.Unit,i.cartonQuantity,i.grossWeight,i.nettWeight,i.volume)
+                return new GarmentShippingLocalSalesDOItemModel(i.localSalesDOId, i.localSalesNoteItemId, i.product.id, i.product.code, i.product.name, i.description, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.packQuantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.grossWeight, i.nettWeight)
                 {
                     Id = i.Id
                 };
@@ -107,7 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.localSalesDONo = GenerateNo(viewModel);
-            GarmentShippingLocalSalesDOModel garmentPackingListModel = new GarmentShippingLocalSalesDOModel(viewModel.localSalesDONo, viewModel.localSalesNoteNo, viewModel.localSalesNoteId, viewModel.date, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.to, viewModel.storageDivision, items);
+            GarmentShippingLocalSalesDOModel garmentPackingListModel = new GarmentShippingLocalSalesDOModel(viewModel.localSalesDONo, viewModel.localSalesNoteNo, viewModel.localSalesNoteId, viewModel.date, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.to, viewModel.storageDivision, viewModel.remark, items);
 
             return garmentPackingListModel;
         }

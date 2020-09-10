@@ -16,12 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public double Quantity { get; private set; }
         public int UomId { get; private set; }
         public string UomUnit { get; private set; }
-        public double CartonQuantity { get; private set; }
+        public double PackQuantity { get; private set; }
+        public int PackUomId { get; private set; }
+        public string PackUomUnit { get; private set; }
         public double GrossWeight { get; private set; }
         public double NettWeight { get; private set; }
-        public double Volume { get; private set; }
 
-        public GarmentShippingLocalSalesDOItemModel(int localSalesDOId, int localSalesNoteItemId, int productId, string productCode, string productName, string description, double quantity, int uomId, string uomUnit, double cartonQuantity, double grossWeight, double nettWeight, double volume)
+        public GarmentShippingLocalSalesDOItemModel(int localSalesDOId, int localSalesNoteItemId, int productId, string productCode, string productName, string description, double quantity, int uomId, string uomUnit, double packQuantity, int packUomId, string packUomUnit, double grossWeight, double nettWeight)
         {
             LocalSalesDOId = localSalesDOId;
             LocalSalesNoteItemId = localSalesNoteItemId;
@@ -32,10 +33,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
-            CartonQuantity = cartonQuantity;
+            PackQuantity = packQuantity;
+            PackUomId = packUomId;
+            PackUomUnit = packUomUnit;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;
-            Volume = volume;
         }
 
         public void SetDescription(string description, string userName, string userAgent)
@@ -43,15 +45,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (Description != description)
             {
                 Description = description;
-                this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
-        public void SetCartonQuantity(double cartonQuantity, string userName, string userAgent)
-        {
-            if (CartonQuantity != cartonQuantity)
-            {
-                CartonQuantity = cartonQuantity;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
@@ -70,15 +63,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (NettWeight != nettWeight)
             {
                 NettWeight = nettWeight;
-                this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
-        public void SetVolume(double volume, string userName, string userAgent)
-        {
-            if (Volume != volume)
-            {
-                Volume = volume;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
