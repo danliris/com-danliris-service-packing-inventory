@@ -153,7 +153,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetAmountToBePaid( 500, data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetTotalAmount(2, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetConsigneeAddress("updated", data.LastModifiedBy, data.LastModifiedAgent);
-            data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3));
+            data.SetDeliverTo("updated", data.LastModifiedBy, data.LastModifiedAgent);
+            data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3));
 			foreach (var item in data.Items)
 			{
 				
@@ -168,9 +169,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			ajdData.SetAdjustmentDescription("dsds", ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 			ajdData.SetAdjustmentValue( 10000 + ajdData.AdjustmentValue, ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 
-			 
-			 
-			var result = await repo2.UpdateAsync(data.Id, data);
+            var unitData = data.GarmentShippingInvoiceUnit.FirstOrDefault();
+            data.GarmentShippingInvoiceUnit.Add(new GarmentShippingInvoiceUnitModel(1, "ddd",100, 1000));
+            unitData.SetUnitCode("dsdsasda", unitData.LastModifiedBy, ajdData.LastModifiedAgent);
+            unitData.SetUnitId(unitData.UnitId+1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
+            unitData.SetQuantityPercentage(unitData.QuantityPercentage+1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
+            unitData.SetAmountPercentage(unitData.AmountPercentage + 1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
+
+
+            var result = await repo2.UpdateAsync(data.Id, data);
 
 			Assert.NotEqual(0, result);
 
