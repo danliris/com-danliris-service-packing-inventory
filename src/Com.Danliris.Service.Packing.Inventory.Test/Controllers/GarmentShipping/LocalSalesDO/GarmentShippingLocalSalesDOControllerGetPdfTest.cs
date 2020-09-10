@@ -94,6 +94,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             {
                                 Unit="kjshd",
                             },
+                            packUom=new UnitOfMeasurement
+                            {
+                                Unit="kjshd",
+                            },
                             description="asjhd",
                         }
                     }
