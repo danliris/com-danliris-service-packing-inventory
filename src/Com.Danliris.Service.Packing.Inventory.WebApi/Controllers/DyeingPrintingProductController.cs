@@ -32,13 +32,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
         }
 
         [HttpGet("packing")]
-        public async Task<IActionResult> Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
             {
 
-                var data = await _service.GetDataProductPacking(page, size, filter, order, keyword);
+                var data = _service.GetDataProductPacking(page, size, filter, order, keyword);
                 return Ok(data);
             }
             catch (Exception ex)

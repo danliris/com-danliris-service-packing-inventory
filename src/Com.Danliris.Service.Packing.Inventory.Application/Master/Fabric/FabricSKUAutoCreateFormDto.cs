@@ -11,5 +11,6 @@
         public string Width { get; set; }
         public string WovenType { get; set; }
         public string YarnType { get; set; }
+        public string ProductionOrderNo { get; set; }
     }
 }

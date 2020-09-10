@@ -16,8 +16,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string BuyerName { get; private set; }
         public string To { get; private set; }
         public string StorageDivision { get; private set; }
+        public string Remark { get; private set; }
         public ICollection<GarmentShippingLocalSalesDOItemModel> Items { get; set; }
-        public GarmentShippingLocalSalesDOModel(string localSalesDONo, string localSalesNoteNo, int localSalesNoteId, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string to, string storageDivision, ICollection<GarmentShippingLocalSalesDOItemModel> items)
+        public GarmentShippingLocalSalesDOModel(string localSalesDONo, string localSalesNoteNo, int localSalesNoteId, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string to, string storageDivision, string remark, ICollection<GarmentShippingLocalSalesDOItemModel> items)
         {
             LocalSalesDONo = localSalesDONo;
             LocalSalesNoteNo = localSalesNoteNo;
@@ -28,6 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             BuyerName = buyerName;
             To = to;
             StorageDivision = storageDivision;
+            Remark = remark;
             Items = items;
         }
 
@@ -67,6 +69,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (StorageDivision != storageDivision)
             {
                 StorageDivision = storageDivision;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

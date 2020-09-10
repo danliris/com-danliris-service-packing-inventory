@@ -14,16 +14,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingLocalSalesDOModel GetModel()
         {
-            var item = new HashSet<GarmentShippingLocalSalesDOItemModel> { new GarmentShippingLocalSalesDOItemModel(1,1,1, "", "", "", 1, 1, "", 1, 1, 1, 1) };
-            var model = new GarmentShippingLocalSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", item);
+            var item = new HashSet<GarmentShippingLocalSalesDOItemModel> { new GarmentShippingLocalSalesDOItemModel(1,1,1, "", "", "", 1, 1, "", 1, 1, "", 1, 1) };
+            var model = new GarmentShippingLocalSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", "", item);
 
             return model;
         }
 
         public override GarmentShippingLocalSalesDOModel GetEmptyModel()
         {
-            var item = new HashSet<GarmentShippingLocalSalesDOItemModel> { new GarmentShippingLocalSalesDOItemModel(0,0,0, null, null, null, 0, 0, null, 0, 0, 0, 0) };
-            var model = new GarmentShippingLocalSalesDOModel(null, null, 0, DateTimeOffset.MinValue, 0, null, null, null, null,  item);
+            var item = new HashSet<GarmentShippingLocalSalesDOItemModel> { new GarmentShippingLocalSalesDOItemModel(0,0,0, null, null, null, 0, 0, null, 0, 0, null, 0, 0) };
+            var model = new GarmentShippingLocalSalesDOModel(null, null, 0, DateTimeOffset.MinValue, 0, null, null, null, null, null,  item);
 
             return model;
         }

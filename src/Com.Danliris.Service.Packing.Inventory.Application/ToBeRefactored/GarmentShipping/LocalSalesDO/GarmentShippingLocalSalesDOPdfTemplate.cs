@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region tableBody
-            PdfPTable tableBody = new PdfPTable(9);
+            PdfPTable tableBody = new PdfPTable(8);
             tableBody.WidthPercentage = 100;
             tableBody.SetWidths(new float[] { 1f, 5f, 3f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f, 2.5f });
 
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeft.Phrase = new Phrase(item.uom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.cartonQuantity), normal_font);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.packQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.grossWeight), normal_font);
@@ -152,16 +152,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.nettWeight), normal_font);
                 tableBody.AddCell(cellBodyRight);
-
-                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.volume), normal_font);
-                tableBody.AddCell(cellBodyRight);
             }
 
             double totalQty = viewModel.items.Sum(a => a.quantity);
-            double totalCtn = viewModel.items.Sum(a => a.cartonQuantity);
+            double totalCtn = viewModel.items.Sum(a => a.packQuantity);
             double totalGW = viewModel.items.Sum(a => a.grossWeight);
             double totalNW = viewModel.items.Sum(a => a.nettWeight);
-            double totalVol = viewModel.items.Sum(a => a.volume);
 
             cellBodyRight.Phrase = new Phrase("Jumlah", normal_font);
             cellBodyRight.Colspan = 3;
@@ -181,9 +177,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellBodyRight);
 
             cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalNW), normal_font);
-            tableBody.AddCell(cellBodyRight);
-
-            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", totalVol), normal_font);
             tableBody.AddCell(cellBodyRight);
 
             tableBody.SpacingAfter = 15;

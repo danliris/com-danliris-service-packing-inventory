@@ -1063,7 +1063,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             inputRepoMock.Setup(s => s.ReadAll())
@@ -1129,7 +1130,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             inputRepoMock.Setup(s => s.ReadAll())
@@ -1192,7 +1194,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             inputRepoMock.Setup(s => s.ReadAll())
@@ -1245,7 +1248,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             var testModel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, false, 10, "A", Convert.ToDouble(10), 1, 1, "r", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1);
@@ -1323,6 +1327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
+                    ProductPackingCodes = new List<string>() { "c" },
                     ProductPackingId = 1
                 });
 
@@ -1382,7 +1387,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             var testModel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, false, 10, "A", Convert.ToDouble(10), 1, 1, "r", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1);
@@ -1881,7 +1887,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     FabricPackingId = 1,
                     ProductPackingCode = "c",
-                    ProductPackingId = 1
+                    ProductPackingId = 1,
+                    ProductPackingCodes = new List<string>() { "c" }
                 });
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object, fabricService.Object).Object);
@@ -2005,7 +2012,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                {
                    FabricPackingId = 1,
                    ProductPackingCode = "c",
-                   ProductPackingId = 1
+                   ProductPackingId = 1,
+                   ProductPackingCodes = new List<string>() { "c" }
                });
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputRepoMock.Object, fabricService.Object).Object);
