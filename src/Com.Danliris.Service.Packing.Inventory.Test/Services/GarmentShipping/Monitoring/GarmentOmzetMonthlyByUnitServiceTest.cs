@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
-            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1 )
+            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1 )
             {
                 GarmentShippingInvoiceId = 1
             };
@@ -81,15 +81,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "uom1", 1, 1, 1, "", 1, "C10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
