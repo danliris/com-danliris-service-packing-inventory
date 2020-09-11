@@ -83,6 +83,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 
+        /// <summary>
+        /// Area Shipping
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="group"></param>
+        /// <param name="shippingType"></param>
+        /// <param name="dyeingPrintingAreaInputProductionOrders"></param>
+        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string shippingType,
+            ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            ShippingType = shippingType;
+            DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
+        }
+
         public void SetArea(string newArea, string user, string agent)
         {
             if (newArea != Area)

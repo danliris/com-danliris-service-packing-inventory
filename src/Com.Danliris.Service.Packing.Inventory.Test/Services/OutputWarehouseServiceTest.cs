@@ -392,7 +392,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.MaterialProduct.Name,
                                                                                                              s.MaterialConstruction.Id,
                                                                                                              s.MaterialConstruction.Name,
-                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty)).ToList());
+                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s")).ToList());
             }
         }
 
@@ -1124,7 +1124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.MaterialProduct.Name,
                                                                                                              s.MaterialConstruction.Id,
                                                                                                              s.MaterialConstruction.Name,
-                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty)).ToList());
+                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1,"s")).ToList());
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
