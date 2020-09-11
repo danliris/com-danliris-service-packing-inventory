@@ -281,14 +281,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
             var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
-            var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == form.ProductSKUId);
 
-            if (fabric != null && productSKU != null)
+            if (fabric != null)
             {
+                var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
+
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
                 var packingCodes = new List<string>();
-                for (var i = 0; i < form.Quantity; i++)
+                for (var i = 1; i <= form.Quantity; i++)
                 {
                     var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                     var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);

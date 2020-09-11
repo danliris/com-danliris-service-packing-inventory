@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
-    public class GoodsWarehouseDocumentsServiceTest
+    public class GoodsWarehouseDocumentsControllerTest
     {
         private GoodsWarehouseDocumentsController GetController(IGoodsWarehouseDocumentsService service, IIdentityProvider identityProvider)
         {
@@ -48,36 +48,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
 
-        private IndexViewModel ViewModel
-        {
-            get
-            {
-                return new IndexViewModel
-                {
-                    Date = new DateTimeOffset(new DateTime(2020, 04, 04)),
-                    Group = "PAGI",
-                    Activities = "KELUAR",
-                    Mutation = "AWAL",
-                    NoOrder = "Order001",
-                    Construction = "PC 001 010",
-                    Motif = "Batik",
-                    Color = "Biru",
-                    Grade = "A",
-                    QtyPacking = "1 Rolls",
-                    Qty = "1",
-                    Packaging = "Rolls",
-                    Satuan = "Meter",
-                    Balance = "10.000",
-                    Zona = "PROD"
-                };
-            }
-        }
-
         [Fact]
         public void Should_Get_Success()
         {
             var serviceMock = new Mock<IGoodsWarehouseDocumentsService>();
-            serviceMock.Setup(s => s.GetList(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock
+                .Setup(s => s.GetList(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new List<IndexViewModel>());
             var service = serviceMock.Object;
 
@@ -108,25 +84,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         [Fact]
         public void Should_GetXls_Success()
         {
+            //Setup
+            MemoryStream fs = new MemoryStream();
+            TextWriter tx = new StreamWriter(fs);
+            tx.WriteLine("1111");
+            tx.Flush();
+            fs.Flush();
+
             var serviceMock = new Mock<IGoodsWarehouseDocumentsService>();
-            serviceMock.Setup(s => s.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(new MemoryStream());
+            serviceMock
+                .Setup(s => s.GetExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(fs);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            //controller.ModelState.IsValid == false;
-            var response = controller.GetDataByExcel(null);
+            
+            //Act
+            var response = controller.GetDataByExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<string>());
 
+            //Assert
             Assert.NotNull(response);
         }
         [Fact]
         public void Should_GetXls_Exception()
         {
             var serviceMock = new Mock<IGoodsWarehouseDocumentsService>();
-            serviceMock.Setup(s => s.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+            serviceMock
+                .Setup(s => s.GetExcel(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Throws<Exception>();
             var service = serviceMock.Object;
 
@@ -134,7 +121,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            //controller.ModelState.IsValid == false;
             var response = controller.GetDataByExcel(null);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
