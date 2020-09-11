@@ -134,6 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "pas",
                     Group = "A",
                     OutputId = 1,
+                    ShippingType = "ZONA GUDANG",
                     ShippingProductionOrders = new List<InputShippingProductionOrderViewModel>()
                     {
                         new InputShippingProductionOrderViewModel()
@@ -212,6 +213,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "pas",
                     Group = "A",
                     OutputId = 1,
+                    ShippingType = "ZONA GUDANG",
                     ShippingProductionOrders = new List<InputShippingProductionOrderViewModel>()
                     {
                         new InputShippingProductionOrderViewModel()
@@ -293,6 +295,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Shift = "pas",
                     Group = "A",
                     OutputId = 1,
+                    ShippingType = "ZONA GUDANG",
                     ShippingProductionOrders = new List<InputShippingProductionOrderViewModel>()
                     {
                         new InputShippingProductionOrderViewModel()
