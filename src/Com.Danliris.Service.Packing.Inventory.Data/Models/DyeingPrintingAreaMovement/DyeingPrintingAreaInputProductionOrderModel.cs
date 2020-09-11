@@ -52,6 +52,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderSalesId { get; set; }
         public string DeliveryOrderSalesNo { get; set; }
 
+        public long DeliveryOrderReturId { get; set; }
+
+        public string DeliveryOrderReturNo { get; set; }
 
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
@@ -909,7 +912,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
            string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains,
            string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth,
            string cartNo, string remark, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode,
-           bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty)
+           bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty,
+           long deliveryOrderReturId, string deliveryOrderReturNo)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -965,6 +969,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             InputQuantity = inputQuantity;
             InputPackagingQty = inputPackagingQty;
+
+            DeliveryOrderReturId = deliveryOrderReturId;
+            DeliveryOrderReturNo = deliveryOrderReturNo;
         }
 
         /// <summary>
