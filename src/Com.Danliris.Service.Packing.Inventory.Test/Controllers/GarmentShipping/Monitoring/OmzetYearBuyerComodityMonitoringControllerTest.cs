@@ -109,13 +109,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             Assert.NotNull(response);
         }
 
+
         [Fact]
-        public void GetGenerateExcel_Error()
+        public void GetXls_Throws_InternalServerError()
         {
+            //Setup
             var serviceMock = new Mock<IOmzetYearBuyerComodityService>();
             serviceMock
                 .Setup(s => s.GenerateExcel(It.IsAny<int>()))
-                .Returns(new MemoryStream());
+                .Throws(new Exception());
 
             var service = serviceMock.Object;
 
@@ -124,9 +126,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            
+            //Act
             var response = controller.GetXls(2000);
 
-            Assert.NotNull(response);
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
     }
 }

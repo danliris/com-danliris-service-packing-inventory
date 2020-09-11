@@ -179,7 +179,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task GetById_Return_OK()
         {
             //Setup
-            var dataUtil = formDto;
             var serviceMock = new Mock<IProductPackingService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(productPackingDto);
             var service = serviceMock.Object;
@@ -203,7 +202,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task GetById_Return_NotFound()
         {
             //Setup
-            var dataUtil = formDto;
             var serviceMock = new Mock<IProductPackingService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync(()=>null);
             var service = serviceMock.Object;
@@ -227,7 +225,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
         public async Task GetById_Return_InternalServerError()
         {
             //Setup
-            var dataUtil = formDto;
             var serviceMock = new Mock<IProductPackingService>();
             serviceMock.Setup(s => s.GetById(It.IsAny<int>())).Throws(new Exception());
             var service = serviceMock.Object;
@@ -242,6 +239,76 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Master
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
             var response = await controller.GetById(1);
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetByCode_Return_NotFound()
+        {
+            //Setup
+            var serviceMock = new Mock<IProductPackingService>();
+            serviceMock.Setup(s => s.GetByCode(It.IsAny<string>())).ReturnsAsync(()=>null);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            //Act
+            var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
+            var response = await controller.GetByCode(It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.NotFound, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetByCode_Return_OK()
+        {
+            //Setup
+            var dataUtil = formDto;
+            var serviceMock = new Mock<IProductPackingService>();
+            serviceMock.Setup(s => s.GetByCode(It.IsAny<string>())).ReturnsAsync(productPackingDto);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            //Act
+            var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
+            var response = await controller.GetByCode(It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetByCode_Return_InternalServerError()
+        {
+            //Setup
+            var serviceMock = new Mock<IProductPackingService>();
+            serviceMock.Setup(s => s.GetByCode(It.IsAny<string>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<FormDto>())).Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            //Act
+            var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
+            var response = await controller.GetByCode(It.IsAny<string>());
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));

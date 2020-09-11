@@ -14,11 +14,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.CommonViewModelObje
             var unitStorage = new UnitStorage();
             Storage storage = new Storage()
             {
+                Id = 1,
+                Code = "Code",
+                Name = "Name",
                 Unit = unitStorage
             };
 
             Assert.Equal(unitStorage, storage.Unit);
-
+            Assert.Equal(1, storage.Id);
+            Assert.Equal("Code", storage.Code);
+            Assert.Equal("Name", storage.Name);
         }
 
         [Fact]
