@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public class OutputPreShippingProductionOrderViewModel : BaseViewModel
     {
         public DeliveryOrderSales DeliveryOrder { get; set; }
+        public DeliveryOrderRetur DeliveryOrderRetur { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }

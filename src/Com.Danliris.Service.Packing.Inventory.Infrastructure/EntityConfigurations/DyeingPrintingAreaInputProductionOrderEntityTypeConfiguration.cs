@@ -95,6 +95,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(128);
 
             builder
+                .Property(s => s.DeliveryOrderReturNo)
+                .HasMaxLength(128);
+
+            builder
                 .Property(s => s.PackagingUnit)
                 .HasMaxLength(128);
 
