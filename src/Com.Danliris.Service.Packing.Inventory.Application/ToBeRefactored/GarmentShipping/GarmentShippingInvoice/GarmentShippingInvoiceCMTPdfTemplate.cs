@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region detailOrders
             PdfPTable tabledetailOrders = new PdfPTable(3);
-            tabledetailOrders.SetWidths(new float[] { 0.5f, 1.5f, 2f });
+            tabledetailOrders.SetWidths(new float[] { 0.6f, 1.4f, 2f });
 
             PdfPCell cellDetailContentLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER };
             PdfPCell cellDetailContentRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
@@ -72,21 +72,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentLeft.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER;
             tabledetailOrders.AddCell(cellDetailContentLeft);
 
-            cellDetailContentRight.AddElement(new Phrase("MESSRS  :  ", normal_font));
+            cellDetailContentRight.AddElement(new Phrase("MESSRS      : ", normal_font));
+            cellDetailContentRight.Border = Rectangle.NO_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
             cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
             cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
+            cellDetailContentCenter.Border = Rectangle.NO_BORDER;
             //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
             tabledetailOrders.AddCell(cellDetailContentCenter);
 
 
+            cellDetailContentRight.Phrase=new Phrase("", normal_font);
             cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
             cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
             cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
             cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
             cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
-           // cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
+            // cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
+            cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentRight);
+
+
+
+            cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
+            cellDetailContentRight.Colspan = 1;
+            cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentRight);
+
+            cellDetailContentCenter.Phrase=new Phrase(viewModel.DeliverTo, normal_font);
+            cellDetailContentCenter.Border = Rectangle.BOTTOM_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentCenter);
+
+            cellDetailContentRight.Phrase = new Phrase("", normal_font);
             cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
@@ -264,7 +282,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     totalPrice += item.Amount;
                 }
 
-                bodyTableCellLeftBorder.Phrase = new Phrase($"{item.RONo}      {item.ComodityDesc}", body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase($"{item.ComodityDesc}   {item.Desc2}   {item.Desc3}   {item.Desc4}", body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.Colspan = 1;
@@ -405,13 +423,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            calculationCellLeft.Phrase = new Phrase($"TOTAL AMOUNT TO BE PAID ", normal_font);
+            calculationCellLeft.Phrase = new Phrase($"TOTAL AMOUNT TO BE PAID ", bold_font);
+            calculationCellLeft.Border = Rectangle.TOP_BORDER;
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
+            calculationCellLeft.Phrase = new Phrase(": USD ", bold_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPaid), normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPaid), bold_font);
+            calculationCellRight.Border = Rectangle.TOP_BORDER;
             calculationTable.AddCell(calculationCellRight);
-            calculationCellRight.Phrase = new Phrase("", normal_font);
+            calculationCellRight.Phrase = new Phrase("", bold_font);
+            calculationCellRight.Border = Rectangle.NO_BORDER;
             calculationTable.AddCell(calculationCellRight);
 
             string amountToText = "";
@@ -426,6 +447,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             calculationCellLeft.Phrase = new Phrase($"SAY : US DOLLARS {amountToText.ToUpper()} ", normal_font);
             calculationCellLeft.Colspan = 4;
+            calculationCellLeft.Border = Rectangle.NO_BORDER;
             calculationTable.AddCell(calculationCellLeft);
 
             document.Add(calculationTable);
@@ -491,6 +513,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             if (pl.Measurements.Count > 0)
             {
+                double totalctns = 0;
+                double totalCM = 0;
                 foreach (var m in pl.Measurements)
                 {
                     double cbm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 1000000;
@@ -511,7 +535,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", cbm) + " CBM", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
+                    totalctns += m.CartonsQuantity;
+                    totalCM += cbm;
                 }
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                cellMeasurement.Colspan = 2;
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase($"{totalctns} CTNS   ", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", totalCM) + " CBM", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
 
                 cellWeightContentRight.AddElement(tableMeasurement);
             }
