@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     if (item.packQuantity <= 0)
                     {
-                        errorItem["cartonQuantity"] = "Carton Quantity harus lebih dari 0";
+                        errorItem["packQuantity"] = "Jumlah Kemasan harus lebih dari 0";
                         errorItemsCount++;
                     }
 

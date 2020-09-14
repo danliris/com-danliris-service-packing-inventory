@@ -295,12 +295,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         //string materialConstructionNumber = string.IsNullOrEmpty(item.MaterialConstruction.Name) ? "" : new string(item.MaterialConstruction.Name.Where(char.IsDigit).ToArray());
                         //string materialWidthNumber = string.IsNullOrEmpty(item.MaterialWidth) ? "" : new string(item.MaterialWidth.Where(char.IsDigit).ToArray());
-                        string sppNumber = item.ProductionOrder.No.Split('/').LastOrDefault();
-                        var skuData = _fabricPackingSKUService.AutoCreateSKU(new NewFabricSKUAutoCreateFormDto()
+                        //string sppNumber = item.ProductionOrder.No.Split('/').LastOrDefault();
+                        var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                         {
                             Grade = detail.Grade,
                             ProcessType = item.ProcessType.Name,
-                            ProductionOrderNumber = sppNumber
+                            ProductionOrderNo = item.ProductionOrder.No,
+                            UOM = item.UomUnit
                         });
 
                         var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id,
@@ -342,11 +343,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var detail in item.ProductionOrderDetails)
                     {
                         string sppNumber = item.ProductionOrder.No.Split('/').LastOrDefault();
-                        var skuData = _fabricPackingSKUService.AutoCreateSKU(new NewFabricSKUAutoCreateFormDto()
+                        var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                         {
                             Grade = detail.Grade,
                             ProcessType = item.ProcessType.Name,
-                            ProductionOrderNumber = sppNumber
+                            ProductionOrderNo = item.ProductionOrder.No,
+                            UOM = item.UomUnit
                         });
 
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -678,12 +680,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var detail in item.ProductionOrderDetails)
                 {
-                    string sppNumber = item.ProductionOrder.No.Split('/').LastOrDefault();
-                    var skuData = _fabricPackingSKUService.AutoCreateSKU(new NewFabricSKUAutoCreateFormDto()
+                    //string sppNumber = item.ProductionOrder.No.Split('/').LastOrDefault();
+                    var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = detail.Grade,
                         ProcessType = item.ProcessType.Name,
-                        ProductionOrderNumber = sppNumber
+                        ProductionOrderNo = item.ProductionOrder.No,
+                        UOM = item.UomUnit
                     });
 
                     var outputProductionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, detail.HasNextAreaDocument, item.ProductionOrder.Id,

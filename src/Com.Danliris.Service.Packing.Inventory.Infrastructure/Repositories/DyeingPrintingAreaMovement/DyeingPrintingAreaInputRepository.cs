@@ -74,12 +74,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public async Task<int> DeleteShippingArea(DyeingPrintingAreaInputModel model)
         {
             int result = 0;
-            result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId).ToList(), false, null);
+            if(model.ShippingType == DyeingPrintingArea.ZONAGUDANG)
+            {
+                result += await _outputSPPRepository.UpdateFromInputAsync(model.DyeingPrintingAreaInputProductionOrders.Select(s => s.DyeingPrintingAreaOutputProductionOrderId).ToList(), false, null);
+            }
+            
             foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => !s.HasOutputDocument))
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
-                var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                if(model.ShippingType == DyeingPrintingArea.ZONAGUDANG)
+                {
+                    var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                }
+                
             }
 
             _dbSet.Update(model);
@@ -384,11 +392,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 if (localItem == null)
                 {
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
-                    result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false, null);
-                    var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+
+                    if(model.ShippingType == DyeingPrintingArea.ZONAGUDANG)
+                    {
+                        result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false, null);
+                        var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
+                        result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                    }
+
+                }
+                else
+                {
+                    var diffBalance = localItem.InputQuantity - item.InputQuantity;
+                    var diffQtyPacking = localItem.InputPackagingQty - item.InputPackagingQty;
+
+                    var newBalanceRemains = item.BalanceRemains + diffBalance;
+                    var newBalance = item.Balance + diffBalance;
+
+                    var newPackagingQty = item.PackagingQty + diffQtyPacking;
+
+                    item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
+                    item.SetPackagingType(localItem.PackagingType, _identityProvider.Username, UserAgent);
+                    item.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
+                    item.SetInputPackagingQty(localItem.InputPackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                    item.SetInputQuantity(localItem.InputQuantity, _identityProvider.Username, UserAgent);
+                    item.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                 }
             }
+
+            if(model.ShippingType == DyeingPrintingArea.RETURBARANG)
+            {
+                foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => s.Id == 0))
+                {
+                    item.FlagForCreate(_identityProvider.Username, UserAgent);
+                    dbModel.DyeingPrintingAreaInputProductionOrders.Add(item);
+                }
+            }
+            
 
             //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(s => s.Id == 0))
             //{

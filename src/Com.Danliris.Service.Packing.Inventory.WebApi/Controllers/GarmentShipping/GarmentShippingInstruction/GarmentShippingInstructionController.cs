@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
@@ -27,14 +28,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         private readonly IValidateService _validateService;
         private readonly IGarmentPackingListService _packingListService;
         private readonly IGarmentShippingInvoiceService _invoiceService;
+        private readonly IGarmentCoverLetterService _coverletterService;
 
-        public GarmentShippingInstructionController(IGarmentShippingInstructionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentPackingListService packingListService, IGarmentShippingInvoiceService invoiceService)
+        public GarmentShippingInstructionController(IGarmentShippingInstructionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentCoverLetterService coverletterService, IGarmentPackingListService packingListService, IGarmentShippingInvoiceService invoiceService)
         {
             _service = service;
             _identityProvider = identityProvider;
             _validateService = validateService;
             _packingListService = packingListService;
             _invoiceService = invoiceService;
+            _coverletterService = coverletterService;
         }
 
         protected void VerifyUser()
@@ -193,9 +196,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 {
                     GarmentShippingInvoiceViewModel invoice =await _invoiceService.ReadById(model.InvoiceId);
                     GarmentPackingListViewModel pl = await _packingListService.ReadById(invoice.PackingListId);
+                    GarmentCoverLetterViewModel cl = await _coverletterService.ReadByInvoiceId(invoice.Id);
 
                     var PdfTemplate = new GarmentShippingInstructionPdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,  pl, invoice, timeoffsset);
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, pl, invoice, timeoffsset);
 
                     return new FileStreamResult(stream, "application/pdf")
                     {

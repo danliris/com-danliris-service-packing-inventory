@@ -46,11 +46,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItemsCount++;
                     }
 
-                    if (item.currency == null || item.currency.Id == 0)
-                    {
-                        errorItem["currency"] = "Currency tidak boleh kosong";
-                        errorItemsCount++;
-                    }
+                    //if (item.currency == null || item.currency.Id == 0)
+                    //{
+                    //    errorItem["currency"] = "Currency tidak boleh kosong";
+                    //    errorItemsCount++;
+                    //}
 
                     if (item.amount <= 0)
                     {

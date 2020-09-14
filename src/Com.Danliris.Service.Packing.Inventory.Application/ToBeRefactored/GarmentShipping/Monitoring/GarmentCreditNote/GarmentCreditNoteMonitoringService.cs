@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             
             var newQ = (from a in query
                         join b in queryitem on a.Id equals b.ShippingNoteId
-                        where a.NoteType == GarmentShippingNoteTypeEnum.NK
+                        where a.NoteType == GarmentShippingNoteTypeEnum.CN
 
                         select new GarmentCreditNoteMonitoringViewModel
                         {

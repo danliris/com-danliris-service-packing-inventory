@@ -404,7 +404,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -536,7 +536,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -585,7 +585,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -644,7 +644,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -695,7 +695,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -745,7 +745,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -794,7 +794,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -844,7 +844,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateFromOutputIMAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -894,7 +894,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaSummaryModel>()))
                  .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -948,13 +948,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                .ReturnsAsync(1);
             sppoutRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>())).ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
-                .Returns(new FabricSKUIdCodeDto()
-                {
-                    FabricSKUId = 1,
-                    ProductSKUCode = "c",
-                    ProductSKUId = 1
-                });
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
+                 .Returns(new FabricSKUIdCodeDto()
+                 {
+                     FabricSKUId = 1,
+                     ProductSKUCode = "c",
+                     ProductSKUId = 1
+                 });
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object, fabricService.Object).Object);
             var vm = ViewModel;
             vm.DestinationArea = "GUDANG AVAL";
@@ -1327,7 +1327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -1368,7 +1368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -1478,7 +1478,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,
@@ -1512,7 +1512,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var detail = vm.InspectionMaterialProductionOrders.FirstOrDefault();
             detail.Id = 0;
             vm.InspectionMaterialProductionOrders = new List<OutputInspectionMaterialProductionOrderViewModel>() { detail };
-            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<NewFabricSKUAutoCreateFormDto>()))
+            fabricService.Setup(s => s.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
                 .Returns(new FabricSKUIdCodeDto()
                 {
                     FabricSKUId = 1,

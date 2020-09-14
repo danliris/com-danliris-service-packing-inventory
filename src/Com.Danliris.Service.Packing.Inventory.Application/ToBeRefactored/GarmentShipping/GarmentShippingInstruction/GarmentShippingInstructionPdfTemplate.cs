@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -11,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingInstructionPdfTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingInstructionViewModel viewModel, GarmentPackingListViewModel pl, GarmentShippingInvoiceViewModel invoice, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingInstructionViewModel viewModel, GarmentCoverLetterViewModel cl, GarmentPackingListViewModel pl, GarmentShippingInvoiceViewModel invoice, int timeoffset)
         {
             const int MARGIN = 20;
 
@@ -44,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellHeaderContent2 = new PdfPCell() { Border = Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER };
             cellHeaderContent2.AddElement(new Phrase(": " + viewModel.forwarder.name, normal_font));
-            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.forwarder.attn, normal_font));
+            cellHeaderContent2.AddElement(new Phrase(": " + viewModel.ATTN, normal_font));
             cellHeaderContent2.AddElement(new Phrase(": " + viewModel.CC, normal_font));
             cellHeaderContent2.AddElement(new Phrase(": " + viewModel.ShippingStaffName + "/" + viewModel.Phone, normal_font));
             tableHeader.AddCell(cellHeaderContent2);
@@ -72,6 +73,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("DEAR SIRS,",normal_font));
             document.Add(new Paragraph("WE REQUEST YOU TO ARRANGE THE FOLLOWING SHIPMENT", normal_font));
 
+            document.Add(new Paragraph("\n", normal_font));
+            document.Add(new Paragraph($"{invoice.Description}", normal_font));
             document.Add(new Paragraph("\n", normal_font));
 
             #region detail
@@ -119,6 +122,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.SetWidths(new float[] { 1f, 1f, 1f, 2f, 2f });
             tableMeasurement.WidthPercentage = 100;
 
+            double totcbm = 0;
+
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             if (pl.Measurements.Count > 0)
             {
@@ -142,18 +147,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", cbm) + " CBM", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
+                    totcbm += cbm;
                 }
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                cellMeasurement.PaddingLeft = 1;
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("---------------------", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                cellMeasurement.PaddingLeft = 1;
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("TOTAL CBM = ", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", totcbm) + " CBM", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
 
                 cellLeft.AddElement(tableMeasurement);
             }
 
             detailTable.AddCell(cellLeft);
 
-            cellLeft.Phrase = new Phrase("CARTON NO.", normal_font);
+            cellLeft.Phrase = new Phrase("CARTON", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(viewModel.CartonNo, normal_font);
+            cellLeft.Phrase = new Phrase($"{string.Format("{0:n0}", viewModel.CartonNo)} CTNS", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("MARKS", normal_font);
@@ -202,7 +240,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase("PT. DAN LIRIS, KELURAHAN BANARAN, KECAMATAN GROGOL,\n" +
+            cellLeft.Phrase = new Phrase("PT. DAN LIRIS, JL. MERAPI NO. 23, KELURAHAN BANARAN, KECAMATAN GROGOL,\n" +
                                          "SUKOHARJO 57193, INDONESIA.\n" +
                                          "PHONE : 0271-714400  FAX : 0271-735222", normal_font);
             detailTable.AddCell(cellLeft);
@@ -246,6 +284,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeft.Phrase = new Phrase($"{viewModel.Freight}", normal_font);
             detailTable.AddCell(cellLeft);
 
+            cellLeft.Phrase = new Phrase("CONTAINER NO.", normal_font);
+            detailTable.AddCell(cellLeft);
+            cellLeft.Phrase = new Phrase(":", normal_font);
+            detailTable.AddCell(cellLeft);
+            cellLeft.Phrase = new Phrase($"{cl.containerNo}", normal_font);
+            detailTable.AddCell(cellLeft);
+
             cellLeft.Phrase = new Phrase("LETTER OF CREDIT NO.", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
@@ -274,6 +319,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("\n",normal_font));
             document.Add(new Paragraph("THANK YOU,", normal_font));
             document.Add(new Paragraph("WITH BEST REGARDS,", normal_font));
+            document.Add(new Paragraph("\n", normal_font));
+            document.Add(new Paragraph("\n", normal_font));
+            document.Add(new Paragraph("\n", normal_font));
+            document.Add(new Paragraph($"{invoice.ShippingStaff}", normal_font));
             #endregion
 
             document.Close();
@@ -325,9 +374,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             string[] headOffices = {
                 "P.T. DAN LIRIS",
-                "Ref. No. : FM-00-SP-24-004",
+                "                                                                   Ref. No. : FM-00-SP-24-004",
                 "SPINNING - WEAVING - FINISHING - PRINTING - GARMENT",
-                "KELURAHAN BANARAN, KECAMATAN GROGOL, SUKOHARJO - INDONESIA",
+                "JL. MERAPI No. 23, KEL. BANARAN, KEC. GROGOL, SUKOHARJO - INDONESIA",
                 "PO. BOX 166 SOLO 57100"
             };
             for (int i = 0; i < headOffices.Length; i++)

@@ -34,14 +34,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeadOffice = new PdfPCell { Border = Rectangle.NO_BORDER };
             cellHeadOffice.Phrase = new Phrase("Head Office : ", normal_font);
             tableHeadOffice.AddCell(cellHeadOffice);
-            cellHeadOffice.Phrase = new Phrase("Kel. Banaran Kec. Grogol Kab. Sukoharjo\nTelp.(0271)714400, Fax.(0271)735222\ne-Mail:", normal_font);
+            cellHeadOffice.Phrase = new Phrase("Jl. Merapi No. 23, Kel. Banaran Kec. Grogol Kab. Sukoharjo\nTelp.(0271)714400, Fax.(0271)735222\ne-Mail:", normal_font);
             cellHeadOffice.Phrase.Add(new Chunk("shipadm.gmt@danliris.com", underlined_font));
             tableHeadOffice.AddCell(cellHeadOffice);
             Chunk chunkAddress = new Chunk("MESSRS :\n" + viewModel.buyer.Name + "\n" + viewModel.buyer.Address, normal_font);
             chunkAddress.SetHorizontalScaling(0.8f);
             Phrase phraseBuyerHeader = new Phrase(chunkAddress);
+
+            //phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
+            //phraseBuyerHeader.Add(new Chunk("CREDIT NOTE", normal_font));
+
             phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
-            phraseBuyerHeader.Add(new Chunk("CREDIT NOTE", normal_font));
+            phraseBuyerHeader.Add(new Chunk("DATE : " + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy"), normal_font));
+
             tableHeadOffice.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
@@ -54,6 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableHeadOffice.ExtendLastRow = false;
             tableHeadOffice.SpacingAfter = 5f;
             document.Add(tableHeadOffice);
+
+            document.Add(new Paragraph("CREDIT NOTE", big_font) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 5f });
 
             document.Add(new Paragraph(viewModel.noteNo, big_font) { Alignment = Element.ALIGN_RIGHT, SpacingAfter = 5f });
 
@@ -126,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Colspan = 2,
                 PaddingBottom = 10f,
                 Border = Rectangle.NO_BORDER,
-                Phrase = new Phrase("Say : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY", normal_font)
+                Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY", normal_font)
             });
 
             tableItems.AddCell(new PdfPCell

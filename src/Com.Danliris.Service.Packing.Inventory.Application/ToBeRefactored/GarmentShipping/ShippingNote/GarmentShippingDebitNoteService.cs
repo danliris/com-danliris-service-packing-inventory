@@ -99,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount { Currency = new Currency() };
             viewModel.bank.Currency = viewModel.bank.Currency ?? new Currency();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.ND, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
 
             return model;
         }
@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var year = DateTime.Now.ToString("yy");
 
-            var prefix = $"{year}ND";
+            var prefix = $"{year}DN";
 
             var lastInvoiceNo = _repository.ReadAll().Where(w => w.NoteNo.StartsWith(prefix))
                 .OrderByDescending(o => o.NoteNo)
@@ -135,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public ListResult<GarmentShippingDebitNoteViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _repository.ReadAll().Where(w => w.NoteType == GarmentShippingNoteTypeEnum.ND);
+            var query = _repository.ReadAll().Where(w => w.NoteType == GarmentShippingNoteTypeEnum.DN);
             List<string> SearchAttributes = new List<string>()
             {
                 "NoteNo", "BuyerCode", "BuyerName"
@@ -184,7 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
-            return new ExcelResult(stream, "Nota Debet " + data.NoteNo + ".pdf");
+            return new ExcelResult(stream, "Debit Note " + data.NoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)
