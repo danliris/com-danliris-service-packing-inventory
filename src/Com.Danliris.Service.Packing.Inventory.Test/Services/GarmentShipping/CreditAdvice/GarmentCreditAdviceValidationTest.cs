@@ -14,5 +14,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
         }
+        [Fact]
+        public void Validate_LC()
+        {
+            GarmentShippingCreditAdviceViewModel viewModel = new GarmentShippingCreditAdviceViewModel()
+            {
+                paymentTerm = "LC"
+            };
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
+
+        [Fact]
+        public void Validate_TT()
+        {
+            GarmentShippingCreditAdviceViewModel viewModel = new GarmentShippingCreditAdviceViewModel()
+            {
+                paymentTerm = "TT/OA"
+            };
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
     }
 }
