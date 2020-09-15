@@ -179,6 +179,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             unitData.SetQuantityPercentage(unitData.QuantityPercentage+1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
             unitData.SetAmountPercentage(unitData.AmountPercentage + 1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
 
+            var unitData2 = data.GarmentShippingInvoiceUnit.LastOrDefault();
+            data.GarmentShippingInvoiceUnit.Remove(unitData2);
 
             var result = await repo2.UpdateAsync(data.Id, data);
 
