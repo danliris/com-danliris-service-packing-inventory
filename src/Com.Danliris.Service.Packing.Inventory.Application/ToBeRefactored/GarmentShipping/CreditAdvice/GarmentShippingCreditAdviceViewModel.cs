@@ -71,84 +71,118 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "date" });
             }
 
-            if (string.IsNullOrEmpty(lcType))
+            if (string.IsNullOrEmpty(paymentTerm))
             {
-                yield return new ValidationResult("Jenis L/C tidak boleh kosong", new List<string> { "lcType" });
+                yield return new ValidationResult("Payment Term tidak boleh kosong", new List<string> { "paymentTerm" });
             }
-
-            if (string.IsNullOrEmpty(srNo))
+            else if (paymentTerm.ToUpper() == "LC")
             {
-                yield return new ValidationResult("SR. No tidak boleh kosong", new List<string> { "srNo" });
+                if (string.IsNullOrEmpty(lcNo))
+                {
+                    yield return new ValidationResult("No LC tidak boleh kosong", new List<string> { "lcNo" });
+                }
+
+                if (string.IsNullOrEmpty(lcType))
+                {
+                    yield return new ValidationResult("Jenis L/C tidak boleh kosong", new List<string> { "lcType" });
+                }
+
+                if (string.IsNullOrEmpty(srNo))
+                {
+                    yield return new ValidationResult("SR. No tidak boleh kosong", new List<string> { "srNo" });
+                }
+
+                if (negoDate == null || negoDate == DateTimeOffset.MinValue)
+                {
+                    yield return new ValidationResult("Tanggal SR tidak boleh kosong", new List<string> { "negoDate" });
+                }
+
+                if (paymentDate == null || paymentDate == DateTimeOffset.MinValue)
+                {
+                    yield return new ValidationResult("Tanggal Pembayaran tidak boleh kosong", new List<string> { "paymentDate" });
+                }
+
+                if (string.IsNullOrEmpty(condition))
+                {
+                    yield return new ValidationResult("Condition tidak boleh kosong", new List<string> { "condition" });
+                }
+
+                if (bankComission <= 0)
+                {
+                    yield return new ValidationResult("Bank Comission harus lebih dari 0", new List<string> { "bankComission" });
+                }
+
+                if (discrepancyFee <= 0)
+                {
+                    yield return new ValidationResult("Discrepancy Fee / Postage harus lebih dari 0", new List<string> { "discrepancyFee" });
+                }
+
+                if (btbCADate == null || btbCADate == DateTimeOffset.MinValue)
+                {
+                    yield return new ValidationResult("Tanggal CA tidak boleh kosong", new List<string> { "btbCADate" });
+                }
+
+                if (btbAmount <= 0)
+                {
+                    yield return new ValidationResult("Amount (US$) harus lebih dari 0", new List<string> { "btbAmount" });
+                }
+
+                if (btbRatio <= 0)
+                {
+                    yield return new ValidationResult("Ratio harus lebih dari 0", new List<string> { "btbRatio" });
+                }
+
+                if (btbRate <= 0)
+                {
+                    yield return new ValidationResult("Rate harus lebih dari 0", new List<string> { "btbRate" });
+                }
+
+                if (btbTransfer <= 0)
+                {
+                    yield return new ValidationResult("Transfer harus lebih dari 0", new List<string> { "btbTransfer" });
+                }
+
+                if (btbMaterial <= 0)
+                {
+                    yield return new ValidationResult("Material harus lebih dari 0", new List<string> { "btbMaterial" });
+                }
+
+                if (billDays <= 0)
+                {
+                    yield return new ValidationResult("Jumlah Hari harus lebih dari 0", new List<string> { "billDays" });
+                }
+
+                if (billAmount <= 0)
+                {
+                    yield return new ValidationResult("Amount harus lebih dari 0", new List<string> { "billAmount" });
+                }
+
+                if (string.IsNullOrEmpty(billCA))
+                {
+                    yield return new ValidationResult("CA tidak boleh kosong", new List<string> { "billCA" });
+                }
+
+                if (creditInterest <= 0)
+                {
+                    yield return new ValidationResult("Credit Interest tidak boleh kosong", new List<string> { "creditInterest" });
+                }
+
+                if (documentPresente == null || documentPresente == DateTimeOffset.MinValue)
+                {
+                    yield return new ValidationResult("Document Presente tidak boleh kosong", new List<string> { "documentPresente" });
+                }
             }
-
-            if (negoDate == null || negoDate == DateTimeOffset.MinValue)
+            else if (paymentTerm.ToUpper() == "TT/OA")
             {
-                yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "negoDate" });
-            }
-
-            if (string.IsNullOrEmpty(condition))
-            {
-                yield return new ValidationResult("Condition tidak boleh kosong", new List<string> { "condition" });
-            }
-
-            if (bankComission <= 0)
-            {
-                yield return new ValidationResult("Bank Comission harus lebih dari 0", new List<string> { "bankComission" });
-            }
-
-            if (discrepancyFee <= 0)
-            {
-                yield return new ValidationResult("Discrepancy Fee / Postage harus lebih dari 0", new List<string> { "discrepancyFee" });
+                if (otherCharge <= 0)
+                {
+                    yield return new ValidationResult("Other Charge tidak boleh kosong", new List<string> { "otherCharge" });
+                }
             }
 
             if (nettNego <= 0)
             {
                 yield return new ValidationResult("Nett Nego harus lebih dari 0", new List<string> { "nettNego" });
-            }
-
-            if (btbCADate == null || btbCADate == DateTimeOffset.MinValue)
-            {
-                yield return new ValidationResult("Tanggal CA tidak boleh kosong", new List<string> { "btbCADate" });
-            }
-
-            if (btbAmount <= 0)
-            {
-                yield return new ValidationResult("Amount (US$) harus lebih dari 0", new List<string> { "btbAmount" });
-            }
-
-            if (btbRatio <= 0)
-            {
-                yield return new ValidationResult("Ratio harus lebih dari 0", new List<string> { "btbRatio" });
-            }
-
-            if (btbRate <= 0)
-            {
-                yield return new ValidationResult("Rate harus lebih dari 0", new List<string> { "btbRate" });
-            }
-
-            if (btbTransfer <= 0)
-            {
-                yield return new ValidationResult("Transfer harus lebih dari 0", new List<string> { "btbTransfer" });
-            }
-
-            if (btbMaterial <= 0)
-            {
-                yield return new ValidationResult("Material harus lebih dari 0", new List<string> { "btbMaterial" });
-            }
-
-            if (billDays <= 0)
-            {
-                yield return new ValidationResult("Jumlah Hari harus lebih dari 0", new List<string> { "billDays" });
-            }
-
-            if (billAmount <= 0)
-            {
-                yield return new ValidationResult("Amount harus lebih dari 0", new List<string> { "billAmount" });
-            }
-
-            if (string.IsNullOrEmpty(billCA))
-            {
-                yield return new ValidationResult("CA tidak boleh kosong", new List<string> { "billCA" });
             }
 
             if (buyer == null || buyer.Id == 0)
@@ -161,19 +195,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Bank tidak boleh kosong", new List<string> { "bank" });
             }
 
-            if (creditInterest <= 0)
-            {
-                yield return new ValidationResult("Credit Interest tidak boleh kosong", new List<string> { "creditInterest" });
-            }
-
             if (bankCharges <= 0)
             {
                 yield return new ValidationResult("Bank Charges tidak boleh kosong", new List<string> { "bankCharges" });
-            }
-
-            if (documentPresente == null || documentPresente == DateTimeOffset.MinValue)
-            {
-                yield return new ValidationResult("Document Presente tidak boleh kosong", new List<string> { "documentPresente" });
             }
         }
     }
