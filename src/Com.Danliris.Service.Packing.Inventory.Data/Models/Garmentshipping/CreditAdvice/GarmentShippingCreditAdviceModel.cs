@@ -164,6 +164,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+        public void SetPaymentDate(DateTimeOffset paymentDate, string userName, string userAgent)
+        {
+            if (PaymentDate != paymentDate)
+            {
+                PaymentDate = paymentDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
         public void SetCondition(string condition, string userName, string userAgent)
         {
             if (Condition != condition)
@@ -281,6 +289,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             if (BankCharges != bankCharges)
             {
                 BankCharges = bankCharges;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetOtherCharge(double otherCharge, string userName, string userAgent)
+        {
+            if (OtherCharge != otherCharge)
+            {
+                OtherCharge = otherCharge;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
