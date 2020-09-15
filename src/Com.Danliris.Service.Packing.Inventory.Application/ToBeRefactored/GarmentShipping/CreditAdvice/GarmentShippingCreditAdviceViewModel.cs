@@ -14,13 +14,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset? date { get; set; }
         public double amount { get; set; }
         public double amountToBePaid { get; set; }
+        public string paymentTerm { get; set; }
 
+        public string lcNo { get; set; }
         public bool valas { get; set; }
         public string lcType { get; set; }
         public double inkaso { get; set; }
         public double disconto { get; set; }
         public string srNo { get; set; }
         public DateTimeOffset? negoDate { get; set; }
+        public DateTimeOffset? paymentDate { get; set; }
         public string condition { get; set; }
         public double bankComission { get; set; }
         public double discrepancyFee { get; set; }
@@ -43,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public double creditInterest { get; set; }
         public double bankCharges { get; set; }
+        public double otherCharge { get; set; }
         public DateTimeOffset? documentPresente { get; set; }
 
         public string cargoPolicyNo { get; set; }
