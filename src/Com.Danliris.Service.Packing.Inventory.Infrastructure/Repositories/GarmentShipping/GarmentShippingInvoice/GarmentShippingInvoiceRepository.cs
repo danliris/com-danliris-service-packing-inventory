@@ -47,7 +47,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				ajd.FlagForDelete(_identityProvider.Username, USER_AGENT);
 			}
 
-			return _dbContext.SaveChangesAsync();
+            foreach (var unit in model.GarmentShippingInvoiceUnit)
+            {
+                unit.FlagForDelete(_identityProvider.Username, USER_AGENT);
+            }
+
+            return _dbContext.SaveChangesAsync();
 		}
 		public Task<int> InsertAsync(GarmentShippingInvoiceModel model)
 		{
@@ -64,7 +69,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 			{
 				adjustment.FlagForCreate(_identityProvider.Username, USER_AGENT);
 			}
-			_garmentshippingInvoiceDbSet.Add(model);
+
+            foreach (var unit in model.GarmentShippingInvoiceUnit)
+            {
+                unit.FlagForCreate(_identityProvider.Username, USER_AGENT);
+            }
+
+            _garmentshippingInvoiceDbSet.Add(model);
 
 			return _dbContext.SaveChangesAsync();
 
@@ -79,7 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 		{
 			return _garmentshippingInvoiceDbSet
 				.Include(i => i.Items)
-					
+				.Include(i=>i.GarmentShippingInvoiceUnit)	
 				.Include(i => i.GarmentShippingInvoiceAdjustment)
 				.FirstOrDefaultAsync(s => s.Id == id);
 		}
@@ -88,7 +99,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 		{
 			var modelToUpdate = _garmentshippingInvoiceDbSet
 				.Include(i => i.Items)
-				.Include(i => i.GarmentShippingInvoiceAdjustment)
+                .Include(i => i.GarmentShippingInvoiceUnit)
+                .Include(i => i.GarmentShippingInvoiceAdjustment)
 				.FirstOrDefault(s => s.Id == id);
 
 			modelToUpdate.SetFrom(model.From, _identityProvider.Username, USER_AGENT);
@@ -158,13 +170,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				}
 			}
 
-			foreach (var items in model.GarmentShippingInvoiceAdjustment.Where(w => w.Id == 0))
+            foreach (var unitToUpdate in modelToUpdate.GarmentShippingInvoiceUnit)
+            {
+                var unit = model.GarmentShippingInvoiceUnit.FirstOrDefault(i => i.Id == unitToUpdate.Id);
+                if (unit != null)
+                {
+                    unitToUpdate.SetAmountPercentage(unit.AmountPercentage, _identityProvider.Username, USER_AGENT);
+                    unitToUpdate.SetQuantityPercentage(unit.QuantityPercentage, _identityProvider.Username, USER_AGENT);
+                    unitToUpdate.SetUnitCode(unit.UnitCode, _identityProvider.Username, USER_AGENT);
+                    unitToUpdate.SetUnitId(unit.UnitId, _identityProvider.Username, USER_AGENT);
+                }
+                else
+                {
+                    unitToUpdate.FlagForDelete(_identityProvider.Username, USER_AGENT);
+                }
+            }
+
+            foreach (var items in model.GarmentShippingInvoiceAdjustment.Where(w => w.Id == 0))
 			{
 				modelToUpdate.GarmentShippingInvoiceAdjustment.Add(items);
 			}
-			
 
-			return _dbContext.SaveChangesAsync();
+            foreach (var unit in model.GarmentShippingInvoiceUnit.Where(w => w.Id == 0))
+            {
+                modelToUpdate.GarmentShippingInvoiceUnit.Add(unit);
+            }
+
+
+            return _dbContext.SaveChangesAsync();
 		}
 	}
 }

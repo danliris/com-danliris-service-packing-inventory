@@ -89,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 				TotalAmount = model.TotalAmount,
 				IsUsed = model.IsUsed,
                 ConsigneeAddress=model.ConsigneeAddress,
+                DeliverTo=model.DeliverTo,
 				GarmentShippingInvoiceAdjustments = model.GarmentShippingInvoiceAdjustment.Select(i=> new GarmentShippingInvoiceAdjustmentViewModel
 				{
 					AdjustmentDescription = i.AdjustmentDescription,

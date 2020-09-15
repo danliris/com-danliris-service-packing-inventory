@@ -179,11 +179,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             unitData.SetQuantityPercentage(unitData.QuantityPercentage+1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
             unitData.SetAmountPercentage(unitData.AmountPercentage + 1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
 
+            
 
             var result = await repo2.UpdateAsync(data.Id, data);
 
 			Assert.NotEqual(0, result);
 
 		}
-	}
+
+        [Fact]
+        public async Task Should_Success_Update_2()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+            GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+            GarmentPackingListModel dataPL = utilPL.GetModel();
+            var dataPackingList = await repoPL.InsertAsync(dataPL);
+
+            GarmentShippingInvoiceRepository repo = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
+
+            GarmentShippingInvoiceRepository repo2 = new GarmentShippingInvoiceRepository(dbContext, serviceProvider);
+            GarmentShippingInvoiceDataUtil invoiceDataUtil = new GarmentShippingInvoiceDataUtil(repo, utilPL);
+            GarmentShippingInvoiceModel oldModel = invoiceDataUtil.GetModels();
+            oldModel.PackingListId = dataPL.Id;
+            await repo.InsertAsync(oldModel);
+
+            var model = repo.ReadAll().FirstOrDefault();
+            var data = await repo.ReadByIdAsync(model.Id);
+
+            var Newdata = invoiceDataUtil.CopyModel(oldModel);
+
+            var unitData = Newdata.GarmentShippingInvoiceUnit.FirstOrDefault();
+            Newdata.GarmentShippingInvoiceUnit.Remove(unitData);
+
+            var result = await repo2.UpdateAsync(data.Id, Newdata);
+
+            Assert.NotEqual(0, result);
+
+        }
+    }
 }

@@ -70,6 +70,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                 Id=2,
                                 Unit="abaa"
                             }
+                        },
+                        new GarmentShippingInvoiceItemViewModel
+                        {
+                            ComodityDesc="aad",
+                            Quantity=10021,
+                            Amount=0,
+                            Price=0,
+                            CMTPrice=0,
+                            RONo="roNo1",
+                            Uom= new UnitOfMeasurement
+                            {
+                                Id=2,
+                                Unit="abaa"
+                            }
                         }
                     },
                     GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>()
@@ -159,6 +173,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             CartonsQuantity=1,
                             Length=1,
                             
+                        }
+                    }
+                };
+            }
+        }
+
+        private GarmentPackingListViewModel packingListVMLC
+        {
+            get
+            {
+                return new GarmentPackingListViewModel()
+                {
+                    Remark = "aa",
+                    SideMark = "aa",
+                    ShippingMark = "aa",
+                    GrossWeight = 12,
+                    NettWeight = 12,
+                    PaymentTerm="LC",
+                    LCDate=DateTimeOffset.Now,
+                    Measurements = new List<GarmentPackingListMeasurementViewModel>()
+                    {
+                        new GarmentPackingListMeasurementViewModel
+                        {
+                            Width=1,
+                            Height=1,
+                            CartonsQuantity=1,
+                            Length=1,
+
                         }
                     }
                 };
@@ -401,6 +443,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var response = await controller.GetPDF(1, "fob");
 
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF_LC()
+        {
+            //v
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVMLC);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1, "fob");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF_CMT_LC()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel2);
+            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVMLC);
+            var packingListService = packingListServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetPDF(1, "cmt");
+
+            Assert.NotNull(response);
         }
     }
 }
