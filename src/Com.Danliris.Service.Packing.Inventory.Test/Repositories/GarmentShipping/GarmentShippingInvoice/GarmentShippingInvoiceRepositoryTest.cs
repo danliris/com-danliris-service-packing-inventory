@@ -172,6 +172,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			ajdData.SetAdjustmentDescription("dsds", ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 			ajdData.SetAdjustmentValue( 10000 + ajdData.AdjustmentValue, ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 
+            var unitData2 = data.GarmentShippingInvoiceUnit.LastOrDefault();
+            data.GarmentShippingInvoiceUnit.Remove(unitData2);
+
             var unitData = data.GarmentShippingInvoiceUnit.FirstOrDefault();
             data.GarmentShippingInvoiceUnit.Add(new GarmentShippingInvoiceUnitModel(1, "ddd",100, 1000));
             unitData.SetUnitCode("dsdsasda", unitData.LastModifiedBy, ajdData.LastModifiedAgent);
@@ -179,8 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             unitData.SetQuantityPercentage(unitData.QuantityPercentage+1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
             unitData.SetAmountPercentage(unitData.AmountPercentage + 1, unitData.LastModifiedBy, ajdData.LastModifiedAgent);
 
-            var unitData2 = data.GarmentShippingInvoiceUnit.LastOrDefault();
-            data.GarmentShippingInvoiceUnit.Remove(unitData2);
+            
 
             var result = await repo2.UpdateAsync(data.Id, data);
 
