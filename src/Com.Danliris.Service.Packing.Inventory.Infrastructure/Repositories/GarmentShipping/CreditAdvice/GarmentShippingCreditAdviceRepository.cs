@@ -59,6 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetDisconto(model.Disconto, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSRNo(model.SRNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNegoDate(model.NegoDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPaymentDate(model.PaymentDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCondition(model.Condition, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankComission(model.BankComission, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDiscrepancyFee(model.DiscrepancyFee, _identityProvider.Username, UserAgent);
@@ -74,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBillCA(model.BillCA, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCreditInterest(model.CreditInterest, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankCharges(model.BankCharges, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetOtherCharge(model.OtherCharge, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDocumentPresente(model.DocumentPresente, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCargoPolicyNo(model.CargoPolicyNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCargoPolicyDate(model.CargoPolicyDate, _identityProvider.Username, UserAgent);
