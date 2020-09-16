@@ -318,5 +318,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void GetItemsReturnQuantity_Ok()
+        {
+            var serviceMock = new Mock<IGarmentShippingLocalReturnNoteService>();
+            serviceMock
+                .Setup(s => s.ReadItemsReturnQuantity(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ListResult<ItemsReturnQuantityViewModel>(new List<ItemsReturnQuantityViewModel>()
+                {
+                    new ItemsReturnQuantityViewModel
+                    {
+                        id = 1,
+                        returnNoteId = 1,
+                        salesNoteItemId = 1,
+                        returnQuantity = 10
+                    }
+                }, 1, 1, 1));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = controller.GetItemsReturnQuantity();
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetItemsReturnQuantity_Exception_InternalServerError()
+        {
+            var dataUtil = ViewModel;
+
+            var serviceMock = new Mock<IGarmentShippingLocalReturnNoteService>();
+            serviceMock
+                .Setup(s => s.ReadItemsReturnQuantity(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = controller.GetItemsReturnQuantity();
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
