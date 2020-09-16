@@ -125,7 +125,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _shippingInstructionRepository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "InvoiceNo","EMKLName","ATTN","ShippedBy", "BuyerAgentName"
+                "InvoiceNo","ForwarderName","ATTN","ShippedBy", "BuyerAgentName"
             };
             query = QueryHelper<GarmentShippingInstructionModel>.Search(query, SearchAttributes, keyword);
 

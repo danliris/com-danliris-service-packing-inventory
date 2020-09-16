@@ -138,17 +138,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("\n", normal_font));
 
             #region sign
-            PdfPTable tableSign = new PdfPTable(4);
+            PdfPTable tableSign = new PdfPTable(5);
             tableSign.WidthPercentage = 100;
-            tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f });
+            tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f });
             PdfPCell cellSign = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellSign.Phrase = new Phrase("", normal_font);
-            tableSign.AddCell(cellSign);
+            //cellSign.Phrase = new Phrase("", normal_font);
+            //tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("SHIPPING STAF : "+ viewModel.shippingStaff.name, normal_font);
-            cellSign.Colspan = 3;
-            tableSign.AddCell(cellSign);
+            //cellSign.Phrase = new Phrase("SHIPPING STAF : "+ viewModel.shippingStaff.name, normal_font);
+            //cellSign.Colspan = 3;
+            //tableSign.AddCell(cellSign);
 
 
             cellSign.Phrase = new Phrase("Pengemudi Truck, \n\n\n\n\n\n", normal_font);
@@ -158,6 +158,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("Mengetahui, \n\n\n\n\n\n", normal_font);
             cellSign.Colspan = 2;
             tableSign.AddCell(cellSign);
+
+            cellSign.Phrase = new Phrase("\n\n\n\n\n\n", normal_font);
+            cellSign.Colspan = 1;
+            tableSign.AddCell(cellSign);
+
 
             cellSign.Phrase = new Phrase("Hormat Kami, \n\n\n\n\n\n", normal_font);
             cellSign.Colspan = 1;
@@ -175,28 +180,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("(                        )", normal_font);
             tableSign.AddCell(cellSign);
 
+            cellSign.Phrase = new Phrase($"( {viewModel.shippingStaff.name} )", normal_font);
+            tableSign.AddCell(cellSign);
+
             cellSign.Phrase = new Phrase("\n", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("Pembukuan DL", normal_font);
+            cellSign.Phrase = new Phrase("Audit", normal_font);
             tableSign.AddCell(cellSign);
 
             cellSign.Phrase = new Phrase("Sat Pam", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("Unit Konveksi", normal_font);
+            cellSign.Phrase = new Phrase("Bagian Gudang", normal_font);
             tableSign.AddCell(cellSign);
+
+            cellSign.Phrase = new Phrase("Shipping Staff", normal_font);
+            tableSign.AddCell(cellSign);
+
 
             cellSign.Phrase = new Phrase("CATATAN : \n" +
                                          "1. Mohon bisa dikirim kembali Pengantar ini apabila barang sudah diterima \n" +
                                          "2. ....................................................", normal_font);
-            cellSign.Colspan = 2;
+            cellSign.Colspan = 3;
             cellSign.Rowspan = 2;
             cellSign.HorizontalAlignment = Element.ALIGN_LEFT;
             tableSign.AddCell(cellSign);
 
             cellSign.Phrase = new Phrase("Diterima, \n\n\n\n", normal_font);
             cellSign.Rowspan = 1;
+            cellSign.Colspan = 2;
             cellSign.HorizontalAlignment = Element.ALIGN_CENTER;
             tableSign.AddCell(cellSign);
 
