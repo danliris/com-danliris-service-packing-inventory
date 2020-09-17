@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string ShippingStaffName { get; set; }
         public string BuyerAgentCode { get; set; }
         public string BuyerAgentName { get; set; }
-        public double CartonNo { get; set; }
+        public string CartonNo { get; set; }
         public DateTimeOffset TruckingDate { get; set; }
         public string PortOfDischarge { get; set; }
         public string PlaceOfDelivery { get; set; }

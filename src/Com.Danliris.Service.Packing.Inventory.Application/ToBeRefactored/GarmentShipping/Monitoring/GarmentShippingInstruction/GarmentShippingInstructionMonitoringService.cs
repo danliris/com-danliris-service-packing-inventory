@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             ShippingStaffName = a.ShippingStaffName,
                             BuyerAgentCode = a.BuyerAgentCode,
                             BuyerAgentName = a.BuyerAgentName,
-                            CartonNo =  Convert.ToDouble(a.CartonNo),
+                            CartonNo =  a.CartonNo,
                             TruckingDate = a.TruckingDate,
                             PortOfDischarge = a.PortOfDischarge,
                             PlaceOfDelivery = a.PlaceOfDelivery,
@@ -131,10 +131,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string PckQ = string.Format("{0:N2}", d.PACKQuantity);
                     string GW = string.Format("{0:N2}", d.GrossWeight);
                     string NW = string.Format("{0:N2}", d.NettWeight);
-                    string CTN = string.Format("{0:N2}", d.CartonNo);
-
-
-                    result.Rows.Add(index, d.InvoiceNo, SIDate, TruckDate, Fwdr, Agent, d.ShippingStaffName, d.ContainerNo, d.PortOfDischarge, d.PlaceOfDelivery, PcsQ, SetQ, PckQ, GW, NW, CTN);
+                   
+                    result.Rows.Add(index, d.InvoiceNo, SIDate, TruckDate, Fwdr, Agent, d.ShippingStaffName, d.ContainerNo, d.PortOfDischarge, d.PlaceOfDelivery, PcsQ, SetQ, PckQ, GW, NW, d.CartonNo);
                 }
             }
           
