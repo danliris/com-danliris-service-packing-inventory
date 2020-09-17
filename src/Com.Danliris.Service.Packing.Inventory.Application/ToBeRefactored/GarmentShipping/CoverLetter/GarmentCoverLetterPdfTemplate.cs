@@ -332,7 +332,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.HorizontalAlignment = Element.ALIGN_LEFT;
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("                              JAM KELUAR : ______", normal_font);
+            cellSign.Phrase = new Phrase("                              JAM DITERIMA : ______", normal_font);
             cellSign.Rowspan = 1;
             tableSign.AddCell(cellSign);
 
