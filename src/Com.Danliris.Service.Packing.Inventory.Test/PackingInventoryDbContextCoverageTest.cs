@@ -103,6 +103,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
 
             Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNotes);
             Assert.Empty(dbContext.GarmentShippingLocalPriceCuttingNoteItems);
+
+            Assert.Empty(dbContext.GarmentShippingLocalSalesContracts);
+            Assert.Empty(dbContext.GarmentShippingLocalSalesContracts);
         }
     }
 }
