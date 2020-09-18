@@ -46,6 +46,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shippin
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBPayment;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.VBPayment;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -146,6 +147,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingVBPaymentModel> GarmentShippingVBPayments { get; set; }
         public DbSet<GarmentShippingVBPaymentInvoiceModel> GarmentShippingVBPaymentInvoices { get; set; }
         public DbSet<GarmentShippingVBPaymentUnitModel> GarmentShippingVBPaymentUnits { get; set; }
+
+        public DbSet<GarmentShippingLocalSalesContractModel> GarmentShippingLocalSalesContracts { get; set; }
+        public DbSet<GarmentShippingLocalSalesContractItemModel> GarmentShippingLocalSalesContractItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
