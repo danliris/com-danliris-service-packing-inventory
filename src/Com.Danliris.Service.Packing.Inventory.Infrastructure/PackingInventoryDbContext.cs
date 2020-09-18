@@ -47,6 +47,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBPayment;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.VBPayment;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesContract;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -214,6 +215,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentInvoiceConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingVBPaymentUnitConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesContractConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesContractItemConfig());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
