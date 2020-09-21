@@ -255,6 +255,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
+                    b.Property<string>("ShippingType")
+                        .HasMaxLength(128);
+
                     b.Property<double>("TotalAvalQuantity");
 
                     b.Property<double>("TotalAvalWeight");
@@ -324,6 +327,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<long>("DeliveryOrderReturId");
+
+                    b.Property<string>("DeliveryOrderReturNo")
+                        .HasMaxLength(128);
 
                     b.Property<long>("DeliveryOrderSalesId");
 
@@ -407,7 +415,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(128);
+                        .HasMaxLength(4096);
 
                     b.Property<int>("ProductPackingId");
 
@@ -780,7 +788,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1024);
 
                     b.Property<string>("ProductPackingCode")
-                        .HasMaxLength(128);
+                        .HasMaxLength(4096);
 
                     b.Property<int>("ProductPackingId");
 
@@ -1196,6 +1204,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("Destination");
+
                     b.Property<string>("Driver")
                         .HasMaxLength(250);
 
@@ -1249,6 +1259,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double>("PACKQuantity");
 
                     b.Property<double>("PCSQuantity");
+
+                    b.Property<string>("PIC");
 
                     b.Property<int>("PackingListId");
 
@@ -1384,6 +1396,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<string>("LCNo")
+                        .HasMaxLength(25);
+
                     b.Property<string>("LCType")
                         .HasMaxLength(25);
 
@@ -1399,7 +1414,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("NettNego");
 
+                    b.Property<double>("OtherCharge");
+
                     b.Property<int>("PackingListId");
+
+                    b.Property<DateTimeOffset>("PaymentDate");
+
+                    b.Property<string>("PaymentTerm")
+                        .HasMaxLength(25);
 
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
@@ -1517,6 +1539,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("DeliverTo")
+                        .HasMaxLength(255);
+
                     b.Property<string>("ExportSalesDONo")
                         .HasMaxLength(50);
 
@@ -1534,6 +1559,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<int>("PackingListId");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(2000);
+
+                    b.Property<string>("ShipmentMode")
+                        .HasMaxLength(255);
 
                     b.Property<string>("To")
                         .HasMaxLength(255);
@@ -2148,6 +2179,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("Desc2")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Desc3")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Desc4")
+                        .HasMaxLength(128);
+
                     b.Property<int>("GarmentShippingInvoiceId");
 
                     b.Property<bool>("IsDeleted");
@@ -2254,6 +2294,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("DeliverTo")
+                        .HasMaxLength(500);
+
                     b.Property<string>("Description")
                         .HasMaxLength(255);
 
@@ -2328,6 +2371,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GarmentShippingInvoices");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice.GarmentShippingInvoiceUnitModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<decimal>("AmountPercentage");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("GarmentShippingInvoiceId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<decimal>("QuantityPercentage");
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GarmentShippingInvoiceId");
+
+                    b.ToTable("GarmentShippingInvoiceUnitPercentages");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterOfCredit.GarmentShippingLetterOfCreditModel", b =>
@@ -2589,7 +2684,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("GarmentShippingLocalReturnNotes");
                 });
 
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO.GarmentShippingLocalSalesDOItemModel", b =>
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract.GarmentShippingLocalSalesContractItemModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2597,7 +2692,153 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<double>("CartonQuantity");
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("LocalSalesContractId");
+
+                    b.Property<double>("Price");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(250);
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<int>("UomId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocalSalesContractId");
+
+                    b.ToTable("GarmentShippingLocalSalesContractItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract.GarmentShippingLocalSalesContractModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("BuyerAddress")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("BuyerCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerNPWP")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("BuyerName")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsUseVat");
+
+                    b.Property<bool>("IsUsed");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<DateTimeOffset>("SalesContractDate");
+
+                    b.Property<string>("SalesContractNo")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("SellerAddress")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("SellerNPWP")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("SellerName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("SellerPosition")
+                        .HasMaxLength(100);
+
+                    b.Property<decimal>("SubTotal");
+
+                    b.Property<string>("TransactionTypeCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("TransactionTypeId");
+
+                    b.Property<string>("TransactionTypeName")
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesContractNo")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted]=(0)");
+
+                    b.ToTable("GarmentShippingLocalSalesContracts");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO.GarmentShippingLocalSalesDOItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
 
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
@@ -2636,6 +2877,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("NettWeight");
 
+                    b.Property<double>("PackQuantity");
+
+                    b.Property<int>("PackUomId");
+
+                    b.Property<string>("PackUomUnit")
+                        .HasMaxLength(100);
+
                     b.Property<string>("ProductCode")
                         .HasMaxLength(100);
 
@@ -2650,8 +2898,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(100);
-
-                    b.Property<double>("Volume");
 
                     b.HasKey("Id");
 
@@ -2711,6 +2957,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("LocalSalesNoteNo")
                         .HasMaxLength(50);
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(3000);
 
                     b.Property<string>("StorageDivision")
                         .HasMaxLength(255);
@@ -4739,6 +4988,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice.GarmentShippingInvoiceUnitModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice.GarmentShippingInvoiceModel")
+                        .WithMany("GarmentShippingInvoiceUnit")
+                        .HasForeignKey("GarmentShippingInvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote.GarmentShippingLocalReturnNoteItemModel", b =>
                 {
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote.GarmentShippingLocalReturnNoteModel")
@@ -4757,6 +5014,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote.GarmentShippingLocalSalesNoteModel", "SalesNote")
                         .WithMany()
                         .HasForeignKey("SalesNoteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract.GarmentShippingLocalSalesContractItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract.GarmentShippingLocalSalesContractModel")
+                        .WithMany("Items")
+                        .HasForeignKey("LocalSalesContractId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -23,6 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public bool IsTransformedAval { get; private set; }
         #endregion
 
+        #region Shipping
+
+        public string ShippingType { get; private set; }
+        #endregion
+
         public ICollection<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaInputModel()
@@ -75,6 +80,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             IsTransformedAval = isTransformedAval;
             TotalAvalQuantity = totalAvalQuantity;
             TotalAvalWeight = totalAvalWeight;
+            DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
+        }
+
+        /// <summary>
+        /// Area Shipping
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="area"></param>
+        /// <param name="shift"></param>
+        /// <param name="bonNo"></param>
+        /// <param name="group"></param>
+        /// <param name="shippingType"></param>
+        /// <param name="dyeingPrintingAreaInputProductionOrders"></param>
+        public DyeingPrintingAreaInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group, string shippingType,
+            ICollection<DyeingPrintingAreaInputProductionOrderModel> dyeingPrintingAreaInputProductionOrders)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            ShippingType = shippingType;
             DyeingPrintingAreaInputProductionOrders = dyeingPrintingAreaInputProductionOrders;
         }
 

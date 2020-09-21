@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public interface IDyeingPrintingProductService
     {
-        Task<ListResult<DyeingPrintingProductPackingViewModel>> GetDataProductPacking(int page, int size, string filter, string order, string keyword);
+        ListResult<DyeingPrintingProductPackingViewModel> GetDataProductPacking(int page, int size, string filter, string order, string keyword);
         Task<int> UpdatePrintingStatusProductPacking(int id, bool hasPrintingProduct);
     }
 }

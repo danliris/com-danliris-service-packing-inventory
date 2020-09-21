@@ -19,9 +19,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Exp
         public string UnitName { get; private set; }
         public int UnitId { get; private set; }
         public string UnitCode { get; private set; }
+
+        public string ShipmentMode { get; private set; }
+        public string DeliverTo { get; private set; }
+        public string Remark { get; private set; }
         public ICollection<GarmentShippingExportSalesDOItemModel> Items { get; set; }
 
-        public GarmentShippingExportSalesDOModel(string exportSalesDONo, string invoiceNo, int packingListId, DateTimeOffset date, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string to, string unitName, int unitId, string unitCode, ICollection<GarmentShippingExportSalesDOItemModel> items)
+        public GarmentShippingExportSalesDOModel()
+        {
+        }
+
+        public GarmentShippingExportSalesDOModel(string exportSalesDONo, string invoiceNo, int packingListId, DateTimeOffset date, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string to, string unitName, int unitId, string unitCode, string shipmentMode, string deliverTo, string remark, ICollection<GarmentShippingExportSalesDOItemModel> items)
         {
             ExportSalesDONo = exportSalesDONo;
             InvoiceNo = invoiceNo;
@@ -34,11 +42,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Exp
             UnitName = unitName;
             UnitId = unitId;
             UnitCode = unitCode;
+            ShipmentMode = shipmentMode;
+            DeliverTo = deliverTo;
+            Remark = remark;
             Items = items;
-        }
-
-        public GarmentShippingExportSalesDOModel()
-        {
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
@@ -82,6 +89,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Exp
             if (UnitName != unitName)
             {
                 UnitName = unitName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetShipmentMode(string shipmentMode, string userName, string userAgent)
+        {
+            if (ShipmentMode != shipmentMode)
+            {
+                ShipmentMode = shipmentMode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

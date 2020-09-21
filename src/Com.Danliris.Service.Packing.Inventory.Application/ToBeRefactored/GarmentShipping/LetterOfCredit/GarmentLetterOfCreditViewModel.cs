@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Satuan tidak boleh kosong", new List<string> { "Uom" });
             }
 
-            if (Quantity<=0)
+            if (Quantity < 0)
             {
                 yield return new ValidationResult("Quantity tidak boleh kosong", new List<string> { "Quantity" });
             }

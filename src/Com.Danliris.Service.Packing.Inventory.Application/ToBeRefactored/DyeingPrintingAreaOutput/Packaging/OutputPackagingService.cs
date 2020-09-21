@@ -343,13 +343,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var sumQtyOut = item.Sum(s => s.QtyOut);
                     if (inputData != null)
                     {
-                        foreach(var detail in item)
+                        foreach (var detail in item)
                         {
                             detail.Balance = inputData.Balance;
                             detail.BalanceRemains = inputData.BalanceRemains;
                             detail.PreviousBalance = inputData.BalanceRemains + sumQtyOut;
                         }
-                        
+
                     }
                 }
 
@@ -487,7 +487,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DyeingPrintingAreaOutputModel model = _repository.GetDbSet().AsNoTracking()
                   .FirstOrDefault(s => s.Area == DyeingPrintingArea.PACKING && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == type);
 
-            if(model == null)
+            if (model == null)
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type,
                     viewModel.PackagingProductionOrdersAdj.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -533,7 +533,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
-            
+
 
             return result;
         }
@@ -609,15 +609,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     FabricSKUId = item.FabricSKUId,
                     PackingType = item.PackagingUnit,
-                    Quantity = item.PackagingQTY == 0 ? 0 : item.Balance / Convert.ToDouble(item.PackagingQTY)
+                    Quantity = (int)item.PackagingQTY,
+                    Length = item.PackingLength
                 });
 
+                string packingCodes = string.Join(',', packingData.ProductPackingCodes);
 
                 var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                      item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                      item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, jsonLIstSppHasDecrease,
                      item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
-                     item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, false, item.PackingLength);
+                     item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength);
                 productionOrders.Add(productionOrder);
             }
             if (hasBonNoWithShift == null)
@@ -1691,14 +1693,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     FabricSKUId = item.FabricSKUId,
                     PackingType = item.PackagingUnit,
-                    Quantity = item.PackagingQTY == 0 ? 0 : item.Balance / Convert.ToDouble(item.PackagingQTY)
+                    Quantity = (int)item.PackagingQTY,
+                    Length = item.PackingLength
                 });
-
-                var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, item.HasNextAreaDocument, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
-                     item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
-                     item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, id, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
-                     item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
-                     item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, packingData.ProductPackingCode == item.ProductPackingCode && item.HasPrintingProductPacking, item.PackingLength)
+                string packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, item.HasNextAreaDocument, item.ProductionOrder.Id,
+                    item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut,
+                    item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder,
+                    item.Keterangan, id, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id,
+                    item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId,
+                    item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes,
+                    packingData.ProductPackingCode == item.ProductPackingCode && item.HasPrintingProductPacking, item.PackingLength)
                 {
                     Id = item.Id
                 };

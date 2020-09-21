@@ -10,6 +10,7 @@ using Xunit;
 using System.Net;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentShippingInstruction
 {
@@ -27,6 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
             var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -37,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListServiceMock.Object, invoiceServiceMock.Object);
+            var controller = GetController(service, identityProvider, validateService, coverletterServiceMock.Object, packingListServiceMock.Object, invoiceServiceMock.Object);
 
             var response = await controller.Post(dataUtil);
 
@@ -53,6 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
             var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -63,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListServiceMock.Object, invoiceServiceMock.Object);
+            var controller = GetController(service, identityProvider, validateService, coverletterServiceMock.Object, packingListServiceMock.Object, invoiceServiceMock.Object);
             var response = await controller.Post(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
@@ -81,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
             var packingListServiceMock = new Mock<IGarmentPackingListService>();
             var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
+            var coverletterServiceMock = new Mock<IGarmentCoverLetterService>();
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -91,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService, packingListServiceMock.Object, invoiceServiceMock.Object);
+            var controller = GetController(service, identityProvider, validateService, coverletterServiceMock.Object, packingListServiceMock.Object, invoiceServiceMock.Object);
             var response = await controller.Post(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));

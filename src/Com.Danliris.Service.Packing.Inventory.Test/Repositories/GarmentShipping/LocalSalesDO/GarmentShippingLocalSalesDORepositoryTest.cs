@@ -130,17 +130,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetDate(oldModel.Date.AddDays(1), oldModel.LastModifiedBy, oldModel.LastModifiedAgent);
             modelToUpdate.SetTo("Updated " + oldModel.To, oldModel.LastModifiedBy, oldModel.LastModifiedAgent);
             modelToUpdate.SetStorageDivision("Updated " + oldModel.StorageDivision, oldModel.LastModifiedBy, oldModel.LastModifiedAgent);
+            modelToUpdate.SetRemark("Updated " + oldModel.Remark, oldModel.LastModifiedBy, oldModel.LastModifiedAgent);
             
             foreach (var item in oldModel.Items)
             { 
                 item.SetDescription("Updated " + item.Description, item.LastModifiedBy, item.LastModifiedAgent);
-                item.SetCartonQuantity(1 + item.CartonQuantity, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetGrossWeight(1 + item.GrossWeight, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetNettWeight(1 + item.NettWeight, item.LastModifiedBy, item.LastModifiedAgent);
-                item.SetVolume(1 + item.Volume, item.LastModifiedBy, item.LastModifiedAgent);
 
             }
-            GarmentShippingLocalSalesDOItemModel newItem = new GarmentShippingLocalSalesDOItemModel(2, 2, 2, "a", "", "", 2, 2, "", 2, 2, 2, 2);
+            GarmentShippingLocalSalesDOItemModel newItem = new GarmentShippingLocalSalesDOItemModel(2, 2, 2, "a", "", "", 2, 2, "", 2, 2, "", 2, 2);
             
             oldModel.Items.Add(newItem);
 

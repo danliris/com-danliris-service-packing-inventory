@@ -170,5 +170,33 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("items-return-quantity")]
+        public IActionResult GetItemsReturnQuantity([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 0, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
+        {
+            try
+            {
+                var data = _service.ReadItemsReturnQuantity(page, size, filter, order, keyword);
+
+                var info = new Dictionary<string, object>
+                    {
+                        { "count", data.Data.Count },
+                        { "total", data.Total },
+                        { "order", order },
+                        { "page", page },
+                        { "size", size }
+                    };
+
+                return Ok(new
+                {
+                    data = data.Data,
+                    info
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

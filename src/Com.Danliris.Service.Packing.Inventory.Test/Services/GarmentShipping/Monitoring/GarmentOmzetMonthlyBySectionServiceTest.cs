@@ -42,11 +42,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         public void GetReportData_Success()
         {
              var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                  "", DateTimeOffset.Now, "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
+                                                  "", DateTimeOffset.Now, "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "","",null)
             {
                 Id = 1
             };
-            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1 )
+            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1 )
             {
                 GarmentShippingInvoiceId = 1
             };
@@ -81,22 +81,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 1, "uom1", 1, 1, 1, "", 1, "C10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
                 };
-
+            var invoiceUnitModels = new HashSet<GarmentShippingInvoiceUnitModel> {
+                new GarmentShippingInvoiceUnitModel(1,"unitcode", 3,1)
+                {
+                    Id = 1
+                }
+            };
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                "", DateTimeOffset.Now, "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "")
+                                                "", DateTimeOffset.Now, "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "","",invoiceUnitModels)
             {
                 Id = 1
             };

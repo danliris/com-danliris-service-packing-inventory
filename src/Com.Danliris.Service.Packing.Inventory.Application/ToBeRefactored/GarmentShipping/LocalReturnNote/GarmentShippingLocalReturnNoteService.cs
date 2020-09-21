@@ -248,5 +248,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 return null;
             }
         }
+
+        public ListResult<ItemsReturnQuantityViewModel> ReadItemsReturnQuantity(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _repository.ReadAll();
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ReturnNoteNo", "SalesNote.NoteNo"
+            };
+            query = QueryHelper<GarmentShippingLocalReturnNoteModel>.Search(query, SearchAttributes, keyword, ignoreDot: true);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentShippingLocalReturnNoteModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentShippingLocalReturnNoteModel>.Order(query, OrderDictionary, ignoreDot: true);
+
+            if (size > 0)
+            {
+                query = query
+                    .Skip((page - 1) * size)
+                    .Take(size);
+            }
+
+            var resultQuery = query
+                .Select(rn => new GarmentShippingLocalReturnNoteViewModel
+                {
+                    Id = rn.Id,
+                    items = rn.Items.Select(rni => new GarmentShippingLocalReturnNoteItemViewModel
+                    {
+                        Id = rni.Id,
+                        salesNoteItem = new GarmentShippingLocalSalesNoteItemViewModel
+                        {
+                            Id = rni.SalesNoteItemId
+                        },
+                        returnQuantity = rni.ReturnQuantity
+                    }).ToList()
+                })
+                .ToList();
+
+            var data = resultQuery
+                .SelectMany(rn => rn.items.Select(rni => new ItemsReturnQuantityViewModel
+                {
+                    id = rni.Id,
+                    returnNoteId = rn.Id,
+                    salesNoteItemId = rni.salesNoteItem.Id,
+                    returnQuantity = rni.returnQuantity
+                }))
+                .ToList();
+
+            return new ListResult<ItemsReturnQuantityViewModel>(data, page, size, query.Count());
+        }
     }
 }

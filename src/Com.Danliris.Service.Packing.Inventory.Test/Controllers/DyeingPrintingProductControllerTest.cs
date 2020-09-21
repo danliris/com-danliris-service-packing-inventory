@@ -78,11 +78,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                         Id = 1,
                         No = "s"
                     },
-                    ProductPackingCode ="s",
-                    ProductPackingId =1,
+                    ProductPackingCodes = new List<string>() { "s" },
+                    ProductPackingId = 1,
                     ProductSKUCode = "s",
                     ProductSKUId = 1,
-                    UomUnit ="s",
+                    UomUnit = "s",
                     YarnMaterial = new Application.ToBeRefactored.CommonViewModelObjectProperties.YarnMaterial()
                     {
                         Id = 1,
@@ -93,12 +93,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
-        public async Task Should_Success_Get()
+        public void Should_Success_Get()
         {
             //v
             var serviceMock = new Mock<IDyeingPrintingProductService>();
             serviceMock.Setup(s => s.GetDataProductPacking(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new ListResult<DyeingPrintingProductPackingViewModel>(new List<DyeingPrintingProductPackingViewModel>(), 1, 1, 1));
+                .Returns(new ListResult<DyeingPrintingProductPackingViewModel>(new List<DyeingPrintingProductPackingViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -106,13 +106,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.Get();
+            var response = controller.Get();
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Should_Exception_Get()
+        public void Should_Exception_Get()
         {
             var dataUtil = ViewModel;
             //v
@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider);
             //controller.ModelState.IsValid == false;
-            var response = await controller.Get();
+            var response = controller.Get();
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

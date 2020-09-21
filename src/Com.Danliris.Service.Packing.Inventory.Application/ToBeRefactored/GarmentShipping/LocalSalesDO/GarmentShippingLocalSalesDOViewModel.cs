@@ -18,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset date { get; set; }
         public Buyer buyer { get; set; }
         public string to { get; set; }
+        public string remark { get; set; }
         public ICollection<GarmentShippingLocalSalesDOItemViewModel> items { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -72,15 +73,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItemsCount++;
                     }
 
-                    if (item.cartonQuantity <= 0)
+                    if (item.packQuantity <= 0)
                     {
-                        errorItem["cartonQuantity"] = "Carton Quantity harus lebih dari 0";
-                        errorItemsCount++;
-                    }
-
-                    if (item.volume <= 0)
-                    {
-                        errorItem["volume"] = "Volume harus lebih dari 0";
+                        errorItem["packQuantity"] = "Jumlah Kemasan harus lebih dari 0";
                         errorItemsCount++;
                     }
 

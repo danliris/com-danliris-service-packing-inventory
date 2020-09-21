@@ -327,7 +327,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             
             //act
             var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
-            var form = new FabricSKUAutoCreateFormDto();
+            var form = new FabricSKUAutoCreateFormDto() 
+            {
+                ProductionOrderNo = "TEST12345"
+            };
             FabricSKUIdCodeDto result =  service.AutoCreateSKU(form);
 
             //assert

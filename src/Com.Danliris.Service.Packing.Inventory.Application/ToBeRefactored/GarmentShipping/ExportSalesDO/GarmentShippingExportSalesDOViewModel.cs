@@ -17,6 +17,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Buyer buyerAgent { get;  set; }
         public string to { get;  set; }
         public Unit unit { get;  set; }
+        public string deliverTo { get; set; }
+        public string shipmentMode { get; set; }
+        public string remark { get; set; }
 
         public ICollection<GarmentShippingExportSalesDOItemViewModel> items { get; set; }
 
@@ -61,17 +64,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItemsCount++;
                     }
 
-                    if (item.nettWeight <= 0)
-                    {
-                        errorItem["nettWeight"] = "Nett Weight harus lebih dari 0";
-                        errorItemsCount++;
-                    }
+                    //if (item.nettWeight <= 0)
+                    //{
+                    //    errorItem["nettWeight"] = "Nett Weight harus lebih dari 0";
+                    //    errorItemsCount++;
+                    //}
 
-                    if (item.grossWeight <= 0)
-                    {
-                        errorItem["grossWeight"] = "Gross Weight harus lebih dari 0";
-                        errorItemsCount++;
-                    }
+                    //if (item.grossWeight <= 0)
+                    //{
+                    //    errorItem["grossWeight"] = "Gross Weight harus lebih dari 0";
+                    //    errorItemsCount++;
+                    //}
 
                     if (item.cartonQuantity <= 0)
                     {
@@ -89,11 +92,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItem["comodity"] = "Komoditi tidak boleh kosong";
                         errorItemsCount++;
                     }
-                    if (item.volume <= 0)
-                    {
-                        errorItem["volume"] = "Volume harus lebih dari 0";
-                        errorItemsCount++;
-                    }
+                    //if (item.volume <= 0)
+                    //{
+                    //    errorItem["volume"] = "Volume harus lebih dari 0";
+                    //    errorItemsCount++;
+                    //}
 
                     errorItems.Add(errorItem);
                 }

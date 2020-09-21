@@ -7,10 +7,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 {
     public class NumberToTextEN
     {
-        static string[] th = { "", "Thousand", "Million", "Billion", "Trillion" };
-        static string[] dg = { "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" };
-        static string[] tn = { "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
-        static string[] tw = { "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety" };
+        static string[] th = { "", "THOUSAND", "MILLION", "BILLION", "TRILLION" };
+        static string[] dg = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" };
+        static string[] tn = { "TEN", "EELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN" };
+        static string[] tw = { "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTy", "NINETY" };
 
         public static string toWords(double s)
         {
@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 else if (n.ToString()[i] != '0')
                 { // 0235
                     str += dg[Convert.ToInt16(n.ToString()[i].ToString())] + " ";
-                    if ((x - i) % 3 == 0) str += " Hundred ";
+                    if ((x - i) % 3 == 0) str += " HUNDRED AND ";
                     sk = 1;
                 }
                 if ((x - i) % 3 == 1)
@@ -64,11 +64,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             if (x != Convert.ToString(s).Length)
             {
                 var y = s.ToString().Length;
-                str += "point ";
+                str += "AND CENTS ";
                 for (var i = x + 1; i < y; i++)
                     str += dg[Convert.ToInt16(n.ToString()[i].ToString())] + " ";
             }
             return str;
         }
+    
     }
 }

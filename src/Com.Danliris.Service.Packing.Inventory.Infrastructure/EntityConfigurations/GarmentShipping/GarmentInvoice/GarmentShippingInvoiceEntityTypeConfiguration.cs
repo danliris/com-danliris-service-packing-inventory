@@ -128,6 +128,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(shippingInvoice => shippingInvoice.ConsigneeAddress)
                 .HasMaxLength(4000);
 
+
+            configuration
+                .Property(shippingInvoice => shippingInvoice.DeliverTo)
+                .HasMaxLength(500);
+
             configuration
 				.HasMany(shippingInvoice => shippingInvoice.Items)
 				.WithOne()
@@ -137,6 +142,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 			   .HasMany(shippingInvoice => shippingInvoice.GarmentShippingInvoiceAdjustment)
 			   .WithOne()
 			   .HasForeignKey(s =>s.GarmentShippingInvoiceId);
-		}
+
+            configuration
+               .HasMany(shippingInvoice => shippingInvoice.GarmentShippingInvoiceUnit)
+               .WithOne()
+               .HasForeignKey(s => s.GarmentShippingInvoiceId);
+        }
 	}
 }

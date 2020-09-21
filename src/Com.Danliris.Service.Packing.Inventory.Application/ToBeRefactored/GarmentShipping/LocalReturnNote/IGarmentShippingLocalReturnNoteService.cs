@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Delete(int id);
         Buyer GetBuyer(int id);
+        ListResult<ItemsReturnQuantityViewModel> ReadItemsReturnQuantity(int page, int size, string filter, string order, string keyword);
     }
 }

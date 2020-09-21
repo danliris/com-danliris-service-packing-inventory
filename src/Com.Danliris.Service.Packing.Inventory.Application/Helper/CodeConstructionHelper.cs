@@ -5,15 +5,23 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Helper
 {
-    public static class YearCodeHelper
+    public static class CodeConstructionHelper
     {
-        //public static string GetCode(int year)
-        //{
-        //    if (year < 2015)
-        //        return "A";
+        private static List<string> AlphabetList = new List<string>()
+        {
+            "A", "B", "C", "D", "E",
+            "F", "G", "H", "I", "J",
+            "K", "L", "M", "N", "O",
+            "P", "Q", "R", "S", "T",
+            "U", "V", "W", "X", "Y",
+            "Z"
+        };
 
-
-        //}
+        public static string GetYearCode(int year)
+        {
+            var alphabetIndex = (year - 2015) % 26;
+            return AlphabetList[alphabetIndex];
+        }
 
         //private static List<string> GetCodeList()
         //{

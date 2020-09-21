@@ -61,6 +61,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.AvalType)
                 .HasMaxLength(128);
+
+            builder
+                .Property(s => s.ShippingType)
+                .HasMaxLength(128);
         }
     }
 }

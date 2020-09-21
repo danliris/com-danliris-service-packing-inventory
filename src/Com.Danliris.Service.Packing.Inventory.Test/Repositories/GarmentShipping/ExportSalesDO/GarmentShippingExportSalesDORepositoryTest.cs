@@ -39,6 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetUnitCode("Updated " + data.UnitCode, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetUnitId(2, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetUnitName("Updated " + data.UnitName, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetShipmentMode("Updated ", data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetRemark("Updated ", data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {

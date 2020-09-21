@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     id=model.ForwarderId,
                     address=model.ForwarderAddress,
-                    attn=model.ATTN,
+                    //attn=model.ATTN,
                     code=model.ForwarderCode,
                     fax=model.Fax,
                     name=model.ForwarderName,
@@ -61,7 +61,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 BuyerAgentAddress= model.BuyerAgentAddress,
                 Carrier= model.Carrier,
                 CartonNo= model.CartonNo,
-                CC= model.CC,
+                ATTN = model.ATTN,
+                CC = model.CC,
                 Date= model.Date,
                 FeederVessel= model.FeederVessel,
                 Flight= model.Flight,
@@ -94,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
             GarmentShippingInstructionModel garmentShippingInstructionModel = new GarmentShippingInstructionModel(viewModel.InvoiceNo,viewModel.InvoiceId, 
                 viewModel.Date, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name,viewModel.forwarder.address,
-                viewModel.forwarder.phone, viewModel.forwarder.attn,viewModel.forwarder.fax,viewModel.CC, viewModel.ShippingStaffId, 
+                viewModel.forwarder.phone, viewModel.ATTN, viewModel.forwarder.fax,viewModel.CC, viewModel.ShippingStaffId, 
                 viewModel.ShippingStaffName, viewModel.Phone, viewModel.ShippedBy, viewModel.TruckingDate, 
                 viewModel.CartonNo, viewModel.PortOfDischarge, viewModel.PlaceOfDelivery, 
                 viewModel.FeederVessel, viewModel.OceanVessel, viewModel.Carrier, viewModel.Flight, 
@@ -124,7 +125,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _shippingInstructionRepository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "InvoiceNo","EMKLName","ATTN","ShippedBy", "BuyerAgentName"
+                "InvoiceNo","ForwarderName","ATTN","ShippedBy", "BuyerAgentName"
             };
             query = QueryHelper<GarmentShippingInstructionModel>.Search(query, SearchAttributes, keyword);
 

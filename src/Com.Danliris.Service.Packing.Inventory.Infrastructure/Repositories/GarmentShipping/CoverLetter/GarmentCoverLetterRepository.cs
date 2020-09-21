@@ -50,6 +50,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public Task<GarmentShippingCoverLetterModel> ReadByInvoiceIdAsync(int invoiceid)
+        {
+            return _dbSet.FirstOrDefaultAsync(s => s.InvoiceId == invoiceid);
+        }
+
         public async Task<int> UpdateAsync(int id, GarmentShippingCoverLetterModel model)
         {
             var modelToUpdate = _dbSet.First(s => s.Id == id);
@@ -58,7 +63,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetEMKLId(model.EMKLId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetEMKLCode(model.EMKLCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetName(model.Name, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAddress(model.Address, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPIC(model.PIC, _identityProvider.Username, UserAgent);
             modelToUpdate.SetATTN(model.ATTN, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPhone(model.Phone, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBookingDate(model.BookingDate, _identityProvider.Username, UserAgent);

@@ -196,5 +196,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public void ReadItemsReturnQuantity_Success()
+        {
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", DateTimeOffset.Now, 1, "", "", 1, "", "", "", 1, "", true, "", true, null), items);
+
+            var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteModel>() { model }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.ReadItemsReturnQuantity(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
     }
 }

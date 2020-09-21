@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.E
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingExportSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", 1, "",  new List<GarmentShippingExportSalesDOItemModel>());
+            var model = new GarmentShippingExportSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", 1, "", "", "", "",  new List<GarmentShippingExportSalesDOItemModel>());
 
             var repoMock = new Mock<IGarmentShippingExportSalesDORepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -77,7 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.E
         public async Task ReadById_Success()
         {
             var items = new List<GarmentShippingExportSalesDOItemModel>() { new GarmentShippingExportSalesDOItemModel(1, "", "", "", 1, 1, "", 1, 1, 1, 1) };
-            var model = new GarmentShippingExportSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", 1, "", items);
+            var model = new GarmentShippingExportSalesDOModel("", "", 1, DateTimeOffset.Now, 1, "", "", "", "", 1, "", "", "", "", items);
 
             var repoMock = new Mock<IGarmentShippingExportSalesDORepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
