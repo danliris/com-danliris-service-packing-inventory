@@ -146,8 +146,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 					itemToUpdate.SetUomId(item.UomId, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetCMTPrice(item.CMTPrice, _identityProvider.Username, USER_AGENT);
 					itemToUpdate.SetComodityDesc(item.ComodityDesc, _identityProvider.Username, USER_AGENT);
-					
-				}else
+                    itemToUpdate.SetDesc2(item.Desc2, _identityProvider.Username, USER_AGENT);
+                    itemToUpdate.SetDesc3(item.Desc3, _identityProvider.Username, USER_AGENT);
+                    itemToUpdate.SetDesc4(item.Desc4, _identityProvider.Username, USER_AGENT);
+
+                }
+                else
 				{
 					itemToUpdate.FlagForDelete(_identityProvider.Username, USER_AGENT);
 

@@ -59,7 +59,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetPrice(model.Price, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetUomId(model.UomId, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, USER_AGENT);
-           
+            modelToUpdate.SetDesc2(model.Desc2, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetDesc3(model.Desc3, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetDesc4(model.Desc4, _identityProvider.Username, USER_AGENT);
+
 
             return _dbContext.SaveChangesAsync();
         }
