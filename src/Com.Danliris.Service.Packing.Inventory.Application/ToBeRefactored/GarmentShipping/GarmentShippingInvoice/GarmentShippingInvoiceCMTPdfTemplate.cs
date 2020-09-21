@@ -507,7 +507,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 amountToText = NumberToTextEN.toWords((double)totalPaid);
             }
-            calculationCellLeft.Phrase = new Phrase($"SAY : US DOLLARS {amountToText.ToUpper()} ", normal_font);
+            calculationCellLeft.Phrase = new Phrase($"SAY : US DOLLARS {amountToText.ToUpper()} ONLY ///", normal_font);
             calculationCellLeft.Colspan = 4;
             calculationCellLeft.Border = Rectangle.NO_BORDER;
             calculationTable.AddCell(calculationCellLeft);
