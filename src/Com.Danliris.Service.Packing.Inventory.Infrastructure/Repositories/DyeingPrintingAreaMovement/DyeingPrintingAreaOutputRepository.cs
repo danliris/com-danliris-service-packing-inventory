@@ -954,6 +954,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            //dbModel.SetDeliveryOrderAval(model.DeliveryOrderAvalId, model.DeliveryOrderAvalNo, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {

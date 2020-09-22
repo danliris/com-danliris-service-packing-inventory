@@ -21,6 +21,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderSalesId { get; private set; }
         public string DeliveryOrderSalesNo { get; private set; }
 
+        public long DeliveryOrderAvalId { get; private set; }
+        public string DeliveryOrderAvalNo { get; private set; }
+
         public string Type { get; private set; }
 
         public string ShippingCode { get; private set; }
@@ -102,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="group"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
-        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, int doId, bool hasNextAreaDocument,
+        public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string donNo, long doId, bool hasNextAreaDocument,
             string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
@@ -112,8 +115,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Group = group;
             HasNextAreaDocument = hasNextAreaDocument;
             DestinationArea = destinationArea;
-            DeliveryOrderSalesId = doId;
-            DeliveryOrderSalesNo = donNo;
+            DeliveryOrderAvalId = doId;
+            DeliveryOrderAvalNo = donNo;
             Type = type;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
         }
@@ -259,5 +262,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        //public void SetDeliveryOrderAval(long deliveryOrderAvalId, string deliveryOrderAvalNo, string user, string agent)
+        //{
+        //    if (deliveryOrderAvalId != DeliveryOrderAvalId)
+        //    {
+        //        DeliveryOrderAvalId = deliveryOrderAvalId;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+
+        //    if (deliveryOrderAvalNo != DeliveryOrderAvalNo)
+        //    {
+        //        DeliveryOrderAvalNo = deliveryOrderAvalNo;
+        //        this.FlagForUpdate(user, agent);
+        //    }
+        //}
     }
 }
