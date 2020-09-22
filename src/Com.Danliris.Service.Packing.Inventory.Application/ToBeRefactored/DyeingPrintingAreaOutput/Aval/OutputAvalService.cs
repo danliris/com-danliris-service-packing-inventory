@@ -62,8 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Group = model.Group,
                     DestinationArea = model.DestinationArea,
                     HasNextAreaDocument = model.HasNextAreaDocument,
-                    DeliveryOrderSalesNo = model.DeliveryOrderSalesNo,
-                    DeliveryOrdeSalesId = Convert.ToInt32(model.DeliveryOrderSalesId),
+                    DeliveryOrderAvalNo = model.DeliveryOrderAvalNo,
+                    DeliveryOrderAvalId = model.DeliveryOrderAvalId,
                     AvalItems = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputAvalItemViewModel()
                     {
                         Active = s.Active,
@@ -221,7 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var model = _outputRepository.GetDbSet().AsNoTracking()
                 .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGAVAL && s.DestinationArea == viewModel.DestinationArea
-                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == DyeingPrintingArea.OUT && s.DeliveryOrderSalesNo == viewModel.DeliveryOrderSalesNo);
+                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.Type == DyeingPrintingArea.OUT && s.DeliveryOrderAvalId == viewModel.DeliveryOrderAvalId);
 
             if (model == null)
             {
@@ -253,7 +253,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
                 }
 
-                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.DeliveryOrderSalesNo, viewModel.DeliveryOrdeSalesId, false,
+                model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.DeliveryOrderAvalNo, viewModel.DeliveryOrderAvalId, false,
                     viewModel.DestinationArea, viewModel.Group, viewModel.Type, productionOrders);
                 result += await _outputRepository.InsertAsync(model);
 
@@ -954,7 +954,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var dbModel = await _outputRepository.ReadByIdAsync(id);
 
 
-            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.DeliveryOrderSalesNo, viewModel.DeliveryOrdeSalesId, false,
+            var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.DeliveryOrderAvalNo, viewModel.DeliveryOrderAvalId, false,
                     viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.AvalItems.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalOutSatuan, s.AvalOutQuantity, s.AvalQuantity,
                             s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote, s.PrevAval, 0)

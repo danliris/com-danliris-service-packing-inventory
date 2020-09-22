@@ -22,8 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public string BonNo { get; set; }
         public string Group { get; set; }
-        public int DeliveryOrdeSalesId { get; set; }
-        public string DeliveryOrderSalesNo { get; set; }
+        public long DeliveryOrderAvalId { get; set; }
+        public string DeliveryOrderAvalNo { get; set; }
         public bool HasNextAreaDocument { get; set; }
         public ICollection<OutputAvalItemViewModel> AvalItems { get; set; }
         public List<OutputAvalDyeingPrintingAreaMovementIdsViewModel> DyeingPrintingMovementIds { get; set; }
@@ -56,6 +56,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (Type == DyeingPrintingArea.OUT && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });
+
+            if (Type == DyeingPrintingArea.OUT && (string.IsNullOrEmpty(DeliveryOrderAvalNo) || DeliveryOrderAvalId == 0))
+                yield return new ValidationResult("No. DO Harus Diisi!", new List<string> { "DeliveryOrderAvalNo" });
 
             int Count = 0;
             string DetailErrors = "[";

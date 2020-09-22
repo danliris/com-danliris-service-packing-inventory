@@ -78,6 +78,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
                 .Property(s => s.AdjItemCategory)
                 .HasMaxLength(16);
+
+            builder
+                .Property(s => s.DeliveryOrderAvalNo)
+                .HasMaxLength(128);
         }
     }
 }
