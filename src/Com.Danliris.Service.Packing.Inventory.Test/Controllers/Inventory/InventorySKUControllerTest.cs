@@ -115,12 +115,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
         }
 
         [Fact]
-        public async Task Should_Success_Post()
+        public void Should_Success_Post()
         {
             //Setup
             var dataUtil = formDto;
             var serviceMock = new Mock<IInventorySKUService>();
-            serviceMock.Setup(s => s.AddDocument(It.IsAny<FormDto>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.AddDocument(It.IsAny<FormDto>())).Returns(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -132,14 +132,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Post_Return_BadRequest()
+        public void Post_Return_BadRequest()
         {
             //Setup
             var dataUtil = formDto;
@@ -156,14 +156,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Post_Return_InternalServerError()
+        public void Post_Return_InternalServerError()
         {
             //Setup
             var dataUtil = formDto;
@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
