@@ -110,6 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = s.Grade,
                         PackingInstruction = s.PackingInstruction,
                         Remark = s.Remark,
+                        ProductionMachine =s.ProductionMachine,
                         Status = s.Status,
                         Id = s.Id,
                         IsDeleted = s.IsDeleted,
@@ -282,6 +283,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = s.Grade,
                         PackingInstruction = s.PackingInstruction,
                         Remark = s.Remark,
+                        ProductionMachine=s.ProductionMachine,
                         Status = s.Status,
                         Id = s.Id,
                         IsDeleted = s.IsDeleted,
@@ -616,7 +618,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 string packingCodes = string.Join(',', packingData.ProductPackingCodes);
 
                 var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
-                     item.Motif, item.UomUnit, item.Remark, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                     item.Motif, item.UomUnit, item.Remark,item.ProductionMachine, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                      item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, jsonLIstSppHasDecrease,
                      item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
                      item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength);
@@ -774,6 +776,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"Construction","Material "},
                 {"Color","Warna"},
                 {"Motif","Motif"},
+                {"ProductionMachine","Mesin Produksi"},
                 {"PackagingType","Jenis"},
                 {"Grade","Grade"},
                 {"PackagingQty","Qty Packaging"},
@@ -943,6 +946,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Buyer = d.Buyer,
                         Warna = d.Color,
                         Motif = d.Motif,
+                        ProductionMachine =d.ProductionMachine,
                         Jenis = d.PackagingType,
                         Grade = d.Grade,
                         Ket = d.Description,
@@ -995,6 +999,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"Buyer","BUYER"},
                 {"Warna","WARNA"},
                 {"Motif","MOTIF"},
+                {"ProductionMachine","Mesin Produksi"},
                 {"Jenis","JENIS"},
                 {"Grade","GRADE"},
                 {"Ket","KET"},
@@ -1446,6 +1451,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Name = s.YarnMaterialName
                 },
                 Motif = s.Motif,
+                ProductionMachine=s.ProductionMachine,
                 PackingInstruction = s.PackingInstruction,
                 ProductionOrder = new ProductionOrder()
                 {

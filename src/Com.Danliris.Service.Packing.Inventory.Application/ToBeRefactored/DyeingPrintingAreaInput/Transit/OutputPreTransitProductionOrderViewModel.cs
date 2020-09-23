@@ -27,6 +27,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public string Remark { get; set; }
+
+        public string ProductionMachine { get; set; }
         public string Grade { get; set; }
         public string Status { get; set; }
         public double Balance { get; set; }
