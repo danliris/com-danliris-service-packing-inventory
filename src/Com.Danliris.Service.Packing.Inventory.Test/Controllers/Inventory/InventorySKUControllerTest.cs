@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
         }
 
         [Fact]
-        public async Task Should_Success_Post()
+        public void Should_Success_Post()
         {
             //Setup
             var dataUtil = formDto;
@@ -132,14 +132,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Post_Return_BadRequest()
+        public void Post_Return_BadRequest()
         {
             //Setup
             var dataUtil = formDto;
@@ -156,14 +156,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
-        public async Task Post_Return_InternalServerError()
+        public void Post_Return_InternalServerError()
         {
             //Setup
             var dataUtil = formDto;
@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
 
             //Act
             var controller = GetController(GetServiceProvider(service, identityProvider, validateService).Object);
-            var response = await controller.Post(dataUtil);
+            var response = controller.Post(dataUtil);
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
