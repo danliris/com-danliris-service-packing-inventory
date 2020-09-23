@@ -297,7 +297,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
                 var packingCodes = new List<string>();
-                for (; i <= (i - 1) + form.Quantity; i++)
+                var limit = (i - 1) + form.Quantity;
+                for (; i <= limit; i++)
                 {
                     var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                     var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
