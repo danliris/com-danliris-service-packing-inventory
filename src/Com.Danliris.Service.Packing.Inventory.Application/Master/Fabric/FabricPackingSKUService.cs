@@ -240,7 +240,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 code += "00";
                 processTypeId = 0;
             }
-                
+
             var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
             code += yearCode;
 
@@ -285,11 +285,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             if (fabric != null)
             {
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Code).FirstOrDefault();
+
+                var i = 1;
+                if (latestProductPacking != null)
+                {
+                    var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
+                    i = int.Parse(rollNumber) + 1;
+                }
 
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
                 var packingCodes = new List<string>();
-                for (var i = 1; i <= form.Quantity; i++)
+                for (; i <= (i - 1) + form.Quantity; i++)
                 {
                     var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                     var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);

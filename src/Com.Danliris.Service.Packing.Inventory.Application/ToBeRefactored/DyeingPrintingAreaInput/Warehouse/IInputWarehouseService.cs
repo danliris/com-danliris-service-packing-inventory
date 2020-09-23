@@ -17,6 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<InputWarehouseDetailViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         List<OutputPreWarehouseViewModel> GetOutputPreWarehouseProductionOrders();
+        OutputPreWarehouseItemListViewModel GetOutputPreWarehouseProductionOrdersByCode(string packingCode);
         Task<int> Reject(RejectedInputWarehouseViewModel viewModel);
         Task<int> Delete(int bonId);
         Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel);

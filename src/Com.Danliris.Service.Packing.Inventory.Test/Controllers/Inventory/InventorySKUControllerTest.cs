@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
             //Setup
             var dataUtil = formDto;
             var serviceMock = new Mock<IInventorySKUService>();
-            serviceMock.Setup(s => s.AddDocument(It.IsAny<FormDto>())).ReturnsAsync(1);
+            serviceMock.Setup(s => s.AddDocument(It.IsAny<FormDto>())).Returns(1);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

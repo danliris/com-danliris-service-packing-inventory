@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
 {
     public interface IInventorySKUService
     {
-        Task<int> AddDocument(FormDto form);
+        int AddDocument(FormDto form);
         void AddMovement(ProductSKUInventoryMovementModel model);
         DocumentDto GetDocumentById(int id);
         DocumentIndexDto GetDocumentIndex(IndexQueryParam query);
