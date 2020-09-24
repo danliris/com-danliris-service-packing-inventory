@@ -133,14 +133,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Colspan = 2,
                 PaddingBottom = 10f,
                 Border = Rectangle.NO_BORDER,
-                Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY", normal_font)
+                Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
             });
 
             tableItems.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
                 PaddingRight = 10f,
-                Phrase = new Phrase("Please TT the above payment to our correspondence bank as follow :", normal_font)
+                Phrase = new Phrase(" ", normal_font)
             });
             Phrase phraseSign = new Phrase();
             phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy") + "\n\n\n\n", normal_font));
