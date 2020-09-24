@@ -300,7 +300,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //controller.ModelState.IsValid == false;
             var response = await controller.Post(dataUtil);
 
-            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -533,7 +533,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<RejectedInputWarehouseViewModel>()))
                 .Throws(GetServiceValidationExeption());
             var validateService = validateServiceMock.Object;
 
@@ -541,7 +541,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //controller.ModelState.IsValid == false;
             var response = await controller.Reject(dataUtil);
 
-            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -694,7 +694,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //controller.ModelState.IsValid == false;
             var response = await controller.Update(1, dataUtil);
 
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
