@@ -65,8 +65,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
         {
             var categoryRepository = new Mock<IRepository<CategoryModel>>();
 
-            categoryRepository.Setup(s => s.ReadAll())
-               .Returns(new List<CategoryModel>() { }.AsQueryable());
+            categoryRepository
+                .Setup(s => s.ReadAll())
+                .Returns(new List<CategoryModel>() { }.AsQueryable());
 
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
 
@@ -104,7 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
         {
             var categoryRepository = new Mock<IRepository<CategoryModel>>();
 
-            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(categoryModel);
 
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
@@ -118,8 +120,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
         {
             var categoryRepository = new Mock<IRepository<CategoryModel>>();
 
-            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-               .ReturnsAsync(()=>null);
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(()=>null);
 
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
 
@@ -138,8 +141,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
             categoryRepository.Setup(s => s.ReadAll())
                  .Returns(new List<CategoryModel>() { categoryModel, categoryModel }.AsQueryable().BuildMock().Object);
             
-            
-
             IndexQueryParam queryParam = new IndexQueryParam()
             {
                 page=1,
@@ -160,8 +161,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
             var categoryRepository = new Mock<IRepository<CategoryModel>>();
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
            
-            categoryRepository.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                 .ReturnsAsync(categoryModel);
+            categoryRepository
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(categoryModel);
 
             categoryRepository.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<CategoryModel>()))
                  .ReturnsAsync(1);
@@ -177,7 +179,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
 
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
 
-            categoryRepository.Setup(s => s.ReadAll())
+            categoryRepository
+                .Setup(s => s.ReadAll())
                 .Returns(new List<CategoryModel>() { categoryModel, categoryModel }.AsQueryable());
 
             var result = await service.Upsert(formDto);
@@ -190,7 +193,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Category
             var categoryRepository = new Mock<IRepository<CategoryModel>>();
             var service = GetService(GetServiceProvider(categoryRepository.Object).Object);
            
-            categoryRepository.Setup(s => s.ReadAll())
+            categoryRepository
+                .Setup(s => s.ReadAll())
                 .Returns(new List<CategoryModel>() { categoryModel }.AsQueryable());
             var result = await service.Upsert(new FormDto() { Name ="New Name"});
 

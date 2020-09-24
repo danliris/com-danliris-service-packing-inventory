@@ -32,6 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool IsChecked { get; set; }
         public string Grade { get; set; }
         public string Remark { get; set; }
+
+        public string ProductionMachine { get; set; }
         public string Status { get; set; }
         public double PackingLength { get; set; }
 
