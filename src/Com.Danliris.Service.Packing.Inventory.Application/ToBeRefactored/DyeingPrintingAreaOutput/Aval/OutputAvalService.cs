@@ -787,11 +787,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<AvailableAvalIndexViewModel> ReadByTypeAvailableAval(string avalType, int page, int size, string filter, string order, string keyword)
         {
+            //var query = _inputRepository.ReadAll().Where(s =>
+            //                                             s.AvalType == avalType &&
+            //                                             s.Area == DyeingPrintingArea.GUDANGAVAL &&
+            //                                             s.IsTransformedAval &&
+            //                                             s.DyeingPrintingAreaInputProductionOrders.Any(o => !o.HasOutputDocument));
             var query = _inputRepository.ReadAll().Where(s =>
                                                          s.AvalType == avalType &&
                                                          s.Area == DyeingPrintingArea.GUDANGAVAL &&
-                                                         s.IsTransformedAval &&
-                                                         s.DyeingPrintingAreaInputProductionOrders.Any(o => !o.HasOutputDocument));
+                                                         s.IsTransformedAval);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
