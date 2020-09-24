@@ -19,12 +19,14 @@ using Xunit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
 using System.IO;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 {
     public class InputWarehouseControllerTest
     {
-        private InputWarehouseController GetController(IInputWarehouseService service, IIdentityProvider identityProvider)
+        private InputWarehouseController GetController(IInputWarehouseService service, IIdentityProvider identityProvider, IValidateService validateService)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -33,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new InputWarehouseController(service, identityProvider)
+            var controller = new InputWarehouseController(service, identityProvider, validateService)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -55,6 +57,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             return (int)response.GetType().GetProperty("StatusCode").GetValue(response, null);
         }
+
+
+        private ServiceValidationException GetServiceValidationExeption()
+        {
+            Mock<IServiceProvider> serviceProvider = new Mock<IServiceProvider>();
+            List<ValidationResult> validationResults = new List<ValidationResult>()
+            {
+                new ValidationResult("message",new string[1]{ "A" }),
+                new ValidationResult("{}",new string[1]{ "B" })
+            };
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(ViewModel, serviceProvider.Object, null);
+            return new ServiceValidationException(validationContext, validationResults);
+        }
+
 
         private InputWarehouseCreateViewModel ViewModel
         {
@@ -251,11 +267,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.Post(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_ValidationException_Post()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Create(It.IsAny<InputWarehouseCreateViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Throws(GetServiceValidationExeption());
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Post(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -270,7 +315,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.Post(dataUtil);
@@ -291,7 +341,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.Post(dataUtil);
 
@@ -309,7 +364,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetById(1);
 
@@ -328,7 +388,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetById(1);
 
@@ -347,7 +412,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.Get();
 
@@ -366,7 +436,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.Get();
 
@@ -385,7 +460,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.GetProductionOrders();
 
@@ -404,7 +484,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.GetProductionOrders();
 
@@ -423,11 +508,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.Reject(dataUtil);
 
             Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_ValidationException_Reject()
+        {
+            var dataUtil = RejectedViewModel;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Reject(It.IsAny<RejectedInputWarehouseViewModel>())).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<RejectedInputWarehouseViewModel>()))
+                .Throws(GetServiceValidationExeption());
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Reject(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -442,7 +556,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.Reject(dataUtil);
@@ -463,7 +582,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.Reject(dataUtil);
 
@@ -483,7 +607,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.Delete(1);
@@ -505,7 +634,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.Delete(1);
 
@@ -524,12 +658,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.Update(1, dataUtil);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_ValidationException_Update()
+        {
+            var dataUtil = ViewModel;
+            dataUtil.Id = 1;
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.Update(It.IsAny<int>(), dataUtil)).ReturnsAsync(1);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Throws(GetServiceValidationExeption());
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ModelState.AddModelError("test", "test");
+            //controller.ModelState.IsValid == false;
+            var response = await controller.Update(1, dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -545,7 +710,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             controller.ModelState.AddModelError("test", "test");
             //controller.ModelState.IsValid == false;
             var response = await controller.Update(1, dataUtil);
@@ -565,7 +735,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.GetExcelAll("7");
 
@@ -584,7 +759,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider);
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = controller.GetExcelAll("7");
 
