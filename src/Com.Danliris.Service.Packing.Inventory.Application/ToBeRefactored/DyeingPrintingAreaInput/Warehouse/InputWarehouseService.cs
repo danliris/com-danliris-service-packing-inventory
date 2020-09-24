@@ -180,7 +180,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = s.ProductPackingId,
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
-                        HasPrintingProductPacking = s.HasPrintingProductPacking
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        PreviousOutputPackagingQty = s.InputPackagingQty
                     }).Distinct(new PackingComparer()).ToList()
                 }).ToList()
             };
@@ -472,7 +473,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = p.ProductPackingId,
                     FabricPackingId = p.FabricPackingId,
                     ProductPackingCode = p.ProductPackingCode,
-                    HasPrintingProductPacking = p.HasPrintingProductPacking
+                    HasPrintingProductPacking = p.HasPrintingProductPacking,
+                    PreviousOutputPackagingQty = p.PackagingQty
                 }).ToList()
 
             });
@@ -1026,7 +1028,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         ProductPackingId = p.ProductPackingId,
                                                                         FabricPackingId = p.FabricPackingId,
                                                                         ProductPackingCode = p.ProductPackingCode,
-                                                                        HasPrintingProductPacking = p.HasPrintingProductPacking
+                                                                        HasPrintingProductPacking = p.HasPrintingProductPacking,
+                                                                        PreviousOutputPackagingQty = p.PackagingQty
                                                                     });
 
             return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
