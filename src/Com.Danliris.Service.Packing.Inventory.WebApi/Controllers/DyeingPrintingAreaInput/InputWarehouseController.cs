@@ -77,12 +77,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
         [HttpPost("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id,[FromBody]InputWarehouseCreateViewModel viewModel)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] InputWarehouseCreateViewModel viewModel)
         {
             try
             {
                 VerifyUser();
-                var data = await _service.Update(id,viewModel);
+                var data = await _service.Update(id, viewModel);
                 return Ok(new
                 {
                     data
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}",
+        public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
         {
             try
@@ -136,6 +136,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
 
                 var data = _service.GetOutputPreWarehouseProductionOrders();
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet("output-production-orders/{packingCode}")]
+        public IActionResult GetProductionOrderByCode(string packingCode)
+        {
+            try
+            {
+
+                var data = _service.GetOutputPreWarehouseProductionOrdersByCode(packingCode);
                 return Ok(new
                 {
                     data

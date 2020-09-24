@@ -373,7 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             string amountToText = NumberToTextEN.toWords((double)totalAmount);
-            document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper(), normal_font));
+            document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font));
             document.Add(new Paragraph("\n", normal_font));
 
             document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));

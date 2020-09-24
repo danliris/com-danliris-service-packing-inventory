@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.QueueService;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
     public class InventorySKUService : IInventorySKUService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAzureServiceBusSender<ProductSKUInventoryMovementModel> _queueService;
+        //private readonly IAzureServiceBusSender<ProductSKUInventoryMovementModel> _queueService;
 
         public InventorySKUService(IServiceProvider serviceProvider)
         {
             _unitOfWork = serviceProvider.GetService<IUnitOfWork>();
-            _queueService = serviceProvider.GetService<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
+            //_queueService = serviceProvider.GetService<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
         }
 
-        public async Task<int> AddDocument(FormDto form)
+        public int AddDocument(FormDto form)
         {
             var documentNo = CodeGenerator.GenerateCode();
             do
@@ -48,8 +49,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.InventorySKU
             {
                 foreach (var item in form.Items)
                 {
-                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId.GetValueOrDefault(), item.UOMId.GetValueOrDefault(), model.StorageId, model.StorageCode, model.StorageName, item.Quantity.GetValueOrDefault(), form.Type, item.Remark);
-                    await _queueService.SendMessage(movementItem);
+                    var movementItem = new ProductSKUInventoryMovementModel(model.Id, item.ProductSKUId.GetValueOrDefault(), item.UOMId.GetValueOrDefault(), model.StorageId, model.StorageCode, model.StorageName, item.Quantity.GetValueOrDefault(), model.Type, item.Remark);
+
+                    var summary = _unitOfWork.ProductSKUInventorySummaries.Get(element => element.ProductSKUId == item.ProductSKUId.GetValueOrDefault() && element.StorageId == model.StorageId && item.UOMId.GetValueOrDefault() == element.StorageId).FirstOrDefault();
+
+                    if (summary == null)
+                    {
+                        switch (movementItem.Type.ToUpper())
+                        {
+                            case "IN":
+                                movementItem.SetCurrentBalance(movementItem.Quantity);
+                                break;
+                            case "OUT":
+                                movementItem.SetCurrentBalance(movementItem.Quantity * -1);
+                                break;
+                            case "ADJ":
+                                movementItem.SetCurrentBalance(movementItem.Quantity);
+                                break;
+                            default:
+                                throw new Exception("Invalid Type");
+                        }
+
+                        summary = new ProductSKUInventorySummaryModel(item.ProductSKUId.GetValueOrDefault(), model.StorageId, model.StorageCode, model.StorageName, item.UOMId.GetValueOrDefault());
+                        summary.SetBalance(movementItem.CurrentBalance);
+                        _unitOfWork.ProductSKUInventorySummaries.Insert(summary);
+                    }
+                    else
+                    {
+                        movementItem.SetPreviousBalance(summary.Balance);
+                        switch (movementItem.Type.ToUpper())
+                        {
+                            case "IN":
+                                movementItem.SetCurrentBalance(movementItem.Quantity);
+                                break;
+                            case "OUT":
+                                movementItem.SetCurrentBalance(movementItem.Quantity * -1);
+                                break;
+                            case "ADJ":
+                                movementItem.SetCurrentBalance(movementItem.Quantity);
+                                break;
+                            default:
+                                throw new Exception("Invalid Type");
+                        }
+
+                        summary.SetBalance(movementItem.CurrentBalance);
+                        _unitOfWork.ProductSKUInventorySummaries.Update(summary);
+                    }
+
+                    _unitOfWork.ProductSKUInventoryMovements.Insert(movementItem);
+                    _unitOfWork.Commit();
                 }
             }
 

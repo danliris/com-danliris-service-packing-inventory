@@ -28,6 +28,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ShippingType { get; private set; }
         #endregion
 
+        public bool OpnameInput { get; private set; }
+
         public ICollection<DyeingPrintingAreaInputProductionOrderModel> DyeingPrintingAreaInputProductionOrders { get; private set; }
 
         public DyeingPrintingAreaInputModel()

@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "SalesContractNo", "BuyerCode", "BuyerName", "SellerName","TransactionTypeCo"
+                "SalesContractNo", "BuyerCode", "BuyerName", "SellerName","TransactionTypeCode","TransactionTypeName"
             };
             query = QueryHelper<GarmentShippingLocalSalesContractModel>.Search(query, SearchAttributes, keyword);
 

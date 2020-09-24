@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
 
 
         [Fact]
-        public async Task Should_Success_AddDocument()
+        public void Should_Success_AddDocument()
         {
             //Arrange
             var dbContext = new PackingInventoryDbContext(CreateNewContextOptions(MethodBase.GetCurrentMethod().ReflectedType.FullName + MethodBase.GetCurrentMethod().Name));
@@ -82,27 +82,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 .Returns(new IdentityProvider() { TimezoneOffset = 1, Token = "token", Username = "username" });
 
 
-            var productSKUInventoryDocument = new ProductSKUInventoryDocumentModel("documentNo",DateTimeOffset.Now, "ReferenceNo", "ReferenceType", 1, "storagename", "storagecode","type","remark");
+            var productSKUInventoryDocument = new ProductSKUInventoryDocumentModel("documentNo", DateTimeOffset.Now, "ReferenceNo", "ReferenceType", 1, "storagename", "storagecode", "type", "remark");
             dbContext.ProductSKUInventoryDocuments.Add(productSKUInventoryDocument);
 
             dbContext.SaveChanges();
 
             var unitOfWork = new UnitOfWork(dbContext, serviceProviderMock.Object);
-           
-           
+
+
             var azureServiceBusSenderMock = new Mock<IAzureServiceBusSender<ProductSKUInventoryMovementModel>>();
             var service = GetService(GetServiceProvider(unitOfWork, azureServiceBusSenderMock.Object).Object);
 
             var data = new FormDto()
             {
-                
+
                 Date = DateTimeOffset.Now,
                 ReferenceNo = "ReferenceNo",
                 ReferenceType = "ReferenceType",
                 Remark = "Remark",
                 Storage = new Application.DTOs.StorageDto()
                 {
-                    _id=1,
+                    _id = 1,
                     code = "storagecode",
                     name = "storagename",
                 },
@@ -116,13 +116,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                         UOMId =1
                     }
                 },
-                Type= "Type",
-                
+                Type = "IN",
+
             };
 
 
             //Act
-            var result = await service.AddDocument(data);
+            var result = service.AddDocument(data);
 
             //Assertion
             Assert.True(-1 < result);
@@ -501,7 +501,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                 size = 25,
                 keyword = "documentNo",
                 order = "{}",
-                
+
             };
             var result = service.GetDocumentIndex(query);
 

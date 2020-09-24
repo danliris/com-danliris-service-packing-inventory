@@ -38,19 +38,19 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Inventory
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] FormDto form)
+        public IActionResult Post([FromBody] FormDto form)
         {
             try
             {
                 VerifyUser();
                 _validateService.Validate(form);
-                var result = await _service.AddDocument(form);
+                var result = _service.AddDocument(form);
 
                 return Created(HttpContext.Request.Path, result);
             }
             catch (ServiceValidationException ex)
             {
-                var Result = new
+                var result = new
                 {
                     error = ResultFormatter.Fail(ex),
                     apiVersion = "1.0.0",
@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Inventory
                     message = "Data does not pass validation"
                 };
 
-                return new BadRequestObjectResult(Result);
+                return new BadRequestObjectResult(result);
             }
             catch (Exception ex)
             {

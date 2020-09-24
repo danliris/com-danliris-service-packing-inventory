@@ -85,8 +85,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Type = "OUT",
                     BonNo = "GA.20.0001",
                     Group = "A",
-                    DeliveryOrderSalesNo = "Do01",
-                    DeliveryOrdeSalesId = 1,
+                    DeliveryOrderAvalNo = "Do01",
+                    DeliveryOrderAvalId = 1,
                     HasNextAreaDocument = false,
                     AvalItems = new List<OutputAvalItemViewModel>()
                     {
@@ -127,8 +127,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Type = "ADJ",
                     BonNo = "GA.20.0001",
                     Group = "A",
-                    DeliveryOrderSalesNo = "Do01",
-                    DeliveryOrdeSalesId = 1,
+                    DeliveryOrderAvalNo = "Do01",
+                    DeliveryOrderAvalId = 1,
                     HasNextAreaDocument = false,
                     AvalItems = new List<OutputAvalItemViewModel>()
                     {
@@ -192,8 +192,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.Area,
                                                          ViewModel.Shift,
                                                          ViewModel.BonNo,
-                                                         ViewModel.DeliveryOrderSalesNo,
-                                                         ViewModel.DeliveryOrdeSalesId,
+                                                         ViewModel.DeliveryOrderAvalNo,
+                                                         ViewModel.DeliveryOrderAvalId,
                                                          false,
                                                          ViewModel.DestinationArea,
                                                          ViewModel.Group,
@@ -1489,8 +1489,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         public void Should_Success_GetSetModel()
         {
             var test = ViewModel;
-            var did = test.DeliveryOrdeSalesId;
-            var dno = test.DeliveryOrderSalesNo;
+            var did = test.DeliveryOrderAvalId;
+            var dno = test.DeliveryOrderAvalNo;
             var nexArea = test.HasNextAreaDocument;
             var dpIds = test.DyeingPrintingMovementIds;
             Assert.NotNull(test);
