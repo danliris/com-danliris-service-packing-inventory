@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Create;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Detail;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.PreOutputWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse.Reject;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
@@ -2108,11 +2109,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             validateService = new ValidateService(serviceProvider);
             Assert.ThrowsAny<ServiceValidationException>(() => validateService.Validate(vm));
 
+
             vm.MappedWarehousesProductionOrders = new List<InputWarehouseProductionOrderCreateViewModel>()
             {
                 new InputWarehouseProductionOrderCreateViewModel()
                 {
-                    ProductionOrder = new ProductionOrder()
+                    ProductionOrder = new ProductionOrder(),
+                    PreviousOutputPackagingQty = 1
                 }
             };
             validateService = new ValidateService(serviceProvider);
@@ -2147,6 +2150,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(vm.MaterialProduct);
             Assert.Null(vm.MaterialConstruction);
             Assert.Null(vm.MaterialWidth);
+
+            var detail = new ProductionOrderItemListDetailViewModel()
+            {
+                Id = 1
+            };
+            Assert.Equal(0, detail.PreviousOutputPackagingQty);
+
+            var preWarehouse = new OutputPreWarehouseItemListViewModel()
+            {
+                Id = 1
+            };
+            Assert.Equal(0, preWarehouse.PreviousOutputPackagingQty);
+
+            var reject = new RejectedInputWarehouseProductionOrderViewModel()
+            {
+                Id = 1
+            };
+            Assert.Equal(0, reject.PreviousOutputPackagingQty);
         }
     }
 }

@@ -820,7 +820,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
 
                     AvalType = avalInput.AvalType,
-                    AvalUomUnit = avalInput.AvalItem.First().DyeingPrintingAreaInputProductionOrders.FirstOrDefault().UomUnit,
+                    AvalUomUnit = avalInput.AvalItem.First().DyeingPrintingAreaInputProductionOrders.FirstOrDefault()?.UomUnit,
                     AvalQuantity = avalInput.AvalItem.Sum(s => s.TotalAvalQuantity),
                     AvalQuantityKg = avalInput.AvalItem.Sum(s => s.TotalAvalWeight),
                 };
