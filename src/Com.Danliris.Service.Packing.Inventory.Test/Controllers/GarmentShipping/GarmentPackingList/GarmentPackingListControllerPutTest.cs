@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public async Task Put_Ok()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public async Task Put_ValidationException_BadRequest()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             var service = serviceMock.Object;
@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public async Task Put_Exception_InternalServerError()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock

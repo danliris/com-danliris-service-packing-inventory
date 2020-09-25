@@ -41,12 +41,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             return controller;
         }
 
-        protected virtual GarmentPackingListViewModel ViewModel
+        protected virtual GarmentPackingListViewModel GetViewModel()
         {
-            get
-            {
-                return new GarmentPackingListViewModel();
-            }
+            return new GarmentPackingListViewModel();
         }
 
         protected ServiceValidationException GetServiceValidationExeption()
@@ -57,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                 new ValidationResult("message",new string[1]{ "A" }),
                 new ValidationResult("{}",new string[1]{ "B" })
             };
-            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(ViewModel, serviceProvider.Object, null);
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(GetViewModel(), serviceProvider.Object, null);
             return new ServiceValidationException(validationContext, validationResults);
         }
 
