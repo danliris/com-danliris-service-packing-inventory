@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingLocalSalesNoteModel> _dbSet;
+        private readonly DbSet<GarmentShippingLocalSalesContractModel> _salesContractDbSet;
 
         public GarmentShippingLocalSalesNoteRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingLocalSalesNoteModel>();
+            _salesContractDbSet= dbContext.Set<GarmentShippingLocalSalesContractModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -29,6 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .Include(i => i.Items)
                 .FirstOrDefault(s => s.Id == id);
 
+            var sc= _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
+            sc.SetIsUsed(false, _identityProvider.Username, UserAgent);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
             foreach (var item in model.Items)
@@ -42,6 +47,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public Task<int> InsertAsync(GarmentShippingLocalSalesNoteModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
+
+            var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
+            sc.SetIsUsed(true, _identityProvider.Username, UserAgent);
 
             foreach (var item in model.Items)
             {
@@ -76,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetDispositionNo(model.DispositionNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUseVat(model.UseVat, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPaymentType(model.PaymentType, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {

@@ -1,9 +1,12 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.LocalSalesDO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,9 +29,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var dbContext = DbContext(testName);
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
             GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
-            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
             GarmentShippingLocalSalesNoteModel data = salesNoteDataUtil.GetModel();
+            data.LocalSalesContractId = dataSC.Id;
             var dataLocalSalesNote = await repo.InsertAsync(data);
 
             GarmentShippingLocalSalesDORepository repoLocalSalesDO = new GarmentShippingLocalSalesDORepository(dbContext, serviceProvider);
@@ -47,9 +56,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var dbContext = DbContext(testName);
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
             GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
-            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
             GarmentShippingLocalSalesNoteModel data = salesNoteDataUtil.GetModel();
+            data.LocalSalesContractId = dataSC.Id;
             var dataLocalSalesNote = await repo.InsertAsync(data);
 
             GarmentShippingLocalSalesDORepository repoLocalSalesDO = new GarmentShippingLocalSalesDORepository(dbContext, serviceProvider);
@@ -68,9 +83,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var dbContext = DbContext(testName);
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
             GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
-            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
             GarmentShippingLocalSalesNoteModel data = salesNoteDataUtil.GetModel();
+            data.LocalSalesContractId = dataSC.Id;
             var dataLocalSalesNote = await repo.InsertAsync(data);
 
             GarmentShippingLocalSalesDORepository repoLocalSalesDO = new GarmentShippingLocalSalesDORepository(dbContext, serviceProvider);
@@ -89,9 +110,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var dbContext = DbContext(testName);
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
             GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
-            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
             GarmentShippingLocalSalesNoteModel data = salesNoteDataUtil.GetModel();
+            data.LocalSalesContractId = dataSC.Id;
             var dataLocalSalesNote = await repo.InsertAsync(data);
 
             GarmentShippingLocalSalesDORepository repoLocalSalesDO = new GarmentShippingLocalSalesDORepository(dbContext, serviceProvider);
@@ -111,9 +138,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
             GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
-            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
             GarmentShippingLocalSalesNoteModel data = salesNoteDataUtil.GetModel();
+            data.LocalSalesContractId = dataSC.Id;
             var dataLocalSalesNote = await repo.InsertAsync(data);
 
             GarmentShippingLocalSalesDORepository repoLocalSalesDO = new GarmentShippingLocalSalesDORepository(dbContext, serviceProvider);

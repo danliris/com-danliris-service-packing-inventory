@@ -62,6 +62,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 useVat = model.UseVat,
                 remark = model.Remark,
                 isUsed=model.IsUsed,
+                localSalesContractId=model.LocalSalesContractId,
+                salesContractNo=model.SalesContractNo,
+                paymentType=model.PaymentType,
                 items = (model.Items ?? new List<GarmentShippingLocalSalesNoteItemModel>()).Select(i => new GarmentShippingLocalSalesNoteItemViewModel
                 {
                     Active = i.Active,
@@ -95,7 +98,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.PackageUomId,
                         Unit = i.PackageUomUnit
                     },
-                    price = i.Price
+                    price = i.Price,
+                    localSalesContractItemId=i.LocalSalesContractItemId
                 }).ToList()
             };
 
@@ -109,12 +113,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 i.product = i.product ?? new ProductViewModel();
                 i.uom = i.uom ?? new UnitOfMeasurement();
                 i.packageUom = i.packageUom ?? new UnitOfMeasurement();
-                return new GarmentShippingLocalSalesNoteItemModel(i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price,i.packageQuantity,i.packageUom.Id.GetValueOrDefault(), i.packageUom.Unit) { Id = i.Id };
+                return new GarmentShippingLocalSalesNoteItemModel(i.localSalesContractItemId, i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price,i.packageQuantity,i.packageUom.Id.GetValueOrDefault(), i.packageUom.Unit) { Id = i.Id };
             }).ToList();
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesNoteModel(GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.tempo, vm.dispositionNo, vm.useVat, vm.remark,vm.isUsed, items) { Id = vm.Id };
+            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.tempo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteViewModel vm)

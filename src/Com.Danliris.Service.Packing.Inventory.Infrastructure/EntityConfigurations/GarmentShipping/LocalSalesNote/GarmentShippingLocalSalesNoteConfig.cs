@@ -20,6 +20,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder
+                .Property(s => s.SalesContractNo)
+                .HasMaxLength(50);
+
+            builder
                 .Property(s => s.NoteNo)
                 .HasMaxLength(50);
 
@@ -60,6 +64,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                  .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.LocalSalesNoteId);
+
+            builder
+                .Property(s => s.PaymentType)
+                .HasMaxLength(20);
         }
     }
 }

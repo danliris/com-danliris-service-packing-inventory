@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200924013608_connect_GShipping_SalesNote_SalesContract")]
+    partial class connect_GShipping_SalesNote_SalesContract
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,8 +254,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<bool>("OpnameInput");
-
                     b.Property<string>("Shift")
                         .HasMaxLength(64);
 
@@ -425,9 +425,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<int>("ProductSKUId");
-
-                    b.Property<string>("ProductionMachine")
-                        .HasMaxLength(128);
 
                     b.Property<long>("ProductionOrderId");
 
@@ -606,11 +603,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<long>("DeliveryOrderAvalId");
-
-                    b.Property<string>("DeliveryOrderAvalNo")
-                        .HasMaxLength(128);
 
                     b.Property<long>("DeliveryOrderSalesId");
 
@@ -806,9 +798,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<int>("ProductSKUId");
-
-                    b.Property<string>("ProductionMachine")
-                        .HasMaxLength(128);
 
                     b.Property<long>("ProductionOrderId");
 
@@ -1609,8 +1598,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("CartonQuantity");
 
-                    b.Property<double>("CartonsQuantity");
-
                     b.Property<string>("Colour")
                         .HasMaxLength(100);
 
@@ -1630,8 +1617,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<double>("Height");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -1642,15 +1627,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double>("Length");
-
                     b.Property<int>("PackingListItemId");
 
                     b.Property<double>("QuantityPCS");
 
                     b.Property<double>("TotalQuantity");
-
-                    b.Property<double>("Width");
 
                     b.HasKey("Id");
 

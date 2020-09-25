@@ -5,6 +5,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
     public class GarmentShippingLocalSalesNoteItemModel : StandardEntity
     {
         public int LocalSalesNoteId { get; set; }
+        public int LocalSalesContractItemId { get; set; }
         public int ProductId { get; private set; }
         public string ProductCode { get; private set; }
         public string ProductName { get; private set; }
@@ -24,8 +25,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteItemModel(int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price, double packageQuantity, int packageUomId, string packageUomUnit)
+        public GarmentShippingLocalSalesNoteItemModel(int localSalesContractItemId, int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price, double packageQuantity, int packageUomId, string packageUomUnit)
         {
+            LocalSalesContractItemId = localSalesContractItemId;
             ProductId = productId;
             ProductCode = productCode;
             ProductName = productName;
