@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public void GetNotUsed_Exception_InternalServerError()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock

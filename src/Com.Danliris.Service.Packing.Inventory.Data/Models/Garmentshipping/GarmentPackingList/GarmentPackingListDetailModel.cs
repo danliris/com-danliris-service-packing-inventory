@@ -14,6 +14,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public double QuantityPCS { get; private set; }
         public double TotalQuantity { get; private set; }
 
+        public double Length { get; private set; }
+        public double Width { get; private set; }
+        public double Height { get; private set; }
+        public double CartonsQuantity { get; private set; }
+
         public ICollection<GarmentPackingListDetailSizeModel> Sizes { get; private set; }
 
         public GarmentPackingListDetailModel()
@@ -21,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Sizes = new List<GarmentPackingListDetailSizeModel>();
         }
 
-        public GarmentPackingListDetailModel(double carton1, double carton2, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, ICollection<GarmentPackingListDetailSizeModel> sizes)
+        public GarmentPackingListDetailModel(double carton1, double carton2, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, double length, double width, double height, double cartonsQuantity, ICollection<GarmentPackingListDetailSizeModel> sizes)
         {
             Carton1 = carton1;
             Carton2 = carton2;
@@ -29,6 +34,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             CartonQuantity = cartonQuantity;
             QuantityPCS = quantityPCS;
             TotalQuantity = totalQuantity;
+            Length = length;
+            Width = width;
+            Height = height;
+            CartonsQuantity = cartonsQuantity;
             Sizes = sizes;
         }
 

@@ -1,6 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,56 +6,9 @@ using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListViewModel : BaseViewModel, IValidatableObject
+    public class GarmentPackingListUnitPackingViewModel : GarmentPackingListViewModel, IValidatableObject
     {
-        #region Description
-
-        public string InvoiceNo { get; set; }
-        public string PackingListType { get; set; }
-        public string InvoiceType { get; set; }
-        public Section Section { get; set; }
-        public DateTimeOffset? Date { get; set; }
-
-        public string PaymentTerm { get; set; }
-        public string LCNo { get; set; }
-        public DateTimeOffset? LCDate { get; set; }
-        public string IssuedBy { get; set; }
-        public Buyer BuyerAgent { get; set; }
-
-        public string Destination { get; set; }
-
-        public DateTimeOffset? TruckingDate { get; set; }
-        public DateTimeOffset? ExportEstimationDate { get; set; }
-
-        public bool Omzet { get; set; }
-        public bool Accounting { get; set; }
-
-        public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
-
-        #endregion
-
-        #region Measurement
-
-        public double GrossWeight { get; set; }
-        public double NettWeight { get; set; }
-        public double TotalCartons { get; set; }
-        public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
-
-        public string SayUnit { get; set; }
-
-        #endregion
-
-        #region Mark
-
-        public string ShippingMark { get; set; }
-        public string SideMark { get; set; }
-        public string Remark { get; set; }
-
-        #endregion
-
-        public bool IsUsed { get; set; }
-
-        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             #region Description
 
@@ -71,60 +22,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Jenis Invoice tidak boleh kosong", new List<string> { "InvoiceType" });
             }
 
-            if (Section == null || Section.Id == 0)
-            {
-                yield return new ValidationResult("Seksi tidak boleh kosong", new List<string> { "Section" });
-            }
-
             if (Date == null || Date == DateTimeOffset.MinValue)
             {
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "Date" });
-            }
-            //else if (Date > DateTimeOffset.Now)
-            //{
-            //    yield return new ValidationResult("Tanggal tidak boleh lebih dari hari ini", new List<string> { "Date" });
-            //}
-
-            if (string.IsNullOrWhiteSpace(PaymentTerm))
-            {
-                yield return new ValidationResult("Payment Term tidak boleh kosong", new List<string> { "PaymentTerm" });
-            }
-            else if (PaymentTerm.ToUpper() == "LC")
-            {
-                if (string.IsNullOrEmpty(LCNo))
-                {
-                    yield return new ValidationResult("LC No tidak boleh kosong", new List<string> { "LCNo" });
-                }
-
-                if (LCDate == null || LCDate == DateTimeOffset.MinValue)
-                {
-                    yield return new ValidationResult("Tgl. LC harus diisi", new List<string> { "LCDate" });
-                }
-
-                if (string.IsNullOrEmpty(IssuedBy))
-                {
-                    yield return new ValidationResult("Issued By tidak boleh kosong", new List<string> { "IssuedBy" });
-                }
-            }
-
-            if (BuyerAgent == null || BuyerAgent.Id == 0)
-            {
-                yield return new ValidationResult("Buyer Agent tidak boleh kosong", new List<string> { "BuyerAgent" });
-            }
-
-            if (string.IsNullOrEmpty(Destination))
-            {
-                yield return new ValidationResult("Destination tidak boleh kosong", new List<string> { "Destination" });
-            }
-
-            if (TruckingDate == null || TruckingDate == DateTimeOffset.MinValue)
-            {
-                yield return new ValidationResult("Tanggal Trucking tidak boleh kosong", new List<string> { "TruckingDate" });
-            }
-
-            if (ExportEstimationDate == null || ExportEstimationDate == DateTimeOffset.MinValue)
-            {
-                yield return new ValidationResult("Tanggal Perkiraan Export tidak boleh kosong", new List<string> { "ExportEstimationDate" });
             }
 
             if (Items == null || Items.Count < 1)

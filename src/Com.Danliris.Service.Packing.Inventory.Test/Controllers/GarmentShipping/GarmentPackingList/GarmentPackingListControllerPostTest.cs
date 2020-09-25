@@ -11,6 +11,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 {
     public class GarmentPackingListControllerPostTest : GarmentPackingListControllerTest
     {
+        private GarmentPackingListUnitPackingViewModel ViewModel => new GarmentPackingListUnitPackingViewModel();
+
         [Fact]
         public async Task Post_Created()
         {

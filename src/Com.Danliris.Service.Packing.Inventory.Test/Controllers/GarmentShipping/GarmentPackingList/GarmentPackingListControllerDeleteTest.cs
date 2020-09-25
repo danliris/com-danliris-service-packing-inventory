@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public async Task Delete_Ok()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public async Task Delete_Exception_InternalServerError()
         {
-            var dataUtil = ViewModel;
+            var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
