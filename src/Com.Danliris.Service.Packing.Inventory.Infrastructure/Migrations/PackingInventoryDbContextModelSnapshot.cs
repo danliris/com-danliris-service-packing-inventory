@@ -3223,6 +3223,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int>("LocalSalesContractItemId");
+
                     b.Property<int>("LocalSalesNoteId");
 
                     b.Property<double>("PackageQuantity");
@@ -3308,11 +3310,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int>("LocalSalesContractId");
+
                     b.Property<string>("NoteNo")
                         .HasMaxLength(50);
 
+                    b.Property<string>("PaymentType")
+                        .HasMaxLength(20);
+
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
+
+                    b.Property<string>("SalesContractNo")
+                        .HasMaxLength(50);
 
                     b.Property<int>("Tempo");
 

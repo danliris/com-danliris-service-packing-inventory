@@ -5,6 +5,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingLocalSalesNoteItemViewModel : BaseViewModel
     {
+        public int localSalesContractItemId { get; set; }
         public ProductViewModel product { get; set; }
         public double quantity { get; set; }
         public UnitOfMeasurement uom { get; set; }

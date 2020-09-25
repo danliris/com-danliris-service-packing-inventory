@@ -9,6 +9,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingLocalSalesNoteViewModel : BaseViewModel, IValidatableObject
     {
+        public string salesContractNo { get; set; }
+        public int localSalesContractId { get; set; }
         public string noteNo { get; set; }
         public DateTimeOffset? date { get; set; }
         public TransactionType transactionType { get; set; }
@@ -18,11 +20,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool useVat { get; set; }
         public string remark { get; set; }
         public bool isUsed { get; set; }
+        public string paymentType { get; set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemViewModel> items { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if(localSalesContractId==0 || string.IsNullOrWhiteSpace(salesContractNo))
+            {
+                yield return new ValidationResult("Sales Contract Lokal tidak boleh kosong", new List<string> { "salesContract" });
+            }
             if (date == null || date == DateTimeOffset.MinValue)
             {
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "date" });
@@ -38,15 +45,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
             }
 
-            if (tempo <= 0)
+            if (paymentType=="TEMPO" && tempo <= 0)
             {
                 yield return new ValidationResult("Tempo Pembayaran tidak boleh kosong", new List<string> { "tempo" });
             }
 
-            if (string.IsNullOrWhiteSpace(dispositionNo))
-            {
-                yield return new ValidationResult("No Disposisi tidak boleh kosong", new List<string> { "dispositionNo" });
-            }
+            //if (string.IsNullOrWhiteSpace(dispositionNo))
+            //{
+            //    yield return new ValidationResult("No Disposisi tidak boleh kosong", new List<string> { "dispositionNo" });
+            //}
 
             if (items == null || items.Count == 0)
             {

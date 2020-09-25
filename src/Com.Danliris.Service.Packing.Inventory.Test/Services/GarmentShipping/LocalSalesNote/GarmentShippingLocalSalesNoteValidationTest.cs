@@ -25,8 +25,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             {
                 date = DateTimeOffset.MinValue,
                 transactionType = new TransactionType { id = 0 },
-                buyer = new Buyer { Id = 0 }
-
+                buyer = new Buyer { Id = 0 },
+                tempo=0,
+                paymentType="TEMPO"
             };
 
             var result = viewModel.Validate(null);

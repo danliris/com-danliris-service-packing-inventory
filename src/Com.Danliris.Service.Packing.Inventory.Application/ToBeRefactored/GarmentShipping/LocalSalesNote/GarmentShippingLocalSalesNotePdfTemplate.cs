@@ -182,22 +182,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             string terbilang = NumberToTextIDN.terbilang(Math.Round(finalPrice,2));
 
-            cellFooterContent1.Phrase=new Phrase("Tempo     :", normal_font);
+            cellFooterContent1.Phrase = new Phrase("No Disposisi:", normal_font);
+            tableFooter.AddCell(cellFooterContent1);
+            cellFooterContent2.Phrase = new Phrase(string.IsNullOrWhiteSpace(viewModel.dispositionNo) ? "-" : viewModel.dispositionNo, normal_font);
+            tableFooter.AddCell(cellFooterContent2);
+
+            cellFooterContent1.Phrase=new Phrase("Tempo       :", normal_font);
             tableFooter.AddCell(cellFooterContent1);
             cellFooterContent2.Phrase=new Phrase(viewModel.tempo + " Hari", normal_font);
             tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase=(new Phrase("JT.       :", normal_font));
+            cellFooterContent1.Phrase=(new Phrase("JT.         :", normal_font));
             tableFooter.AddCell(cellFooterContent1);
             cellFooterContent2.Phrase = (new Phrase(viewModel.date.GetValueOrDefault().AddDays(viewModel.tempo).ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
             tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase=(new Phrase("Terbilang :", normal_font));
+            cellFooterContent1.Phrase=(new Phrase("Terbilang   :", normal_font));
             tableFooter.AddCell(cellFooterContent1);
             cellFooterContent2.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
             tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase=(new Phrase("Catatan   :", normal_font));
+            cellFooterContent1.Phrase=(new Phrase("Catatan     :", normal_font));
             tableFooter.AddCell(cellFooterContent1);
             cellFooterContent2.Phrase = (new Phrase(viewModel.remark, normal_font));
             tableFooter.AddCell(cellFooterContent2);
