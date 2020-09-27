@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils;
 using System;
 using System.Collections.Generic;
@@ -323,7 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             emptyData.SetBalanceRemains(4, "", "");
             emptyData.SetBalance(4, "", "");
             await repo.InsertAsync(emptyData);
-            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL",emptyData.ProductionOrderNo, emptyData.Grade, 2);
+            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL", emptyData.ProductionOrderNo, emptyData.Grade, 2);
 
             Assert.NotEqual(0, result.Item1);
         }
@@ -343,9 +344,64 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             emptyData.SetBalanceRemains(4, "", "");
             emptyData.SetBalance(4, "", "");
             await repo.InsertAsync(emptyData);
-            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL", emptyData.ProductionOrderNo, emptyData.Grade, 4);
+            var emptyData2 = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData2.SetArea("PACKING", "", "");
+            emptyData2.SetBalanceRemains(4, "", "");
+            emptyData2.SetBalance(4, "", "");
+            await repo.InsertAsync(emptyData2);
+            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL", emptyData.ProductionOrderNo, emptyData.Grade, 6);
 
             Assert.NotEqual(0, result.Item1);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_RestorePacking()
+        {
+            string testName = GetCurrentMethod() + "RestorePacking";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData.SetArea("PACKING", "", "");
+            emptyData.SetBalanceRemains(4, "", "");
+            emptyData.SetBalance(4, "", "");
+            await repo.InsertAsync(emptyData);
+            var packingData = new PackingData()
+            {
+                Id = emptyData.Id,
+                Balance = 4
+            };
+            var result = await repo2.RestorePacking("INSPECTION MATERIAL", new List<PackingData>() { packingData });
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdateFromNextAreaInputPackingAsync()
+        {
+            string testName = GetCurrentMethod() + "UpdateFromNextAreaInputPackingAsync";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData.SetArea("PACKING", "", "");
+            emptyData.SetBalanceRemains(4, "", "");
+            emptyData.SetBalance(4, "", "");
+            await repo.InsertAsync(emptyData);
+            var packingData = new PackingData()
+            {
+                Id = emptyData.Id,
+                Balance = 4
+            };
+            var result = await repo2.UpdateFromNextAreaInputPackingAsync(new List<PackingData>() { packingData });
+
+            Assert.NotEqual(0, result);
         }
     }
 }

@@ -366,11 +366,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> UpdateFromNextAreaInputPackingAsync(List<PackingData> packingData)
         {
-            foreach(var item in packingData)
+            foreach (var item in packingData)
             {
                 var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == item.Id);
-                var newBalance = modelToUpdate.Balance - item.Balance;
-                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                if (modelToUpdate != null)
+                {
+                    var newBalance = modelToUpdate.Balance - item.Balance;
+                    modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                }
             }
 
             return _dbContext.SaveChangesAsync();
