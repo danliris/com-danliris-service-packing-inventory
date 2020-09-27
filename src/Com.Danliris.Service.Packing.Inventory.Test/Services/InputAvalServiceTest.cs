@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Moq;
 using Newtonsoft.Json;
 using System;
@@ -589,6 +590,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "s"
                 };
+                item.PrevSppInJson = "[]";
+
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
 
@@ -647,6 +650,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
 
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 
             var result = await service.Reject(ObjectTestPayload);
@@ -668,6 +674,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             foreach (var spp in vm.AvalItems)
             {
                 spp.Area = "PACKING";
+                spp.PrevSppInJson = "[]";
             }
 
             var model = Model;
@@ -697,6 +704,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var item = vm.AvalItems.FirstOrDefault();
 
             outputSppRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
                 .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
@@ -949,6 +959,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "s"
                 };
+                item.PrevSppInJson = "[]";
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
             //Mock for totalCurrentYear
@@ -1007,6 +1018,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                .ReturnsAsync(1);
             inputSppMock.Setup(s => s.UpdateFromNextAreaInputAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                .ReturnsAsync(1);
+
+            inputSppMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, inputSppMock.Object, outputSppRepoMock.Object).Object);
 

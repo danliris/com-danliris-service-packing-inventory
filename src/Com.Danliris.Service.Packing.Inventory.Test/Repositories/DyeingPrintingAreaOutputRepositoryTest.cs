@@ -5,6 +5,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingP
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils;
 using Moq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             var data = await DataUtil(repo, dbContext).GetTestData();
             var test = new List<int> { data.Id };
-            var result = await repo.UpdateFromInputAsync(data.Id, true,test);
+            var result = await repo.UpdateFromInputAsync(data.Id, true, test);
             Assert.NotEqual(0, result);
         }
 
@@ -129,9 +130,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
 
             var data = await DataUtil(repo, dbContext).GetTestData();
-            
-            List<int> test = new List<int> ();
-            foreach (var item in data.DyeingPrintingAreaOutputProductionOrders) {
+
+            List<int> test = new List<int>();
+            foreach (var item in data.DyeingPrintingAreaOutputProductionOrders)
+            {
                 test.Add(item.Id);
             }
             var result = await repo.UpdateFromInputAsync(data.Id, true, test);
@@ -280,12 +282,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
-            
+
             await repo.InsertAsync(emptyData);
             var data = repo.ReadAll().FirstOrDefault();
             var dbModel = await repo.ReadByIdAsync(data.Id);
             var model = DataUtil(repo, dbContext).GetModel();
-           
+
             var result = await repo2.UpdateIMArea(data.Id, model, dbModel);
 
             Assert.NotEqual(0, result);
@@ -419,7 +421,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             data.DyeingPrintingAreaOutputProductionOrders = new List<DyeingPrintingAreaOutputProductionOrderModel>();
 
-            
+
             var result = await repo2.UpdateAdjustmentData(data.Id, data, emptyData);
 
             Assert.NotEqual(0, result);
@@ -500,7 +502,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
-                .ReturnsAsync(1); 
+                .ReturnsAsync(1);
             inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsWithFlagAsync(It.IsAny<int>(), It.IsAny<double>(), It.IsAny<decimal>()))
                  .ReturnsAsync(1);
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
@@ -589,7 +591,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var data = repo.ReadAll().FirstOrDefault();
             var dbModel = await repo.ReadByIdAsync(data.Id);
             var model = DataUtil(repo, dbContext).GetModelForUpdateAfter2();
-            foreach(var item in model.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
             }
@@ -797,8 +799,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            inputSPPMock.Setup(s => s.RestorePacking(It.IsAny<string>(), It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<PackingData>>(1, new List<PackingData>()));
+
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
                 .Returns(inputSPPMock.Object);
+
 
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
                 .Returns(outputSPPMock.Object);
@@ -833,6 +842,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            inputSPPMock.Setup(s => s.RestorePacking(It.IsAny<string>(), It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<PackingData>>(1, new List<PackingData>()));
+
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
                 .Returns(inputSPPMock.Object);
 
@@ -849,11 +864,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var model = DataUtil(repo, dbContext).GetModelForUpdateAfter();
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
+                var packingData = new List<PackingData>()
+                {
+                    new PackingData()
+                    {
+                        Id = 1,
+                        Balance = 10
+                    }
+                };
+                string jsonPackingData = JsonConvert.SerializeObject(packingData);
                 item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
                 item.SetProductPackingId(item.ProductPackingId + 1, "", "");
                 item.SetProductPackingCode(item.ProductPackingCode + "01", "", "");
                 item.SetFabricPackingId(item.FabricPackingId + 1, "", "");
                 item.SetDescription(item.Description + "ss", "", "");
+                item.PrevSppInJson = jsonPackingData;
             }
             var result = await repo2.UpdatePackingArea(data.Id, model, dbModel);
 
@@ -1035,7 +1060,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var dbModel = await repo.ReadByIdAsync(data.Id);
             var model = DataUtil(repo, dbContext).GetModelShippingBuyerAfter();
 
-            foreach(var item in model.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.Id = dbModel.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault().Id;
             }
@@ -1090,6 +1115,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
                 .ReturnsAsync(1);
 
+            inputSPPMock.Setup(s => s.RestorePacking(It.IsAny<string>(), It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
                 .Returns(inputSPPMock.Object);
 
@@ -1115,11 +1143,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
 
             Mock<IDyeingPrintingAreaInputProductionOrderRepository> inputSPPMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-            
+
             inputSPPMock.Setup(s => s.UpdateBalanceAndRemainsAsync(It.IsAny<int>(), It.IsAny<double>()))
                .ReturnsAsync(1);
 
             inputSPPMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<double>()))
+                .ReturnsAsync(1);
+
+            inputSPPMock.Setup(s => s.RestorePacking(It.IsAny<string>(), It.IsAny<List<PackingData>>()))
                 .ReturnsAsync(1);
 
             serviceProvider.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
@@ -1435,7 +1466,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var data = DataUtil(repo, dbContext).GetModelShippingPenjualan();
-            foreach(var item in data.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var item in data.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.PrevSppInJson = "[]";
             }
@@ -1660,7 +1691,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
                 .ReturnsAsync(1);
 
             inputMock.Setup(s => s.UpdateAvalTransformationFromOut(It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new Tuple<int, List<AvalData>>(1,new List<AvalData>()));
+                .ReturnsAsync(new Tuple<int, List<AvalData>>(1, new List<AvalData>()));
 
             inputMock.Setup(s => s.RestoreAvalTransformation(It.IsAny<List<AvalData>>()))
                 .ReturnsAsync(1);
@@ -1682,7 +1713,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var repo = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var repo2 = new DyeingPrintingAreaOutputRepository(dbContext, serviceProvider.Object);
             var emptyData = DataUtil(repo, dbContext).GetModelShippingPenjualan();
-            foreach(var item in emptyData.DyeingPrintingAreaOutputProductionOrders)
+            foreach (var item in emptyData.DyeingPrintingAreaOutputProductionOrders)
             {
                 item.PrevSppInJson = "[]";
             }

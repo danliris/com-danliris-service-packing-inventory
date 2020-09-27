@@ -1058,6 +1058,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     testModel
                 }.AsQueryable());
 
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+               .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
+
             fabricService.Setup(s => s.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
                 .Returns(new FabricPackingIdCodeDto()
                 {
@@ -1125,6 +1128,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     testModel
                 }.AsQueryable());
 
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+               .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
+
             fabricService.Setup(s => s.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
                 .Returns(new FabricPackingIdCodeDto()
                 {
@@ -1184,6 +1190,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             sppRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
+
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+                .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
                     testModel
@@ -1262,7 +1271,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     testModel
                 }.AsQueryable());
 
-
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+               .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel>()
@@ -1321,6 +1331,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
                     testModel
                 }.AsQueryable());
+
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+               .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
 
             fabricService.Setup(s => s.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
                 .Returns(new FabricPackingIdCodeDto()
@@ -1400,6 +1413,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
                     testModel
                 }.AsQueryable());
+
+            sppRepoMock.Setup(s => s.UpdatePackingFromOut(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<double>()))
+               .ReturnsAsync(new Tuple<int, List<Inventory.Infrastructure.Utilities.PackingData>>(1, new List<Inventory.Infrastructure.Utilities.PackingData>()));
 
             outputSppRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
                 .ReturnsAsync(1);
