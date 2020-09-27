@@ -307,5 +307,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdatePackingFromOut()
+        {
+            string testName = GetCurrentMethod() + "UpdatePackingFromOut";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData.SetArea("PACKING", "", "");
+            emptyData.SetBalanceRemains(4, "", "");
+            emptyData.SetBalance(4, "", "");
+            await repo.InsertAsync(emptyData);
+            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL",emptyData.ProductionOrderNo, emptyData.Grade, 2);
+
+            Assert.NotEqual(0, result.Item1);
+        }
+
+        [Fact]
+        public virtual async Task Should_Success_UpdatePackingFromOut2()
+        {
+            string testName = GetCurrentMethod() + "UpdatePackingFromOut2";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetEmptyModel();
+            emptyData.SetArea("PACKING", "", "");
+            emptyData.SetBalanceRemains(4, "", "");
+            emptyData.SetBalance(4, "", "");
+            await repo.InsertAsync(emptyData);
+            var result = await repo2.UpdatePackingFromOut("INSPECTION MATERIAL", emptyData.ProductionOrderNo, emptyData.Grade, 4);
+
+            Assert.NotEqual(0, result.Item1);
+        }
     }
 }
