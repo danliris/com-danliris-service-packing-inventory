@@ -239,6 +239,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
+
+        [HttpGet("input-production-orders/sum-by-grade")]
+        public IActionResult GetSppInPackingSumByGrade([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
+            [FromQuery] string filter = "{}")
+        {
+            try
+            {
+
+                var data = _service.ReadSPPInPackingGroupBySPPGrade(page, size, filter, order, keyword);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpGet("production-order-loader")]
         public IActionResult GetDistinctProductionOrder([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
