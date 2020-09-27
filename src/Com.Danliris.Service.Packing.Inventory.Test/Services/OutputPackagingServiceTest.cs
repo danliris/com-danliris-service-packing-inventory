@@ -2082,6 +2082,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public void Should_Success_ReadSPPInPackingGroupBySPPGrade()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var inputBonRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model }.AsQueryable());
+
+            inputBonRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputModel>() { InputModel }.AsQueryable());
+            sppRepoMock.Setup(s => s.ReadAll())
+                .Returns(InputModel.DyeingPrintingAreaInputProductionOrders.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, inputBonRepoMock.Object).Object);
+
+            var result = service.ReadSPPInPackingGroupBySPPGrade(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
         public void Should_Success_Get_Set()
         {
             var test = InputModelPlain;
