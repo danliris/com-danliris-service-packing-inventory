@@ -426,6 +426,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("ProductSKUId");
 
+                    b.Property<string>("ProductionMachine")
+                        .HasMaxLength(128);
+
                     b.Property<long>("ProductionOrderId");
 
                     b.Property<string>("ProductionOrderNo")
@@ -803,6 +806,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<int>("ProductSKUId");
+
+                    b.Property<string>("ProductionMachine")
+                        .HasMaxLength(128);
 
                     b.Property<long>("ProductionOrderId");
 
@@ -1603,6 +1609,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("CartonQuantity");
 
+                    b.Property<double>("CartonsQuantity");
+
                     b.Property<string>("Colour")
                         .HasMaxLength(100);
 
@@ -1622,6 +1630,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<double>("Height");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -1632,11 +1642,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<double>("Length");
+
                     b.Property<int>("PackingListItemId");
 
                     b.Property<double>("QuantityPCS");
 
                     b.Property<double>("TotalQuantity");
+
+                    b.Property<double>("Width");
 
                     b.HasKey("Id");
 
@@ -1895,6 +1909,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(25);
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsPosted");
 
                     b.Property<bool>("IsUsed");
 
@@ -3230,6 +3246,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int>("LocalSalesContractItemId");
+
                     b.Property<int>("LocalSalesNoteId");
 
                     b.Property<double>("PackageQuantity");
@@ -3315,11 +3333,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int>("LocalSalesContractId");
+
                     b.Property<string>("NoteNo")
                         .HasMaxLength(50);
 
+                    b.Property<string>("PaymentType")
+                        .HasMaxLength(20);
+
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
+
+                    b.Property<string>("SalesContractNo")
+                        .HasMaxLength(50);
 
                     b.Property<int>("Tempo");
 

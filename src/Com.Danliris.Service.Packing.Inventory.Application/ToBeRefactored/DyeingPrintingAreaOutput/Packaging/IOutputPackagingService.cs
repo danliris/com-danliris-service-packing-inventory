@@ -20,6 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPackSumBySPPNo(int page, int size, string filter, string order, string keyword);
 
+        ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSPPInPackingGroupBySPPGrade(int page, int size, string filter, string order, string keyword);
+
         ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSppInFromPackGroup(int page, int size, string filter, string order, string keyword);
         ListResult<PlainAdjPackagingProductionOrder> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
         Task<int> CreateAdj(OutputPackagingViewModel viewModel);

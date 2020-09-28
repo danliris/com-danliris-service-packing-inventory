@@ -27,6 +27,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Color { get; set; }
         public string Motif { get; set; }
         public string Remark { get; set; }
+
+        public string ProductionMachine { get; set; }
         public string Grade { get; set; }
         public string Status { get; set; }
         public double Balance { get; set; }
@@ -60,5 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int FabricPackingId { get; set; }
         public string ProductPackingCode { get; set; }
         public bool HasPrintingProductPacking { get; set; }
+
+        public string PrevSppInJson { get; set; }
     }
 }

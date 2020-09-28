@@ -194,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         var productionOrders = new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
-                            detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,
+                            detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine,
                             item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 1, 1, "a", false)
                         {
                             Id = detail.Id
@@ -359,8 +359,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     ViewModelAdj.DestinationArea, ViewModelAdj.Group, ViewModelAdj.Type,
                     ViewModelAdj.InspectionMaterialProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument,
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
-                            item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, "", "", item.Status, item.Balance, item.Id, item.BuyerId,
-                            "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine, item.AdjDocumentNo,
+                            item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, "", "",item.Status, item.Balance, item.Id, item.BuyerId,
+                            "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine, item.AdjDocumentNo,
                             item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false)
                     {
                         Id = item.Id

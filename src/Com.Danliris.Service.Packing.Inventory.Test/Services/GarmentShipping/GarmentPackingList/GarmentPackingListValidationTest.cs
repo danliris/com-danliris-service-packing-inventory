@@ -81,6 +81,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                     CartonQuantity = 0,
                                     QuantityPCS = 0,
                                     TotalQuantity = 0,
+                                    Length = 0,
+                                    Width = 0,
+                                    Height = 0,
+                                    CartonsQuantity = 0,
                                     Sizes = new List<GarmentPackingListDetailSizeViewModel>
                                     {
                                         new GarmentPackingListDetailSizeViewModel

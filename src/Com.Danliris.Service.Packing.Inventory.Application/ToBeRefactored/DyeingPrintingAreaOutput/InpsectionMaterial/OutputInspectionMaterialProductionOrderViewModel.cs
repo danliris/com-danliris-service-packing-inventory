@@ -33,6 +33,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double InitLength { get; set; }
         public string Machine { get; set; }
 
+        public string ProductionMachine { get; set; }
+
         public double BalanceRemains { get; set; }
         public double Balance { get; set; }
 

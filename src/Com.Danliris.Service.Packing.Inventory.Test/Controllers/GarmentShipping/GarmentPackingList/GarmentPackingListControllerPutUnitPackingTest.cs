@@ -9,8 +9,10 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListControllerPutTest : GarmentPackingListControllerTest
+    public class GarmentPackingListControllerPutUnitPackingTest : GarmentPackingListControllerTest
     {
+        private GarmentPackingListUnitPackingViewModel ViewModel => new GarmentPackingListUnitPackingViewModel();
+
         [Fact]
         public async Task Put_Ok()
         {
@@ -33,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.Put(dataUtil.Id, dataUtil);
+            var response = await controller.PutUnitPacking(dataUtil.Id, dataUtil);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -56,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider, validateService);
-            var response = await controller.Put(dataUtil.Id, dataUtil);
+            var response = await controller.PutUnitPacking(dataUtil.Id, dataUtil);
 
             Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
@@ -82,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider, validateService);
-            var response = await controller.Put(dataUtil.Id, dataUtil);
+            var response = await controller.PutUnitPacking(dataUtil.Id, dataUtil);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

@@ -6,6 +6,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
 {
     public class GarmentShippingLocalSalesNoteModel : StandardEntity
     {
+        public string SalesContractNo { get; private set; }
+        public int LocalSalesContractId { get; set; }
         public string NoteNo { get; private set; }
         public DateTimeOffset Date { get; private set; }
 
@@ -18,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string BuyerName { get; private set; }
         public string BuyerNPWP { get; private set; }
 
+        public string PaymentType { get; private set; }
         public int Tempo { get; set; }
         public string DispositionNo { get; set; }
         public bool UseVat { get; set; }
@@ -30,8 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, int tempo, string dispositionNo, bool useVat, string remark, bool isUsed, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, int tempo, string dispositionNo, bool useVat, string remark, bool isUsed, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
+            SalesContractNo = salesContractNo;
+            LocalSalesContractId = localSalesContractId;
             NoteNo = noteNo;
             Date = date;
             TransactionTypeId = transactionTypeId;
@@ -41,12 +46,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BuyerCode = buyerCode;
             BuyerName = buyerName;
             BuyerNPWP = buyerNPWP;
+            PaymentType = paymentType;
             Tempo = tempo;
             DispositionNo = dispositionNo;
             UseVat = useVat;
             Remark = remark;
-            Items = items;
             IsUsed = isUsed;
+            Items = items;
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
@@ -63,6 +69,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (Tempo != tempo)
             {
                 Tempo = tempo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPaymentType(string paymentType, string userName, string userAgent)
+        {
+            if (PaymentType != paymentType)
+            {
+                PaymentType = paymentType;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

@@ -31,16 +31,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
-                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     }),
-                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
                 }, 1, 1),
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
-                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
                 }, 1, 1)
@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false);
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
 
             await repo.InsertAsync(oldModel);
 
@@ -92,6 +92,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     detail.SetCartonQuantity(1 + detail.CartonQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetQuantityPCS(1 + detail.QuantityPCS, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetTotalQuantity(1 + detail.TotalQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetLength(1 + detail.Length, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetWidth(1 + detail.Width, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetHeight(1 + detail.Height, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetCartonsQuantity(1 + detail.CartonsQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
 
                     foreach (var size in detail.Sizes)
                     {

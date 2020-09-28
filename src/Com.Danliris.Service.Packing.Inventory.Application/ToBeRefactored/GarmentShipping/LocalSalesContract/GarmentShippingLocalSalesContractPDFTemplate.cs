@@ -105,13 +105,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellTitle1.Phrase = new Phrase(viewModel.buyer.Name, normal_font);
             tableTitle.AddCell(cellTitle1);
 
-            cellTitle1.Phrase = new Phrase("Jabatan", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(":", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(viewModel.buyer.Code, normal_font);
-            tableTitle.AddCell(cellTitle1);
-
             cellTitle1.Phrase = new Phrase("Alamat", normal_font);
             tableTitle.AddCell(cellTitle1);
             cellTitle1.Phrase = new Phrase(":", normal_font);
@@ -137,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("Adapun kami, selaku Pihak Pertama (I) dan Pihak Kedua (II) akan melakukan kerjasama dengan ketentuan-ketentuan sebagai berikut : \n",normal_font));
             PdfPTable tableBody = new PdfPTable(6);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1f, 4f, 2.5f, 2f, 2.5f, 3f });
+            tableBody.SetWidths(new float[] { 1f, 6f, 2f, 1.5f, 2f, 2.5f });
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyLeftNoBorder = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -156,10 +149,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyCenter.Phrase = new Phrase("Satuan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            cellBodyCenter.Phrase = new Phrase("Harga Satuan Rp", normal_font);
+            cellBodyCenter.Phrase = new Phrase("Harga Satuan \nRp", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            cellBodyCenter.Phrase = new Phrase("Harga Total Rp", normal_font);
+            cellBodyCenter.Phrase = new Phrase("Harga Total \nRp", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
             var index = 0;
