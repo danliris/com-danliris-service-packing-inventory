@@ -2210,11 +2210,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var vm = new InputWarehouseProductionOrderCreateViewModel()
             {
+                PrevSppInJson = "[]"
             };
 
             Assert.Null(vm.MaterialProduct);
             Assert.Null(vm.MaterialConstruction);
             Assert.Null(vm.MaterialWidth);
+            Assert.NotNull(vm.PrevSppInJson);
 
             var detail = new ProductionOrderItemListDetailViewModel()
             {
@@ -2227,6 +2229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 Id = 1
             };
             Assert.Equal(0, preWarehouse.PreviousOutputPackagingQty);
+            Assert.Null(preWarehouse.PrevSppInJson);
 
             var reject = new RejectedInputWarehouseProductionOrderViewModel()
             {

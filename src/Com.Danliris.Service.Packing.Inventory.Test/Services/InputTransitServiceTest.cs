@@ -1158,6 +1158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(outputPreTransitSPP.PackingUnit);
             Assert.Equal(0, outputPreTransitSPP.DyeingPrintingAreaInputProductionOrderId);
             Assert.Equal(0, outputPreTransitSPP.QtyPacking);
+            Assert.Null(outputPreTransitSPP.PrevSppInJson);
 
             var inputSPP = new InputTransitProductionOrderViewModel();
             Assert.False(inputSPP.IsChecked);
@@ -1165,6 +1166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(0, inputSPP.PreviousBalance);
             Assert.Equal(0, inputSPP.InputId);
             Assert.Null(inputSPP.PackingType);
+
         }
 
         [Fact]

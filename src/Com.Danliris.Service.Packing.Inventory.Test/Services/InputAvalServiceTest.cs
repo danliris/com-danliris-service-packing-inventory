@@ -1433,7 +1433,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Name = "a"
                 },
                 MaterialWidth = "1",
-                Machine = "a"
+                Machine = "a",
+                Area = "arae",
+                PrevSppInJson = "[]"
             };
             var test1 = test.BuyerId;
             var test2 = test.ProductionOrder;
@@ -1445,6 +1447,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(test.MaterialConstruction);
             Assert.NotNull(test.MaterialWidth);
             Assert.NotNull(test.Machine);
+
+            Assert.NotNull(test.Area);
+            Assert.NotNull(test.PrevSppInJson);
 
             Assert.Null(test.ProductPackingCode);
             Assert.Null(test.ProductSKUCode);
