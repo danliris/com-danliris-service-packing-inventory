@@ -172,6 +172,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                             detailToUpdate.SetQuantityPCS(detail.QuantityPCS, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetTotalQuantity(detail.TotalQuantity, _identityProvider.Username, UserAgent);
 
+                            detailToUpdate.SetLength(detail.Length, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetWidth(detail.Width, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetHeight(detail.Height, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetCartonsQuantity(detail.CartonsQuantity, _identityProvider.Username, UserAgent);
+
                             foreach (var sizeToUpdate in detailToUpdate.Sizes)
                             {
                                 var size = detail.Sizes.FirstOrDefault(s => s.Id == sizeToUpdate.Id);

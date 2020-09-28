@@ -92,6 +92,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     detail.SetCartonQuantity(1 + detail.CartonQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetQuantityPCS(1 + detail.QuantityPCS, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetTotalQuantity(1 + detail.TotalQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetLength(1 + detail.Length, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetWidth(1 + detail.Width, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetHeight(1 + detail.Height, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetCartonsQuantity(1 + detail.CartonsQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
 
                     foreach (var size in detail.Sizes)
                     {
