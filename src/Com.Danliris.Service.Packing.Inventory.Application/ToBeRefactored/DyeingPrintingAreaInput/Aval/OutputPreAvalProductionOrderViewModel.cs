@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public class OutputPreAvalProductionOrderViewModel : BaseViewModel
     {
+        public string Area { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
@@ -55,5 +56,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int FabricPackingId { get; set; }
         public string ProductPackingCode { get; set; }
         public bool HasPrintingProductPacking { get; set; }
+        public string PrevSppInJson { get; set; }
     }
 }

@@ -59,5 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasPrintingProductPacking { get; set; }
 
         public decimal PreviousOutputPackagingQty { get; set; }
+        
+        public string PrevSppInJson { get; set; }
     }
 }

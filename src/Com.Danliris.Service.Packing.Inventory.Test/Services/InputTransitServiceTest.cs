@@ -3,6 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Moq;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
@@ -267,7 +268,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Unit = "s",
                             UomUnit = "d",
                             OutputId = 0,
-                            DyeingPrintingAreaInputProductionOrderId =1
+                            DyeingPrintingAreaInputProductionOrderId =1,
+                            PrevSppInJson = "[]"
                         }
                     }
                 };
@@ -736,6 +738,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
+            inSPPRepoMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object,
                 outputSPPRepoMock.Object, inSPPRepoMock.Object).Object);
 
@@ -781,6 +786,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  }.AsQueryable());
 
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
+                .ReturnsAsync(1);
+
+            inSPPRepoMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
                 .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object,
@@ -1150,6 +1158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Null(outputPreTransitSPP.PackingUnit);
             Assert.Equal(0, outputPreTransitSPP.DyeingPrintingAreaInputProductionOrderId);
             Assert.Equal(0, outputPreTransitSPP.QtyPacking);
+            Assert.Null(outputPreTransitSPP.PrevSppInJson);
 
             var inputSPP = new InputTransitProductionOrderViewModel();
             Assert.False(inputSPP.IsChecked);
@@ -1157,6 +1166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(0, inputSPP.PreviousBalance);
             Assert.Equal(0, inputSPP.InputId);
             Assert.Null(inputSPP.PackingType);
+
         }
 
         [Fact]

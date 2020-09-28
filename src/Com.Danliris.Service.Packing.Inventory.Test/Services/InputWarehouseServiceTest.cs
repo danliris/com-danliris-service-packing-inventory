@@ -7,6 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -601,7 +602,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Area = "PACKING",
                             InputId = 12,
                             OutputId = 10,
-                            DyeingPrintingAreaInputProductionOrderId = 4
+                            DyeingPrintingAreaInputProductionOrderId = 4,
+                            PrevSppInJson = "[]"
                         }
                     }
                 };
@@ -1569,6 +1571,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
+            inputProductionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
+                .ReturnsAsync(1);
+
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
                                                         movementRepoMock.Object,
@@ -1619,6 +1624,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
+
+            inputProductionOrderRepoMock.Setup(s => s.UpdateFromNextAreaInputPackingAsync(It.IsAny<List<PackingData>>()))
+               .ReturnsAsync(1);
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -2202,11 +2210,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var vm = new InputWarehouseProductionOrderCreateViewModel()
             {
+                PrevSppInJson = "[]"
             };
 
             Assert.Null(vm.MaterialProduct);
             Assert.Null(vm.MaterialConstruction);
             Assert.Null(vm.MaterialWidth);
+            Assert.NotNull(vm.PrevSppInJson);
 
             var detail = new ProductionOrderItemListDetailViewModel()
             {
@@ -2219,6 +2229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 Id = 1
             };
             Assert.Equal(0, preWarehouse.PreviousOutputPackagingQty);
+            Assert.Null(preWarehouse.PrevSppInJson);
 
             var reject = new RejectedInputWarehouseProductionOrderViewModel()
             {

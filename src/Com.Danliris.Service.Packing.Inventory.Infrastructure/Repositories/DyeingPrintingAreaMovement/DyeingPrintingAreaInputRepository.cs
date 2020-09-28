@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Newtonsoft.Json;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement
 {
@@ -104,7 +105,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
                 var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                if (previousOutputData.Area == DyeingPrintingArea.PACKING)
+                {
+                    //var outputData = await _outputProductionOrderRepository.ReadByIdAsync(item.Id);
+                    var packingData = JsonConvert.DeserializeObject<List<PackingData>>(previousOutputData.PrevSppInJson);
+                    foreach(var pack in packingData)
+                    {
+                        pack.Balance *= -1;
+                    }
+                    result += await _SPPRepository.UpdateFromNextAreaInputPackingAsync(packingData);
+                }
+                else
+                {
+
+                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                }
+                //result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
             }
 
             //model.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -462,7 +478,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     result += await _outputSPPRepository.UpdateFromInputNextAreaFlagAsync(item.DyeingPrintingAreaOutputProductionOrderId, false, null);
                     var previousOutputData = await _outputSPPRepository.ReadByIdAsync(item.DyeingPrintingAreaOutputProductionOrderId);
-                    result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+
+                    if (previousOutputData.Area == DyeingPrintingArea.PACKING)
+                    {
+                        //var outputData = await _outputProductionOrderRepository.ReadByIdAsync(item.Id);
+                        var packingData = JsonConvert.DeserializeObject<List<PackingData>>(previousOutputData.PrevSppInJson);
+                        foreach (var pack in packingData)
+                        {
+                            pack.Balance *= -1;
+                        }
+                        result += await _SPPRepository.UpdateFromNextAreaInputPackingAsync(packingData);
+                    }
+                    else
+                    {
+
+                        result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
+                    }
+                    //result += await _SPPRepository.UpdateFromNextAreaInputAsync(previousOutputData.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                 }
             }
 
