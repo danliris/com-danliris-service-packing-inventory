@@ -95,5 +95,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetLength(double newValue, string userName, string userAgent)
+        {
+            if (Length != newValue)
+            {
+                Length = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetWidth(double newValue, string userName, string userAgent)
+        {
+            if (Width != newValue)
+            {
+                Width = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetHeight(double newValue, string userName, string userAgent)
+        {
+            if (Height != newValue)
+            {
+                Height = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetCartonsQuantity(double newValue, string userName, string userAgent)
+        {
+            if (CartonsQuantity != newValue)
+            {
+                CartonsQuantity = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }

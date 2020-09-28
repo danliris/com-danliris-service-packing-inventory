@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("unit-packing/{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] GarmentPackingListViewModel viewModel)
+        public async Task<IActionResult> PutUnitPacking([FromRoute] int id, [FromBody] GarmentPackingListUnitPackingViewModel viewModel)
         {
             try
             {
