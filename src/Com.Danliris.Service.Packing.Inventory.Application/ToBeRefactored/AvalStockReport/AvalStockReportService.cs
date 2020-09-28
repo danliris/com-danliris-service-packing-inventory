@@ -123,14 +123,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
                 EndAvalQuantity = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).AvalQuantity : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.TRANSFORM).AvalQuantity : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).AvalQuantity : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).AvalQuantityWeight : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).AvalQuantityWeight : 0),
+                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).AvalQuantity : 0)
+                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).AvalQuantity : 0),
                 EndAvalWeightQuantity = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.TRANSFORM) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.TRANSFORM).AvalQuantityWeight : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).AvalQuantityWeight : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).AvalQuantityWeight : 0)
-            });
+            }); 
 
             return result.Where(s => s.StartAvalQuantity != 0 || s.InAvalQuantity != 0 || s.OutAvalQuantity != 0 || s.EndAvalQuantity != 0 ||
                     s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0);
