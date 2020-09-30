@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             };
 
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", "", true)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", "", true, true)
             {
                 Id = 1
             };
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             };
 
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", "", true)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, null, 1, 1, 1, null, "", "", "", "", true, true)
             {
                 Id = 1
             };

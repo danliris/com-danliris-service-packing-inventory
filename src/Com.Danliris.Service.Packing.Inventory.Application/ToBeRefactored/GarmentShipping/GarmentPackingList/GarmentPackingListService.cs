@@ -362,5 +362,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return new ExcelResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
+
+        public async Task SetPost(List<int> ids)
+        {
+            var models = _packingListRepository.Query.Where(m => ids.Contains(m.Id));
+            foreach (var model in models)
+            {
+                model.SetIsPosted(true, _identityProvider.Username, "GarmentPackingListService");
+            }
+
+            await _packingListRepository.SaveChanges();
+        }
+
+        public async Task SetUnpost(int id)
+        {
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetIsPosted(false, _identityProvider.Username, "GarmentPackingListService");
+
+            await _packingListRepository.SaveChanges();
+        }
+
     }
 }

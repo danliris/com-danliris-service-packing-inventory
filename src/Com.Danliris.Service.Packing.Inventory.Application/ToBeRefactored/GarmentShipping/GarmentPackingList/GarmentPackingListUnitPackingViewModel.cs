@@ -36,6 +36,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 int errorItemsCount = 0;
                 List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
 
+                bool isBuyerAgentDiff = !Items.All(i => i.BuyerAgent != null && BuyerAgent != null && i.BuyerAgent.Id == BuyerAgent.Id);
+                bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
+
                 foreach (var item in Items)
                 {
                     Dictionary<string, object> errorItem = new Dictionary<string, object>();
@@ -44,6 +47,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         errorItem["RONo"] = "RONo tidak boleh kosong";
                         errorItemsCount++;
+                    }
+                    else
+                    {
+                        if (isBuyerAgentDiff)
+                        {
+                            errorItem["BuyerAgent"] = "Buyer Agent harus sama semua";
+                            errorItemsCount++;
+                        }
+
+                        if (isSectionDiff)
+                        {
+                            errorItem["Section"] = "Section harus sama semua";
+                            errorItemsCount++;
+                        }
                     }
 
                     if (string.IsNullOrWhiteSpace(item.OrderNo))

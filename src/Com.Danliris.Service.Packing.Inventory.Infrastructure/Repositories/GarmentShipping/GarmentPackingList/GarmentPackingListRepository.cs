@@ -277,5 +277,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .FirstOrDefaultAsync(s => s.InvoiceNo==no);
         }
 
+        public IQueryable<GarmentPackingListModel> Query => _dbSet.AsQueryable();
+
+        public Task<int> SaveChanges()
+        {
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

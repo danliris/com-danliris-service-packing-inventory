@@ -194,5 +194,39 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("post")]
+        public async Task<IActionResult> SetPost([FromBody] List<int> ids)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetPost(ids);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("unpost/{id}")]
+        public async Task<IActionResult> SetUnpost([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetUnpost(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
