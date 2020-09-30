@@ -119,6 +119,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.InsuranceDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.InsuranceDisposition;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -223,6 +225,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddTransient<IGarmentShippingLocalSalesContractRepository, GarmentShippingLocalSalesContractRepository>();
+            services.AddTransient<IGarmentShippingInsuranceDispositionRepository, GarmentShippingInsuranceDispositionRepository>();
             #endregion
 
             #region Service
@@ -273,6 +276,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingVBPaymentService, GarmentShippingVBPaymentService>();
 
             services.AddTransient<IGarmentShippingLocalSalesContractService, GarmentShippingLocalSalesContractService>();
+            services.AddTransient<IGarmentShippingInsuranceDispositionService, GarmentShippingInsuranceDispositionService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();
@@ -304,6 +308,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
             services.AddTransient<IOmzetYearBuyerComodityService, OmzetYearBuyerComodityService>();
             services.AddTransient<IDyeingPrintingProductService, DyeingPrintingProductService>();
+
             #endregion
 
             // Register Provider
