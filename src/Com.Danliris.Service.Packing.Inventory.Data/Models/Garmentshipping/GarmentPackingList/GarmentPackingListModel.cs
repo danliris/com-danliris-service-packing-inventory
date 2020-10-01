@@ -321,5 +321,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetIsPosted(bool isPosted, string userName, string userAgent)
+        {
+            if (IsPosted != isPosted)
+            {
+                IsPosted = isPosted;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -301,6 +302,72 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.ReadPdfById(1);
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Set_Post_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 },
+                new GarmentPackingListModel { Id = 2 },
+                new GarmentPackingListModel { Id = 3 },
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var ids = models.Select(s => s.Id).ToList();
+
+            await service.SetPost(ids);
+        }
+
+        [Fact]
+        public async Task Set_Unpost_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetUnpost(id);
         }
     }
 }

@@ -18,5 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Delete(int id);
         Task<ExcelResult> ReadPdfById(int id);
         Task<GarmentPackingListViewModel> ReadByInvoiceNo(string no);
+        Task SetPost(List<int> ids);
+        Task SetUnpost(int id);
     }
 }
