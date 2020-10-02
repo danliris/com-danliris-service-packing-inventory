@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizes) };
             var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             return model;
         }
@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(0, 0, null, 0, 0, 0, 0, 0, 0, 0, sizes) };
             var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel(null, null, 0, null, 0, null, null, null, 0, 0, null, 0, 0, 0, null, 0, null, null, null, null, details, 0, 0) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(0, 0, 0, 0) };
-            var model = new GarmentPackingListModel(null, null, null, 0, null, DateTimeOffset.MinValue, null, null, DateTimeOffset.MinValue, null, 0, null, null, null, DateTimeOffset.MinValue, DateTimeOffset.MinValue, false, false, items, 0, 0, 0, measurements, null, null, null, null, false, false);
+            var model = new GarmentPackingListModel(null, null, null, 0, null, DateTimeOffset.MinValue, null, null, DateTimeOffset.MinValue, null, 0, null, null, null, DateTimeOffset.MinValue, DateTimeOffset.MinValue, false, false, items, 0, 0, 0, measurements, null, null, null, null, false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             return model;
         }
@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             {
                 measurements.Add(new GarmentPackingListMeasurementModel(measurement.Length, measurement.Width, measurement.Height, measurement.CartonsQuantity) { Id = measurement.Id });
             }
-            var model = new GarmentPackingListModel(om.InvoiceNo, om.PackingListType, om.InvoiceType, om.SectionId, om.SectionCode, om.Date, om.PaymentTerm, om.LCNo, om.LCDate, om.IssuedBy, om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.Destination, om.TruckingDate, om.ExportEstimationDate, om.Omzet, om.Accounting, items, om.GrossWeight, om.NettWeight, om.TotalCartons, measurements, om.SayUnit, om.ShippingMark, om.SideMark, om.Remark, om.IsUsed, om.IsPosted) { Id = om.Id };
+            var model = new GarmentPackingListModel(om.InvoiceNo, om.PackingListType, om.InvoiceType, om.SectionId, om.SectionCode, om.Date, om.PaymentTerm, om.LCNo, om.LCDate, om.IssuedBy, om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.Destination, om.TruckingDate, om.ExportEstimationDate, om.Omzet, om.Accounting, items, om.GrossWeight, om.NettWeight, om.TotalCartons, measurements, om.SayUnit, om.ShippingMark, om.SideMark, om.Remark, om.IsUsed, om.IsPosted, om.Status) { Id = om.Id };
 
             return model;
         }

@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GetReportData_Success()
         {
-            var packingListModel = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false)
+            var packingListModel = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS)
             {
                 Id = 1
             };
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Success()
         {
-            var packingListModel = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false)
+            var packingListModel = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS)
             {
                 Id = 1
             };
