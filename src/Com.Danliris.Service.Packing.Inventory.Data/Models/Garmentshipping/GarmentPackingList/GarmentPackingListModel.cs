@@ -46,6 +46,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string SayUnit { get; private set; }
 
+        public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
+
         #endregion
 
         #region Mark
@@ -58,14 +60,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public bool IsUsed { get; private set; }
         public bool IsPosted { get; private set; }
+        public GarmentPackingListStatusEnum Status { get; private set; }
 
         public GarmentPackingListModel()
         {
             Items = new HashSet<GarmentPackingListItemModel>();
             Measurements = new HashSet<GarmentPackingListMeasurementModel>();
+            StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed, bool isPosted)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed, bool isPosted, GarmentPackingListStatusEnum status)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -96,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Remark = remark;
             IsUsed = isUsed;
             IsPosted = isPosted;
+            Status = status;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -327,6 +332,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (IsPosted != isPosted)
             {
                 IsPosted = isPosted;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetStatus(GarmentPackingListStatusEnum status, string userName, string userAgent)
+        {
+            if (Status != status)
+            {
+                Status = status;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
