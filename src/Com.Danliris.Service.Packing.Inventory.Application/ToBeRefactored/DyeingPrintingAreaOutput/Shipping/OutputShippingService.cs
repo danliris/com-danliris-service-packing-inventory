@@ -470,19 +470,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
 
-                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance, item.QtyPacking);
+                            result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Qty, item.QtyPacking);
                         }
                         else
                         {
 
-                            result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                            result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Qty);
                         }
 
                         if (viewModel.DestinationArea != DyeingPrintingArea.PENJUALAN)
                         {
                             var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                           item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, modelItem.Id, item.ProductionOrder.Type, item.Grade,
-                           null, item.PackingType, item.QtyPacking, item.Packing, item.PackingLength);
+                                item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Qty, modelItem.Id, item.ProductionOrder.Type, item.Grade,
+                                null, item.PackingType, item.QtyPacking, item.Packing, item.PackingLength);
 
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
