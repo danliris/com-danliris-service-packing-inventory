@@ -431,5 +431,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 await _packingListRepository.SaveChanges();
             }
         }
+
+        public async Task SetRevisedMd(int id)
+        {
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetStatus(GarmentPackingListStatusEnum.REVISED_MD, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.REVISED_MD));
+
+            await _packingListRepository.SaveChanges();
+        }
     }
 }
