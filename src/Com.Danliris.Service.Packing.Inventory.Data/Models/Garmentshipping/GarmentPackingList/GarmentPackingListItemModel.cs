@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public double PriceRO { get; private set; }
         public double Price { get; private set; }
+        public double PriceFOB { get; private set; }
+        public double PriceCMT { get; private set; }
         public double Amount { get; private set; }
         public string Valas { get; private set; }
 
@@ -34,6 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string Article { get; private set; }
         public string OrderNo { get; private set; }
         public string Description { get; private set; }
+
+        public string DescriptionMd { get; private set; }
 
         public ICollection<GarmentPackingListDetailModel> Details { get; private set; }
 
@@ -45,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentPackingListDetailModel>();
         }
 
-        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, ICollection<GarmentPackingListDetailModel> details, double aVG_GW, double aVG_NW)
+        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, ICollection<GarmentPackingListDetailModel> details, double aVG_GW, double aVG_NW)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -60,6 +64,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             UomUnit = uomUnit;
             PriceRO = priceRO;
             Price = price;
+            PriceFOB = priceFob;
+            PriceCMT = priceCmt;
             Amount = amount;
             Valas = valas;
             UnitId = unitId;
@@ -67,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Article = article;
             OrderNo = orderNo;
             Description = description;
+            DescriptionMd = descriptionMd;
             Details = details;
             AVG_GW = aVG_GW;
             AVG_NW = aVG_NW;
@@ -177,6 +184,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetPriceFob(double price, string userName, string userAgent)
+        {
+            if (PriceFOB != price)
+            {
+                PriceFOB = price; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPriceCmt(double price, string userName, string userAgent)
+        {
+            if (PriceCMT != price)
+            {
+                PriceCMT = price; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetAmount(double amount, string userName, string userAgent)
         {
             if (Amount != amount)
@@ -230,6 +253,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Description != description)
             {
                 Description = description; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDescriptionMd(string descriptionMd, string userName, string userAgent)
+        {
+            if (DescriptionMd != descriptionMd)
+            {
+                DescriptionMd = descriptionMd; this.FlagForUpdate(userName, userAgent);
             }
         }
 

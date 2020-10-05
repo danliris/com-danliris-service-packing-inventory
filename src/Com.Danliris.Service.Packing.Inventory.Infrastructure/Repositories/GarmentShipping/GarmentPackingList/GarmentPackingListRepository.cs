@@ -118,10 +118,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentName(model.BuyerAgentName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetShipmentMode(model.ShipmentMode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruckingDate(model.TruckingDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetTruckingEstimationDate(model.TruckingEstimationDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetExportEstimationDate(model.ExportEstimationDate, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFabricCountryOrigin(model.FabricCountryOrigin, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFabricComposition(model.FabricComposition, _identityProvider.Username, UserAgent);
             modelToUpdate.SetOmzet(model.Omzet, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAccounting(model.Accounting, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemarkMd(model.RemarkMd, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
@@ -131,6 +136,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetShippingMark(model.ShippingMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
@@ -150,6 +157,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPriceRO(item.PriceRO, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPrice(item.Price, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetPriceFob(item.PriceFOB, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetPriceCmt(item.PriceCMT, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAmount(item.Amount, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetValas(item.Valas, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUnitId(item.UnitId, _identityProvider.Username, UserAgent);
@@ -157,6 +166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetArticle(item.Article, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAVG_GW(item.AVG_GW, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAVG_NW(item.AVG_NW, _identityProvider.Username, UserAgent);
 
