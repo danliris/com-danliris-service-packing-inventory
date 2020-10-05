@@ -43,6 +43,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
+            if(TotalQuantity <= 0)
+            {
+                yield return new ValidationResult("Qty Satuan harus diisi", new List<string>() { "TotalQuantity" });
+            }
+
+            if (TotalWeight <= 0)
+            {
+                yield return new ValidationResult("Qty Berat harus diisi", new List<string>() { "TotalWeight" });
+            }
 
             if (string.IsNullOrEmpty(Shift))
                 yield return new ValidationResult("Shift harus diisi", new List<string> { "Shift" });
