@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Accounting = model.Accounting,
                 FabricCountryOrigin = model.FabricCountryOrigin,
                 FabricComposition = model.FabricComposition,
-                RemarkMd = model.Remark,
+                RemarkMd = model.RemarkMd,
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
                 Status = model.Status.ToString(),
