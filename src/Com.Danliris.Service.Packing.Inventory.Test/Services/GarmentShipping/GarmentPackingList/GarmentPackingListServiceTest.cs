@@ -465,5 +465,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             await service.SetApproveMd(id, ViewModel);
         }
+
+        [Fact]
+        public async Task Set_RevisedMd_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetRevisedMd(id);
+        }
     }
 }
