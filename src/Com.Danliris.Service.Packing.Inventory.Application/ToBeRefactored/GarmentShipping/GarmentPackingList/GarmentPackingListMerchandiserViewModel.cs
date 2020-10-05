@@ -28,6 +28,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "Date" });
             }
 
+            if (string.IsNullOrWhiteSpace(ShipmentMode))
+            {
+                yield return new ValidationResult("Shipment Mode List tidak boleh kosong", new List<string> { "ShipmentMode" });
+            }
+
+            if (TruckingEstimationDate == null || TruckingEstimationDate == DateTimeOffset.MinValue)
+            {
+                yield return new ValidationResult("Tgl Trucking / Ex-fty tidak boleh kosong", new List<string> { "TruckingEstimationDate" });
+            }
+
+            if (string.IsNullOrWhiteSpace(FabricCountryOrigin))
+            {
+                yield return new ValidationResult("Negara Asal Fabric tidak boleh kosong", new List<string> { "FabricCountryOrigin" });
+            }
+
+            if (string.IsNullOrWhiteSpace(FabricComposition))
+            {
+                yield return new ValidationResult("Komposisi Fabric tidak boleh kosong", new List<string> { "FabricComposition" });
+            }
+
+            if (string.IsNullOrWhiteSpace(RemarkMd))
+            {
+                yield return new ValidationResult("Keterangan dari Md tidak boleh kosong", new List<string> { "RemarkMd" });
+            }
+
             if (Items == null || Items.Count < 1)
             {
                 yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
@@ -73,6 +98,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     if (string.IsNullOrWhiteSpace(item.Description))
                     {
                         errorItem["Description"] = "Description tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(item.DescriptionMd))
+                    {
+                        errorItem["DescriptionMd"] = "Description Md tidak boleh kosong";
                         errorItemsCount++;
                     }
 

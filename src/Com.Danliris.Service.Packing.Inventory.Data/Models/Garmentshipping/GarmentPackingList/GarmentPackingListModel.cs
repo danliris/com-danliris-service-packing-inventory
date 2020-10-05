@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Accounting = accounting;
             FabricCountryOrigin = fabricCountryOrigin;
             FabricComposition = fabricComposition;
-            Remark = remark;
+            RemarkMd = remarkMd;
             Items = items;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;
