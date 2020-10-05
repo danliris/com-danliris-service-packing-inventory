@@ -157,8 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingInsuranceDispositionModel> GarmentShippingInsuranceDispositions { get; set; }
         public DbSet<GarmentShippingInsuranceDispositionItemModel> GarmentShippingInsuranceDispositionItems { get; set; }
-        public DbSet<GarmentShippingInsuranceDispositionUnitChargeModel> GarmentShippingInsuranceDispositionUnitCharges { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -229,8 +228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionItemConfiguration());
-            modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionUnitChargeConfiguration());
-
+            
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);

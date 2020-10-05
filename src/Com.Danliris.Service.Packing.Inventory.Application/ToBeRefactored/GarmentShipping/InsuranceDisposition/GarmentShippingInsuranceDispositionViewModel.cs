@@ -17,7 +17,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Insurance insurance { get; set; }
         public decimal rate { get; set; }
         public string remark { get; set; }
-        public ICollection<GarmentShippingInsuranceDispositionUnitChargeViewModel> unitCharge { get; set; }
         public ICollection<GarmentShippingInsuranceDispositionItemViewModel> items { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

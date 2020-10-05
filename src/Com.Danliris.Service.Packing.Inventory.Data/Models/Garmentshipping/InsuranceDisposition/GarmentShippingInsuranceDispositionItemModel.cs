@@ -7,7 +7,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
 {
     public class GarmentShippingInsuranceDispositionItemModel : StandardEntity
     {
-
         public int InsuranceDispositionId { get; set; }
         public DateTimeOffset PolicyDate { get; set; }
         public string PolicyNo { get; set; }
@@ -19,8 +18,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
         public string BuyerAgentName { get; set; }
         public decimal Amount { get; set; }
         public decimal CurrencyRate { get; set; }
+        public decimal Amount2A { get; set; }
+        public decimal Amount2B { get; set; }
+        public decimal Amount2C { get; set; }
+        public decimal Amount1A { get; set; }
+        public decimal Amount1B { get; set; }
 
-        public GarmentShippingInsuranceDispositionItemModel(DateTimeOffset policyDate, string policyNo, string invoiceNo, int invoiceId, int buyerAgentId, string buyerAgentCode, string buyerAgentName, decimal amount, decimal currencyRate)
+        public GarmentShippingInsuranceDispositionItemModel(DateTimeOffset policyDate, string policyNo, string invoiceNo, int invoiceId, int buyerAgentId, string buyerAgentCode, string buyerAgentName, decimal amount, decimal currencyRate, decimal amount2A, decimal amount2B, decimal amount2C, decimal amount1A, decimal amount1B)
         {
             PolicyDate = policyDate;
             PolicyNo = policyNo;
@@ -31,7 +35,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
             BuyerAgentName = buyerAgentName;
             Amount = amount;
             CurrencyRate = currencyRate;
+            Amount2A = amount2A;
+            Amount2B = amount2B;
+            Amount2C = amount2C;
+            Amount1A = amount1A;
+            Amount1B = amount1B;
         }
+
 
         public void SetPolicyNo(string policyNo, string username, string uSER_AGENT)
         {
