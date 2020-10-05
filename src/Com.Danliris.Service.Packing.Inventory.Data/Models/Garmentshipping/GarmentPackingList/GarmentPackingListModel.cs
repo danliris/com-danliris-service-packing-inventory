@@ -27,11 +27,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string Destination { get; private set; }
 
+        public string ShipmentMode { get; private set; }
+
         public DateTimeOffset TruckingDate { get; private set; }
+        public DateTimeOffset TruckingEstimationDate { get; private set; }
         public DateTimeOffset ExportEstimationDate { get; private set; }
 
         public bool Omzet { get; private set; }
         public bool Accounting { get; private set; }
+
+        public string FabricCountryOrigin { get; private set; }
+        public string FabricComposition { get; private set; }
+
+        public string RemarkMd { get; private set; }
 
         public ICollection<GarmentPackingListItemModel> Items { get; private set; }
 
@@ -69,7 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, DateTimeOffset truckingDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed, bool isPosted, GarmentPackingListStatusEnum status)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed, bool isPosted, GarmentPackingListStatusEnum status)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -85,10 +93,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BuyerAgentCode = buyerAgentCode;
             BuyerAgentName = buyerAgentName;
             Destination = destination;
+            ShipmentMode = shipmentMode;
             TruckingDate = truckingDate;
+            TruckingEstimationDate = truckingEstimationDate;
             ExportEstimationDate = exportEstimationDate;
             Omzet = omzet;
             Accounting = accounting;
+            FabricCountryOrigin = fabricCountryOrigin;
+            FabricComposition = fabricComposition;
+            Remark = remark;
             Items = items;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;
@@ -101,6 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             IsUsed = isUsed;
             IsPosted = isPosted;
             Status = status;
+            StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -201,11 +215,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetShipmentMode(string shipmentMode, string userName, string userAgent)
+        {
+            if (ShipmentMode != shipmentMode)
+            {
+                ShipmentMode = shipmentMode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetTruckingDate(DateTimeOffset truckingDate, string userName, string userAgent)
         {
             if (TruckingDate != truckingDate)
             {
                 TruckingDate = truckingDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetTruckingEstimationDate(DateTimeOffset truckingEstimationDate, string userName, string userAgent)
+        {
+            if (TruckingEstimationDate != truckingEstimationDate)
+            {
+                TruckingEstimationDate = truckingEstimationDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
@@ -233,6 +265,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Accounting != accounting)
             {
                 Accounting = accounting;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetFabricCountryOrigin(string fabricCountryOrigin, string userName, string userAgent)
+        {
+            if (FabricCountryOrigin != fabricCountryOrigin)
+            {
+                FabricCountryOrigin = fabricCountryOrigin;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetFabricComposition(string fabricComposition, string userName, string userAgent)
+        {
+            if (FabricComposition != fabricComposition)
+            {
+                FabricComposition = fabricComposition;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
@@ -314,6 +364,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Remark != remark)
             {
                 Remark = remark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemarkMd(string remark, string userName, string userAgent)
+        {
+            if (RemarkMd != remark)
+            {
+                RemarkMd = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

@@ -276,5 +276,35 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("approve-md/{id}")]
+        public async Task<IActionResult> ApproveMd([FromRoute] int id, [FromBody] GarmentPackingListMerchandiserViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                _validateService.Validate(viewModel);
+                await _service.SetApproveMd(id, viewModel);
+
+                return Ok();
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }

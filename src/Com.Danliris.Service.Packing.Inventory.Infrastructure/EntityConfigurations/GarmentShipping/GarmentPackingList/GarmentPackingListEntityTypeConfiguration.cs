@@ -66,6 +66,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.FabricCountryOrigin)
+                .HasMaxLength(255);
+
+            builder
+                .Property(s => s.FabricComposition)
+                .HasMaxLength(255);
+
+            builder
+                .Property(s => s.RemarkMd)
+                .HasMaxLength(2000);
+
+            builder
                 .Property(s => s.SayUnit)
                 .HasMaxLength(50);
 

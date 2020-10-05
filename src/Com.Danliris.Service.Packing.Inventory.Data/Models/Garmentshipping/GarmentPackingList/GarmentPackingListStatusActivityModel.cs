@@ -12,9 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public GarmentPackingListStatusEnum Status { get; protected set; }
         public string Remark { get; protected set; }
 
-        public GarmentPackingListStatusActivityModel(int packingListId, string createdBy, string createdAgent, GarmentPackingListStatusEnum status, string remark = null)
+        public GarmentPackingListStatusActivityModel(string createdBy, string createdAgent, GarmentPackingListStatusEnum status, string remark = null)
         {
-            PackingListId = packingListId;
             CreatedDate = DateTimeOffset.Now;
             CreatedBy = createdBy;
             CreatedAgent = createdAgent;
