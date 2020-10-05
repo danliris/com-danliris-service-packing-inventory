@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var repo = new GarmentPackingListRepository(dbContext, serviceProvider);
 
             var items = new HashSet<GarmentPackingListItemModel> {
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1)
@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
                 }, 1, 1),
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             await repo.InsertAsync(oldModel);
 
@@ -58,6 +58,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetAccounting(!data.Accounting, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetOmzet(!data.Omzet, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetIsUsed(!data.IsUsed, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetFabricCountryOrigin("Updated " + data.FabricCountryOrigin, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetFabricComposition("Updated " + data.FabricComposition, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetRemarkMd("Updated " + data.RemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {
@@ -74,6 +77,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetUomUnit("Updated " + item.UomUnit, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetPriceRO(1 + item.PriceRO, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetPrice(1 + item.Price, item.LastModifiedBy, item.LastModifiedAgent);
+                item.SetPriceCmt(1 + item.PriceCMT, item.LastModifiedBy, item.LastModifiedAgent);
+                item.SetPriceFob(1 + item.PriceFOB, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetAmount(1 + item.Amount, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetValas("Updated " + item.Valas, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetUnitId(1 + item.UnitId, item.LastModifiedBy, item.LastModifiedAgent);
@@ -81,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetArticle("Updated " + item.Article, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetOrderNo("Updated " + item.OrderNo, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetDescription("Updated " + item.Description, item.LastModifiedBy, item.LastModifiedAgent);
+                item.SetDescriptionMd("Updated " + item.DescriptionMd, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetAVG_GW(1 + item.AVG_GW, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetAVG_NW(1 + item.AVG_NW, item.LastModifiedBy, item.LastModifiedAgent);
 

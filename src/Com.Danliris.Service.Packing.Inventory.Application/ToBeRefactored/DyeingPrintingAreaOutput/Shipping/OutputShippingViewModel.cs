@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             if (item.Qty == 0)
                             {
                                 Count++;
-                                DetailErrors += "Qty: 'Qty Terima Harus Lebih dari 0!',";
+                                DetailErrors += "Qty: 'Qty Keluar Harus Lebih dari 0!',";
                             }
                             else
                             {

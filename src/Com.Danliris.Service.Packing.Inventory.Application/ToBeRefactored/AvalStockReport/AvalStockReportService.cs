@@ -35,10 +35,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
             {
                 AvalType = d.Key,
-                AvalQuantity = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalQuantity),
+                AvalQuantity = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalQuantity) 
+                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.AvalQuantity),
                 Type = DyeingPrintingArea.AWAL,
                 AvalQuantityWeight = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalWeightQuantity)
-                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.AvalWeightQuantity)
             });
 
             return result;

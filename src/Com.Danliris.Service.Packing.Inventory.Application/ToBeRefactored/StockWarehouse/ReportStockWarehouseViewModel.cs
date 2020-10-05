@@ -15,10 +15,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public string Grade { get; set; }
         public string Jenis { get; set; }
         public string Ket { get; set; }
-        public double Awal { get; set; }
-        public double Masuk { get; set; }
-        public double Keluar { get; set; }
-        public double Akhir { get; set; }
+        public decimal Awal { get; set; }
+        public decimal Masuk { get; set; }
+        public decimal Keluar { get; set; }
+        public decimal Akhir { get; set; }
         public string Satuan { get; set; }
     }
 }

@@ -66,6 +66,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.FabricCountryOrigin)
+                .HasMaxLength(255);
+
+            builder
+                .Property(s => s.FabricComposition)
+                .HasMaxLength(255);
+
+            builder
+                .Property(s => s.RemarkMd)
+                .HasMaxLength(2000);
+
+            builder
                 .Property(s => s.SayUnit)
                 .HasMaxLength(50);
 
@@ -82,6 +94,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(2000);
 
             builder
+                .Property(s => s.Status)
+                .HasMaxLength(50)
+                .HasConversion<string>();
+
+            builder
                 .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.PackingListId);
@@ -90,6 +107,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMany(h => h.Measurements)
                 .WithOne()
                 .HasForeignKey(f => f.PackingListId);
+
+            builder
+                .HasMany(h => h.StatusActivities)
+                .WithOne()
+                .HasForeignKey(f => f.PackingListId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
