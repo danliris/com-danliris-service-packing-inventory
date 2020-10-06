@@ -281,6 +281,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
                             item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0);
+
+
+                        modelItem.DyeingPrintingAreaOutputId = model.Id;
+                        result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                     }
                     else
                     {
@@ -288,14 +292,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
                             item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id);
 
+
+                        modelItem.DyeingPrintingAreaOutputId = model.Id;
+                        result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, modelItem.ProductionOrderId, modelItem.ProductionOrderNo,
                           modelItem.CartNo, modelItem.Buyer, modelItem.Construction, modelItem.Unit, modelItem.Color, modelItem.Motif, modelItem.UomUnit, modelItem.Balance, modelItem.Id, modelItem.ProductionOrderType, modelItem.Balance, modelItem.AvalQuantityKg, modelItem.AvalType);
 
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
 
-                    modelItem.DyeingPrintingAreaOutputId = model.Id;
-                    result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                 }
             }
 

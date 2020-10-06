@@ -48,6 +48,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.VBPayme
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.VBPayment;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.InsuranceDisposition;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -98,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentPackingListDetailModel> GarmentPackingListDetails { get; set; }
         public DbSet<GarmentPackingListDetailSizeModel> GarmentPackingListDetailSizes { get; set; }
         public DbSet<GarmentPackingListMeasurementModel> GarmentPackingListMeasurements { get; set; }
+        public DbSet<GarmentPackingListStatusActivityModel> GarmentPackingListStatusActivities { get; set; }
         public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
         public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
@@ -152,6 +155,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingLocalSalesContractModel> GarmentShippingLocalSalesContracts { get; set; }
         public DbSet<GarmentShippingLocalSalesContractItemModel> GarmentShippingLocalSalesContractItems { get; set; }
 
+        public DbSet<GarmentShippingInsuranceDispositionModel> GarmentShippingInsuranceDispositions { get; set; }
+        public DbSet<GarmentShippingInsuranceDispositionItemModel> GarmentShippingInsuranceDispositionItems { get; set; }
+        public DbSet<GarmentShippingInsuranceDispositionUnitChargeModel> GarmentShippingInsuranceDispositionUnitCharges { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -170,6 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentPackingListStatusActivityEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
@@ -218,6 +226,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesContractConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesContractItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionItemConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionUnitChargeConfiguration());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

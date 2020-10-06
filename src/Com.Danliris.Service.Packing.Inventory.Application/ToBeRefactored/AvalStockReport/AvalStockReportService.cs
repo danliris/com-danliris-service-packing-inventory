@@ -25,20 +25,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
 
         private IEnumerable<SimpleAvalViewModel> GetAwalData(DateTime startDate, IEnumerable<string> avalTypes, int offset)
         {
+            //var queryTransform = _movementRepository.ReadAll()
+            //    .Where(s => s.Area == DyeingPrintingArea.GUDANGAVAL && 
+            //            s.Type != DyeingPrintingArea.IN && 
+            //            s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < startDate.Date && 
+            //            avalTypes.Contains(s.AvalType))
+            //    .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
+
             var queryTransform = _movementRepository.ReadAll()
-                .Where(s => s.Area == DyeingPrintingArea.GUDANGAVAL && 
-                        s.Type != DyeingPrintingArea.IN && 
-                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < startDate.Date && 
-                        avalTypes.Contains(s.AvalType))
+                .Where(s => s.Area == DyeingPrintingArea.GUDANGAVAL &&
+                        s.Type != DyeingPrintingArea.IN &&
+                        s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < startDate.Date)
                 .Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.AvalType, s.AvalQuantity, s.AvalWeightQuantity)).ToList();
 
             var result = queryTransform.GroupBy(s => s.AvalType).Select(d => new SimpleAvalViewModel()
             {
                 AvalType = d.Key,
-                AvalQuantity = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalQuantity),
+                AvalQuantity = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalQuantity) 
+                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.AvalQuantity),
                 Type = DyeingPrintingArea.AWAL,
                 AvalQuantityWeight = d.Where(e => e.Type == DyeingPrintingArea.TRANSFORM).Sum(e => e.AvalWeightQuantity) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.AvalWeightQuantity)
-                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.AvalWeightQuantity)
             });
 
             return result;
@@ -133,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Aval
             }); 
 
             return result.Where(s => s.StartAvalQuantity != 0 || s.InAvalQuantity != 0 || s.OutAvalQuantity != 0 || s.EndAvalQuantity != 0 ||
-                    s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0);
+                    s.StartAvalWeightQuantity != 0 || s.InAvalWeightQuantity != 0 || s.OutAvalWeightQuantity != 0 || s.EndAvalWeightQuantity != 0).OrderBy(s => s.AvalType);
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset searchDate, int offset)

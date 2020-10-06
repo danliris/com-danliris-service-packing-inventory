@@ -26,11 +26,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string Destination { get; set; }
 
+        public string ShipmentMode { get; set; }
+
         public DateTimeOffset? TruckingDate { get; set; }
+        public DateTimeOffset? TruckingEstimationDate { get; set; }
         public DateTimeOffset? ExportEstimationDate { get; set; }
 
         public bool Omzet { get; set; }
         public bool Accounting { get; set; }
+
+        public string FabricCountryOrigin { get; set; }
+        public string FabricComposition { get; set; }
+
+        public string RemarkMd { get; set; }
 
         public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
 
@@ -57,6 +65,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public bool IsUsed { get; set; }
         public bool IsPosted { get; set; }
+
+        public string Status { get; set; }
+        public ICollection<GarmentPackingListStatusActivityViewModel> StatusActivities { get; set; }
 
         public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

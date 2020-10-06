@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, null, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -93,9 +94,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 		[Fact]
 		public void ReadNotUsed_Success()
 		{
-			var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, null, 1, 1, 1, null, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, null, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
-			var repoMock = new Mock<IGarmentPackingListRepository>();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
 			repoMock.Setup(s => s.ReadAll())
 				.Returns(new List<GarmentPackingListModel>() { model }.AsQueryable());
 
@@ -110,9 +111,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizes) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.ON_PROCESS, ""));
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -130,9 +132,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizes) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("no", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByInvoiceNoAsync(It.IsAny<string>()))
@@ -179,9 +181,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "B", 1) };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesA), new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesB) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -221,9 +223,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "B", 1) };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesA), new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesB) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "LC", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -267,9 +269,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", i * 100));
             }
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesA), new GarmentPackingListDetailModel(1, 1, "", 1, 1, 1, 1, 1, 1, 1, sizesB) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, "", 1, "", "", "", "", details, 1, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, items, 1, 1, 1, measurements, "", "", "", "", false, false);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -301,6 +303,200 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.ReadPdfById(1);
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Set_Post_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 },
+                new GarmentPackingListModel { Id = 2 },
+                new GarmentPackingListModel { Id = 3 },
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var ids = models.Select(s => s.Id).ToList();
+
+            await service.SetPost(ids);
+        }
+
+        [Fact]
+        public async Task Set_Unpost_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetUnpost(id);
+        }
+
+        [Fact]
+        public async Task Set_Cancel_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetCancel(id);
+        }
+
+        [Fact]
+        public async Task Set_RejectMd_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetRejectMd(id, "Alasan");
+        }
+
+        [Fact]
+        public async Task Set_ApproveMd_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetApproveMd(id, ViewModel);
+        }
+
+        [Fact]
+        public async Task Set_RevisedMd_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 }
+            };
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(models.AsQueryable());
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(spMock.Object);
+
+            var id = models.Select(s => s.Id).First();
+
+            await service.SetRevisedMd(id);
         }
     }
 }
