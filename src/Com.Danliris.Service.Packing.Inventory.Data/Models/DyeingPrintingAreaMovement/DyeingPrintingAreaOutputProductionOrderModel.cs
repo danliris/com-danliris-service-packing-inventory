@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int MaterialConstructionId { get; private set; }
         public string MaterialConstructionName { get; private set; }
         public string MaterialWidth { get; private set; }
+        public string FinishWidth { get; private set; }
 
         public int ProcessTypeId { get; private set; }
         public string ProcessTypeName { get; private set; }
@@ -153,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
                     string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
                     int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string productionMachine, string adjDocumentNo,
-                    int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU) : this()
+                    int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, string finishWidth) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -202,6 +203,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             FabricSKUId = fabricSKUId;
             ProductSKUCode = productSKUCode;
             HasPrintingProductSKU = hasPrintingProductSKU;
+
+            FinishWidth = finishWidth;
         }
 
         /// <summary>
@@ -1398,6 +1401,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newNextAreaInputStatus != NextAreaInputStatus)
             {
                 NextAreaInputStatus = newNextAreaInputStatus;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetFinishWidth(string newFinishWidth, string user, string agent)
+        {
+
+            if (newFinishWidth != FinishWidth)
+            {
+                FinishWidth = newFinishWidth;
                 this.FlagForUpdate(user, agent);
             }
         }
