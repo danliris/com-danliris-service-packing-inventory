@@ -197,7 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region Mark
 
-            if (string.IsNullOrEmpty(ShippingMark))
+            if (string.IsNullOrWhiteSpace(ShippingMark))
             {
                 yield return new ValidationResult("Shipping Mark tidak boleh kosong", new List<string> { "ShippingMark" });
             }

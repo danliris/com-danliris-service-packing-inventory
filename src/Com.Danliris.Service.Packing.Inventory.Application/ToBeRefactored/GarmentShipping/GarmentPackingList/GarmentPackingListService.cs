@@ -78,7 +78,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 RemarkMd = model.RemarkMd,
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
-                Status = model.Status.ToString(),
                 Items = (model.Items ?? new List<GarmentPackingListItemModel>()).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,
@@ -215,6 +214,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 ShippingMark = model.ShippingMark,
                 SideMark = model.SideMark,
                 Remark = model.Remark,
+                Status = model.Status.ToString(),
+                StatusActivities = (model.StatusActivities ?? new List<GarmentPackingListStatusActivityModel>()).Select(a => new GarmentPackingListStatusActivityViewModel
+                {
+                    Id = a.Id,
+                    CreatedDate = a.CreatedDate,
+                    CreatedBy = a.CreatedBy,
+                    CreatedAgent = a.CreatedAgent,
+                    Status = a.Status.ToString(),
+                    Remark = a.Remark
+                }).ToList()
             };
             return vm;
         }

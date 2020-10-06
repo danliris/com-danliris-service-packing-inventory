@@ -95,6 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     .ThenInclude(i => i.Details)
                         .ThenInclude(i => i.Sizes)
                 .Include(i => i.Measurements)
+                .Include(i => i.StatusActivities)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
