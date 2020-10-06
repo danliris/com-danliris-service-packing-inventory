@@ -118,7 +118,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     },
                     ShippingMark = null,
                     SideMark = null,
-                    Remark = null
+                    Remark = null,
+                    StatusActivities = new List<GarmentPackingListStatusActivityViewModel>
+                    {
+                        new GarmentPackingListStatusActivityViewModel
+                        {
+                            Id = 1,
+                            CreatedAgent = "",
+                            CreatedBy = "",
+                            CreatedDate = DateTimeOffset.Now,
+                            Remark = "",
+                            Status = ""
+                        }
+                    }
                 };
             }
         }
@@ -127,6 +139,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public void Validate_DefaultValue()
         {
             GarmentPackingListViewModel viewModel = ViewModel;
+            foreach (var activity in viewModel.StatusActivities)
+            {
+                activity.Id = activity.Id;
+                activity.CreatedDate = activity.CreatedDate;
+                activity.CreatedBy = activity.CreatedBy;
+                activity.CreatedAgent = activity.CreatedAgent;
+                activity.Remark = activity.Remark;
+                activity.Status = activity.Status;
+            }
 
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
