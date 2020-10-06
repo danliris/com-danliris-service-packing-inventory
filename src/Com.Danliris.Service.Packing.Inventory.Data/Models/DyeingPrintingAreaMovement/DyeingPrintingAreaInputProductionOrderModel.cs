@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int MaterialConstructionId { get; set; }
         public string MaterialConstructionName { get; set; }
         public string MaterialWidth { get; set; }
+        public string FinishWidth { get; set; }
 
         public int ProcessTypeId { get; set; }
         public string ProcessTypeName { get; set; }
@@ -137,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity)
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity, string finishWidth)
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -166,6 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             MaterialConstructionName = materialConstructionName;
             MaterialConstructionId = materialConstructionId;
             MaterialWidth = materialWidth;
+            FinishWidth = finishWidth;
 
             ProcessTypeId = processTypeId;
             ProcessTypeName = processTypeName;
