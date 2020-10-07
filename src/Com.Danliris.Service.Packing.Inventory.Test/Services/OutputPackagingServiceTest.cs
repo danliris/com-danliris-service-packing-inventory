@@ -1306,7 +1306,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     new DyeingPrintingAreaInputModel(new DateTimeOffset(DateTime.Now),"PACKING","PAGI","s","A",
                     new List<DyeingPrintingAreaInputProductionOrderModel>{
-                        new DyeingPrintingAreaInputProductionOrderModel("PACKING",1,"sd","sd","a","a","a","a","a","a","a","a",10,true,10,"A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,DateTimeOffset.Now"a")
+                        new DyeingPrintingAreaInputProductionOrderModel("PACKING",1,"sd","sd","a","a","a","a","a","a","a","a",10,true,10,"A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,DateTimeOffset.Now, "a")
                         
                     })
                 }.AsQueryable());

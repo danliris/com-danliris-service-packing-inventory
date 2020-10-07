@@ -766,7 +766,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                       "A",
                                                       new List<DyeingPrintingAreaInputProductionOrderModel>()
                                                       {
-                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1,DateTimeOffset.Now "a")
+                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1,DateTimeOffset.Now, "a")
                                                           
                      })
                  }.AsQueryable());
