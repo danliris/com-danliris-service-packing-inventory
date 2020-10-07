@@ -276,7 +276,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity,s.DateIn, s.FinishWidth)).ToList());
+                    
             }
         }
         private DyeingPrintingAreaOutputModel OutputModelToGAArea
@@ -315,7 +316,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity,s.DateIn, s.FinishWidth)).ToList());
+                    
             }
 
         }
@@ -355,7 +357,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity,s.DateIn, s.FinishWidth)).ToList());
+                    
             }
 
         }
@@ -395,7 +398,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.MaterialProduct.Name,
                                                                                                              s.MaterialConstruction.Id,
                                                                                                              s.MaterialConstruction.Name,
-                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", s.FinishWidth)).ToList());
+                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", DateTimeOffset.Now, s.FinishWidth)).ToList());
+                                                                                                             
             }
         }
 
@@ -595,7 +599,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade,
                     s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo,
                     true, ViewModelAdj.Area, "", 0, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo,
-                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.FinishWidth)).ToList());
+                    s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity,s.DateIn, s.FinishWidth)).ToList());
+                    
             }
         }
 
@@ -1072,7 +1077,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.DateIn, s.FinishWidth)).ToList());
+                    
             tes.Id = 1;
             tes.SetType("OUT", "", "");
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
@@ -1128,7 +1134,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.MaterialProduct.Name,
                                                                                                              s.MaterialConstruction.Id,
                                                                                                              s.MaterialConstruction.Name,
-                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1,"s", s.FinishWidth)).ToList());
+                                                                                                             s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1,"s",DateTimeOffset.Now, s.FinishWidth)).ToList());
+                                                                                                             
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
                 j.Id = 1;
@@ -1536,7 +1543,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputProductionOrderRepoMock.Setup(s => s.ReadAll())
                 .Returns(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.AsQueryable());
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer", "grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer", "grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll())
                  .Returns(OutputModelToShippingArea.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
@@ -1565,7 +1573,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(OutputModelToShippingArea);
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1600,7 +1609,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(model);
 
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
@@ -1628,7 +1638,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(default(DyeingPrintingAreaOutputModel));
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark","zimmer", "grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(OutputModelToShippingArea.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark","zimmer", "grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1655,7 +1666,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ModelAdj);
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(ModelAdj.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(ModelAdj.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1688,7 +1700,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer", "status", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer", "status", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
@@ -1718,7 +1731,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(model);
 
             inputProductionOrderRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, true, "remark", "zimmer","grade", "status", 0, 1, 1, 1, "nam", 1, "na", "1", 1, "a", "a", 1, "a", "a", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,

@@ -59,5 +59,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int FabricPackingId { get; set; }
         public string ProductPackingCode { get; set; }
         public bool HasPrintingProductPacking { get; set; }
+        public DateTimeOffset DateIn { get; set; }
     }
 }

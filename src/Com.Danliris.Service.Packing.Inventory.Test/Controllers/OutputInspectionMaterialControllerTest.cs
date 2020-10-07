@@ -344,19 +344,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var serviceMock = new Mock<IOutputInspectionMaterialService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>()))
                 .ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputInspectionMaterialViewModel>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputInspectionMaterialViewModel>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
+            identityProviderMock.Setup(s => s.TimezoneOffset).Returns(7);
             var identityProvider = identityProviderMock.Object;
+            
 
             var validateServiceMock = new Mock<IValidateService>();
             var validateService = validateServiceMock.Object;
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(1);
+            var response = await controller.GetExcel(identityProvider.TimezoneOffset.ToString(), 1);
 
             Assert.NotNull(response);
         }
@@ -368,11 +370,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var serviceMock = new Mock<IOutputInspectionMaterialService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>()))
                 .ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputInspectionMaterialViewModel>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputInspectionMaterialViewModel>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
+            identityProviderMock.Setup(s => s.TimezoneOffset).Returns(7);
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
@@ -380,7 +383,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(1);
+            var response = await controller.GetExcel(identityProvider.TimezoneOffset.ToString(),1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

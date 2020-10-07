@@ -48,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             try
             {
+
                 VerifyUser();
                 ValidateService.Validate(viewModel);
                 var result = await _service.Create(viewModel);

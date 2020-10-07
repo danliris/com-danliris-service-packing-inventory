@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             ProductionOrderDetails = new HashSet<OutputInspectionMaterialProductionOrderDetailViewModel>();
         }
+        public DateTimeOffset DateIn { get;  set; }
         public ProductionOrder ProductionOrder { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
