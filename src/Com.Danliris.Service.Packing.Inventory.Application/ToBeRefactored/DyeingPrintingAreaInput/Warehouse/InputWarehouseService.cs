@@ -123,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Type = s.ProductionOrderType
                         },
                         MaterialWidth = s.MaterialWidth,
+                        FinishWidth = s.FinishWidth,
                         MaterialProduct = new Material()
                         {
                             Id = s.MaterialId,
@@ -277,7 +278,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.ProcessType.Name,
                                                                                                                                                                 s.YarnMaterial.Id,
                                                                                                                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty))
+                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth))
                                                                                                                                                                 .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
@@ -365,7 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.YarnMaterial.Id,
                                                                                            productionOrder.YarnMaterial.Name, productionOrder.ProductSKUId, productionOrder.FabricSKUId, productionOrder.ProductSKUCode,
                      productionOrder.HasPrintingProductSKU, productionOrder.ProductPackingId, productionOrder.FabricPackingId, productionOrder.ProductPackingCode,
-                     productionOrder.HasPrintingProductPacking, productionOrder.Qty, productionOrder.InputQuantity, productionOrder.InputPackagingQty)
+                     productionOrder.HasPrintingProductPacking, productionOrder.Qty, productionOrder.InputQuantity, productionOrder.InputPackagingQty, productionOrder.FinishWidth)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,
                 };
@@ -435,6 +436,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = s.Key.ProductionOrderOrderQuantity
                     },
                     MaterialWidth = p.MaterialWidth,
+                    FinishWidth = p.FinishWidth,
                     MaterialConstruction = new MaterialConstruction()
                     {
                         Id = p.MaterialConstructionId,
@@ -598,7 +600,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId,
                                                                                                                 s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty,
-                                                                                                                s.InputQuantity, s.InputPackagingQty)).ToList());
+                                                                                                                s.InputQuantity, s.InputPackagingQty, s.FinishWidth)).ToList());
 
                     result = await _inputRepository.InsertAsync(model);
 
@@ -690,7 +692,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode,
                                                                                         detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId,
                                                                                         detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.Qty,
-                                                                                        detail.InputQuantity, detail.InputPackagingQty);
+                                                                                        detail.InputQuantity, detail.InputPackagingQty, detail.FinishWidth);
 
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -1032,6 +1034,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                             OrderQuantity = p.ProductionOrderOrderQuantity
                                                                         },
                                                                         MaterialWidth = p.MaterialWidth,
+                                                                        FinishWidth = p.FinishWidth,
                                                                         MaterialConstruction = new MaterialConstruction()
                                                                         {
                                                                             Id = p.MaterialConstructionId,
