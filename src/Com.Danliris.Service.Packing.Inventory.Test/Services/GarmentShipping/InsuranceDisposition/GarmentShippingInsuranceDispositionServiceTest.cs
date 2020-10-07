@@ -37,10 +37,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.I
                     {
                         new GarmentShippingInsuranceDispositionItemViewModel()
                     },
-                    unitCharge= new List<GarmentShippingInsuranceDispositionUnitChargeViewModel>()
-                    {
-                        new GarmentShippingInsuranceDispositionUnitChargeViewModel()
-                    },
                 };
             }
         }
@@ -64,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.I
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingInsuranceDispositionModel("", "", DateTimeOffset.Now, "", 1, "", "", 1, "", new List<GarmentShippingInsuranceDispositionUnitChargeModel>(), new List<GarmentShippingInsuranceDispositionItemModel>());
+            var model = new GarmentShippingInsuranceDispositionModel("", "", DateTimeOffset.Now, "", 1, "", "", 1, "", new List<GarmentShippingInsuranceDispositionItemModel>());
 
             var repoMock = new Mock<IGarmentShippingInsuranceDispositionRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -80,9 +76,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.I
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new HashSet<GarmentShippingInsuranceDispositionItemModel> { new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 1, 1, "", "", 1, 1), new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 2, 2, "", "", 2, 2) };
-            var units = new HashSet<GarmentShippingInsuranceDispositionUnitChargeModel> { new GarmentShippingInsuranceDispositionUnitChargeModel(1, "", 1), new GarmentShippingInsuranceDispositionUnitChargeModel(2, "", 2) };
-            var model = new GarmentShippingInsuranceDispositionModel("", "", DateTimeOffset.Now, "", 1, "", "", 1, "", units, items);
+            var items = new HashSet<GarmentShippingInsuranceDispositionItemModel> { new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 1, 1, "", "", 1, 1, 1, 1, 1, 1, 1), new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 2, 2, "", "", 2, 2, 2, 2, 2, 2, 2) };
+            var model = new GarmentShippingInsuranceDispositionModel("", "", DateTimeOffset.Now, "", 1, "", "", 1, "",  items);
             
             var repoMock = new Mock<IGarmentShippingInsuranceDispositionRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

@@ -55,11 +55,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             .HasMany(h => h.Items)
             .WithOne()
             .HasForeignKey(f => f.InsuranceDispositionId);
-
-            configuration
-            .HasMany(h => h.UnitCharge)
-            .WithOne()
-            .HasForeignKey(f => f.InsuranceDispositionId);
         }
     }
 }

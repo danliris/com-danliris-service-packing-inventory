@@ -16,10 +16,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
         public string InsuranceCode { get; set; }
         public decimal Rate { get; set; }
         public string Remark { get; set; }
-        public ICollection<GarmentShippingInsuranceDispositionUnitChargeModel> UnitCharge { get; set; }
         public ICollection<GarmentShippingInsuranceDispositionItemModel> Items { get; set; }
 
-        public GarmentShippingInsuranceDispositionModel(string dispositionNo, string policyType, DateTimeOffset paymentDate, string bankName, int insuranceId, string insuranceName, string insuranceCode, decimal rate, string remark, ICollection<GarmentShippingInsuranceDispositionUnitChargeModel> unitCharge, ICollection<GarmentShippingInsuranceDispositionItemModel> items)
+        public GarmentShippingInsuranceDispositionModel(string dispositionNo, string policyType, DateTimeOffset paymentDate, string bankName, int insuranceId, string insuranceName, string insuranceCode, decimal rate, string remark, ICollection<GarmentShippingInsuranceDispositionItemModel> items)
         {
             DispositionNo = dispositionNo;
             PolicyType = policyType;
@@ -30,7 +29,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
             InsuranceCode = insuranceCode;
             Rate = rate;
             Remark = remark;
-            UnitCharge = unitCharge;
             Items = items;
         }
 

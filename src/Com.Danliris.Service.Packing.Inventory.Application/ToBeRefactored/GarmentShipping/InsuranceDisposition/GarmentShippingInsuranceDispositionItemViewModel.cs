@@ -17,5 +17,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public BuyerAgent BuyerAgent { get; set; }
         public decimal amount { get; set; }
         public decimal currencyRate { get; set; }
+        public decimal amount2A { get; set; }
+        public decimal amount2B { get; set; }
+        public decimal amount2C { get; set; }
+        public decimal amount1A { get; set; }
+        public decimal amount1B { get; set; }
     }
 }

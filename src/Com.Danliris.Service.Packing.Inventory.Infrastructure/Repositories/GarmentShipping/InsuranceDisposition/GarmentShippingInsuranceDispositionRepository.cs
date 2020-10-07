@@ -37,11 +37,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
 
-            foreach (var uc in model.UnitCharge)
-            {
-                uc.FlagForDelete(_identityProvider.Username, UserAgent);
-            }
-
             return _dbContext.SaveChangesAsync();
         }
 
@@ -52,11 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var item in model.Items)
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
-            }
-
-            foreach (var uc in model.UnitCharge)
-            {
-                uc.FlagForCreate(_identityProvider.Username, UserAgent);
             }
 
             _dbSet.Add(model);
@@ -73,7 +63,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             return _dbSet
                 .Include(i => i.Items)
-                .Include(a=>a.UnitCharge)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -111,27 +100,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var item in model.Items.Where(w => w.Id == 0))
             {
                 modelToUpdate.Items.Add(item);
-            }
-
-            foreach (var ucToUpdate in modelToUpdate.UnitCharge)
-            {
-                var item = model.UnitCharge.FirstOrDefault(i => i.Id == ucToUpdate.Id);
-                if (item != null)
-                {
-                    ucToUpdate.SetAmount(item.Amount, _identityProvider.Username, UserAgent);
-                    ucToUpdate.SetUnitCode(item.UnitCode, _identityProvider.Username, UserAgent);
-                    ucToUpdate.SetUnitId(item.UnitId, _identityProvider.Username, UserAgent);
-                }
-                else
-                {
-                    ucToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
-                }
-
-            }
-
-            foreach (var uc in model.UnitCharge.Where(w => w.Id == 0))
-            {
-                modelToUpdate.UnitCharge.Add(uc);
             }
 
             return _dbContext.SaveChangesAsync();
