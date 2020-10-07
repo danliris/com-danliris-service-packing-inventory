@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1, 1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1)
+                new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1, 1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1, "a")
                 {
                     PrevSppInJson = "[]"
                 },
@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "PENJUALAN", "A", 1, "no", false, "OUT", "a", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0)
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0, "a")
                  {
                     PrevSppInJson = "[]"
                 }
@@ -52,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "PENJUALAN", "A", 1, "no", false, "OUT", "a", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1)
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1, "b")
                  {
                     PrevSppInJson = "[]"
                 }
@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "BUYER", "A", 1, "no", false, "OUT", "a", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0)
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e",null,1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0, "a")
                  {
                     PrevSppInJson = "[]"
                 }
@@ -76,7 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "SHIPPING", "pa", "1", false, "BUYER", "A", 1, "no", false, "OUT", "a", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1)
+                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","PENJUALAN",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1, "n")
                  {
                     PrevSppInJson = "[]"
                 }
@@ -143,7 +143,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1, null, null, 0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true,1)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1, null, null, 0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true,1, null)
                 {
                     PrevSppInJson = "[]"
                 },
@@ -167,7 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type,",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0)
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type,",1,1, false,"s","s",1,1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,0, null)
                 {
                     PrevSppInJson = "[]"
                 },
@@ -191,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1,null,null,0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true,1)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,0,null,0,null,null,1,null,null,null,null,null,null,null,null,0,1,null,null,0,0, true,null,null,0,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,0,0,null,true,1,null)
                 {
                     PrevSppInJson = "[]"
                 },
