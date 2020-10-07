@@ -2007,7 +2007,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         BalanceRemains = e.Sum(i => i.BalanceRemains),
                         PreviousBalance = e.Sum(i => i.BalanceRemains),
                         Color = e.First().Color,
-                        Construction = e.First().Construction,
+                        Construction = e.OrderByDescending(a => a.CreatedUtc).First().Construction,
                         MaterialConstruction = new MaterialConstruction()
                         {
                             Id = e.First().MaterialConstructionId,
@@ -2015,7 +2015,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         },
                         PackingType = e.First().PackagingType,
                         MaterialWidth = e.First().MaterialWidth,
-                        FinishWidth = e.First().FinishWidth,
+                        FinishWidth = e.OrderByDescending(a => a.CreatedUtc).First().FinishWidth,
                         MaterialProduct = new Material()
                         {
                             Name = e.First().MaterialName,
