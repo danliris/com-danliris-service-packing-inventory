@@ -109,14 +109,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("xls/{id}")]
-        public async Task<IActionResult> GetExcel(int id)
+        public async Task<IActionResult> GetExcel([FromHeader(Name = "x-timezone-offset")] string timezone, int id)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
+                int clientTimeZoneOffset = Convert.ToInt32(timezone);
                 var data = await _service.ReadById(id);
-                var Result = _service.GenerateExcel(data);
+                var Result = _service.GenerateExcel(data,clientTimeZoneOffset);
                 string filename = $"Pencatatan Pengeluaran Area Inspection Material Dyeing/Printing - {data.BonNo}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

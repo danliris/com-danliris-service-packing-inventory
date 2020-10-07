@@ -63,5 +63,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal PreviousOutputPackagingQty { get; set; }
 
         public string PrevSppInJson { get; set; }
+        public DateTimeOffset DateIn { get; set; }
     }
 }

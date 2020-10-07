@@ -714,7 +714,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                          item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, 0, item.BuyerId, prevPacking,
                          item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
-                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength);
+                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength,item.DateIn);
                     productionOrders.Add(productionOrder);
 
 
@@ -754,7 +754,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, item.Grade, item.Status, item.QtyOut, item.PackingInstruction, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                          item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, 0, item.BuyerId, prevPacking,
                          item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
-                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength);
+                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, item.PackingLength,item.DateIn);
 
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -871,7 +871,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        public async Task<MemoryStream> GenerateExcel(int id)
+        public async Task<MemoryStream> GenerateExcel(int id,int timeZone)
         {
             var model = await _repository.ReadByIdAsync(id);
             var query = model.DyeingPrintingAreaOutputProductionOrders;
@@ -882,6 +882,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             Dictionary<string, string> mappedClass = new Dictionary<string, string>
             {
                 {"ProductionOrderNo","No SPP" },
+                {"DateIn","Tanggal Masuk" },
+                //{"Date","Tanggal Keluar" },
                 {"ProductionOrderOrderQuantity","Qty Order" },
                 {"Buyer","Buyer" },
                 {"Unit","Unit"},
@@ -1066,7 +1068,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Pack = d.PackagingUnit,
                         Qty = d.Balance,
                         d.NextAreaInputStatus,
-                        SAT = d.UomUnit
+                        SAT = d.UomUnit,
+                        DateIn=d.DateIn.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"),
+                        Date=s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
                     })
                 });
 
@@ -1105,6 +1109,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 {"BonNo","NO BON" },
                 {"NoSPP","NO SP" },
+                {"DateIn","Tanggal Masuk" },
+                {"Date","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
                 {"Unit","UNIT"},
@@ -1665,7 +1671,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = d.ProductPackingId,
                     FabricPackingId = d.FabricPackingId,
                     ProductPackingCode = d.ProductPackingCode,
-                    HasPrintingProductPacking = d.HasPrintingProductPacking
+                    HasPrintingProductPacking = d.HasPrintingProductPacking,
+                    DateIn=d.DateIn
                 });
             }
             return result;
@@ -2040,7 +2047,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = e.First().ProductPackingId,
                         FabricPackingId = e.First().FabricPackingId,
                         ProductPackingCode = e.First().ProductPackingCode,
-                        HasPrintingProductPacking = e.First().HasPrintingProductPacking
+                        HasPrintingProductPacking = e.First().HasPrintingProductPacking,
+                        DateIn=e.First().DateIn
 
                     }).Where(e => e.BalanceRemains > 0).ToList()
                 })
@@ -2049,6 +2057,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 .Skip((page - 1) * size).Take(size);
 
             return new ListResult<OutputPackagingProductionOrderGroupedViewModel>(data.ToList(), page, size, data.Count());
+        }
+
+        public Task<MemoryStream> GenerateExcel(int id)
+        {
+            //int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+            throw new NotImplementedException();
         }
     }
     internal static class Extensions
