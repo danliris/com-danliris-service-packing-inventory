@@ -923,10 +923,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY Keluar Karung", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY Keluar KG", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "", "", "","");
             }
             else
             {
@@ -938,7 +939,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.AvalType))
                         {
                             dt.Rows.Add(model.BonNo, item.AvalType, item.AvalALength.ToString("N2", CultureInfo.InvariantCulture), item.AvalBLength.ToString("N2", CultureInfo.InvariantCulture),
-                               item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AvalQuantityKg.ToString("N2", CultureInfo.InvariantCulture), DyeingPrintingArea.OUT);
+                               item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AvalQuantityKg.ToString("N2", CultureInfo.InvariantCulture), DyeingPrintingArea.OUT,model.Date.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"));
 
                         }
 

@@ -277,7 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                                                 s.ProcessType.Name,
                                                                                                                                                                 s.YarnMaterial.Id,
                                                                                                                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty))
+                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty,viewModel.Date))
                                                                                                                                                                 .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
@@ -365,7 +365,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                            productionOrder.YarnMaterial.Id,
                                                                                            productionOrder.YarnMaterial.Name, productionOrder.ProductSKUId, productionOrder.FabricSKUId, productionOrder.ProductSKUCode,
                      productionOrder.HasPrintingProductSKU, productionOrder.ProductPackingId, productionOrder.FabricPackingId, productionOrder.ProductPackingCode,
-                     productionOrder.HasPrintingProductPacking, productionOrder.Qty, productionOrder.InputQuantity, productionOrder.InputPackagingQty)
+                     productionOrder.HasPrintingProductPacking, productionOrder.Qty, productionOrder.InputQuantity, productionOrder.InputPackagingQty, viewModel.Date)
                 {
                     DyeingPrintingAreaInputId = dyeingPrintingAreaInputId,
                 };
