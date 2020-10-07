@@ -51,6 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         Name = "s"
                     },
                     MaterialWidth = "1",
+                    FinishWidth = "a",
                     Motif = "s",
                     ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
                     {
@@ -81,7 +82,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 var model = new DyeingPrintingAreaOutputProductionOrderModel("PACKING", "GUDANG JADI", true, ViewModel.ProductionOrder.Id, ViewModel.ProductionOrder.No, ViewModel.ProductionOrder.Type, ViewModel.ProductionOrder.OrderQuantity, "", "", "", "",
                      "", ViewModel.Color, ViewModel.Motif, ViewModel.UomUnit, "", "zimmer", "","", 0, ViewModel.Id, 0, ViewModel.Material.Id, ViewModel.Material.Name, ViewModel.MaterialConstruction.Id, ViewModel.MaterialConstruction.Name,
                      ViewModel.MaterialWidth, "", ViewModel.Quantity, "", ViewModel.ProductPackingType, 0, "", "", 0, "", ViewModel.YarnMaterial.Id, ViewModel.YarnMaterial.Name, ViewModel.ProductSKUId, ViewModel.FabricSKUId, ViewModel.ProductSKUCode,
-                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, string.Join(',', ViewModel.ProductPackingCodes), ViewModel.HasPrintingProductPacking, ViewModel.ProductPackingLength,DateTimeOffset.Now);
+                    ViewModel.HasPrintingProductSKU, ViewModel.ProductPackingId, ViewModel.FabricPackingId, string.Join(',', ViewModel.ProductPackingCodes), ViewModel.HasPrintingProductPacking, ViewModel.ProductPackingLength,DateTimeOffset.Now, ViewModel.FinishWidth);
+                    
 
 
                 model.DyeingPrintingAreaOutput = new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "PACKING", "s", "s", false, "GUDANG JADI", "S", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>() { model });

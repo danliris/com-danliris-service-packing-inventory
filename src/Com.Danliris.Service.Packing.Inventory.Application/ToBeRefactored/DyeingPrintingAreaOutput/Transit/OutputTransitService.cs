@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
-        
+
         public OutputTransitService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
@@ -92,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = s.Grade,
                         PackingInstruction = s.PackingInstruction,
                         Remark = s.Remark,
-                        ProductionMachine =s.ProductionMachine,
+                        ProductionMachine = s.ProductionMachine,
                         Status = s.Status,
                         Id = s.Id,
                         IsDeleted = s.IsDeleted,
@@ -117,6 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Name = s.ProcessTypeName
                         },
                         MaterialWidth = s.MaterialWidth,
+                        FinishWidth = s.FinishWidth,
                         Material = new Material()
                         {
                             Id = s.MaterialId,
@@ -199,6 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DeletedBy = s.DeletedBy,
                         DeletedUtc = s.DeletedUtc,
                         MaterialWidth = s.MaterialWidth,
+                        FinishWidth = s.FinishWidth,
                         AdjDocumentNo = s.AdjDocumentNo,
                         Material = new Material()
                         {
@@ -235,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         },
                         Unit = s.Unit,
                         Remark = s.Remark,
-                        ProductionMachine =s.ProductionMachine,
+                        ProductionMachine = s.ProductionMachine,
                         UomUnit = s.UomUnit,
                         QtyPacking = s.PackagingQty,
                         PackingInstruction = s.PackingInstruction,
@@ -321,9 +323,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group, viewModel.Type,
                     viewModel.TransitProductionOrders.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.ProductionOrder.Id,
                     s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit,
-                    s.Remark,s.ProductionMachine, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
+                    s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                     s.QtyPacking, s.PackingType, s.PackingUnit, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.AvalType, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength,s.DateIn)).ToList());
+                    s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.DateIn, s.FinishWidth)).ToList());
+                    
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
@@ -351,10 +354,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark,item.ProductionMachine, item.Grade, item.Status, item.Balance, item.Id, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, item.Grade, item.Status, item.Balance, item.Id, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, "", item.QtyPacking, item.PackingType,
                         item.PackingUnit, item.DeliveryOrder.Id, item.DeliveryOrder.No, item.AvalType, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength,item.DateIn);
+                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.DateIn, item.FinishWidth);
+                        
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -408,10 +412,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group, type, viewModel.AdjItemCategory,
                     viewModel.TransitProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark,item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AdjDocumentNo,
                         item.QtyPacking, item.PackingType, item.PackingUnit, 0, "", "", item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength,item.DateIn)).ToList());
+                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.DateIn, item.FinishWidth)).ToList());
+                        
 
                 result = await _repository.InsertAsync(model);
 
@@ -439,10 +444,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark,item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AdjDocumentNo,
                         item.QtyPacking, item.PackingType, item.PackingUnit, 0, "", "", item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength,item.DateIn);
+                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.DateIn, item.FinishWidth);
+                        
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -540,6 +546,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = d.ProductionOrderOrderQuantity
                     },
                     MaterialWidth = d.MaterialWidth,
+                    FinishWidth = d.FinishWidth,
                     Material = new Material()
                     {
                         Id = d.MaterialId,
@@ -636,6 +643,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     OrderQuantity = d.ProductionOrderOrderQuantity,
                 },
                 MaterialWidth = d.MaterialWidth,
+                FinishWidth = d.FinishWidth,
                 Material = new Material()
                 {
                     Id = d.MaterialId,
@@ -651,7 +659,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Id = d.Id,
                 Unit = d.Unit,
                 Remark = d.Remark,
-                ProductionMachine=d.ProductionMachine,
+                ProductionMachine = d.ProductionMachine,
                 Status = d.Status,
                 IsChecked = d.IsChecked,
                 PackingInstruction = d.PackingInstruction,
@@ -744,10 +752,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.HasNextAreaDocument, viewModel.DestinationArea,
                     viewModel.Group, viewModel.Type, viewModel.TransitProductionOrders.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea,
                     s.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer,
-                    s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,s.ProductionMachine, s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.Material.Id,
+                    s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.Material.Id,
                     s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "", s.QtyPacking, s.PackingType, s.PackingUnit, s.DeliveryOrder.Id,
                     s.DeliveryOrder.No, s.AvalType, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength,s.DateIn)
+                    s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.DateIn, s.FinishWidth)
+                    
                     {
                         Id = s.Id
                     }).ToList());
@@ -814,10 +823,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group, type, viewModel.AdjItemCategory,
                     viewModel.TransitProductionOrders.Select(item => new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction,
-                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark,item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
+                        item.Unit, item.Color, item.Motif, item.UomUnit, item.Remark, item.ProductionMachine, "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.AdjDocumentNo, item.QtyPacking,
                         item.PackingType, item.PackingUnit, 0, "", "", item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength,item.DateIn)
+                        item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.DateIn, item.FinishWidth)
+                        
                     {
                         Id = item.Id
                     }).ToList());
@@ -1179,6 +1189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      MaterialId = d.MaterialId,
                      MaterialName = d.MaterialName,
                      MaterialWidth = d.MaterialWidth,
+                     FinishWidth = d.FinishWidth,
                      PackagingLength = d.PackagingLength,
                      PackagingQty = d.PackagingQty,
                      PackagingType = d.PackagingType,
@@ -1256,6 +1267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = s.YarnMaterialName
                     },
                     MaterialWidth = s.MaterialWidth,
+                    FinishWidth = s.FinishWidth,
                     Motif = s.Motif,
                     Unit = s.Unit,
                     UomUnit = s.UomUnit,
