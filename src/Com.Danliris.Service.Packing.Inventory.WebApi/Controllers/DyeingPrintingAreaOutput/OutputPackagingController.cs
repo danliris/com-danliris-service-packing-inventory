@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpDelete("{id}")]
+        [HttpDelete("obsolete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
@@ -279,7 +279,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpPut("{id}")]
+        [HttpPut("obsolete/{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] OutputPackagingViewModel viewModel)
         {
             VerifyUser();
