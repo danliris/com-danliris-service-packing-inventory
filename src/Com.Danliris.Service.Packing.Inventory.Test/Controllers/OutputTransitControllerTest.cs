@@ -347,7 +347,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(identityProvider.TimezoneOffset.ToString(), 1);
+            var response = await controller.GetExcel( 1);
 
             Assert.NotNull(response);
         }
@@ -370,7 +370,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(identityProvider.TimezoneOffset.ToString(),1);
+            var response = await controller.GetExcel(1);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
