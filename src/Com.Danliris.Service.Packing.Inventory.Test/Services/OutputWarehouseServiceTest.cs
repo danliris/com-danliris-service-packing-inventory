@@ -276,7 +276,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputModelToGAArea
@@ -315,7 +315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
             }
 
         }
@@ -355,7 +355,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.Id,
                                                                                                              s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
             }
 
         }
@@ -1072,7 +1072,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                              s.BuyerId,
                                                                                                              s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                     s.MaterialWidth, "", s.PackagingQty, s.PackagingType, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    1, 1, "a", false, 1, 1, "a", false, s.Quantity)).ToList());
+                    1, 1, "a", false, 1, 1, "a", false, s.Quantity, s.FinishWidth)).ToList());
             tes.Id = 1;
             tes.SetType("OUT", "", "");
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)

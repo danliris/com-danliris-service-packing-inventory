@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string YarnMaterialName { get; set; }
 
         public string MaterialWidth { get; set; }
+        public string FinishWidth { get; set; }
 
         public string Remark { get; set; }
 
