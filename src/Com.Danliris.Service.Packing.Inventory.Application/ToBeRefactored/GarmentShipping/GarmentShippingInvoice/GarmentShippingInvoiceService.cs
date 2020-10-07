@@ -155,6 +155,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     },
                     Id = i.Id,
                     GarmentShippingInvoiceId = i.GarmentShippingInvoiceId,
+                    AmountPercentage=i.AmountPercentage,
+                    QuantityPercentage=i.QuantityPercentage
 
                 }).ToList(),
 

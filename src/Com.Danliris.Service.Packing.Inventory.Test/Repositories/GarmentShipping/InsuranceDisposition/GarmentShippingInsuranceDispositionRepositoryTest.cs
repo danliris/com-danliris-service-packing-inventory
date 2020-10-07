@@ -49,12 +49,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetPolicyNo(item.PolicyNo + 1, data.LastModifiedBy, data.LastModifiedAgent);
             }
 
-            foreach (var uc in data.UnitCharge)
-            {
-                uc.SetAmount(uc.Amount + 1, data.LastModifiedBy, data.LastModifiedAgent);
-                uc.SetUnitCode(uc.UnitCode + 1, data.LastModifiedBy, data.LastModifiedAgent);
-                uc.SetUnitId(uc.UnitId+1, data.LastModifiedBy, data.LastModifiedAgent);
-            }
 
             var result = await repo.UpdateAsync(data.Id, data);
 
