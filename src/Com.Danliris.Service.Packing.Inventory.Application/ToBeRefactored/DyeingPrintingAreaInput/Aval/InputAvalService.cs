@@ -78,6 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Type = s.ProductionOrderType
                     },
                     MaterialWidth = s.MaterialWidth,
+                    FinishWidth = s.FinishWidth,
                     Material = new Material()
                     {
                         Id = s.MaterialId,
@@ -237,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
                                                                                                                                             s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
                                                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty))
+                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty, s.FinishWidth))
                                                                                .ToList());
                 result = await _inputRepository.InsertAsync(model);
             }
@@ -281,7 +282,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
                                                                                                                                             s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
                                                                                                                                             s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty))
+                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty, s.FinishWidth))
                                                                                .ToList());
             }
 
@@ -511,6 +512,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     Machine = d.Machine,
                     MaterialWidth = d.MaterialWidth,
+                    FinishWidth = d.FinishWidth,
                     Material = new Material()
                     {
                         Id = d.MaterialId,
@@ -603,6 +605,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                            Type = d.ProductionOrderType
                                                                        },
                                                                        MaterialWidth = d.MaterialWidth,
+                                                                       FinishWidth = d.FinishWidth,
                                                                        Material = new Material()
                                                                        {
                                                                            Id = d.MaterialId,
