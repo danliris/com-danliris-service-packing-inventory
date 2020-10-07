@@ -42,6 +42,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
             Amount1B = amount1B;
         }
 
+        public GarmentShippingInsuranceDispositionItemModel()
+        {
+        }
 
         public void SetPolicyNo(string policyNo, string username, string uSER_AGENT)
         {

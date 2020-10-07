@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 rate = model.Rate,
                 remark = model.Remark,
-                items = model.Items.Select(i => new GarmentShippingInsuranceDispositionItemViewModel
+                items = (model.Items ?? new List<GarmentShippingInsuranceDispositionItemModel>()).Select(i => new GarmentShippingInsuranceDispositionItemViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
@@ -150,7 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "DispositionNo","InsuranceNo","BankName","PolicyType"
+                "DispositionNo","InsuranceName","BankName","PolicyType"
             };
             query = QueryHelper<GarmentShippingInsuranceDispositionModel>.Search(query, SearchAttributes, keyword);
 
