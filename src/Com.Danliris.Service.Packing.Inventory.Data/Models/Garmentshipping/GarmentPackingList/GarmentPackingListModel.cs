@@ -54,8 +54,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string SayUnit { get; private set; }
 
-        public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
-
         #endregion
 
         #region Mark
@@ -68,7 +66,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public bool IsUsed { get; private set; }
         public bool IsPosted { get; private set; }
+
         public GarmentPackingListStatusEnum Status { get; private set; }
+        public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
 
         public GarmentPackingListModel()
         {
@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Accounting = accounting;
             FabricCountryOrigin = fabricCountryOrigin;
             FabricComposition = fabricComposition;
-            Remark = remark;
+            RemarkMd = remarkMd;
             Items = items;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;

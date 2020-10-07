@@ -306,5 +306,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("revise-md/{id}")]
+        public async Task<IActionResult> SetRevisedMd([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetRevisedMd(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
