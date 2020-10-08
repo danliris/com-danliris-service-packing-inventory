@@ -330,6 +330,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
         }
 
         [Fact]
+        public  async Task Should_Success_UpdateDateOutsync()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext);
+
+            var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var repo2 = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider.Object);
+            var emptyData = DataUtil(repo, dbContext).GetTestData();
+            
+            var result = await repo2.UpdateDateOutsync(1, DateTimeOffset.Now);
+
+            Assert.NotEqual(0, result);
+        }
+
+
+        [Fact]
         public virtual async Task Should_Success_UpdatePackingFromOut2()
         {
             string testName = GetCurrentMethod() + "UpdatePackingFromOut2";
