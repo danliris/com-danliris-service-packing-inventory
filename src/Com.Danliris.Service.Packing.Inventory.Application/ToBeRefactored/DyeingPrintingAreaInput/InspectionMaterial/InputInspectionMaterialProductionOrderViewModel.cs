@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int InputId { get; set; }
 
         public DateTimeOffset DateIn { get;  set; }
+        public DateTimeOffset DateOut { get; set; }
 
     }
 }

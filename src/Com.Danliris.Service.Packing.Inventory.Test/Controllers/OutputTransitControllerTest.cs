@@ -357,7 +357,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputTransitService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputTransitViewModel>(), It.IsAny<int>()))
                .Throws(new Exception());
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
             var service = serviceMock.Object;

@@ -112,9 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaInputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.Group, ViewModel.PackagingProductionOrders.Select(s =>
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                    s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark,s.ProductionMachine, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
-                    s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                    s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking,s.DateIn, s.FinishWidth)).ToList());
+                        s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
+                        s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
+                        s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.FinishWidth, s.DateIn)).ToList());
                     
             }
         }
@@ -124,8 +124,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, false, "PACKING", ViewModel.Group, "OUT", ViewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, "PACKING", false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                      s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark,s.ProductionMachine, s.Grade, s.Status, s.Balance, 1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                    s.MaterialWidth, "", 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.PackingLength,s.DateIn, s.FinishWidth)).ToList());
+                          s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, 1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                          s.MaterialWidth, "", 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut)).ToList());
                     
             }
         }
@@ -344,8 +344,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
-                    new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,DateTimeOffset.Now, "a")
-                    
+                    new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now)
+
                 }.AsQueryable());
             outputSpp.Setup(s => s.ReadAll())
                 .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
@@ -398,7 +398,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { a }.AsQueryable());
 
-            var testmodel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A", int.Parse("1"), 1, 1, "a", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1,DateTimeOffset.Now, "a");
+            var testmodel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A", int.Parse("1"), 1, 1, "a", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, "a", DateTimeOffset.Now);
             
             testmodel.Id = 1;
             sppRepoMock.Setup(s => s.ReadAll())
@@ -466,7 +466,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { a }.AsQueryable());
 
-            var testmodel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A", int.Parse("1"), 1, 1, "a", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1,DateTimeOffset.Now, "a");
+            var testmodel = new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A", int.Parse("1"), 1, 1, "a", 1, "a", 1, "a", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, "a", DateTimeOffset.Now);
             
             testmodel.Id = 1;
             sppRepoMock.Setup(s => s.ReadAll())
@@ -514,8 +514,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
-                    new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,DateTimeOffset.Now, "a")
-                    
+                    new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now)
+
                 }.AsQueryable());
             outputSpp.Setup(s => s.ReadAll())
                 .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
