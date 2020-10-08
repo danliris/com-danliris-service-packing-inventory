@@ -378,5 +378,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> UpdateDateOutsync(int id, DateTimeOffset dateOut)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                modelToUpdate.SetDateOut(dateOut, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

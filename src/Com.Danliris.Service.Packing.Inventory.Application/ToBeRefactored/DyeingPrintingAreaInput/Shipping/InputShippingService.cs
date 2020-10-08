@@ -586,7 +586,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit,
                                         s.InputQuantity, false, s.Packing, s.PackingType, s.InputQtyPacking, s.Grade, s.ProductionOrder.OrderQuantity, s.BuyerId, s.Id, s.Remark, s.InputQuantity,
                                         s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                     s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DateIn, s.FinishWidth)).ToList());
+                                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.FinishWidth, s.DateIn)).ToList());
                      
 
                     result = await _repository.InsertAsync(model);
@@ -608,12 +608,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
 
                         var modelItem = new DyeingPrintingAreaInputProductionOrderModel(item.Key, detail.ProductionOrder.Id, detail.ProductionOrder.No, detail.ProductionOrder.Type,
-                                        detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit,
-                                        detail.InputQuantity, false, detail.Packing, detail.PackingType, detail.InputQtyPacking, detail.Grade, detail.ProductionOrder.OrderQuantity, detail.BuyerId,
-                                        detail.Id, detail.Remark, detail.InputQuantity,
-                                        detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.ProcessType.Id, detail.ProcessType.Name, detail.YarnMaterial.Id, detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode,
-                     detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId, detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.PackingLength,
-                     detail.InputQuantity, detail.InputQtyPacking, detail.DateIn, detail.FinishWidth);
+                            detail.PackingInstruction, detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit,
+                            detail.InputQuantity, false, detail.Packing, detail.PackingType, detail.InputQtyPacking, detail.Grade, detail.ProductionOrder.OrderQuantity, detail.BuyerId,
+                            detail.Id, detail.Remark, detail.InputQuantity,
+                            detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.ProcessType.Id, detail.ProcessType.Name, detail.YarnMaterial.Id, detail.YarnMaterial.Name, detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode,
+                            detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId, detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.PackingLength,
+                            detail.InputQuantity, detail.InputQtyPacking, detail.FinishWidth, detail.DateIn);
                      
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -727,6 +727,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Delivery Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             //dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
@@ -743,7 +744,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "","", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "","","", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -752,7 +753,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
                     foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                     {
-                        dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo,model.Date.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"), item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                        var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, dateIn, dateOut, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                              item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Grade, item.Remark, item.InputPackagingQty.ToString("N2", CultureInfo.InvariantCulture),
                              item.PackagingUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit);
                     }
