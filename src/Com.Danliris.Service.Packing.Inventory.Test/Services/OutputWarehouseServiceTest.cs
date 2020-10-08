@@ -1765,7 +1765,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1793,7 +1793,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1818,7 +1818,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          outputRepoMock.Object,
                                                          outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcel(1);
+            var result = service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1850,7 +1850,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          outputRepoMock.Object,
                                                          outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcel(1);
+            var result = service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1878,7 +1878,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          outputRepoMock.Object,
                                                          outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcel(1);
+            var result = service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -2003,7 +2003,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }

@@ -648,7 +648,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<IndexViewModel>(data.ToList(), 0, data.Count(), query.Count());
         }
 
-        private MemoryStream GenerateExcelOut(DyeingPrintingAreaOutputModel model)
+        private MemoryStream GenerateExcelOut(DyeingPrintingAreaOutputModel model,int offSet)
         {
             var query = model.DyeingPrintingAreaOutputProductionOrders;
 
@@ -898,18 +898,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Gudang Jadi") }, true);
         }
 
-        public async Task<MemoryStream> GenerateExcel(int id)
-        {
-            var model = await _outputRepository.ReadByIdAsync(id);
-            if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
-            {
-                return GenerateExcelOut(model);
-            }
-            else
-            {
-                return GenerateExcelAdj(model);
-            }
-        }
+       
 
         public List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders()
         {
@@ -2030,6 +2019,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 });
 
             return new ListResult<InputWarehouseProductionOrderCreateViewModel>(data.ToList(), page, size, query.Count());
+        }
+
+        public async Task<MemoryStream> GenerateExcel(int id, int offSet)
+        {
+            var model = await _outputRepository.ReadByIdAsync(id);
+            if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
+            {
+                return GenerateExcelOut(model, offSet);
+            }
+            else
+            {
+                return GenerateExcelAdj(model);
+            }
+        }
+
+        public Task<MemoryStream> GenerateExcel(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
