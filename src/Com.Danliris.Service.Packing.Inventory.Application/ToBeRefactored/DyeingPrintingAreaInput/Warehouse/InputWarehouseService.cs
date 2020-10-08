@@ -912,8 +912,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Pack = d.PackagingUnit,
                         Qty = d.Balance,
                         SAT = d.UomUnit,
-                        DateIn=d.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
-                        DateOut =d.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d")
+                        DateIn=d.DateIn.Equals(DateTimeOffset.MinValue)?"" : d.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
+                        DateOut = d.DateOut.Equals(DateTimeOffset.MinValue) ? "" : d.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d")
                     })
                 });
 

@@ -466,10 +466,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var model in query)
                 {
+                    
+
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
                     foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                     {
-                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                        var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, dateOut, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                             item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.UomUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture));
                     }
                 }

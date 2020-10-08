@@ -683,6 +683,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in query)
                 {
+                  
                     dt.Rows.Add(indexNumber,
                                 item.DeliveryOrderSalesNo,
                                 item.ProductionOrderNo,
@@ -982,7 +983,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductPackingCode = s.ProductPackingCode,
                 HasPrintingProductPacking = s.HasPrintingProductPacking,
                 //DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
-                DateIn  =s.DateIn
+                DateIn  =s.DateIn,
             });
 
             return data.ToList();

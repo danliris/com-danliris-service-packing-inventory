@@ -1169,7 +1169,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
         }
 
-        private MemoryStream GenerateExcelOut(OutputShippingViewModel viewModel,int Offset)
+        private MemoryStream GenerateExcelOut(OutputShippingViewModel viewModel,int offSet)
         {
             var query = viewModel.ShippingProductionOrders.OrderBy(s => s.ProductionOrder.No);
             DataTable dt = new DataTable();
@@ -1201,9 +1201,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in query)
                 {
+                    var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
                     dt.Rows.Add(item.ProductionOrder.No,
-                        item.DateIn.ToOffset(new TimeSpan(7, 0, 0)).Date.ToString("d"),
-                        item.DateOut.ToOffset(new TimeSpan(7, 0, 0)).Date.ToString("d"),
+                        dateIn,
+                        dateOut,
                         item.Buyer,
                         item.Construction,
                         item.Unit, item.Color,
@@ -1331,11 +1334,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
+                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                            var dateOut = model.Date.Equals(DateTimeOffset.MinValue) ? "" : model.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
                             dt.Rows.Add(model.BonNo,
                                 item.ProductionOrderNo,
-                                item.DeliveryOrderSalesNo, 
-                                item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
-                                model.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
+                                item.DeliveryOrderSalesNo,
+                                dateIn,
+                                dateOut,
                                 item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),  
                                 item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,

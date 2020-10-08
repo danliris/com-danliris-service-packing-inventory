@@ -501,7 +501,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        private MemoryStream GenerateExcelOut(DyeingPrintingAreaOutputModel model, int timeOffset)
+        private MemoryStream GenerateExcelOut(DyeingPrintingAreaOutputModel model, int offSet)
         {
             var query = model.DyeingPrintingAreaOutputProductionOrders;
 
@@ -522,13 +522,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in query)
                 {
-                    
+                    var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
                     dt.Rows.Add(indexNumber,
                                 item.AvalType,
                                 item.Balance,
                                 "KRG",
                                 item.AvalQuantityKg,
-                                item.DateOut
+                                dateOut
                                 );
                     indexNumber++;
                 }

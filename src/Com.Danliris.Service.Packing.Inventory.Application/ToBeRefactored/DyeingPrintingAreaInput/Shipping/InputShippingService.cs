@@ -753,7 +753,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
                     foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                     {
-                        dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                        var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(model.BonNo, item.DeliveryOrderSalesNo, dateIn, dateOut, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                              item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Grade, item.Remark, item.InputPackagingQty.ToString("N2", CultureInfo.InvariantCulture),
                              item.PackagingUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit);
                     }

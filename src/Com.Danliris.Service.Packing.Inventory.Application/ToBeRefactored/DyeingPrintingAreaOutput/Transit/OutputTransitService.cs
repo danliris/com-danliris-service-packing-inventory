@@ -930,7 +930,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<InputTransitProductionOrderViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        private MemoryStream GenerateExcelOut(OutputTransitViewModel viewModel, int timeZone)
+        private MemoryStream GenerateExcelOut(OutputTransitViewModel viewModel, int offSet)
         {
             var query = viewModel.TransitProductionOrders.OrderBy(s => s.ProductionOrder.No);
             DataTable dt = new DataTable();
@@ -959,7 +959,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in query)
                 {
-                    dt.Rows.Add(item.ProductionOrder.No, item.DateIn.ToOffset(new TimeSpan(timeZone,0,0)).Date.ToString("d"), item.DateOut.ToOffset(new TimeSpan(timeZone, 0, 0)).Date.ToString("d"), item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.Construction, item.Unit, item.Buyer,
+                    var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                    dt.Rows.Add(item.ProductionOrder.No, dateIn, dateOut, item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.Construction, item.Unit, item.Buyer,
                         item.Color, item.Motif, item.Remark, item.ProductionMachine, item.Grade, item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, "");
                 }
             }
@@ -1073,7 +1076,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.ProductionOrderNo))
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
-                            dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.DateOut.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"), item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                            var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                            dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, dateOut, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                 item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark,item.ProductionMachine, item.Grade, item.UomUnit,
                                 item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, DyeingPrintingArea.OUT, item.NextAreaInputStatus);
 

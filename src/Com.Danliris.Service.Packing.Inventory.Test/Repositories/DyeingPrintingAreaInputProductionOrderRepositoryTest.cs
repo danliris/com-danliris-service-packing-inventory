@@ -368,6 +368,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             emptyData.SetArea("PACKING", "", "");
             emptyData.SetBalanceRemains(4, "", "");
             emptyData.SetBalance(4, "", "");
+            emptyData.SetDateOut(DateTimeOffset.Now, "", "");
+            emptyData.SetInputPackagingQty(5, "", "");
             await repo.InsertAsync(emptyData);
             var packingData = new PackingData()
             {
