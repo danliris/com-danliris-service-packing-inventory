@@ -142,7 +142,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                      s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.InputQuantity, false, s.BuyerId, 0, s.Material.Id, s.Material.Name,
-                     s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, s.FinishWidth)).ToList());
+                     s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, s.FinishWidth, viewModel.Date)).ToList());
+                   
 
                 result = await _repository.InsertAsync(model);
                 foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
@@ -162,7 +163,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                         item.Motif, item.UomUnit, item.InputQuantity, item.InputQuantity, false, item.BuyerId, 0, item.Material.Id, item.Material.Name,
                         item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.InputQuantity, item.FinishWidth);
+                        item.InputQuantity, item.FinishWidth,viewModel.Date);
+                       
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
                     result += await _productionOrderRepository.InsertAsync(modelItem);
@@ -368,7 +370,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaInputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.Group, viewModel.InspectionMaterialProductionOrders.Select(s =>
                  new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                  s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.InputQuantity, s.HasOutputDocument, s.BuyerId, 0, s.Material.Id,
-                 s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, s.FinishWidth)
+                 s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, s.FinishWidth,viewModel.Date)
+               //  s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, viewModel.Date)
                  { Id = s.Id }).ToList());
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             foreach (var item in dbModel.DyeingPrintingAreaInputProductionOrders)
@@ -443,6 +446,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
@@ -455,16 +460,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "", "", "", "","", "", "", "", "", "", "", "");
             }
             else
             {
                 foreach (var model in query)
                 {
+                    
+
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
                     foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                     {
-                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                        var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, dateOut, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                             item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.UomUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture));
                     }
                 }

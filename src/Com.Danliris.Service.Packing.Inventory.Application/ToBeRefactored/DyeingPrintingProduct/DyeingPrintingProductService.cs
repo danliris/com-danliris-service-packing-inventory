@@ -64,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.MaterialConstructionId
                 },
                 MaterialWidth = s.MaterialWidth,
+                FinishWidth = s.FinishWidth,
                 Motif = s.Motif,
                 ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
                 ProductPackingId = s.ProductPackingId,

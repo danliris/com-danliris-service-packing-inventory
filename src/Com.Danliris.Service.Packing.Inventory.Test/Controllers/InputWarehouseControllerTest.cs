@@ -473,6 +473,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
+        public void Should_Success_GetProductionOrdersByCode()
+        {
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrdersByCode(It.IsAny<string>()))
+                .Returns(new OutputPreWarehouseItemListViewModel());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetProductionOrderByCode(It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Fail_GetProductionOrdersByCode()
+        {
+            //v
+            var serviceMock = new Mock<IInputWarehouseService>();
+            serviceMock.Setup(s => s.GetOutputPreWarehouseProductionOrdersByCode(It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock.Setup(s => s.Validate(It.IsAny<InputWarehouseCreateViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetProductionOrderByCode(It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
         public void Should_Exception_GetProductionOrders()
         {
             var dataUtil = ViewModel;

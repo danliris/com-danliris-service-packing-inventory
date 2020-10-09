@@ -88,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     LastModifiedUtc = d.LastModifiedUtc,
                     Motif = d.Motif,
                     MaterialWidth = d.MaterialWidth,
+                    FinishWidth = d.FinishWidth,
                     Material = new Material()
                     {
                         Id = d.MaterialId,
@@ -150,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.InputQuantity,
                      false, d.Id, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth, d.Machine, d.ProcessType.Id, d.ProcessType.Name,
-                     d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity)).ToList());
+                     d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.TRANSFORM, model.Id, model.BonNo, model.TotalAvalQuantity, model.TotalAvalWeight, model.AvalType);
@@ -171,7 +172,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity, item.CartNo, item.Construction, item.Unit, item.Buyer, item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit,
                         item.InputQuantity, false, item.Id, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name,
-                        item.MaterialWidth, item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity);
+                        item.MaterialWidth, item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity, item.FinishWidth);
 
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -223,6 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Type = s.ProductionOrderType
                 },
                 MaterialWidth = s.MaterialWidth,
+                FinishWidth = s.FinishWidth,
                 Material = new Material()
                 {
                     Id = s.MaterialId,
@@ -322,7 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.InputQuantity,
                     d.HasOutputDocument, d.DyeingPrintingAreaInputProductionOrderId, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth,
-                    d.Machine, d.ProcessType.Id, d.ProcessType.Name, d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity)
+                    d.Machine, d.ProcessType.Id, d.ProcessType.Name, d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth)
                     {
                         Id = d.Id
                     }).ToList());

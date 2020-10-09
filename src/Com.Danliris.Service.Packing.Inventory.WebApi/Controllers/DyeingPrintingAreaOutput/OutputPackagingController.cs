@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpDelete("{id}")]
+        [HttpDelete("obsolete/{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = await _service.GenerateExcel(id);
+                var Result = await _service.GenerateExcel(id,clientTimeZoneOffset);
                 string filename = "Packing Area Note Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
@@ -279,7 +279,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpPut("{id}")]
+        [HttpPut("obsolete/{id}")]
         public async Task<IActionResult> Put([FromRoute] int id, [FromBody] OutputPackagingViewModel viewModel)
         {
             VerifyUser();

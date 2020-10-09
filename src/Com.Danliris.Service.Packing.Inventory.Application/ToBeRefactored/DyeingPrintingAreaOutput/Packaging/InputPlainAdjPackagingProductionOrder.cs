@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Construction { get; set; }
         public string NoDocument { get; set; }
         public string MaterialWidth { get; set; }
+        public string FinishWidth { get; set; }
         public string Area { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
@@ -62,5 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int FabricPackingId { get; set; }
         public string ProductPackingCode { get; set; }
         public bool HasPrintingProductPacking { get; set; }
+        public DateTimeOffset DateIn { get; set; }
+        public DateTimeOffset DateOut { get; set; }
     }
 }
