@@ -45,39 +45,64 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent1.AddElement(new Phrase("Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
             cellHeaderContent1.AddElement(new Phrase("Telp : 0271-714400, Fax. 0271-717178", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PO. Box. 166 Solo-57100 Indonesia", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("NOTA PENJUALAN GARMENT", normal_font));
+            //cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             tableHeader.AddCell(cellHeaderContent1);
 
             cellHeaderContent2.AddElement(new Phrase("Sukoharjo, " + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
             cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
+            //cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Name, normal_font));
             cellHeaderContent2.AddElement(new Phrase(buyer.Address, normal_font));
             tableHeader.AddCell(cellHeaderContent2);
 
             document.Add(tableHeader);
+
             #endregion
 
             #region title
 
+            Paragraph title = new Paragraph("NOTA PENJUALAN GARMENT", header_font_bold);
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
+
+            Paragraph no = new Paragraph(viewModel.noteNo, header_font_bold);
+            no.Alignment = Element.ALIGN_CENTER;
+            document.Add(no);
+
+            Paragraph location = new Paragraph("SUKOHARJO - JATENG", normal_font_underlined);
+            location.Alignment = Element.ALIGN_RIGHT;
+            document.Add(location);
+
+
             PdfPTable tableTitle = new PdfPTable(3);
-            tableTitle.WidthPercentage = 100;
-            tableTitle.SetWidths(new float[] { 2f, 2f,1f });
+            tableTitle.WidthPercentage = 40;
+            tableTitle.SetWidths(new float[] { 3f, 0.5f, 4f });
 
-            PdfPCell cellTitle1 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment=Element.ALIGN_CENTER };
+            PdfPCell cellTitle1 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
-            cellTitle1.Phrase = new Phrase(viewModel.noteNo, normal_font_bold);
-            cellTitle1.Colspan = 2;
+            cellTitle1.Phrase= new Phrase("NPWP Penjual", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase(":", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase("01.139.907.8-532.000", normal_font);
             tableTitle.AddCell(cellTitle1);
 
-            cellTitle1.Phrase = new Phrase("SUKOHARJO - JATENG", normal_font_underlined);
-            cellTitle1.Colspan = 1;
-            cellTitle1.HorizontalAlignment = Element.ALIGN_LEFT;
+            cellTitle1.Phrase = new Phrase("NPWP Pembeli", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase(":", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase(buyer.npwp, normal_font);
             tableTitle.AddCell(cellTitle1);
 
-            tableTitle.SpacingAfter = 10;
+            cellTitle1.Phrase = new Phrase("NIK Pembeli", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase(":", normal_font);
+            tableTitle.AddCell(cellTitle1);
+            cellTitle1.Phrase = new Phrase(buyer.NIK, normal_font);
+            tableTitle.AddCell(cellTitle1);
+
+            tableTitle.SpacingAfter = 5;
+            tableTitle.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableTitle);
             #endregion
 
