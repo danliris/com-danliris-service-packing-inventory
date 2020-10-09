@@ -55,7 +55,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     if (item.policyDate == null || item.policyDate == DateTimeOffset.MinValue)
                     {
-                        errorItem["policyDate"] = "Tgl Polis tidak boleh 0";
+                        errorItem["policyDate"] = "Tgl Polis tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+
+                    if (item.invoiceId == 0 ||string.IsNullOrEmpty(item.invoiceNo))
+                    {
+                        errorItem["invoice"] = "Invoice tidak boleh kosong";
                         errorItemsCount++;
                     }
 
