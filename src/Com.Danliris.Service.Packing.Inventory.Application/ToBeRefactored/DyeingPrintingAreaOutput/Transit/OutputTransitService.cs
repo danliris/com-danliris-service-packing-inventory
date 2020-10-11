@@ -138,7 +138,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = s.ProductPackingId,
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
-                        HasPrintingProductPacking = s.HasPrintingProductPacking
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        DateIn=s.DateIn,
+                        DateOut=s.DateOut,
                     }).ToList()
                 };
 
@@ -254,7 +256,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
-                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId
+                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
+                        DateIn=s.DateIn,
+                        DateOut=s.DateOut,
                     }).ToList()
                 };
                 foreach (var item in vm.TransitProductionOrders)
@@ -962,20 +966,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
                     var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
 
-                    dt.Rows.Add(item.ProductionOrder.No, dateIn, dateOut, item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.Construction, item.Unit, item.Buyer,
-                        item.Color, item.Motif, item.Remark, item.ProductionMachine, item.Grade, item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, "");
+                    dt.Rows.Add(item.ProductionOrder.No, 
+                                dateIn, 
+                                dateOut, 
+                                item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.Construction, 
+                                item.Unit, 
+                                item.Buyer,
+                                item.Color,
+                                item.Motif, 
+                                item.Remark, 
+                                item.ProductionMachine, 
+                                item.Grade, 
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.UomUnit, 
+                                "");
                 }
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Transit") }, true);
         }
 
-        private MemoryStream GenerateExcelAdj(OutputTransitViewModel viewModel)
+        private MemoryStream GenerateExcelAdj(OutputTransitViewModel viewModel,int timeOffSet)
         {
             var query = viewModel.TransitProductionOrders.OrderBy(s => s.ProductionOrder.No);
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
@@ -990,14 +1008,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "","", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
                 foreach (var item in query)
                 {
-                    dt.Rows.Add(item.ProductionOrder.No, item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.Construction, item.Unit,
-                               item.Buyer, item.Color, item.Motif, item.Remark, item.UomUnit, item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AdjDocumentNo, "");
+                    var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(timeOffSet, 0, 0)).Date.ToString("d");
+                    dt.Rows.Add(item.ProductionOrder.No,
+                                dateOut,
+                                item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.Construction,
+                                item.Unit,
+                                item.Buyer, 
+                                item.Color, 
+                                item.Motif,
+                                item.Remark, 
+                                item.UomUnit, 
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.AdjDocumentNo, 
+                                "");
 
                 }
             }
@@ -1005,15 +1035,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Transit") }, true);
         }
 
-        public MemoryStream GenerateExcel(OutputTransitViewModel viewModel,int TimeZone)
+        public MemoryStream GenerateExcel(OutputTransitViewModel viewModel,int timeOffset)
         {
             if (viewModel.Type == null || viewModel.Type == DyeingPrintingArea.OUT)
             {
-                return GenerateExcelOut(viewModel, TimeZone);
+                return GenerateExcelOut(viewModel, timeOffset);
             }
             else
             {
-                return GenerateExcelAdj(viewModel);
+                return GenerateExcelAdj(viewModel,timeOffset);
             }
         }
 
@@ -1079,9 +1109,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
                             var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
 
-                            dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, dateOut, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
-                                item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark,item.ProductionMachine, item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, DyeingPrintingArea.OUT, item.NextAreaInputStatus);
+                            dt.Rows.Add(model.BonNo, 
+                                        item.ProductionOrderNo, 
+                                        dateIn, 
+                                        dateOut, 
+                                        item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                                        item.CartNo, 
+                                        item.Construction, 
+                                        item.Unit, 
+                                        item.Buyer, 
+                                        item.Color, 
+                                        item.Motif, 
+                                        item.Remark,
+                                        item.ProductionMachine,
+                                        item.Grade, 
+                                        item.UomUnit,
+                                        item.Balance.ToString("N2", CultureInfo.InvariantCulture),
+                                        model.DestinationArea, DyeingPrintingArea.OUT, 
+                                        item.NextAreaInputStatus);
 
                         }
 
@@ -1090,9 +1135,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
-                            dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),model.Date.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"), item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
-                                item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Remark,"", item.Grade, item.UomUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), model.DestinationArea, DyeingPrintingArea.ADJ, "");
+                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                            var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                            dt.Rows.Add(model.BonNo,
+                                        item.ProductionOrderNo,
+                                        dateIn,
+                                        dateOut, 
+                                        item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                                        item.CartNo, 
+                                        item.Construction, 
+                                        item.Unit, 
+                                        item.Buyer,
+                                        item.Color, 
+                                        item.Motif, 
+                                        item.Remark,
+                                        "",
+                                        item.Grade,
+                                        item.UomUnit,
+                                        item.Balance.ToString("N2", CultureInfo.InvariantCulture), 
+                                        model.DestinationArea, 
+                                        DyeingPrintingArea.ADJ, 
+                                        "");
 
                         }
                     }
@@ -1304,15 +1368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public MemoryStream GenerateExcel(OutputTransitViewModel viewModel)
         {
-            if (viewModel.Type == null || viewModel.Type == DyeingPrintingArea.OUT)
-            {
-                throw new NotImplementedException();
-              //  return GenerateExcelOut(viewModel);
-            }
-            else
-            {
-                return GenerateExcelAdj(viewModel);
-            }
+            throw new NotImplementedException();
         }
     }
 }

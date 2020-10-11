@@ -152,6 +152,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
                         DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
+                        DateIn=s.DateIn,
+                        DateOut=s.DateOut
                     }).ToList()
                 };
                 foreach (var item in vm.WarehousesProductionOrders)
@@ -658,6 +660,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "NO. DO", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "TANGGAL MASUK", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "TANGGAL KELUAR", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY ORDER", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "MATERIAL", DataType = typeof(string) });
@@ -677,17 +680,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
                 foreach (var item in query)
                 {
-                  
+                    var dataIn= item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
                     dt.Rows.Add(indexNumber,
                                 item.DeliveryOrderSalesNo,
                                 item.ProductionOrderNo,
-                                item.DateIn,
+                                dataIn,
+                                dataOut,
                                 item.ProductionOrderOrderQuantity,
                                 item.Construction,
                                 item.Unit,
@@ -858,12 +864,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
-        private MemoryStream GenerateExcelAdj(DyeingPrintingAreaOutputModel model)
+        private MemoryStream GenerateExcelAdj(DyeingPrintingAreaOutputModel model,int timeOffset)
         {
             var query = model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo);
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal. Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
@@ -882,13 +889,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "","", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
                 foreach (var item in query)
                 {
-                    dt.Rows.Add(item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.ProductionOrderType,
+                   
+                    var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(timeOffset, 0, 0)).Date.ToString("d");
+
+                    dt.Rows.Add(item.ProductionOrderNo, dateOut,item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture), item.ProductionOrderType,
                         item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.Grade, item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture),
                         item.PackagingUnit, item.UomUnit, item.PackagingLength.ToString("N2", CultureInfo.InvariantCulture), item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.AdjDocumentNo, "");
 
@@ -1405,8 +1415,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          BonNo = s.BonNo,
                          DoNo = s.DeliveryOrderSalesNo,
                          NoSPP = d.ProductionOrderNo,
-                         DateIn=d.DateIn.ToOffset(new TimeSpan(offSet,0,0)).Date.ToString("d"),
-                         DateOut=d.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
+                         DateIn=d.DateIn,
+                         DateOut=d.DateOut,
                          QtyOrder = d.ProductionOrderOrderQuantity,
                          Material = d.Construction,
                          Unit = d.Unit,
@@ -1475,7 +1485,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         var searchValue = searchProperty.GetValue(item, null);
-                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                        if (searchProperty.Name.Equals("DateIn") || searchProperty.Name.Equals("DateOut"))
+                        {
+                            var date = DateTimeOffset.Parse(searchValue.ToString());
+                            valueClass = date.Equals(DateTimeOffset.MinValue) ? "" : date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        }
+                        else
+                        {
+                            valueClass = searchValue == null ? "" : searchValue.ToString();
+                        }
+                      
                     }
                     //else
                     //{
@@ -2030,7 +2049,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
-                return GenerateExcelAdj(model);
+                return GenerateExcelAdj(model, offSet);
             }
         }
 

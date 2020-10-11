@@ -149,7 +149,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
-                        BalanceRemains = s.Balance
+                        BalanceRemains = s.Balance,
+                        DateIn=s.DateIn,
+                        DateOut=s.DateOut,
                     }).ToList()
                 };
 
@@ -276,7 +278,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingId = s.ProductPackingId,
                         FabricPackingId = s.FabricPackingId,
                         ProductPackingCode = s.ProductPackingCode,
-                        HasPrintingProductPacking = s.HasPrintingProductPacking
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        DateIn=s.DateIn,
+                        DateOut=s.DateOut,
                     }).ToList()
                 };
                 foreach (var item in vm.ShippingProductionOrders)
@@ -1212,7 +1216,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Unit, item.Color,
                         item.Motif, item.PackingType, item.Grade,
                         item.ShippingGrade,
-                        item.ShippingRemark, item.QtyPacking.ToString("N2", CultureInfo.InvariantCulture), item.Packing,
+                        item.ShippingRemark, 
+                        item.QtyPacking.ToString("N2", CultureInfo.InvariantCulture),
+                        item.Packing,
                         item.Qty.ToString("N2", CultureInfo.InvariantCulture), item.Weight.ToString("N2", CultureInfo.InvariantCulture), item.DeliveryNote, "");
                 }
             }
@@ -1335,7 +1341,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
                             var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                            var dateOut = model.Date.Equals(DateTimeOffset.MinValue) ? "" : model.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                            var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
 
                             dt.Rows.Add(model.BonNo,
                                 item.ProductionOrderNo,
@@ -1343,9 +1349,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 dateIn,
                                 dateOut,
                                 item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),  
-                                item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
-                                item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, DyeingPrintingArea.OUT, item.NextAreaInputStatus);
+                                item.Construction, 
+                                item.Unit, 
+                                item.Buyer, 
+                                item.Color, 
+                                item.Motif, 
+                                item.PackagingType,
+                                item.ShippingGrade, 
+                                item.ShippingRemark,
+                                item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.PackagingUnit,
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.UomUnit, 
+                                item.DeliveryNote,
+                                model.DestinationArea,
+                                DyeingPrintingArea.OUT, 
+                                item.NextAreaInputStatus);
 
                         }
                     }
@@ -1353,14 +1372,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                         {
+                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                            var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+
                             dt.Rows.Add(model.BonNo, 
                                 item.ProductionOrderNo, 
-                                item.DeliveryOrderSalesNo, 
-                                item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), 
-                                model.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"), item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
-                                item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.PackagingType, item.ShippingGrade, item.ShippingRemark,
-                                item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), item.PackagingUnit,
-                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), item.UomUnit, item.DeliveryNote, model.DestinationArea, DyeingPrintingArea.ADJ, "");
+                                item.DeliveryOrderSalesNo,
+                                dateIn,
+                                dateOut, 
+                                item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                                item.Construction,
+                                item.Unit,
+                                item.Buyer,
+                                item.Color, 
+                                item.Motif, 
+                                item.PackagingType, 
+                                item.ShippingGrade, 
+                                item.ShippingRemark,
+                                item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.PackagingUnit,
+                                item.Balance.ToString("N2", CultureInfo.InvariantCulture), 
+                                item.UomUnit, 
+                                item.DeliveryNote, 
+                                model.DestinationArea, 
+                                DyeingPrintingArea.ADJ,
+                                "");
 
                         }
                     }
@@ -1560,7 +1597,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = s.ProductPackingId,
                     FabricPackingId = s.FabricPackingId,
                     ProductPackingCode = s.ProductPackingCode,
-                    HasPrintingProductPacking = s.HasPrintingProductPacking
+                    HasPrintingProductPacking = s.HasPrintingProductPacking,
+                    
                 });
 
             return new ListResult<AdjShippingProductionOrderViewModel>(data.ToList(), page, size, query.Count());

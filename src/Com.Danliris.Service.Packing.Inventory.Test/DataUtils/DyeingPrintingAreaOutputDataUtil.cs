@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1)
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now,DateTimeOffset.Now)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue,DateTimeOffset.MaxValue)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1)
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now,DateTimeOffset.Now)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -208,7 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue,DateTimeOffset.MinValue)
                 {
                     PrevSppInJson = "[]"
                 }
