@@ -329,7 +329,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Type = s.ProductionOrderType
                 },
                 Unit = s.Unit,
-                UomUnit = s.UomUnit
+                UomUnit = s.UomUnit,
+                DateIn=s.DateIn,
+                DateOut=s.DateOut
             });
 
             return new ListResult<InputInspectionMaterialProductionOrderViewModel>(data.ToList(), page, size, query.Count());

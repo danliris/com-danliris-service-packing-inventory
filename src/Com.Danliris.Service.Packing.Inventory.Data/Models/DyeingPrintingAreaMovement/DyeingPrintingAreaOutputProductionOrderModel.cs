@@ -372,7 +372,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId, int buyerId,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string adjDocumentNo, string packagingType, decimal packagingQty,
             string packagingUnit, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth) : this()
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth,DateTimeOffset dateIn, DateTimeOffset dateOut) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -426,6 +426,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             HasPrintingProductPacking = hasPrintingProductPacking;
 
             PackagingLength = packingLength;
+            DateIn = dateIn;
+            DateOut = dateOut;
         }
 
         /// <summary>
@@ -759,7 +761,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="adjDocumentNo"></param>
         /// <param name="area"></param>
         /// <param name="hasNextAreaDocument"></param>
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo, int avalTransformationId) : this()
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo, int avalTransformationId,DateTimeOffset dateIn,DateTimeOffset dateOut) : this()
         {
             Area = area;
             HasNextAreaDocument = hasNextAreaDocument;
@@ -768,6 +770,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
             DyeingPrintingAreaInputProductionOrderId = avalTransformationId;
+            DateIn = dateIn;
+            DateOut = dateOut;
         }
 
         /// <summary>
@@ -795,6 +799,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             string deliveryNote,
                                                             string prevAval,
                                                             int dyeingPrintingAreaInputProductionOrderId,
+                                                            DateTimeOffset dateIn,
                                                             DateTimeOffset dateOut) : this()
         {
             AvalType = avalType;
@@ -809,6 +814,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryNote = deliveryNote;
             PrevSppInJson = prevAval;
             DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+            DateIn = dateIn;
             DateOut = dateOut;
         }
 

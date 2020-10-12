@@ -417,7 +417,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = s.ProductPackingId,
                     FabricPackingId = s.FabricPackingId,
                     ProductPackingCode = s.ProductPackingCode,
-                    HasPrintingProductPacking = s.HasPrintingProductPacking
+                    HasPrintingProductPacking = s.HasPrintingProductPacking,
+                    DateIn = s.DateIn,
+                    DateOut = s.DateOut
                 }).ToList()
             };
 
@@ -863,8 +865,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                           Grade = d.Grade,
                           QtyKeluar = d.Balance,
                           SAT = d.UomUnit,
-                          DateIn = d.DateIn.Equals(DateTimeOffset.MinValue) ? "" : d.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d"),
-                          DateOut = d.DateOut.Equals(DateTimeOffset.MinValue) ? "" : d.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d")
+                          DateIn = d.DateIn,
+                          DateOut = d.DateOut
                       })
                   });
 
@@ -915,12 +917,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         var searchValue = searchProperty.GetValue(item, null);
-                        valueClass = searchValue == null ? "" : searchValue.ToString();
+                      
+                        if (searchProperty.Name.Equals("DateIn") || searchProperty.Name.Equals("DateOut"))
+                        {
+                            var date = DateTimeOffset.Parse(searchValue.ToString());
+                            valueClass = date.Equals(DateTimeOffset.MinValue) ? "" : date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                        }
+                        else
+                        {
+                            valueClass = searchValue == null ? "" : searchValue.ToString();
+                        }
                     }
-                    //else
-                    //{
-                    //    valueClass = "";
-                    //}
+                    
                     data.Add(valueClass);
                 }
                 dt.Rows.Add(data.ToArray());
