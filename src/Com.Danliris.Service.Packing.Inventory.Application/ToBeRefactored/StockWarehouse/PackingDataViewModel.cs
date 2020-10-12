@@ -10,6 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public decimal PackagingQty { get; set; }
         public string PackagingUnit { get; set; }
         public double PackagingLength { get; set; }
-        public double Balance { get; set; }
+        public decimal Balance { get; set; }
     }
 }

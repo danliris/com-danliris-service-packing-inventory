@@ -143,8 +143,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId);
             var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
             var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId);
-            var joinData2 = dataSearchDate.Concat(dataAwal);
 
+            var joinData2 = dataSearchDate.Concat(dataAwal);
             var result = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
             {
                 ProductionOrderId = e.Key.ProductionOrderId,
@@ -157,16 +157,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Motif = e.First().Motif,
                 Satuan = e.First().Satuan,
                 Unit = e.First().Unit,
-                Awal = e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0,
-                Masuk = e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0,
-                Keluar = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0),
-                Akhir = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0)
+                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
             });
 
             return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
@@ -235,8 +235,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 PackagingUnit = d.Key.PackagingUnit,
                 PackagingQty = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.PackagingQty) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.PackagingQty)
                     + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.PackagingQty),
-                Balance = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
-                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+                Balance = Convert.ToDecimal(d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
+                    + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance))
 
             });
 
@@ -268,7 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 PackagingLength = d.Key.PackagingLength,
                 PackagingUnit = d.Key.PackagingUnit,
                 PackagingQty = d.Sum(e => e.PackagingQty),
-                Balance = d.Sum(e => e.Balance)
+                Balance = Convert.ToDecimal(d.Sum(e => e.Balance))
             });
 
             return result;
@@ -285,11 +285,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             {
                 PackagingLength = e.Key.PackagingLength,
                 PackagingUnit = e.Key.PackagingUnit,
-                Balance = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Balance : 0)
+                Balance = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Balance : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Balance : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Balance : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Balance : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Balance : 0),
+                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Balance : 0), 4),
                 PackagingQty = (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).PackagingQty : 0)
                     + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).PackagingQty : 0)
                     - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).PackagingQty : 0)
