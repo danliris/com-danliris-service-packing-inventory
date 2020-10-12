@@ -863,7 +863,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                           Motif = d.Motif,
                           ProductionMachine=d.ProductionMachine,
                           Grade = d.Grade,
-                          QtyKeluar = d.Balance,
+                          QtyTerima = d.InputQuantity,
                           SAT = d.UomUnit,
                           DateIn = d.DateIn,
                           DateOut = d.DateOut
@@ -893,7 +893,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"Motif","MOTIF"},
                 {"ProductionMachine","ProductionMachine" },
                 {"Grade","GRADE"},
-                {"QtyKeluar","QTY KELUAR" },
+                {"QtyTerima","QTY TERIMA" },
                 {"SAT","SAT" },
             };
             var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();

@@ -278,7 +278,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
             var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
             var dataSearchDate = GetPackingDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, grade);
-            var dataAwal = dataSearchDate.Count() > 0 ? GetAwalPackingData(startDate, zona, offset, unit, packingType, construction, buyer, productionOrderId, grade) : new List<PackingDataViewModel>();
+            var dataAwal = GetAwalPackingData(startDate, zona, offset, unit, packingType, construction, buyer, productionOrderId, grade);
             var joinData2 = dataSearchDate.Concat(dataAwal);
 
             var result = joinData2.GroupBy(d => new { d.PackagingUnit, d.PackagingLength }).Select(e => new PackingDataViewModel()
