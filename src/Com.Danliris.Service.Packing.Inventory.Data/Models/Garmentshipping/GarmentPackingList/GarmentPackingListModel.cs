@@ -153,6 +153,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetPaymentTerm(string paymentTerm, string userName, string userAgent)
+        {
+            if (PaymentTerm != paymentTerm)
+            {
+                PaymentTerm = paymentTerm;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetLCNo(string lCNo, string userName, string userAgent)
         {
             if (LCNo != lCNo)

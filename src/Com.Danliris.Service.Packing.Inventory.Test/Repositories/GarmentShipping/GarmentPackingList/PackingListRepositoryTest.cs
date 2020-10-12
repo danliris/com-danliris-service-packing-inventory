@@ -61,6 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetFabricCountryOrigin("Updated " + data.FabricCountryOrigin, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetFabricComposition("Updated " + data.FabricComposition, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetRemarkMd("Updated " + data.RemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetPaymentTerm("Updated " + data.PaymentTerm, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {

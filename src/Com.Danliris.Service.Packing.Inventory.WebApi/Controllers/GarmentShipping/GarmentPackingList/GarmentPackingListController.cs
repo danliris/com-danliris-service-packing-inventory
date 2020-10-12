@@ -323,5 +323,114 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("approve-shipping/{id}")]
+        public async Task<IActionResult> ApproveShipping([FromRoute] int id, [FromBody] GarmentPackingListShippingViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                _validateService.Validate(viewModel);
+                await _service.SetApproveShipping(id, viewModel);
+
+                return Ok();
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-shipping-unit/{id}")]
+        public async Task<IActionResult> SetRejectShippingToUnit([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
+                await _service.SetRejectShippingToUnit(id, reason);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-shipping-md/{id}")]
+        public async Task<IActionResult> SetRejectShippingToMd([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
+                await _service.SetRejectShippingToMd(id, reason);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("revise-shipping/{id}")]
+        public async Task<IActionResult> SetRevisedShipping([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetRevisedShipping(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
