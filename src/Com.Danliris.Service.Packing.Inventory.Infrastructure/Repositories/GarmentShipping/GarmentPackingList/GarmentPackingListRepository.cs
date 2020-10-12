@@ -112,6 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSectionId(model.SectionId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPaymentTerm(model.PaymentTerm, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLCNo(model.LCNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetLCDate(model.LCDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIssuedBy(model.IssuedBy, _identityProvider.Username, UserAgent);
