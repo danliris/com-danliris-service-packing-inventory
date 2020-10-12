@@ -937,9 +937,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Motif = d.Motif,
                         Jenis = d.PackagingType,
                         Grade = d.Grade,
-                        QtyPack = d.PackagingQty,
+                        QtyPack = d.InputPackagingQty,
                         Pack = d.PackagingUnit,
-                        Qty = d.Balance,
+                        Qty = d.InputQuantity,
                         SAT = d.UomUnit,
                         DateIn=d.DateIn,
                         DateOut = d.DateOut
