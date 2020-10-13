@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingLocalPriceCuttingNoteModel GetModel()
         {
-            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1) };
+            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1,false) };
             var model = new GarmentShippingLocalPriceCuttingNoteModel("", DateTimeOffset.Now, 1, "", "", true, "", items);
 
             return model;
@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingLocalPriceCuttingNoteModel GetEmptyModel()
         {
-            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(0, null, 0, 0) };
+            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(0, null, 0, 0, false) };
             var model = new GarmentShippingLocalPriceCuttingNoteModel(null, DateTimeOffset.MinValue, 0, null, null, true, null, items);
 
             return model;

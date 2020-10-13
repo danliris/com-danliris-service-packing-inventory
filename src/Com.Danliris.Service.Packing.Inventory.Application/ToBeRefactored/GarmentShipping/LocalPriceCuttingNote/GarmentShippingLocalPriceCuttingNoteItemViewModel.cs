@@ -9,5 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string salesNoteNo { get; set; }
         public double salesAmount { get; set; }
         public double cuttingAmount { get; set; }
+        public bool includeVat { get; set; }
     }
 }
