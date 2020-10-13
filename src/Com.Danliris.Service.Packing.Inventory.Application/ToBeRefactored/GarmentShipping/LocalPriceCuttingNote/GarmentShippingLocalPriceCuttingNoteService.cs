@@ -69,7 +69,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     salesNoteId = i.SalesNoteId,
                     salesNoteNo = i.SalesNoteNo,
                     salesAmount = i.SalesAmount,
-                    cuttingAmount = i.CuttingAmount
+                    cuttingAmount = i.CuttingAmount,
+                    includeVat = i.IncludeVat
                 }).ToList()
             };
 
@@ -80,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var items = (vm.items ?? new List<GarmentShippingLocalPriceCuttingNoteItemViewModel>()).Select(i =>
             {
-                return new GarmentShippingLocalPriceCuttingNoteItemModel(i.salesNoteId, i.salesNoteNo, i.salesAmount, i.cuttingAmount) { Id = i.Id };
+                return new GarmentShippingLocalPriceCuttingNoteItemModel(i.salesNoteId, i.salesNoteNo, i.salesAmount, i.cuttingAmount, i.includeVat) { Id = i.Id };
             }).ToList();
 
             vm.buyer = vm.buyer ?? new Buyer();

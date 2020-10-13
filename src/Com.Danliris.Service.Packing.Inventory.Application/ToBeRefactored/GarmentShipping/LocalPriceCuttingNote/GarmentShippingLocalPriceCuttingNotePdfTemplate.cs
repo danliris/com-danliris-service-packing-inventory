@@ -98,6 +98,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyCenter.Colspan = 1;
             tableBody.AddCell(cellBodyCenter);
 
+            double totalPrice = 0;
+
             foreach (var item in viewModel.items)
             {
                 cellBodyLeft.Phrase = new Phrase(item.salesNoteNo, normal_font);
@@ -105,9 +107,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.cuttingAmount), normal_font);
                 tableBody.AddCell(cellBodyRight);
+
+                totalPrice += item.includeVat ? item.cuttingAmount * 100 * 110 : item.cuttingAmount;
             }
 
-            double totalPrice = viewModel.items.Sum(a => a.cuttingAmount);
             double ppn = 0;
             if (viewModel.useVat)
             {
