@@ -335,8 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 result = await _repository.InsertAsync(model);
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                    
                     if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
 
@@ -367,8 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                    
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
                     if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {

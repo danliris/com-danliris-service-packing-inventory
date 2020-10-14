@@ -942,7 +942,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Qty = d.InputQuantity,
                         SAT = d.UomUnit,
                         DateIn=d.DateIn,
-                        DateOut = d.DateOut
+                        
                     })
                 });
 
@@ -961,7 +961,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"BonNo","NO BON" },
                 {"NoSPP","NO SP" },
                 {"DateIn","Tanggal Masuk" },
-                {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
                 {"Unit","UNIT"},
@@ -998,7 +997,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //{
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         var searchValue = searchProperty.GetValue(item, null);
-                        if (searchProperty.Name.Equals("DateIn") || searchProperty.Name.Equals("DateOut"))
+                        if (searchProperty.Name.Equals("DateIn") )
                         {
                             var date = DateTimeOffset.Parse(searchValue.ToString());
                             valueClass = date.Equals(DateTimeOffset.MinValue) ? "" : date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");

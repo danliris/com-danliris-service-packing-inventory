@@ -340,7 +340,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += await _inputProductionOrderRepository.UpdateFromOutputIMAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                     }
 
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
+                    
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType);
@@ -374,8 +374,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                         result += await _outputProductionOrderRepository.InsertAsync(modelItem);
 
-                        result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                       
                         if (viewModel.DestinationArea == DyeingPrintingArea.PRODUKSI)
                         {
                             result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.Id, detail.Balance);
@@ -431,8 +430,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                   
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, type, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
@@ -454,8 +452,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                    
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
 
                     result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
@@ -1052,7 +1049,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
+            
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
@@ -1068,7 +1065,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "","","", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "","", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -1078,7 +1075,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan( timeOffset, 0, 0)).Date.ToString("d");
 
                     dt.Rows.Add(item.ProductionOrder.No, 
-                                dateIn,
                                 dateOut,
                                 item.ProductionOrder.OrderQuantity.ToString("N2", CultureInfo.InvariantCulture), 
                                 item.CartNo, 
