@@ -64,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellRight = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             PdfPCell cellCurrency = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            PdfPCell cellAmount = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             cellLeft.Phrase = new Phrase("Nomor Polis & Certificate", normal_font);
             tableBody.AddCell(cellLeft);
@@ -102,14 +103,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellCurrency.Phrase = new Phrase("$", normal_font);
                 tableBody.AddCell(cellCurrency);
 
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", item.amount), normal_font);
-                tableBody.AddCell(cellRight);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", item.amount), normal_font);
+                tableBody.AddCell(cellAmount);
 
                 cellCurrency.Phrase = new Phrase("$", normal_font);
                 tableBody.AddCell(cellCurrency);
 
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", item.amount*viewModel.rate), normal_font);
-                tableBody.AddCell(cellRight);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", item.amount*viewModel.rate), normal_font);
+                tableBody.AddCell(cellAmount);
             }
 
             cellRight.Phrase = new Phrase("Total Premi", normal_font);
@@ -120,15 +121,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellCurrency);
 
             decimal totalAmount = viewModel.items.Sum(a => a.amount);
-            cellRight.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font_bold);
-            cellRight.Colspan = 1;
-            tableBody.AddCell(cellRight);
+            cellAmount.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font_bold);
+            cellAmount.Colspan = 1;
+            tableBody.AddCell(cellAmount);
 
             cellCurrency.Phrase = new Phrase("$", normal_font_bold);
             tableBody.AddCell(cellCurrency);
 
-            cellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPremi), normal_font_bold);
-            tableBody.AddCell(cellRight);
+            cellAmount.Phrase = new Phrase(string.Format("{0:n2}", totalPremi), normal_font_bold);
+            tableBody.AddCell(cellAmount);
 
             tableBody.SpacingAfter = 10;
             tableBody.SpacingBefore = 5;
