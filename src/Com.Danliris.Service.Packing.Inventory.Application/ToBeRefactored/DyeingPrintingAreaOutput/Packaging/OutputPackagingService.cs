@@ -709,8 +709,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in viewModel.PackagingProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-                    
+                   
                     var transform = await _inputProductionOrderRepository.UpdatePackingFromOut(viewModel.DestinationArea, item.ProductionOrderNo, item.Grade, item.QtyOut);
                     
                     result += transform.Item1;
@@ -754,8 +753,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     DyeingPrintingAreaOutputProductionOrderModel modelItem = null;
 
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                   
                     var transform = await _inputProductionOrderRepository.UpdatePackingFromOut(viewModel.DestinationArea, item.ProductionOrderNo, item.Grade, item.QtyOut);
                     result += transform.Item1;
                     var prevPacking = JsonConvert.SerializeObject(transform.Item2);
@@ -906,7 +904,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             Dictionary<string, string> mappedClass = new Dictionary<string, string>
             {
                 {"ProductionOrderNo","No SPP" },
-                {"DateIn","Tanggal Masuk" },
                 {"DateOut","Tanggal Keluar" },
                 {"ProductionOrderOrderQuantity","Qty Order" },
                 {"Buyer","Buyer" },
@@ -948,7 +945,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         
                         var searchValue = searchProperty.GetValue(item, null);
-                        if (searchProperty.Name.Equals("DateIn") || searchProperty.Name.Equals("DateOut"))
+                        if ( searchProperty.Name.Equals("DateOut"))
                         {
                           
                             var date = DateTimeOffset.Parse(searchValue.ToString());
@@ -1104,7 +1101,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Qty = d.Balance,
                         d.NextAreaInputStatus,
                         SAT = d.UomUnit,
-                        DateIn=d.DateIn,
                         DateOut=d.DateOut,
                     })
                 });
@@ -1144,7 +1140,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 {"BonNo","NO BON" },
                 {"NoSPP","NO SP" },
-                {"DateIn","Tanggal Masuk" },
                 {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
@@ -1184,7 +1179,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var searchProperty = item.GetType().GetProperty(searchMappedClass.FirstOrDefault().Key);
                         var searchValue = searchProperty.GetValue(item, null);
 
-                        if (searchProperty.Name.Equals("DateIn") || searchProperty.Name.Equals("DateOut"))
+                        if ( searchProperty.Name.Equals("DateOut"))
                         {
                             var date = DateTimeOffset.Parse(searchValue.ToString());
                             valueClass = date.Equals(DateTimeOffset.MinValue) ? "" : date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");

@@ -26,12 +26,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
+              
                 new DyeingPrintingAreaOutputProductionOrderModel("SHIPPING","TRANSIT",false,1,"a",1,"a","a0,",1,"s","s","s","s","d","d","e","note",1,1, "unit","type",1,1, false,"s","s",1, 1, "name", 1, "a", "1","1","1","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now)
-
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now,DateTimeOffset.Now)
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue,DateTimeOffset.MaxValue)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now,DateTimeOffset.Now)
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG AVAL",true,"Aval Sambungan",1,1,"no",1,DateTimeOffset.Now)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -208,7 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue,DateTimeOffset.MinValue)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,false,null, 0, 0,null,1,DateTimeOffset.MinValue)
                 {
                     PrevSppInJson = "[]"
                 }

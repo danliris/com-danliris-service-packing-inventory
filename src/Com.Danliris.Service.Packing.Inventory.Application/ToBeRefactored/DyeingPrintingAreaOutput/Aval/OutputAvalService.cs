@@ -245,14 +245,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0,item.DateIn, viewModel.Date);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0, viewModel.Date);
                         productionOrders.Add(productionOrder);
                     }
                     else
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         var productionOrder = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id, item.DateIn,viewModel.Date);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id, viewModel.Date);
                         productionOrders.Add(productionOrder);
                     }
                 }
@@ -263,8 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                    
                     if (viewModel.DestinationArea == DyeingPrintingArea.BUYER)
                     {
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
@@ -286,7 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += transform.Item1;
                         var prevAval = JsonConvert.SerializeObject(transform.Item2);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0, item.DateIn, viewModel.Date);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, prevAval, 0,  viewModel.Date);
 
 
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
@@ -296,7 +295,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
                         modelItem = new DyeingPrintingAreaOutputProductionOrderModel(item.AvalType, item.AvalCartNo, item.AvalUomUnit, item.AvalOutSatuan, item.AvalOutQuantity, item.AvalQuantity,
-                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id, item.DateIn, viewModel.Date);
+                            item.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, item.DeliveryNote, "[]", item.Id, viewModel.Date);
 
 
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
@@ -339,14 +338,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group,
                        type, viewModel.AvalItems.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,s.DateIn,viewModel.Date)).ToList());
+                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,viewModel.Date)).ToList());
 
                 result = await _outputRepository.InsertAsync(model);
 
                 foreach (var item in model.DyeingPrintingAreaOutputProductionOrders)
                 {
-                    result += await _inputProductionOrderRepository.UpdateDateOutsync(item.DyeingPrintingAreaInputProductionOrderId, viewModel.Date);
-
+                   
                     var avalTransform = await _inputRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
                     if (avalTransform != null)
                     {
@@ -364,7 +362,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var item in viewModel.AvalItems)
                 {
-                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, item.AvalType, item.AvalQuantity, item.AvalQuantityKg, item.AdjDocumentNo, item.AvalTransformationId,item.DateIn,viewModel.Date);
+                    var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, item.AvalType, item.AvalQuantity, item.AvalQuantityKg, item.AdjDocumentNo, item.AvalTransformationId,viewModel.Date);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
 
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
@@ -927,7 +925,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Karung", DataType = typeof(string) });
@@ -939,7 +936,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "","","", "", "", "", "","");
+                dt.Rows.Add("","","", "", "", "", "","");
             }
             else
             {
@@ -951,11 +948,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(d => !d.HasNextAreaDocument).OrderBy(s => s.AvalType))
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.AvalType))
                         {
-                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                           
                             var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
 
                             dt.Rows.Add(model.BonNo, 
-                                        dateIn,
+                                       
                                         dateOut, 
                                         item.AvalType, 
                                         item.AvalALength.ToString("N2", CultureInfo.InvariantCulture), 
@@ -973,9 +970,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.OrderBy(s => s.AvalType))
                         {
                             var dateOut = item.DateOut.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                            var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                           
                             dt.Rows.Add(model.BonNo, 
-                                dateIn,
+                                
                                         dateOut,
                                         item.AvalType, 
                                         item.AvalALength.ToString("N2", CultureInfo.InvariantCulture), 
@@ -1001,7 +998,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, viewModel.DeliveryOrderAvalNo, viewModel.DeliveryOrderAvalId, false,
                     viewModel.DestinationArea, viewModel.Group, viewModel.Type, viewModel.AvalItems.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalOutSatuan, s.AvalOutQuantity, s.AvalQuantity,
-                            s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote, s.PrevAval, 0, s.DateIn, viewModel.Date)
+                            s.AvalQuantityKg, viewModel.Area, viewModel.DestinationArea, s.DeliveryNote, s.PrevAval, 0, viewModel.Date)
                     {
                         Id = s.Id
                     }).ToList());
@@ -1076,7 +1073,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             var model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, viewModel.BonNo, true, "", viewModel.Group,
                        type, viewModel.AvalItems.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,s.DateIn,viewModel.Date)
+                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,viewModel.Date)
                     {
                         Id = s.Id
                     }).ToList());
