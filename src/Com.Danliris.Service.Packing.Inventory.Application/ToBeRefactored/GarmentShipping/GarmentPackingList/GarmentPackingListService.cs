@@ -401,8 +401,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetIsPosted(false, _identityProvider.Username, UserAgent);
-            model.SetStatus(GarmentPackingListStatusEnum.ON_PROCESS, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.ON_PROCESS));
+            model.SetStatus(GarmentPackingListStatusEnum.CREATED, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED));
 
             await _packingListRepository.SaveChanges();
         }

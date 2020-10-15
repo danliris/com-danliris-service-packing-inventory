@@ -761,7 +761,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="adjDocumentNo"></param>
         /// <param name="area"></param>
         /// <param name="hasNextAreaDocument"></param>
-        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo, int avalTransformationId,DateTimeOffset dateIn,DateTimeOffset dateOut) : this()
+        public DyeingPrintingAreaOutputProductionOrderModel(string area, bool hasNextAreaDocument, string avalType, double avalQuantity, double avalQuantityKg, string adjDocumentNo, int avalTransformationId,DateTimeOffset dateOut) : this()
         {
             Area = area;
             HasNextAreaDocument = hasNextAreaDocument;
@@ -770,7 +770,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = avalQuantity;
             AvalQuantityKg = avalQuantityKg;
             DyeingPrintingAreaInputProductionOrderId = avalTransformationId;
-            DateIn = dateIn;
+           
             DateOut = dateOut;
         }
 
@@ -799,7 +799,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                                                             string deliveryNote,
                                                             string prevAval,
                                                             int dyeingPrintingAreaInputProductionOrderId,
-                                                            DateTimeOffset dateIn,
                                                             DateTimeOffset dateOut) : this()
         {
             AvalType = avalType;
@@ -814,7 +813,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryNote = deliveryNote;
             PrevSppInJson = prevAval;
             DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
-            DateIn = dateIn;
             DateOut = dateOut;
         }
 

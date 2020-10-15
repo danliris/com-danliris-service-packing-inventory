@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Paragraph title = new Paragraph("DISPOSISI PEMBAYARAN", header_font_bold_underlined);
             title.Alignment = Element.ALIGN_CENTER;
 
-            decimal totalPremi = viewModel.items.Sum(a => a.amount * viewModel.rate);
+            decimal totalPremi = viewModel.items.Sum(a => a.amount * viewModel.rate / 100);
             Phrase intro = new Phrase();
             intro.Add(new Chunk("Mohon dibayarkan uang sebesar ", normal_font));
             intro.Add(new Chunk("USD " + string.Format("{0:n2}", totalPremi), normal_font_bold));
@@ -60,9 +60,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.WidthPercentage = 100;
             tableBody.SetWidths(new float[] { 3.5f, 2.5f, 3.5f, 2f, 0.2f, 2f, 0.2f, 2f });
 
-            PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
-            PdfPCell cellRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            PdfPCell cellRight = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            PdfPCell cellCurrency = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            PdfPCell cellAmount = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             cellLeft.Phrase = new Phrase("Nomor Polis & Certificate", normal_font);
             tableBody.AddCell(cellLeft);
@@ -98,36 +100,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellLeft.Phrase = new Phrase(item.invoiceNo, normal_font);
                 tableBody.AddCell(cellLeft);
 
-                cellLeft.Phrase = new Phrase("$", normal_font);
-                tableBody.AddCell(cellLeft);
+                cellCurrency.Phrase = new Phrase("$", normal_font);
+                tableBody.AddCell(cellCurrency);
 
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", item.amount), normal_font);
-                tableBody.AddCell(cellRight);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", item.amount), normal_font);
+                tableBody.AddCell(cellAmount);
 
-                cellLeft.Phrase = new Phrase("$", normal_font);
-                tableBody.AddCell(cellLeft);
+                cellCurrency.Phrase = new Phrase("$", normal_font);
+                tableBody.AddCell(cellCurrency);
 
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", item.amount*viewModel.rate), normal_font);
-                tableBody.AddCell(cellRight);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", item.amount*viewModel.rate), normal_font);
+                tableBody.AddCell(cellAmount);
             }
 
             cellRight.Phrase = new Phrase("Total Premi", normal_font);
             cellRight.Colspan = 4;
             tableBody.AddCell(cellRight);
 
-            cellLeft.Phrase = new Phrase("$", normal_font_bold);
-            tableBody.AddCell(cellLeft);
+            cellCurrency.Phrase = new Phrase("$", normal_font_bold);
+            tableBody.AddCell(cellCurrency);
 
             decimal totalAmount = viewModel.items.Sum(a => a.amount);
-            cellRight.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font_bold);
-            cellRight.Colspan = 1;
-            tableBody.AddCell(cellRight);
+            cellAmount.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font_bold);
+            cellAmount.Colspan = 1;
+            tableBody.AddCell(cellAmount);
 
-            cellLeft.Phrase = new Phrase("$", normal_font_bold);
-            tableBody.AddCell(cellLeft);
+            cellCurrency.Phrase = new Phrase("$", normal_font_bold);
+            tableBody.AddCell(cellCurrency);
 
-            cellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPremi), normal_font_bold);
-            tableBody.AddCell(cellRight);
+            cellAmount.Phrase = new Phrase(string.Format("{0:n2}", totalPremi), normal_font_bold);
+            tableBody.AddCell(cellAmount);
 
             tableBody.SpacingAfter = 10;
             tableBody.SpacingBefore = 5;
@@ -144,6 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             cellLeft.Phrase = new Phrase("AccountName", normal_font);
+            cellLeft.Border = Rectangle.NO_BORDER;
             tableBank.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             tableBank.AddCell(cellLeft);

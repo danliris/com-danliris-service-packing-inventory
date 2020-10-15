@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             decimal totalAmountIDR = viewModel.items.Sum(a => a.amount * a.currencyRate);
             Phrase intro = new Phrase();
             intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
-            intro.Add(new Chunk("USD " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
+            intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
 
             var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR)+ " rupiah";
 
@@ -307,7 +307,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableUnit.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableUnit);
 
-            document.Add(new Phrase("[Terbilang : " + terbilang + " rupiah]", small_font));
+            document.Add(new Phrase("[Terbilang : " + terbilang +"]", small_font));
             #endregion
 
             #region sign2

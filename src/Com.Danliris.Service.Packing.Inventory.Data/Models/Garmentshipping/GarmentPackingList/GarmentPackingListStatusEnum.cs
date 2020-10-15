@@ -2,7 +2,7 @@
 {
     public enum GarmentPackingListStatusEnum
     {
-        ON_PROCESS,
+        CREATED,
         POSTED,
         APPROVED_MD,
         REJECTED_MD,
