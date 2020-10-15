@@ -1352,7 +1352,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 item.Color, 
                                 item.Motif, 
                                 item.PackagingType,
-                                item.ShippingGrade, 
+                                item.Grade, 
                                 item.ShippingRemark,
                                 item.PackagingQty.ToString("N2", CultureInfo.InvariantCulture), 
                                 item.PackagingUnit,
