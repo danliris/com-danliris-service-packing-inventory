@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
         public string MaterialWidth { get; set; }
+        public string FinishWidth { get; set; }
         public string CartNo { get; set; }
         public string PackingInstruction { get; set; }
         public string Construction { get; set; }
@@ -37,5 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double BalanceRemains { get; set; }
 
         public int InputId { get; set; }
+
+        public DateTimeOffset DateIn { get;  set; }
+        public DateTimeOffset DateOut { get; set; }
+
     }
 }

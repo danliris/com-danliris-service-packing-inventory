@@ -752,6 +752,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
+                    item.SetFinishWidth(localItem.FinishWidth, _identityProvider.Username, UserAgent);
                     item.SetGrade(localItem.Grade, _identityProvider.Username, UserAgent);
                     item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);

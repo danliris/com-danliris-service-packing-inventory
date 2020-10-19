@@ -131,7 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1) };
+            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false) };
             var model = new GarmentShippingLocalPriceCuttingNoteModel("", DateTimeOffset.Now, 1, "", "", true, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
@@ -162,7 +162,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Success_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1) };
+            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, true) };
             var model = new GarmentShippingLocalPriceCuttingNoteModel("", DateTimeOffset.Now, 1, "", "", true, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Null_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1) };
+            var items = new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, true) };
             var model = new GarmentShippingLocalPriceCuttingNoteModel("", DateTimeOffset.Now, 1, "", "", true, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();

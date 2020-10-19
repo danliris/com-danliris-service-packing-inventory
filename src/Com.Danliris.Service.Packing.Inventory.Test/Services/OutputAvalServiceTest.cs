@@ -170,7 +170,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.Group,
                                                          ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,s.DateOut)).ToList());
             }
         }
 
@@ -180,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModelAdj.Date, ViewModelAdj.Area, ViewModelAdj.Shift, ViewModelAdj.BonNo, ViewModelAdj.HasNextAreaDocument, ViewModelAdj.DestinationArea,
                     ViewModelAdj.Group, ViewModelAdj.Type, ViewModelAdj.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModelAdj.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
+                                                             ViewModelAdj.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,s.DateOut)).ToList());
             }
         }
 
@@ -199,7 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                          ViewModel.Group,
                                                          ViewModel.Type,
                                                          ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(
-                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId)).ToList());
+                                                             ViewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,s.DateOut)).ToList());
             }
         }
         private DyeingPrintingAreaOutputModel OutputEmptyModel
@@ -310,7 +310,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
                                                         s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                                                         s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
-                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty))
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty, s.DateIn, s.FinishWidth))
+                                                        
                                                                            .ToList());
             }
         }
@@ -334,7 +335,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -383,7 +385,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -447,7 +450,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -513,7 +517,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
 
             inputProductionOrdersRepoMock.Setup(s => s.GetInputProductionOrder(It.IsAny<int>()))
-                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1));
+                .Returns(new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL", "type", "1", "a", 1, 1, false, 1, "m", "a", 1, "a", "c", "u", "c", "m", "r", "g", "s", 1, "a", "a", 1, "a", 1, "a", 1, "a", 1, "a", 1, "d", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1,DateTimeOffset.Now, "a"));
+                
 
             inputProductionOrdersRepoMock.Setup(s => s.UpdateFromOutputAsync(It.IsAny<int>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
@@ -761,7 +766,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                       "A",
                                                       new List<DyeingPrintingAreaInputProductionOrderModel>()
                                                       {
-                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1)
+                                                          new DyeingPrintingAreaInputProductionOrderModel("GUDANG AVAL","type","1","a",1,1,false,1,"m","a",1,"a","c","u","c","m","r","g","s",1,"a","a",1,"a",1,"a",1,"a",1,"a",1,"d","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1,DateTimeOffset.Now, "a")
+                                                          
                      })
                  }.AsQueryable());
 
@@ -917,7 +923,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         summaryRepoMock.Object,
                                                         inputProductionOrdersRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -943,7 +949,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         summaryRepoMock.Object,
                                                         inputProductionOrdersRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -966,7 +972,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         summaryRepoMock.Object,
                                                         inputProductionOrdersRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -988,7 +994,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        movementRepoMock.Object,
                                                        summaryRepoMock.Object,
                                                        inputProductionOrdersRepoMock.Object).Object);
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1013,7 +1019,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        summaryRepoMock.Object,
                                                        inputProductionOrdersRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }
@@ -1039,7 +1045,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                        summaryRepoMock.Object,
                                                        inputProductionOrdersRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1);
+            var result = await service.GenerateExcel(1,7);
 
             Assert.NotNull(result);
         }

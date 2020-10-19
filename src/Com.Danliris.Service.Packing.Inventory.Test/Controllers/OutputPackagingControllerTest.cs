@@ -444,7 +444,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -467,7 +467,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 

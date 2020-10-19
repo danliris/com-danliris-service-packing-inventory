@@ -135,6 +135,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
               .HasMaxLength(1024);
 
             builder
+              .Property(s => s.FinishWidth)
+              .HasMaxLength(1024);
+
+            builder
              .Property(s => s.Machine)
              .HasMaxLength(32);
 

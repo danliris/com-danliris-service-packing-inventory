@@ -45,13 +45,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent1.AddElement(new Phrase("Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
             cellHeaderContent1.AddElement(new Phrase("Telp : 0271-714400, Fax. 0271-717178", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PO. Box. 166 Solo-57100 Indonesia", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent1.AddElement(new Phrase("NOTA RETUR", normal_font));
             tableHeader.AddCell(cellHeaderContent1);
 
             cellHeaderContent2.AddElement(new Phrase("Sukoharjo, " + viewModel.returnDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
-            cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent2.AddElement(new Phrase(viewModel.salesNote.buyer.Name, normal_font));
             cellHeaderContent2.AddElement(new Phrase(buyer.Address, normal_font));
@@ -62,23 +58,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region title
 
-            PdfPTable tableTitle = new PdfPTable(3);
-            tableTitle.WidthPercentage = 100;
-            tableTitle.SetWidths(new float[] { 2f, 2f, 1f });
+            Paragraph title = new Paragraph("NOTA RETUR", header_font_bold);
+            title.Alignment = Element.ALIGN_CENTER;
+            document.Add(title);
 
-            PdfPCell cellTitle1 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            Paragraph no = new Paragraph(viewModel.returnNoteNo, header_font_bold);
+            no.Alignment = Element.ALIGN_CENTER;
+            document.Add(no);
 
-            cellTitle1.Phrase = new Phrase(viewModel.returnNoteNo, normal_font_bold);
-            cellTitle1.Colspan = 2;
-            tableTitle.AddCell(cellTitle1);
-
-            cellTitle1.Phrase = new Phrase("SUKOHARJO - JATENG", normal_font_underlined);
-            cellTitle1.Colspan = 1;
-            cellTitle1.HorizontalAlignment = Element.ALIGN_LEFT;
-            tableTitle.AddCell(cellTitle1);
-
-            tableTitle.SpacingAfter = 10;
-            document.Add(tableTitle);
+            Paragraph location = new Paragraph("SUKOHARJO - JATENG", normal_font_underlined);
+            location.Alignment = Element.ALIGN_RIGHT;
+            document.Add(location);
             #endregion
 
             #region bodyTable
@@ -157,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRightNoBorder.Border = Rectangle.NO_BORDER;
             tableBody.AddCell(cellBodyRightNoBorder);
 
-
+            tableBody.SpacingBefore = 5;
             tableBody.SpacingAfter = 10;
             document.Add(tableBody);
             #endregion

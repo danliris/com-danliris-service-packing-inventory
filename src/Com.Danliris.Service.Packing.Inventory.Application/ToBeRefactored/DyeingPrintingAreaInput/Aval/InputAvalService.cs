@@ -78,6 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Type = s.ProductionOrderType
                     },
                     MaterialWidth = s.MaterialWidth,
+                    FinishWidth = s.FinishWidth,
                     Material = new Material()
                     {
                         Id = s.MaterialId,
@@ -139,7 +140,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = s.ProductPackingId,
                     FabricPackingId = s.FabricPackingId,
                     ProductPackingCode = s.ProductPackingCode,
-                    HasPrintingProductPacking = s.HasPrintingProductPacking
+                    HasPrintingProductPacking = s.HasPrintingProductPacking,
+                    DateIn=s.DateIn,
+                    DateOut=s.DateOut
                 }).ToList()
             };
 
@@ -234,10 +237,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.PackagingUnit,
                                                                                                                                             s.Id,
                                                                                                                                             s.Machine,
-                                                                                                                                            s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
-                                                                                                                                            s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
-                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty))
+                                                                                                                                            s.Material.Id,
+                                                                                                                                            s.Material.Name,
+                                                                                                                                            s.MaterialConstruction.Id,
+                                                                                                                                            s.MaterialConstruction.Name,
+                                                                                                                                            s.MaterialWidth,
+                                                                                                                                            s.ProcessType.Id,
+                                                                                                                                            s.ProcessType.Name,
+                                                                                                                                            s.YarnMaterial.Id,
+                                                                                                                                            s.YarnMaterial.Name,
+                                                                                                                                            s.ProductSKUId,
+                                                                                                                                            s.FabricSKUId,
+                                                                                                                                            s.ProductSKUCode,
+                                                                                                                                            s.HasPrintingProductSKU,
+                                                                                                                                            s.ProductPackingId,
+                                                                                                                                            s.FabricPackingId,
+                                                                                                                                            s.ProductPackingCode,
+                                                                                                                                            s.HasPrintingProductPacking,
+                                                                                                                                            s.PackingLength,
+                                                                                                                                            s.InputQuantity,
+                                                                                                                                            s.InputPackagingQty,
+                                                                                                                                            viewModel.Date,
+                                                                                                                                            s.FinishWidth))
+
                                                                                .ToList());
                 result = await _inputRepository.InsertAsync(model);
             }
@@ -249,40 +271,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             bonNo,
                                                             viewModel.Group,
                                                             viewModel.AvalItems.Select(s => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area,
-                                                                                                                                            s.AvalType,
-                                                                                                                                            s.AvalCartNo,
-                                                                                                                                            s.AvalUomUnit,
-                                                                                                                                            s.AvalQuantity,
-                                                                                                                                            s.AvalQuantityKg,
-                                                                                                                                            false,
-                                                                                                                                            s.ProductionOrderId,
-                                                                                                                                            s.ProductionOrderNo,
-                                                                                                                                            s.CartNo,
-                                                                                                                                            s.BuyerId,
-                                                                                                                                            s.Buyer,
-                                                                                                                                            s.Construction,
-                                                                                                                                            s.Unit,
-                                                                                                                                            s.Color,
-                                                                                                                                            s.Motif,
-                                                                                                                                            s.Remark,
-                                                                                                                                            s.Grade,
-                                                                                                                                            s.Status,
-                                                                                                                                            s.InputQuantity,
-                                                                                                                                            s.InputQuantity,
-                                                                                                                                            s.PackingInstruction,
-                                                                                                                                            s.ProductionOrderType,
-                                                                                                                                            s.ProductionOrderOrderQuantity,
-                                                                                                                                            s.PackagingType,
-                                                                                                                                            s.InputPackagingQty,
-                                                                                                                                            s.PackagingUnit,
-                                                                                                                                            s.Id,
-                                                                                                                                            bonExist.First().Id,
-                                                                                                                                            s.Machine,
-                                                                                                                                            s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
-                                                                                                                                            s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id,
-                                                                                                                                            s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                                                                                                                                            s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty))
-                                                                               .ToList());
+                                                                s.AvalType,
+                                                                s.AvalCartNo,
+                                                                s.AvalUomUnit,
+                                                                s.AvalQuantity,
+                                                                s.AvalQuantityKg,
+                                                                false,
+                                                                s.ProductionOrderId,
+                                                                s.ProductionOrderNo,
+                                                                s.CartNo,
+                                                                s.BuyerId,
+                                                                s.Buyer,
+                                                                s.Construction,
+                                                                s.Unit,
+                                                                s.Color,
+                                                                s.Motif,
+                                                                s.Remark,
+                                                                s.Grade,
+                                                                s.Status,
+                                                                s.InputQuantity,
+                                                                s.InputQuantity,
+                                                                s.PackingInstruction,
+                                                                s.ProductionOrderType,
+                                                                s.ProductionOrderOrderQuantity,
+                                                                s.PackagingType,
+                                                                s.InputPackagingQty,
+                                                                s.PackagingUnit,
+                                                                s.Id,
+                                                                bonExist.First().Id,
+                                                                s.Machine,
+                                                                s.Material.Id,
+                                                                s.Material.Name,
+                                                                s.MaterialConstruction.Id,
+                                                                s.MaterialConstruction.Name,
+                                                                s.MaterialWidth,
+                                                                s.ProcessType.Id,
+                                                                s.ProcessType.Name,
+                                                                s.YarnMaterial.Id,
+                                                                s.YarnMaterial.Name,
+                                                                s.ProductSKUId,
+                                                                s.FabricSKUId,
+                                                                s.ProductSKUCode,
+                                                                s.HasPrintingProductSKU,
+                                                                s.ProductPackingId,
+                                                                s.FabricPackingId,
+                                                                s.ProductPackingCode,
+                                                                s.HasPrintingProductPacking,
+                                                                s.PackingLength,
+                                                                s.InputQuantity,
+                                                                s.InputPackagingQty,
+                                                                s.FinishWidth,
+                                                                viewModel.Date)).ToList());
             }
 
             //Create New Row in Input and ProductionOrdersInput in Each Repository 
@@ -511,6 +550,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     Machine = d.Machine,
                     MaterialWidth = d.MaterialWidth,
+                    FinishWidth = d.FinishWidth,
                     Material = new Material()
                     {
                         Id = d.MaterialId,
@@ -603,6 +643,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                            Type = d.ProductionOrderType
                                                                        },
                                                                        MaterialWidth = d.MaterialWidth,
+                                                                       FinishWidth = d.FinishWidth,
                                                                        Material = new Material()
                                                                        {
                                                                            Id = d.MaterialId,
@@ -683,9 +724,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     model = new DyeingPrintingAreaInputModel(viewModel.Date, item.Key, viewModel.Shift, bonNo, viewModel.Group, viewModel.AvalItems.Select(s =>
                      new DyeingPrintingAreaInputProductionOrderModel(item.Key, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrderOrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
-                     s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
-                     s.MaterialConstruction.Name, s.MaterialWidth, s.InputPackagingQty, s.PackagingUnit, s.PackagingType, 0, "", s.AvalType, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                     s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty)).ToList());
+                         s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id,
+                         s.MaterialConstruction.Name, s.MaterialWidth, s.InputPackagingQty, s.PackagingUnit, s.PackagingType, 0, "", s.AvalType, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
+                         s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn)).ToList());
+
 
                     result = await _inputRepository.InsertAsync(model);
                     result += await _outputSppRepository.UpdateFromInputAsync(item.Select(s => s.Id).ToList(), true, DyeingPrintingArea.TOLAK);
@@ -746,7 +788,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             detail.Id, detail.Material.Id, detail.Material.Name, detail.MaterialConstruction.Id, detail.MaterialConstruction.Name, detail.MaterialWidth, detail.InputPackagingQty,
                             detail.PackagingUnit, detail.PackagingType, 0, "", detail.AvalType, detail.ProcessType.Id, detail.ProcessType.Name, detail.YarnMaterial.Id, detail.YarnMaterial.Name,
                             detail.ProductSKUId, detail.FabricSKUId, detail.ProductSKUCode, detail.HasPrintingProductSKU, detail.ProductPackingId, detail.FabricPackingId,
-                            detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.PackingLength, detail.InputQuantity, detail.InputPackagingQty);
+                            detail.ProductPackingCode, detail.HasPrintingProductPacking, detail.PackingLength, detail.InputQuantity, detail.InputPackagingQty, detail.FinishWidth, detail.DateIn);
+
                         modelItem.DyeingPrintingAreaInputId = model.Id;
 
                         result += await _inputSppRepository.InsertAsync(modelItem);
@@ -933,6 +976,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
@@ -946,7 +990,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("",  "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -955,7 +999,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
                     foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
                     {
-                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                        var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                       
+                        dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                             item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.AvalType, item.UomUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture));
                     }
                 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.InsuranceDisposition;
@@ -49,14 +50,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Id = model.InsuranceId,
                     Code = model.InsuranceCode,
-                    Name=model.InsuranceName
+                    Name = model.InsuranceName
                 },
                 paymentDate = model.PaymentDate,
                 policyType = model.PolicyType,
-                
+
                 rate = model.Rate,
                 remark = model.Remark,
-                items = model.Items.Select(i => new GarmentShippingInsuranceDispositionItemViewModel
+                items = (model.Items ?? new List<GarmentShippingInsuranceDispositionItemModel>()).Select(i => new GarmentShippingInsuranceDispositionItemViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
@@ -84,18 +85,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     invoiceNo = i.InvoiceNo,
                     policyDate = i.PolicyDate,
                     policyNo = i.PolicyNo,
-                }).ToList(),
-                unitCharge = model.UnitCharge.Select(i => new GarmentShippingInsuranceDispositionUnitChargeViewModel
-                {
-                    unit = new Unit
-                    {
-                        Id = i.UnitId,
-                        Code = i.UnitCode
-                    },
-                    Id = i.Id,
-                    amount = i.Amount,
-                    insuranceDispositionId=i.InsuranceDispositionId
-
+                    amount1A = i.Amount1A,
+                    amount1B = i.Amount1B,
+                    amount2A = i.Amount2A,
+                    amount2B = i.Amount2B,
+                    amount2C = i.Amount2C
                 }).ToList(),
 
             };
@@ -107,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
 
                 i.BuyerAgent = i.BuyerAgent ?? new BuyerAgent();
-                return new GarmentShippingInsuranceDispositionItemModel(i.policyDate,i.policyNo,i.invoiceNo,i.invoiceId,i.BuyerAgent.Id,i.BuyerAgent.Code,i.BuyerAgent.Name,i.amount,i.currencyRate)
+                return new GarmentShippingInsuranceDispositionItemModel(i.policyDate, i.policyNo, i.invoiceNo, i.invoiceId, i.BuyerAgent.Id, i.BuyerAgent.Code, i.BuyerAgent.Name, i.amount, i.currencyRate, i.amount2A, i.amount2B, i.amount2C, i.amount1A, i.amount1B)
                 {
                     Id = i.Id
                 };
@@ -117,16 +111,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             viewModel.insurance = viewModel.insurance ?? new Insurance();
 
-            var unitCharge = (viewModel.unitCharge ?? new List<GarmentShippingInsuranceDispositionUnitChargeViewModel>()).Select(m => {
 
-                m.unit = m.unit ?? new Unit();
-                return new GarmentShippingInsuranceDispositionUnitChargeModel(m.unit.Id, m.unit.Code, m.amount)
-                {
-                    Id = m.Id
-                };
-            }).ToList();
-
-            GarmentShippingInsuranceDispositionModel garmentShippingInvoiceModel = new GarmentShippingInsuranceDispositionModel(GenerateNo(viewModel), viewModel.policyType, viewModel.paymentDate.GetValueOrDefault(),viewModel.bankName,viewModel.insurance.Id,viewModel.insurance.Name,viewModel.insurance.Code,viewModel.rate,viewModel.remark,unitCharge,items);
+            GarmentShippingInsuranceDispositionModel garmentShippingInvoiceModel = new GarmentShippingInsuranceDispositionModel(GenerateNo(viewModel), viewModel.policyType, viewModel.paymentDate.GetValueOrDefault(),viewModel.bankName,viewModel.insurance.Id,viewModel.insurance.Name,viewModel.insurance.Code,viewModel.rate,viewModel.remark,items);
 
             return garmentShippingInvoiceModel;
         }
@@ -165,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "DispositionNo","InsuranceNo","BankName","PolicyType"
+                "DispositionNo","InsuranceName","BankName","PolicyType"
             };
             query = QueryHelper<GarmentShippingInsuranceDispositionModel>.Search(query, SearchAttributes, keyword);
 
@@ -198,6 +184,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             GarmentShippingInsuranceDispositionModel model = MapToModel(viewModel);
 
             return await _repository.UpdateAsync(id, model);
+        }
+
+        public Insurance GetInsurance(int id)
+        {
+            string insuranceUri = "master/garment-insurances";
+            IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+
+            var response = httpClient.GetAsync($"{APIEndpoint.Core}{insuranceUri}/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                Insurance viewModel = JsonConvert.DeserializeObject<Insurance>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

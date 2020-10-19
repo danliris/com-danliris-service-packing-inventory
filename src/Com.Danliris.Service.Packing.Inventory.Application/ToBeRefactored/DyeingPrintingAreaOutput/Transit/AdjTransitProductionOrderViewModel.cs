@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
         public string MaterialWidth { get; set; }
+        public string FinishWidth { get; set; }
         public string Remark { get; set; }
         public string Construction { get; set; }
         public decimal QtyPacking { get; set; }

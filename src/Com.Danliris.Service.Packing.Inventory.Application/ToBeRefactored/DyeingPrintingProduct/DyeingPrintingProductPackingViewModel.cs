@@ -22,8 +22,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public Material Material { get; set; }
         // Konstruksi
         public MaterialConstruction MaterialConstruction { get; set; }
-        // Panjang
+        // Lebar Material (SPP)
         public string MaterialWidth { get; set; }
+        // Lebar Finish (SPP)
+        public string FinishWidth { get; set; }
         // Warna
         public string Color { get; set; }
         // Motif

@@ -115,7 +115,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 VerifyUser();
                 byte[] xlsInBytes;
                 var data = await _service.ReadById(id);
-                var Result = _service.GenerateExcel(data);
+
+                int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+             
+                var Result = _service.GenerateExcel(data, clientTimeZoneOffset);
                 string filename = $"Pencatatan Pengeluaran Area Transit Dyeing/Printing - {data.BonNo}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

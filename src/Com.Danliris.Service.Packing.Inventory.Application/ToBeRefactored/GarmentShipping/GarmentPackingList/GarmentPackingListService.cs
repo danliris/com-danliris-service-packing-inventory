@@ -401,8 +401,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetIsPosted(false, _identityProvider.Username, UserAgent);
-            model.SetStatus(GarmentPackingListStatusEnum.ON_PROCESS, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.ON_PROCESS));
+            model.SetStatus(GarmentPackingListStatusEnum.CREATED, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED));
 
             await _packingListRepository.SaveChanges();
         }
@@ -431,11 +431,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
 
+            var status = GarmentPackingListStatusEnum.APPROVED_MD;
             var oldModel = _packingListRepository.Query.Single(m => m.Id == id);
-            if (oldModel.Status != GarmentPackingListStatusEnum.APPROVED_MD)
+            if (oldModel.Status != status)
             {
-                oldModel.SetStatus(GarmentPackingListStatusEnum.APPROVED_MD, _identityProvider.Username, UserAgent);
-                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.APPROVED_MD));
+                oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
 
                 await _packingListRepository.SaveChanges();
             }
@@ -446,6 +447,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetStatus(GarmentPackingListStatusEnum.REVISED_MD, _identityProvider.Username, UserAgent);
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.REVISED_MD));
+
+            await _packingListRepository.SaveChanges();
+        }
+
+        public async Task SetApproveShipping(int id, GarmentPackingListViewModel viewModel)
+        {
+            GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
+
+            await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
+
+            var status = GarmentPackingListStatusEnum.APPROVED_SHIPPING;
+            var oldModel = _packingListRepository.Query.Single(m => m.Id == id);
+            if (oldModel.Status != status)
+            {
+                oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+
+                await _packingListRepository.SaveChanges();
+            }
+        }
+
+        public async Task SetRejectShippingToUnit(int id, string remark)
+        {
+            var status = GarmentPackingListStatusEnum.REJECTED_SHIPPING_UNIT;
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetStatus(status, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status, remark));
+
+            await _packingListRepository.SaveChanges();
+        }
+
+        public async Task SetRejectShippingToMd(int id, string remark)
+        {
+            var status = GarmentPackingListStatusEnum.REJECTED_SHIPPING_MD;
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetStatus(status, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status, remark));
+
+            await _packingListRepository.SaveChanges();
+        }
+
+        public async Task SetRevisedShipping(int id)
+        {
+            var status = GarmentPackingListStatusEnum.REVISED_SHIPPING;
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetStatus(status, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
 
             await _packingListRepository.SaveChanges();
         }

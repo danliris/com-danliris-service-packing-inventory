@@ -349,11 +349,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputShippingViewModel>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputShippingViewModel>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
+            identityProviderMock.Setup(s => s.TimezoneOffset).Returns(7);
             var identityProvider = identityProviderMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
@@ -372,7 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             //v
             var serviceMock = new Mock<IOutputShippingService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputShippingViewModel>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<OutputShippingViewModel>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 

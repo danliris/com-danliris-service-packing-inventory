@@ -322,6 +322,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
+                    b.Property<DateTimeOffset>("DateIn");
+
+                    b.Property<DateTimeOffset>("DateOut");
+
                     b.Property<string>("DeletedAgent")
                         .HasMaxLength(128);
 
@@ -347,6 +351,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<int>("FabricPackingId");
 
                     b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth")
+                        .HasMaxLength(1024);
 
                     b.Property<string>("Grade")
                         .HasMaxLength(128);
@@ -701,6 +708,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
+                    b.Property<DateTimeOffset>("DateIn");
+
+                    b.Property<DateTimeOffset>("DateOut");
+
                     b.Property<string>("DeletedAgent")
                         .HasMaxLength(128);
 
@@ -731,6 +742,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<int>("FabricPackingId");
 
                     b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth")
+                        .HasMaxLength(1024);
 
                     b.Property<string>("Grade")
                         .HasMaxLength(128);
@@ -2512,6 +2526,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<decimal>("Amount1A");
+
+                    b.Property<decimal>("Amount1B");
+
+                    b.Property<decimal>("Amount2A");
+
+                    b.Property<decimal>("Amount2B");
+
+                    b.Property<decimal>("Amount2C");
+
                     b.Property<string>("BuyerAgentCode")
                         .HasMaxLength(10);
 
@@ -2632,56 +2656,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasFilter("[IsDeleted]=(0)");
 
                     b.ToTable("GarmentShippingInsuranceDispositions");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition.GarmentShippingInsuranceDispositionUnitChargeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<decimal>("Amount");
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<int>("InsuranceDispositionId");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("UnitCode")
-                        .HasMaxLength(10);
-
-                    b.Property<int>("UnitId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InsuranceDispositionId");
-
-                    b.ToTable("GarmentShippingInsuranceDispositionUnitCharges");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LetterOfCredit.GarmentShippingLetterOfCreditModel", b =>
@@ -3360,6 +3334,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IncludeVat");
 
                     b.Property<bool>("IsDeleted");
 
@@ -5277,14 +5253,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                 {
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition.GarmentShippingInsuranceDispositionModel")
                         .WithMany("Items")
-                        .HasForeignKey("InsuranceDispositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition.GarmentShippingInsuranceDispositionUnitChargeModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition.GarmentShippingInsuranceDispositionModel")
-                        .WithMany("UnitCharge")
                         .HasForeignKey("InsuranceDispositionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

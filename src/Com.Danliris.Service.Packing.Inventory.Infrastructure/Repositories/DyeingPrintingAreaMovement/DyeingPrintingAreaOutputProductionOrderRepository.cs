@@ -99,6 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetMaterialConstruction(model.MaterialConstructionId, model.MaterialConstructionName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMachine(model.Machine, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialWidth(model.MaterialWidth, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFinishWidth(model.FinishWidth, _identityProvider.Username, UserAgent);
             return _dbContext.SaveChangesAsync();
         }
 

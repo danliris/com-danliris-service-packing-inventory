@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.InsuranceDisposition;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.InsuranceDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -158,45 +160,58 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
-        //[HttpGet("pdf/{Id}")]
-        //public async Task<IActionResult> GetPDF([FromRoute] int Id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var exception = new
-        //        {
-        //            error = ResultFormatter.FormatErrorMessage(ModelState)
-        //        };
-        //        return new BadRequestObjectResult(exception);
-        //    }
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
 
-        //    try
-        //    {
-        //        var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
-        //        int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //        var model = await _service.ReadById(Id);
+            try
+            {
+                VerifyUser();
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
 
-        //        if (model == null)
-        //        {
-        //            return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
-        //        }
-        //        else
-        //        {
-        //            GarmentShippingLocalSalesNoteViewModel salesNote = await _salesNoteService.ReadById(model.localSalesNoteId);
-        //            Buyer buyer = _salesNoteService.GetBuyer(model.buyer.Id);
-        //            var PdfTemplate = new GarmentLocalCoverLetterPdfTemplate();
-        //            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, salesNote, model.buyer, timeoffsset);
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    Insurance insurance = _service.GetInsurance(model.insurance.Id);
+                    if (model.policyType == "Piutang")
+                    {
+                        var PdfTemplate = new GarmentShippingInsuranceDispositionPDFTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, insurance, timeoffsset);
 
-        //            return new FileStreamResult(stream, "application/pdf")
-        //            {
-        //                FileDownloadName = model.noteNo + ".pdf"
-        //            };
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-        //    }
-        //}
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.dispositionNo + "-Piutang.pdf"
+                        };
+                    }
+                    else
+                    {
+                        var PdfTemplate = new GarmentShippingInsuranceDispositionCargoPDFTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, insurance, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.dispositionNo + "-Kargo.pdf"
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

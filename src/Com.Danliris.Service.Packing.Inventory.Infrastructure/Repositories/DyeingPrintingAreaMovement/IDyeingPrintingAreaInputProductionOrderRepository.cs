@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance);
         Task<int> UpdateBalanceAndRemainsWithFlagAsync(int id, double balance, decimal qtyPacking);
         Task<int> UpdateFromOutputIMAsync(int id, double balance);
+        Task<int> UpdateDateOutsync(int id, DateTimeOffset dateOut);
         Task<Tuple<int, List<PackingData>>> UpdatePackingFromOut(string destinationArea, string productionOrderNo, string grade, double balance);
         Task<int> RestorePacking(string destinationArea, List<PackingData> packingData);
         Task<int> UpdateFromNextAreaInputPackingAsync(List<PackingData> packingData);

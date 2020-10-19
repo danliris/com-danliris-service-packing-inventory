@@ -24,5 +24,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task SetRejectMd(int id, string remark);
         Task SetApproveMd(int id, GarmentPackingListViewModel viewModel);
         Task SetRevisedMd(int id);
+        Task SetApproveShipping(int id, GarmentPackingListViewModel viewModel);
+        Task SetRejectShippingToUnit(int id, string remark);
+        Task SetRejectShippingToMd(int id, string remark);
+        Task SetRevisedShipping(int id);
     }
 }

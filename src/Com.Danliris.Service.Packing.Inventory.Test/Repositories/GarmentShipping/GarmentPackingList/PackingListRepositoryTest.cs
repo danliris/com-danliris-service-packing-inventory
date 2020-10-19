@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.ON_PROCESS);
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", false, false, GarmentPackingListStatusEnum.CREATED);
 
             await repo.InsertAsync(oldModel);
 
@@ -61,6 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetFabricCountryOrigin("Updated " + data.FabricCountryOrigin, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetFabricComposition("Updated " + data.FabricComposition, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetRemarkMd("Updated " + data.RemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetPaymentTerm("Updated " + data.PaymentTerm, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {
