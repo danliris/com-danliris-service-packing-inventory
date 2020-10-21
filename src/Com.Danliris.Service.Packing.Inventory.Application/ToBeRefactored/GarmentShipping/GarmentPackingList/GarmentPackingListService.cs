@@ -19,9 +19,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private const string UserAgent = "GarmentPackingListService";
 
-        private readonly IGarmentPackingListRepository _packingListRepository;
-        private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
-        private readonly IIdentityProvider _identityProvider;
+        protected readonly IGarmentPackingListRepository _packingListRepository;
+        protected readonly IGarmentShippingInvoiceRepository _invoiceRepository;
+        protected readonly IIdentityProvider _identityProvider;
 
         public GarmentPackingListService(IServiceProvider serviceProvider)
         {
@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-        private GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
+        protected GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
         {
             var vm =  new GarmentPackingListViewModel()
             {
@@ -214,6 +214,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 ShippingMark = model.ShippingMark,
                 SideMark = model.SideMark,
                 Remark = model.Remark,
+
+                ShippingMarkImagePath = model.ShippingMarkImagePath,
+                SideMarkImagePath = model.SideMarkImagePath,
+                RemarkImagePath = model.RemarkImagePath,
+
+                ShippingStaff = new ShippingStaff
+                {
+                    id = model.ShippingStaffId,
+                    name = model.ShippingStaffName,
+                },
+
                 Status = model.Status.ToString(),
                 StatusActivities = (model.StatusActivities ?? new List<GarmentPackingListStatusActivityModel>()).Select(a => new GarmentPackingListStatusActivityViewModel
                 {
@@ -228,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return vm;
         }
 
-        private GarmentPackingListModel MapToModel(GarmentPackingListViewModel viewModel)
+        protected GarmentPackingListModel MapToModel(GarmentPackingListViewModel viewModel)
         {
             var items = (viewModel.Items ?? new List<GarmentPackingListItemViewModel>()).Select(i =>
             {
@@ -261,13 +272,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Section = viewModel.Section ?? new Section();
             viewModel.BuyerAgent = viewModel.BuyerAgent ?? new Buyer();
             viewModel.InvoiceNo = GenerateInvoiceNo(viewModel);
+            viewModel.ShippingStaff = viewModel.ShippingStaff ?? new ShippingStaff();
             Enum.TryParse(viewModel.Status, true, out GarmentPackingListStatusEnum status);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.IsUsed, viewModel.IsPosted, status);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status);
 
             return garmentPackingListModel;
         }
 
-        public async Task<string> Create(GarmentPackingListViewModel viewModel)
+        public virtual async Task<string> Create(GarmentPackingListViewModel viewModel)
         {
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 
@@ -357,8 +369,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
 		}
-
-
 
 		public async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
         {
