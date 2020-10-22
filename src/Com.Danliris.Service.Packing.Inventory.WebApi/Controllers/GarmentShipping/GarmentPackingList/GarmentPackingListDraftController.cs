@@ -92,5 +92,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("post-booking/{id}")]
+        public async Task<IActionResult> PostBooking(int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.PostBooking(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
