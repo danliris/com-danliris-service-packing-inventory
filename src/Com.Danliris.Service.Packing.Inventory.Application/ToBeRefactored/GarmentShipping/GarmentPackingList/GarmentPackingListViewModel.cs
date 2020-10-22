@@ -61,10 +61,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string SideMark { get; set; }
         public string Remark { get; set; }
 
+        public string ShippingMarkImagePath { get; set; }
+        public string SideMarkImagePath { get; set; }
+        public string RemarkImagePath { get; set; }
+
         #endregion
 
         public bool IsUsed { get; set; }
         public bool IsPosted { get; set; }
+
+        public ShippingStaff ShippingStaff { get; set; }
 
         public string Status { get; set; }
         public ICollection<GarmentPackingListStatusActivityViewModel> StatusActivities { get; set; }
