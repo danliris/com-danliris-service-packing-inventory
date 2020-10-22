@@ -31,5 +31,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
             return model;
         }
+
+        public GarmentShippingPaymentDispositionModel CopyModel(GarmentShippingPaymentDispositionModel om)
+        {
+            var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel>();
+            foreach (var i in om.BillDetails)
+            {
+                bills.Add(new GarmentShippingPaymentDispositionBillDetailModel(i.BillDescription, i.Amount) { Id = i.Id });
+            }
+            var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel>();
+            foreach (var x in om.UnitCharges)
+            {
+                units.Add(new GarmentShippingPaymentDispositionUnitChargeModel(x.UnitId,x.UnitCode,x.AmountPercentage,x.BillAmount) { Id = x.Id });
+            }
+
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel>();
+            foreach (var y in om.InvoiceDetails)
+            {
+                invoices.Add(new GarmentShippingPaymentDispositionInvoiceDetailModel(y.InvoiceNo,y.InvoiceId,y.Quantity,y.Amount,y.Volume,y.GrossWeight,y.ChargeableWeight,y.TotalCarton) { Id = y.Id });
+            }
+            var model = new GarmentShippingPaymentDispositionModel(om.DispositionNo, om.PaymentType, om.PaymentMethod, om.PaidAt, om.SendBy,
+                om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.PaymentTerm, om.ForwarderId, om.ForwarderCode, om.ForwarderName,
+                om.CourierId, om.CourierCode, om.CourierName, om.EMKLId, om.EMKLCode, om.EMKLName, om.Address, om.NPWP, om.InvoiceNumber, om.InvoiceDate,
+                om.InvoiceTaxNumber, om.BillValue, om.VatValue, om.IncomeTaxId, om.IncomeTaxName, (decimal)om.IncomeTaxRate, om.IncomeTaxValue,
+                om.TotalBill, om.PaymentDate, om.Bank, om.AccNo, om.IsFreightCharged, om.FreightBy, om.FreightNo, om.FreightDate, om.Remark, invoices, bills, units) { Id = om.Id };
+
+            return model;
+        }
     }
 }
