@@ -67,6 +67,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             Assert.NotEqual(0, result);
         }
 
+        public async Task Create_Success_COURIER()
+        {
+            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
+                .ReturnsAsync(1);
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            ViewModel.paymentType = "COURIER";
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        public async Task Create_Success_FORWARDER()
+        {
+            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
+                .ReturnsAsync(1);
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            ViewModel.paymentType = "FORWARDER";
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
         [Fact]
         public void Read_Success()
         {
