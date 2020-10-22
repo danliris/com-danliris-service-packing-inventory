@@ -109,6 +109,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test
 
             Assert.Empty(dbContext.GarmentShippingInsuranceDispositions);
             Assert.Empty(dbContext.GarmentShippingInsuranceDispositionItems);
+
+            Assert.Empty(dbContext.GarmentShippingPaymentDispositions);
+            Assert.Empty(dbContext.GarmentShippingPaymentDispositionBillDetails);
+            Assert.Empty(dbContext.GarmentShippingPaymentDispositionInvoiceDetails);
+            Assert.Empty(dbContext.GarmentShippingPaymentDispositionUnitCharges);
         }
     }
 }
