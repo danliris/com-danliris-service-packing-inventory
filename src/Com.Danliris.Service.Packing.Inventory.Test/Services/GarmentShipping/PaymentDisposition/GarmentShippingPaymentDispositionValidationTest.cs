@@ -66,6 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             GarmentShippingPaymentDispositionViewModel viewModel = new GarmentShippingPaymentDispositionViewModel();
 
             viewModel.paymentType = "FORWARDER";
+            viewModel.isFreightCharged = true;
             viewModel.billDetails = new List<GarmentShippingPaymentDispositionBillDetailViewModel>
             {
                 new GarmentShippingPaymentDispositionBillDetailViewModel()
