@@ -109,5 +109,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("unpost-booking/{id}")]
+        public async Task<IActionResult> UnpostBooking(int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.UnpostBooking(id);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
