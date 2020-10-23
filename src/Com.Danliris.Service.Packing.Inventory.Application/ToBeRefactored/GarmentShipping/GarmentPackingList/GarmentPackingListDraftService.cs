@@ -31,5 +31,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             await _packingListRepository.SaveChanges();
         }
+
+        public async Task UnpostBooking(int id)
+        {
+            var status = GarmentPackingListStatusEnum.DRAFT;
+            var model = _packingListRepository.Query.Single(m => m.Id == id);
+            model.SetStatus(status, _identityProvider.Username, UserAgent);
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+
+            await _packingListRepository.SaveChanges();
+        }
     }
 }
