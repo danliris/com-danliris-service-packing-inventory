@@ -380,40 +380,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
-        public async Task Set_Cancel_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetCancel(id);
-        }
-
-        [Fact]
-        public async Task Set_RejectMd_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetRejectMd(id, "Alasan");
-        }
-
-        [Fact]
         public async Task Set_ApproveMd_Success()
         {
             List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
@@ -431,23 +397,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
-        public async Task Set_RevisedMd_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetRevisedMd(id);
-        }
-
-        [Fact]
         public async Task Set_ApproveShipping_Success()
         {
             List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
@@ -462,55 +411,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var id = models.Select(s => s.Id).First();
 
             await service.SetApproveShipping(id, ViewModel);
-        }
-
-        [Fact]
-        public async Task Set_RejectShippingToUnit_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetRejectShippingToUnit(id, "Alasan");
-        }
-
-        [Fact]
-        public async Task Set_RejectShippingToMd_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetRejectShippingToMd(id, "Alasan");
-        }
-
-        [Fact]
-        public async Task Set_RevisedShipping_Success()
-        {
-            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
-            {
-                new GarmentPackingListModel { Id = 1 }
-            };
-
-            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
-
-            var service = GetService(spMock.Object);
-
-            var id = models.Select(s => s.Id).First();
-
-            await service.SetRevisedShipping(id);
         }
     }
 }

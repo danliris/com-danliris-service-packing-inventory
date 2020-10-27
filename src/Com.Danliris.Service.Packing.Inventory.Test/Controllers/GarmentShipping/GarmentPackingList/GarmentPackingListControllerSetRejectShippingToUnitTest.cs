@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Moq;
 using System;
@@ -17,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
-                .Setup(s => s.SetRejectShippingToUnit(It.IsAny<int>(), It.IsAny<string>()))
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
                 .Verifiable();
             var service = serviceMock.Object;
 
@@ -58,7 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
-                .Setup(s => s.SetRejectShippingToUnit(It.IsAny<int>(), It.IsAny<string>()))
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 

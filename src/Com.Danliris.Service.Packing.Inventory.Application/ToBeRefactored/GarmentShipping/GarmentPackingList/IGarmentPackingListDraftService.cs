@@ -4,7 +4,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public interface IGarmentPackingListDraftService : IGarmentPackingListService
     {
-        Task PostBooking(int id);
-        Task UnpostBooking(int id);
     }
 }
