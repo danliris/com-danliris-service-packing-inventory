@@ -55,6 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public bool IsFreightCharged { get; private set; }
         public string FreightBy { get; private set; }
         public string FreightNo { get; private set; }
+        public string FlightVessel { get; private set; }
         public DateTimeOffset FreightDate { get; private set; }
 
         public string Remark { get; private set; }
@@ -63,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public ICollection<GarmentShippingPaymentDispositionBillDetailModel> BillDetails { get; set; }
         public ICollection<GarmentShippingPaymentDispositionUnitChargeModel> UnitCharges { get; set; }
        
-        public GarmentShippingPaymentDispositionModel(string dispositionNo, string paymentType, string paymentMethod, string paidAt, string sendBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string paymentTerm, int forwarderId, string forwarderCode, string forwarderName, int courierId, string courierCode, string courierName, int eMKLId, string eMKLCode, string eMKLName, string address, string nPWP, string invoiceNumber, DateTimeOffset invoiceDate, string invoiceTaxNumber, decimal billValue, decimal vatValue, int incomeTaxId, string incomeTaxName, decimal incomeTaxRate, decimal incomeTaxValue, decimal totalBill, DateTimeOffset paymentDate, string bank, string accNo, bool isFreightCharged, string freightBy, string freightNo, DateTimeOffset freightDate, string remark, ICollection<GarmentShippingPaymentDispositionInvoiceDetailModel> invoiceDetails, ICollection<GarmentShippingPaymentDispositionBillDetailModel> billDetails, ICollection<GarmentShippingPaymentDispositionUnitChargeModel> unitCharges)
+        public GarmentShippingPaymentDispositionModel(string dispositionNo, string paymentType, string paymentMethod, string paidAt, string sendBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string paymentTerm, int forwarderId, string forwarderCode, string forwarderName, int courierId, string courierCode, string courierName, int eMKLId, string eMKLCode, string eMKLName, string address, string nPWP, string invoiceNumber, DateTimeOffset invoiceDate, string invoiceTaxNumber, decimal billValue, decimal vatValue, int incomeTaxId, string incomeTaxName, decimal incomeTaxRate, decimal incomeTaxValue, decimal totalBill, DateTimeOffset paymentDate, string bank, string accNo, bool isFreightCharged, string freightBy, string freightNo, DateTimeOffset freightDate, string flightVessel, string remark, ICollection<GarmentShippingPaymentDispositionInvoiceDetailModel> invoiceDetails, ICollection<GarmentShippingPaymentDispositionBillDetailModel> billDetails, ICollection<GarmentShippingPaymentDispositionUnitChargeModel> unitCharges)
         {
             DispositionNo = dispositionNo;
             PaymentType = paymentType;
@@ -106,6 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
             InvoiceDetails = invoiceDetails;
             BillDetails = billDetails;
             UnitCharges = unitCharges;
+            FlightVessel = flightVessel;
         }
 
         public GarmentShippingPaymentDispositionModel()
@@ -415,5 +417,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetFlightVessel(string flightVessel, string userName, string userAgent)
+        {
+            if (FlightVessel != flightVessel)
+            {
+                FlightVessel = flightVessel;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
     }
 }
