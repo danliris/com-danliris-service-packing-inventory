@@ -139,10 +139,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
         public IConfiguration Configuration { get; }
 
-        private void RegisterEndpoints()
+        private void RegisterApplicationSetting()
         {
-            APIEndpoint.Core = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
-
+            ApplicationSetting.CoreEndpoint = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
+            ApplicationSetting.StorageAccountName = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_NAME) ?? Configuration[Constant.STORAGE_ACCOUNT_NAME];
+            ApplicationSetting.StorageAccountKey = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_KEY) ?? Configuration[Constant.STORAGE_ACCOUNT_KEY];
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -156,7 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                     options.UseSqlServer(connectionString);
                 });
 
-            RegisterEndpoints();
+            RegisterApplicationSetting();
 
             // Register Middleware
 

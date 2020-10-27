@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string uri = "master/garment-sections";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{uri}?filter={JsonConvert.SerializeObject(filter)}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{uri}?filter={JsonConvert.SerializeObject(filter)}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;

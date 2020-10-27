@@ -191,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string insuranceUri = "master/garment-insurances";
             IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = httpClient.GetAsync($"{APIEndpoint.Core}{insuranceUri}/{id}").Result;
+            var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{insuranceUri}/{id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;

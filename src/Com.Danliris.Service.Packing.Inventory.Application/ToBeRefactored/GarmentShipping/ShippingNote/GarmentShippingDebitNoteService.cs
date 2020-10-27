@@ -192,7 +192,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string buyerUri = "master/garment-buyers";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{buyerUri}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string bankUri = "master/account-banks";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{bankUri}/{id}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{bankUri}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
