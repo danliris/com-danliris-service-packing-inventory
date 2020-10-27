@@ -81,6 +81,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetRemark("Updated ", data.LastModifiedBy, data.LastModifiedAgent);
             data.SetSendBy("Updated ", data.LastModifiedBy, data.LastModifiedAgent);
             data.SetTotalBill(data.TotalBill+1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetFlightVessel("Updated ", data.LastModifiedBy, data.LastModifiedAgent);
+
 
             foreach (var item in data.InvoiceDetails)
             {
