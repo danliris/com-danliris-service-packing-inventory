@@ -63,7 +63,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 },
                 emkl = new EMKL
                 {
-                    Name = model.EMKLName
+                    Name = model.EMKLName,
+                    Code = model.EMKLCode,
+                    Id = model.EMKLId
                 },
                 forwarder = new Forwarder
                 {
@@ -93,7 +95,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 remark = model.Remark,
                 sendBy = model.SendBy,
                 totalBill = model.TotalBill,
-                vatValue=model.VatValue,
+                vatValue = model.VatValue,
+                flightVessel = model.FlightVessel,
                 unitCharges = (model.UnitCharges ?? new List<GarmentShippingPaymentDispositionUnitChargeModel>()).Select(i => new GarmentShippingPaymentDispositionUnitChargeViewModel
                 {
                     Active = i.Active,
@@ -158,6 +161,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     LastModifiedBy = i.LastModifiedBy,
                     LastModifiedUtc = i.LastModifiedUtc,
 
+                    amount = i.Amount,
+                    billDescription = i.BillDescription
 
                 }).ToList()
             };
@@ -195,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 vm.buyerAgent.Id, vm.buyerAgent.Code, vm.buyerAgent.Name, vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
                 vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
                 vm.invoiceTaxNumber, vm.billValue, vm.vatValue, vm.incomeTax.id, vm.incomeTax.name, (decimal)vm.incomeTax.rate, vm.IncomeTaxValue,
-                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate, vm.remark, invoices, bills, units)
+                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate,vm.flightVessel, vm.remark, invoices, bills, units)
             { Id = vm.Id };
         }
 

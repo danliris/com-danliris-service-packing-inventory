@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "",new List<GarmentShippingPaymentDispositionInvoiceDetailModel>(),new List<GarmentShippingPaymentDispositionBillDetailModel>(), new List<GarmentShippingPaymentDispositionUnitChargeModel>());
+            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "",new List<GarmentShippingPaymentDispositionInvoiceDetailModel>(),new List<GarmentShippingPaymentDispositionBillDetailModel>(), new List<GarmentShippingPaymentDispositionUnitChargeModel>());
 
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel("", 1) };
             var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(1, "", 1, 1) };
             var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("", 1, 1, 1, 1, 1, 1, 1) };
-            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", invoices, bills, units);
+            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", invoices, bills, units);
 
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

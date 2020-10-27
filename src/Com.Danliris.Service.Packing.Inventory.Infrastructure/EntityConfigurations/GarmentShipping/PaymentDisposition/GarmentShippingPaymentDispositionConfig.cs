@@ -87,6 +87,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(100);
 
             builder
+                .Property(s => s.FlightVessel)
+                .HasMaxLength(4000);
+
+            builder
                 .Property(s => s.PaymentMethod)
                 .HasMaxLength(50);
 
