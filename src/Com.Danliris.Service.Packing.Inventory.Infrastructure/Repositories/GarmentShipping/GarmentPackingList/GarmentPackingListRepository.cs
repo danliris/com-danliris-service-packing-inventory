@@ -139,6 +139,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
 
+            modelToUpdate.SetShippingMarkImagePath(model.ShippingMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSideMarkImagePath(model.SideMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemarkImagePath(model.RemarkImagePath, _identityProvider.Username, UserAgent);
+
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);

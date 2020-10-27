@@ -323,6 +323,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddScoped<IValidateService, ValidateService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
+            services.AddScoped<IAzureImageService, AzureImageService>();
 
 
 

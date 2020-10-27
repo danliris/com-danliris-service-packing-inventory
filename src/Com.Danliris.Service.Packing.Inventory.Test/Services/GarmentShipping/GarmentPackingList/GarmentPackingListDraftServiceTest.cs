@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
@@ -53,25 +54,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Measurements = new List<GarmentPackingListMeasurementViewModel>
                     {
                         new GarmentPackingListMeasurementViewModel()
-                    }
+                    },
+                    ShippingMarkImagePath = "IMG_1_000101010000000000_ShippingMarkImageFile",
+                    ShippingMarkImageFile = "ShippingMarkImageFile",
+                    SideMarkImagePath = null,
+                    SideMarkImageFile = "SideMarkImageFile",
+                    RemarkImagePath = "IMG_1_000101010000000000_RemarkImagePath",
+                    RemarkImageFile = null,
                 };
             }
-        }
-
-        [Fact]
-        public async Task Create_Success()
-        {
-            var repoMock = new Mock<IGarmentPackingListRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentPackingListModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEmpty(result);
         }
 
         private Mock<IServiceProvider> GetServiceProviderWithIdentity(IGarmentPackingListRepository repository)
@@ -101,6 +92,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 .ReturnsAsync(1);
 
             return repoMock;
+        }
+
+        [Fact]
+        public async Task Create_Success()
+        {
+            var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
+            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
+                .ReturnsAsync(1);
+
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
+                .Returns(ViewModel.ShippingMarkImagePath);
+            imageServiceMock.Setup(s => s.RemoveImage(It.IsAny<string>(), It.IsAny<string>()))
+                .Verifiable();
+            imageServiceMock.Setup(s => s.UploadImage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImagePath");
+
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public async Task Update_Success()
+        {
+            var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
+            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentPackingListModel>()))
+                .ReturnsAsync(1);
+
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
+                .Returns(ViewModel.ShippingMarkImagePath);
+            imageServiceMock.Setup(s => s.UploadImage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImagePath");
+
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.Create(ViewModel);
+
+            Assert.NotEmpty(result);
         }
 
         [Fact]

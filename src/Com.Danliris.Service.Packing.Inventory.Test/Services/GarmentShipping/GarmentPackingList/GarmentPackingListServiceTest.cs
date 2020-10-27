@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -120,7 +121,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadById(1);
 
