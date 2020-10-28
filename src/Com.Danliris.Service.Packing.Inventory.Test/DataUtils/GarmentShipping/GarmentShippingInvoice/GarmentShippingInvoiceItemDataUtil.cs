@@ -3,7 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using System;
 using System.Collections.Generic;
 
-namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.ShippingNote
+namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentShippingInvoice
 {
     public class GarmentShippingInvoiceItemDataUtil : BaseDataUtil<GarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemModel>
     {

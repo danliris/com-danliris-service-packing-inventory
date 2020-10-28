@@ -79,9 +79,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Pakai PPN", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Quantity", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });            
             result.Columns.Add(new DataColumn() { ColumnName = "D P P", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "P P N", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "T O T A L", DataType = typeof(string) });
