@@ -401,5 +401,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task PostPackingList_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListViewModel());
+            serviceMock
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+                .Verifiable();
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.PostPackingList(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task PostPackingList_ValidationException_BadRequest()
+        {
+            var dataUtil = GetViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentPackingListViewModel>()))
+                .Throws(GetServiceValidationExeption());
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.PostPackingList(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task PostPackingList_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.PostPackingList(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
