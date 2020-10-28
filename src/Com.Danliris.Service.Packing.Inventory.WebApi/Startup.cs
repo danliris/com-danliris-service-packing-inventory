@@ -256,6 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentPackingListDraftService, GarmentPackingListDraftService>();
+            services.AddTransient<IGarmentPackingListItemsService, GarmentPackingListItemsService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();

@@ -308,7 +308,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return invoiceNo;
         }
 
-        public ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public virtual ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _packingListRepository.ReadAll();
             List<string> SearchAttributes = new List<string>()
@@ -332,7 +332,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
         }
 
-        public async Task<GarmentPackingListViewModel> ReadById(int id)
+        public virtual async Task<GarmentPackingListViewModel> ReadById(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
 
