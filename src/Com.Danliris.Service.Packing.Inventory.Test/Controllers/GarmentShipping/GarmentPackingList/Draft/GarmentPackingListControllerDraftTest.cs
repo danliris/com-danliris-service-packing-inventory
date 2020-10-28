@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.GarmentPackingList;
 using Microsoft.AspNetCore.Http;
@@ -219,15 +220,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
-        [Fact]
-        public async Task PostBooking_Ok()
+        protected GarmentPackingListDraftController GetControllerSetStatus(bool error = false)
         {
-            var dataUtil = GetViewModel();
-
             var serviceMock = new Mock<IGarmentPackingListDraftService>();
-            serviceMock
-                .Setup(s => s.PostBooking(It.IsAny<int>()))
-                .Verifiable();
+            if (!error)
+            {
+                serviceMock
+                    .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+                    .Verifiable();
+            }
+            else
+            {
+                serviceMock
+                    .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+                    .Throws(new Exception());
+            }
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
@@ -236,7 +243,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService);
+            return GetController(service, identityProvider, validateService);
+        }
+
+        [Fact]
+        public async Task PostBooking_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
 
             var response = await controller.PostBooking(dataUtil.Id);
 
@@ -248,19 +263,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var dataUtil = GetViewModel();
 
-            var serviceMock = new Mock<IGarmentPackingListDraftService>();
-            serviceMock
-                .Setup(s => s.PostBooking(It.IsAny<int>()))
-                .Throws(new Exception());
-            var service = serviceMock.Object;
+            var controller = GetControllerSetStatus(true);
 
-            var validateServiceMock = new Mock<IValidateService>();
-            var validateService = validateServiceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, identityProvider, validateService);
             var response = await controller.PostBooking(dataUtil.Id);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
@@ -271,19 +275,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var dataUtil = GetViewModel();
 
-            var serviceMock = new Mock<IGarmentPackingListDraftService>();
-            serviceMock
-                .Setup(s => s.UnpostBooking(It.IsAny<int>()))
-                .Verifiable();
-            var service = serviceMock.Object;
-
-            var validateServiceMock = new Mock<IValidateService>();
-            var validateService = validateServiceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, identityProvider, validateService);
+            var controller = GetControllerSetStatus();
 
             var response = await controller.UnpostBooking(dataUtil.Id);
 
@@ -295,20 +287,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var dataUtil = GetViewModel();
 
-            var serviceMock = new Mock<IGarmentPackingListDraftService>();
-            serviceMock
-                .Setup(s => s.UnpostBooking(It.IsAny<int>()))
-                .Throws(new Exception());
-            var service = serviceMock.Object;
+            var controller = GetControllerSetStatus(true);
 
-            var validateServiceMock = new Mock<IValidateService>();
-            var validateService = validateServiceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, identityProvider, validateService);
             var response = await controller.UnpostBooking(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Cancel_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.SetCancel(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task ApproveMd_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.SetApproveMd(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task ApproveMd_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetApproveMd(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task RejectMd_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.SetRejectMd(dataUtil.Id, "Alasan");
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task RejectMd_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetRejectMd(dataUtil.Id, "Alasan");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task ApproveShipping_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.SetApproveShipping(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task ApproveShipping_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetApproveShipping(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task RejectShipping_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.SetRejectShipping(dataUtil.Id, "Alasan");
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task RejectShipping_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetRejectShipping(dataUtil.Id, "Alasan");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

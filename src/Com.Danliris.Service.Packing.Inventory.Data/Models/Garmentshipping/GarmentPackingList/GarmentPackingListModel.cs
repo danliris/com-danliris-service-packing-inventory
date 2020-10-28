@@ -434,5 +434,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetShippingMarkImagePath(string value, string userName, string userAgent)
+        {
+            if (ShippingMarkImagePath != value)
+            {
+                ShippingMarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSideMarkImagePath(string value, string userName, string userAgent)
+        {
+            if (SideMarkImagePath != value)
+            {
+                SideMarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemarkImagePath(string value, string userName, string userAgent)
+        {
+            if (RemarkImagePath != value)
+            {
+                RemarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }

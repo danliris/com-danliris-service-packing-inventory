@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -99,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                await _service.PostBooking(id);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_POSTED);
 
                 return Ok();
             }
@@ -116,7 +117,92 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                await _service.UnpostBooking(id);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("cancel/{id}")]
+        public async Task<IActionResult> SetCancel([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_CANCELED);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-md/{id}")]
+        public async Task<IActionResult> SetApproveMd([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_APPROVED_MD);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-md/{id}")]
+        public async Task<IActionResult> SetRejectMd([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_MD, reason);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-shipping/{id}")]
+        public async Task<IActionResult> SetApproveShipping([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-shipping/{id}")]
+        public async Task<IActionResult> SetRejectShipping([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_SHIPPING, reason);
 
                 return Ok();
             }
