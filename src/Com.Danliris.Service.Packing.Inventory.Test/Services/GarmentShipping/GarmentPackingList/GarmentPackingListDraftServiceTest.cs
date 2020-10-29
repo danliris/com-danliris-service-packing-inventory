@@ -123,8 +123,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task Update_Success()
         {
             var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentPackingListModel>()))
-                .ReturnsAsync(1);
+            repoMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel> { new GarmentPackingListModel { Id = ViewModel.Id } }.AsQueryable());
 
             var imageServiceMock = new Mock<IAzureImageService>();
             imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
@@ -138,9 +138,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var service = GetService(serviceProviderMock.Object);
 
-            var result = await service.Create(ViewModel);
+            var result = await service.Update(ViewModel.Id, ViewModel);
 
-            Assert.NotEmpty(result);
+            Assert.NotEqual(0, result);
         }
     }
 }

@@ -65,12 +65,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             errorItemsCount++;
                         }
 
-                        if (string.IsNullOrWhiteSpace(item.Description))
-                        {
-                            errorItem["Description"] = "Description tidak boleh kosong";
-                            errorItemsCount++;
-                        }
-
                         if (item.Details == null || item.Details.Count < 1)
                         {
                             errorItem["DetailsCount"] = "Details tidak boleh kosong";
