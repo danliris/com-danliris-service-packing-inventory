@@ -5,6 +5,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net;
@@ -205,6 +206,41 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_SHIPPING, reason);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("post-packing-list/{id}")]
+        public async Task<IActionResult> PostPackingList(int id)
+        {
+            try
+            {
+                VerifyUser();
+
+                var packingListViewModel = await _service.ReadById(id);
+                var packingListViewModelSerialized = JsonConvert.SerializeObject(packingListViewModel);
+                var packingListUnitPackingViewModel = JsonConvert.DeserializeObject<GarmentPackingListUnitPackingViewModel>(packingListViewModelSerialized);
+                _validateService.Validate(packingListUnitPackingViewModel);
+
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.POSTED);
+
+                return Ok();
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
             }
             catch (Exception ex)
             {

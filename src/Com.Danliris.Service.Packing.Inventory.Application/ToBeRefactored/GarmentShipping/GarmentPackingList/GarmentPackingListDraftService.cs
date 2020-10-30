@@ -75,7 +75,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.SideMarkImagePath = await UploadImage(viewModel.SideMarkImageFile, viewModel.Id, viewModel.SideMarkImagePath, viewModel.CreatedUtc);
             viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
-            return await base.Update(id, viewModel);
+            GarmentPackingListModel model = MapToModel(viewModel);
+
+            var modelToUpdate = _packingListRepository.Query.FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSayUnit(model.SayUnit, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetShippingMark(model.ShippingMark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetShippingMarkImagePath(model.ShippingMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSideMarkImagePath(model.SideMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemarkImagePath(model.RemarkImagePath, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
+
+            return await _packingListRepository.SaveChanges();
         }
     }
 }
