@@ -21,6 +21,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder
+                .Property(s => s.Style)
+                .HasMaxLength(100);
+
+            builder
                 .Property(s => s.Colour)
                 .HasMaxLength(100);
 
