@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, sizes) };
             var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED) { Id = 1 };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED){ Id = 1 };
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED, ""));
 
             List<GarmentPackingListModel> models = new List<GarmentPackingListModel> { model };
@@ -138,14 +138,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Update_Success()
         {
-            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
-            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, sizes) };
-            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) { CreatedBy = "UserTest" } };
-            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED) { Id = 1 };
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> {
+                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 1 },
+                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
+            };
+            var details = new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, sizes){ Id = 1 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 2, 3, 1, sizes){ Id = 2 },
+            };
+            var items = new HashSet<GarmentPackingListItemModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1){ Id = 1, CreatedBy = "UserTest" },
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel>(), 1, 1){ Id = 2, CreatedBy = "UserTest" }
+            };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> {
+                new GarmentPackingListMeasurementModel(1, 1, 1, 1){ Id = 1 },
+                new GarmentPackingListMeasurementModel(1, 2, 3, 1){ Id = 2 },
+                new GarmentPackingListMeasurementModel(4, 5, 6, 1){ Id = 2 },
+            };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED){ Id = 1 };
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED, ""));
 
             List<GarmentPackingListModel> models = new List<GarmentPackingListModel> { model };
+
+            var ViewModel = this.ViewModel;
 
             var mockModels = models.AsQueryable().BuildMock();
             var repoMock = new Mock<IGarmentPackingListRepository>();
@@ -168,6 +183,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var service = GetService(serviceProviderMock.Object);
 
+            foreach (var i in model.Items)
+            {
+                GarmentPackingListItemViewModel item = new GarmentPackingListItemViewModel{ Id = i.Id, Details = new List<GarmentPackingListDetailViewModel>() };
+                foreach (var d in i.Details)
+                {
+                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel{ Id = d.Id, Length = d.Length, Width = d.Width, Height = d.Height, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
+                    foreach (var s in d.Sizes)
+                    {
+                        detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel{ Id = s.Id });
+                        detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel());
+                        break;
+                    }
+                    item.Details.Add(detail);
+                    item.Details.Add(new GarmentPackingListDetailViewModel { Sizes = new List<GarmentPackingListDetailSizeViewModel> { new GarmentPackingListDetailSizeViewModel() } });
+                    break;
+                }
+                ViewModel.Items.Add(item);
+                break;
+            }
             var result = await service.Update(1, ViewModel);
 
             Assert.NotEqual(0, result);
