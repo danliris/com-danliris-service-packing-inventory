@@ -58,13 +58,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (buyerAgent == null || buyerAgent.Id == 0)
-            {
-                yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyerAgent" });
-            }
             if (incomeTax == null || incomeTax.id == 0)
             {
                 yield return new ValidationResult("PPH tidak boleh kosong", new List<string> { "incomeTax" });
+            }
+            if (paymentDate == null || paymentDate == DateTimeOffset.MinValue)
+            {
+                yield return new ValidationResult("Tanggal Pembayaran tidak boleh kosong", new List<string> { "paymentDate" });
             }
             if (paymentType == "FORWARDER")
             {
@@ -101,6 +101,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 if (courier == null || courier.Id == 0)
                 {
                     yield return new ValidationResult("Kurir tidak boleh kosong", new List<string> { "courier" });
+                }
+            }
+            else
+            {
+                if (buyerAgent == null || buyerAgent.Id == 0)
+                {
+                    yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyerAgent" });
                 }
             }
             if (billDetails == null || billDetails.Count == 0)
