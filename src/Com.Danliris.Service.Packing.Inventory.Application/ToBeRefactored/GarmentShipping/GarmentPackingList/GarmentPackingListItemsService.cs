@@ -386,14 +386,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 modelToUpdate.Items.Add(item);
             }
 
+            var measurements = modelToUpdate.Items
+                .SelectMany(i => i.Details.Select(d => new { d.Length, d.Width, d.Height, d.CartonQuantity }))
+                .GroupBy(m => new { m.Length, m.Width, m.Height }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Sum(d => d.CartonQuantity)));
+
             foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {
-                var measurement = model.Measurements.FirstOrDefault(m => m.Id == measurementToUpdate.Id);
+                var measurement = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
                 if (measurement != null)
                 {
-                    measurementToUpdate.SetLength(measurement.Length, _identityProvider.Username, UserAgent);
-                    measurementToUpdate.SetWidth(measurement.Width, _identityProvider.Username, UserAgent);
-                    measurementToUpdate.SetHeight(measurement.Height, _identityProvider.Username, UserAgent);
                     measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
                 }
                 else
@@ -402,10 +403,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            foreach (var measurement in model.Measurements.Where(w => w.Id == 0))
+            foreach (var measurement in measurements)
             {
-                measurement.FlagForCreate(_identityProvider.Username, UserAgent);
-                modelToUpdate.Measurements.Add(measurement);
+                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.IsDeleted == false && m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
+                if (oldMeasurement == null)
+                {
+                    measurement.FlagForCreate(_identityProvider.Username, UserAgent);
+                    modelToUpdate.Measurements.Add(measurement);
+                }
             }
 
             return _packingListRepository.SaveChanges();
