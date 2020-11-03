@@ -8,9 +8,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public string InvoiceNo { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
+        public DateTimeOffset TruckingDate { get; set; }
+        public DateTimeOffset CADate { get; set; }
+        public DateTimeOffset PaymentDate { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
-        public string BuyerAgentCode { get; set; }
         public string BuyerAgentName { get; set; }
         public string ConsigneeName { get; set; }
         public DateTimeOffset SailingDate { get; set; }
@@ -20,19 +22,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string ShippingStaffName { get; set; }
         public decimal Amount { get; set; }
         public decimal ToBePaid { get; set; }
-
-        //public string RONo { get; set; }
-        //public string SCNo { get; set; }
-        //public string BuyerBrandName { get; set; }
-        //public string Description { get; set; }
-        //public double Quantity { get; set; }
-        //public string UOMUnit { get; set; }
-        //public string CurrencyCode { get; set; }
-        //public decimal Price { get; set; }
-        //public decimal Amount { get; set; }
-        //public decimal CMTPrice { get; set; }
-        //public decimal AmountCMT { get; set; }
-        //public decimal LessFabCost { get; set; }
-
+        public double AmountPaid { get; set; }
     }
 }
