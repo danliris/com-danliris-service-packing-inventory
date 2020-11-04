@@ -151,6 +151,93 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                 };
             }
         }
+
+        protected virtual GarmentShippingPaymentDispositionViewModel viewModelFFC
+        {
+            get
+            {
+                return new GarmentShippingPaymentDispositionViewModel()
+                {
+                    paymentType = "FORWARDER",
+                    forwarder = new Forwarder
+                    {
+                        id = 1,
+                        name = "as",
+                        code = "ad",
+                    },
+                    accNo = "sad",
+                    address = "test",
+                    bank = "test",
+                    billValue = 10,
+                    buyerAgent = new BuyerAgent
+                    {
+                        Name = "test",
+                        Code = "test",
+                        Id = 1
+                    },
+                    dispositionNo = "test",
+                    flightVessel = "test",
+                    freightBy = "test",
+                    freightDate = DateTimeOffset.Now,
+                    freightNo = "test",
+                    incomeTax = new IncomeTax
+                    {
+                        name = "test",
+                        rate = 1
+                    },
+                    invoiceDate = DateTimeOffset.Now,
+                    invoiceNumber = "test",
+                    invoiceTaxNumber = "test",
+                    IncomeTaxValue = 10,
+                    isFreightCharged = true,
+                    npwp = "test",
+                    paidAt = "test",
+                    sendBy = "test",
+                    paymentDate = DateTimeOffset.Now,
+                    paymentMethod = "test",
+                    paymentTerm = "test",
+                    remark = "test",
+                    totalBill = 10,
+                    vatValue = 10,
+                    billDetails = new List<GarmentShippingPaymentDispositionBillDetailViewModel>()
+                    {
+                        new GarmentShippingPaymentDispositionBillDetailViewModel
+                        {
+                            billDescription="test",
+                            amount=100
+                        }
+                    },
+                    unitCharges = new List<GarmentShippingPaymentDispositionUnitChargeViewModel>()
+                    {
+                        new GarmentShippingPaymentDispositionUnitChargeViewModel
+                        {
+                            amountPercentage=100,
+                            billAmount=100,
+                            unit=new Unit
+                            {
+                                Code="test",
+                                Id=1
+                            }
+                        }
+                    },
+                    invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
+                    {
+                        new GarmentShippingPaymentDispositionInvoiceDetailViewModel
+                        {
+                            amount=100,
+                            chargeableWeight=1,
+                            grossWeight=1,
+                            invoiceId=1,
+                            invoiceNo="test",
+                            quantity=1,
+                            totalCarton=1,
+                            volume=1,
+
+                        }
+                    }
+                };
+            }
+        }
         protected virtual GarmentShippingPaymentDispositionViewModel viewModelCourier
         {
             get
@@ -401,6 +488,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentShippingPaymentDispositionService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(viewModel);
+            var service = serviceMock.Object;
+
+            var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
+            invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
+            var invoiceService = invoiceServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingPaymentDispositionViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService, invoiceService);
+            var response = await controller.GetPDF(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF_FFC()
+        {
+            var serviceMock = new Mock<IGarmentShippingPaymentDispositionService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(viewModelFFC);
             var service = serviceMock.Object;
 
             var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();

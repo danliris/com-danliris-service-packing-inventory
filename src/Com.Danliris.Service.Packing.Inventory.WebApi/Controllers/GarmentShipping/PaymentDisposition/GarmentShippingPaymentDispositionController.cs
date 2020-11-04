@@ -194,13 +194,28 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     }
                     if (model.paymentType == "FORWARDER")
                     {
-                        var PdfTemplate = new GarmentShippingPaymentDispositionForwarderPDFTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
-
-                        return new FileStreamResult(stream, "application/pdf")
+                        if (model.isFreightCharged)
                         {
-                            FileDownloadName = model.dispositionNo + ".pdf"
-                        };
+                            var PdfTemplate = new GarmentShippingPaymentDispositionForwarderFCPDFTemplate();
+                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+
+                            return new FileStreamResult(stream, "application/pdf")
+                            {
+                                FileDownloadName = model.dispositionNo + ".pdf"
+                            };
+
+                        }
+                        else
+                        {
+                            var PdfTemplate = new GarmentShippingPaymentDispositionForwarderPDFTemplate();
+                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+
+                            return new FileStreamResult(stream, "application/pdf")
+                            {
+                                FileDownloadName = model.dispositionNo + ".pdf"
+                            };
+
+                        }
                     }
                     else if (model.paymentType == "EMKL")
                     {

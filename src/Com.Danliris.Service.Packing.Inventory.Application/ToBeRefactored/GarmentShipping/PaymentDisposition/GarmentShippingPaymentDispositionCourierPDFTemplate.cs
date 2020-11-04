@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
             Font normal_font_bold = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 40, MARGIN);
 
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
@@ -32,22 +32,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region header
 
-            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN KURIR", header_font_bold_underlined);
+            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN COURIER\n\n\n", header_font_bold);
             title.Alignment = Element.ALIGN_CENTER;
 
             Paragraph title1 = new Paragraph("DISPOSISI BIAYA SHIPMENT", normal_font_underlined);
             Paragraph no = new Paragraph(viewModel.dispositionNo, normal_font);
-            Paragraph title2 = new Paragraph("Kepada : \nBp./Ibu \nKasir Exp Garment PT Danliris", normal_font);
+            Paragraph title2 = new Paragraph("Kepada : \nBp./Ibu Kasir Exp Garment PT Danliris", normal_font);
             
-            Paragraph words = new Paragraph($"Harap dibayarkan kepada {viewModel.courier.Name} {viewModel.address} " +
+            Paragraph words = new Paragraph($"\nHarap dibayarkan kepada {viewModel.courier.Name} {viewModel.address} " +
                 $"NPWP {viewModel.npwp} untuk tagihan Invoice No. {viewModel.invoiceNumber} Tgl. " +
                 $"{viewModel.invoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}" +
                 $" Faktur Pajak No.{viewModel.invoiceTaxNumber} dengan rincian sbb : ", normal_font);
 
             document.Add(title);
             document.Add(title1);
-            document.Add(title2);
             document.Add(no);
+            document.Add(title2);
             document.Add(words);
             #endregion
 
@@ -156,7 +156,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region bank
-            Paragraph units = new Paragraph("Beban Per Unit", normal_font_bold);
+            Paragraph units = new Paragraph("\nBeban Per Unit", normal_font_bold);
             document.Add(units);
 
             PdfPTable tableUnit = new PdfPTable(2);

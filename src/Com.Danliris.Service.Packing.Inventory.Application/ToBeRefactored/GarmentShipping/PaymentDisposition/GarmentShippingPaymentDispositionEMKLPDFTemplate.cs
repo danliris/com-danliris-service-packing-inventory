@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10, Font.UNDERLINE);
             Font normal_font_bold = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, MARGIN, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 40, MARGIN);
 
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region header
 
-            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN EMKL", header_font_bold_underlined);
+            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN EMKL\n\n\n", header_font_bold);
             title.Alignment = Element.ALIGN_CENTER;
 
             Paragraph title1 = new Paragraph("DISPOSISI BIAYA SHIPMENT", normal_font_underlined);
