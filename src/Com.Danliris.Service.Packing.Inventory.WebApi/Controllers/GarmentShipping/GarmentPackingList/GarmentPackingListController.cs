@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -235,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                await _service.SetCancel(id);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.CANCELED);
 
                 return Ok();
             }
@@ -266,7 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     return new BadRequestObjectResult(Result);
                 }
 
-                await _service.SetRejectMd(id, reason);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REJECTED_MD, reason);
 
                 return Ok();
             }
@@ -313,7 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                await _service.SetRevisedMd(id);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_MD);
 
                 return Ok();
             }
@@ -374,7 +375,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     return new BadRequestObjectResult(Result);
                 }
 
-                await _service.SetRejectShippingToUnit(id, reason);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REJECTED_SHIPPING_UNIT, reason);
 
                 return Ok();
             }
@@ -405,7 +406,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     return new BadRequestObjectResult(Result);
                 }
 
-                await _service.SetRejectShippingToMd(id, reason);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REJECTED_SHIPPING_MD, reason);
 
                 return Ok();
             }
@@ -422,7 +423,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                await _service.SetRevisedShipping(id);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_SHIPPING);
 
                 return Ok();
             }

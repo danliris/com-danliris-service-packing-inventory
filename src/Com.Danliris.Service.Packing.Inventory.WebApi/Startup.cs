@@ -123,6 +123,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.InsuranceDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShipment;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -139,10 +140,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
         public IConfiguration Configuration { get; }
 
-        private void RegisterEndpoints()
+        private void RegisterApplicationSetting()
         {
-            APIEndpoint.Core = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
-
+            ApplicationSetting.CoreEndpoint = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
+            ApplicationSetting.StorageAccountName = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_NAME) ?? Configuration[Constant.STORAGE_ACCOUNT_NAME];
+            ApplicationSetting.StorageAccountKey = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_KEY) ?? Configuration[Constant.STORAGE_ACCOUNT_KEY];
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -156,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                     options.UseSqlServer(connectionString);
                 });
 
-            RegisterEndpoints();
+            RegisterApplicationSetting();
 
             // Register Middleware
 
@@ -209,6 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
             services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
+            services.AddTransient<IGarmentShippingInvoiceAdjustmentRepository, GarmentShippingInvoiceAdjustmentRepository>();
             services.AddTransient<IGarmentShippingLocalSalesNoteItemRepository, GarmentShippingLocalSalesNoteItemRepository>();
             services.AddTransient<IGarmentShippingVBPaymentRepository, GarmentShippingVBPaymentRepository>();
 
@@ -255,6 +258,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
             services.AddTransient<IGarmentPackingListDraftService, GarmentPackingListDraftService>();
+            services.AddTransient<IGarmentPackingListItemsService, GarmentPackingListItemsService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
@@ -310,6 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalSalesReportByBuyerService, GarmentLocalSalesReportByBuyerService>();
             services.AddTransient<IGarmentShippingInstructionMonitoringService, GarmentShippingInstructionMonitoringService>();
             services.AddTransient<IGarmentCoverLetterMonitoringService, GarmentCoverLetterMonitoringService>();
+            services.AddTransient<IGarmentShipmentMonitoringService, GarmentShipmentMonitoringService>();
 
             services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
             services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
@@ -322,6 +327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddScoped<IValidateService, ValidateService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
+            services.AddScoped<IAzureImageService, AzureImageService>();
 
 
 

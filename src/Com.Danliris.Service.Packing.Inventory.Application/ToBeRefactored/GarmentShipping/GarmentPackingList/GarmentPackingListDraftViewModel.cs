@@ -40,10 +40,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Shipping Staff tidak boleh kosong", new List<string> { "ShippingStaff" });
             }
 
-            if (Items != null && Items.Count > 0)
-            {
-                yield return new ValidationResult("Items tidak boleh ada", new List<string> { "ItemsCount" });
-            }
+            //if (Items != null && Items.Count > 0)
+            //{
+            //    yield return new ValidationResult("Items tidak boleh ada", new List<string> { "ItemsCount" });
+            //}
 
             #endregion
 
@@ -54,10 +54,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Unit SAY tidak boleh kosong", new List<string> { "SayUnit" });
             }
 
-            if (Measurements != null && Measurements.Count > 0)
-            {
-                yield return new ValidationResult("Measurements tidak boleh ada", new List<string> { "MeasurementsCount" });
-            }
+            //if (Measurements != null && Measurements.Count > 0)
+            //{
+            //    yield return new ValidationResult("Measurements tidak boleh ada", new List<string> { "MeasurementsCount" });
+            //}
 
             #endregion
 

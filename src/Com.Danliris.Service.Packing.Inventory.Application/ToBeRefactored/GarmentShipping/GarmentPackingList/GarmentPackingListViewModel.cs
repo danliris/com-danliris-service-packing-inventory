@@ -65,6 +65,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string SideMarkImagePath { get; set; }
         public string RemarkImagePath { get; set; }
 
+        public string ShippingMarkImageFile { get; set; }
+        public string SideMarkImageFile { get; set; }
+        public string RemarkImageFile { get; set; }
+
         #endregion
 
         public bool IsUsed { get; set; }

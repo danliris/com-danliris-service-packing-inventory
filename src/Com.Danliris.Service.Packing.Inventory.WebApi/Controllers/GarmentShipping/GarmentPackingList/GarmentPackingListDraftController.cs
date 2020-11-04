@@ -1,9 +1,11 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net;
@@ -73,6 +75,160 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 var result = await _service.Update(id, viewModel);
 
                 return Ok(result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("post-booking/{id}")]
+        public async Task<IActionResult> PostBooking(int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_POSTED);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("unpost-booking/{id}")]
+        public async Task<IActionResult> UnpostBooking(int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("cancel/{id}")]
+        public async Task<IActionResult> SetCancel([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_CANCELED);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-md/{id}")]
+        public async Task<IActionResult> SetApproveMd([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_APPROVED_MD);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-md/{id}")]
+        public async Task<IActionResult> SetRejectMd([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_MD, reason);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-shipping/{id}")]
+        public async Task<IActionResult> SetApproveShipping([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-shipping/{id}")]
+        public async Task<IActionResult> SetRejectShipping([FromRoute] int id, [FromBody] string reason)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_SHIPPING, reason);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("post-packing-list/{id}")]
+        public async Task<IActionResult> PostPackingList(int id)
+        {
+            try
+            {
+                VerifyUser();
+
+                var packingListViewModel = await _service.ReadById(id);
+                var packingListViewModelSerialized = JsonConvert.SerializeObject(packingListViewModel);
+                var packingListUnitPackingViewModel = JsonConvert.DeserializeObject<GarmentPackingListUnitPackingViewModel>(packingListViewModelSerialized);
+                _validateService.Validate(packingListUnitPackingViewModel);
+
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.POSTED);
+
+                return Ok();
             }
             catch (ServiceValidationException ex)
             {

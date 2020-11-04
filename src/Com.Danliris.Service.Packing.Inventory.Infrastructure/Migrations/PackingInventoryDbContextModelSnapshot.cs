@@ -1662,6 +1662,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("QuantityPCS");
 
+                    b.Property<string>("Style")
+                        .HasMaxLength(100);
+
                     b.Property<double>("TotalQuantity");
 
                     b.Property<double>("Width");

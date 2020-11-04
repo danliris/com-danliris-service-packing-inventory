@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,126 +34,116 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else
             {
-                int errorItemsCount = 0;
-                List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
-
-                bool isBuyerAgentDiff = !Items.All(i => i.BuyerAgent != null && BuyerAgent != null && i.BuyerAgent.Id == BuyerAgent.Id);
-                bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
-
-                foreach (var item in Items)
+                if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
                 {
-                    Dictionary<string, object> errorItem = new Dictionary<string, object>();
+                    int errorItemsCount = 0;
+                    List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
 
-                    if (string.IsNullOrWhiteSpace(item.RONo))
+                    bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
+
+                    foreach (var item in Items)
                     {
-                        errorItem["RONo"] = "RONo tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-                    else
-                    {
-                        if (isBuyerAgentDiff)
+                        Dictionary<string, object> errorItem = new Dictionary<string, object>();
+
+                        if (string.IsNullOrWhiteSpace(item.RONo))
                         {
-                            errorItem["BuyerAgent"] = "Buyer Agent harus sama semua";
+                            errorItem["RONo"] = "RONo tidak boleh kosong";
+                            errorItemsCount++;
+                        }
+                        else
+                        {
+                            if (isSectionDiff)
+                            {
+                                errorItem["Section"] = "Section harus sama semua";
+                                errorItemsCount++;
+                            }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(item.OrderNo))
+                        {
+                            errorItem["OrderNo"] = "Order No tidak boleh kosong";
                             errorItemsCount++;
                         }
 
-                        if (isSectionDiff)
+                        if (item.Details == null || item.Details.Count < 1)
                         {
-                            errorItem["Section"] = "Section harus sama semua";
+                            errorItem["DetailsCount"] = "Details tidak boleh kosong";
                             errorItemsCount++;
                         }
-                    }
-
-                    if (string.IsNullOrWhiteSpace(item.OrderNo))
-                    {
-                        errorItem["OrderNo"] = "Order No tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(item.Description))
-                    {
-                        errorItem["Description"] = "Description tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-
-                    if (item.Details == null || item.Details.Count < 1)
-                    {
-                        errorItem["DetailsCount"] = "Details tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-                    else
-                    {
-                        int errorDetailsCount = 0;
-                        List<Dictionary<string, object>> errorDetails = new List<Dictionary<string, object>>();
-
-                        foreach (var detail in item.Details)
+                        else
                         {
-                            Dictionary<string, object> errorDetail = new Dictionary<string, object>();
+                            int errorDetailsCount = 0;
+                            List<Dictionary<string, object>> errorDetails = new List<Dictionary<string, object>>();
 
-                            if (string.IsNullOrWhiteSpace(detail.Colour))
+                            foreach (var detail in item.Details)
                             {
-                                errorDetail["Colour"] = "Colour tidak boleh kosong";
-                                errorDetailsCount++;
-                            }
+                                Dictionary<string, object> errorDetail = new Dictionary<string, object>();
 
-                            if (detail.Sizes == null || detail.Sizes.Count < 1)
-                            {
-                                errorDetail["SizesCount"] = "Sizes tidak boleh kosong";
-                                errorDetailsCount++;
-                            }
-                            else
-                            {
-                                int errorSizesCount = 0;
-                                List<Dictionary<string, object>> errorSizes = new List<Dictionary<string, object>>();
-
-                                foreach (var size in detail.Sizes)
+                                if (string.IsNullOrWhiteSpace(detail.Colour))
                                 {
-                                    Dictionary<string, object> errorSize = new Dictionary<string, object>();
+                                    errorDetail["Colour"] = "Colour tidak boleh kosong";
+                                    errorDetailsCount++;
+                                }
 
-                                    if (size.Size == null || size.Size.Id == 0)
+                                if (detail.Sizes == null || detail.Sizes.Count < 1)
+                                {
+                                    errorDetail["SizesCount"] = "Sizes tidak boleh kosong";
+                                    errorDetailsCount++;
+                                }
+                                else
+                                {
+                                    int errorSizesCount = 0;
+                                    List<Dictionary<string, object>> errorSizes = new List<Dictionary<string, object>>();
+
+                                    foreach (var size in detail.Sizes)
                                     {
-                                        errorSize["Size"] = "Size tidak boleh kosong";
-                                        errorSizesCount++;
+                                        Dictionary<string, object> errorSize = new Dictionary<string, object>();
+
+                                        if (size.Size == null || size.Size.Id == 0)
+                                        {
+                                            errorSize["Size"] = "Size tidak boleh kosong";
+                                            errorSizesCount++;
+                                        }
+
+                                        errorSizes.Add(errorSize);
                                     }
 
-                                    errorSizes.Add(errorSize);
+                                    if (errorSizesCount > 0)
+                                    {
+                                        errorDetail["Sizes"] = errorSizes;
+                                        errorDetailsCount++;
+                                    }
+
+                                    if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                    {
+                                        errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                        errorDetailsCount++;
+                                    }
                                 }
 
-                                if (errorSizesCount > 0)
-                                {
-                                    errorDetail["Sizes"] = errorSizes;
-                                    errorDetailsCount++;
-                                }
-
-                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
-                                {
-                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
-                                    errorDetailsCount++;
-                                }
+                                errorDetails.Add(errorDetail);
                             }
 
-                            errorDetails.Add(errorDetail);
+                            if (errorDetailsCount > 0)
+                            {
+                                errorItem["Details"] = errorDetails;
+                                errorItemsCount++;
+                            }
+
+                            //if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
+                            //{
+                            //    errorItem["totalQty"] = "Harus sama dengan Qty";
+                            //    errorItemsCount++;
+                            //}
                         }
 
-                        if (errorDetailsCount > 0)
-                        {
-                            errorItem["Details"] = errorDetails;
-                            errorItemsCount++;
-                        }
-
-                        //if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
-                        //{
-                        //    errorItem["totalQty"] = "Harus sama dengan Qty";
-                        //    errorItemsCount++;
-                        //}
+                        errorItems.Add(errorItem);
                     }
 
-                    errorItems.Add(errorItem);
-                }
-
-                if (errorItemsCount > 0)
-                {
-                    yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "Items" });
+                    if (errorItemsCount > 0)
+                    {
+                        yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "Items" });
+                    }
                 }
             }
 
@@ -166,25 +157,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else
             {
-                int errorMeasurementsCount = 0;
-                List<Dictionary<string, object>> errorMeasurements = new List<Dictionary<string, object>>();
-
-                foreach (var measurement in Measurements)
+                if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
                 {
-                    Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
+                    int errorMeasurementsCount = 0;
+                    List<Dictionary<string, object>> errorMeasurements = new List<Dictionary<string, object>>();
 
-                    //if (measurement.Length <= 0)
-                    //{
-                    //    errorMeasurement["Length"] = "Length harus lebih dari 0";
-                    //    errorMeasurementsCount++;
-                    //}
+                    foreach (var measurement in Measurements)
+                    {
+                        Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
 
-                    errorMeasurements.Add(errorMeasurement);
-                }
+                        //if (measurement.Length <= 0)
+                        //{
+                        //    errorMeasurement["Length"] = "Length harus lebih dari 0";
+                        //    errorMeasurementsCount++;
+                        //}
 
-                if (errorMeasurementsCount > 0)
-                {
-                    yield return new ValidationResult(JsonConvert.SerializeObject(errorMeasurements), new List<string> { "Measurements" });
+                        errorMeasurements.Add(errorMeasurement);
+                    }
+
+                    if (errorMeasurementsCount > 0)
+                    {
+                        yield return new ValidationResult(JsonConvert.SerializeObject(errorMeasurements), new List<string> { "Measurements" });
+                    }
                 }
             }
 
