@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition
@@ -197,6 +198,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 if (unitCharges == null || unitCharges.Count == 0)
                 {
                     yield return new ValidationResult("Beban Unit tidak boleh kosong", new List<string> { "unitChargesCount" });
+                }
+                else if(unitCharges.Sum(a=>a.billAmount) != totalBill)
+                {
+                    yield return new ValidationResult("Total Beban Unit harus sama dengan Total Tagihan", new List<string> { "unitChargesValue" });
                 }
                 else
                 {

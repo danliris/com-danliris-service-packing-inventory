@@ -95,6 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
 
 
             viewModel.paymentType = "COURIER";
+            viewModel.totalBill = 1000;
             viewModel.billDetails = new List<GarmentShippingPaymentDispositionBillDetailViewModel>
             {
                 new GarmentShippingPaymentDispositionBillDetailViewModel()
