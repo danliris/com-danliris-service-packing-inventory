@@ -423,6 +423,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task Should_Success_GetPDF_FFC()
+        {
+            var serviceMock = new Mock<IGarmentShippingPaymentDispositionService>();
+            viewModel.isFreightCharged = true;
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(viewModel);
+            var service = serviceMock.Object;
+
+            var invoiceServiceMock = new Mock<IGarmentShippingInvoiceService>();
+            invoiceServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(invoiceVM);
+            var invoiceService = invoiceServiceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingPaymentDispositionViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService, invoiceService);
+            var response = await controller.GetPDF(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetPDF_COURIER()
         {
             var serviceMock = new Mock<IGarmentShippingPaymentDispositionService>();
