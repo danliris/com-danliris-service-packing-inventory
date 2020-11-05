@@ -312,14 +312,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public virtual ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _packingListRepository.ReadAll();
-            List<string> SearchAttributes = new List<string>()
-            {
-                "InvoiceNo", "InvoiceType", "PackingListType", "SectionCode", "Destination", "BuyerAgentName"
-            };
-            query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+            //List<string> SearchAttributes = new List<string>()
+            //{
+            //    "InvoiceNo", "InvoiceType", "PackingListType", "SectionCode", "Destination", "BuyerAgentName"
+            //};
+            //query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+            if (keyword != null)
+            {
+                query = query.Where(q => q.Items.Any(i => i.RONo.Contains(keyword)) ||
+                    q.InvoiceNo.Contains(keyword) ||
+                    q.InvoiceType.Contains(keyword) ||
+                    q.PackingListType.Contains(keyword) ||
+                    q.SectionCode.Contains(keyword) ||
+                    q.Destination.Contains(keyword) ||
+                    q.BuyerAgentName.Contains(keyword));
+            }
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
             query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
