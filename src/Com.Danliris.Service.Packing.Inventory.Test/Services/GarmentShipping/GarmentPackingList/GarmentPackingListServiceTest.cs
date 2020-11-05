@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED);
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", new List<GarmentPackingListItemModel>(), 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -88,7 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.Read(1, 25, "{}", "{}", null);
+            var result = service.Read(1, 25, "{}", "{}", "");
 
             Assert.NotEmpty(result.Data);
         }

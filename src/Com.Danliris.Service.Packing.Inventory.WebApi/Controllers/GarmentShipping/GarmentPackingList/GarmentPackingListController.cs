@@ -231,12 +231,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("cancel/{id}")]
-        public async Task<IActionResult> SetCancel([FromRoute] int id)
+        public async Task<IActionResult> SetCancel([FromRoute] int id, [FromBody] string reason)
         {
             try
             {
                 VerifyUser();
-                await _service.SetStatus(id, GarmentPackingListStatusEnum.CANCELED);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.CANCELED, reason);
 
                 return Ok();
             }
@@ -309,12 +309,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("revise-md/{id}")]
-        public async Task<IActionResult> SetRevisedMd([FromRoute] int id)
+        public async Task<IActionResult> SetRevisedMd([FromRoute] int id, [FromBody] string reason)
         {
             try
             {
                 VerifyUser();
-                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_MD);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_MD, reason);
 
                 return Ok();
             }
@@ -418,12 +418,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("revise-shipping/{id}")]
-        public async Task<IActionResult> SetRevisedShipping([FromRoute] int id)
+        public async Task<IActionResult> SetRevisedShipping([FromRoute] int id, [FromBody] string reason)
         {
             try
             {
                 VerifyUser();
-                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_SHIPPING);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_SHIPPING, reason);
 
                 return Ok();
             }

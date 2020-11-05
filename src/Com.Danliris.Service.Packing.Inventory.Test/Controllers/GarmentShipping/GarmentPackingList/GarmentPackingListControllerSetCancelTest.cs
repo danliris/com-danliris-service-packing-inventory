@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetCancel(It.IsAny<int>());
+            var response = await controller.SetCancel(It.IsAny<int>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetCancel(It.IsAny<int>());
+            var response = await controller.SetCancel(It.IsAny<int>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
