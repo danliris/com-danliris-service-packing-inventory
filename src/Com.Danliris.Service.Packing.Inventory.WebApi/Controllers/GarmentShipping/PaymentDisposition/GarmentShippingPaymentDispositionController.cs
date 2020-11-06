@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -23,13 +24,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
         private readonly IGarmentShippingInvoiceService _invoiceService;
+        private readonly IGarmentPackingListService _packingListService;
 
-        public GarmentShippingPaymentDispositionController(IGarmentShippingPaymentDispositionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentShippingInvoiceService invoiceService)
+        public GarmentShippingPaymentDispositionController(IGarmentShippingPaymentDispositionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentShippingInvoiceService invoiceService, IGarmentPackingListService packingListService)
         {
             _service = service;
             _identityProvider = identityProvider;
             _validateService = validateService;
             _invoiceService = invoiceService;
+            _packingListService = packingListService;
         }
 
         protected void VerifyUser()
@@ -187,17 +190,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 else
                 {
                     List<GarmentShippingInvoiceViewModel> invoices = new List<GarmentShippingInvoiceViewModel>();
-                    foreach(var invoiceItem in model.invoiceDetails)
+                    List<GarmentPackingListViewModel> packingLists = new List<GarmentPackingListViewModel>();
+                    foreach (var invoiceItem in model.invoiceDetails)
                     {
                         GarmentShippingInvoiceViewModel invoice = await _invoiceService.ReadById(invoiceItem.invoiceId);
+                        GarmentPackingListViewModel pl = await _packingListService.ReadByInvoiceNo(invoiceItem.invoiceNo);
                         invoices.Add(invoice);
+                        packingLists.Add(pl);
                     }
                     if (model.paymentType == "FORWARDER")
                     {
                         if (model.isFreightCharged)
                         {
                             var PdfTemplate = new GarmentShippingPaymentDispositionForwarderFCPDFTemplate();
-                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices,  timeoffsset);
 
                             return new FileStreamResult(stream, "application/pdf")
                             {
@@ -208,7 +214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                         else
                         {
                             var PdfTemplate = new GarmentShippingPaymentDispositionForwarderPDFTemplate();
-                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, packingLists, timeoffsset);
 
                             return new FileStreamResult(stream, "application/pdf")
                             {

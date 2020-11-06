@@ -97,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 totalBill = model.TotalBill,
                 vatValue = model.VatValue,
                 flightVessel = model.FlightVessel,
+                destination=model.Destination,
                 unitCharges = (model.UnitCharges ?? new List<GarmentShippingPaymentDispositionUnitChargeModel>()).Select(i => new GarmentShippingPaymentDispositionUnitChargeViewModel
                 {
                     Active = i.Active,
@@ -200,7 +201,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 vm.buyerAgent.Id, vm.buyerAgent.Code, vm.buyerAgent.Name, vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
                 vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
                 vm.invoiceTaxNumber, vm.billValue, vm.vatValue, vm.incomeTax.id, vm.incomeTax.name, (decimal)vm.incomeTax.rate, vm.IncomeTaxValue,
-                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate,vm.flightVessel, vm.remark, invoices, bills, units)
+                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate.GetValueOrDefault(), vm.flightVessel, vm.destination, vm.remark, invoices, bills, units)
             { Id = vm.Id };
         }
 
@@ -211,7 +212,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var prefix = "";
             if (vm.paymentType == "FORWARDER")
             {
-                prefix =$"DL/FRWD/{vm.paidAt}/{year}/";
+                if (vm.isFreightCharged)
+                {
+                    if (vm.freightBy == "AIR")
+                    {
+                        prefix = $"DL/AF.EG/{vm.paidAt}/{year}/";
+                    }
+                    else
+                    {
+                        prefix = $"DL/OF.EG/{vm.paidAt}/{year}/";
+                    }
+                }
+                else
+                {
+                    prefix = $"DL/FRWD/{vm.paidAt}/{year}/";
+                }
             }
             else if(vm.paymentType == "COURIER")
             {

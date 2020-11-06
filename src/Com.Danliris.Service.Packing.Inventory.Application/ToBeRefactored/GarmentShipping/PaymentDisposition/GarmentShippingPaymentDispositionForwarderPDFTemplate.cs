@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -12,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingPaymentDispositionForwarderPDFTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionViewModel viewModel, List<GarmentShippingInvoiceViewModel>invoices, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionViewModel viewModel, List<GarmentShippingInvoiceViewModel>invoices, List<GarmentPackingListViewModel> packingLists, int timeoffset)
         {
             const int MARGIN = 20;
 
@@ -70,6 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             decimal invTotalQty = viewModel.invoiceDetails.Sum(a => a.quantity);
             decimal totalCtns= viewModel.invoiceDetails.Sum(a => a.totalCarton);
+            double totalcbm = packingLists.Sum(a => a.Measurements.Sum(m => m.Length * m.Width * m.Height * m.CartonsQuantity / 1000000));
 
             PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 80;
@@ -137,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} pcs / {string.Format("{0:n2}", totalCtns)} ctns =  cbm", normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} pcs / {string.Format("{0:n2}", totalCtns)} ctns =  {string.Format("{0:n2}", totalcbm)} cbm", normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Biaya", normal_font);

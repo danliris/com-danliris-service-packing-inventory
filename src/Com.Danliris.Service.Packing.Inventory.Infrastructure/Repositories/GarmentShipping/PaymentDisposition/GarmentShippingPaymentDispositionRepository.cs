@@ -132,6 +132,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetCourierCode(model.CourierCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCourierId(model.CourierId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCourierName(model.CourierName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFlightVessel(model.FlightVessel, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetVatValue(model.VatValue, _identityProvider.Username, UserAgent);
 
             foreach (var billToUpdate in modelToUpdate.BillDetails)
             {
