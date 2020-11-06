@@ -120,6 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentName(model.BuyerAgentName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFinalDestination(model.FinalDestination, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShipmentMode(model.ShipmentMode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruckingDate(model.TruckingDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruckingEstimationDate(model.TruckingEstimationDate, _identityProvider.Username, UserAgent);
