@@ -72,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Name = model.BuyerAgentName,
                 },
                 Destination = model.Destination,
+                FinalDestination = model.FinalDestination,
                 ShipmentMode = model.ShipmentMode,
                 TruckingDate = model.TruckingDate,
                 TruckingEstimationDate = model.TruckingEstimationDate,
