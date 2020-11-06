@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Buyer BuyerAgent { get; set; }
 
         public string Destination { get; set; }
+        public string FinalDestination { get; set; }
 
         public string ShipmentMode { get; set; }
 

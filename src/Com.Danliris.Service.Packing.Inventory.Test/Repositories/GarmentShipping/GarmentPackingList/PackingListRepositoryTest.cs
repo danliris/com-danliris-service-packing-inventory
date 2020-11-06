@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED);
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED);
 
             await repo.InsertAsync(oldModel);
 

@@ -66,6 +66,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.FinalDestination)
+                .HasMaxLength(50);
+
+            builder
                 .Property(s => s.FabricCountryOrigin)
                 .HasMaxLength(255);
 

@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string BuyerAgentName { get; private set; }
 
         public string Destination { get; private set; }
+        public string FinalDestination { get; private set; }
 
         public string ShipmentMode { get; private set; }
 
@@ -84,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -100,6 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BuyerAgentCode = buyerAgentCode;
             BuyerAgentName = buyerAgentName;
             Destination = destination;
+            FinalDestination = finalDestination;
             ShipmentMode = shipmentMode;
             TruckingDate = truckingDate;
             TruckingEstimationDate = truckingEstimationDate;
@@ -232,6 +234,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Destination != destination)
             {
                 Destination = destination;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetFinalDestination(string finalDestination, string userName, string userAgent)
+        {
+            if (FinalDestination != finalDestination)
+            {
+                FinalDestination = finalDestination;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
