@@ -103,7 +103,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeftNoBorder1.Phrase = new Phrase(viewModel.flightVessel, normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
-            cellLeftNoBorder.Phrase = new Phrase(viewModel.freightBy!="AIR"?"AWB No." : "BL No.", normal_font);
+            cellLeftNoBorder.Phrase = new Phrase("Destination To", normal_font);
+            cellLeftNoBorder.Colspan = 1;
+            tableBody.AddCell(cellLeftNoBorder);
+            cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
+            tableBody.AddCell(cellCenterNoBorder);
+            cellLeftNoBorder1.Phrase = new Phrase(viewModel.destination, normal_font);
+            tableBody.AddCell(cellLeftNoBorder1);
+
+            cellLeftNoBorder.Phrase = new Phrase(viewModel.freightBy=="AIR"?"AWB No." : "BL No.", normal_font);
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
@@ -114,7 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(viewModel.freightDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase(viewModel.freightDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Dscription", normal_font);

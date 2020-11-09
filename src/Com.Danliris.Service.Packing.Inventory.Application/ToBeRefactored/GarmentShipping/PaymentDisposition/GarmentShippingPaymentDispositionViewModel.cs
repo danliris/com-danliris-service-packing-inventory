@@ -48,8 +48,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool isFreightCharged { get;  set; }
         public string freightBy { get;  set; }
         public string freightNo { get;  set; }
-        public DateTimeOffset freightDate { get;  set; }
+        public DateTimeOffset ? freightDate { get;  set; }
         public string flightVessel { get; set; }
+        public string destination { get; set; }
 
         public string remark { get;  set; }
         public ICollection<GarmentShippingPaymentDispositionInvoiceDetailViewModel> invoiceDetails { get; set; }
@@ -82,10 +83,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     if (freightDate == null || freightDate == DateTimeOffset.MinValue)
                     {
                         yield return new ValidationResult("Tanggal AWB/BL tidak boleh kosong", new List<string> { "freightDate" });
-                    }
-                    if (string.IsNullOrWhiteSpace(flightVessel))
-                    {
-                        yield return new ValidationResult("Flight/Vessel tidak boleh kosong", new List<string> { "flightVessel" });
                     }
 
                 }
