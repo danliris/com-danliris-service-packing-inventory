@@ -280,6 +280,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 .Include(i => i.Measurements)
                 .FirstOrDefault(s => s.Id == id);
 
+            modelToUpdate.SetSectionId(model.SectionId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
+
             foreach (var itemToUpdate in modelToUpdate.Items.Where(i => i.CreatedBy == _identityProvider.Username))
             {
                 var item = model.Items.FirstOrDefault(i => i.Id == itemToUpdate.Id);
@@ -318,6 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             detailToUpdate.SetCarton1(detail.Carton1, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCarton2(detail.Carton2, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetStyle(detail.Style, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetColour(detail.Colour, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCartonQuantity(detail.CartonQuantity, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetQuantityPCS(detail.QuantityPCS, _identityProvider.Username, UserAgent);
