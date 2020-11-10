@@ -8,6 +8,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public interface IOmzetYearUnitService
     {
         OmzetYearUnitViewModel GetReportData(int year);
-        ExcelResult GenerateExcel(int year);
+        FileResult GenerateExcel(int year);
     }
 }

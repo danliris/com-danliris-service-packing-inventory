@@ -1,12 +1,10 @@
-using Com.Danliris.Service.Packing.Inventory.Data;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Utilities
 {
-    public class ExcelResult
+    public class FileResult
     {
-        public ExcelResult(MemoryStream data, string fileName)
+        public FileResult(MemoryStream data, string fileName)
         {
             Data = data;
             FileName = fileName;

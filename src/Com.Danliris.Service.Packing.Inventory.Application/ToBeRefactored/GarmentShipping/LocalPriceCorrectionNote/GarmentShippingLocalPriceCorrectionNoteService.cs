@@ -232,7 +232,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public async Task<ExcelResult> ReadPdfById(int id)
+        public async Task<FileResult> ReadPdfById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
             var viewModel = MapToViewModel(data);
@@ -242,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel, buyer, _identityProvider.TimezoneOffset);
 
-            return new ExcelResult(stream, "Nota Koreksi " + data.CorrectionNoteNo + ".pdf");
+            return new FileResult(stream, "Nota Koreksi " + data.CorrectionNoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)

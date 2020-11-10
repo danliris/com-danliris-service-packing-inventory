@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var serviceMock = new Mock<IRecapOmzetPerMonthMonitoringService>();
             serviceMock
                 .Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new ExcelResult(new MemoryStream(), "FileName"));
+                .Returns(new Application.Utilities.FileResult(new MemoryStream(), "FileName"));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

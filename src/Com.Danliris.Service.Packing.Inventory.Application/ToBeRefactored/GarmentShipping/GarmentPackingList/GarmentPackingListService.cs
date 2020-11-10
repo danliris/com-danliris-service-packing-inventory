@@ -404,7 +404,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _packingListRepository.DeleteAsync(id);
         }
 
-        public async Task<ExcelResult> ReadPdfById(int id)
+        public async Task<FileResult> ReadPdfById(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
 
@@ -413,7 +413,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);
 
-            return new ExcelResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+            return new FileResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
 
         public async Task SetPost(List<int> ids)
