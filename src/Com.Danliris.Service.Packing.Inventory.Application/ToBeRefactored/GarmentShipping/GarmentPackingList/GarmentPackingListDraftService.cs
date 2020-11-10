@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Helper;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using System;
 using System.Linq;
@@ -98,6 +99,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             return await _packingListRepository.SaveChanges();
+        }
+
+        public override async Task<MemoryStreamResult> ReadPdfById(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListDraftPdfTemplate(_identityProvider);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data));
+
+            return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".pdf");
         }
     }
 }
