@@ -2,9 +2,9 @@ using System.IO;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.Utilities
 {
-    public class FileResult
+    public class MemoryStreamResult
     {
-        public FileResult(MemoryStream data, string fileName)
+        public MemoryStreamResult(MemoryStream data, string fileName)
         {
             Data = data;
             FileName = fileName;

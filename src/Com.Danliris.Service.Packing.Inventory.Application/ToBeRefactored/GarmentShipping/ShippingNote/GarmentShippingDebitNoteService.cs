@@ -173,7 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _repository.UpdateAsync(id, model);
         }
 
-        public async Task<FileResult> ReadPdfById(int id)
+        public async Task<MemoryStreamResult> ReadPdfById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
             var viewModel = MapToViewModel(data);
@@ -184,7 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
-            return new FileResult(stream, "Debit Note " + data.NoteNo + ".pdf");
+            return new MemoryStreamResult(stream, "Debit Note " + data.NoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)
