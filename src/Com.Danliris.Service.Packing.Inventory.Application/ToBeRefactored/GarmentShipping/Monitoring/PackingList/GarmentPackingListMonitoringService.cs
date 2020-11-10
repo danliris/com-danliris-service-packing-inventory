@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentPackingListMonitoringViewModel>(data, 1, total, total);
         }
 
-        public ExcelResult GenerateExcel(int buyerAgentId, string buyerAgent, string invoiceType, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
+        public FileResult GenerateExcel(int buyerAgentId, string buyerAgent, string invoiceType, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
         {
             var data = GetData(buyerAgentId, invoiceType, dateFrom, dateTo);
 
@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Packing List") }, true);
             var filename = $"Monitoring Packing List{buyerAgent}{invoiceType}{dateFromString}{dateToString}.xlsx";
 
-            return new ExcelResult(excel, filename);
+            return new FileResult(excel, filename);
         }
 
         private string DateTimeToString(DateTimeOffset dateTime)
