@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
+        InputSppWarehouseItemListViewModel GetInputSppWarehouseItemListV2(string productPackingCode);
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
         Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsync(int bonId);
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
