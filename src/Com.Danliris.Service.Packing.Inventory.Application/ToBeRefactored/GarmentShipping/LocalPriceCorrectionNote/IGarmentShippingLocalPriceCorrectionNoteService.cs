@@ -9,6 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<GarmentShippingLocalPriceCorrectionNoteViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Delete(int id);
-        Task<FileResult> ReadPdfById(int id);
+        Task<MemoryStreamResult> ReadPdfById(int id);
     }
 }

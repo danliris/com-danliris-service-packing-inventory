@@ -9,18 +9,18 @@ using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListPdfTemplate
+    public class GarmentPackingListDraftPdfTemplate
     {
         private IIdentityProvider _identityProvider;
 
-        public GarmentPackingListPdfTemplate(IIdentityProvider identityProvider)
+        public GarmentPackingListDraftPdfTemplate(IIdentityProvider identityProvider)
         {
             _identityProvider = identityProvider;
         }
 
-        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob)
+        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel)
         {
-            int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
 
             Font header_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
@@ -29,82 +29,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 170);
+            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 70, 30);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
-            writer.PageEvent = new GarmentPackingListPDFTemplatePageEvent(_identityProvider, viewModel);
+            writer.PageEvent = new GarmentPackingListDraftPDFTemplatePageEvent(_identityProvider, viewModel);
 
             document.Open();
-
-            #region Description
-
-            PdfPTable tableDescription = new PdfPTable(3);
-            tableDescription.SetWidths(new float[] { 2f, 0.2f, 7.8f });
-            PdfPCell cellDescription = new PdfPCell() { Border = Rectangle.NO_BORDER };
-
-            cellDescription.Phrase = new Phrase("FOB", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(":", normal_font);
-            tableDescription.AddCell(cellDescription);
-            cellDescription.Phrase = new Phrase(fob, normal_font);
-            tableDescription.AddCell(cellDescription);
-            if (viewModel.PaymentTerm == "LC")
-            {
-                cellDescription.Phrase = new Phrase("LC No.", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(":", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(viewModel.LCNo, normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase("Tgl. LC", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(":", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(viewModel.LCDate.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase("ISSUED BY", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(":", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(viewModel.IssuedBy, normal_font);
-                tableDescription.AddCell(cellDescription);
-            }
-            else
-            {
-                cellDescription.Phrase = new Phrase("Payment Term", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(":", normal_font);
-                tableDescription.AddCell(cellDescription);
-                cellDescription.Phrase = new Phrase(viewModel.PaymentTerm, normal_font);
-                tableDescription.AddCell(cellDescription);
-            }
-
-            new PdfPCell(tableDescription);
-            tableDescription.ExtendLastRow = false;
-            tableDescription.SpacingAfter = 5f;
-            document.Add(tableDescription);
-
-            #endregion
 
             PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            double totalCtns = 0;
+            var cartons = new List<GarmentPackingListDetailViewModel>();
             double grandTotal = 0;
             foreach (var item in viewModel.Items)
             {
                 #region Item
 
-                PdfPTable tableItem = new PdfPTable(3);
-                tableItem.SetWidths(new float[] { 2f, 0.2f, 7.8f });
+                PdfPTable tableItem = new PdfPTable(6);
+                tableItem.SetWidths(new float[] { 2f, 0.2f, 2.8f, 2f, 0.2f, 2.8f });
                 PdfPCell cellItemContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
+                cellItemContent.Phrase = new Phrase("RO No", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(":", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(item.RONo, normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase("ARTICLE", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(":", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(item.Article, normal_font);
+                tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase("DESCRIPTION OF GOODS", normal_font);
                 tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase(":", normal_font);
                 tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase(item.Description, normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase("", normal_font);
+                tableItem.AddCell(cellItemContent);
+                tableItem.AddCell(cellItemContent);
                 tableItem.AddCell(cellItemContent);
 
                 new PdfPCell(tableItem);
@@ -137,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("COLOUR", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("ART. NO.", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("STYLE", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("ORDER NO.", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
@@ -174,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Colour, normal_font, 0.5f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.Article, normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Style, normal_font, 0.5f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.OrderNo, normal_font, 0.5f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -202,8 +168,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottom.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
                     tableDetail.AddCell(cellBorderBottom);
+
+                    if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    {
+                        cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity });
+                    }
                 }
-                totalCtns += subCtns;
                 grandTotal += subTotal;
 
                 tableDetail.AddCell(new PdfPCell()
@@ -251,6 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Phrase = new Phrase(grandTotal.ToString(), normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
+            var totalCtns = cartons.Sum(c => c.CartonQuantity);
             var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
             tableGrandTotal.AddCell(new PdfPCell()
             {
@@ -388,12 +359,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
     }
 
-    class GarmentPackingListPDFTemplatePageEvent : PdfPageEventHelper
+    class GarmentPackingListDraftPDFTemplatePageEvent : PdfPageEventHelper
     {
         private IIdentityProvider identityProvider;
         private GarmentPackingListViewModel viewModel;
 
-        public GarmentPackingListPDFTemplatePageEvent(IIdentityProvider identityProvider, GarmentPackingListViewModel viewModel)
+        public GarmentPackingListDraftPDFTemplatePageEvent(IIdentityProvider identityProvider, GarmentPackingListViewModel viewModel)
         {
             this.identityProvider = identityProvider;
             this.viewModel = viewModel;
@@ -407,96 +378,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin, marginTop = document.TopMargin, marginRight = document.RightMargin, marginBottom = document.BottomMargin;
 
-            int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            #region TITLE
 
-            if (maxSizesCount > 11)
-            {
-                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 6);
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 16);
 
-                #region LEFT
-
-                var logoY = height - marginTop + 65;
-
-                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_211_200_BW);
-                Image imageDL = Image.GetInstance(imageByteDL);
-                imageDL.ScaleAbsolute(60f, 60f);
-                var newColor = System.Drawing.Color.Red;
-                imageDL.SetAbsolutePosition(marginLeft, logoY);
-                cb.AddImage(imageDL, inlineImage: true);
-
-                #endregion
-
-                #region CENTER
-
-                var headOfficeX = marginLeft + 75;
-                var headOfficeY = height - marginTop + 105;
-
-                byte[] imageByte = Convert.FromBase64String(Base64ImageStrings.LOGO_NAME);
-                Image image = Image.GetInstance(imageByte);
-                if (image.Width > 160)
-                {
-                    float percentage = 0.0f;
-                    percentage = 160 / image.Width;
-                    image.ScalePercent(percentage * 100);
-                }
-                image.SetAbsolutePosition(headOfficeX, headOfficeY);
-                cb.AddImage(image, inlineImage: true);
-
-                string[] headOffices = {
-                    "Head Office : Kelurahan Banaran, Kecamatan Grogol,",
-                    "Sukoharjo - Indonesia",
-                    "PO BOX 166 Solo 57100",
-                    "Telp. (62 271) 740888, 714400 (HUNTING)",
-                    "Fax. (62 271) 735222, 740777",
-                    "Website : www.danliris.com",
-                };
-                for (int i = 0; i < headOffices.Length; i++)
-                {
-                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, headOffices[i], headOfficeX, headOfficeY + 10 - image.ScaledHeight - (i * 6), 0);
-                }
-
-                #endregion
-
-                #region RIGHT
-
-                byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
-                Image imageIso = Image.GetInstance(imageByteIso);
-                if (imageIso.Width > 80)
-                {
-                    float percentage = 0.0f;
-                    percentage = 80 / imageIso.Width;
-                    imageIso.ScalePercent(percentage * 100);
-                }
-                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight, height - imageIso.ScaledHeight - marginTop + 120);
-                cb.AddImage(imageIso, inlineImage: true);
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight, height - imageIso.ScaledHeight - marginTop + 120 - 5, 0);
-
-                #endregion
-
-                #region LINE
-
-                cb.MoveTo(marginLeft, height - marginTop + 60);
-                cb.LineTo(width - marginRight, height - marginTop + 60);
-                cb.Stroke();
-
-                #endregion
-
-                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 16);
-
-                #region TITLE
-
-                var titleY = height - marginTop + 40;
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "PACKING LIST", width / 2, titleY, 0);
-
-                #endregion
-            }
-
-            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
-
-            #region REF
-
-            var refY = height - marginTop + 25;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Ref. No. : FM-00-SP-24-005", width - marginRight, refY, 0);
+            var titleY = height - marginTop + 25;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "DRAFT PACKING LIST", width / 2, titleY, 0);
 
             #endregion
 
@@ -520,22 +407,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
 
-            #region PRINTED
-
-            var printY = marginBottom - 150;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
-
-            #endregion
-
             #region SIGNATURE
 
-            var signX = width - 140;
-            var signY = marginBottom - 80;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", signX, signY, 0);
-            cb.MoveTo(signX - 55, signY - 2);
-            cb.LineTo(signX + 55, signY - 2);
-            cb.Stroke();
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", signX, signY - 10, 0);
+            var printY = marginBottom - 10;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
 
             #endregion
 

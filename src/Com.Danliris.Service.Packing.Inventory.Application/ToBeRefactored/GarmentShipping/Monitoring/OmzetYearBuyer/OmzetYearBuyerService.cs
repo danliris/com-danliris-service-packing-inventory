@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return data;
         }
 
-        public FileResult GenerateExcel(int year)
+        public MemoryStreamResult GenerateExcel(int year)
         {
             var data = GetData(year);
 
@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "OmzetPerBuyer") }, false);
             var filename = $"Report Omzet Per Buyer {year}.xlsx";
 
-            return new FileResult(excel, filename);
+            return new MemoryStreamResult(excel, filename);
         }
     }
 }

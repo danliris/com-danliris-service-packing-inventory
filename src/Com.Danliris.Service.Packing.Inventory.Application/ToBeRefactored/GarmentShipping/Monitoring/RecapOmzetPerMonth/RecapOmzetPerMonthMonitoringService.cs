@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<RecapOmzetPerMonthMonitoringViewModel>(data, 1, total, total);
         }
 
-        public FileResult GenerateExcel(int month, int year)
+        public MemoryStreamResult GenerateExcel(int month, int year)
         {
             var data = GetData(month, year);
 
@@ -155,7 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Monitoring Rekap Omzet Bulan") }, true);
             var filename = $"Monitoring Rekap Omzet Bulan {new DateTime(year, month, 1).ToString("MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}.xlsx";
 
-            return new FileResult(excel, filename);
+            return new MemoryStreamResult(excel, filename);
         }
 
         async Task<List<GarmentCurrency>> GetCurrecncies(List<CurrencyFilter> filters)
