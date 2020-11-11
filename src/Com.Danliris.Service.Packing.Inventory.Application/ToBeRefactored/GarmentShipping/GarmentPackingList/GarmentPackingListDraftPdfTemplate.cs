@@ -410,7 +410,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region SIGNATURE
 
             var printY = marginBottom - 10;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + new DateTimeOffset(DateTime.Now, new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
 
             #endregion
 

@@ -1,5 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -518,6 +517,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cb.MoveTo(marginLeft, height - marginTop);
             cb.LineTo(width - marginRight, height - marginTop);
             cb.Stroke();
+
+            #endregion
+
+            #region PRINTED
+
+            var printY = marginBottom - 150;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
 
             #endregion
 
