@@ -34,31 +34,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else
             {
-                if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
+                int errorItemsCount = 0;
+                List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
+
+                bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
+
+                foreach (var item in Items)
                 {
-                    int errorItemsCount = 0;
-                    List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
+                    Dictionary<string, object> errorItem = new Dictionary<string, object>();
 
-                    bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
-
-                    foreach (var item in Items)
+                    if (string.IsNullOrWhiteSpace(item.RONo))
                     {
-                        Dictionary<string, object> errorItem = new Dictionary<string, object>();
-
-                        if (string.IsNullOrWhiteSpace(item.RONo))
+                        errorItem["RONo"] = "RONo tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+                    else
+                    {
+                        if (isSectionDiff)
                         {
-                            errorItem["RONo"] = "RONo tidak boleh kosong";
+                            errorItem["Section"] = "Section harus sama semua";
                             errorItemsCount++;
                         }
-                        else
-                        {
-                            if (isSectionDiff)
-                            {
-                                errorItem["Section"] = "Section harus sama semua";
-                                errorItemsCount++;
-                            }
-                        }
+                    }
 
+                    if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
+                    {
                         if (string.IsNullOrWhiteSpace(item.OrderNo))
                         {
                             errorItem["OrderNo"] = "Order No tidak boleh kosong";
@@ -136,14 +136,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             //    errorItemsCount++;
                             //}
                         }
-
-                        errorItems.Add(errorItem);
                     }
 
-                    if (errorItemsCount > 0)
-                    {
-                        yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "Items" });
-                    }
+                    errorItems.Add(errorItem);
+                }
+
+                if (errorItemsCount > 0)
+                {
+                    yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "Items" });
                 }
             }
 
