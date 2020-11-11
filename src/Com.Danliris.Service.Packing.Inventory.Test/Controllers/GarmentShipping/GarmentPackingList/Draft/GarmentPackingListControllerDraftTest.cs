@@ -49,7 +49,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
         protected virtual GarmentPackingListDraftViewModel GetViewModel()
         {
-            return new GarmentPackingListDraftViewModel();
+            return new GarmentPackingListDraftViewModel() {
+                Items = new List<GarmentPackingListItemViewModel>
+                {
+                    new GarmentPackingListItemViewModel()
+                }
+            };
         }
 
         protected ServiceValidationException GetServiceValidationExeption()
@@ -477,7 +482,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var serviceMock = new Mock<IGarmentPackingListDraftService>();
             serviceMock
                 .Setup(s => s.ReadById(It.IsAny<int>()))
-                .ReturnsAsync(new GarmentPackingListViewModel());
+                .ReturnsAsync(dataUtil);
             serviceMock
                 .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
                 .Verifiable();
@@ -502,6 +507,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var dataUtil = GetViewModel();
 
             var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(dataUtil);
             var service = serviceMock.Object;
 
             var validateServiceMock = new Mock<IValidateService>();
