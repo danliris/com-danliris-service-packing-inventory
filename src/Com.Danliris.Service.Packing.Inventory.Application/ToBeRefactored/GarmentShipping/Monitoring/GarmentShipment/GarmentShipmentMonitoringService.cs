@@ -61,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             
             queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
-            queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
+            queryInv = queryInv.OrderBy(w => w.InvoiceNo);
 
             var NewQ1 = (from a in queryInv
                         join b in queryAdj on a.Id equals b.GarmentShippingInvoiceId into cc
