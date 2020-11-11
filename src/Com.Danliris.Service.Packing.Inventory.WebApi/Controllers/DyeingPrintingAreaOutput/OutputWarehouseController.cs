@@ -179,6 +179,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("input-production-orders-v2/by-packing-code/{packingCode}")]
+        public IActionResult NewGetProductionOrdersv2ByPackingCode(string packingCode)
+        {
+            try
+            {
+
+                var data = _service.GetInputSppWarehouseItemListV2(packingCode);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpGet("input-production-orders-v2/{bonId}")]
         public IActionResult GetProductionOrdersv2(int bonId)
         {
