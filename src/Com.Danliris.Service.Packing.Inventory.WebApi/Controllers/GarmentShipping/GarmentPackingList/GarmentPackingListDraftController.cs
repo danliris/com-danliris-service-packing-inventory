@@ -279,5 +279,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("unpost-packing-list/{id}")]
+        public async Task<IActionResult> UnpostPackingList(int id)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
