@@ -126,6 +126,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShipment;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDispositionRecap;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -290,6 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingInsuranceDispositionService, GarmentShippingInsuranceDispositionService>();
 
             services.AddTransient<IGarmentShippingPaymentDispositionService, GarmentShippingPaymentDispositionService>();
+            services.AddTransient<IPaymentDispositionRecapService, PaymentDispositionRecapService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();

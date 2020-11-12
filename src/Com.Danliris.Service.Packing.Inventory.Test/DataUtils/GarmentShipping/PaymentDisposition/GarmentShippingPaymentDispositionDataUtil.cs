@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.PaymentDisposition
 {
-    public class GarmentShippingPaymentDispositionDataUtil : BaseDataUtil<GarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionModel>
+    public class GarmentShippingPaymentDispositionRecapDataUtil : BaseDataUtil<GarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionModel>
     {
-        public GarmentShippingPaymentDispositionDataUtil(GarmentShippingPaymentDispositionRepository repository) : base(repository)
+        public GarmentShippingPaymentDispositionRecapDataUtil(GarmentShippingPaymentDispositionRepository repository) : base(repository)
         {
         }
 

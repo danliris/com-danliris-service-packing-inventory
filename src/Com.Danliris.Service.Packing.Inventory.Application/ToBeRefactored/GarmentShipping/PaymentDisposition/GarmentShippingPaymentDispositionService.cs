@@ -26,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             this.serviceProvider = serviceProvider;
         }
 
-        private GarmentShippingPaymentDispositionViewModel MapToViewModel(GarmentShippingPaymentDispositionModel model)
+        public GarmentShippingPaymentDispositionViewModel MapToViewModel(GarmentShippingPaymentDispositionModel model)
         {
             GarmentShippingPaymentDispositionViewModel viewModel = new GarmentShippingPaymentDispositionViewModel
             {
@@ -171,7 +171,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        private GarmentShippingPaymentDispositionModel MapToModel(GarmentShippingPaymentDispositionViewModel vm)
+        public GarmentShippingPaymentDispositionModel MapToModel(GarmentShippingPaymentDispositionViewModel vm)
         {
             var bills = (vm.billDetails ?? new List<GarmentShippingPaymentDispositionBillDetailViewModel>()).Select(i =>
             {
