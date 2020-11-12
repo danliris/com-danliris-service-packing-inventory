@@ -62,11 +62,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase(item.Article, normal_font);
                 tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase("BUYER", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(":", normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase(viewModel.BuyerAgent.Name, normal_font);
+                tableItem.AddCell(cellItemContent);
+                cellItemContent.Phrase = new Phrase("", normal_font);
                 cellItemContent.Phrase = new Phrase("DESCRIPTION OF GOODS", normal_font);
                 tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase(":", normal_font);
                 tableItem.AddCell(cellItemContent);
-                cellItemContent.Phrase = new Phrase(item.Description, normal_font);
+                cellItemContent.Phrase = new Phrase(item.ComodityDescription, normal_font);
                 tableItem.AddCell(cellItemContent);
                 cellItemContent.Phrase = new Phrase("", normal_font);
                 tableItem.AddCell(cellItemContent);
@@ -132,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                 }
 
-                double subCtns = 0;
+                var subCartons = new List<GarmentPackingListDetailViewModel>();
                 double subTotal = 0;
                 foreach (var detail in item.Details)
                 {
@@ -157,7 +164,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         tableDetail.AddCell(cellBorderBottomRight);
                     }
-                    subCtns += detail.CartonQuantity;
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.CartonQuantity.ToString(), normal_font, 0.5f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.QuantityPCS.ToString(), normal_font, 0.5f));
@@ -173,6 +179,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity });
                     }
+                    if (subCartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    {
+                        subCartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity });
+                    }
                 }
                 grandTotal += subTotal;
 
@@ -186,6 +196,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBorderBottom.Phrase = new Phrase(subTotal.ToString(), normal_font);
                 tableDetail.AddCell(cellBorderBottom);
 
+                var subCtns = subCartons.Sum(c => c.CartonQuantity);
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
