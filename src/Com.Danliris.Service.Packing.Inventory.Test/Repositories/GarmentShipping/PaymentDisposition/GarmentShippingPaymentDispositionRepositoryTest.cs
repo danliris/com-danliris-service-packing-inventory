@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShipping.ShippingPaymentDisposition
 {
-    public class GarmentShippingShippingPaymentDispositionRepositoryTest : BaseRepositoryTest<PackingInventoryDbContext, GarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionModel, GarmentShippingPaymentDispositionDataUtil>
+    public class GarmentShippingShippingPaymentDispositionRepositoryTest : BaseRepositoryTest<PackingInventoryDbContext, GarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionModel, GarmentShippingPaymentDispositionRecapDataUtil>
     {
         private const string ENTITY = "GarmentShippingShippingPaymentDisposition";
 

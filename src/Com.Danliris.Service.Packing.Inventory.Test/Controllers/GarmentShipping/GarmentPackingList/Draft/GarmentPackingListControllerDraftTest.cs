@@ -550,5 +550,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task UnpostPackingList_Ok()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus();
+
+            var response = await controller.UnpostPackingList(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task UnpostPackingList_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.UnpostPackingList(dataUtil.Id);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
