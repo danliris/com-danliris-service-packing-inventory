@@ -251,6 +251,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 var packingListViewModel = await _service.ReadById(id);
                 var packingListViewModelSerialized = JsonConvert.SerializeObject(packingListViewModel);
                 var packingListUnitPackingViewModel = JsonConvert.DeserializeObject<GarmentPackingListUnitPackingViewModel>(packingListViewModelSerialized);
+                foreach (var item in packingListUnitPackingViewModel.Items)
+                {
+                    item.Section = packingListUnitPackingViewModel.Section;
+                }
                 _validateService.Validate(packingListUnitPackingViewModel);
 
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.POSTED);
