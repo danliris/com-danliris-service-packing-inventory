@@ -191,10 +191,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             grossWeight = d.GrossWeight,
                             chargeableWeight = d.ChargeableWeight,
                             totalCarton = d.TotalCarton,
-                            service = itemModel.Details.Where(f => f.PaymentDispositionInvoiceDetailId == d.Id).Select(f => f.Service).First()
+                            //service = itemModel.Details.Where(f => f.PaymentDispositionInvoiceDetailId == d.Id).Select(f => f.Service).First()
                         }).ToList()
                     })
                     .Single();
+
+                var services = itemModel.Details.Select(f => f.Service).ToArray();
+                int ind = 0;
+                foreach (var detail in item.paymentDisposition.invoiceDetails)
+                {
+                    detail.service = services[ind];
+                    ind++;
+                }
 
                 foreach (var detail in item.paymentDisposition.invoiceDetails)
                 {

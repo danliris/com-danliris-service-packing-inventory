@@ -72,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             return _dbSet
                 .Include(i => i.Items)
+                .ThenInclude(i => i.Details)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
