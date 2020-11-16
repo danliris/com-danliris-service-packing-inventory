@@ -72,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             return _dbSet
                 .Include(i => i.Items)
+                .ThenInclude(i => i.Details)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -79,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             var modelToUpdate = _dbSet
                 .Include(i => i.Items)
+                .ThenInclude(i => i.Details)
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
