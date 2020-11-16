@@ -21,11 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder
                 .Ignore(s => s.PaymentDisposition);
-
-            builder
-               .HasMany(s => s.Details)
-               .WithOne()
-               .HasForeignKey(a => a.RecapItemId);
         }
     }
 }

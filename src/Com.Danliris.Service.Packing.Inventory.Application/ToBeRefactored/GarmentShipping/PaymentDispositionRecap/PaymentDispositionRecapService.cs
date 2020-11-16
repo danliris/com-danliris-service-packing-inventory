@@ -81,7 +81,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     paymentDisposition = new GarmentShippingPaymentDispositionViewModel
                     {
                         Id = i.PaymentDispositionId
-                    }
+                    },
+                    service = i.Service
                 }).ToList()
             };
 
@@ -97,12 +98,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.paymentDisposition = i.paymentDisposition ?? new GarmentShippingPaymentDispositionViewModel();
 
-                var details = i.paymentDisposition.invoiceDetails.Select(d => new GarmentShippingPaymentDispositionRecapDetailModel(i.Id, d.invoiceId, d.service)).ToList();
-
-                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, details);
+                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service) { Id = i.Id };
             }).ToList();
 
-            return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items);
+            return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items) { Id = vm.Id };
         }
 
         private string GenerateNo(PaymentDispositionRecapViewModel vm)
@@ -166,7 +165,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             foreach (var item in viewModel.items)
             {
                 var dispoQuery = _paymentDispositionRepository.ReadAll();
-                var itemModel = data.Items.First(w => w.Id == item.Id);
                 item.paymentDisposition = dispoQuery
                     .Where(w => w.Id == item.paymentDisposition.Id)
                     .Select(s => new GarmentShippingPaymentDispositionViewModel
@@ -186,23 +184,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             invoiceNo = d.InvoiceNo,
                             invoiceId = d.InvoiceId,
                             quantity = d.Quantity,
-                            amount = d.Amount,
                             volume = d.Volume,
                             grossWeight = d.GrossWeight,
                             chargeableWeight = d.ChargeableWeight,
                             totalCarton = d.TotalCarton,
-                            //service = itemModel.Details.Where(f => f.PaymentDispositionInvoiceDetailId == d.Id).Select(f => f.Service).First()
-                        }).ToList()
+                        }).ToList(),
+                        amount = s.BillValue + s.VatValue,
+                        paid = s.BillValue + s.VatValue - s.IncomeTaxValue,
                     })
                     .Single();
-
-                var services = itemModel.Details.Select(f => f.Service).ToArray();
-                int ind = 0;
-                foreach (var detail in item.paymentDisposition.invoiceDetails)
-                {
-                    detail.service = services[ind];
-                    ind++;
-                }
 
                 foreach (var detail in item.paymentDisposition.invoiceDetails)
                 {
@@ -238,14 +228,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         .Single();
                     detail.packingList.totalCBM = Math.Floor(detail.packingList.totalCBM * 1000) / 1000;
 
-                    detail.paid = Math.Floor((detail.amount - item.paymentDisposition.incomeTaxValue) * 100) / 100;
                     detail.percentage = new Dictionary<string, double>();
                     detail.amountPerUnit = new Dictionary<string, double>();
                     foreach (var unit in units)
                     {
                         var qtyByUnit = detail.invoice.items.Where(i => i.unit == unit).Sum(i => i.quantity);
                         detail.percentage[unit] = Math.Floor((qtyByUnit / (double)detail.quantity * 100) * 100) / 100;
-                        detail.amountPerUnit[unit] = Math.Floor((detail.percentage[unit] * (double)detail.paid / 100) * 100) / 100;
+                        detail.amountPerUnit[unit] = Math.Floor((detail.percentage[unit] * (double)item.paymentDisposition.paid / 100) * 100) / 100;
                     }
                 }
             }
