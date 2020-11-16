@@ -27,13 +27,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             var model = _dbSet
                 .Include(i => i.Items)
+                .ThenInclude(i => i.Details)
                 .FirstOrDefault(s => s.Id == id);
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
-            foreach (var unitCharge in model.Items)
+            foreach (var item in model.Items)
             {
-                unitCharge.FlagForDelete(_identityProvider.Username, UserAgent);
+                item.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                foreach (var detail in item.Details)
+                {
+                    detail.FlagForDelete(_identityProvider.Username, UserAgent);
+                }
             }
 
             return _dbContext.SaveChangesAsync();
@@ -43,9 +49,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
 
-            foreach (var unitCharge in model.Items)
+            foreach (var item in model.Items)
             {
-                unitCharge.FlagForCreate(_identityProvider.Username, UserAgent);
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                foreach (var detail in item.Details)
+                {
+                    detail.FlagForCreate(_identityProvider.Username, UserAgent);
+                }
             }
 
             _dbSet.Add(model);
@@ -71,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
@@ -78,12 +90,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 if (item == null)
                 {
                     itemToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
-                }
 
+                    foreach (var detailToUpdate in itemToUpdate.Details)
+                    {
+                        detailToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                    }
+                }
+                else
+                {
+                    itemToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
+
+                    foreach (var detailToUpdate in itemToUpdate.Details)
+                    {
+                        detailToUpdate.SetService(detailToUpdate.Service, _identityProvider.Username, UserAgent);
+                        detailToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
+                    }
+                }
             }
 
             foreach (var item in model.Items.Where(w => w.Id == 0))
             {
+                item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                foreach (var detail in item.Details)
+                {
+                    detail.FlagForCreate(_identityProvider.Username, UserAgent);
+                }
+
                 modelToUpdate.Items.Add(item);
             }
 

@@ -13,9 +13,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public int PaymentDispositionId { get; private set; }
         public GarmentShippingPaymentDispositionModel PaymentDisposition { get; private set; }
 
-        public GarmentShippingPaymentDispositionRecapItemModel(int paymentDispositionId)
+        public ICollection<GarmentShippingPaymentDispositionRecapDetailModel> Details { get; set; }
+
+        public GarmentShippingPaymentDispositionRecapItemModel(int paymentDispositionId, ICollection<GarmentShippingPaymentDispositionRecapDetailModel> details)
         {
             PaymentDispositionId = paymentDispositionId;
+            Details = details;
         }
 
         public GarmentShippingPaymentDispositionRecapItemModel()
@@ -24,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
 
         public void SetPaymentDisposition(GarmentShippingPaymentDispositionModel paymentDisposition)
         {
-            PaymentDisposition = PaymentDisposition;
+            PaymentDisposition = paymentDisposition;
         }
     }
 }
