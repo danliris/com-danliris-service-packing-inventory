@@ -168,6 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingPaymentDispositionRecapModel> GarmentShippingPaymentDispositionRecaps { get; set; }
         public DbSet<GarmentShippingPaymentDispositionRecapItemModel> GarmentShippingPaymentDispositionRecapItems { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionRecapDetailModel> GarmentShippingPaymentDispositionRecapDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

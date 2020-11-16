@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.PaymentDisposition
 {
-    public class GarmentShippingPaymentDispositionRecapItemConfig : IEntityTypeConfiguration<GarmentShippingPaymentDispositionRecapItemModel>
+    public class GarmentShippingPaymentDispositionRecapDetailConfig : IEntityTypeConfiguration<GarmentShippingPaymentDispositionRecapDetailModel>
     {
-        public void Configure(EntityTypeBuilder<GarmentShippingPaymentDispositionRecapItemModel> builder)
+        public void Configure(EntityTypeBuilder<GarmentShippingPaymentDispositionRecapDetailModel> builder)
         {
             /* StandardEntity */
             builder.HasKey(s => s.Id);
@@ -18,14 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder.Property(s => s.DeletedBy).HasMaxLength(128);
             builder.HasQueryFilter(f => !f.IsDeleted);
             /* StandardEntity */
-
-            builder
-                .Ignore(s => s.PaymentDisposition);
-
-            builder
-               .HasMany(s => s.Details)
-               .WithOne()
-               .HasForeignKey(a => a.RecapItemId);
         }
     }
 }

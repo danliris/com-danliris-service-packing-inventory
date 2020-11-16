@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,6 +31,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (items == null || items.Count() < 1)
             {
                 yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "itemsCount" });
+            }
+            else
+            {
+                int errorItemsCount = 0;
+                List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
+
+                foreach (var item in items)
+                {
+                    Dictionary<string, object> errorItem = new Dictionary<string, object>();
+
+                    if (item.paymentDisposition == null || item.paymentDisposition.Id == 0)
+                    {
+                        errorItem["paymentDisposition"] = "No Disposisi tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+
+                    errorItems.Add(errorItem);
+                }
+
+                if (errorItemsCount > 0)
+                {
+                    yield return new ValidationResult(JsonConvert.SerializeObject(errorItems), new List<string> { "items" });
+                }
             }
         }
     }
