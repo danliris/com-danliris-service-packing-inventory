@@ -25,6 +25,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal incomeTaxValue { get; set; }
         public decimal paid { get; set; }
 
+        public Dictionary<string, double> percentage { get; set; }
+        public Dictionary<string, double> amountPerUnit { get; set; }
+
         public ICollection<GarmentShippingPaymentDispositionInvoiceDetailViewModel> invoiceDetails { get; set; }
     }
 
@@ -39,9 +42,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal totalCarton { get; set; }
         public Invoice invoice { get; set; }
         public PackingList packingList { get; set; }
-
-        public Dictionary<string, double> percentage { get; set; }
-        public Dictionary<string, double> amountPerUnit { get; set; }
 
         public double service { get; set; }
     }
