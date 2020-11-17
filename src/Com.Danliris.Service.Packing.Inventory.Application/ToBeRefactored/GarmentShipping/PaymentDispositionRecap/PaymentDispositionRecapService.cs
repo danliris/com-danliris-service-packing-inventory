@@ -230,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             totalCBM = s.Measurements.Sum(m => m.Length * m.Width * m.Height * m.CartonsQuantity / 1000000)
                         })
                         .Single();
-                    detail.packingList.totalCBM = Math.Floor(detail.packingList.totalCBM * 1000) / 1000;
+                    detail.packingList.totalCBM = Math.Round(detail.packingList.totalCBM, 3, MidpointRounding.AwayFromZero);
 
                     foreach (var unit in units)
                     {
@@ -242,8 +242,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var totalQuantity = item.paymentDisposition.invoiceDetails.Sum(d => d.quantity);
                 foreach (var unit in qtyByUnits.Keys)
                 {
-                    item.paymentDisposition.percentage[unit] = Math.Floor(qtyByUnits[unit] / (double)totalQuantity * 100 * 100) / 100;
-                    item.paymentDisposition.amountPerUnit[unit] = Math.Floor(item.paymentDisposition.percentage[unit] * (double)item.paymentDisposition.paid / 100 * 100) / 100;
+                    item.paymentDisposition.percentage[unit] = Math.Round(qtyByUnits[unit] / (double)totalQuantity * 100, 2, MidpointRounding.AwayFromZero);
+                    item.paymentDisposition.amountPerUnit[unit] = Math.Round(item.paymentDisposition.percentage[unit] * (double)item.paymentDisposition.paid / 100, 2, MidpointRounding.AwayFromZero);
                 }
             }
 
