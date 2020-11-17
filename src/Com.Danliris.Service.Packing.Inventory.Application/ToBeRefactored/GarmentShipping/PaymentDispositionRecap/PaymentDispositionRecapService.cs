@@ -194,6 +194,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     })
                     .Single();
 
+                var qtyByUnits = new Dictionary<string, double>();
+                item.paymentDisposition.percentage = new Dictionary<string, double>();
+                item.paymentDisposition.amountPerUnit = new Dictionary<string, double>();
+
                 foreach (var detail in item.paymentDisposition.invoiceDetails)
                 {
                     var invQUery = _invoiceRepository.ReadAll();
@@ -228,14 +232,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         .Single();
                     detail.packingList.totalCBM = Math.Floor(detail.packingList.totalCBM * 1000) / 1000;
 
-                    detail.percentage = new Dictionary<string, double>();
-                    detail.amountPerUnit = new Dictionary<string, double>();
                     foreach (var unit in units)
                     {
                         var qtyByUnit = detail.invoice.items.Where(i => i.unit == unit).Sum(i => i.quantity);
-                        detail.percentage[unit] = Math.Floor((qtyByUnit / (double)detail.quantity * 100) * 100) / 100;
-                        detail.amountPerUnit[unit] = Math.Floor((detail.percentage[unit] * (double)item.paymentDisposition.paid / 100) * 100) / 100;
+                        qtyByUnits[unit] = qtyByUnits.GetValueOrDefault(unit) + qtyByUnit;
                     }
+                }
+
+                var totalQuantity = item.paymentDisposition.invoiceDetails.Sum(d => d.quantity);
+                foreach (var unit in qtyByUnits.Keys)
+                {
+                    item.paymentDisposition.percentage[unit] = Math.Floor(qtyByUnits[unit] / (double)totalQuantity * 100 * 100) / 100;
+                    item.paymentDisposition.amountPerUnit[unit] = Math.Floor(item.paymentDisposition.percentage[unit] * (double)item.paymentDisposition.paid / 100 * 100) / 100;
                 }
             }
 
