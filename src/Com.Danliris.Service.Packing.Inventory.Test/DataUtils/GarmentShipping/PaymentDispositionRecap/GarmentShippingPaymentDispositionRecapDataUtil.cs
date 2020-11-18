@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingPaymentDispositionRecapModel GetModel()
         {
-            var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { new GarmentShippingPaymentDispositionRecapItemModel(1) };
+            var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { new GarmentShippingPaymentDispositionRecapItemModel(1, 10) };
             var model = new GarmentShippingPaymentDispositionRecapModel("", DateTimeOffset.Now, 1, "", "", "", "", items);
 
             return model;
@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingPaymentDispositionRecapModel GetEmptyModel()
         {
-            var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { new GarmentShippingPaymentDispositionRecapItemModel(0) };
+            var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { new GarmentShippingPaymentDispositionRecapItemModel(0, 10) };
             var model = new GarmentShippingPaymentDispositionRecapModel(null, DateTimeOffset.MinValue, 0, null, null, null, null, items);
 
             return model;
@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel>();
             foreach (var i in om.Items)
             {
-                items.Add(new GarmentShippingPaymentDispositionRecapItemModel(i.PaymentDispositionId) { Id = i.Id });
+                items.Add(new GarmentShippingPaymentDispositionRecapItemModel(i.PaymentDispositionId, i.Service) { Id = i.Id });
             }
             var model = new GarmentShippingPaymentDispositionRecapModel(om.RecapNo, om.Date, om.EmklId, om.EMKLCode, om.EMKLName, om.EMKLAddress, om.EMKLNPWP, items) { Id = om.Id };
 

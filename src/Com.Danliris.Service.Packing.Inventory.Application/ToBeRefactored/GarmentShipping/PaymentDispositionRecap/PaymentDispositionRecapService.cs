@@ -1,7 +1,10 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDispositionRecap;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
@@ -19,7 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IServiceProvider serviceProvider;
         private readonly IGarmentShippingPaymentDispositionRecapRepository _recapRepository;
         private readonly IGarmentShippingPaymentDispositionRepository _paymentDispositionRepository;
-        private readonly IGarmentShippingPaymentDispositionService _paymentDispositionService;
+        private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
+        private readonly IGarmentPackingListRepository _packingListRepository;
 
         public PaymentDispositionRecapService(IServiceProvider serviceProvider)
         {
@@ -27,7 +31,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             _recapRepository = serviceProvider.GetService<IGarmentShippingPaymentDispositionRecapRepository>();
             _paymentDispositionRepository = serviceProvider.GetService<IGarmentShippingPaymentDispositionRepository>();
-            _paymentDispositionService = serviceProvider.GetService<IGarmentShippingPaymentDispositionService>();
+            _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
+            _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
         }
 
         private PaymentDispositionRecapViewModel MapToViewModel(GarmentShippingPaymentDispositionRecapModel model)
@@ -73,8 +78,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     LastModifiedBy = i.LastModifiedBy,
                     LastModifiedUtc = i.LastModifiedUtc,
 
-                    paymentDisposition = _paymentDispositionService.MapToViewModel(i.PaymentDisposition)
-                })
+                    paymentDisposition = new GarmentShippingPaymentDispositionViewModel
+                    {
+                        Id = i.PaymentDispositionId
+                    },
+                    service = i.Service
+                }).ToList()
             };
 
             return viewModel;
@@ -89,10 +98,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.paymentDisposition = i.paymentDisposition ?? new GarmentShippingPaymentDispositionViewModel();
 
-                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id);
+                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service) { Id = i.Id };
             }).ToList();
 
-            return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items);
+            return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items) { Id = vm.Id };
         }
 
         private string GenerateNo(PaymentDispositionRecapViewModel vm)
@@ -151,12 +160,92 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<PaymentDispositionRecapViewModel> ReadById(int id)
         {
             var data = await _recapRepository.ReadByIdAsync(id);
-            foreach (var item in data.Items)
-            {
-                item.SetPaymentDisposition(await _paymentDispositionRepository.ReadByIdAsync(item.PaymentDispositionId));
-            }
 
             var viewModel = MapToViewModel(data);
+            foreach (var item in viewModel.items)
+            {
+                var dispoQuery = _paymentDispositionRepository.ReadAll();
+                item.paymentDisposition = dispoQuery
+                    .Where(w => w.Id == item.paymentDisposition.Id)
+                    .Select(s => new GarmentShippingPaymentDispositionViewModel
+                    {
+                        Id = s.Id,
+                        dispositionNo = s.DispositionNo,
+
+                        invoiceNumber = s.InvoiceNumber,
+                        invoiceDate = s.InvoiceDate,
+
+                        billValue = s.BillValue,
+                        vatValue = s.VatValue,
+                        incomeTaxValue = s.IncomeTaxValue,
+                        invoiceDetails = s.InvoiceDetails.Select(d => new GarmentShippingPaymentDispositionInvoiceDetailViewModel
+                        {
+                            Id = d.Id,
+                            invoiceNo = d.InvoiceNo,
+                            invoiceId = d.InvoiceId,
+                            quantity = d.Quantity,
+                            volume = d.Volume,
+                            grossWeight = d.GrossWeight,
+                            chargeableWeight = d.ChargeableWeight,
+                            totalCarton = d.TotalCarton,
+                        }).ToList(),
+                        amount = s.BillValue + s.VatValue,
+                        paid = s.BillValue + s.VatValue - s.IncomeTaxValue,
+                    })
+                    .Single();
+
+                var qtyByUnits = new Dictionary<string, double>();
+                item.paymentDisposition.percentage = new Dictionary<string, double>();
+                item.paymentDisposition.amountPerUnit = new Dictionary<string, double>();
+
+                foreach (var detail in item.paymentDisposition.invoiceDetails)
+                {
+                    var invQUery = _invoiceRepository.ReadAll();
+                    detail.invoice = invQUery
+                        .Where(w => w.Id == detail.invoiceId)
+                        .Select(s => new Invoice
+                        {
+                            packingListId = s.PackingListId,
+                            BuyerAgent = new BuyerAgent
+                            {
+                                Id = s.BuyerAgentId,
+                                Code = s.BuyerAgentCode,
+                                Name = s.BuyerAgentName
+                            },
+                            items = s.Items.Select(i => new InvoiceItem
+                            {
+                                unit = i.UnitCode,
+                                quantity = i.Quantity
+                            }).ToList()
+                        })
+                        .Single();
+                    var units = detail.invoice.items.Select(i => i.unit).Distinct();
+                    detail.invoice.unit = string.Join(", ", units);
+
+                    var plQuery = _packingListRepository.ReadAll();
+                    detail.packingList = plQuery
+                        .Where(w => w.Id == detail.invoice.packingListId)
+                        .Select(s => new PackingList
+                        {
+                            totalCBM = s.Measurements.Sum(m => m.Length * m.Width * m.Height * m.CartonsQuantity / 1000000)
+                        })
+                        .Single();
+                    detail.packingList.totalCBM = Math.Round(detail.packingList.totalCBM, 3, MidpointRounding.AwayFromZero);
+
+                    foreach (var unit in units)
+                    {
+                        var qtyByUnit = detail.invoice.items.Where(i => i.unit == unit).Sum(i => i.quantity);
+                        qtyByUnits[unit] = qtyByUnits.GetValueOrDefault(unit) + qtyByUnit;
+                    }
+                }
+
+                var totalQuantity = item.paymentDisposition.invoiceDetails.Sum(d => d.quantity);
+                foreach (var unit in qtyByUnits.Keys)
+                {
+                    item.paymentDisposition.percentage[unit] = Math.Round(qtyByUnits[unit] / (double)totalQuantity * 100, 2, MidpointRounding.AwayFromZero);
+                    item.paymentDisposition.amountPerUnit[unit] = Math.Round(item.paymentDisposition.percentage[unit] * (double)item.paymentDisposition.paid / 100, 2, MidpointRounding.AwayFromZero);
+                }
+            }
 
             return viewModel;
         }
