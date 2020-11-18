@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         protected GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
         {
-            var vm =  new GarmentPackingListViewModel()
+            var vm = new GarmentPackingListViewModel()
             {
                 Active = model.Active,
                 Id = model.Id,
@@ -150,6 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         LastModifiedBy = d.LastModifiedBy,
                         LastModifiedUtc = d.LastModifiedUtc,
 
+                        PackingListItemId = d.PackingListItemId,
                         Carton1 = d.Carton1,
                         Carton2 = d.Carton2,
                         Style = d.Style,
@@ -411,7 +412,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
             var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
 
-            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
