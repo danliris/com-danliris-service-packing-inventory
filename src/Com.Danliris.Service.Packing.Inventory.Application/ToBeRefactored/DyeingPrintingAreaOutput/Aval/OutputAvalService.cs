@@ -541,11 +541,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             ExcelPackage package = new ExcelPackage();
             #region Header
             var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
-            sheet.Cells[1, 1].Value = "DIVISI";
-            sheet.Cells[1, 2].Value = "DYEING PRINTING PT DANLIRIS";
+            sheet.Cells[2, 1].Value = "DIVISI";
+            sheet.Cells[2, 2].Value = "DYEING PRINTING PT DANLIRIS";
 
-            sheet.Cells[2, 1].Value = "TANGGAL";
-            sheet.Cells[2, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+            sheet.Cells[13, 1].Value = "TANGGAL";
+            sheet.Cells[13, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
 
             sheet.Cells[3, 1].Value = "GROUP";
             sheet.Cells[3, 2].Value = model.Shift;
@@ -557,110 +557,194 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             sheet.Cells[5, 2].Value = model.DestinationArea;
             sheet.Cells[5, 2, 5, 3].Merge = true;
 
-            sheet.Cells[7, 1].Value = "BON PENYERAHAN BARANG";
-            sheet.Cells[7, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[7, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[7, 1, 7, 5].Merge = true;
+            sheet.Cells[7, 5].Value = "FM.7-MK-03-010L";
+            sheet.Cells[7, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[7, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[7, 5].AutoFitColumns();
+            sheet.Cells[7, 5].Style.Font.Bold = true;
 
-            sheet.Cells[8, 1].Value = "PT. DANLIRIS";
+            sheet.Cells[8, 1].Value = "BON PENGIRIMAN BARANG";
             sheet.Cells[8, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[8, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[8, 1, 8, 5].Merge = true;
 
-            sheet.Cells[9, 1].Value = "SUKOHARJO";
-            sheet.Cells[9, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[9, 1].Value = "PT. DANLIRIS";
+            sheet.Cells[9, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[9, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[9, 1, 9, 3].Merge = true;
+            sheet.Cells[9, 1, 9, 5].Merge = true;
 
-            sheet.Cells[10, 1].Value = "Dari Seksi/ Bagian :";
+            sheet.Cells[10, 1].Value = "SUKOHARJO";
             sheet.Cells[10, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
             sheet.Cells[10, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[10, 1, 10, 3].Merge = true;
-            //sheet.Cells[10, 4].Value = model.OriginSection;
 
-            sheet.Cells[11, 1].Value = "Untuk Seksi/ Bagian :";
+            sheet.Cells[11, 1].Value = "KEPADA :";
             sheet.Cells[11, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
             sheet.Cells[11, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[11, 1, 11, 3].Merge = true;
+
+            sheet.Cells[11, 4].Value = "No BON : ";
+            sheet.Cells[11, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[11, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+
+            sheet.Cells[11, 5].Value = model.BonNo;
+            sheet.Cells[11, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[11, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[11, 5].AutoFitColumns();
+
+            //sheet.Cells[10, 4].Value = model.OriginSection;
+
+            sheet.Cells[12, 1].Value = "DIKIRIM KE :";
+            sheet.Cells[12, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[12, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[12, 1, 12, 3].Merge = true;
+
+            sheet.Cells[12, 4].Value = "NoDO : ";
+            sheet.Cells[12, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[12, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+
+            sheet.Cells[12, 5].Value = model.DeliveryOrderAvalNo;
+            sheet.Cells[12, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            sheet.Cells[12, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[12, 5].AutoFitColumns();
+            //sheet.Cells[12, 4].Merge = true;
             //sheet.Cells[11, 4].Value = model.DestinationSection;
 
-            sheet.Cells[12, 1].Value = "Yang Menerima,";
-            sheet.Cells[12, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[12, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[12, 1, 12, 2].Merge = true;
+            //sheet.Cells[12, 1].Value = "Yang Menerima,";
+            //sheet.Cells[12, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //sheet.Cells[12, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[12, 1, 12, 2].Merge = true;
 
-            sheet.Cells[12, 4].Value = "Yang Menyerahkan,";
-            sheet.Cells[12, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[12, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[12, 4, 12, 5].Merge = true;
+            sheet.Cells[18 + query.Count(), 1].Value = "Mengetahui";
+            sheet.Cells[18 + query.Count(), 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 1].Merge = true;
+            sheet.Cells[18 + query.Count(), 1].AutoFitColumns();
+
+            sheet.Cells[18 + query.Count(), 2].Value = "Audit";
+            sheet.Cells[18 + query.Count(), 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 2].Merge = true;
+            sheet.Cells[18 + query.Count(), 2].AutoFitColumns();
+
+            sheet.Cells[18 + query.Count(), 3].Value = "Ekspedisi";
+            sheet.Cells[18 + query.Count(), 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 3, 18 + query.Count(), 4].Merge = true;
+            sheet.Cells[18 + query.Count(), 3].AutoFitColumns();
+
+
+            //sheet.Cells[12, 4].Value = "Yang Menyerahkan,";
+            //sheet.Cells[12, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //sheet.Cells[12, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[12, 4, 12, 5].Merge = true;
+
+            sheet.Cells[18 + query.Count(), 5].Value = "Gudang Aval";
+            sheet.Cells[18 + query.Count(), 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[18 + query.Count(), 5].Merge = true;
 
             //sheet.Cells[15, 1].Value = "( " + model.ReceiveOperator + " )";
-            sheet.Cells[15, 1].Value = "(  )";
-            sheet.Cells[15, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[15, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[15, 1, 15, 2].Merge = true;
+            //sheet.Cells[15, 1].Value = "(  )";
+            //sheet.Cells[15, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //sheet.Cells[15, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[15, 1, 15, 2].Merge = true;
+
+            sheet.Cells[21 + query.Count(), 1].Value = "(  )";
+            sheet.Cells[21 + query.Count(), 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 1].AutoFitColumns();
+
+            sheet.Cells[21 + query.Count(), 2].Value = "(  )";
+            sheet.Cells[21 + query.Count(), 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 2].AutoFitColumns();
+
+            sheet.Cells[21 + query.Count(), 3].Value = "(  )";
+            sheet.Cells[21 + query.Count(), 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 3, 21 + query.Count(), 4].AutoFitColumns();
+            sheet.Cells[21 + query.Count(), 3, 21 + query.Count(), 4].Merge = true;
+
+            sheet.Cells[21 + query.Count(), 5].Value = "(  )";
+            sheet.Cells[21 + query.Count(), 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[21 + query.Count(), 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+           // sheet.Cells[21 + query.Count(), 5].AutoFitColumns();
+            sheet.Cells[21 + query.Count(), 5].Merge = true;
 
             //sheet.Cells[15, 1].Value = "( " + model.SubmitOperator + " )";
-            sheet.Cells[15, 4].Value = "(  )";
-            sheet.Cells[15, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[15, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[15, 4, 15, 5].Merge = true;
+            //sheet.Cells[15, 4].Value = "(  )";
+            //sheet.Cells[15, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //sheet.Cells[15, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[15, 4, 15, 5].Merge = true;
 
-            sheet.Cells[16, 1].Value = "NO.";
-            sheet.Cells[16, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[16, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[16, 1].AutoFitColumns();
-            sheet.Cells[16, 1, 17, 1].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 1, 17, 1].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 1, 17, 1].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 1, 17, 1].Merge = true;
+            sheet.Cells[15, 1].Value = "NO.";
+            sheet.Cells[15, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[15, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells[15, 1].AutoFitColumns();
+            sheet.Cells[15, 1, 16, 1].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 1, 16, 1].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 1, 16, 1].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 1, 16, 1].Merge = true;
 
-            sheet.Cells[16, 2].Value = "NAMA BARANG";
-            sheet.Cells[16, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[16, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[16, 2].AutoFitColumns();
-            sheet.Cells[16, 2, 17, 2].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 2, 17, 2].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 2, 17, 2].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 2, 17, 2].Merge = true;
+            sheet.Cells[15, 2].Value = "NAMA BARANG";
+            sheet.Cells[15, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[15, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[15, 2].AutoFitColumns();
+            sheet.Cells[15, 2, 16, 2].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 2, 16, 2].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 2, 16, 2].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 2, 16, 2].Merge = true;
 
-            sheet.Cells[16, 3].Value = "SAT";
+            sheet.Cells[15, 3].Value = "SAT";
+            sheet.Cells[15, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[15, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[15, 3].AutoFitColumns();
+            sheet.Cells[15, 3, 15, 4].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 3].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 4].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 3, 15, 4].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 3, 15, 4].Merge = true;
+
+            sheet.Cells[16, 3].Value = "QTY";
             sheet.Cells[16, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[16, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[16, 3].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
             sheet.Cells[16, 3].AutoFitColumns();
-            sheet.Cells[16, 3, 16, 4].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 3].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 4].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 3, 16, 4].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 3, 16, 4].Merge = true;
 
-            sheet.Cells[17, 3].Value = "QTY";
-            sheet.Cells[17, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[17, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[17, 3].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[17, 3].AutoFitColumns();
+            sheet.Cells[16, 4].Value = "KET";
+            sheet.Cells[16, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[16, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[16, 4].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[16, 4].AutoFitColumns();
 
-            sheet.Cells[17, 4].Value = "KET";
-            sheet.Cells[17, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[17, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[17, 4].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[17, 4].AutoFitColumns();
-
-            sheet.Cells[16, 5].Value = "KG";
-            sheet.Cells[16, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-            sheet.Cells[16, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[16, 5].AutoFitColumns();
-            sheet.Cells[16, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 5, 17, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 5, 17, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-            sheet.Cells[16, 5, 17, 5].Merge = true;
+            sheet.Cells[15, 5].Value = "KG";
+            sheet.Cells[15, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[15, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+           // sheet.Cells[15, 5].AutoFitColumns();
+            sheet.Cells[15, 5].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 5, 16, 5].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 5, 16, 5].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[15, 5, 16, 5].Merge = true;
             #endregion
 
-            int tableRowStart = 18;
+            int tableRowStart = 17;
             int tableColStart = 1;
 
             sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
             sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
+
+            //int index = 0;
+            for(var index = 0; index < query.Count(); index++)
+            {
+                for(var index2 = 0; index2 < 5; index2++)
+                {
+                    sheet.Cells[tableRowStart + index, tableColStart + index2].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[tableRowStart + index, tableColStart + index2].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[tableRowStart + index, tableColStart + index2].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[tableRowStart + index, tableColStart + index2].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                }
+            }
             //sheet.Cells[tableRowStart, tableColStart].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
 
             MemoryStream stream = new MemoryStream();

@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var serviceMock = new Mock<IGarmentShippingCreditNoteService>();
             serviceMock
                 .Setup(s => s.ReadPdfById(It.IsAny<int>()))
-                .ReturnsAsync(new ExcelResult(new MemoryStream(), "FileName.pdf"));
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

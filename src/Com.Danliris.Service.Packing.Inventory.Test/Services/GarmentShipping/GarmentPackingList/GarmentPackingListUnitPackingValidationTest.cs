@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -115,7 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     },
                     ShippingMark = null,
                     SideMark = null,
-                    Remark = null
+                    Remark = null,
+                    Status = GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString()
                 };
             }
         }

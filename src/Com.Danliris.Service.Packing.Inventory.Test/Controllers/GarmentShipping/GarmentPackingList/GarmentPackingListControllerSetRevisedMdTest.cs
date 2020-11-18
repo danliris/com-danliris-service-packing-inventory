@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Moq;
 using System;
@@ -16,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
-                .Setup(s => s.SetRevisedMd(It.IsAny<int>()))
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
                 .Verifiable();
             var service = serviceMock.Object;
 
@@ -28,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetRevisedMd(It.IsAny<int>());
+            var response = await controller.SetRevisedMd(It.IsAny<int>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -38,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentPackingListService>();
             serviceMock
-                .Setup(s => s.SetRevisedMd(It.IsAny<int>()))
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
@@ -50,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetRevisedMd(It.IsAny<int>());
+            var response = await controller.SetRevisedMd(It.IsAny<int>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

@@ -120,6 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentName(model.BuyerAgentName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetFinalDestination(model.FinalDestination, _identityProvider.Username, UserAgent);
             modelToUpdate.SetShipmentMode(model.ShipmentMode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruckingDate(model.TruckingDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruckingEstimationDate(model.TruckingEstimationDate, _identityProvider.Username, UserAgent);
@@ -138,6 +139,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetShippingMark(model.ShippingMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetShippingMarkImagePath(model.ShippingMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSideMarkImagePath(model.SideMarkImagePath, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemarkImagePath(model.RemarkImagePath, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
 

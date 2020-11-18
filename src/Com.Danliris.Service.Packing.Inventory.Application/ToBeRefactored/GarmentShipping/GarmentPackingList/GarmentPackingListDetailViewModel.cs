@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public double Carton1 { get; set; }
         public double Carton2 { get; set; }
+        public string Style { get; set; }
         public string Colour { get; set; }
         public double CartonQuantity { get; set; }
         public double QuantityPCS { get; set; }

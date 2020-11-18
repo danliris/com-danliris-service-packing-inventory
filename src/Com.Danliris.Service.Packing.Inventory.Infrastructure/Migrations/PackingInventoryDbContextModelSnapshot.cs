@@ -1662,6 +1662,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("QuantityPCS");
 
+                    b.Property<string>("Style")
+                        .HasMaxLength(100);
+
                     b.Property<double>("TotalQuantity");
 
                     b.Property<double>("Width");
@@ -1927,6 +1930,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("FabricCountryOrigin")
                         .HasMaxLength(255);
 
+                    b.Property<string>("FinalDestination")
+                        .HasMaxLength(50);
+
                     b.Property<double>("GrossWeight");
 
                     b.Property<string>("InvoiceNo")
@@ -1970,6 +1976,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Remark")
                         .HasMaxLength(2000);
 
+                    b.Property<string>("RemarkImagePath")
+                        .HasMaxLength(500);
+
                     b.Property<string>("RemarkMd")
                         .HasMaxLength(2000);
 
@@ -1986,8 +1995,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ShippingMark")
                         .HasMaxLength(2000);
 
+                    b.Property<string>("ShippingMarkImagePath")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("ShippingStaffId");
+
+                    b.Property<string>("ShippingStaffName")
+                        .HasMaxLength(255);
+
                     b.Property<string>("SideMark")
                         .HasMaxLength(2000);
+
+                    b.Property<string>("SideMarkImagePath")
+                        .HasMaxLength(500);
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -3203,6 +3223,417 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GarmentShippingLocalSalesDOs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionBillDetailModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("BillDescription")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("PaymentDispositionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDispositionId");
+
+                    b.ToTable("GarmentShippingPaymentDispositionBillDetails");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionInvoiceDetailModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<decimal>("ChargeableWeight");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<decimal>("GrossWeight");
+
+                    b.Property<int>("InvoiceId");
+
+                    b.Property<string>("InvoiceNo")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("PaymentDispositionId");
+
+                    b.Property<decimal>("Quantity");
+
+                    b.Property<decimal>("TotalCarton");
+
+                    b.Property<decimal>("Volume");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDispositionId");
+
+                    b.ToTable("GarmentShippingPaymentDispositionInvoiceDetails");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccNo")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("Bank")
+                        .HasMaxLength(255);
+
+                    b.Property<decimal>("BillValue");
+
+                    b.Property<string>("BuyerAgentCode")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("BuyerAgentId");
+
+                    b.Property<string>("BuyerAgentName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CourierCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("CourierId");
+
+                    b.Property<string>("CourierName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Destination");
+
+                    b.Property<string>("DispositionNo");
+
+                    b.Property<string>("EMKLCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("EMKLId");
+
+                    b.Property<string>("EMKLName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("FlightVessel")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("ForwarderCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("ForwarderId");
+
+                    b.Property<string>("ForwarderName")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("FreightBy")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset>("FreightDate");
+
+                    b.Property<string>("FreightNo")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("IncomeTaxId");
+
+                    b.Property<string>("IncomeTaxName")
+                        .HasMaxLength(255);
+
+                    b.Property<decimal>("IncomeTaxRate");
+
+                    b.Property<decimal>("IncomeTaxValue");
+
+                    b.Property<DateTimeOffset>("InvoiceDate");
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("InvoiceTaxNumber")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFreightCharged");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("NPWP")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("PaidAt")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset>("PaymentDate");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PaymentTerm")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PaymentType")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("SendBy");
+
+                    b.Property<decimal>("TotalBill");
+
+                    b.Property<decimal>("VatValue");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GarmentShippingPaymentDispositions");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionUnitChargeModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<decimal>("AmountPercentage");
+
+                    b.Property<decimal>("BillAmount");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("PaymentDispositionId");
+
+                    b.Property<string>("UnitCode")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("UnitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDispositionId");
+
+                    b.ToTable("GarmentShippingPaymentDispositionUnitCharges");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap.GarmentShippingPaymentDispositionRecapItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("PaymentDispositionId");
+
+                    b.Property<int>("RecapId");
+
+                    b.Property<double>("Service");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecapId");
+
+                    b.ToTable("GarmentShippingPaymentDispositionRecapItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap.GarmentShippingPaymentDispositionRecapModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("CreatedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("EMKLAddress")
+                        .HasMaxLength(4000);
+
+                    b.Property<string>("EMKLCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("EMKLNPWP")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("EMKLName")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("EmklId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("RecapNo")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecapNo")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted]=(0)");
+
+                    b.ToTable("GarmentShippingPaymentDispositionRecaps");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCorrectionNote.GarmentShippingLocalPriceCorrectionNoteItemModel", b =>
@@ -5291,6 +5722,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDO.GarmentShippingLocalSalesDOModel")
                         .WithMany("Items")
                         .HasForeignKey("LocalSalesDOId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionBillDetailModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionModel")
+                        .WithMany("BillDetails")
+                        .HasForeignKey("PaymentDispositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionInvoiceDetailModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionModel")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("PaymentDispositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionUnitChargeModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition.GarmentShippingPaymentDispositionModel")
+                        .WithMany("UnitCharges")
+                        .HasForeignKey("PaymentDispositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap.GarmentShippingPaymentDispositionRecapItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap.GarmentShippingPaymentDispositionRecapModel")
+                        .WithMany("Items")
+                        .HasForeignKey("RecapId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

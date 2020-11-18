@@ -173,7 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _repository.UpdateAsync(id, model);
         }
 
-        public async Task<ExcelResult> ReadPdfById(int id)
+        public async Task<MemoryStreamResult> ReadPdfById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
             var viewModel = MapToViewModel(data);
@@ -184,7 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
-            return new ExcelResult(stream, "Debit Note " + data.NoteNo + ".pdf");
+            return new MemoryStreamResult(stream, "Debit Note " + data.NoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)
@@ -192,7 +192,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string buyerUri = "master/garment-buyers";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{buyerUri}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string bankUri = "master/account-banks";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{bankUri}/{id}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{bankUri}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;

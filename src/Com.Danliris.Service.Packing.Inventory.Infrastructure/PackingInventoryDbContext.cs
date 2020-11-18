@@ -50,6 +50,9 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSa
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.InsuranceDisposition;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.InsuranceDisposition;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -157,7 +160,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingInsuranceDispositionModel> GarmentShippingInsuranceDispositions { get; set; }
         public DbSet<GarmentShippingInsuranceDispositionItemModel> GarmentShippingInsuranceDispositionItems { get; set; }
-        
+
+        public DbSet<GarmentShippingPaymentDispositionModel> GarmentShippingPaymentDispositions { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionBillDetailModel> GarmentShippingPaymentDispositionBillDetails { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionInvoiceDetailModel> GarmentShippingPaymentDispositionInvoiceDetails { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionUnitChargeModel> GarmentShippingPaymentDispositionUnitCharges { get; set; }
+
+        public DbSet<GarmentShippingPaymentDispositionRecapModel> GarmentShippingPaymentDispositionRecaps { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionRecapItemModel> GarmentShippingPaymentDispositionRecapItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -228,7 +239,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionItemConfiguration());
-            
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionBillDetailConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionInvoiceDetailConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionUnitChargeConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());
+
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentSKUItemModel>().HasQueryFilter(entity => !entity.IsDeleted);

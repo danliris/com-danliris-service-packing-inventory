@@ -144,6 +144,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<IndexViewModel>(data, page, size, query.Count());
         }
 
+        public ListResult<GarmentShippingCreditAdviceViewModel> ReadData(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _repository.ReadAll();
+
+            List<string> SearchAttributes = new List<string>() { "InvoiceNo", "BuyerName", "BankAccountName" };
+            query = QueryHelper<GarmentShippingCreditAdviceModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentShippingCreditAdviceModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentShippingCreditAdviceModel>.Order(query, OrderDictionary);
+
+            var data = query
+                .Skip((page - 1) * size)
+                .Take(size)
+                .Select(model => MapToViewModel(model))
+                .ToList();
+
+            return new ListResult<GarmentShippingCreditAdviceViewModel>(data, page, size, query.Count());
+        }
+
         public async Task<GarmentShippingCreditAdviceViewModel> ReadById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);

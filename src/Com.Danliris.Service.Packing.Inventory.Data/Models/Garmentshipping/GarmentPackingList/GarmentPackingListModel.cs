@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string BuyerAgentName { get; private set; }
 
         public string Destination { get; private set; }
+        public string FinalDestination { get; private set; }
 
         public string ShipmentMode { get; private set; }
 
@@ -62,11 +63,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string SideMark { get; private set; }
         public string Remark { get; private set; }
 
+        public string ShippingMarkImagePath { get; private set; }
+        public string SideMarkImagePath { get; private set; }
+        public string RemarkImagePath { get; private set; }
+
         #endregion
 
         public bool IsUsed { get; private set; }
         public bool IsPosted { get; private set; }
 
+        public int ShippingStaffId { get; private set; }
+        public string ShippingStaffName { get; private set; }
+        
         public GarmentPackingListStatusEnum Status { get; private set; }
         public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
 
@@ -77,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, bool isUsed, bool isPosted, GarmentPackingListStatusEnum status)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -93,6 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BuyerAgentCode = buyerAgentCode;
             BuyerAgentName = buyerAgentName;
             Destination = destination;
+            FinalDestination = finalDestination;
             ShipmentMode = shipmentMode;
             TruckingDate = truckingDate;
             TruckingEstimationDate = truckingEstimationDate;
@@ -111,9 +120,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ShippingMark = shippingMark;
             SideMark = sideMark;
             Remark = remark;
+            ShippingMarkImagePath = shippingMarkImagePath;
+            SideMarkImagePath = sideMarkImagePath;
+            RemarkImagePath = remarkImagePath;
             IsUsed = isUsed;
             IsPosted = isPosted;
             Status = status;
+            ShippingStaffId = shippingStaffId;
+            ShippingStaffName = shippingStaffName;
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
@@ -220,6 +234,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Destination != destination)
             {
                 Destination = destination;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetFinalDestination(string finalDestination, string userName, string userAgent)
+        {
+            if (FinalDestination != finalDestination)
+            {
+                FinalDestination = finalDestination;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
@@ -404,11 +427,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             }
         }
 
+        public void SetShippingStaff(int shippingStaffId, string shippingStaffName, string userName, string userAgent)
+        {
+            if (ShippingStaffId != shippingStaffId || ShippingStaffName != shippingStaffName)
+            {
+                ShippingStaffId = shippingStaffId;
+                ShippingStaffName = shippingStaffName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetStatus(GarmentPackingListStatusEnum status, string userName, string userAgent)
         {
             if (Status != status)
             {
                 Status = status;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetShippingMarkImagePath(string value, string userName, string userAgent)
+        {
+            if (ShippingMarkImagePath != value)
+            {
+                ShippingMarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSideMarkImagePath(string value, string userName, string userAgent)
+        {
+            if (SideMarkImagePath != value)
+            {
+                SideMarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemarkImagePath(string value, string userName, string userAgent)
+        {
+            if (RemarkImagePath != value)
+            {
+                RemarkImagePath = value;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

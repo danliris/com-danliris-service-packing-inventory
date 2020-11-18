@@ -3,6 +3,13 @@
     public enum GarmentPackingListStatusEnum
     {
         CREATED,
+        DRAFT,
+        DRAFT_POSTED,
+        DRAFT_APPROVED_MD,
+        DRAFT_REJECTED_MD,
+        DRAFT_APPROVED_SHIPPING,
+        DRAFT_REJECTED_SHIPPING,
+        DRAFT_CANCELED,
         POSTED,
         APPROVED_MD,
         REJECTED_MD,

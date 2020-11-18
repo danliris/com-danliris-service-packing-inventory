@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Buyer BuyerAgent { get; set; }
 
         public string Destination { get; set; }
+        public string FinalDestination { get; set; }
 
         public string ShipmentMode { get; set; }
 
@@ -61,10 +62,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string SideMark { get; set; }
         public string Remark { get; set; }
 
+        public string ShippingMarkImagePath { get; set; }
+        public string SideMarkImagePath { get; set; }
+        public string RemarkImagePath { get; set; }
+
+        public string ShippingMarkImageFile { get; set; }
+        public string SideMarkImageFile { get; set; }
+        public string RemarkImageFile { get; set; }
+
         #endregion
 
         public bool IsUsed { get; set; }
         public bool IsPosted { get; set; }
+
+        public ShippingStaff ShippingStaff { get; set; }
 
         public string Status { get; set; }
         public ICollection<GarmentPackingListStatusActivityViewModel> StatusActivities { get; set; }

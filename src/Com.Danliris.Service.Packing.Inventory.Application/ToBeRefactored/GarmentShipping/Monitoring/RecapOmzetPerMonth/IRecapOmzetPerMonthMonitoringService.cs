@@ -9,6 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public interface IRecapOmzetPerMonthMonitoringService
     {
         ListResult<RecapOmzetPerMonthMonitoringViewModel> GetReportData(int month, int year);
-        ExcelResult GenerateExcel(int month, int year);
+        MemoryStreamResult GenerateExcel(int month, int year);
     }
 }

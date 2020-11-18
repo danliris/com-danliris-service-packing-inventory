@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string uri = "master/garment-sections";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{uri}?filter={JsonConvert.SerializeObject(filter)}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{uri}?filter={JsonConvert.SerializeObject(filter)}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return data;
         }
 
-        public ExcelResult GenerateExcel(int year)
+        public MemoryStreamResult GenerateExcel(int year)
         {
             var data = GetData(year);
 
@@ -187,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "OmzetPerSection") }, false);
             var filename = $"Report Omzet Per Section {year}.xlsx";
 
-            return new ExcelResult(excel, filename);
+            return new MemoryStreamResult(excel, filename);
         }
     }
 }

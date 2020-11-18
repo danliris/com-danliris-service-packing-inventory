@@ -66,6 +66,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.FinalDestination)
+                .HasMaxLength(50);
+
+            builder
                 .Property(s => s.FabricCountryOrigin)
                 .HasMaxLength(255);
 
@@ -94,6 +98,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(2000);
 
             builder
+                .Property(s => s.ShippingMarkImagePath)
+                .HasMaxLength(500);
+
+            builder
+                .Property(s => s.SideMarkImagePath)
+                .HasMaxLength(500);
+
+            builder
+                .Property(s => s.RemarkImagePath)
+                .HasMaxLength(500);
+
+            builder
                 .Property(s => s.Status)
                 .HasMaxLength(50)
                 .HasConversion<string>();
@@ -107,6 +123,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMany(h => h.Measurements)
                 .WithOne()
                 .HasForeignKey(f => f.PackingListId);
+
+            builder
+                .Property(s => s.ShippingStaffName)
+                .HasMaxLength(255);
 
             builder
                 .HasMany(h => h.StatusActivities)

@@ -138,7 +138,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     phone = model.Phone,
                     bookingDate = model.BookingDate,
                     orderName = model.OrderName,
-                    destination=model.Destination
+                    destination=model.Destination,
+                    cartoonQuantity=model.CartoonQuantity
                 })
                 .ToList();
 

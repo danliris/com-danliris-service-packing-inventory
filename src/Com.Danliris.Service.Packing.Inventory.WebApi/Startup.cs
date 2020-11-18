@@ -121,6 +121,13 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.InsuranceDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.InsuranceDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShipment;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLetterOfCredit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDispositionRecap;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDispositionRecap;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -137,10 +144,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
         public IConfiguration Configuration { get; }
 
-        private void RegisterEndpoints()
+        private void RegisterApplicationSetting()
         {
-            APIEndpoint.Core = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
-
+            ApplicationSetting.CoreEndpoint = Configuration.GetValue<string>(Constant.CORE_ENDPOINT) ?? Configuration[Constant.CORE_ENDPOINT];
+            ApplicationSetting.StorageAccountName = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_NAME) ?? Configuration[Constant.STORAGE_ACCOUNT_NAME];
+            ApplicationSetting.StorageAccountKey = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_KEY) ?? Configuration[Constant.STORAGE_ACCOUNT_KEY];
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -154,7 +162,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                     options.UseSqlServer(connectionString);
                 });
 
-            RegisterEndpoints();
+            RegisterApplicationSetting();
 
             // Register Middleware
 
@@ -207,8 +215,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingNoteItemRepository, GarmentShippingNoteItemRepository>();
             services.AddTransient<IGarmentShippingInvoiceItemRepository, GarmentShippingInvoiceItemRepository>();
+            services.AddTransient<IGarmentShippingInvoiceAdjustmentRepository, GarmentShippingInvoiceAdjustmentRepository>();
             services.AddTransient<IGarmentShippingLocalSalesNoteItemRepository, GarmentShippingLocalSalesNoteItemRepository>();
             services.AddTransient<IGarmentShippingVBPaymentRepository, GarmentShippingVBPaymentRepository>();
+
+            services.AddTransient<IGarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionRepository>();
+            services.AddTransient<IGarmentShippingPaymentDispositionRecapRepository, GarmentShippingPaymentDispositionRecapRepository>();
 
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
@@ -250,6 +262,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IIPWovenTypeService, IPWovenTypeService>();
             services.AddTransient<IIPProcessTypeService, IPProcessTypeService>();
             services.AddTransient<IGarmentPackingListService, GarmentPackingListService>();
+            services.AddTransient<IGarmentPackingListDraftService, GarmentPackingListDraftService>();
+            services.AddTransient<IGarmentPackingListItemsService, GarmentPackingListItemsService>();
             services.AddTransient<IGarmentCoverLetterService, GarmentCoverLetterService>();
             services.AddTransient<IGarmentShippingCreditNoteService, GarmentShippingCreditNoteService>();
             services.AddTransient<IGarmentShippingDebitNoteService, GarmentShippingDebitNoteService>();
@@ -278,6 +292,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalSalesContractService, GarmentShippingLocalSalesContractService>();
             services.AddTransient<IGarmentShippingInsuranceDispositionService, GarmentShippingInsuranceDispositionService>();
 
+            services.AddTransient<IGarmentShippingPaymentDispositionService, GarmentShippingPaymentDispositionService>();
+            services.AddTransient<IPaymentDispositionRecapService, PaymentDispositionRecapService>();
+
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();
             services.AddTransient<IProductSKUService, ProductSKUService>();
@@ -303,6 +320,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalSalesReportByBuyerService, GarmentLocalSalesReportByBuyerService>();
             services.AddTransient<IGarmentShippingInstructionMonitoringService, GarmentShippingInstructionMonitoringService>();
             services.AddTransient<IGarmentCoverLetterMonitoringService, GarmentCoverLetterMonitoringService>();
+            services.AddTransient<IGarmentShipmentMonitoringService, GarmentShipmentMonitoringService>();
+            services.AddTransient<IGarmentLetterOfCreditMonitoringService, GarmentLetterOfCreditMonitoringService>();
+            services.AddTransient<IGarmentCreditAdviceMonitoringService, GarmentCreditAdviceMonitoringService>();
 
             services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
             services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
@@ -315,6 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddScoped<IIdentityProvider, IdentityProvider>();
             services.AddScoped<IValidateService, ValidateService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
+            services.AddScoped<IAzureImageService, AzureImageService>();
 
 
 

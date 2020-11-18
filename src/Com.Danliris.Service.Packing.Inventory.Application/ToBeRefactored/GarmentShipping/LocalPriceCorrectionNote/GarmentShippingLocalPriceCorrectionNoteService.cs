@@ -232,7 +232,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public async Task<ExcelResult> ReadPdfById(int id)
+        public async Task<MemoryStreamResult> ReadPdfById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
             var viewModel = MapToViewModel(data);
@@ -242,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel, buyer, _identityProvider.TimezoneOffset);
 
-            return new ExcelResult(stream, "Nota Koreksi " + data.CorrectionNoteNo + ".pdf");
+            return new MemoryStreamResult(stream, "Nota Koreksi " + data.CorrectionNoteNo + ".pdf");
         }
 
         async Task<Buyer> GetBuyer(int id)
@@ -250,7 +250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             string buyerUri = "master/garment-leftover-warehouse-buyers";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = await httpClient.GetAsync($"{APIEndpoint.Core}{buyerUri}/{id}");
+            var response = await httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{buyerUri}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
