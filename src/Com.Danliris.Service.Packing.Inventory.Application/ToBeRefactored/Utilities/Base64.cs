@@ -12,12 +12,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             return encoded.Substring(encoded.IndexOf(',') + 1);
         }
 
-        public static string GetBase64Type(string encoded)
-        {
-            Regex regex = new Regex(@"data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*");
-            string match = regex.Match(encoded).Groups[1].Value;
-
-            return match == null && match == String.Empty ? "image/jpeg" : match;
-        }
     }
 }
