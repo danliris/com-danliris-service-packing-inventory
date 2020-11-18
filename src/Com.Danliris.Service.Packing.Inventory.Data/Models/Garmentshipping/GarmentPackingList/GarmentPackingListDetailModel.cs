@@ -43,6 +43,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Sizes = sizes;
         }
 
+        public void setPackingListItemId(int PackingListItemId, string userName, string userAgent)
+        {
+            if (this.PackingListItemId != PackingListItemId)
+            {
+                this.PackingListItemId = PackingListItemId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetCarton1(double newValue, string userName, string userAgent)
         {
             if (Carton1 != newValue)
