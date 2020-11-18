@@ -107,7 +107,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var PdfTemplate = new GarmentPackingListDraftPdfTemplate(_identityProvider);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data));
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
             return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".pdf");
         }
