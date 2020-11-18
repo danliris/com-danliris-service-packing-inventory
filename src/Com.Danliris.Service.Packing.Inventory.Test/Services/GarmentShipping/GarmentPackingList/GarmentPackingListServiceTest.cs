@@ -207,11 +207,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoInvoiceMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
 
-            var spMock = GetServiceProvider(repoMock.Object);
-            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repoInvoiceMock.Object);
 
-            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider
                 {
                     TimezoneOffset = 7,
@@ -219,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Username = "UserTest"
                 });
 
-            var service = GetService(spMock.Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadPdfById(1);
 
@@ -249,11 +257,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoInvoiceMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
 
-            var spMock = GetServiceProvider(repoMock.Object);
-            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repoInvoiceMock.Object);
 
-            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider
                 {
                     TimezoneOffset = 7,
@@ -261,7 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Username = "UserTest"
                 });
 
-            var service = GetService(spMock.Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadPdfById(1);
 
@@ -295,11 +311,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoInvoiceMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
 
-            var spMock = GetServiceProvider(repoMock.Object);
-            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repoInvoiceMock.Object);
 
-            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider
                 {
                     TimezoneOffset = 7,
@@ -307,7 +331,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Username = "UserTest"
                 });
 
-            var service = GetService(spMock.Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadPdfById(1);
 

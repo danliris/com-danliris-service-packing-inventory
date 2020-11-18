@@ -157,9 +157,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
 
-            var spMock = GetServiceProvider(repoMock.Object);
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
 
-            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider
                 {
                     TimezoneOffset = 7,
@@ -167,7 +174,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Username = "UserTest"
                 });
 
-            var service = GetService(spMock.Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadPdfById(1);
 
