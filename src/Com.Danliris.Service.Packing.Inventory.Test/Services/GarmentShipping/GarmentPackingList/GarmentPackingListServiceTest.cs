@@ -64,13 +64,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Create_Success()
         {
-            var repoMock = new Mock<IGarmentPackingListRepository>();
+            var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
             repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
                 .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentPackingListModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
+                .Returns(ViewModel.ShippingMarkImagePath);
+            imageServiceMock.Setup(s => s.RemoveImage(It.IsAny<string>(), It.IsAny<string>()))
+                .Verifiable();
+            imageServiceMock.Setup(s => s.UploadImage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImagePath");
+
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.Create(ViewModel);
 
