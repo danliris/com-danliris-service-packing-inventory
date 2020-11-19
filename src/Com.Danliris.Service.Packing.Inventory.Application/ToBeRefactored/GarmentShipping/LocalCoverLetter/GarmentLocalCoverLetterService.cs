@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Address = model.BuyerAdddress
                 },
                 remark = model.Remark,
+                bcNo = model.BCNo,
                 truck = model.Truck,
                 plateNumber = model.PlateNumber,
                 driver = model.Driver,
@@ -67,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
-            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo,GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo,GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.InsertAsync(model);
         }
@@ -133,11 +134,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
+        public async Task<GarmentLocalCoverLetterViewModel> ReadByLocalSalesNoteId(int localsalesnoteid)
+        {
+            var data = await _repository.ReadByLocalSalesNoteIdAsync(localsalesnoteid);
+            var viewModel = MapToViewModel(data);
+
+            return viewModel;
+        }
+
         public async Task<int> Update(int id, GarmentLocalCoverLetterViewModel viewModel)
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
-            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.localCoverLetterNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+            GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.localCoverLetterNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             return await _repository.UpdateAsync(id, model);
         }

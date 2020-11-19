@@ -55,9 +55,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Id = model.BuyerId,
                     Code = model.BuyerCode,
                     Name = model.BuyerName,
-                    npwp = model.BuyerNPWP
+                    npwp = model.BuyerNPWP,
+                    KaberType = model.KaberType
                 },
                 tempo = model.Tempo,
+                expenditureNo = model.ExpenditureNo,
                 dispositionNo = model.DispositionNo,
                 useVat = model.UseVat,
                 remark = model.Remark,
@@ -118,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.tempo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed, items) { Id = vm.Id };
+            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, vm.expenditureNo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteViewModel vm)

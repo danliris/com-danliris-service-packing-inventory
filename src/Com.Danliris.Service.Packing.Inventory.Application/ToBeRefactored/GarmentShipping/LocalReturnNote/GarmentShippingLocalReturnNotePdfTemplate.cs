@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PT. DAN LIRIS", header_font_bold));
-            cellHeaderContent1.AddElement(new Phrase("Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
+            cellHeaderContent1.AddElement(new Phrase("Jl. Merapi No. 23,  Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
             cellHeaderContent1.AddElement(new Phrase("Telp : 0271-714400, Fax. 0271-717178", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PO. Box. 166 Solo-57100 Indonesia", normal_font));
             tableHeader.AddCell(cellHeaderContent1);

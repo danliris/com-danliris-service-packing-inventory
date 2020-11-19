@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-       public IQueryable<GarmentCreditAdviceMonitoringViewModel> GetData(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
+       public IQueryable<GarmentCreditAdviceMonitoringViewModel> GetData(string buyerAgent, string invoiceNo, string paymentTerm, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var queryCA = carepository.ReadAll();
 
@@ -46,8 +46,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             queryCA = queryCA.OrderBy(w => w.InvoiceNo);
 
             var Query = (from a in queryCA
-                     
-                        select new GarmentCreditAdviceMonitoringViewModel
+                         where a.PaymentTerm == (string.IsNullOrWhiteSpace(paymentTerm) ? a.PaymentTerm : paymentTerm)
+
+                         select new GarmentCreditAdviceMonitoringViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = a.Date,
@@ -56,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             PaymentTerm = a.PaymentTerm,
                             Amount = a.Amount,
                             ToBePaid = a.AmountToBePaid,
-                            NettNego = a.NettNego,
+                            NettNego = a.NettNego + a.BankCharges + a.OtherCharge + a.BankComission + a.DiscrepancyFee + a.CreditInterest,
                             BuyerName = a.BuyerName,
                             BuyerAddress = a.BuyerAddress,
                             BankName = a.BankAccountName,
@@ -77,17 +78,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return Query;
         }
 
-        public List<GarmentCreditAdviceMonitoringViewModel> GetReportData(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public List<GarmentCreditAdviceMonitoringViewModel> GetReportData(string buyerAgent, string invoiceNo, string paymentTerm, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var Query = GetData(buyerAgent, invoiceNo, dateFrom, dateTo, offset);
+            var Query = GetData(buyerAgent, invoiceNo, paymentTerm, dateFrom, dateTo, offset);
             Query = Query.OrderBy(w => w.InvoiceNo);
             return Query.ToList();
         }
 
-        public MemoryStream GenerateExcel(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(string buyerAgent, string invoiceNo, string paymentTerm, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
-            var Query = GetData(buyerAgent, invoiceNo, dateFrom, dateTo, offset);
+            var Query = GetData(buyerAgent, invoiceNo, paymentTerm, dateFrom, dateTo, offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });

@@ -50,6 +50,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public Task<GarmentShippingLocalCoverLetterModel> ReadByLocalSalesNoteIdAsync(int localsalesnoteid)
+        {
+            return _dbSet.FirstOrDefaultAsync(s => s.LocalSalesNoteId == localsalesnoteid);
+        }
+
         public async Task<int> UpdateAsync(int id, GarmentShippingLocalCoverLetterModel model)
         {
             var modelToUpdate = _dbSet.First(s => s.Id == id);

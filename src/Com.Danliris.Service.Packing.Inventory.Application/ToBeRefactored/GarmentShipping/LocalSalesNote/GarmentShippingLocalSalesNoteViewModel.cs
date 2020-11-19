@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public TransactionType transactionType { get; set; }
         public Buyer buyer { get; set; }
         public int tempo { get; set; }
+        public string expenditureNo { get; set; }
         public string dispositionNo { get; set; }
         public bool useVat { get; set; }
         public string remark { get; set; }
@@ -50,10 +51,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tempo Pembayaran tidak boleh kosong", new List<string> { "tempo" });
             }
 
-            //if (string.IsNullOrWhiteSpace(dispositionNo))
-            //{
-            //    yield return new ValidationResult("No Disposisi tidak boleh kosong", new List<string> { "dispositionNo" });
-            //}
+            if (string.IsNullOrWhiteSpace(expenditureNo))
+            {
+                yield return new ValidationResult("No Bon Keluar tidak boleh kosong", new List<string> { "expenditureNo" });
+            }
 
             if (items == null || items.Count == 0)
             {

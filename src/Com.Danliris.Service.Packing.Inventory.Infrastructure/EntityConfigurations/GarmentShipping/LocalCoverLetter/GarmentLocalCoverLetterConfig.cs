@@ -28,6 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder.Property(s => s.BuyerName).HasMaxLength(255);
             builder.Property(s => s.BuyerAdddress).HasMaxLength(1000);
             builder.Property(s => s.Remark).HasMaxLength(1000);
+            builder.Property(s => s.BCNo).HasMaxLength(50);
 
             builder.Property(s => s.Truck).HasMaxLength(250);
             builder.Property(s => s.PlateNumber).HasMaxLength(250);
