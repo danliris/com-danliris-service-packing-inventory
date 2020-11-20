@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             var modelToUpdate = _dbSet.First(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBCNo(model.BCNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTruck(model.Truck, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPlateNumber(model.PlateNumber, _identityProvider.Username, UserAgent);

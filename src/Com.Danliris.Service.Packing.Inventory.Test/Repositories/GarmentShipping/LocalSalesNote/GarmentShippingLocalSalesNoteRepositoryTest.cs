@@ -126,6 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             data.SetDate(data.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
             data.SetTempo(model.Tempo + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetExpenditureNo(model.ExpenditureNo + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetDispositionNo(model.DispositionNo + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetUseVat(!model.UseVat, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetRemark(model.Remark + 1, data.LastModifiedBy, data.LastModifiedAgent);
