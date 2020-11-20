@@ -164,6 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -188,6 +189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -212,6 +214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -236,6 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -260,6 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(GarmentShippingLocalSalesNoteViewModel));
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -283,6 +288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
