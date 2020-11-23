@@ -1,10 +1,8 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Helper;
-using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SHA1 = Com.Danliris.Service.Packing.Inventory.Application.Helper.SHA1;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
@@ -14,44 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public GarmentPackingListDraftService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-        }
-
-        private string GenerateFileName(int id, DateTime createdUtc, string hash)
-        {
-            return string.Format("IMG_{0}_{1}_{2}", id, Timestamp.Generate(createdUtc), hash);
-        }
-
-        private async Task<string> UploadImage(string imageFile, int id, string imagePath, DateTime createdUtc)
-        {
-            if (!string.IsNullOrWhiteSpace(imageFile))
-            {
-                var shippingMarkImageHash = SHA1.Hash(imageFile);
-
-                if (!string.IsNullOrWhiteSpace(imagePath))
-                {
-                    var fileName = _azureImageService.GetFileNameFromPath(imagePath).Split("_");
-
-                    if (fileName[3] != shippingMarkImageHash)
-                    {
-                        await _azureImageService.RemoveImage(IMG_DIR, imagePath);
-                        imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
-                    }
-                }
-                else
-                {
-                    imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(imagePath))
-                {
-                    await _azureImageService.RemoveImage(IMG_DIR, imagePath);
-                    imagePath = null;
-                }
-            }
-
-            return imagePath;
         }
 
         public override async Task<string> Create(GarmentPackingListViewModel viewModel)
@@ -107,7 +67,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var PdfTemplate = new GarmentPackingListDraftPdfTemplate(_identityProvider);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data));
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
 
             return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".pdf");
         }

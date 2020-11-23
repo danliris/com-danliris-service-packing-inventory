@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double Width { get; set; }
         public double Height { get; set; }
         public double CartonsQuantity { get; set; }
+        public int PackingListItemId { get; set; }
 
         public ICollection<GarmentPackingListDetailSizeViewModel> Sizes { get; set; }
     }

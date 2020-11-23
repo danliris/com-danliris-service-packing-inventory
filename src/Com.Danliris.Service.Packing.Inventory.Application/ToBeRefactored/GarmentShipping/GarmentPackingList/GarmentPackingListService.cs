@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.Helper;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
@@ -37,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         protected GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
         {
-            var vm =  new GarmentPackingListViewModel()
+            var vm = new GarmentPackingListViewModel()
             {
                 Active = model.Active,
                 Id = model.Id,
@@ -150,6 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         LastModifiedBy = d.LastModifiedBy,
                         LastModifiedUtc = d.LastModifiedUtc,
 
+                        PackingListItemId = d.PackingListItemId,
                         Carton1 = d.Carton1,
                         Carton2 = d.Carton2,
                         Style = d.Style,
@@ -286,11 +288,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return garmentPackingListModel;
         }
 
+        protected string GenerateFileName(int id, DateTime createdUtc, string hash)
+        {
+            return string.Format("IMG_{0}_{1}_{2}", id, Timestamp.Generate(createdUtc), hash);
+        }
+
+        protected async Task<string> UploadImage(string imageFile, int id, string imagePath, DateTime createdUtc)
+        {
+            if (!string.IsNullOrWhiteSpace(imageFile))
+            {
+                var shippingMarkImageHash = SHA1.Hash(imageFile);
+
+                if (!string.IsNullOrWhiteSpace(imagePath))
+                {
+                    var fileName = _azureImageService.GetFileNameFromPath(imagePath).Split("_");
+
+                    if (fileName[3] != shippingMarkImageHash)
+                    {
+                        await _azureImageService.RemoveImage(IMG_DIR, imagePath);
+                        imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
+                    }
+                }
+                else
+                {
+                    imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(imagePath))
+                {
+                    await _azureImageService.RemoveImage(IMG_DIR, imagePath);
+                    imagePath = null;
+                }
+            }
+
+            return imagePath;
+        }
+
         public virtual async Task<string> Create(GarmentPackingListViewModel viewModel)
         {
+            viewModel.Status = GarmentPackingListStatusEnum.CREATED.ToString();
+
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
+
+            garmentPackingListModel.SetShippingMarkImagePath(await UploadImage(viewModel.ShippingMarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.ShippingMarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
+            garmentPackingListModel.SetSideMarkImagePath(await UploadImage(viewModel.SideMarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.SideMarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
+            garmentPackingListModel.SetRemarkImagePath(await UploadImage(viewModel.RemarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.RemarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
+            await _packingListRepository.SaveChanges();
 
             return garmentPackingListModel.InvoiceNo;
         }
@@ -394,6 +441,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 		public virtual async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
         {
+            viewModel.ShippingMarkImagePath = await UploadImage(viewModel.ShippingMarkImageFile, viewModel.Id, viewModel.ShippingMarkImagePath, viewModel.CreatedUtc);
+            viewModel.SideMarkImagePath = await UploadImage(viewModel.SideMarkImageFile, viewModel.Id, viewModel.SideMarkImagePath, viewModel.CreatedUtc);
+            viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
+
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 
             return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
@@ -411,7 +462,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
             var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
 
-            var stream = PdfTemplate.GeneratePdfTemplate(MapToViewModel(data), fob);
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
