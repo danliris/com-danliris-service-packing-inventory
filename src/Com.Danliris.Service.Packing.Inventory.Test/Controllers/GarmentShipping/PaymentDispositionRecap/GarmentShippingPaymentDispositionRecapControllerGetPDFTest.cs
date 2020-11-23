@@ -130,6 +130,65 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             {
                                 amount=1000,
                                 billValue = 10,
+                                dispositionNo = "test",
+                                invoiceDate = DateTimeOffset.Now,
+                                invoiceNumber = "test",
+                                vatValue = 10,
+                                amountPerUnit=new Dictionary<string, double>()
+                                {
+                                    ["C1A"]=1000,
+                                    ["C2A"]=1000,
+                                    ["C1B"]=1000,
+                                    ["C2B"]=1000,
+                                },
+                                invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
+                                {
+                                    new GarmentShippingPaymentDispositionInvoiceDetailViewModel
+                                    {
+                                        chargeableWeight=1,
+                                        grossWeight=1,
+                                        invoiceId=1,
+                                        invoiceNo="test",
+                                        quantity=1,
+                                        totalCarton=1,
+                                        volume=1,
+                                        packingList=new PackingList
+                                        {
+                                            totalCBM=100
+                                        },
+                                        invoice= new Invoice()
+                                        {
+                                            BuyerAgent= new BuyerAgent
+                                            {
+                                                Id = '1',
+                                                Code = "aa",
+                                                Name = "aa"
+                                            },
+                                            unit= "2A",
+                                            items=new List<InvoiceItem>()
+                                            {
+                                                new InvoiceItem
+                                                {
+                                                    quantity=10,
+                                                    unit="2A"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                incomeTaxValue=122,
+                                paid=10000,
+
+                            },
+
+                        },
+                        new PaymentDispositionRecapItemViewModel
+                        {
+                            service=1000,
+                            paymentDisposition= new GarmentShippingPaymentDispositionViewModel
+                            {
+                                amount=1000,
+                                billValue = 10,
                                 dispositionNo = "test1",
                                 invoiceDate = DateTimeOffset.Now,
                                 invoiceNumber = "test1",
