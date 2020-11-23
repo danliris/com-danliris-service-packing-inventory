@@ -42,8 +42,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal totalCarton { get; set; }
         public Invoice invoice { get; set; }
         public PackingList packingList { get; set; }
-
-        public double service { get; set; }
     }
 
     public class Invoice
