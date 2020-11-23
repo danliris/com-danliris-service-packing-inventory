@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,8 +38,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
             GarmentPackingListModel model = MapToModel(viewModel);
+            GarmentPackingListModel modelToUpdate;
 
-            var modelToUpdate = _packingListRepository.Query.FirstOrDefault(s => s.Id == id);
+            if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            {
+                modelToUpdate = _packingListRepository.Query
+                    .Include(i => i.Items)
+                        .ThenInclude(i => i.Details)
+                    .Include(i => i.Measurements)
+                    .FirstOrDefault(s => s.Id == id);
+
+                foreach (var itemToUpdate in modelToUpdate.Items)
+                {
+                    var item = model.Items.First(i => i.Id == itemToUpdate.Id);
+                    foreach (var detailToUpdate in itemToUpdate.Details)
+                    {
+                        var detail = item.Details.Where(d => d.Id == detailToUpdate.Id).First();
+                        detailToUpdate.SetCarton1(detail.Carton1, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetCarton2(detail.Carton2, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetCartonQuantity(detail.CartonQuantity, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetTotalQuantity(detail.TotalQuantity, _identityProvider.Username, UserAgent);
+                    }
+                }
+
+                foreach (var measurementToUpdate in modelToUpdate.Measurements)
+                {
+                    var measurement = model.Measurements.First(m => m.Id == measurementToUpdate.Id);
+                    measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
+                }
+            }
+            else
+            {
+                modelToUpdate = _packingListRepository.Query.FirstOrDefault(s => s.Id == id);
+            }
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);
