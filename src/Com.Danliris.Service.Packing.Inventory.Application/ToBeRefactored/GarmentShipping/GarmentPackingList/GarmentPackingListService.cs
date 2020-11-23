@@ -397,6 +397,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var viewModel = MapToViewModel(data);
+            viewModel.Items = viewModel.Items.OrderBy(o => o.ComodityDescription).ToList();
 
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
