@@ -96,13 +96,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                         packingList=new PackingList
                                         {
                                             totalCBM=100
+                                        },
+                                        invoice= new Invoice()
+                                        {
+                                            BuyerAgent= new BuyerAgent
+                                            {
+                                                Id = '1',
+                                                Code = "aa",
+                                                Name = "aa"
+                                            },
+                                            unit= "1A",
+                                            
                                         }
                                     }
                                 },
                                 incomeTaxValue=122,
                                 paid=10000,
+                                
                             },
-                        }
+                            
+                        },
+                        
                     }
                 };
             }
