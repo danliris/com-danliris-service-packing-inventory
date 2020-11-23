@@ -105,8 +105,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                                 Code = "aa",
                                                 Name = "aa"
                                             },
-                                            unit= "1A",
-                                            
+                                            unit= "2A",
+                                            items=new List<InvoiceItem>()
+                                            {
+                                                new InvoiceItem
+                                                {
+                                                    quantity=10,
+                                                    unit="2A"
+                                                }
+                                            }
                                         }
                                     }
                                 },
