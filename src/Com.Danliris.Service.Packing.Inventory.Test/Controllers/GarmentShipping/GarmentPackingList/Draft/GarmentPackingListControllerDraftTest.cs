@@ -373,9 +373,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetControllerSetStatus();
 
-            var response = await controller.SetCancel(dataUtil.Id);
+            var response = await controller.SetCancel(dataUtil.Id, "Alasan");
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Cancel_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetCancel(dataUtil.Id, "Alasan");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
         [Fact]

@@ -157,12 +157,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("cancel/{id}")]
-        public async Task<IActionResult> SetCancel([FromRoute] int id)
+        public async Task<IActionResult> SetCancel([FromRoute] int id, [FromBody] string reason)
         {
             try
             {
                 VerifyUser();
-                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_CANCELED);
+                await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_CANCELED, reason);
 
                 return Ok();
             }
