@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public int ShippingStaffId { get; private set; }
         public string ShippingStaffName { get; private set; }
 
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
 
         #endregion
