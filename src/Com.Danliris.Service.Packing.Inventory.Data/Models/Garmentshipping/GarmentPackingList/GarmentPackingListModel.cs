@@ -44,6 +44,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public ICollection<GarmentPackingListItemModel> Items { get; private set; }
 
+
+        public int ShippingStaffId { get; private set; }
+        public string ShippingStaffName { get; private set; }
+
+        public string Description { get; set; }
+
+
         #endregion
 
         #region Measurement
@@ -72,9 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public bool IsUsed { get; private set; }
         public bool IsPosted { get; private set; }
 
-        public int ShippingStaffId { get; private set; }
-        public string ShippingStaffName { get; private set; }
-        
+
         public GarmentPackingListStatusEnum Status { get; private set; }
         public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
 
@@ -85,7 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -129,6 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ShippingStaffId = shippingStaffId;
             ShippingStaffName = shippingStaffName;
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
+            Description = description;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -469,6 +475,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (RemarkImagePath != value)
             {
                 RemarkImagePath = value;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDescription(string value, string userName, string userAgent)
+        {
+            if (Description != value)
+            {
+                Description = value;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

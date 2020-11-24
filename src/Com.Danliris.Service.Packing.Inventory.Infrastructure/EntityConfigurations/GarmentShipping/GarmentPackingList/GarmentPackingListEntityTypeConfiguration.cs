@@ -133,6 +133,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .WithOne()
                 .HasForeignKey(f => f.PackingListId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Property(d => d.Description)
+                .HasMaxLength(1000);
+
         }
     }
 }
