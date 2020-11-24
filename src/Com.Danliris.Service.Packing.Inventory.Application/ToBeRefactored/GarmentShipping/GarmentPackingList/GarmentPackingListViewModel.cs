@@ -43,6 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
 
+        public string Description { get; set; }
+
         #endregion
 
         #region Measurement

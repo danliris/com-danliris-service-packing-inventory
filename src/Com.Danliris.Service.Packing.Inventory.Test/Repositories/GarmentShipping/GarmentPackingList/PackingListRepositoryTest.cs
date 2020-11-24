@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED);
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
 
             await repo.InsertAsync(oldModel);
 
@@ -146,23 +146,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             Assert.NotEqual(0, result);
         }
-		[Fact]
-		public async override Task Should_Success_ReadAll()
-		{
-			string testName = GetCurrentMethod();
-			var dbContext = DbContext(testName);
+        [Fact]
+        public async override Task Should_Success_ReadAll()
+        {
+            string testName = GetCurrentMethod();
+            var dbContext = DbContext(testName);
 
-			var serviceProvider = GetServiceProviderMock(dbContext).Object;
-			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
-			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
-			GarmentPackingListModel dataPL = utilPL.GetModel();
-			var dataPackingList = await repoPL.InsertAsync(dataPL);
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+            GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+            GarmentPackingListModel dataPL = utilPL.GetModel();
+            var dataPackingList = await repoPL.InsertAsync(dataPL);
 
-			
-			var result = repoPL.ReadNotUsedAsync();
 
-			Assert.NotEmpty(result);
-		}
+            var result = repoPL.ReadNotUsedAsync();
+
+            Assert.NotEmpty(result);
+        }
 
         [Fact]
         public async Task Should_Success_ReadByNoInvoice()
@@ -175,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
             GarmentPackingListModel dataPL = utilPL.GetModel();
             var dataPackingList = await repoPL.InsertAsync(dataPL);
-            
+
             var result = repoPL.ReadByInvoiceNoAsync(dataPL.InvoiceNo);
 
             Assert.NotNull(result);

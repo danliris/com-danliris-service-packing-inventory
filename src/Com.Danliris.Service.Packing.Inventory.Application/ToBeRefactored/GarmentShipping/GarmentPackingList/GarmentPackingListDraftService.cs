@@ -90,6 +90,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
+            modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
+
             return await _packingListRepository.SaveChanges();
         }
 

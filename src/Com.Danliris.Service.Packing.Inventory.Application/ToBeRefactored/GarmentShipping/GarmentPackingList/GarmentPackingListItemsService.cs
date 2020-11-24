@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedAgent = model.LastModifiedAgent,
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
-
+                Description = model.Description,
                 InvoiceNo = model.InvoiceNo,
                 PackingListType = model.PackingListType,
                 InvoiceType = model.InvoiceType,
