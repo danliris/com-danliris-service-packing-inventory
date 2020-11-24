@@ -1,10 +1,9 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.Helper;
-using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SHA1 = Com.Danliris.Service.Packing.Inventory.Application.Helper.SHA1;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
@@ -14,44 +13,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public GarmentPackingListDraftService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-        }
-
-        private string GenerateFileName(int id, DateTime createdUtc, string hash)
-        {
-            return string.Format("IMG_{0}_{1}_{2}", id, Timestamp.Generate(createdUtc), hash);
-        }
-
-        private async Task<string> UploadImage(string imageFile, int id, string imagePath, DateTime createdUtc)
-        {
-            if (!string.IsNullOrWhiteSpace(imageFile))
-            {
-                var shippingMarkImageHash = SHA1.Hash(imageFile);
-
-                if (!string.IsNullOrWhiteSpace(imagePath))
-                {
-                    var fileName = _azureImageService.GetFileNameFromPath(imagePath).Split("_");
-
-                    if (fileName[3] != shippingMarkImageHash)
-                    {
-                        await _azureImageService.RemoveImage(IMG_DIR, imagePath);
-                        imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
-                    }
-                }
-                else
-                {
-                    imagePath = await _azureImageService.UploadImage(IMG_DIR, GenerateFileName(id, createdUtc, shippingMarkImageHash), imageFile);
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(imagePath))
-                {
-                    await _azureImageService.RemoveImage(IMG_DIR, imagePath);
-                    imagePath = null;
-                }
-            }
-
-            return imagePath;
         }
 
         public override async Task<string> Create(GarmentPackingListViewModel viewModel)
@@ -77,8 +38,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
             GarmentPackingListModel model = MapToModel(viewModel);
+            GarmentPackingListModel modelToUpdate;
 
-            var modelToUpdate = _packingListRepository.Query.FirstOrDefault(s => s.Id == id);
+            if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            {
+                modelToUpdate = _packingListRepository.Query
+                    .Include(i => i.Items)
+                        .ThenInclude(i => i.Details)
+                    .Include(i => i.Measurements)
+                    .FirstOrDefault(s => s.Id == id);
+
+                foreach (var itemToUpdate in modelToUpdate.Items)
+                {
+                    var item = model.Items.First(i => i.Id == itemToUpdate.Id);
+                    foreach (var detailToUpdate in itemToUpdate.Details)
+                    {
+                        var detail = item.Details.Where(d => d.Id == detailToUpdate.Id).First();
+                        detailToUpdate.SetCarton1(detail.Carton1, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetCarton2(detail.Carton2, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetCartonQuantity(detail.CartonQuantity, _identityProvider.Username, UserAgent);
+                        detailToUpdate.SetTotalQuantity(detail.TotalQuantity, _identityProvider.Username, UserAgent);
+                    }
+                }
+
+                foreach (var measurementToUpdate in modelToUpdate.Measurements)
+                {
+                    var measurement = model.Measurements.First(m => m.Id == measurementToUpdate.Id);
+                    measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
+                }
+            }
+            else
+            {
+                modelToUpdate = _packingListRepository.Query.FirstOrDefault(s => s.Id == id);
+            }
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestination(model.Destination, _identityProvider.Username, UserAgent);

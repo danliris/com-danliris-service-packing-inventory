@@ -34,17 +34,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             {
                 return new GarmentPackingListViewModel
                 {
+                    Id = 1,
                     Items = new List<GarmentPackingListItemViewModel>
                     {
                         new GarmentPackingListItemViewModel
                         {
+                            Id = 1,
                             Details = new List<GarmentPackingListDetailViewModel>()
                             {
                                 new GarmentPackingListDetailViewModel
                                 {
+                                    Id = 1,
                                     Sizes = new List<GarmentPackingListDetailSizeViewModel>()
                                     {
                                         new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 1
+                                        }
                                     }
                                 }
                             }
@@ -53,6 +59,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     Measurements = new List<GarmentPackingListMeasurementViewModel>
                     {
                         new GarmentPackingListMeasurementViewModel()
+                        {
+                            Id = 1
+                        }
                     },
                     ShippingMarkImagePath = "IMG_1_000101010000000000_ShippingMarkImageFile",
                     ShippingMarkImageFile = "ShippingMarkImageFile",
@@ -137,6 +146,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 .Returns(imageServiceMock.Object);
 
             var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.Update(ViewModel.Id, ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Update_DRAFT_APPROVED_SHIPPING_Success()
+        {
+            var ViewModel = this.ViewModel;
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, null) { Id = 1 } };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("c", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details, 1, 1) { Id = 1 } };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) { Id = 1 } };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED) { Id = ViewModel.Id };
+
+            var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
+            repoMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel> { model }.AsQueryable());
+
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
+                .Returns(ViewModel.ShippingMarkImagePath);
+            imageServiceMock.Setup(s => s.UploadImage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImagePath");
+
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
+
+            ViewModel.Status = GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString();
 
             var result = await service.Update(ViewModel.Id, ViewModel);
 

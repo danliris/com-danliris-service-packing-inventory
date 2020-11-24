@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 20);
+            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 30);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -131,7 +131,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             ComodityDescription = a.ComodityDescription,
                             OrderNo = a.OrderNo,
                             AVG_GW = a.AVG_GW,
-                            AVG_NW = a.AVG_NW
+                            AVG_NW = a.AVG_NW,
+                            Description= a.Description
                         })
                             .Single(a => a.Id == d.PackingListItemId);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
@@ -685,8 +686,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 #region LINE
 
-                cb.MoveTo(marginLeft, height - marginTop + 60);
-                cb.LineTo(width - marginRight, height - marginTop + 60);
+                cb.MoveTo(marginLeft, height - marginTop + 50);
+                cb.LineTo(width - marginRight, height - marginTop + 50);
                 cb.Stroke();
 
                 #endregion
@@ -714,7 +715,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region INFO
 
-            var infoY = height - marginTop + 5;
+            var infoY = height - marginTop + 10;
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Invoice No. : " + viewModel.InvoiceNo, marginLeft, infoY, 0);
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Date : " + viewModel.Date.GetValueOrDefault().ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("MMM dd, yyyy."), width / 2, infoY, 0);
@@ -724,15 +725,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LINE
 
-            cb.MoveTo(marginLeft, height - marginTop);
-            cb.LineTo(width - marginRight, height - marginTop);
+            cb.MoveTo(marginLeft, height - marginTop +5);
+            cb.LineTo(width - marginRight, height - marginTop + 5);
             cb.Stroke();
 
             #endregion
 
             #region PRINTED
 
-            var printY = marginBottom - 150;
+            var printY = marginBottom - 10;
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
 
             #endregion
