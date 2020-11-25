@@ -255,7 +255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableUnit.AddCell(cellLeft);
             cellLeftNoRightBorder.Phrase = new Phrase("Rp", small_font);
             tableUnit.AddCell(cellLeftNoRightBorder);
-            cellRightNoLeftBorder.Phrase = new Phrase(string.Format("{0:n}", total1A), small_font);
+            cellRightNoLeftBorder.Phrase = new Phrase(total1A.ToString("N0"), small_font);
             tableUnit.AddCell(cellRightNoLeftBorder);
 
             cellLeft.Phrase = new Phrase("1B", small_font);
