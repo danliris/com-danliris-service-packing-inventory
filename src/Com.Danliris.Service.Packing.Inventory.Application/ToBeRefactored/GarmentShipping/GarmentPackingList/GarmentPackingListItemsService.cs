@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedAgent = model.LastModifiedAgent,
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
-
+                Description = model.Description,
                 InvoiceNo = model.InvoiceNo,
                 PackingListType = model.PackingListType,
                 InvoiceType = model.InvoiceType,
@@ -172,6 +172,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Carton1 = d.Carton1,
                         Carton2 = d.Carton2,
                         Colour = d.Colour,
+                        Style = d.Style,
                         CartonQuantity = d.CartonQuantity,
                         QuantityPCS = d.QuantityPCS,
                         TotalQuantity = d.TotalQuantity,
@@ -394,8 +395,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             var measurements = modelToUpdate.Items
-                .SelectMany(i => i.Details.Select(d => new { d.Length, d.Width, d.Height, d.CartonQuantity }))
-                .GroupBy(m => new { m.Length, m.Width, m.Height }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Sum(d => d.CartonQuantity)));
+                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.Length, d.Width, d.Height, d.CartonQuantity }))
+                .GroupBy(m => new { m.Length, m.Width, m.Height }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Distinct().Sum(d => d.CartonQuantity)));
 
             foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {

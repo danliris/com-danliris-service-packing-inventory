@@ -85,6 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 RemarkMd = model.RemarkMd,
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
+                Description = model.Description,
                 Items = (model.Items ?? new List<GarmentPackingListItemModel>()).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,
@@ -283,7 +284,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.InvoiceNo = viewModel.InvoiceNo ?? GenerateInvoiceNo(viewModel);
             viewModel.ShippingStaff = viewModel.ShippingStaff ?? new ShippingStaff();
             Enum.TryParse(viewModel.Status, true, out GarmentPackingListStatusEnum status);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description);
 
             return garmentPackingListModel;
         }
@@ -397,6 +398,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var viewModel = MapToViewModel(data);
+            viewModel.Items = viewModel.Items.OrderBy(o => o.ComodityDescription).ToList();
 
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
@@ -415,31 +417,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
 
         public ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword)
-		{
-			var query = _packingListRepository.ReadAll();
-			List<string> SearchAttributes = new List<string>()
-			{
-				"InvoiceNo"
-			};
-			query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+        {
+            var query = _packingListRepository.ReadAll();
+            List<string> SearchAttributes = new List<string>()
+            {
+                "InvoiceNo"
+            };
+            query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
 
-			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-			query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
 
-			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-			query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
 
-			var data = query
-				.Skip((page - 1) * size)
-				.Take(size)
-				.Where(s=>s.IsUsed== false)
-				.Select(model => MapToViewModel(model))
-				.ToList();
+            var data = query
+                .Skip((page - 1) * size)
+                .Take(size)
+                .Where(s => s.IsUsed == false)
+                .Select(model => MapToViewModel(model))
+                .ToList();
 
-			return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
-		}
+            return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
+        }
 
-		public virtual async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
+        public virtual async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
         {
             viewModel.ShippingMarkImagePath = await UploadImage(viewModel.ShippingMarkImageFile, viewModel.Id, viewModel.ShippingMarkImagePath, viewModel.CreatedUtc);
             viewModel.SideMarkImagePath = await UploadImage(viewModel.SideMarkImageFile, viewModel.Id, viewModel.SideMarkImagePath, viewModel.CreatedUtc);

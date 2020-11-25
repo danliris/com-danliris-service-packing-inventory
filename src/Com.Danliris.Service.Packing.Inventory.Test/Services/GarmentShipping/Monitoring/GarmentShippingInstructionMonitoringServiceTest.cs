@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 {
     public class GarmentShippingInstructionMonitoringServiceTest
     {
-       public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInstructionRepository repository, IGarmentShippingInvoiceRepository invrepository, IGarmentPackingListRepository plrepository, IGarmentCoverLetterRepository clrepository)
+        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInstructionRepository repository, IGarmentShippingInvoiceRepository invrepository, IGarmentPackingListRepository plrepository, IGarmentCoverLetterRepository clrepository)
 
         {
             var spMock = new Mock<IServiceProvider>();
@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             spMock.Setup(s => s.GetService(typeof(IGarmentCoverLetterRepository)))
                .Returns(clrepository);
- 
+
             spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider());
 
@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             };
 
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "")
             {
                 Id = 1
             };
@@ -105,15 +105,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
-            var model1 = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1,"A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "",
-                                                        1, "", 1, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", null, 1, "", "", "", 
+            var model1 = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "",
+                                                        1, "", 1, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", null, 1, "", "", "",
                                                         false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
                 Id = 1
             };
 
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "")
             {
                 Id = 1
             };
