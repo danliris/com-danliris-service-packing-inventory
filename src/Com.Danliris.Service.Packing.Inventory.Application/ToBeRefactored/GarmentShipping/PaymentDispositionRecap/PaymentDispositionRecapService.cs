@@ -178,6 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         billValue = s.BillValue,
                         vatValue = s.VatValue,
                         incomeTaxValue = s.IncomeTaxValue,
+                        invoiceTaxNumber=s.InvoiceTaxNumber,
                         invoiceDetails = s.InvoiceDetails.Select(d => new GarmentShippingPaymentDispositionInvoiceDetailViewModel
                         {
                             Id = d.Id,

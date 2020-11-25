@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string dispositionNo { get; set; }
 
         public string invoiceNumber { get; set; }
+        public string invoiceTaxNumber { get; set; }
         public DateTimeOffset invoiceDate { get; set; }
 
         public decimal amount { get; set; }
