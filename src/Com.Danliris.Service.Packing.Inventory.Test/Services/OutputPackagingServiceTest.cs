@@ -327,7 +327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, "", s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                          s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut)).ToList());
+                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.NextAreaInputStatus)).ToList());
                     
             }
         }
@@ -340,7 +340,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, "", s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                          s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut)).ToList());
+                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.NextAreaInputStatus)).ToList());
                     
             }
         }

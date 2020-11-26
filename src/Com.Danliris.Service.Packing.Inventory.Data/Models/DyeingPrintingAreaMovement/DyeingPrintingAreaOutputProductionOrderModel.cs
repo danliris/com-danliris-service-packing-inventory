@@ -261,11 +261,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="fabricPackingId"></param>
         /// <param name="productPackingCode"></param>
         /// <param name="hasPrintingProductPacking"></param>
+        /// <param name="nextAreaInputStatus"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, string remark, string productionMachine, string grade, string status, double balance, int dyeingPrintingAreaInputProductonOrderId, int buyerId,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string adjDocumentNo, decimal qtyPacking, string packingType,
             string packingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, string avalType, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut) : this()
+            int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut, string nextAreaInputStatus) : this()
             
         {
             ProductionOrderId = productionOrderId;
@@ -329,6 +330,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingLength = packingLength;
             DateIn = dateIn;
             DateOut = dateOut;
+            NextAreaInputStatus = nextAreaInputStatus;
         }
 
         /// <summary>
