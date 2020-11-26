@@ -168,7 +168,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             ProductPackingId = 1,
                             FabricPackingId = 1,
                             ProductPackingCode = "c",
-                            HasPrintingProductPacking = false
+                            HasPrintingProductPacking = false,
+                            NextAreaInputStatus = "DITERIMA"
+                            
                         }
                     }
                 };
