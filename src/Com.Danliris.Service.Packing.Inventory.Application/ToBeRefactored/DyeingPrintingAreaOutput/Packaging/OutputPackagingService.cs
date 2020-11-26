@@ -165,7 +165,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
                         DateIn=s.DateIn,
-                        DateOut=s.DateOut
+                        DateOut=s.DateOut,
+                        //NextAreaInputStatus = s.NextAreaInputStatus
                     }).ToList(),
                     PackagingProductionOrdersAdj = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new InputPlainAdjPackagingProductionOrder()
                     {
@@ -229,7 +230,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
                         DateIn = s.DateIn,
-                        DateOut = s.DateOut
+                        DateOut = s.DateOut,
+                        //NextAreaInputStatus = s.NextAreaInputStatus
                     }).ToList()
                 };
 
@@ -344,7 +346,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
                         DateIn = s.DateIn,
-                        DateOut = s.DateOut
+                        DateOut = s.DateOut,
+                        NextAreaInputStatus = s.NextAreaInputStatus
                     }).ToList()
                 };
 
