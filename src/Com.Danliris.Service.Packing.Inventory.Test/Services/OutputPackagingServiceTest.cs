@@ -245,8 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             InputId=1,
                             DyeingPrintingAreaInputProductionOrderId=1,
                             DyeingPrintingAreaOutputProductionOrderId=1,
-                            AtQty=1,
-                            NextAreaInputStatus ="Diterima"
+                            AtQty=1
                         }
                     }
                 };
@@ -311,8 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "sd"
                             },
                             Unit = "s",
-                            UomUnit = "d",
-                            NextAreaInputStatus ="Diterima"
+                            UomUnit = "d"
                             
                         }
                     }
