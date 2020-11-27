@@ -285,7 +285,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items.Where(i => i.CreatedBy == _identityProvider.Username))
             {
@@ -420,6 +419,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     modelToUpdate.Measurements.Add(measurement);
                 }
             }
+
+            var totalCartons = modelToUpdate.Items
+                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
+                .Distinct().Sum(d => d.CartonQuantity);
+            modelToUpdate.SetTotalCartons(totalCartons, _identityProvider.Username, UserAgent);
 
             return _packingListRepository.SaveChanges();
         }
