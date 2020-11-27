@@ -130,5 +130,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
         }
+
+        [Fact]
+        public void Validate_Items_Empty()
+        {
+            GarmentPackingListUnitPackingViewModel viewModel = ViewModel;
+            viewModel.Mode = Mode.CREATE;
+            viewModel.Items = null;
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
     }
 }

@@ -9,6 +9,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentPackingListUnitPackingViewModel : GarmentPackingListViewModel, IValidatableObject
     {
+        public Mode Mode { get; set; }
+
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             #region Description
@@ -30,7 +32,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Items == null || Items.Count < 1)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
+                if (Mode == Mode.CREATE)
+                    yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
             }
             else
             {
@@ -151,36 +154,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region Measurement
 
-            if (Measurements == null || Measurements.Count < 1)
-            {
-                yield return new ValidationResult("Measurements tidak boleh kosong", new List<string> { "MeasurementsCount" });
-            }
-            else
-            {
-                if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
-                {
-                    int errorMeasurementsCount = 0;
-                    List<Dictionary<string, object>> errorMeasurements = new List<Dictionary<string, object>>();
+            //if (Measurements == null || Measurements.Count < 1)
+            //{
+            //    yield return new ValidationResult("Measurements tidak boleh kosong", new List<string> { "MeasurementsCount" });
+            //}
+            //else
+            //{
+            //    if (Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING.ToString())
+            //    {
+            //        int errorMeasurementsCount = 0;
+            //        List<Dictionary<string, object>> errorMeasurements = new List<Dictionary<string, object>>();
 
-                    foreach (var measurement in Measurements)
-                    {
-                        Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
+            //        foreach (var measurement in Measurements)
+            //        {
+            //            Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
 
-                        //if (measurement.Length <= 0)
-                        //{
-                        //    errorMeasurement["Length"] = "Length harus lebih dari 0";
-                        //    errorMeasurementsCount++;
-                        //}
+            //            //if (measurement.Length <= 0)
+            //            //{
+            //            //    errorMeasurement["Length"] = "Length harus lebih dari 0";
+            //            //    errorMeasurementsCount++;
+            //            //}
 
-                        errorMeasurements.Add(errorMeasurement);
-                    }
+            //            errorMeasurements.Add(errorMeasurement);
+            //        }
 
-                    if (errorMeasurementsCount > 0)
-                    {
-                        yield return new ValidationResult(JsonConvert.SerializeObject(errorMeasurements), new List<string> { "Measurements" });
-                    }
-                }
-            }
+            //        if (errorMeasurementsCount > 0)
+            //        {
+            //            yield return new ValidationResult(JsonConvert.SerializeObject(errorMeasurements), new List<string> { "Measurements" });
+            //        }
+            //    }
+            //}
 
             if (string.IsNullOrEmpty(SayUnit))
             {
@@ -208,5 +211,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
         }
+    }
+
+    public enum Mode
+    {
+        CREATE,
+        UPDATE
     }
 }
