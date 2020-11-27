@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -12,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingLocalSalesNotePdfTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteViewModel viewModel, Buyer buyer, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteViewModel viewModel, GarmentLocalCoverLetterViewModel cl, Buyer buyer, int timeoffset)
         {
             const int MARGIN = 20;
 
@@ -42,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PT. DAN LIRIS", header_font_bold));
-            cellHeaderContent1.AddElement(new Phrase("Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
+            cellHeaderContent1.AddElement(new Phrase("Jl. Merapi No. 23, Kel. Banaran Kec.Grogol Kab. Sukoharjo", normal_font));
             cellHeaderContent1.AddElement(new Phrase("Telp : 0271-714400, Fax. 0271-717178", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PO. Box. 166 Solo-57100 Indonesia", normal_font));
             //cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
@@ -51,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent2.AddElement(new Phrase("Sukoharjo, " + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
             cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
             //cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Name, normal_font));
+            cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Code + " - " + viewModel.buyer.Name + " - " + viewModel.buyer.KaberType, normal_font));
             cellHeaderContent2.AddElement(new Phrase(buyer.Address, normal_font));
             tableHeader.AddCell(cellHeaderContent2);
 
@@ -145,7 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeft.Phrase = new Phrase(item.packageUom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                cellBodyLeft.Phrase = new Phrase(item.product.name, normal_font);
+                cellBodyLeft.Phrase = new Phrase(item.product.code + " - " + item.product.name, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
                 cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
@@ -198,42 +199,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region footer
-            PdfPTable tableFooter = new PdfPTable(2);
+            PdfPTable tableFooter = new PdfPTable(4);
             tableFooter.WidthPercentage = 100;
-            tableFooter.SetWidths(new float[] { 1.5f, 9f });
+            tableFooter.SetWidths(new float[] { 2f, 3f, 2f, 3f });
 
             PdfPCell cellFooterContent1 = new PdfPCell() { Border = Rectangle.NO_BORDER };
             PdfPCell cellFooterContent2 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent3 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent4 = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
-            string terbilang = NumberToTextIDN.terbilang(Math.Round(finalPrice,2));
+            cellFooterContent1.Phrase = new Phrase("No Sales Contract :", normal_font);
+            tableFooter.AddCell(cellFooterContent1);
+            cellFooterContent2.Phrase = new Phrase(viewModel.salesContractNo, normal_font);
+            tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase = new Phrase("No Disposisi:", normal_font);
+            cellFooterContent3.Phrase = new Phrase("No Bon Keluar     :", normal_font);
+            tableFooter.AddCell(cellFooterContent3);
+            cellFooterContent4.Phrase = new Phrase(viewModel.expenditureNo, normal_font);
+            tableFooter.AddCell(cellFooterContent4);
+
+            cellFooterContent1.Phrase = new Phrase("No Disposisi      :", normal_font);
             tableFooter.AddCell(cellFooterContent1);
             cellFooterContent2.Phrase = new Phrase(string.IsNullOrWhiteSpace(viewModel.dispositionNo) ? "-" : viewModel.dispositionNo, normal_font);
             tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase=new Phrase("Tempo       :", normal_font);
+            cellFooterContent3.Phrase = new Phrase("No Bea Cukai      :", normal_font);
+            tableFooter.AddCell(cellFooterContent3);
+            cellFooterContent4.Phrase = new Phrase(cl.bcNo, normal_font);
+            tableFooter.AddCell(cellFooterContent4);
+
+            cellFooterContent1.Phrase = new Phrase("Tempo Pembayaran  :", normal_font);
             tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase=new Phrase(viewModel.tempo + " Hari", normal_font);
+            cellFooterContent2.Phrase = new Phrase(viewModel.tempo + " Hari", normal_font);
             tableFooter.AddCell(cellFooterContent2);
 
-            cellFooterContent1.Phrase=(new Phrase("JT.         :", normal_font));
-            tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(viewModel.date.GetValueOrDefault().AddDays(viewModel.tempo).ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
-            tableFooter.AddCell(cellFooterContent2);
-
-            cellFooterContent1.Phrase=(new Phrase("Terbilang   :", normal_font));
-            tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
-            tableFooter.AddCell(cellFooterContent2);
-
-            cellFooterContent1.Phrase=(new Phrase("Catatan     :", normal_font));
-            tableFooter.AddCell(cellFooterContent1);
-            cellFooterContent2.Phrase = (new Phrase(viewModel.remark, normal_font));
-            tableFooter.AddCell(cellFooterContent2);
-
-            tableFooter.SpacingAfter = 10;
+            cellFooterContent3.Phrase = (new Phrase("Tanggal J/T       :", normal_font));
+            tableFooter.AddCell(cellFooterContent3);
+            cellFooterContent4.Phrase = (new Phrase(viewModel.date.GetValueOrDefault().AddDays(viewModel.tempo).ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
+            tableFooter.AddCell(cellFooterContent4);
             document.Add(tableFooter);
+            #endregion
+
+            #region footer1
+            PdfPTable tableFooter1 = new PdfPTable(2);
+            tableFooter1.WidthPercentage = 100;
+            tableFooter1.SetWidths(new float[] { 1.5f, 9f });
+
+            PdfPCell cellFooterContent11 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent21 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+            string terbilang = NumberToTextIDN.terbilang(Math.Round(finalPrice, 2));
+
+            cellFooterContent11.Phrase = (new Phrase("Terbilang   :", normal_font));
+            tableFooter1.AddCell(cellFooterContent11);
+            cellFooterContent21.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
+            tableFooter1.AddCell(cellFooterContent21);
+
+            cellFooterContent11.Phrase = (new Phrase("Catatan     :", normal_font));
+            tableFooter1.AddCell(cellFooterContent11);
+            cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
+            tableFooter1.AddCell(cellFooterContent21);
+
+            tableFooter1.SpacingAfter = 10;
+            document.Add(tableFooter1);
             #endregion
 
             #region sign

@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -20,12 +21,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
     public class GarmentShippingLocalSalesNoteController : ControllerBase
     {
         private readonly IGarmentShippingLocalSalesNoteService _service;
+        private readonly IGarmentLocalCoverLetterService _clservice;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
 
-        public GarmentShippingLocalSalesNoteController(IGarmentShippingLocalSalesNoteService service, IIdentityProvider identityProvider, IValidateService validateService)
+        public GarmentShippingLocalSalesNoteController(IGarmentShippingLocalSalesNoteService service, IGarmentLocalCoverLetterService clservice, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
+            _clservice = clservice;
             _identityProvider = identityProvider;
             _validateService = validateService;
         }
@@ -186,8 +189,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 else
                 {
                     Buyer buyer = _service.GetBuyer(model.buyer.Id);
+                    GarmentLocalCoverLetterViewModel cl = await _clservice.ReadByLocalSalesNoteId(model.Id);
                     var PdfTemplate = new GarmentShippingLocalSalesNotePdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model,buyer, timeoffsset);
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset);
 
                     return new FileStreamResult(stream, "application/pdf")
                     {

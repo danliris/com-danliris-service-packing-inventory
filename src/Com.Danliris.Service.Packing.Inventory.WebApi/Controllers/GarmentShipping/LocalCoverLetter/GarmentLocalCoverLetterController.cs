@@ -194,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
                     return new FileStreamResult(stream, "application/pdf")
                     {
-                        FileDownloadName = model.noteNo + ".pdf"
+                        FileDownloadName = model.localCoverLetterNo + ".pdf"
                     };
                 }
             }

@@ -81,6 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTempo(model.Tempo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetExpenditureNo(model.ExpenditureNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDispositionNo(model.DispositionNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUseVat(model.UseVat, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
