@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string BuyerName { get; private set; }
         public string BuyerAdddress { get; private set; }
         public string Remark { get; private set; }
-
+        public string BCNo { get; private set; }
         public string Truck { get; private set; }
         public string PlateNumber { get; private set; }
         public string Driver { get; private set; }
@@ -23,7 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public int ShippingStaffId { get; private set; }
         public string ShippingStaffName { get; private set; }
 
-        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo,string localCoverLetterNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
+        public GarmentShippingLocalCoverLetterModel()
+        {
+        }
+
+        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo,string localCoverLetterNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string bcNo, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
         {
             LocalSalesNoteId = localSalesNoteId;
             NoteNo = noteNo;
@@ -34,6 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             BuyerName = buyerName;
             BuyerAdddress = buyerAdddress;
             Remark = remark;
+            BCNo = bcNo;
             Truck = truck;
             PlateNumber = plateNumber;
             Driver = driver;
@@ -46,6 +51,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (Date != date)
             {
                 Date = date;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBCNo(string bcNo, string userName, string userAgent)
+        {
+            if (BCNo != bcNo)
+            {
+                BCNo = bcNo;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

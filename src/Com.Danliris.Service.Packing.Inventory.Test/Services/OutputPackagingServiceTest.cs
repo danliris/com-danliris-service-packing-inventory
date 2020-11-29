@@ -168,7 +168,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             ProductPackingId = 1,
                             FabricPackingId = 1,
                             ProductPackingCode = "c",
-                            HasPrintingProductPacking = false
+                            HasPrintingProductPacking = false,
+                            NextAreaInputStatus ="Diterima"
                         }
                     }
                 };
@@ -244,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             InputId=1,
                             DyeingPrintingAreaInputProductionOrderId=1,
                             DyeingPrintingAreaOutputProductionOrderId=1,
-                            AtQty=1,
+                            AtQty=1
                         }
                     }
                 };
@@ -310,6 +311,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             },
                             Unit = "s",
                             UomUnit = "d"
+                            
                         }
                     }
                 };
@@ -329,6 +331,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     
             }
         }
+        private DyeingPrintingAreaOutputModel Model2
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
+                   ViewModel.Group, ViewModel.Type, ViewModel.PackagingProductionOrders.Select(s =>
+                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
+                         s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, "", s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                         s.MaterialWidth, "", s.PackagingQTY, s.PackagingType, s.PackagingUnit, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.NextAreaInputStatus)).ToList());
+
+            }
+        }
+
+
         private DyeingPrintingAreaOutputModel ModelAdj
         {
             get
@@ -1591,6 +1608,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEmpty(result.Data);
         }
 
+
+
+        [Fact]
+        public async Task Should_Success_ReadById_2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model2);
+
+            //sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+            //    .ReturnsAsync(new DyeingPrintingAreaOutputProductionOrderModel(
+            //        1,//productionorder
+            //        "OrderNo",
+            //        "CartNo",
+            //        "buyer",
+            //        "construction",
+            //        "unit",
+            //        "color",
+            //        "motif",
+            //        "uomUnit",
+            //        "remark",
+            //        "grade",
+            //        "status",
+            //        1, //balance
+            //        "packingInstruction",
+            //        "productionOrderType",
+            //        1,//productionOrderOrderQuantity
+            //        "packagingType",
+            //        1,//packagingQty
+            //        "packagingUnit",
+            //        1,//deliveryOrderSalesId
+            //        "deliveryOrderSalesNo",
+            //        true, //hasNextAreaDocument
+            //        "area",
+            //        "destinationArea",
+            //        1,//dyeingPrintingAreaInputProductionOrderId
+            //        1, //buyerId
+            //        1, //materialId
+            //        "materialName",
+            //        1,//materialConstructionId
+            //        "materialConstructionName",
+            //        "materialWidth",
+            //        "adjDocumentNo",
+            //        1,//processTypeId
+            //        "processTypeName",
+            //        "nextAreaInputStatus",
+            //        1,//yarnMaterialId
+            //        "yarnMaterialName",
+            //        1,//productSKUId,
+            //        1,//fabricSKUId,
+            //        "productSKUcode",
+            //        true,//hasPrintingProductSKU
+            //        1,//productPackingId
+            //        1,//fabricPackingId
+            //        "productPackingCode",
+            //        true, //hasPrintingProductPacking
+            //        1,//packinglength
+            //        "finishwidth"
+
+            //        ));
+
+
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
+
+            var result = await service.ReadById(1);
+
+            Assert.NotNull(result);
+        }
 
         [Fact]
         public async Task Should_Success_ReadById()

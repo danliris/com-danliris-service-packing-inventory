@@ -11,11 +11,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public int localSalesNoteId { get; set; }
         public string noteNo { get; set; }
         public string localCoverLetterNo { get; set; }
-
         public DateTimeOffset? date { get; set; }
         public Buyer buyer { get; set; }
         public string remark { get; set; }
-
+        public string bcNo { get; set; }
         public string truck { get; set; }
         public string plateNumber { get; set; }
         public string driver { get; set; }
@@ -41,6 +40,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (string.IsNullOrEmpty(truck))
             {
                 yield return new ValidationResult("Truck tidak boleh kosong", new List<string> { "truck" });
+            }
+
+            if (string.IsNullOrEmpty(bcNo))
+            {
+                yield return new ValidationResult("No BC tidak boleh kosong", new List<string> { "bcNo" });
             }
 
             if (string.IsNullOrEmpty(plateNumber))

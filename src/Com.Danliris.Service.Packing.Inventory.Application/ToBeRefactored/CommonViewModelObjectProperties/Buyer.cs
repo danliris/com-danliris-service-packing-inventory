@@ -9,5 +9,6 @@
         public string npwp { get; set; }
         public string Country { get; set; }
         public string NIK { get; set; }
+        public string KaberType { get; set; }
     }
 }

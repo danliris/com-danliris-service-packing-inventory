@@ -53,6 +53,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.KaberType)
+                .HasMaxLength(20);
+
+            builder
+               .Property(s => s.ExpenditureNo)
+               .HasMaxLength(50);
+
+            builder
                .Property(s => s.DispositionNo)
                .HasMaxLength(100);
 
