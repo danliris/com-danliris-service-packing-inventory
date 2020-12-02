@@ -199,7 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
                         return new FileStreamResult(stream, "application/pdf")
                         {
-                            FileDownloadName = model.InvoiceNo+"-FOB" + ".pdf"
+                            FileDownloadName = model.InvoiceNo+"-Invoice" + ".pdf"
                         };
                     }
                     else
@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
                         return new FileStreamResult(stream, "application/pdf")
                         {
-                            FileDownloadName = model.InvoiceNo + "-FOB-CMT" + ".pdf"
+                            FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
                         };
                     }
 
