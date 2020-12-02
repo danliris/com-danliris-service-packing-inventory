@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.AddCell(bodyTableHeader);
 
 
-            bodyTableHeader.Phrase = new Phrase("FOB IN USD", normal_font);
+            bodyTableHeader.Phrase = new Phrase(viewModel.CPrice + " IN USD", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.Colspan = 2;
