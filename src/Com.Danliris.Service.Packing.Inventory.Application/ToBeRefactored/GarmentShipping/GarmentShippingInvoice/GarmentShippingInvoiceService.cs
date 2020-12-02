@@ -95,8 +95,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 					AdjustmentDescription = i.AdjustmentDescription,
 					AdjustmentValue = i.AdjustmentValue,
 					Id = i.Id,
-					GarmentShippingInvoiceId = i.GarmentShippingInvoiceId
-				}).ToList(),
+					GarmentShippingInvoiceId = i.GarmentShippingInvoiceId,
+                    AdditionalChargesId = i.AdditionalChargesId
+                }).ToList(),
 				Items = model.Items.Select(i => new GarmentShippingInvoiceItemViewModel
 				{
 					Active = i.Active,
@@ -181,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			
 			viewModel.Section = viewModel.Section ?? new Section();
 			viewModel.BuyerAgent = viewModel.BuyerAgent ?? new BuyerAgent();
-			var garmentshippinginvoiceadjustment = (viewModel.GarmentShippingInvoiceAdjustments ?? new List<GarmentShippingInvoiceAdjustmentViewModel>()).Select(m => new GarmentShippingInvoiceAdjustmentModel(m.GarmentShippingInvoiceId, m.AdjustmentDescription, m.AdjustmentValue) { Id = m.Id }).ToList();
+			var garmentshippinginvoiceadjustment = (viewModel.GarmentShippingInvoiceAdjustments ?? new List<GarmentShippingInvoiceAdjustmentViewModel>()).Select(m => new GarmentShippingInvoiceAdjustmentModel(m.GarmentShippingInvoiceId, m.AdjustmentDescription, m.AdjustmentValue, m.AdditionalChargesId) { Id = m.Id }).ToList();
             var garmentshippinginvoiceUnit = (viewModel.GarmentShippingInvoiceUnits ?? new List<GarmentShippingInvoiceUnitViewModel>()).Select(m => {
 
                 m.Unit = m.Unit ?? new Unit();
