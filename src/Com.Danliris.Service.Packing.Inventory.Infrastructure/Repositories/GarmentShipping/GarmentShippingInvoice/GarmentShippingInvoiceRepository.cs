@@ -168,7 +168,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 				{
 					adjToUpdate.SetAdjustmentDescription(adj.AdjustmentDescription, _identityProvider.Username, USER_AGENT);
 					adjToUpdate.SetAdjustmentValue(adj.AdjustmentValue, _identityProvider.Username, USER_AGENT);
-				}else
+                    adjToUpdate.SetAdditionalChargesId(adj.AdditionalChargesId, _identityProvider.Username, USER_AGENT);
+                }
+                else
 				{
 					adjToUpdate.FlagForDelete(_identityProvider.Username, USER_AGENT);
 				}

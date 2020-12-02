@@ -168,9 +168,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 				item.SetUomUnit("sss", item.LastModifiedBy, item.LastModifiedAgent);
 			}
 			var ajdData = data.GarmentShippingInvoiceAdjustment.FirstOrDefault();
-			data.GarmentShippingInvoiceAdjustment.Add(new GarmentShippingInvoiceAdjustmentModel(data.Id,"ddd",1000));
+			data.GarmentShippingInvoiceAdjustment.Add(new GarmentShippingInvoiceAdjustmentModel(data.Id,"ddd",1000, 1));
 			ajdData.SetAdjustmentDescription("dsds", ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 			ajdData.SetAdjustmentValue( 10000 + ajdData.AdjustmentValue, ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
+            ajdData.SetAdditionalChargesId(1 + ajdData.AdditionalChargesId, ajdData.LastModifiedBy, ajdData.LastModifiedAgent);
 
             var unitData = data.GarmentShippingInvoiceUnit.FirstOrDefault();
             data.GarmentShippingInvoiceUnit.Add(new GarmentShippingInvoiceUnitModel(1, "ddd",100, 1000));

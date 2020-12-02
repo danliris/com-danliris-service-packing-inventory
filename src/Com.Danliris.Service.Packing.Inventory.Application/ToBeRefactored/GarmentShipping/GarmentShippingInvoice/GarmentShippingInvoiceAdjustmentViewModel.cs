@@ -10,5 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public int GarmentShippingInvoiceId { get; set; }
 		public string AdjustmentDescription { get; set; }
 		public decimal AdjustmentValue { get; set; }
-	}
+        public int AdditionalChargesId { get; set; }
+    }
 }

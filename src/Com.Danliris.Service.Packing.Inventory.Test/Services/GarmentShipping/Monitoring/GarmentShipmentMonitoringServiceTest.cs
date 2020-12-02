@@ -79,11 +79,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var itemadj = new List<GarmentShippingInvoiceAdjustmentModel>
                         {
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100,1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25,1)
                              {
                                GarmentShippingInvoiceId = 1
                              },
@@ -152,11 +152,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var itemadj = new List<GarmentShippingInvoiceAdjustmentModel>
                         {
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100,1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25,1)
                              {
                                GarmentShippingInvoiceId = 1
                              },
@@ -226,11 +226,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var itemadj = new List<GarmentShippingInvoiceAdjustmentModel>
                         {
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 100,1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25)
+                         new GarmentShippingInvoiceAdjustmentModel(1, "", 25,1)
                              {
                                GarmentShippingInvoiceId = 1
                              },
