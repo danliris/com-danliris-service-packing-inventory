@@ -586,5 +586,93 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        //COPY
+
+        protected virtual GarmentPackingListDraftCopyViewModel GetCopyViewModel()
+        {
+            return new GarmentPackingListDraftCopyViewModel()
+            {
+                Items = new List<GarmentPackingListItemViewModel>
+                {
+                    new GarmentPackingListItemViewModel()
+                }
+            };
+        }
+        [Fact]
+        public async Task Post_Created_Copy()
+        {
+            var dataUtil = GetCopyViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.Create(It.IsAny<GarmentPackingListDraftCopyViewModel>()))
+                .ReturnsAsync("InvoiceNo");
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentPackingListDraftCopyViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.PostCopy(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.Created, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task PostCopy_ValidationException_BadRequest()
+        {
+            var dataUtil = GetCopyViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentPackingListDraftCopyViewModel>()))
+                .Throws(GetServiceValidationExeption());
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.PostCopy(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task PostCopy_Exception_InternalServerError()
+        {
+            var dataUtil = GetCopyViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.Create(It.IsAny<GarmentPackingListViewModel>()))
+                .ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentPackingListDraftCopyViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.PostCopy(dataUtil);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
