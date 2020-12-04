@@ -365,29 +365,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"F{++sideMarkIndex}"].Value = viewModel.SideMark;
 
             byte[] shippingMarkImage;
-            if (!String.IsNullOrEmpty(viewModel.ShippingMarkImageFile) && IsBase64String(viewModel.ShippingMarkImageFile))
+            if (!String.IsNullOrEmpty(viewModel.ShippingMarkImageFile))
             {
-                shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
-                Image shipMarkImage = byteArrayToImage(shippingMarkImage);
-                var imageShippingMarkIndex = shippingMarkIndex + 1;
+                if (IsBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile)))
+                {
+                    shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
+                    Image shipMarkImage = byteArrayToImage(shippingMarkImage);
+                    var imageShippingMarkIndex = shippingMarkIndex + 1;
 
-                ExcelPicture excelPictureShipMarkImage = sheet.Drawings.AddPicture("ShippingMarkImage", shipMarkImage);
-                excelPictureShipMarkImage.From.Column = 0;
-                excelPictureShipMarkImage.From.Row = imageShippingMarkIndex;
-                excelPictureShipMarkImage.SetSize(200, 200);
+                    ExcelPicture excelPictureShipMarkImage = sheet.Drawings.AddPicture("ShippingMarkImage", shipMarkImage);
+                    excelPictureShipMarkImage.From.Column = 0;
+                    excelPictureShipMarkImage.From.Row = imageShippingMarkIndex;
+                    excelPictureShipMarkImage.SetSize(200, 200);
+                }
             }
 
             byte[] sideMarkImage;
-            if (!String.IsNullOrEmpty(viewModel.SideMarkImageFile) && IsBase64String(viewModel.ShippingMarkImageFile))
+            if (!String.IsNullOrEmpty(viewModel.SideMarkImageFile) )
             {
-                sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
-                Image _sideMarkImage = byteArrayToImage(sideMarkImage);
-                var sideMarkImageIndex = sideMarkIndex + 1;
+                if (IsBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile)))
+                {
+                    sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
+                    Image _sideMarkImage = byteArrayToImage(sideMarkImage);
+                    var sideMarkImageIndex = sideMarkIndex + 1;
 
-                ExcelPicture excelPictureSideMarkImage = sheet.Drawings.AddPicture("SideMarkImage", _sideMarkImage);
-                excelPictureSideMarkImage.From.Column = 5;
-                excelPictureSideMarkImage.From.Row = sideMarkImageIndex;
-                excelPictureSideMarkImage.SetSize(200, 200);
+                    ExcelPicture excelPictureSideMarkImage = sheet.Drawings.AddPicture("SideMarkImage", _sideMarkImage);
+                    excelPictureSideMarkImage.From.Column = 5;
+                    excelPictureSideMarkImage.From.Row = sideMarkImageIndex;
+                    excelPictureSideMarkImage.SetSize(200, 200);
+                }
             }
 
             #endregion
@@ -443,14 +449,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             byte[] remarkImage;
             var remarkImageIndex = remarkIndex + 1;
-            if (!String.IsNullOrEmpty(viewModel.RemarkImageFile) && IsBase64String(viewModel.ShippingMarkImageFile))
+            if (!String.IsNullOrEmpty(viewModel.RemarkImageFile))
             {
-                remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
-                Image _remarkImage = byteArrayToImage(remarkImage);
-                ExcelPicture excelPictureRemarkImage = sheet.Drawings.AddPicture("RemarkImage", _remarkImage);
-                excelPictureRemarkImage.From.Column = 0;
-                excelPictureRemarkImage.From.Row = remarkImageIndex;
-                excelPictureRemarkImage.SetSize(200, 200);
+                if (IsBase64String(Base64.GetBase64File(viewModel.RemarkImageFile)))
+                {
+                    remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
+                    Image _remarkImage = byteArrayToImage(remarkImage);
+                    ExcelPicture excelPictureRemarkImage = sheet.Drawings.AddPicture("RemarkImage", _remarkImage);
+                    excelPictureRemarkImage.From.Column = 0;
+                    excelPictureRemarkImage.From.Row = remarkImageIndex;
+                    excelPictureRemarkImage.SetSize(200, 200);
+                }
+                
             }
 
 
@@ -515,10 +525,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         }
 
-        public bool IsBase64String(string base64)
+        public  bool IsBase64String(string base64)
         {
             Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
             return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
         }
+    
     }
 }
