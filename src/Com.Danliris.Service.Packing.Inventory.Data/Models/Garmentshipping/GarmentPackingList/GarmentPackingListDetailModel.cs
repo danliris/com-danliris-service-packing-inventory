@@ -157,5 +157,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetGrossWeight(double newValue, string userName, string userAgent)
+        {
+            if (GrossWeight != newValue)
+            {
+                GrossWeight = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetNetWeight(double newValue, string userName, string userAgent)
+        {
+            if (NetWeight != newValue)
+            {
+                NetWeight = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetNetNetWeight(double newValue, string userName, string userAgent)
+        {
+            if (NetNetWeight != newValue)
+            {
+                NetNetWeight = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }

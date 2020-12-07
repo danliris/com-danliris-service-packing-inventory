@@ -18,6 +18,7 @@
         REJECTED_SHIPPING_UNIT,
         REJECTED_SHIPPING_MD,
         REVISED_SHIPPING,
-        CANCELED
+        CANCELED,
+        DELIVERED
     }
 }
