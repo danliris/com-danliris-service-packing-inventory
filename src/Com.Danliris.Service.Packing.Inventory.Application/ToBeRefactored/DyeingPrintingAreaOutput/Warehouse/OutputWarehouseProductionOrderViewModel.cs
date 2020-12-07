@@ -28,6 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Status { get; set; }
         public double Balance { get; set; }
         public double PreviousBalance { get; set; }
+        public decimal PreviousQtyPacking { get; set; }
 
         public int InputId { get; set; }
         public string ProductionOrderNo { get; set; }
