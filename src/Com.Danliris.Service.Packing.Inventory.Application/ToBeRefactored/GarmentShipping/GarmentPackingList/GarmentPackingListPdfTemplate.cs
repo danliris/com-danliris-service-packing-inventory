@@ -18,16 +18,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = identityProvider;
         }
 
-        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob)
+        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob,string cprice)
         {
             int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
 
-            Font header_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 30);
             MemoryStream stream = new MemoryStream();
@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDescription.SetWidths(new float[] { 2f, 0.2f, 7.8f });
             PdfPCell cellDescription = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
-            cellDescription.Phrase = new Phrase("FOB", normal_font);
+            cellDescription.Phrase = new Phrase(cprice, normal_font);
             tableDescription.AddCell(cellDescription);
             cellDescription.Phrase = new Phrase(":", normal_font);
             tableDescription.AddCell(cellDescription);
@@ -172,10 +172,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 }
                 
-                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 8);
+                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 10);
                 var width = new List<float> { 3f, 3f, 2f, 4f };
                 for (int i = 0; i < SIZES_COUNT; i++) width.Add(1f);
-                width.AddRange(new List<float> { 2f, 1f, 3f, 3f });
+                width.AddRange(new List<float> { 2f, 1f, 3f, 1f,1f,1f });
                 tableDetail.SetWidths(width.ToArray());
 
                 PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 19, Padding = 0.5f, Phrase = new Phrase("") };
@@ -203,8 +203,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QUANTITY\nPCS", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("TOTAL", normal_font, 0.75f));
+                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("GW", normal_font, 0.75f));
                 cellBorderBottom.Rowspan = 2;
+                tableDetail.AddCell(cellBorderBottom);
+                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("NW", normal_font, 0.75f));
+                tableDetail.AddCell(cellBorderBottom);
+                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("NNW", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottom);
                 cellBorderBottom.Rowspan = 1;
 
@@ -244,7 +248,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         double quantity = 0;
                         if (size.Key != 0)
                         {
-                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity);
+                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity* detail.CartonQuantity);
                         }
 
                         if (sizeSumQty.ContainsKey(size.Key))
