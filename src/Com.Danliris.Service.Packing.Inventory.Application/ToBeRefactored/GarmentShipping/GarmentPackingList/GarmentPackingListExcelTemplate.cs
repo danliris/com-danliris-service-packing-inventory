@@ -517,12 +517,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public Image byteArrayToImage(byte[] bytesArr)
         {
-            using (MemoryStream memstr = new MemoryStream(bytesArr))
-            {
-                Image img = Image.FromStream(memstr);
-                return img;
-            }
-
+            MemoryStream memstr = new MemoryStream(bytesArr);
+            Image img = Image.FromStream(memstr);
+            return img;
         }
 
         public  bool IsBase64String(string base64)
