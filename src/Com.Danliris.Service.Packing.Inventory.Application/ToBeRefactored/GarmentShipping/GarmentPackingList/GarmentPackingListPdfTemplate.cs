@@ -248,16 +248,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         double quantity = 0;
                         if (size.Key != 0)
                         {
-                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity* detail.CartonQuantity);
+                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity);
                         }
 
                         if (sizeSumQty.ContainsKey(size.Key))
                         {
-                            sizeSumQty[size.Key] += quantity;
+                            sizeSumQty[size.Key] += quantity * detail.CartonQuantity;
                         }
                         else
                         {
-                            sizeSumQty.Add(size.Key, quantity);
+                            sizeSumQty.Add(size.Key, quantity * detail.CartonQuantity);
                         }
 
                         cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(quantity == 0 ? "" : quantity.ToString(), normal_font, 0.6f));
@@ -323,7 +323,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 6,
                     Padding = 5,
-                    Phrase = new Phrase("SUB TOTAL ................................................................................. ", normal_font)
+                    Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
                 cellBorderBottom.Phrase = new Phrase(subTotal.ToString(), normal_font);
                 cellBorderBottom.Colspan = 1;
