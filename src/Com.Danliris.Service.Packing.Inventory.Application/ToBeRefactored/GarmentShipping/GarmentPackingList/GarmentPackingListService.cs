@@ -467,14 +467,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
-            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
 
             var viewModel = MapToViewModel(data);
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob,cPrice);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }

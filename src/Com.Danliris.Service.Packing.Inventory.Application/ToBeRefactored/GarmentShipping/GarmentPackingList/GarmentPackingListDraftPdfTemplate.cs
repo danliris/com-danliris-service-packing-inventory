@@ -23,11 +23,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
 
-            Font header_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 70, 30);
             MemoryStream stream = new MemoryStream();
@@ -138,10 +138,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 }
 
-                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 8);
+                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 10);
                 var width = new List<float> { 3f, 3f, 2f, 4f };
                 for (int i = 0; i < SIZES_COUNT; i++) width.Add(1f);
-                width.AddRange(new List<float> { 2f, 1f, 3f, 3f });
+                width.AddRange(new List<float> { 2f, 1f, 2.5f, 1f, 1f, 1.5f });
                 tableDetail.SetWidths(width.ToArray());
 
                 PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 19, Padding = 0.5f, Phrase = new Phrase("") };
@@ -169,10 +169,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QUANTITY\nPCS", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("TOTAL", normal_font, 0.75f));
-                cellBorderBottom.Rowspan = 2;
-                tableDetail.AddCell(cellBorderBottom);
-                cellBorderBottom.Rowspan = 1;
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GW", normal_font, 0.75f));
+                cellBorderBottomRight.Rowspan = 2;
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NW", normal_font, 0.75f));
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NNW", normal_font, 0.75f));
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Rowspan = 1;
 
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
@@ -196,13 +200,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         cartonNumbers.Add($"{detail.Carton1}- {detail.Carton2}");
                     }
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Carton1}- {detail.Carton2}", normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Carton1}- {detail.Carton2}", normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Colour, normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Colour, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Style, normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Style, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.OrderNo, normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.OrderNo, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     for (int i = 0; i < SIZES_COUNT; i++)
                     {
@@ -215,27 +219,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         if (sizeSumQty.ContainsKey(size.Key))
                         {
-                            sizeSumQty[size.Key] += quantity;
+                            sizeSumQty[size.Key] += quantity * detail.CartonQuantity;
                         }
                         else
                         {
-                            sizeSumQty.Add(size.Key, quantity);
+                            sizeSumQty.Add(size.Key, quantity * detail.CartonQuantity);
                         }
 
-                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(quantity == 0 ? "" : quantity.ToString(), normal_font, 0.5f));
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(quantity == 0 ? "" : quantity.ToString(), normal_font, 0.6f));
 
                         tableDetail.AddCell(cellBorderBottomRight);
                     }
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(ctnsQty.ToString(), normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(ctnsQty.ToString(), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.QuantityPCS.ToString(), normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.QuantityPCS.ToString(), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     var totalQuantity = (detail.CartonQuantity * detail.QuantityPCS);
                     subTotal += totalQuantity;
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(totalQuantity.ToString(), normal_font, 0.5f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(totalQuantity.ToString(), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottom.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
-                    tableDetail.AddCell(cellBorderBottom);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.GrossWeight), normal_font, 0.6f));
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.NetWeight), normal_font, 0.6f));
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.NetNetWeight), normal_font, 0.6f));
+                    tableDetail.AddCell(cellBorderBottomRight);
 
                     if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
                     {
@@ -269,14 +277,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     tableDetail.AddCell(cellBorderBottomRight);
                 }
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottom.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
-                tableDetail.AddCell(cellBorderBottom);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
+                tableDetail.AddCell(cellBorderBottomRight);
 
 
                 grandTotal += subTotal;
@@ -284,19 +296,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 7,
+                    Colspan = SIZES_COUNT + 6,
                     Padding = 5,
-                    Phrase = new Phrase("SUB TOTAL ................................................................................. ", normal_font)
+                    Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
                 cellBorderBottom.Phrase = new Phrase(subTotal.ToString(), normal_font);
+                cellBorderBottom.Colspan = 1;
                 tableDetail.AddCell(cellBorderBottom);
+                cellBorderBottom.Phrase = new Phrase("", normal_font);
+                cellBorderBottom.Colspan = 3;
+                tableDetail.AddCell(cellBorderBottom);
+                cellBorderBottom.Colspan = 1;
 
                 var subCtns = subCartons.Sum(c => c.CartonQuantity);
+
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 8,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}", normal_font)
+                    Colspan = SIZES_COUNT + 10,
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}      - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight)}", normal_font)
                 });
 
                 new PdfPCell(tableDetail);
