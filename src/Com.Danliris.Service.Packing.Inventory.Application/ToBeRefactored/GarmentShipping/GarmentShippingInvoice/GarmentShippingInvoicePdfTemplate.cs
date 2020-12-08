@@ -376,15 +376,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font));
             document.Add(new Paragraph("\n", normal_font));
 
-            document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));
+            if (bank != null)
+            {
+                document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));
+
+                document.Add(new Paragraph(viewModel.BankAccount, normal_font));
+                document.Add(new Paragraph(bank.bankAddress, normal_font));
+                document.Add(new Paragraph("ACC NO. " + bank.AccountNumber + $"({bank.Currency.Code})", normal_font));
+                document.Add(new Paragraph("A/N " + bank.accountName, normal_font));
+                document.Add(new Paragraph("SWIFT CODE : " + bank.swiftCode, normal_font));
+                document.Add(new Paragraph("PURPOSE CODE : 1011", normal_font));
+                document.Add(new Paragraph("\n", normal_font));
+            }
             
-            document.Add(new Paragraph(viewModel.BankAccount, normal_font));
-            document.Add(new Paragraph(bank.bankAddress, normal_font));
-            document.Add(new Paragraph("ACC NO. "+bank.AccountNumber + $"({bank.Currency.Code})", normal_font));
-            document.Add(new Paragraph("A/N " + bank.accountName, normal_font));
-            document.Add(new Paragraph("SWIFT CODE : "+bank.swiftCode, normal_font));
-            document.Add(new Paragraph("PURPOSE CODE : 1011", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
 
             #region MARK
             PdfPTable tableMark = new PdfPTable(2);
