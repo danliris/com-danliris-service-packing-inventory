@@ -20,7 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = identityProvider;
         }
 
-        public MemoryStream GenerateExcelTemplate(GarmentPackingListViewModel viewModel, string fob)
+        public MemoryStream GenerateExcelTemplate(GarmentPackingListViewModel viewModel, string fob, string cPrice)
         {
             int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
@@ -29,7 +29,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var colCtns = GetColNameFromIndex(SIZES_COUNT + 5);
             var colPcs = GetColNameFromIndex(SIZES_COUNT + 6);
             var colQty = GetColNameFromIndex(SIZES_COUNT + 7);
-            var colTotal = GetColNameFromIndex(SIZES_COUNT + 8);
+            var colGw = GetColNameFromIndex(SIZES_COUNT + 8);
+            var colNw = GetColNameFromIndex(SIZES_COUNT + 9);
+            var colNnw = GetColNameFromIndex(SIZES_COUNT + 10);
 
 
 
@@ -47,44 +49,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Column(3).Width = 7;
             sheet.Cells["C1"].Value = viewModel.InvoiceNo;
             sheet.Cells["C1:D1"].Merge = true;
-            sheet.Cells[$"A1:{colTotal}1"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+            sheet.Cells[$"A1:{colNnw}1"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
             sheet.Cells["E1"].Value = "Date : " + viewModel.Date.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("MMM dd, yyyy.");
             sheet.Cells[$"E1:{col}1"].Merge = true;
             sheet.Cells[$"{colCtns}1"].Value = "Ref No. :  FM-00-SP-24-005 ";
             sheet.Cells[$"{colCtns}1"].Style.Font.Bold = true;
-            sheet.Cells[$"{colCtns}1:{colTotal}1"].Merge = true;
-            sheet.Cells["A3"].Value = "FOB";
+            sheet.Cells[$"{colCtns}1:{colNnw}1"].Merge = true;
+            sheet.Cells["A3"].Value = cPrice;
             sheet.Cells["A3:C3"].Merge = true;
             sheet.Cells["D3"].Value = ":";
             sheet.Cells["E3"].Value = fob;
-            sheet.Cells[$"E3:{colTotal}3"].Merge = true;
+            sheet.Cells[$"E3:{colNnw}3"].Merge = true;
             if (viewModel.PaymentTerm == "LC")
             {
                 sheet.Cells["A4"].Value = "LC No.";
                 sheet.Cells["A4:C4"].Merge = true;
                 sheet.Cells["D4"].Value = ":";
                 sheet.Cells["E4"].Value = viewModel.LCNo;
-                sheet.Cells[$"E4:{colTotal}4"].Merge = true;
+                sheet.Cells[$"E4:{colNnw}4"].Merge = true;
                 sheet.Cells["A5"].Value = "Tgl LC.";
                 sheet.Cells["A5:C5"].Merge = true;
                 sheet.Cells["D5"].Value = ":";
                 sheet.Cells["E5"].Value = viewModel.LCDate.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy");
-                sheet.Cells[$"E5:{colTotal}5"].Merge = true;
+                sheet.Cells[$"E5:{colNnw}5"].Merge = true;
                 sheet.Cells["A6"].Value = "ISSUED BY";
                 sheet.Cells["A6:C6"].Merge = true;
                 sheet.Cells["D6"].Value = ":";
                 sheet.Cells["E6"].Value = viewModel.IssuedBy;
-                sheet.Cells[$"E6:{colTotal}6"].Merge = true;
+                sheet.Cells[$"E6:{colNnw}6"].Merge = true;
             }
             else
             {
                 sheet.Cells["A4"].Value = "Payment Term";
                 sheet.Cells["A4:C4"].Merge = true;
                 sheet.Cells["E4"].Value = viewModel.PaymentTerm;
-                sheet.Cells[$"E4:{colTotal}4"].Merge = true;
+                sheet.Cells[$"E4:{colNnw}4"].Merge = true;
             }
 
             double totalCtns = 0;
+            double totalGw = 0;
+            double totalNw = 0;
+            double totalNnw = 0;
             double grandTotal = 0;
             List<string> cartonNumbers = new List<string>();
 
@@ -153,16 +158,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Row(index).Height = 25;
                 sheet.Cells[$"D{index}"].Value = ":";
                 sheet.Cells[$"E{index}"].Value = item.Description;
-                sheet.Cells[$"E{index}:{colTotal}{index}"].Merge = true;
+                sheet.Cells[$"E{index}:{colNnw}{index}"].Merge = true;
 
                 sheet.Cells[$"A{afterIndex}"].Value = "CARTON NO.";
                 sheet.Cells[$"A{afterIndex}:A{afterIndex + 1}"].Merge = true;
                 sheet.Cells[$"A{afterIndex}:A{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"A{afterIndex}:A{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                sheet.Cells[$"A{afterIndex}:{colTotal}{afterIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
-                sheet.Cells[$"A{afterIndex}:{colTotal}{afterIndex}"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[$"A{afterIndex}:{colNnw}{afterIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
+                sheet.Cells[$"A{afterIndex}:{colNnw}{afterIndex}"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
                 sheet.Cells[$"A{afterIndex}:A{afterIndex + 1}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
-                sheet.Cells[$"A{afterIndex}:{colTotal}{afterIndex + 1}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[$"A{afterIndex}:{colNnw}{afterIndex + 1}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
                 sheet.Cells[$"B{afterIndex}"].Value = "COLOUR";
                 sheet.Cells[$"B{afterIndex}:B{afterIndex + 1}"].Merge = true;
@@ -216,13 +221,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"{colQty}{afterIndex}:{colQty}{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"{colQty}{afterIndex}:{colQty}{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                sheet.Cells[$"{colTotal}{afterIndex}"].Value = "TOTAL";
-                sheet.Column(GetColNumberFromName(colTotal)).Width = 4;
-                sheet.Cells[$"{colTotal}{afterIndex}:{colTotal}{afterIndex + 1}"].Merge = true;
-                sheet.Cells[$"{colTotal}{afterIndex}:{colTotal}{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-                sheet.Cells[$"{colTotal}{afterIndex}:{colTotal}{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                sheet.Cells[$"{colGw}{afterIndex}"].Value = "GW";
+                sheet.Column(GetColNumberFromName(colGw)).Width = 4;
+                sheet.Cells[$"{colGw}{afterIndex}:{colGw}{afterIndex + 1}"].Merge = true;
+                sheet.Cells[$"{colGw}{afterIndex}:{colGw}{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                sheet.Cells[$"{colGw}{afterIndex}:{colGw}{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                sheet.Cells[$"{colNw}{afterIndex}"].Value = "NW";
+                sheet.Column(GetColNumberFromName(colNw)).Width = 4;
+                sheet.Cells[$"{colNw}{afterIndex}:{colNw}{afterIndex + 1}"].Merge = true;
+                sheet.Cells[$"{colNw}{afterIndex}:{colNw}{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                sheet.Cells[$"{colNw}{afterIndex}:{colNw}{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                sheet.Cells[$"{colNnw}{afterIndex}"].Value = "NNW";
+                sheet.Column(GetColNumberFromName(colNnw)).Width = 4;
+                sheet.Cells[$"{colNnw}{afterIndex}:{colNnw}{afterIndex + 1}"].Merge = true;
+                sheet.Cells[$"{colNnw}{afterIndex}:{colNnw}{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                sheet.Cells[$"{colNnw}{afterIndex}:{colNnw}{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
                 double subCtns = 0;
+                double subGw = 0;
+                double subNw = 0;
+                double subNnw = 0;
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
                 foreach (var detail in item.Details)
@@ -245,8 +265,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"D{valueIndex}"].Value = item.OrderNo;
                     sheet.Cells[$"D{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                    sheet.Cells[$"A{valueIndex}:{colTotal}{valueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                    sheet.Cells[$"A{valueIndex}:{colTotal}{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                    sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                    sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
 
                     for (int i = 0; i < SIZES_COUNT; i++)
@@ -261,17 +281,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         if (sizeSumQty.ContainsKey(size.Key))
                         {
-                            sizeSumQty[size.Key] += quantity;
+                            sizeSumQty[size.Key] += quantity * detail.CartonQuantity;
                         }
                         else
                         {
-                            sizeSumQty.Add(size.Key, quantity);
+                            sizeSumQty.Add(size.Key, quantity * detail.CartonQuantity);
                         }
                         sheet.Cells[$"{colSize}{valueIndex}"].Value = quantity == 0 ? "" : quantity.ToString();
                         sheet.Column(GetColNumberFromName(colSize)).Width = 3.5;
                         sheet.Cells[$"{colSize}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     }
                     subCtns += ctnsQty;
+                    subGw += detail.GrossWeight;
+                    subNw += detail.NetWeight;
+                    subNnw += detail.NetNetWeight;
 
                     sheet.Cells[$"{colCtns}{valueIndex}"].Value = ctnsQty.ToString();
                     sheet.Cells[$"{colCtns}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -284,6 +307,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     sheet.Cells[$"{colQty}{valueIndex}"].Value = totalQuantity.ToString();
                     sheet.Cells[$"{colQty}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                    sheet.Cells[$"{colGw}{valueIndex}"].Value = detail.GrossWeight.ToString();
+                    sheet.Cells[$"{colGw}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                    sheet.Cells[$"{colNw}{valueIndex}"].Value = detail.NetWeight.ToString();
+                    sheet.Cells[$"{colNw}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                    sheet.Cells[$"{colNnw}{valueIndex}"].Value = detail.NetNetWeight.ToString();
+                    sheet.Cells[$"{colNnw}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
                     valueIndex++;
                 }
 
@@ -303,26 +336,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 }
 
-                sheet.Cells[$"A{valueIndex}:{colTotal}{valueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                sheet.Cells[$"A{valueIndex}:{colTotal}{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
                 totalCtns += subCtns;
+                totalGw += subGw;
+                totalNw += subNw;
+                totalNnw += subNnw;
                 grandTotal += subTotal;
 
-                sheet.Cells[$"A{sumValueIndex}:{colQty}{sumValueIndex}"].Merge = true;
-                sheet.Cells[$"A{sumValueIndex}:{colQty}{sumValueIndex}"].Value = "SUB TOTAL";
-                sheet.Cells[$"A{sumValueIndex}:{colQty}{sumValueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                sheet.Cells[$"{colTotal}{sumValueIndex}"].Value = subTotal.ToString();
-                sheet.Cells[$"A{sumValueIndex}:{colTotal}{sumValueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                sheet.Cells[$"A{sumValueIndex}:{colTotal}{sumValueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Merge = true;
+                sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Value = "SUB TOTAL";
+                sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                sheet.Cells[$"{colQty}{sumValueIndex}"].Value = subTotal.ToString();
+                sheet.Cells[$"{colQty}{sumValueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                sheet.Cells[$"A{sumValueIndex}:{colNnw}{sumValueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                sheet.Cells[$"A{sumValueIndex}:{colNnw}{sumValueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
                 afterSubTotalIndex = sumValueIndex + 1;
-                sheet.Cells[$"A{afterSubTotalIndex}:{colTotal}{afterSubTotalIndex}"].Merge = true;
+                sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Merge = true;
 
-                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}";
-                sheet.Cells[$"A{afterSubTotalIndex}:{colTotal}{afterSubTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                sheet.Cells[$"A{afterSubTotalIndex}:{colTotal}{afterSubTotalIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-                sheet.Cells[$"A{afterSubTotalIndex}:{colTotal}{afterSubTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {subGw}      - Sub N.W. = {subNw}      - Sub N.N.W. = {subNnw}";
+                sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+                sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
                 afterIndex = sizeIndex++;
                 index = afterSubTotalIndex + 2;
@@ -331,15 +368,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region GrandTotal
             var grandTotalIndex = afterSubTotalIndex + 2;
-            sheet.Cells[$"A{grandTotalIndex}:{colQty}{grandTotalIndex}"].Merge = true;
-            sheet.Cells[$"A{grandTotalIndex}:{colQty}{grandTotalIndex}"].Value = "GRAND TOTAL";
-            sheet.Cells[$"A{grandTotalIndex}:{colTotal}{grandTotalIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
-            sheet.Cells[$"A{grandTotalIndex}:{colTotal}{grandTotalIndex}"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
-            sheet.Cells[$"{colTotal}{grandTotalIndex}"].Value = grandTotal.ToString();
+            sheet.Cells[$"A{grandTotalIndex}:{colPcs}{grandTotalIndex}"].Merge = true;
+            sheet.Cells[$"A{grandTotalIndex}:{colPcs}{grandTotalIndex}"].Value = "GRAND TOTAL";
+            sheet.Cells[$"A{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
+            sheet.Cells[$"A{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
+            sheet.Cells[$"{colQty}{grandTotalIndex}"].Value = grandTotal.ToString();
 
             var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
             var spellingWordIndex = grandTotalIndex + 1;
-            sheet.Cells[$"A{spellingWordIndex}:{colTotal}{spellingWordIndex}"].Merge = true;
+            sheet.Cells[$"A{spellingWordIndex}:{colNnw}{spellingWordIndex}"].Merge = true;
             sheet.Cells[$"A{spellingWordIndex}"].Value = $"{totalCtns} {viewModel.SayUnit} [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} {viewModel.SayUnit} OF {string.Join(" AND ", comodities)}]";
 
             for (int i = 8; i < grandTotalIndex; i++)
@@ -419,25 +456,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"C{measurementIndex}"].Value = measurement.Length + " X ";
                 sheet.Cells[$"D{measurementIndex}"].Value = measurement.Width + " X ";
                 sheet.Cells[$"E{measurementIndex}"].Value = measurement.Height + " X ";
-                sheet.Cells[$"F{measurementIndex}"].Value = measurement.CartonsQuantity + " CTNS = ";
-                sheet.Cells[$"F{measurementIndex}:G{measurementIndex}"].Merge = true;
+                sheet.Cells[$"E{measurementIndex}:G{measurementIndex}"].Merge = true;
+                sheet.Cells[$"H{measurementIndex}"].Value = measurement.CartonsQuantity + " CTNS";
+                sheet.Cells[$"H{measurementIndex}:I{measurementIndex}"].Merge = true;
+
+                sheet.Cells[$"J{measurementIndex}"].Value = "=";
 
 
                 var cbm = (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000;
                 totalCbm += cbm;
-                sheet.Cells[$"H{measurementIndex}"].Value = string.Format("{0:N2} CBM", cbm);
-                sheet.Cells[$"H{measurementIndex}:I{measurementIndex}"].Merge = true;
+                sheet.Cells[$"K{measurementIndex}"].Value = string.Format("{0:N2} CBM", cbm);
+                sheet.Cells[$"K{measurementIndex}:M{measurementIndex}"].Merge = true;
 
                 measurementIndex++;
             }
             var totalMeasurementIndex = measurementIndex;
-            sheet.Cells[$"C{totalMeasurementIndex}:I{totalMeasurementIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+            sheet.Cells[$"C{totalMeasurementIndex}:K{totalMeasurementIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
             sheet.Cells[$"D{totalMeasurementIndex}"].Value = "TOTAL";
-            sheet.Cells[$"D{totalMeasurementIndex}:E{totalMeasurementIndex}"].Merge = true;
-            sheet.Cells[$"F{totalMeasurementIndex}"].Value = viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .";
-            sheet.Cells[$"F{totalMeasurementIndex}:G{totalMeasurementIndex}"].Merge = true;
-            sheet.Cells[$"H{totalMeasurementIndex}"].Value = string.Format("{0:N2} CBM", totalCbm);
+            sheet.Cells[$"D{totalMeasurementIndex}:G{totalMeasurementIndex}"].Merge = true;
+            sheet.Cells[$"H{totalMeasurementIndex}"].Value = viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .";
             sheet.Cells[$"H{totalMeasurementIndex}:I{totalMeasurementIndex}"].Merge = true;
+            sheet.Cells[$"K{totalMeasurementIndex}"].Value = string.Format("{0:N2} CBM", totalCbm);
+            sheet.Cells[$"J{totalMeasurementIndex}"].Value = "=";
+            sheet.Cells[$"K{totalMeasurementIndex}:L{totalMeasurementIndex}"].Merge = true;
 
 
             #endregion
@@ -468,17 +509,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region Signature
             var signatureIndex = remarkImageIndex + 14;
-            sheet.Cells[$"{colCtns}{signatureIndex}:{colTotal}{signatureIndex}"].Merge = true;
+            sheet.Cells[$"{colCtns}{signatureIndex}:{colNnw}{signatureIndex}"].Merge = true;
             sheet.Cells[$"{colCtns}{signatureIndex}"].Value = "( MRS.ADRIYANA DAMAYANTI )";
             sheet.Cells[$"{colCtns}{signatureIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[$"{colCtns}{++signatureIndex}"].Value = "AUTHORIZED SIGNATURE";
-            sheet.Cells[$"{colCtns}{signatureIndex}:{colTotal}{signatureIndex}"].Merge = true;
+            sheet.Cells[$"{colCtns}{signatureIndex}:{colNnw}{signatureIndex}"].Merge = true;
             sheet.Cells[$"{colCtns}{signatureIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             #endregion
 
             sheet.Cells.Style.Font.SetFromFont(new Font("Tahoma", 7, FontStyle.Regular));
             //sheet.Cells[sheet.Dimension.Address].AutoFitColumns(15, 40);
             sheet.Cells.Style.WrapText = true;
+
+            sheet.PrinterSettings.LeftMargin = 0.39M;
+            sheet.PrinterSettings.TopMargin = 0;
+            sheet.PrinterSettings.RightMargin = 0;
+            
+            sheet.PrinterSettings.Orientation = maxSizesCount > 11 ? eOrientation.Landscape : eOrientation.Portrait;
 
 
             MemoryStream stream = new MemoryStream();
