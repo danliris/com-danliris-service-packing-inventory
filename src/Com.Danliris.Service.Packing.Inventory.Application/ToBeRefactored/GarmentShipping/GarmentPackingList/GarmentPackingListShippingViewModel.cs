@@ -192,11 +192,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     errorDetailsCount++;
                                 }
 
-                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
-                                {
-                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
-                                    errorDetailsCount++;
-                                }
+                                //if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                //{
+                                //    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                //    errorDetailsCount++;
+                                //}
                             }
 
                             errorDetails.Add(errorDetail);
