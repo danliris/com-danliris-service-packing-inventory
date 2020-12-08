@@ -116,9 +116,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(),viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.destination, viewModel.address, viewModel.pic, viewModel.attn, viewModel.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
             var packingList = _packingListrepository.Query.SingleOrDefault(s => s.Id == model.PackingListId);
-            if (packingList != null)
+            var status = GarmentPackingListStatusEnum.DELIVERED;
+            if (packingList != null && packingList.Status != status)
             {
-                var status = GarmentPackingListStatusEnum.DELIVERED;
                 packingList.SetStatus(status, _identityProvider.Username, UserAgent);
                 packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
             }
@@ -136,10 +136,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var packingList = _packingListrepository.Query.Include(i => i.StatusActivities).SingleOrDefault(s => s.Id == data.PackingListId);
             if (packingList != null)
             {
-                var statusActivity = packingList.StatusActivities.LastOrDefault(s => s.Status != GarmentPackingListStatusEnum.DELIVERED);
-                var status = statusActivity != null ? statusActivity.Status : GarmentPackingListStatusEnum.CREATED;
-                packingList.SetStatus(status, _identityProvider.Username, UserAgent);
-                packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                var usedCount = _repository.ReadAll().Count(w => w.Id != id && w.PackingListId == packingList.Id);
+                if (usedCount == 0)
+                {
+                    var statusActivity = packingList.StatusActivities.LastOrDefault(s => s.Status != GarmentPackingListStatusEnum.DELIVERED);
+                    var status = statusActivity != null ? statusActivity.Status : GarmentPackingListStatusEnum.CREATED;
+                    packingList.SetStatus(status, _identityProvider.Username, UserAgent);
+                    packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                }
             }
             else
             {
