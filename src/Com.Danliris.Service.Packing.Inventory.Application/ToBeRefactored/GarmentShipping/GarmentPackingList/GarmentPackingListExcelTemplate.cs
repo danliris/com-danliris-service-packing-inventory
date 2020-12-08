@@ -375,7 +375,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"{colQty}{grandTotalIndex}"].Value = grandTotal.ToString();
 
             var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
-            var spellingWordIndex = grandTotalIndex + 1;
+            var spellingWordIndex = grandTotalIndex + 2;
             sheet.Cells[$"A{spellingWordIndex}:{colNnw}{spellingWordIndex}"].Merge = true;
             sheet.Cells[$"A{spellingWordIndex}"].Value = $"{totalCtns} {viewModel.SayUnit} [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} {viewModel.SayUnit} OF {string.Join(" AND ", comodities)}]";
 
