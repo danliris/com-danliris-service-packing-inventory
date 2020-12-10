@@ -2,8 +2,12 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
@@ -15,11 +19,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentCoverLetterService : IGarmentCoverLetterService
     {
+        private const string UserAgent = "GarmentCoverLetterService";
+
         private readonly IGarmentCoverLetterRepository _repository;
+        private readonly IGarmentPackingListRepository _packingListrepository;
+
+        private readonly IIdentityProvider _identityProvider;
 
         public GarmentCoverLetterService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentCoverLetterRepository>();
+            _packingListrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
+
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         private GarmentCoverLetterViewModel MapToViewModel(GarmentShippingCoverLetterModel model)
@@ -103,11 +115,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.emkl = viewModel.emkl ?? new EMKL();
             GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(),viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.destination, viewModel.address, viewModel.pic, viewModel.attn, viewModel.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
+            var packingList = _packingListrepository.Query.SingleOrDefault(s => s.Id == model.PackingListId);
+            var status = GarmentPackingListStatusEnum.DELIVERED;
+            if (packingList != null && packingList.Status != status)
+            {
+                packingList.SetStatus(status, _identityProvider.Username, UserAgent);
+                packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+            }
+            else
+            {
+                throw new Exception("Packing List " + model.PackingListId + " not found");
+            }
+
             return await _repository.InsertAsync(model);
         }
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+            var packingList = _packingListrepository.Query.Include(i => i.StatusActivities).SingleOrDefault(s => s.Id == data.PackingListId);
+            if (packingList != null)
+            {
+                var usedCount = _repository.ReadAll().Count(w => w.Id != id && w.PackingListId == packingList.Id);
+                if (usedCount == 0)
+                {
+                    var statusActivity = packingList.StatusActivities.LastOrDefault(s => s.Status != GarmentPackingListStatusEnum.DELIVERED);
+                    var status = statusActivity != null ? statusActivity.Status : GarmentPackingListStatusEnum.CREATED;
+                    packingList.SetStatus(status, _identityProvider.Username, UserAgent);
+                    packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                }
+            }
+            else
+            {
+                throw new Exception("Packing List " + data.PackingListId + " not found");
+            }
+
             return await _repository.DeleteAsync(id);
         }
 

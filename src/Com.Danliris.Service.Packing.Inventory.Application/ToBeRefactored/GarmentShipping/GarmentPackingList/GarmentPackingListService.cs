@@ -166,6 +166,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Height = d.Height,
                         CartonsQuantity = d.CartonsQuantity,
 
+                        GrossWeight = d.GrossWeight,
+                        NetWeight = d.NetWeight,
+                        NetNetWeight = d.NetNetWeight,
+
                         Sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeModel>()).Select(s => new GarmentPackingListDetailSizeViewModel
                         {
                             Active = s.Active,
@@ -261,7 +265,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity) { Id = s.Id };
                     }).ToList();
 
-                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.CartonsQuantity, sizes) { Id = d.Id };
+                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.CartonsQuantity, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes) { Id = d.Id };
                 }).ToList();
 
                 i.BuyerBrand = i.BuyerBrand ?? new Buyer();
@@ -332,6 +336,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Status = GarmentPackingListStatusEnum.CREATED.ToString();
 
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
+            garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status));
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
 
@@ -462,16 +467,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
-            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.From).FirstOrDefault();
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
 
             var viewModel = MapToViewModel(data);
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob,cPrice);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+        }
+
+        public virtual async Task<MemoryStreamResult> ReadExcelById(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var ExcelTemplate = new GarmentPackingListExcelTemplate(_identityProvider);
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, fob, cPrice);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".xls");
         }
 
         public async Task SetPost(List<int> ids)

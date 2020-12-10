@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201202022139_add_AdditionalChargesId_InvoiceAdjustment")]
+    partial class add_AdditionalChargesId_InvoiceAdjustment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1644,8 +1646,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<double>("GrossWeight");
-
                     b.Property<double>("Height");
 
                     b.Property<bool>("IsDeleted");
@@ -1659,10 +1659,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedUtc");
 
                     b.Property<double>("Length");
-
-                    b.Property<double>("NetNetWeight");
-
-                    b.Property<double>("NetWeight");
 
                     b.Property<int>("PackingListItemId");
 

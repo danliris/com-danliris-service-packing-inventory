@@ -12,10 +12,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         Task<string> Create(GarmentPackingListViewModel viewModel);
         Task<GarmentPackingListViewModel> ReadById(int id);
-		ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword);
-		ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword);
+        ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword);
+        ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword);
 
-		Task<int> Update(int id, GarmentPackingListViewModel viewModel);
+        Task<int> Update(int id, GarmentPackingListViewModel viewModel);
         Task<int> Delete(int id);
         Task<MemoryStreamResult> ReadPdfById(int id);
         Task<GarmentPackingListViewModel> ReadByInvoiceNo(string no);
@@ -24,5 +24,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task SetApproveMd(int id, GarmentPackingListViewModel viewModel);
         Task SetApproveShipping(int id, GarmentPackingListViewModel viewModel);
         Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null);
+        Task<MemoryStreamResult> ReadExcelById(int id);
     }
 }

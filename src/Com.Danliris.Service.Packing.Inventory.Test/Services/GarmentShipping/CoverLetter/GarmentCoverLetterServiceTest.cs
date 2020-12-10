@@ -1,6 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -45,11 +48,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingCoverLetterModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
+            repoPackingListMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel>
+                {
+                    new GarmentPackingListModel() { Id = ViewModel.Id }
+                }.AsQueryable());
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repoPackingListMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider());
+
+            var service = GetService(spMock.Object);
 
             var result = await service.Create(ViewModel);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Create_PackingList_NotFound_Error()
+        {
+            var repoMock = new Mock<IGarmentCoverLetterRepository>();
+
+            var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
+            repoPackingListMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel>
+                {
+                    new GarmentPackingListModel() { Id = int.MaxValue }
+                }.AsQueryable());
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repoPackingListMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => service.Create(ViewModel));
         }
 
         [Fact]
@@ -101,15 +138,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Delete_Success()
         {
+            var model = new GarmentShippingCoverLetterModel(1, 1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", 1, "") { Id = 1 };
+
             var repoMock = new Mock<IGarmentCoverLetterRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
             repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
+            repoPackingListMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel>
+                {
+                    new GarmentPackingListModel() { Id = model.Id }
+                }.AsQueryable());
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repoPackingListMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider());
+
+            var service = GetService(spMock.Object);
 
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Delete_NoStatus_Success()
+        {
+            var model = new GarmentShippingCoverLetterModel(1, 1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", 1, "") { Id = 1 };
+
+            var repoMock = new Mock<IGarmentCoverLetterRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var packingListData = new GarmentPackingListModel() { Id = model.Id };
+            packingListData.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.APPROVED_SHIPPING));
+
+            var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
+            repoPackingListMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel>
+                {
+                    packingListData
+                }.AsQueryable());
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repoPackingListMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider());
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.Delete(1);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Delete_PackingList_NotFound_Error()
+        {
+            var model = new GarmentShippingCoverLetterModel(1, 1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", 1, "") { Id = 1 };
+
+            var repoMock = new Mock<IGarmentCoverLetterRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
+            repoPackingListMock.Setup(s => s.Query)
+                .Returns(new List<GarmentPackingListModel>
+                {
+                    new GarmentPackingListModel() { Id = model.Id + 1 }
+                }.AsQueryable());
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
+                .Returns(repoPackingListMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider());
+
+            var service = GetService(spMock.Object);
+
+            await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(1));
         }
     }
 }

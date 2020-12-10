@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListMerchandiserViewModel : GarmentPackingListViewModel, IValidatableObject
+    public class GarmentPackingListDraftCopyViewModel : GarmentPackingListViewModel, IValidatableObject
     {
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -28,46 +29,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "Date" });
             }
 
-            if (string.IsNullOrWhiteSpace(ShipmentMode))
+            if (BuyerAgent == null || BuyerAgent.Id == 0)
             {
-                yield return new ValidationResult("Shipment Mode List tidak boleh kosong", new List<string> { "ShipmentMode" });
+                yield return new ValidationResult("Buyer Agent tidak boleh kosong", new List<string> { "BuyerAgent" });
             }
 
-            if (TruckingEstimationDate == null || TruckingEstimationDate == DateTimeOffset.MinValue)
+            if (string.IsNullOrEmpty(Destination))
             {
-                yield return new ValidationResult("Tgl Trucking / Ex-fty tidak boleh kosong", new List<string> { "TruckingEstimationDate" });
+                yield return new ValidationResult("Destination tidak boleh kosong", new List<string> { "Destination" });
             }
 
-            if (string.IsNullOrWhiteSpace(FabricCountryOrigin))
+            if (ShippingStaff == null || ShippingStaff.id == 0)
             {
-                yield return new ValidationResult("Negara Asal Fabric tidak boleh kosong", new List<string> { "FabricCountryOrigin" });
-            }
-
-            if (string.IsNullOrWhiteSpace(FabricComposition))
-            {
-                yield return new ValidationResult("Komposisi Fabric tidak boleh kosong", new List<string> { "FabricComposition" });
-            }
-
-            if (string.IsNullOrWhiteSpace(RemarkMd))
-            {
-                yield return new ValidationResult("Keterangan dari Md tidak boleh kosong", new List<string> { "RemarkMd" });
-            }
-
-            if (string.IsNullOrEmpty(FinalDestination))
-            {
-                yield return new ValidationResult("Final Destination tidak boleh kosong", new List<string> { "FinalDestination" });
+                yield return new ValidationResult("Shipping Staff tidak boleh kosong", new List<string> { "ShippingStaff" });
             }
 
             if (Items == null || Items.Count < 1)
             {
-                yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
+                    yield return new ValidationResult("Items tidak boleh kosong", new List<string> { "ItemsCount" });
             }
             else
             {
                 int errorItemsCount = 0;
                 List<Dictionary<string, object>> errorItems = new List<Dictionary<string, object>>();
 
-                bool isBuyerAgentDiff = !Items.All(i => i.BuyerAgent != null && BuyerAgent != null && i.BuyerAgent.Id == BuyerAgent.Id);
                 bool isSectionDiff = !Items.All(i => i.Section != null && Section != null && i.Section.Code == Section.Code);
 
                 foreach (var item in Items)
@@ -81,12 +66,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                     else
                     {
-                        if (isBuyerAgentDiff)
-                        {
-                            errorItem["BuyerAgent"] = "Buyer Agent harus sama semua";
-                            errorItemsCount++;
-                        }
-
                         if (isSectionDiff)
                         {
                             errorItem["Section"] = "Section harus sama semua";
@@ -94,15 +73,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }
                     }
 
+                    
                     if (string.IsNullOrWhiteSpace(item.OrderNo))
                     {
-                        errorItem["OrderNo"] = "Order No tidak boleh kosong";
-                        errorItemsCount++;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(item.DescriptionMd))
-                    {
-                        errorItem["DescriptionMd"] = "Description Md tidak boleh kosong";
+                        errorItem["OrderNo"] = "PO Buyer tidak boleh kosong";
                         errorItemsCount++;
                     }
 
@@ -155,11 +129,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     errorDetailsCount++;
                                 }
 
-                                //if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
-                                //{
-                                //    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
-                                //    errorDetailsCount++;
-                                //}
+                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                {
+                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                    errorDetailsCount++;
+                                }
                             }
 
                             errorDetails.Add(errorDetail);
@@ -171,12 +145,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             errorItemsCount++;
                         }
 
-                        //if (item.Quantity != item.Details.Sum(d => d.CartonQuantity * d.QuantityPCS))
-                        //{
-                        //    errorItem["totalQty"] = "Harus sama dengan Qty";
-                        //    errorItemsCount++;
-                        //}
                     }
+                    
 
                     errorItems.Add(errorItem);
                 }
@@ -191,59 +161,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region Measurement
 
-            if (Measurements == null || Measurements.Count < 1)
-            {
-                yield return new ValidationResult("Measurements tidak boleh kosong", new List<string> { "MeasurementsCount" });
-            }
-            else
-            {
-                int errorMeasurementsCount = 0;
-                List<Dictionary<string, object>> errorMeasurements = new List<Dictionary<string, object>>();
-
-                foreach (var measurement in Measurements)
-                {
-                    Dictionary<string, object> errorMeasurement = new Dictionary<string, object>();
-
-                    //if (measurement.Length <= 0)
-                    //{
-                    //    errorMeasurement["Length"] = "Length harus lebih dari 0";
-                    //    errorMeasurementsCount++;
-                    //}
-
-                    errorMeasurements.Add(errorMeasurement);
-                }
-
-                if (errorMeasurementsCount > 0)
-                {
-                    yield return new ValidationResult(JsonConvert.SerializeObject(errorMeasurements), new List<string> { "Measurements" });
-                }
-            }
-
             if (string.IsNullOrEmpty(SayUnit))
             {
                 yield return new ValidationResult("Unit SAY tidak boleh kosong", new List<string> { "SayUnit" });
             }
 
+            //if (Measurements != null && Measurements.Count > 0)
+            //{
+            //    yield return new ValidationResult("Measurements tidak boleh ada", new List<string> { "MeasurementsCount" });
+            //}
+
             #endregion
 
             #region Mark
 
-            if (string.IsNullOrEmpty(ShippingMark))
+            if (string.IsNullOrWhiteSpace(ShippingMark))
             {
                 yield return new ValidationResult("Shipping Mark tidak boleh kosong", new List<string> { "ShippingMark" });
             }
 
-            //if (string.IsNullOrEmpty(SideMark))
-            //{
-            //    yield return new ValidationResult("Side Mark tidak boleh kosong", new List<string> { "SideMark" });
-            //}
-
-            //if (string.IsNullOrEmpty(Remark))
-            //{
-            //    yield return new ValidationResult("Remark tidak boleh kosong", new List<string> { "Remark" });
-            //}
-
             #endregion
         }
     }
+
 }

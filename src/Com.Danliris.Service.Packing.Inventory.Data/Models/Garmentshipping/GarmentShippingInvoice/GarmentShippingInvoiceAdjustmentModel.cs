@@ -8,16 +8,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public int GarmentShippingInvoiceId { get; set; }
 		public string AdjustmentDescription { get; set; }
 		public decimal AdjustmentValue { get; set; }
-		public GarmentShippingInvoiceAdjustmentModel()
+        public int AdditionalChargesId { get; set; }
+        public GarmentShippingInvoiceAdjustmentModel()
 		{
 		}
 
-		public GarmentShippingInvoiceAdjustmentModel(int GarmentShippingInvoiceId,string AdjustmentDescription, decimal AdjustmentValue)
+		public GarmentShippingInvoiceAdjustmentModel(int GarmentShippingInvoiceId,string AdjustmentDescription, decimal AdjustmentValue, int AdditionalChargesId)
 		{
 			this.GarmentShippingInvoiceId = GarmentShippingInvoiceId;
 			this.AdjustmentDescription = AdjustmentDescription;
 			this.AdjustmentValue = AdjustmentValue;
-			this.Id = Id;
+            this.AdditionalChargesId = AdditionalChargesId;
+
+            this.Id = Id;
 		}
 
 
@@ -38,5 +41,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 				this.FlagForUpdate(username, uSER_AGENT);
 			}
 		}
-	}
+
+        public void SetAdditionalChargesId(int additionalChargesId, string username, string uSER_AGENT)
+        {
+            if (AdditionalChargesId != additionalChargesId)
+            {
+                AdditionalChargesId = additionalChargesId;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+    }
 }

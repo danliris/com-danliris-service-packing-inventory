@@ -182,6 +182,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Height = d.Height,
                         CartonsQuantity = d.CartonsQuantity,
 
+                        GrossWeight = d.GrossWeight,
+                        NetWeight = d.NetWeight,
+                        NetNetWeight = d.NetNetWeight,
+
                         Sizes = d.Sizes.Select(s => new GarmentPackingListDetailSizeViewModel
                         {
                             Active = s.Active,
@@ -334,6 +338,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             detailToUpdate.SetWidth(detail.Width, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetHeight(detail.Height, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCartonsQuantity(detail.CartonsQuantity, _identityProvider.Username, UserAgent);
+
+                            detailToUpdate.SetGrossWeight(detail.GrossWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetNetWeight(detail.NetNetWeight, _identityProvider.Username, UserAgent);
 
                             foreach (var sizeToUpdate in detailToUpdate.Sizes)
                             {
