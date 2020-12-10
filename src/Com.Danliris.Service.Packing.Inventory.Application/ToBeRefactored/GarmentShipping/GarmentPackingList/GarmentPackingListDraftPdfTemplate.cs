@@ -335,7 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 Border = Rectangle.BOTTOM_BORDER,
                 Padding = 5,
-                Phrase = new Phrase("GRAND TOTAL ...............................................................................", normal_font)
+                Phrase = new Phrase("GRAND TOTAL ...................................................................................................................................................................................", normal_font)
             });
             tableGrandTotal.AddCell(new PdfPCell()
             {
@@ -590,7 +590,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
 
-            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
 
             #region INFO
 

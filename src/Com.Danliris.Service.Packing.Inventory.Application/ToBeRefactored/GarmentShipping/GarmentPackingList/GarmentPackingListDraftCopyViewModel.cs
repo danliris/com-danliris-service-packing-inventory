@@ -100,42 +100,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                 errorDetailsCount++;
                             }
 
-                            if (detail.Sizes == null || detail.Sizes.Count < 1)
-                            {
-                                errorDetail["SizesCount"] = "Sizes tidak boleh kosong";
-                                errorDetailsCount++;
-                            }
-                            else
-                            {
-                                int errorSizesCount = 0;
-                                List<Dictionary<string, object>> errorSizes = new List<Dictionary<string, object>>();
-
-                                foreach (var size in detail.Sizes)
-                                {
-                                    Dictionary<string, object> errorSize = new Dictionary<string, object>();
-
-                                    if (size.Size == null || size.Size.Id == 0)
-                                    {
-                                        errorSize["Size"] = "Size tidak boleh kosong";
-                                        errorSizesCount++;
-                                    }
-
-                                    errorSizes.Add(errorSize);
-                                }
-
-                                if (errorSizesCount > 0)
-                                {
-                                    errorDetail["Sizes"] = errorSizes;
-                                    errorDetailsCount++;
-                                }
-
-                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
-                                {
-                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
-                                    errorDetailsCount++;
-                                }
-                            }
-
                             errorDetails.Add(errorDetail);
                         }
 
