@@ -407,7 +407,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
                 result = await _outputRepository.InsertAsync(model);
-
+                //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
 
@@ -1941,6 +1941,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
                     PreviousBalance = p.BalanceRemains,
+                    PreviousQtyPacking = p.PackagingQty,
                     Id = p.Id,
                     ProductionOrder = new ProductionOrder()
                     {
