@@ -195,6 +195,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                             detailToUpdate.SetWidth(detail.Width, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetHeight(detail.Height, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCartonsQuantity(detail.CartonsQuantity, _identityProvider.Username, UserAgent);
+                            
+                            detailToUpdate.SetGrossWeight(detail.GrossWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetNetWeight(detail.NetNetWeight, _identityProvider.Username, UserAgent);
 
                             foreach (var sizeToUpdate in detailToUpdate.Sizes)
                             {
