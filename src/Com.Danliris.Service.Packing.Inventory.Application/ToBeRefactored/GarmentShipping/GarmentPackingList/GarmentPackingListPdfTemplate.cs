@@ -357,13 +357,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.BOTTOM_BORDER,
-                Padding = 5,
-                Phrase = new Phrase("GRAND TOTAL ...............................................................................", normal_font)
+                Padding = 6,
+                Phrase = new Phrase("GRAND TOTAL ...................................................................................................................................................................................", normal_font)
             });
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.BOTTOM_BORDER,
-                Padding = 5,
+                Padding = 4,
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 Phrase = new Phrase(grandTotal.ToString(), normal_font)
             });
@@ -719,7 +719,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 #endregion
             }
 
-            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
 
             #region REF
 
@@ -728,7 +728,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
 
-            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
 
             #region INFO
 
