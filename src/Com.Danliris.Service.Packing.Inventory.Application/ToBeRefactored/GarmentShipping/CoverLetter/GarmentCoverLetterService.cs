@@ -117,7 +117,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var packingList = _packingListrepository.Query.SingleOrDefault(s => s.Id == model.PackingListId);
             var status = GarmentPackingListStatusEnum.DELIVERED;
-            if (packingList != null && packingList.Status != status)
+            //&& packingList.Status != status
+            if (packingList != null )
             {
                 packingList.SetStatus(status, _identityProvider.Username, UserAgent);
                 packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
