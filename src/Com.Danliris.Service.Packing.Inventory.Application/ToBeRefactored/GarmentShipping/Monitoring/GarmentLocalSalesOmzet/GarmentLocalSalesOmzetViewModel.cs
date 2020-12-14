@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset LSDate { get; set; }
         public string BuyerCode { get; set; }
         public string BuyerName { get; set; }
+        public string KaberType { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public double Quantity { get; set; }

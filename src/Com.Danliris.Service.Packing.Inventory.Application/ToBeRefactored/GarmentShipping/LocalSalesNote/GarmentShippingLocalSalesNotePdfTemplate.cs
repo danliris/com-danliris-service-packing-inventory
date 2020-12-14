@@ -70,10 +70,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             no.Alignment = Element.ALIGN_CENTER;
             document.Add(no);
 
-            Paragraph location = new Paragraph("SUKOHARJO - JATENG", normal_font_underlined);
-            location.Alignment = Element.ALIGN_RIGHT;
-            document.Add(location);
-
+            if (viewModel.buyer.KaberType == "KABER")
+            {
+                Paragraph location = new Paragraph("PPN BERFASILITAS", normal_font_bold);
+                location.Alignment = Element.ALIGN_RIGHT;
+                document.Add(location);
+            }
 
             PdfPTable tableTitle = new PdfPTable(3);
             tableTitle.WidthPercentage = 40;
@@ -110,7 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region bodyTable
             PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1.2f, 1f, 4f, 2f, 1f, 2.3f, 2.5f });
+            tableBody.SetWidths(new float[] { 1.2f, 1f, 5f, 2f, 1f, 2f, 2f });
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyLeftNoBorder = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -260,9 +262,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
             tableFooter1.AddCell(cellFooterContent21);
 
-            tableFooter1.SpacingAfter = 10;
+            tableFooter1.SpacingAfter = 4;
             document.Add(tableFooter1);
             #endregion
+
+            document.Add(new Paragraph("HARAP TRANSFER PEMBAYARAN DIATAS KEPADA BANK KORESPONDEN KAMI SEBAGAI BERIKUT :", normal_font));
+            document.Add(new Paragraph("MAYBANK INDONESIA - CABANG SLAMET RIYADI", normal_font));
+            document.Add(new Paragraph("ACC NO. : 2105010887  A/N : PT. DAN LIRIS", normal_font));
+            document.Add(new Paragraph(" ", normal_font));
 
             #region sign
             PdfPTable tableSign = new PdfPTable(5);
@@ -300,7 +307,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             document.Add(tableSign);
             #endregion
-            document.Add(new Phrase("Model DL1",normal_font));
+            //document.Add(new Phrase("Model DL1",normal_font));
 
             document.Close();
             byte[] byteInfo = stream.ToArray();

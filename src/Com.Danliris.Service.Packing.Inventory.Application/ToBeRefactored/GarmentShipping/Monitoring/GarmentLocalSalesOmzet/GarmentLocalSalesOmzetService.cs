@@ -47,14 +47,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             LSDate = a.Date,
                             BuyerCode = a.BuyerCode,
                             BuyerName = a.BuyerName,
+                            KaberType = a.KaberType,
                             ProductCode = b.ProductCode,
                             ProductName = b.ProductName,
                             Quantity = b.Quantity,
                             UomUnit = b.UomUnit,
                             DPP = Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price),
                             UseVat = a.UseVat == true ? "YA" : "TIDAK",
-                            PPN = a.UseVat == true ? (Convert.ToDecimal(0.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) : 0,
-                            Total = a.UseVat == true ? (Convert.ToDecimal(1.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) : Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price),
+                            PPN = (a.UseVat == true && a.KaberType == "KABER") || a.UseVat == false ? 0 : (Convert.ToDecimal(0.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)),
+                            Total = (a.UseVat == true && a.KaberType == "KABER") || a.UseVat == false ? Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) : (Convert.ToDecimal(1.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)),
                         });                      
             return newQ;
         }
@@ -77,6 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Tanggal Nota", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Buyer", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Status Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Pakai PPN", DataType = typeof(string) });
@@ -87,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "T O T A L", DataType = typeof(string) });
             
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
             //{
             //    int index = 0;
@@ -120,6 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         LSDate = item.LSDate,
                         BuyerCode = item.BuyerCode,
                         BuyerName = item.BuyerName,
+                        KaberType = item.KaberType,
                         UseVat = item.UseVat,  
                         ProductCode = item.ProductCode,
                         ProductName = item.ProductName,
@@ -179,12 +182,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         string PPN = string.Format("{0:N2}", item.PPN);
                         string Amount = string.Format("{0:N2}", item.Total);
 
-                        result.Rows.Add(index, item.LSNo, LSDate, item.BuyerCode, item.BuyerName, item.ProductCode, item.ProductName, item.UseVat, QtyOrder, item.UomUnit, DPP, PPN, Amount);
+                        result.Rows.Add(index, item.LSNo, LSDate, item.BuyerCode, item.BuyerName, item.KaberType, item.ProductCode, item.ProductName, item.UseVat, QtyOrder, item.UomUnit, DPP, PPN, Amount);
                         rowPosition += 1;
                         NoteNo = item.LSNo;
                     }
 
-                    result.Rows.Add("", "", "SUB TOTAL", ".", ".", NoteNo, ".", ".", Math.Round(subTotalQty[LSNumber.Key], 2), ".", Math.Round(subTotalDPP[LSNumber.Key], 2), Math.Round(subTotalPPN[LSNumber.Key], 2), Math.Round(subTotalAmt[LSNumber.Key], 2));
+                    result.Rows.Add("", "", "SUB TOTAL", ".", ".", ".", NoteNo, ".", ".", Math.Round(subTotalQty[LSNumber.Key], 2), ".", Math.Round(subTotalDPP[LSNumber.Key], 2), Math.Round(subTotalPPN[LSNumber.Key], 2), Math.Round(subTotalAmt[LSNumber.Key], 2));
 
                     rowPosition += 1;
                     totalQty += subTotalQty[LSNumber.Key];
@@ -192,7 +195,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     totalPPN += subTotalPPN[LSNumber.Key];
                     totalAmount += subTotalAmt[LSNumber.Key];
                 }
-                result.Rows.Add("", "", "T O T A L :", ".", ".", ".", ".", ".", Math.Round(totalQty, 2), ".", Math.Round(totalDPP, 2), Math.Round(totalPPN, 2), Math.Round(totalAmount, 2));
+                result.Rows.Add("", "", "T O T A L :", ".", ".", ".", ".", ".", ".", Math.Round(totalQty, 2), ".", Math.Round(totalDPP, 2), Math.Round(totalPPN, 2), Math.Round(totalAmount, 2));
                 rowPosition += 1;
             }
 
