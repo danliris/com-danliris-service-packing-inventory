@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string BuyerAdddress { get; private set; }
         public string Remark { get; private set; }
         public string BCNo { get; private set; }
+        public DateTimeOffset BCDate { get; private set; }
         public string Truck { get; private set; }
         public string PlateNumber { get; private set; }
         public string Driver { get; private set; }
@@ -27,7 +28,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         {
         }
 
-        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo,string localCoverLetterNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string bcNo, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
+        public GarmentShippingLocalCoverLetterModel(int localSalesNoteId, string noteNo, string localCoverLetterNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string buyerAdddress, string remark, string bcNo, DateTimeOffset bcDate, string truck, string plateNumber, string driver, int shippingStaffId, string shippingStaffName)
         {
             LocalSalesNoteId = localSalesNoteId;
             NoteNo = noteNo;
@@ -39,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             BuyerAdddress = buyerAdddress;
             Remark = remark;
             BCNo = bcNo;
+            BCDate = bcDate;
             Truck = truck;
             PlateNumber = plateNumber;
             Driver = driver;
@@ -51,6 +53,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (Date != date)
             {
                 Date = date;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBCDate(DateTimeOffset bcDate, string userName, string userAgent)
+        {
+            if (BCDate != bcDate)
+            {
+                BCDate = bcDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
