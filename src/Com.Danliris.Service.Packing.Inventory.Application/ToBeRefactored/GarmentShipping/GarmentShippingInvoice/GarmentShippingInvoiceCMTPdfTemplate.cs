@@ -24,95 +24,96 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 170, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 300, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
-            writer.PageEvent = new GarmentShippingInvoiceCMTPDFTemplatePageEvent();
+            writer.PageEvent = new GarmentShippingInvoicePDFTemplatePageEvent(viewModel, timeoffset);
 
             document.Open();
 
             #region Header
-            PdfPTable tableHeader = new PdfPTable(3);
-            tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
+            //PdfPTable tableHeader = new PdfPTable(3);
+            //tableHeader.SetWidths(new float[] { 1f, 1f, 1f });
 
-            PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo, normal_font));
-            tableHeader.AddCell(cellHeaderContentLeft);
+            //PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            //cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
+            //cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo, normal_font));
+            //tableHeader.AddCell(cellHeaderContentLeft);
 
-            PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentCenter.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentCenter.AddElement(new Paragraph("Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
-            tableHeader.AddCell(cellHeaderContentCenter);
+            //PdfPCell cellHeaderContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            //cellHeaderContentCenter.AddElement(new Phrase("\n", normal_font));
+            //cellHeaderContentCenter.AddElement(new Paragraph("Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            //tableHeader.AddCell(cellHeaderContentCenter);
 
-            PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentRight.AddElement(new Phrase("", bold_font));
-            tableHeader.AddCell(cellHeaderContentRight);
+            //PdfPCell cellHeaderContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            //cellHeaderContentRight.AddElement(new Phrase("", bold_font));
+            //tableHeader.AddCell(cellHeaderContentRight);
 
-            PdfPCell cellHeader = new PdfPCell(tableHeader);
-            tableHeader.ExtendLastRow = false;
-            tableHeader.SpacingAfter = 15f;
-            document.Add(tableHeader);
+            //PdfPCell cellHeader = new PdfPCell(tableHeader);
+            //tableHeader.ExtendLastRow = false;
+            //tableHeader.SpacingAfter = 15f;
+            //document.Add(tableHeader);
             #endregion
 
             #region detailOrders
-            PdfPTable tabledetailOrders = new PdfPTable(3);
-            tabledetailOrders.SetWidths(new float[] { 0.6f, 1.4f, 2f });
+            //PdfPTable tabledetailOrders = new PdfPTable(3);
+            //tabledetailOrders.SetWidths(new float[] { 0.6f, 1.4f, 2f });
 
-            PdfPCell cellDetailContentLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER };
-            PdfPCell cellDetailContentRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
-            PdfPCell cellDetailContentCenter = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
+            //PdfPCell cellDetailContentLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER };
+            //PdfPCell cellDetailContentRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
+            //PdfPCell cellDetailContentCenter = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
 
-            cellDetailContentLeft.Phrase = new Phrase("SOLD BY ORDERS AND FOR ACCOUNT AND RISK OF", normal_font);
-            cellDetailContentLeft.Colspan = 2;
-            tabledetailOrders.AddCell(cellDetailContentLeft);
+            //cellDetailContentLeft.Phrase = new Phrase("SOLD BY ORDERS AND FOR ACCOUNT AND RISK OF", normal_font);
+            //cellDetailContentLeft.Colspan = 2;
+            //tabledetailOrders.AddCell(cellDetailContentLeft);
 
-            cellDetailContentLeft.Phrase = new Phrase("CO NO.  : " + viewModel.CO, normal_font);
-            cellDetailContentLeft.Colspan = 1;
-            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentLeft);
+            //cellDetailContentLeft.Phrase = new Phrase("CO NO.  : " + viewModel.CO, normal_font);
+            //cellDetailContentLeft.Colspan = 1;
+            //cellDetailContentLeft.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentLeft);
 
-            cellDetailContentRight.AddElement(new Phrase("MESSRS      : ", normal_font));
-            cellDetailContentRight.Border = Rectangle.NO_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
+            //cellDetailContentRight.AddElement(new Phrase("MESSRS      : ", normal_font));
+            //cellDetailContentRight.Border = Rectangle.NO_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentRight);
 
-            cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
-            cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
-            cellDetailContentCenter.Border = Rectangle.NO_BORDER;
-            //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
-            tabledetailOrders.AddCell(cellDetailContentCenter);
-
-
-            cellDetailContentRight.Phrase=new Phrase("", normal_font);
-            cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
-            cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
-            // cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
-            cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
+            //cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
+            //cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
+            //cellDetailContentCenter.Border = Rectangle.NO_BORDER;
+            ////cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
+            //tabledetailOrders.AddCell(cellDetailContentCenter);
 
 
+            //cellDetailContentRight.Phrase=new Phrase("", normal_font);
+            //cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
+            //// cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
+            //cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentRight);
 
-            cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
-            cellDetailContentRight.Colspan = 1;
-            cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
 
-            cellDetailContentCenter.Phrase=new Phrase(viewModel.DeliverTo, normal_font);
-            cellDetailContentCenter.Border = Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentCenter);
 
-            cellDetailContentRight.Phrase = new Phrase("", normal_font);
-            cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
+            //cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
+            //cellDetailContentRight.Colspan = 1;
+            //cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentRight);
 
-            PdfPCell cellDetail = new PdfPCell(tabledetailOrders);
-            tabledetailOrders.ExtendLastRow = false;
-            tabledetailOrders.SpacingAfter = 5f;
-            document.Add(tabledetailOrders);
+            //cellDetailContentCenter.Phrase=new Phrase(viewModel.DeliverTo, normal_font);
+            //cellDetailContentCenter.Border = Rectangle.BOTTOM_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentCenter);
+
+            //cellDetailContentRight.Phrase = new Phrase("", normal_font);
+            //cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentRight);
+
+            //PdfPCell cellDetail = new PdfPCell(tabledetailOrders);
+            //tabledetailOrders.ExtendLastRow = false;
+            //tabledetailOrders.SpacingAfter = 5f;
+            //tabledetailOrders.HeaderRows = 3;
+            //document.Add(tabledetailOrders);
             #endregion
 
             #region LC
@@ -165,7 +166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Body Table
 
             PdfPTable bodyTable = new PdfPTable(10);
-            float[] bodyTableWidths = new float[] { 1.25f, 1.25f, 1.25f, 1.25f, 1.2f, 0.8f, 2f, 2f, 2f, 2f };
+            float[] bodyTableWidths = new float[] { 1.6f, 1.6f, 1.6f, 1.6f, 1.2f, 0.8f, 1.5f, 1.8f, 1.5f, 1.8f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
@@ -425,7 +426,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.AddCell(bodyTableCellFooter);
 
             #endregion
-
+            bodyTable.HeaderRows = 1;
             document.Add(bodyTable);
             #endregion
 
@@ -453,7 +454,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             calculationTable.AddCell(calculationCellLeft);
             calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
             calculationTable.AddCell(calculationCellLeft);
-            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPrice - (decimal)totalCMTPrice), normal_font);
+            calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", (totalPrice - (decimal)totalCMTPrice)*-1), normal_font);
             calculationTable.AddCell(calculationCellRight);
             calculationCellRight.Phrase = new Phrase("", normal_font);
             calculationTable.AddCell(calculationCellRight);
@@ -653,49 +654,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
     }
 
-    class GarmentShippingInvoiceCMTPDFTemplatePageEvent : iTextSharp.text.pdf.PdfPageEventHelper
-    {
-        public override void OnStartPage(PdfWriter writer, Document document)
-        {
-
-            PdfContentByte cb = writer.DirectContent;
-            cb.BeginText();
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            BaseFont bf = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
-
-            float height = writer.PageSize.Height, width = writer.PageSize.Width;
-            float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
-
-            cb.SetFontAndSize(bf, 8);
-
-
-            #region CENTER
-
-            var headOfficeX = width / 2 + 30;
-            var headOfficeY = height - marginTop + 25;
-
-
-            string[] headOffices = {
-                "Ref. No. : FM-00-SP-24-006",
-            };
-            for (int i = 0; i < headOffices.Length; i++)
-            {
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, headOffices[i], headOfficeX, headOfficeY, 0);
-            }
-
-            #endregion
-
-
-            #region RIGHT
-
-
-            BaseColor grey = new BaseColor(128, 128, 128);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Page " + (writer.PageNumber), width - (30 / 2) - marginRight, height - marginTop + 20, 0);
-
-            #endregion
-
-
-            cb.EndText();
-        }
-    }
+    
 }
