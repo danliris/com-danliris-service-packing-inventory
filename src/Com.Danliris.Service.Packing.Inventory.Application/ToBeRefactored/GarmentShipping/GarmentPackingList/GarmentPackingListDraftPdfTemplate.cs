@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Open();
             PdfContentByte cb = writer.DirectContent;
 
-            PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
             var cartons = new List<GarmentPackingListDetailViewModel>();
@@ -139,9 +139,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
 
                 PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 10);
-                var width = new List<float> { 3f, 3f, 2f, 4f };
+                var width = new List<float> { 2f, 3.5f, 4f, 4f };
                 for (int i = 0; i < SIZES_COUNT; i++) width.Add(1f);
-                width.AddRange(new List<float> { 2f, 1f, 2.5f, 1f, 1f, 1.5f });
+                width.AddRange(new List<float> { 1.5f, 1f, 1.5f, 1f, 1f, 1.5f });
                 tableDetail.SetWidths(width.ToArray());
 
                 PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 19, Padding = 0.5f, Phrase = new Phrase("") };
@@ -167,14 +167,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("@\nPCS", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QUANTITY\nPCS", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QTY\nPCS", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GW", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GW/\nCTN", normal_font, 0.75f));
                 cellBorderBottomRight.Rowspan = 2;
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NW", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NW/\nCTN", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NNW", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NNW/\nCTN", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Rowspan = 1;
 
@@ -262,7 +262,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.5f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SUMMARY", normal_font, 0.6f));
                 tableDetail.AddCell(cellBorderBottomRight);
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
@@ -314,7 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 10,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.AVG_GW}      - Sub N.W. = {item.AVG_NW}      - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight)}", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {item.Details.Sum(a => a.GrossWeight * a.CartonQuantity)} Kgs           - Sub N.W. = {item.Details.Sum(a => a.NetWeight * a.CartonQuantity)} Kgs            - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight*a.CartonQuantity)} Kgs", normal_font)
                 });
 
                 new PdfPCell(tableDetail);
@@ -455,12 +455,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(viewModel.GrossWeight + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
+
             cellMeasurement.Phrase = new Phrase("NET WEIGHT", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(viewModel.NettWeight + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
+
+            cellMeasurement.Phrase = new Phrase("NET NET WEIGHT", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(":", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(viewModel.NettWeight + " KGS", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+
             cellMeasurement.Phrase = new Phrase("MEASUREMENT", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
@@ -472,11 +481,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             decimal totalCbm = 0;
             foreach (var measurement in viewModel.Measurements)
             {
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + "CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + " X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + "CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + " X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + "CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
