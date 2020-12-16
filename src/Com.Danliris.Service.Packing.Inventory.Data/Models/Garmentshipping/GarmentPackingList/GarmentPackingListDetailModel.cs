@@ -18,7 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public double Length { get; private set; }
         public double Width { get; private set; }
         public double Height { get; private set; }
-        public double CartonsQuantity { get; private set; }
 
         public double GrossWeight { get; private set; }
         public double NetWeight { get; private set; }
@@ -31,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Sizes = new List<GarmentPackingListDetailSizeModel>();
         }
 
-        public GarmentPackingListDetailModel(double carton1, double carton2, string style, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, double length, double width, double height, double cartonsQuantity, double grossWeight, double netWeight, double netNetWeight, ICollection<GarmentPackingListDetailSizeModel> sizes)
+        public GarmentPackingListDetailModel(double carton1, double carton2, string style, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, double length, double width, double height, double grossWeight, double netWeight, double netNetWeight, ICollection<GarmentPackingListDetailSizeModel> sizes)
         {
             Carton1 = carton1;
             Carton2 = carton2;
@@ -43,7 +42,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Length = length;
             Width = width;
             Height = height;
-            CartonsQuantity = cartonsQuantity;
             GrossWeight = grossWeight;
             NetWeight = netWeight;
             NetNetWeight = netNetWeight;
@@ -145,15 +143,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (Height != newValue)
             {
                 Height = newValue;
-                this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
-        public void SetCartonsQuantity(double newValue, string userName, string userAgent)
-        {
-            if (CartonsQuantity != newValue)
-            {
-                CartonsQuantity = newValue;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

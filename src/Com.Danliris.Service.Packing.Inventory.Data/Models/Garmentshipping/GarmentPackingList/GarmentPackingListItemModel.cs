@@ -41,15 +41,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public ICollection<GarmentPackingListDetailModel> Details { get; private set; }
 
-        public double AVG_GW { get; private set; }
-        public double AVG_NW { get; private set; }
-
         public GarmentPackingListItemModel()
         {
             Details = new HashSet<GarmentPackingListDetailModel>();
         }
 
-        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, ICollection<GarmentPackingListDetailModel> details, double aVG_GW, double aVG_NW)
+        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, ICollection<GarmentPackingListDetailModel> details)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -75,8 +72,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Description = description;
             DescriptionMd = descriptionMd;
             Details = details;
-            AVG_GW = aVG_GW;
-            AVG_NW = aVG_NW;
         }
 
         public void SetRONo(string rONo, string userName, string userAgent)
@@ -261,22 +256,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (DescriptionMd != descriptionMd)
             {
                 DescriptionMd = descriptionMd; this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
-        public void SetAVG_GW(double aVG_GW, string userName, string userAgent)
-        {
-            if (AVG_GW != aVG_GW)
-            {
-                AVG_GW = aVG_GW; this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
-        public void SetAVG_NW(double aVG_NW, string userName, string userAgent)
-        {
-            if (AVG_NW != aVG_NW)
-            {
-                AVG_NW = aVG_NW; this.FlagForUpdate(userName, userAgent);
             }
         }
 

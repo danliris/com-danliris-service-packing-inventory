@@ -164,7 +164,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Length = d.Length,
                         Width = d.Width,
                         Height = d.Height,
-                        CartonsQuantity = d.CartonsQuantity,
 
                         GrossWeight = d.GrossWeight,
                         NetWeight = d.NetWeight,
@@ -194,13 +193,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }).ToList()
 
                     }).ToList(),
-
-                    AVG_GW = i.AVG_GW,
-                    AVG_NW = i.AVG_NW,
                 }).ToList(),
 
                 GrossWeight = model.GrossWeight,
                 NettWeight = model.NettWeight,
+                NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
                 Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).Select(m => new GarmentPackingListMeasurementViewModel
                 {
@@ -265,14 +262,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity) { Id = s.Id };
                     }).ToList();
 
-                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.CartonsQuantity, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes) { Id = d.Id };
+                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes) { Id = d.Id };
                 }).ToList();
 
                 i.BuyerBrand = i.BuyerBrand ?? new Buyer();
                 i.Uom = i.Uom ?? new UnitOfMeasurement();
                 i.Unit = i.Unit ?? new Unit();
                 i.Comodity = i.Comodity ?? new Comodity();
-                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, details, i.AVG_GW, i.AVG_NW)
+                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, details)
                 {
                     Id = i.Id
                 };
@@ -288,7 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.InvoiceNo = viewModel.InvoiceNo ?? GenerateInvoiceNo(viewModel);
             viewModel.ShippingStaff = viewModel.ShippingStaff ?? new ShippingStaff();
             Enum.TryParse(viewModel.Status, true, out GarmentPackingListStatusEnum status);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.NetNetWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description);
 
             return garmentPackingListModel;
         }
