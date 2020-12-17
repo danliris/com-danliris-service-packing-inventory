@@ -129,6 +129,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellMark.Phrase = new Phrase(viewModel.bcNo, normal_font);
             tableMark.AddCell(cellMark);
 
+            cellMark.Phrase = new Phrase("Tgl Bea Cukai :", normal_font);
+            tableMark.AddCell(cellMark);
+
+            cellMark.Phrase = new Phrase(viewModel.bcdate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
+            tableMark.AddCell(cellMark);
+
             cellMark.Phrase = new Phrase("Shippig Mark :", normal_font);
             tableMark.AddCell(cellMark);
 

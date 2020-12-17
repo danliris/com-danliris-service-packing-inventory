@@ -31,25 +31,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
-                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     }),
-                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
-                }, 1, 1),
+                }),
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
-                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
+                    new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     })
-                }, 1, 1)
+                })
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1)
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
 
             await repo.InsertAsync(oldModel);
 
@@ -89,8 +89,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetOrderNo("Updated " + item.OrderNo, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetDescription("Updated " + item.Description, item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetDescriptionMd("Updated " + item.DescriptionMd, item.LastModifiedBy, item.LastModifiedAgent);
-                item.SetAVG_GW(1 + item.AVG_GW, item.LastModifiedBy, item.LastModifiedAgent);
-                item.SetAVG_NW(1 + item.AVG_NW, item.LastModifiedBy, item.LastModifiedAgent);
 
                 foreach (var detail in item.Details)
                 {
@@ -103,7 +101,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     detail.SetLength(1 + detail.Length, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetWidth(1 + detail.Width, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetHeight(1 + detail.Height, detail.LastModifiedBy, detail.LastModifiedAgent);
-                    detail.SetCartonsQuantity(1 + detail.CartonsQuantity, detail.LastModifiedBy, detail.LastModifiedAgent);
 
                     foreach (var size in detail.Sizes)
                     {

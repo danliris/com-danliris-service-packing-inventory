@@ -407,7 +407,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
                 result = await _outputRepository.InsertAsync(model);
-
+                //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
 
@@ -1924,11 +1924,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (productionOrderId == 0)
             {
 
-                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument);
+                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument).Take(50);
             }
             else
             {
-                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId);
+                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId).Take(50);
 
             }
 
@@ -1941,6 +1941,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
                     PreviousBalance = p.BalanceRemains,
+                    PreviousQtyPacking = p.PackagingQty,
                     Id = p.Id,
                     ProductionOrder = new ProductionOrder()
                     {

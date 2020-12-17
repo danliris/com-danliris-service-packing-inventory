@@ -51,6 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public double GrossWeight { get; set; }
         public double NettWeight { get; set; }
+        public double NetNetWeight { get; set; }
         public double TotalCartons { get; set; }
         public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
 
@@ -231,12 +232,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     errorDetail["Sizes"] = errorSizes;
                                     errorDetailsCount++;
                                 }
-
-                                if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
-                                {
-                                    errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
-                                    errorDetailsCount++;
-                                }
+                                //
+                                // if (detail.Sizes.Sum(s => s.Quantity) != (detail.CartonQuantity * detail.QuantityPCS))
+                                // {
+                                //     errorDetail["TotalQtySize"] = "Harus sama dengan Total Qty";
+                                //     errorDetailsCount++;
+                                // }
                             }
 
                             errorDetails.Add(errorDetail);

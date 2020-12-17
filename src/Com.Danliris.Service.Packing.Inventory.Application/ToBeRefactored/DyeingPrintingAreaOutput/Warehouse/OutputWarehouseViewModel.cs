@@ -67,19 +67,78 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
                 else
                 {
+                   
                     var Items = WarehousesProductionOrders.GroupBy(s => s.ProductionOrder.Id);
-
-                    //if (Items.Any(s => s.Count() > 1))
-                    //{
-                    //    yield return new ValidationResult("Tidak boleh duplikat SPP dalam satu Tabel!", new List<string> { "PackagingProductionOrder" });
-                    //}
-                    //else
-                    //{
+                    
                     foreach (var item in Items)
                     {
                         DetailErrors += "{";
                         DetailErrors += "WarehouseList : [ ";
-
+                        var items = item.GroupBy(x => x.Id).Select(s => new OutputWarehouseProductionOrderViewModel
+                        {
+                            Active = s.FirstOrDefault().Active,
+                            AdjDocumentNo = s.FirstOrDefault().AdjDocumentNo,
+                            Balance = s.Sum(x => x.Balance),
+                            BalanceRemains = s.FirstOrDefault().BalanceRemains,
+                            Buyer = s.FirstOrDefault().Buyer,
+                            BuyerId = s.FirstOrDefault().BuyerId,
+                            CartNo = s.FirstOrDefault().CartNo,
+                            Color = s.FirstOrDefault().Color,
+                            Construction = s.FirstOrDefault().Construction,
+                            CreatedAgent = s.FirstOrDefault().CreatedAgent,
+                            CreatedBy = s.FirstOrDefault().CreatedBy,
+                            CreatedUtc = s.FirstOrDefault().CreatedUtc,
+                            DateIn = s.FirstOrDefault().DateIn,
+                            DateOut = s.FirstOrDefault().DateOut,
+                            DeletedAgent = s.FirstOrDefault().DeletedAgent,
+                            DeletedBy = s.FirstOrDefault().DeletedBy,
+                            DeletedUtc = s.FirstOrDefault().DeletedUtc,
+                            DeliveryOrderSalesId = s.FirstOrDefault().DeliveryOrderSalesId,
+                            DeliveryOrderSalesNo = s.FirstOrDefault().DeliveryOrderSalesNo,
+                            DyeingPrintingAreaInputProductionOrderId = s.FirstOrDefault().DyeingPrintingAreaInputProductionOrderId,
+                            FabricPackingId = s.FirstOrDefault().FabricPackingId,
+                            FabricSKUId = s.FirstOrDefault().FabricSKUId,
+                            FinishWidth = s.FirstOrDefault().FinishWidth,
+                            Grade = s.FirstOrDefault().Grade,
+                            HasNextAreaDocument = s.FirstOrDefault().HasNextAreaDocument,
+                            HasPrintingProductPacking = s.FirstOrDefault().HasPrintingProductPacking,
+                            HasPrintingProductSKU = s.FirstOrDefault().HasPrintingProductSKU,
+                            Id = s.FirstOrDefault().Id,
+                            InputId = s.FirstOrDefault().InputId,
+                            IsDeleted = s.FirstOrDefault().IsDeleted,
+                            IsSave = s.FirstOrDefault().IsSave,
+                            LastModifiedAgent = s.FirstOrDefault().LastModifiedAgent,
+                            LastModifiedBy = s.FirstOrDefault().LastModifiedBy,
+                            LastModifiedUtc = s.FirstOrDefault().LastModifiedUtc,
+                            Material = s.FirstOrDefault().Material,
+                            MaterialConstruction = s.FirstOrDefault().MaterialConstruction,
+                            MaterialProduct = s.FirstOrDefault().MaterialProduct,
+                            MaterialWidth = s.FirstOrDefault().MaterialWidth,
+                            Motif = s.FirstOrDefault().Motif,
+                            MtrLength = s.FirstOrDefault().MtrLength,
+                            PackagingQty = s.Sum(x => x.PackagingQty),
+                            PackagingType = s.FirstOrDefault().PackagingType,
+                            PackagingUnit = s.FirstOrDefault().PackagingUnit,
+                            PackingInstruction = s.FirstOrDefault().PackingInstruction,
+                            PreviousBalance = s.FirstOrDefault().PreviousBalance,
+                            ProcessType = s.FirstOrDefault().ProcessType,
+                            ProductionOrder = s.FirstOrDefault().ProductionOrder,
+                            ProductionOrderNo = s.FirstOrDefault().ProductionOrderNo,
+                            ProductPackingCode = s.FirstOrDefault().ProductPackingCode,
+                            ProductPackingId = s.FirstOrDefault().ProductPackingId,
+                            ProductSKUCode = s.FirstOrDefault().ProductSKUCode,
+                            ProductSKUId = s.FirstOrDefault().ProductSKUId,
+                            QtyOrder = s.FirstOrDefault().QtyOrder,
+                            Quantity = s.FirstOrDefault().Quantity,
+                            Remark = s.FirstOrDefault().Remark,
+                            Status = s.FirstOrDefault().Status,
+                            Unit = s.FirstOrDefault().Unit,
+                            UomUnit = s.FirstOrDefault().UomUnit,
+                            YarnMaterial = s.FirstOrDefault().YarnMaterial,
+                            YdsLength = s.FirstOrDefault().YdsLength,
+                            PreviousQtyPacking = s.FirstOrDefault().PreviousQtyPacking
+                        });
+                        //foreach(var detail in item.Where(x=>x.Id == ))
                         foreach (var detail in item)
                         {
                             DetailErrors += "{";
@@ -91,11 +150,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     Count++;
                                     DetailErrors += "DeliveryOrderSales: 'Nomor DO harus diisi!',";
                                 }
-
-                                if (detail.PackagingQty <= 0)
+                                var detail1 = items.FirstOrDefault(x => x.Id == detail.Id);
+                                if (detail1.PackagingQty <= 0)
                                 {
                                     Count++;
                                     DetailErrors += "PackagingQty: 'Qty Packing Terima Harus Lebih dari 0!',";
+                                }
+                                else {
+                                    if(detail1.PackagingQty > detail.PreviousQtyPacking)
+                                    {
+                                        Count++;
+                                        DetailErrors += string.Format("PackagingQty: 'Qty Packing Tidak Boleh Lebih dari Qty Packing {0}!',",detail.PreviousQtyPacking);
+                                    }
                                 }
 
                                 if (string.IsNullOrEmpty(detail.PackagingUnit))
@@ -104,14 +170,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     DetailErrors += "PackagingUnit: 'Unit Packaging Tidak Boleh Kosong!',";
                                 }
 
-                                if (detail.Balance <= 0)
+                                if (detail1.Balance <= 0)
                                 {
                                     Count++;
                                     DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
                                 }
                                 else
                                 {
-                                    if (detail.Balance > detail.PreviousBalance)
+                                    if (detail1.Balance > detail1.PreviousBalance)
                                     {
                                         Count++;
                                         DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", detail.PreviousBalance);

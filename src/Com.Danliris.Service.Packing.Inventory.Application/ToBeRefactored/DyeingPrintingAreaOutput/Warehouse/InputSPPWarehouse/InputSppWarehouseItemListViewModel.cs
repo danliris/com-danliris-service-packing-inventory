@@ -53,6 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasNextAreaDocument { get; set; }
 
         public double PreviousBalance { get; set; }
+        public decimal PreviousQtyPacking { get; set; }
 
         public int ProductSKUId { get; set; }
         public int FabricSKUId { get; set; }

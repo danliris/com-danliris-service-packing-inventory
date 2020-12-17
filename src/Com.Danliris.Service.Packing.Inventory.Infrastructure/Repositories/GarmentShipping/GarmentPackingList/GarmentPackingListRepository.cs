@@ -133,6 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetNetNetWeight(model.NetNetWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSayUnit(model.SayUnit, _identityProvider.Username, UserAgent);
 
@@ -176,8 +177,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetAVG_GW(item.AVG_GW, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetAVG_NW(item.AVG_NW, _identityProvider.Username, UserAgent);
 
                     foreach (var detailToUpdate in itemToUpdate.Details)
                     {
@@ -194,7 +193,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                             detailToUpdate.SetLength(detail.Length, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetWidth(detail.Width, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetHeight(detail.Height, _identityProvider.Username, UserAgent);
-                            detailToUpdate.SetCartonsQuantity(detail.CartonsQuantity, _identityProvider.Username, UserAgent);
+                            
+                            detailToUpdate.SetGrossWeight(detail.GrossWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetNetWeight(detail.NetNetWeight, _identityProvider.Username, UserAgent);
 
                             foreach (var sizeToUpdate in detailToUpdate.Sizes)
                             {

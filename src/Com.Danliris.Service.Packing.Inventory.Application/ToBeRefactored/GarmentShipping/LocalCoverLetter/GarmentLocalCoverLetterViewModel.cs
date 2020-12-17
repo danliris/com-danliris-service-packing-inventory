@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Buyer buyer { get; set; }
         public string remark { get; set; }
         public string bcNo { get; set; }
+        public DateTimeOffset? bcdate { get; set; }
         public string truck { get; set; }
         public string plateNumber { get; set; }
         public string driver { get; set; }
@@ -30,6 +31,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (date == null || date == DateTimeOffset.MinValue)
             {
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "date" });
+            }
+
+            if (bcdate == null || bcdate == DateTimeOffset.MinValue)
+            {
+                yield return new ValidationResult("Tanggal BC tidak boleh kosong", new List<string> { "bcdate" });
             }
 
             if (buyer == null || buyer.Id == 0)
