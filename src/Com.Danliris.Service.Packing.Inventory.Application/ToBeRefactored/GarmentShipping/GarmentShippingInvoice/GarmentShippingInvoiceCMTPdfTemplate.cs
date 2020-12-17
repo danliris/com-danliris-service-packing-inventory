@@ -426,7 +426,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.AddCell(bodyTableCellFooter);
 
             #endregion
-            bodyTable.HeaderRows = 1;
+            bodyTable.HeaderRows = 2;
             document.Add(bodyTable);
             #endregion
 

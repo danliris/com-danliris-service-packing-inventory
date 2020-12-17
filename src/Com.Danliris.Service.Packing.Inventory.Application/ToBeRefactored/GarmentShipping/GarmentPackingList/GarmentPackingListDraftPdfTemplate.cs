@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(a=>a.RONo))
             {
                 foreach (var detail in item.Details)
                 {
@@ -319,8 +319,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
-                tableDetail.KeepTogether = true;
+                //tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
+                //tableDetail.HeaderRows = 3;
                 document.Add(tableDetail);
             }
 
