@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public double GrossWeight { get; private set; }
         public double NettWeight { get; private set; }
+        public double NetNetWeight {get; private set;}
         public double TotalCartons { get; private set; }
         public ICollection<GarmentPackingListMeasurementModel> Measurements { get; private set; }
 
@@ -90,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -119,6 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Items = items;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;
+            NetNetWeight = NetNetWeight;
             TotalCartons = totalCartons;
             Measurements = measurements;
             SayUnit = sayUnit;
@@ -348,6 +350,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (NettWeight != nettWeight)
             {
                 NettWeight = nettWeight;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetNetNetWeight(double netNetWeight, string userName, string userAgent)
+        {
+            if (NetNetWeight != netNetWeight)
+            {
+                NetNetWeight = netNetWeight;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

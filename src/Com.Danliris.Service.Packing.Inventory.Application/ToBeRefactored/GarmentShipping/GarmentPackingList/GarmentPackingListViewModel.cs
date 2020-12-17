@@ -51,6 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public double GrossWeight { get; set; }
         public double NettWeight { get; set; }
+        public double NetNetWeight { get; set; }
         public double TotalCartons { get; set; }
         public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
 

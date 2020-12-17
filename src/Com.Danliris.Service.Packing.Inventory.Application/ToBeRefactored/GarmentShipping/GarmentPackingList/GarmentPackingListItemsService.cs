@@ -180,7 +180,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Length = d.Length,
                         Width = d.Width,
                         Height = d.Height,
-                        CartonsQuantity = d.CartonsQuantity,
 
                         GrossWeight = d.GrossWeight,
                         NetWeight = d.NetWeight,
@@ -210,13 +209,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }).ToList()
 
                     }).ToList(),
-
-                    AVG_GW = i.AVG_GW,
-                    AVG_NW = i.AVG_NW,
-                }).ToList(),
+                }).OrderBy(o => o.ComodityDescription).ToList(),
 
                 GrossWeight = model.GrossWeight,
                 NettWeight = model.NettWeight,
+                NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
                 Measurements = model.Measurements.Select(m => new GarmentPackingListMeasurementViewModel
                 {
@@ -287,8 +284,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             modelToUpdate.SetSectionId(model.SectionId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetGrossWeight(model.GrossWeight, _identityProvider.Username, UserAgent);
-            modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
+            
 
             foreach (var itemToUpdate in modelToUpdate.Items.Where(i => i.CreatedBy == _identityProvider.Username))
             {
@@ -318,8 +314,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetAVG_GW(item.AVG_GW, _identityProvider.Username, UserAgent);
-                    itemToUpdate.SetAVG_NW(item.AVG_NW, _identityProvider.Username, UserAgent);
 
                     foreach (var detailToUpdate in itemToUpdate.Details)
                     {
@@ -337,7 +331,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             detailToUpdate.SetLength(detail.Length, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetWidth(detail.Width, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetHeight(detail.Height, _identityProvider.Username, UserAgent);
-                            detailToUpdate.SetCartonsQuantity(detail.CartonsQuantity, _identityProvider.Username, UserAgent);
 
                             detailToUpdate.SetGrossWeight(detail.GrossWeight, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
@@ -428,10 +421,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            var totalCartons = modelToUpdate.Items
-                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
+            var itemsUpdate = modelToUpdate.Items.Where(i => i.IsDeleted == false).OrderBy(o => o.ComodityDescription);
+
+            var totalCartons = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
                 .Distinct().Sum(d => d.CartonQuantity);
             modelToUpdate.SetTotalCartons(totalCartons, _identityProvider.Username, UserAgent);
+
+            var totalGw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalGrossWeight = d.CartonQuantity * d.GrossWeight }))
+                .GroupBy(g => new { g.Carton1, g.Carton2}, (key,value) => value.First().totalGrossWeight).Sum();
+
+            modelToUpdate.SetGrossWeight(totalGw, _identityProvider.Username, UserAgent);
+
+            var totalNw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetWeight = d.CartonQuantity * d.NetWeight }))
+                .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetWeight).Sum();
+
+            modelToUpdate.SetNettWeight(totalNw, _identityProvider.Username, UserAgent);
+
+            var totalNnw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
+                .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
+
+            modelToUpdate.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
             return _packingListRepository.SaveChanges();
         }
