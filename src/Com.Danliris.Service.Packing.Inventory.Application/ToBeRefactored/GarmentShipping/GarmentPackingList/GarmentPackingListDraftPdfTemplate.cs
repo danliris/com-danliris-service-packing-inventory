@@ -468,7 +468,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(viewModel.NettWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(viewModel.NetNetWeight + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("MEASUREMENT", normal_font);
@@ -482,11 +482,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             decimal totalCbm = 0;
             foreach (var measurement in viewModel.Measurements)
             {
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + "CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + "CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + "CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
