@@ -23,3 +23,6 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test src/Com.Danliris.Service.Packing.Inventory.Test/Com.Danliris.Service.Packing.Inventory.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
