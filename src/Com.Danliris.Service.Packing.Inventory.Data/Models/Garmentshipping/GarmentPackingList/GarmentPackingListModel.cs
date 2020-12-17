@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Items = items;
             GrossWeight = grossWeight;
             NettWeight = nettWeight;
-            NetNetWeight = NetNetWeight;
+            NetNetWeight = netNetWeight;
             TotalCartons = totalCartons;
             Measurements = measurements;
             SayUnit = sayUnit;
