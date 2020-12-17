@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }).ToList()
 
                     }).ToList(),
-                }).ToList(),
+                }).OrderBy(o => o.ComodityDescription).ToList(),
 
                 GrossWeight = model.GrossWeight,
                 NettWeight = model.NettWeight,
@@ -421,17 +421,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            var totalCartons = modelToUpdate.Items
-                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
+            var itemsUpdate = modelToUpdate.Items.Where(i => i.IsDeleted == false).OrderBy(o => o.ComodityDescription);
+
+            var totalCartons = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
                 .Distinct().Sum(d => d.CartonQuantity);
             modelToUpdate.SetTotalCartons(totalCartons, _identityProvider.Username, UserAgent);
 
-            var totalGw = modelToUpdate.Items
-                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, totalGrossWeight = d.CartonQuantity * d.GrossWeight }))
+            var totalGw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalGrossWeight = d.CartonQuantity * d.GrossWeight }))
                 .GroupBy(g => new { g.Carton1, g.Carton2}, (key,value) => value.First().totalGrossWeight).Sum();
 
             modelToUpdate.SetGrossWeight(totalGw, _identityProvider.Username, UserAgent);
-            //modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
+
+            var totalNw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetWeight = d.CartonQuantity * d.NetWeight }))
+                .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetWeight).Sum();
+
+            modelToUpdate.SetNettWeight(totalNw, _identityProvider.Username, UserAgent);
+
+            var totalNnw = itemsUpdate
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
+                .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
+
+            modelToUpdate.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
             return _packingListRepository.SaveChanges();
         }
