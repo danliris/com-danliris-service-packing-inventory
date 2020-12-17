@@ -177,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.Rowspan = 2;
+            //bodyTableHeader.Rowspan = 2;
             bodyTableHeader.Colspan = 4;
             bodyTable.AddCell(bodyTableHeader);
 
@@ -209,6 +209,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableHeader);
 
+            bodyTableHeader.Phrase = new Phrase("", normal_font);
+            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.Rowspan = 2;
+            bodyTableHeader.Colspan = 4;
+            bodyTable.AddCell(bodyTableHeader);
+
+            bodyTableHeader.Phrase = new Phrase("", normal_font);
+            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.Colspan = 2;
+            bodyTable.AddCell(bodyTableHeader);
 
             bodyTableHeader.Phrase = new Phrase(viewModel.CPrice + " IN USD", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -426,7 +438,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.AddCell(bodyTableCellFooter);
 
             #endregion
-            bodyTable.HeaderRows = 1;
+            bodyTable.HeaderRows = 2;
             document.Add(bodyTable);
             #endregion
 
