@@ -536,12 +536,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (productionOrderId == 0)
             {
                 productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                                    .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument);
+                                    .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument).Take(50);
             }
             else
             {
                 productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                                    .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId);
+                                    .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId).Take(50);
 
             }
 
