@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.C
                amount=1,
                amountToBePaid =1,
                bankAccountName = "bankAccountName",
-               buyerName = "bankAccountName",
+               buyerName = "buyerName",
                date =DateTimeOffset.Now,
                id=1,
                invoiceNo = "invoiceNo"
@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.C
             Assert.Equal(1, index.amount);
             Assert.Equal(1, index.amountToBePaid);
             Assert.Equal("bankAccountName", index.bankAccountName);
+            Assert.Equal("buyerName", index.buyerName);
             Assert.Equal("invoiceNo", index.invoiceNo);
             Assert.Equal(1, index.id);
             Assert.True(DateTimeOffset.MinValue < index.date);

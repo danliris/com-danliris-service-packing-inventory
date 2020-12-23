@@ -1,4 +1,6 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CreditAdvice;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -14,12 +16,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = viewModel.Validate(null);
             Assert.NotEmpty(result.ToList());
         }
+
         [Fact]
         public void Validate_LC()
         {
             GarmentShippingCreditAdviceViewModel viewModel = new GarmentShippingCreditAdviceViewModel()
             {
-                paymentTerm = "LC"
+                invoiceNo = "invoiceNo",
+                date = DateTimeOffset.MinValue,
+                paymentTerm = "LC",
+                buyer = new Buyer(),
+                bank = new BankAccount()
+            };
+
+            var result = viewModel.Validate(null);
+            Assert.NotEmpty(result.ToList());
+        }
+
+        [Fact]
+        public void Validate_LC_DateTimeOffsetMinValue()
+        {
+            GarmentShippingCreditAdviceViewModel viewModel = new GarmentShippingCreditAdviceViewModel()
+            {
+                invoiceNo = "invoiceNo",
+                date = DateTimeOffset.MinValue,
+                paymentTerm = "LC",
+                buyer = new Buyer(),
+                bank = new BankAccount(),
+                negoDate = DateTimeOffset.MinValue,
+                paymentDate = DateTimeOffset.MinValue,
+                btbCADate = DateTimeOffset.MinValue,
+                documentPresente = DateTimeOffset.MinValue
             };
 
             var result = viewModel.Validate(null);
@@ -31,6 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         {
             GarmentShippingCreditAdviceViewModel viewModel = new GarmentShippingCreditAdviceViewModel()
             {
+                invoiceNo = "invoiceNo",
+                packingListId = 1,
                 paymentTerm = "TT/OA"
             };
 

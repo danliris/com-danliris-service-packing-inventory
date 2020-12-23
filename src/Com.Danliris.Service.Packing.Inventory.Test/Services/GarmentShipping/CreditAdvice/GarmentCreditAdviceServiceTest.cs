@@ -68,6 +68,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public void ReadData_Success()
+        {
+            var model = new GarmentShippingCreditAdviceModel(1, 1, "", DateTimeOffset.Now, 1, 1, "", "", true, "", 1, 1, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, 1, 1, DateTimeOffset.Now, 1, 1, 1, 1, 1, 1, 1, "", 1, "", "", 1, "", "", 1, 1, 1, DateTimeOffset.Now, "", DateTimeOffset.Now, 1, "", DateTimeOffset.Now, 1, DateTimeOffset.Now, "");
+            var repoMock = new Mock<IGarmentShippingCreditAdviceRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingCreditAdviceModel>() { model }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.ReadData(1, 25, "{}", "{}", null);
+
+            Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
         public async Task ReadById_Success()
         {
             var model = new GarmentShippingCreditAdviceModel(1, 1, "", DateTimeOffset.Now, 1, 1, "", "", true, "", 1, 1, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, 1, 1, DateTimeOffset.Now, 1, 1, 1, 1, 1, 1, 1, "", 1, "", "", 1, "", "", 1, 1, 1, DateTimeOffset.Now, "", DateTimeOffset.Now, 1, "", DateTimeOffset.Now, 1, DateTimeOffset.Now, "");

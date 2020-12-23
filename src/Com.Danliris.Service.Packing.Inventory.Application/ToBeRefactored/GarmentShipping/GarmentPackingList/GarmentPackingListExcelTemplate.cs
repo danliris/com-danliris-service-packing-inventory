@@ -95,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(a => a.RONo))
             {
                 foreach (var detail in item.Details)
                 {
@@ -287,6 +287,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             sizeSumQty.Add(size.Key, quantity * detail.CartonQuantity);
                         }
+                        
+
                         sheet.Cells[$"{colSize}{valueIndex}"].Value = quantity == 0 ? "" : quantity.ToString();
                         sheet.Column(GetColNumberFromName(colSize)).Width = 3.5;
                         sheet.Cells[$"{colSize}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -331,6 +333,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         quantity = sizeSumQty.Where(w => w.Key == size.Key).Sum(a => a.Value);
                     }
+                    
+                    sheet.Cells[$"D{valueIndex}"].Value = "SUMMARY";
+                    sheet.Cells[$"D{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
                     sheet.Cells[$"{colSize}{valueIndex}"].Value = quantity == 0 ? "" : quantity.ToString();
 
@@ -356,7 +361,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 afterSubTotalIndex = sumValueIndex + 1;
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Merge = true;
 
-                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {subGw}      - Sub N.W. = {subNw}      - Sub N.N.W. = {subNnw}";
+                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.Details.Sum(a => a.GrossWeight * a.CartonQuantity)} Kgs      - Sub N.W. = {item.Details.Sum(a => a.NetWeight * a.CartonQuantity)} Kgs     - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight*a.CartonQuantity)} Kgs";
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
@@ -439,14 +444,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var grossWeightIndex = shippingMarkIndex + 18;
             var netWeightIndex = grossWeightIndex + 1;
-            var measurementIndex = netWeightIndex + 1;
+            var netNetWeightIndex = netWeightIndex + 1;
+            var measurementIndex = netNetWeightIndex + 1;
 
             sheet.Cells[$"A{grossWeightIndex}"].Value = "GROSS WEIGHT";
             sheet.Cells[$"A{grossWeightIndex}:B{grossWeightIndex}"].Merge = true;
             sheet.Cells[$"C{grossWeightIndex}"].Value = viewModel.GrossWeight + " KGS";
+
             sheet.Cells[$"A{netWeightIndex}"].Value = "NET WEIGHT";
             sheet.Cells[$"A{netWeightIndex}:B{netWeightIndex}"].Merge = true;
             sheet.Cells[$"C{netWeightIndex}"].Value = viewModel.NettWeight + " KGS";
+
+            sheet.Cells[$"A{netNetWeightIndex}"].Value = "NET NET WEIGHT";
+            sheet.Cells[$"A{netNetWeightIndex}:B{netNetWeightIndex}"].Merge = true;
+            sheet.Cells[$"C{netNetWeightIndex}"].Value = viewModel.NetNetWeight + " KGS";
+
             sheet.Cells[$"A{measurementIndex}"].Value = "MEASUREMENT";
             sheet.Cells[$"A{measurementIndex}:B{measurementIndex}"].Merge = true;
 

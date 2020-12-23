@@ -464,7 +464,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var PdfTemplate = new GarmentPackingListPdfTemplate(_identityProvider);
-            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" ? s.From : s.To).FirstOrDefault();
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
             var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
 
             var viewModel = MapToViewModel(data);
