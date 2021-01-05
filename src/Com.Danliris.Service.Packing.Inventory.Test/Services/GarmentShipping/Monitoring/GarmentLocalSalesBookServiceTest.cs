@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          },
                 };
 
-            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBL", "LBL TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "LBL TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
             {
                 Id = 1
             };
@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         }
 
         [Fact]
-        public void GenerateExcel_Success()
+        public void GenerateExcel_Success_LBL()
         {
             var items = new List<GarmentShippingLocalSalesNoteItemModel>
                 {
@@ -120,6 +120,291 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 };
 
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBL", "LBL TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, ""), 1)
+            {
+                Id = 1
+            };
+
+            var model3 = new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false)
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock2.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteItemModel>() { model2 }.AsQueryable());
+
+            var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            repoMock3.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GenerateExcel_Success_LBJ()
+        {
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>
+                {
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                };
+
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBJ", "LBJ TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, ""), 1)
+            {
+                Id = 1
+            };
+
+            var model3 = new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false)
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock2.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteItemModel>() { model2 }.AsQueryable());
+
+            var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            repoMock3.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GenerateExcel_Success_LBM()
+        {
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>
+                {
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                };
+
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBM", "LBM TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, ""), 1)
+            {
+                Id = 1
+            };
+
+            var model3 = new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false)
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock2.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteItemModel>() { model2 }.AsQueryable());
+
+            var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            repoMock3.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GenerateExcel_Success_LJS()
+        {
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>
+                {
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                };
+
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LJS", "LJS TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, ""), 1)
+            {
+                Id = 1
+            };
+
+            var model3 = new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false)
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock2.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteItemModel>() { model2 }.AsQueryable());
+
+            var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            repoMock3.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GenerateExcel_Success_SBJ()
+        {
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>
+                {
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                };
+
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "SBJ", "SBJ TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, ""), 1)
+            {
+                Id = 1
+            };
+
+            var model3 = new GarmentShippingLocalPriceCuttingNoteItemModel(1, "", 1, 1, false)
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentShippingLocalReturnNoteRepository>();
+            repoMock2.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalReturnNoteItemModel>() { model2 }.AsQueryable());
+
+            var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            repoMock3.Setup(s => s.ReadItemAll())
+                .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GenerateExcel_Success_SMR()
+        {
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>
+                {
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                         {
+                           LocalSalesNoteId = 1
+                         },
+                };
+
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "SMR", "SMR TRANSAKSI", 1, "A999", "", "", "", 1, "", "", true, "", false, items)
             {
                 Id = 1
             };
