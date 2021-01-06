@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items.OrderBy(a=>a.RONo))
+            foreach (var item in viewModel.Items)
             {
                 foreach (var detail in item.Details)
                 {
@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             document.Add(new Paragraph("SHIPPING METHOD : " + viewModel.ShipmentMode + "\n", normal_font));
 
-            foreach (var item in newItems)
+            foreach (var item in newItems.OrderBy(a=>a.RONo))
             {
                 #region Item
 
