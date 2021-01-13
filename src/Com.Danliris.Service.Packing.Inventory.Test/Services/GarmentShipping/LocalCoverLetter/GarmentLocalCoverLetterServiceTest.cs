@@ -101,6 +101,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public async Task ReadByLocalSalesNoteId_Success_null()
+        {
+            var model = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "BC123", DateTimeOffset.Now, "", "", "", 1, "");
+
+            var repoMock = new Mock<IGarmentLocalCoverLetterRepository>();
+            //repoMock.Setup(s => s.ReadByLocalSalesNoteIdAsync(It.IsAny<int>()))
+            //    .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadByLocalSalesNoteId(0);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task Update_Success()
         {
             var repoMock = new Mock<IGarmentLocalCoverLetterRepository>();
