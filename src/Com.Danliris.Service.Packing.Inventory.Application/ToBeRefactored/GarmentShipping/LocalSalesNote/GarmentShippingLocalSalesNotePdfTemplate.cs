@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellFooterContent3.Phrase = new Phrase("No Bea Cukai      :", normal_font);
             tableFooter.AddCell(cellFooterContent3);
-            cellFooterContent4.Phrase = new Phrase(cl.bcNo, normal_font);
+            cellFooterContent4.Phrase = new Phrase(cl==null ? "-" : cl.bcNo, normal_font);
             tableFooter.AddCell(cellFooterContent4);
 
             cellFooterContent1.Phrase = new Phrase("Tempo Pembayaran  :", normal_font);
