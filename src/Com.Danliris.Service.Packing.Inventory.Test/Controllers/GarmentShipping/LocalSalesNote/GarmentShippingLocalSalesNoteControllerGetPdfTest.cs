@@ -190,7 +190,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
-            //localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null );
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -201,9 +201,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, null, identityProvider, validateService);
+            var controller = GetController(service, localcoverletterServiceMock.Object, identityProvider, validateService);
             var response = await controller.GetPDF(1);
-
             Assert.NotNull(response);
         }
 
