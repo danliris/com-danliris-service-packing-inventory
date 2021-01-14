@@ -34,15 +34,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1)
-                    }),
+                    },1),
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
-                    })
+                    },1)
                 }),
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
-                    })
+                    },1)
                 })
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
