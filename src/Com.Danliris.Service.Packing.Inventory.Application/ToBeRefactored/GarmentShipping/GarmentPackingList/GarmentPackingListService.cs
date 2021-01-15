@@ -169,6 +169,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         NetWeight = d.NetWeight,
                         NetNetWeight = d.NetNetWeight,
 
+                        Index = d.Index,
+
                         Sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeModel>()).Select(s => new GarmentPackingListDetailSizeViewModel
                         {
                             Active = s.Active,
