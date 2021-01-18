@@ -484,6 +484,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
 
+        public virtual async Task<MemoryStreamResult> ReadPdfFilterCarton(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListDraftPdfByCartonTemplate(_identityProvider);
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".pdf");
+        }
+
         public virtual async Task<MemoryStreamResult> ReadExcelById(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
