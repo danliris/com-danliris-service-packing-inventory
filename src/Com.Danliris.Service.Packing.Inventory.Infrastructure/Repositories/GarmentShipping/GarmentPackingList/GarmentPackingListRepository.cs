@@ -198,6 +198,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                             detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetNetNetWeight(detail.NetNetWeight, _identityProvider.Username, UserAgent);
 
+                            detailToUpdate.SetIndex(detail.Index, _identityProvider.Username, UserAgent);
+
                             foreach (var sizeToUpdate in detailToUpdate.Sizes)
                             {
                                 var size = detail.Sizes.FirstOrDefault(s => s.Id == sizeToUpdate.Id);
