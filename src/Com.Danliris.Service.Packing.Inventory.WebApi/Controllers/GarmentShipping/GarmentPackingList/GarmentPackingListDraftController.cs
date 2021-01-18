@@ -129,22 +129,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
-                VerifyUser();
-                var result = await _service.ReadPdfById(id);
-
-                return File(result.Data.ToArray(), "application/pdf", result.FileName);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet("{id}/carton")]
-        public async Task<IActionResult> GetPdfFilterCarton([FromRoute] int id)
-        {
-            try
-            {
                 var accept = Request.Headers["Accept"];
                 if (accept == "application/pdf")
                 {
@@ -167,6 +151,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 {
                     data
                 });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/carton")]
+        public async Task<IActionResult> GetPdfFilterCarton([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ReadPdfById(id);
+
+                return File(result.Data.ToArray(), "application/pdf", result.FileName);
             }
             catch (Exception ex)
             {
