@@ -133,7 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 if (accept == "application/pdf")
                 {
                     VerifyUser();
-                    var result = await _service.ReadPdfFilterCarton(id);
+                    var result = await _service.ReadPdfById(id);
 
                     return File(result.Data.ToArray(), "application/pdf", result.FileName);
                 }
@@ -164,7 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
-                var result = await _service.ReadPdfById(id);
+                var result = await _service.ReadPdfFilterCarton(id);
 
                 return File(result.Data.ToArray(), "application/pdf", result.FileName);
             }
