@@ -194,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
-        public async Task GetPdfByCarton_Ok()
+        public async Task GetPdfFilterCarton_Ok()
         {
             var serviceMock = new Mock<IGarmentPackingListDraftService>();
             serviceMock
@@ -210,7 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
-            var response = await controller.GetById(1);
+            var response = await controller.GetPdfFilterCarton(1);
 
             Assert.NotNull(response);
         }
