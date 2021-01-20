@@ -163,16 +163,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
-                var accept = Request.Headers["Accept"];
-                if (accept == "application/pdf")
-                {
-                    VerifyUser();
-                    var result = await _service.ReadPdfFilterCarton(id);
+                VerifyUser();
+                var result = await _service.ReadPdfFilterCarton(id);
 
-                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
-                }
-
-                return Ok();
+                return File(result.Data.ToArray(), "application/pdf", result.FileName);
             }
             catch (Exception ex)
             {
