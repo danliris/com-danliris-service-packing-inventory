@@ -163,10 +163,28 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
-                VerifyUser();
-                var result = await _service.ReadPdfFilterCarton(id);
+                var accept = Request.Headers["Accept"];
+                if (accept == "application/pdf")
+                {
+                    VerifyUser();
+                    var result = await _service.ReadPdfFilterCarton(id);
 
-                return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                }
+                else if (accept == "application/xls")
+                {
+                    VerifyUser();
+                    var result = await _service.ReadExcelById(id);
+
+                    return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
+                }
+
+                var data = await _service.ReadById(id);
+
+                return Ok(new
+                {
+                    data
+                });
             }
             catch (Exception ex)
             {
