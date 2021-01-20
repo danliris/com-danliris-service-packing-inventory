@@ -398,13 +398,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 modelToUpdate.Items.Add(item);
             }
 
-            var measurements = model.Items
+            var measurements = modelToUpdate.Items
                 .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.Length, d.Width, d.Height, d.CartonQuantity }))
                 .GroupBy(m => new { m.Length, m.Width, m.Height }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Distinct().Sum(d => d.CartonQuantity)));
 
             foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {
-                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
+                //var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
+                var measurement = model.Measurements.FirstOrDefault(d => d.Id == measurementToUpdate.Id);
                 if (measurement != null)
                 {
                     measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
