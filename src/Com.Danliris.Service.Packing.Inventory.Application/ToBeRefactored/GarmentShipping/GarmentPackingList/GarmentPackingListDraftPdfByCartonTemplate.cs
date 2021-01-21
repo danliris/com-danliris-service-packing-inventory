@@ -195,18 +195,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
 
                 var subCartons = new List<GarmentPackingListDetailViewModel>();
+                var subGrossWeight = new List<GarmentPackingListDetailViewModel>();
+                var subNetWeight = new List<GarmentPackingListDetailViewModel>();
+                var subNetNetWeight = new List<GarmentPackingListDetailViewModel>();
+
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
                 foreach (var detail in item.Details)
                 {
                     var ctnsQty = detail.CartonQuantity;
-                    if (cartonNumbers.Contains($"{detail.Carton1}- {detail.Carton2}"))
+                    var grossWeight = detail.GrossWeight;
+                    var netWeight = detail.NetWeight;
+                    var netNetWeight = detail.NetNetWeight;
+                    if (cartonNumbers.Contains($"{detail.Index}-{detail.Carton1}- {detail.Carton2}"))
                     {
                         ctnsQty = 0;
+                        grossWeight = 0;
+                        netWeight = 0;
+                        netNetWeight = 0;
                     }
                     else
                     {
-                        cartonNumbers.Add($"{detail.Carton1}- {detail.Carton2}");
+                        cartonNumbers.Add($"{detail.Index}-{detail.Carton1}- {detail.Carton2}");
                     }
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Carton1}- {detail.Carton2}", normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -257,9 +267,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
                     }
-                    if (subCartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    if (subCartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2 && c.Index == detail.Index) < 0)
                     {
                         subCartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
+                        subGrossWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, GrossWeight = grossWeight });
+                        subNetWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetWeight = netWeight });
+                        subGrossWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetNetWeight = netNetWeight });
                     }
 
                 }
@@ -317,12 +330,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBorderBottom.Colspan = 1;
 
                 var subCtns = subCartons.Sum(c => c.CartonQuantity);
+                var subGw = subGrossWeight.Sum(c => c.CartonQuantity * c.GrossWeight);
+                var subNw = subNetWeight.Sum(c => c.CartonQuantity * c.NetWeight);
+                var subNnw = subNetNetWeight.Sum(c => c.CartonQuantity * c.NetNetWeight);
 
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 10,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {item.Details.Sum(a => a.GrossWeight * a.CartonQuantity)} Kgs           - Sub N.W. = {item.Details.Sum(a => a.NetWeight * a.CartonQuantity)} Kgs            - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity)} Kgs", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {subGw} Kgs           - Sub N.W. = {subNw} Kgs            - Sub N.N.W. = {subNnw} Kgs", normal_font)
                 });
 
                 new PdfPCell(tableDetail);

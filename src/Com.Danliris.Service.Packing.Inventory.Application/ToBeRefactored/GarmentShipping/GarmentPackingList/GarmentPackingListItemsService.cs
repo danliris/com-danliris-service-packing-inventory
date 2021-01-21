@@ -405,7 +405,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {
                 var measurement = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
-                // var measurement = model.Measurements.FirstOrDefault(d => d.Id == measurementToUpdate.Id);
                 if (measurement != null)
                 {
                     measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
