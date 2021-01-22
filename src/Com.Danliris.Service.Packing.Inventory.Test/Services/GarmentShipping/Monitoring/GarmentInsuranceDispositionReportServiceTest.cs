@@ -57,9 +57,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())               
                 .Returns(new List<GarmentShippingInsuranceDispositionModel>() { model }.AsQueryable());
 
-            //var repoMock1 = new Mock<IGarmentShippingInsuranceDispositionRepository>();
-            //repoMock1.Setup(s => s.ReadItemAll())
-            //    .Returns(items.AsQueryable());
+            repoMock.Setup(s => s.ReadItemAll())
+              .Returns(items.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
@@ -73,17 +72,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInsuranceDispositionItemModel>
                 {
-                     new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 1, 1, "", "", 1, 1, 1, 1, 1, 1, 1)
+                     new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "001", "DL/210001", 1, 1, "", "", 1, 1, 1, 1, 1, 1, 1)
                          {
                            InsuranceDispositionId = 1
                          },
-                     new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "", "", 2, 2, "", "", 2, 2, 2, 2, 2, 2, 2)
+                     new GarmentShippingInsuranceDispositionItemModel(DateTimeOffset.Now, "002", "DL/210002", 2, 2, "", "", 2, 2, 2, 2, 2, 2, 2)
                          {
                            InsuranceDispositionId = 1
                          },
                 };
 
-            var model = new GarmentShippingInsuranceDispositionModel("", "", DateTimeOffset.Now, "", 1, "", "", 1, "", items)
+            var model = new GarmentShippingInsuranceDispositionModel("001", "Kargo", DateTimeOffset.Now, "", 1, "", "", 1, "", items)
             {
                 Id = 1
             };
@@ -91,6 +90,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock = new Mock<IGarmentShippingInsuranceDispositionRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInsuranceDispositionModel>() { model }.AsQueryable());
+
+            repoMock.Setup(s => s.ReadItemAll())
+              .Returns(items.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
@@ -106,6 +108,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock = new Mock<IGarmentShippingInsuranceDispositionRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInsuranceDispositionModel>().AsQueryable());
+
+            repoMock.Setup(s => s.ReadItemAll())
+             .Returns(new List<GarmentShippingInsuranceDispositionItemModel>().AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
