@@ -65,10 +65,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     if (newItems.Last().RONo == x.RONo && newItems.Last().OrderNo == x.OrderNo)
                     {
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems?.Last().Details.Add(d);
-                        }
+                        //foreach (var d in x.Details.OrderBy(a => a.Carton1))
+                        //{
+                        //    newItems.Last().Details.Add(d);
+                        //}
                     }
                     else
                     {
