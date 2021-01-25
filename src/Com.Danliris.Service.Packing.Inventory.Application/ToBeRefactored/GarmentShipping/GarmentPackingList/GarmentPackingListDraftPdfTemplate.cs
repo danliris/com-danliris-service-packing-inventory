@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {
-                            newItems.Last().Details.Add(d);
+                            newItems?.Last().Details.Add(d);
                         }
                     }
                     else
