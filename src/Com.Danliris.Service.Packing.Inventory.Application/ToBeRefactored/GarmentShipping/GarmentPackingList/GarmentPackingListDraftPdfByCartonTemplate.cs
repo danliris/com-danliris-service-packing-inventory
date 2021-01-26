@@ -1,19 +1,19 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListDraftPdfTemplate
+    public class GarmentPackingListDraftPdfByCartonTemplate
     {
         private IIdentityProvider _identityProvider;
 
-        public GarmentPackingListDraftPdfTemplate(IIdentityProvider identityProvider)
+        public GarmentPackingListDraftPdfByCartonTemplate(IIdentityProvider identityProvider)
         {
             _identityProvider = identityProvider;
         }
@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 70, 30);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
-            writer.PageEvent = new GarmentPackingListDraftPDFTemplatePageEvent(_identityProvider, viewModel);
+            writer.PageEvent = new GarmentPackingListDraftPdfByCartonTemplatePageEvent(_identityProvider, viewModel);
 
             document.Open();
             PdfContentByte cb = writer.DirectContent;
@@ -55,20 +55,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
 
-            foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
+            foreach (var d in newDetails)
             {
                 if (newItems.Count == 0)
                 {
-                    newItems.Add(x);
+                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
+                    i.Details = new List<GarmentPackingListDetailViewModel>();
+                    i.Details.Add(d);
+                    newItems.Add(i);
                 }
                 else
                 {
-                    if (newItems.Last().RONo == x.RONo && newItems.Last().OrderNo == x.OrderNo)
+                    if (newItems.Last().Id == d.PackingListItemId)
                     {
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems.Last().Details.Add(d);
-                        }
+                        newItems.Last().Details.Add(d);
                     }
                     else
                     {
@@ -83,48 +83,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             AVG_GW = a.AVG_GW,
                             AVG_NW = a.AVG_NW
                         })
-                            .Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo);
+                            .Single(a => a.Id == d.PackingListItemId);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            y.Details.Add(d);
-                        }
+                        y.Details.Add(d);
                         newItems.Add(y);
                     }
                 }
             }
 
-            //foreach (var d in newDetails)
-            //{
-            //    if (newItems.Count == 0)
-            //    {
-            //        var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
-            //        i.Details = new List<GarmentPackingListDetailViewModel>();
-            //        i.Details.Add(d);
-            //        newItems.Add(i);
-            //    }
-            //    else
-            //    {
-            //        if (newItems.Last().Id == d.PackingListItemId)
-            //        {
-            //            newItems.Last().Details.Add(d);
-            //        }
-            //        else
-            //        {
-            //            var y = viewModel.Items.Select(a=> new GarmentPackingListItemViewModel {
-            //                Id =a.Id, RONo=a.RONo, Article=a.Article, BuyerAgent=a.BuyerAgent, ComodityDescription=a.ComodityDescription,
-            //                OrderNo=a.OrderNo, AVG_GW=a.AVG_GW, AVG_NW=a.AVG_NW})
-            //                .Single(a => a.Id == d.PackingListItemId);
-            //            y.Details = new List<GarmentPackingListDetailViewModel>();
-            //            y.Details.Add(d);
-            //            newItems.Add(y);
-            //        }
-            //    }
-            //}
-
             document.Add(new Paragraph("SHIPPING METHOD : " + viewModel.ShipmentMode + "\n", normal_font));
 
-            foreach (var item in newItems.OrderBy(a=>a.RONo))
+            foreach (var item in newItems)
             {
                 #region Item
 
@@ -303,8 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         subCartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
                         subGrossWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, GrossWeight = grossWeight });
                         subNetWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetWeight = netWeight });
-                        subNetNetWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetNetWeight = netNetWeight });
-
+                        subGrossWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetNetWeight = netNetWeight });
                     }
 
                 }
@@ -362,9 +330,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBorderBottom.Colspan = 1;
 
                 var subCtns = subCartons.Sum(c => c.CartonQuantity);
-                var subGw = subGrossWeight.Sum(c => c.GrossWeight * c.CartonQuantity);
-                var subNw = subNetWeight.Sum(c => c.NetWeight * c.CartonQuantity);
-                var subNnw = subNetNetWeight.Sum(c => c.NetNetWeight * c.CartonQuantity);
+                var subGw = subGrossWeight.Sum(c => c.CartonQuantity * c.GrossWeight);
+                var subNw = subNetWeight.Sum(c => c.CartonQuantity * c.NetWeight);
+                var subNnw = subNetNetWeight.Sum(c => c.CartonQuantity * c.NetNetWeight);
 
                 tableDetail.AddCell(new PdfPCell()
                 {
@@ -628,12 +596,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
     }
 
-    class GarmentPackingListDraftPDFTemplatePageEvent : PdfPageEventHelper
+    class GarmentPackingListDraftPdfByCartonTemplatePageEvent : PdfPageEventHelper
     {
         private IIdentityProvider identityProvider;
         private GarmentPackingListViewModel viewModel;
 
-        public GarmentPackingListDraftPDFTemplatePageEvent(IIdentityProvider identityProvider, GarmentPackingListViewModel viewModel)
+        public GarmentPackingListDraftPdfByCartonTemplatePageEvent(IIdentityProvider identityProvider, GarmentPackingListViewModel viewModel)
         {
             this.identityProvider = identityProvider;
             this.viewModel = viewModel;

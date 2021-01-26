@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public double NetWeight { get; private set; }
         public double NetNetWeight { get; private set; }
 
+        public int Index { get; private set; }
+
         public ICollection<GarmentPackingListDetailSizeModel> Sizes { get; private set; }
 
         public GarmentPackingListDetailModel()
@@ -30,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Sizes = new List<GarmentPackingListDetailSizeModel>();
         }
 
-        public GarmentPackingListDetailModel(double carton1, double carton2, string style, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, double length, double width, double height, double grossWeight, double netWeight, double netNetWeight, ICollection<GarmentPackingListDetailSizeModel> sizes)
+        public GarmentPackingListDetailModel(double carton1, double carton2, string style, string colour, double cartonQuantity, double quantityPCS, double totalQuantity, double length, double width, double height, double grossWeight, double netWeight, double netNetWeight, ICollection<GarmentPackingListDetailSizeModel> sizes, int index)
         {
             Carton1 = carton1;
             Carton2 = carton2;
@@ -46,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             NetWeight = netWeight;
             NetNetWeight = netNetWeight;
             Sizes = sizes;
+            Index = index;
         }
 
         public void setPackingListItemId(int PackingListItemId, string userName, string userAgent)
@@ -170,6 +173,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (NetNetWeight != newValue)
             {
                 NetNetWeight = newValue;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIndex(int newValue, string userName, string userAgent)
+        {
+            if (Index != newValue)
+            {
+                Index = newValue;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
