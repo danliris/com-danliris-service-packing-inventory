@@ -45,8 +45,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<string> cartonNumbers = new List<string>();
 
             var newItems = new List<GarmentPackingListItemViewModel>();
+            var newItems2 = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(a => a.RONo))
             {
                 foreach (var detail in item.Details)
                 {
@@ -72,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                     else
                     {
-                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+                        var y = viewModel.Items.OrderBy(o => o.RONo).Select(a => new GarmentPackingListItemViewModel
                         {
                             Id = a.Id,
                             RONo = a.RONo,
@@ -83,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             AVG_GW = a.AVG_GW,
                             AVG_NW = a.AVG_NW
                         })
-                            .Single(a => a.Id == d.PackingListItemId);
+                     .Single(a => a.Id == d.PackingListItemId);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
                         y.Details.Add(d);
                         newItems.Add(y);
@@ -91,9 +92,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
+            foreach (var item in newItems)
+            {
+                if (newItems2.Count == 0)
+                {
+                    newItems2.Add(item);
+                }
+                else
+                {
+                    if (newItems2.Last().RONo == item.RONo && newItems2.Last().OrderNo == item.OrderNo)
+                    {
+                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems2.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        newItems2.Add(item);
+                    }
+                }
+            }
+
             document.Add(new Paragraph("SHIPPING METHOD : " + viewModel.ShipmentMode + "\n", normal_font));
 
-            foreach (var item in newItems)
+            foreach (var item in newItems2)
             {
                 #region Item
 
@@ -263,7 +286,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.NetNetWeight), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
 
-                    if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2 && c.Index == detail.Index) < 0)
                     {
                         cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
                     }
