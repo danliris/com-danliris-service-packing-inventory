@@ -17,11 +17,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingInsuranceDispositionModel> _dbSet;
+        private readonly DbSet<GarmentShippingInsuranceDispositionItemModel> _dbSetItem;
 
         public GarmentShippingInsuranceDispositionRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingInsuranceDispositionModel>();
+            _dbSetItem = dbContext.Set<GarmentShippingInsuranceDispositionItemModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
         public Task<int> DeleteAsync(int id)
@@ -57,6 +59,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public IQueryable<GarmentShippingInsuranceDispositionModel> ReadAll()
         {
             return _dbSet.AsNoTracking();
+        }
+
+        public IQueryable<GarmentShippingInsuranceDispositionItemModel> ReadItemAll()
+        {
+            return _dbSetItem.AsNoTracking();
         }
 
         public Task<GarmentShippingInsuranceDispositionModel> ReadByIdAsync(int id)
