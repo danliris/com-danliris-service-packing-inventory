@@ -447,6 +447,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public async Task ReadPdfByOrderNo_LC_Success()
+        {
+            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
+            var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "B", 1) };
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details) };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var itemsInvoice = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustmentsInvoice = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100, 1) };
+            var units = new HashSet<GarmentShippingInvoiceUnitModel> { new GarmentShippingInvoiceUnitModel(1, "fee", 1, 1) };
+            var modelInvoice = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", itemsInvoice, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustmentsInvoice, 100000, "aa", "aa", units);
+
+            var repoInvoiceMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoInvoiceMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
+
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+                .Returns(repoInvoiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.ReadPdfByOrderNo(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task ReadPdfById_LC_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
@@ -492,6 +542,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var service = GetService(serviceProviderMock.Object);
 
             var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfByOrderNo_Big_Sizes_Success()
+        {
+            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
+            var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { };
+            for (int i = 2; i < 22; i++)
+            {
+                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", i * 100));
+            }
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details) };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var itemsInvoice = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3) };
+            var adjustmentsInvoice = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100, 1) };
+            var units = new HashSet<GarmentShippingInvoiceUnitModel> { new GarmentShippingInvoiceUnitModel(1, "fee", 1, 1) };
+            var modelInvoice = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", itemsInvoice, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustmentsInvoice, 100000, "aa", "aa", units);
+
+            var repoInvoiceMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoInvoiceMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
+
+            //var spMock = GetServiceProvider(repoMock.Object);
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImageFile");
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+                .Returns(repoInvoiceMock.Object);
+
+            serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
+
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.ReadPdfByOrderNo(1);
 
             Assert.NotNull(result);
         }
