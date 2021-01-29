@@ -148,6 +148,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetCOTP("model.COTP", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetCOTPDate( DateTimeOffset.Now.AddDays(3), data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetDescription("model.Description", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetRemark("model.Remark", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetCPrice( "cprice", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetMemo("model.Memo", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetAmountToBePaid( 500, data.LastModifiedBy, data.LastModifiedAgent);
