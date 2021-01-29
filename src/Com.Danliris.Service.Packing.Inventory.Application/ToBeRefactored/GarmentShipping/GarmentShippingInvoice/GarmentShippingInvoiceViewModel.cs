@@ -36,7 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public string NPENo { get; set; }
 		public DateTimeOffset? NPEDate { get; set; }
 		public string Description { get; set; }
-		public decimal AmountToBePaid { get; set; }
+        public string Remark { get; set; }
+        public decimal AmountToBePaid { get; set; }
 		public string CPrice { get; set; }
 		public string Say { get; set; }
 		public string Memo { get; set; }
