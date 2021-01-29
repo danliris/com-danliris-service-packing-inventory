@@ -724,7 +724,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 #region TITLE
 
-                var titleY = height - marginTop + 40;
+                var titleY = height - marginTop + 30;
                 cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "PACKING LIST", width / 2, titleY, 0);
 
                 #endregion
