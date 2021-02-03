@@ -327,8 +327,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
-                cellBorderBottom.Phrase = new Phrase(subTotal.ToString(), normal_font);
-                cellBorderBottom.Colspan = 1;
+                cellBorderBottom.Phrase = new Phrase(subTotal.ToString() + " PCS", normal_font);
+                cellBorderBottom.Colspan = 2;
                 tableDetail.AddCell(cellBorderBottom);
                 cellBorderBottom.Phrase = new Phrase("", normal_font);
                 cellBorderBottom.Colspan = 3;
