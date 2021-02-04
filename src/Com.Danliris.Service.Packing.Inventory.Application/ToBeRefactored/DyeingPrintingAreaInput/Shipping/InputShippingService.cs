@@ -488,10 +488,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return new ListResult<InputShippingProductionOrderViewModel>(data.ToList(), page, size, query.Count());
         }
 
-        public List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders()
+        public List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders(long deliveriOrderSalesId)
         {
-            var productionOrders = _outputSPPRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument);
+
+            IQueryable<DyeingPrintingAreaOutputProductionOrderModel> productionOrders;
+
+            if (deliveriOrderSalesId == 0)
+            {
+                 productionOrders = _outputSPPRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument).Take(100);
+            }
+            else {
+                productionOrders = _outputSPPRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument && s.DeliveryOrderSalesId == deliveriOrderSalesId).Take(100);
+            }
+            
             var data = productionOrders.Select(s => new OutputPreShippingProductionOrderViewModel()
             {
                 Id = s.Id,
@@ -777,6 +788,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Shipping") }, true);
+        }
+
+        public ListResult<OutputPreShippingProductionOrderViewModel> GetDistinctDO(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _outputSPPRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "DeliveryOrderSalesNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
+            var data = query
+                .GroupBy(d => d.DeliveryOrderSalesId)
+                .Select(s => s.First())
+                .Skip((page - 1) * size).Take(size)
+                .OrderBy(s => s.ProductionOrderNo)
+                .Select(s => new OutputPreShippingProductionOrderViewModel()
+                {
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = s.DeliveryOrderSalesId,
+                        No = s.DeliveryOrderSalesNo
+
+                    }
+                });
+
+            return new ListResult<OutputPreShippingProductionOrderViewModel>(data.ToList(), page, size, query.Count());
         }
     }
 }

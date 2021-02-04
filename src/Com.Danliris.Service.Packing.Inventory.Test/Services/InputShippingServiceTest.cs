@@ -475,6 +475,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 };
             }
         }
+
         [Fact]
         public async Task Should_Success_Create()
         {
@@ -853,9 +854,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }.AsQueryable());
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object);
 
-            var result = service.GetOutputPreShippingProductionOrders();
+            var result = service.GetOutputPreShippingProductionOrders(0);
+            var result2 = service.GetOutputPreShippingProductionOrders(1);
 
             Assert.NotEmpty(result);
+            Assert.NotEmpty(result2);
         }
 
         [Fact]

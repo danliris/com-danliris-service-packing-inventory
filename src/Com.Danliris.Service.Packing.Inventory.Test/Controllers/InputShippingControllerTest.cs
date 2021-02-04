@@ -426,7 +426,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputShippingService>();
-            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders())
+            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders(0))
                 .Returns(new List<OutputPreShippingProductionOrderViewModel>() { });
             var service = serviceMock.Object;
 
@@ -449,7 +449,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputShippingService>();
-            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders()).Throws(new Exception());
+            serviceMock.Setup(s => s.GetOutputPreShippingProductionOrders(0)).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
