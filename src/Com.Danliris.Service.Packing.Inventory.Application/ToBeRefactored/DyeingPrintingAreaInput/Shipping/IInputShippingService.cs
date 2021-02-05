@@ -16,8 +16,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<PreShippingIndexViewModel> ReadOutputPreShipping(int page, int size, string filter, string order, string keyword);
         ListResult<InputShippingProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
-        List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders();
+        List<OutputPreShippingProductionOrderViewModel> GetOutputPreShippingProductionOrders(long deliveryOrderSalesId);
         Task<int> Reject(InputShippingViewModel viewModel);
         MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        ListResult<OutputPreShippingProductionOrderViewModel> GetDistinctDO(int page, int size, string filter, string order, string keyword);
     }
 }
