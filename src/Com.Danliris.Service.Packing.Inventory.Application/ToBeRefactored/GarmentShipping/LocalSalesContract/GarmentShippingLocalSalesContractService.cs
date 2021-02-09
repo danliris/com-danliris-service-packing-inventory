@@ -92,7 +92,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.UomId,
                         Unit = i.UomUnit
                     },
-                    price = i.Price
+                    price = i.Price,
+                    remainingQuantity=i.RemainingQuantity
                 }).ToList()
             };
 
@@ -105,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.product = i.product ?? new ProductViewModel();
                 i.uom = i.uom ?? new UnitOfMeasurement();
-                return new GarmentShippingLocalSalesContractItemModel(i.product.id, i.product.code, i.product.name, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price) { Id = i.Id };
+                return new GarmentShippingLocalSalesContractItemModel(i.product.id, i.product.code, i.product.name, i.quantity,i.remainingQuantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price) { Id = i.Id };
             }).ToList();
 
             vm.transactionType = vm.transactionType ?? new TransactionType();

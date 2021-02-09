@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public ProductViewModel product { get; set; }
         public double quantity { get; set; }
+        public double remainingQuantity { get; set; }
         public UnitOfMeasurement uom { get; set; }
         public double price { get; set; }
     }

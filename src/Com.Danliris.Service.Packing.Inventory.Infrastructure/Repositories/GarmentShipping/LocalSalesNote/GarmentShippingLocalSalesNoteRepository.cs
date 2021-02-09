@@ -16,13 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingLocalSalesNoteModel> _dbSet;
-        private readonly DbSet<GarmentShippingLocalSalesContractModel> _salesContractDbSet;
+        private readonly DbSet<GarmentShippingLocalSalesContractItemModel> _salesContractDbSet;
 
         public GarmentShippingLocalSalesNoteRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingLocalSalesNoteModel>();
-            _salesContractDbSet= dbContext.Set<GarmentShippingLocalSalesContractModel>();
+            _salesContractDbSet= dbContext.Set<GarmentShippingLocalSalesContractItemModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -32,12 +32,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .Include(i => i.Items)
                 .FirstOrDefault(s => s.Id == id);
 
-            var sc= _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
-            sc.SetIsUsed(false, _identityProvider.Username, UserAgent);
+            //var sc= _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
+
+            //sc.SetIsUsed(false, _identityProvider.Username, UserAgent);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
             foreach (var item in model.Items)
             {
+                var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == item.LocalSalesContractItemId);
+                sc.SetRemainingQuantity(sc.RemainingQuantity + item.Quantity, _identityProvider.Username, UserAgent);
+
                 item.FlagForDelete(_identityProvider.Username, UserAgent);
             }
 
@@ -48,11 +52,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
 
-            var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
-            sc.SetIsUsed(true, _identityProvider.Username, UserAgent);
+            //var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
+            //sc.SetIsUsed(true, _identityProvider.Username, UserAgent);
 
             foreach (var item in model.Items)
             {
+                var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == item.LocalSalesContractItemId);
+                sc.SetRemainingQuantity(sc.RemainingQuantity - item.Quantity, _identityProvider.Username, UserAgent);
+
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
             }
 
@@ -90,8 +97,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
                 var item = model.Items.FirstOrDefault(m => m.Id == itemToUpdate.Id);
+                var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == item.LocalSalesContractItemId);
+                
+
                 if (item != null)
                 {
+
+                    var qty = sc.RemainingQuantity + itemToUpdate.Quantity - item.Quantity;
+                    sc.SetRemainingQuantity(qty, _identityProvider.Username, UserAgent);
+
                     itemToUpdate.SetProductId(item.ProductId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetProductCode(item.ProductCode, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetProductName(item.ProductName, _identityProvider.Username, UserAgent);
@@ -102,15 +116,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetPackageUomUnit(item.PackageUomUnit, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPackageUomId(item.UomId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPackageQuantity(item.PackageQuantity, _identityProvider.Username, UserAgent);
+
                 }
                 else
                 {
                     itemToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+
+                    sc.SetRemainingQuantity(sc.RemainingQuantity + itemToUpdate.Quantity, _identityProvider.Username, UserAgent);
                 }
             }
 
             foreach (var item in model.Items.Where(w => w.Id == 0))
             {
+                var sc = _salesContractDbSet.FirstOrDefault(a => a.Id == item.LocalSalesContractItemId);
+                sc.SetRemainingQuantity(sc.RemainingQuantity - item.Quantity, _identityProvider.Username, UserAgent);
+
                 modelToUpdate.Items.Add(item);
             }
 
