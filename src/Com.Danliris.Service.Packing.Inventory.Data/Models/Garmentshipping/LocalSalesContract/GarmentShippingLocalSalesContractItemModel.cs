@@ -14,13 +14,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string ProductName { get; private set; }
 
         public double Quantity { get; private set; }
+        public double RemainingQuantity { get; private set; }
 
         public int UomId { get; private set; }
         public string UomUnit { get; private set; }
 
         public double Price { get; private set; }
 
-        public GarmentShippingLocalSalesContractItemModel(int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price)
+        public GarmentShippingLocalSalesContractItemModel(int productId, string productCode, string productName, double quantity, double remainingQuantity, int uomId, string uomUnit, double price)
         {
             ProductId = productId;
             ProductCode = productCode;
@@ -29,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             UomId = uomId;
             UomUnit = uomUnit;
             Price = price;
+            RemainingQuantity = remainingQuantity;
         }
 
         public GarmentShippingLocalSalesContractItemModel()
@@ -66,6 +68,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (Quantity != quantity)
             {
                 Quantity = quantity;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemainingQuantity(double remainingQuantity, string userName, string userAgent)
+        {
+            if (RemainingQuantity != remainingQuantity)
+            {
+                RemainingQuantity = remainingQuantity;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
