@@ -579,7 +579,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             table.AddCell(cell);
             cell.Phrase = new Phrase("(                        )", TEXT_FONT);
             table.AddCell(cell);
-            cell.Phrase = new Phrase($"({model.CreatedBy})", TEXT_FONT);
+            cell.Phrase = new Phrase($"( SRIWIYATI )", TEXT_FONT);
             table.AddCell(cell);
 
 

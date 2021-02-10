@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210129040246_AddField_Remark_GarmentShippingInvoice")]
+    partial class AddField_Remark_GarmentShippingInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2415,7 +2417,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<string>("DeliverTo")
-                        .HasMaxLength(1500);
+                        .HasMaxLength(500);
 
                     b.Property<string>("Description")
                         .HasMaxLength(255);
@@ -3000,8 +3002,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(250);
 
                     b.Property<double>("Quantity");
-
-                    b.Property<double>("RemainingQuantity");
 
                     b.Property<int>("UomId");
 
