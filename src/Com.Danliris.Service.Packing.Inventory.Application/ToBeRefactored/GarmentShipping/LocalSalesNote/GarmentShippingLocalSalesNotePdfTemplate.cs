@@ -142,10 +142,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach(var item in viewModel.items)
             {
-                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.packageQuantity), normal_font);
+                cellBodyRight.Phrase = new Phrase(item.packageQuantity==0 ? "" : string.Format("{0:n2}", item.packageQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyLeft.Phrase = new Phrase(item.packageUom.Unit, normal_font);
+                cellBodyLeft.Phrase = new Phrase(item.packageUom==null ? "" : item.packageUom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
                 cellBodyLeft.Phrase = new Phrase(item.product.code + " - " + item.product.name, normal_font);
@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellFooterContent3.Phrase = new Phrase("No Bea Cukai      :", normal_font);
             tableFooter.AddCell(cellFooterContent3);
-            cellFooterContent4.Phrase = new Phrase(cl.bcNo, normal_font);
+            cellFooterContent4.Phrase = new Phrase(cl == null ? "-" : cl.bcNo, normal_font);
             tableFooter.AddCell(cellFooterContent4);
 
             cellFooterContent1.Phrase = new Phrase("Tempo Pembayaran  :", normal_font);
@@ -273,6 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region sign
             PdfPTable tableSign = new PdfPTable(5);
+            tableSign.KeepTogether = true;
             tableSign.WidthPercentage = 80;
             tableSign.SetWidths(new float[] { 1f,1f,1f,1f,1f });
             PdfPCell cellBodySign = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
