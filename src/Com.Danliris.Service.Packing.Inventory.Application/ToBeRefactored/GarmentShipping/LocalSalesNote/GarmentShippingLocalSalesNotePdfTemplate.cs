@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyRight.Phrase = new Phrase(item.packageQuantity==0 ? "" : string.Format("{0:n2}", item.packageQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
-                cellBodyLeft.Phrase = new Phrase(item.packageUom.Unit==null ? "" : item.packageUom.Unit, normal_font);
+                cellBodyLeft.Phrase = new Phrase(item.packageUom==null ? "" : item.packageUom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
                 cellBodyLeft.Phrase = new Phrase(item.product.code + " - " + item.product.name, normal_font);
