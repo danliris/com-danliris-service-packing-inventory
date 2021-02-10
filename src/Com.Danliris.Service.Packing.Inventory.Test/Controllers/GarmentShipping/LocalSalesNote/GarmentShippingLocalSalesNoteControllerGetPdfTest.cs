@@ -140,15 +140,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                 Id=1,
                                 Unit="asjd"
                             },
-                            packageQuantity=12,
+                            packageQuantity=0,
                             product=new ProductViewModel
                             {
                                 name="aksd",
                             },
-                            packageUom= new UnitOfMeasurement
-                            {
-                                Unit="ksljd"
-                            },
+                            packageUom= null,
                             price=1123
                         }
                     }
