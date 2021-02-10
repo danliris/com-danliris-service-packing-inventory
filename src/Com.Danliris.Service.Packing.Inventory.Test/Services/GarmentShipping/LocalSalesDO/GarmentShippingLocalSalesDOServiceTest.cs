@@ -36,6 +36,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
                     items = new List<GarmentShippingLocalSalesDOItemViewModel>()
                     {
                         new GarmentShippingLocalSalesDOItemViewModel()
+                        {
+                            uom=new Application.CommonViewModelObjectProperties.UnitOfMeasurement
+                            {
+                                Id=1,
+                                Unit="test"
+                            },
+                            packUom=new Application.CommonViewModelObjectProperties.UnitOfMeasurement
+                            {
+                                Id=1,
+                                Unit="test"
+                            }
+                        }
                     }
                 };
             }
