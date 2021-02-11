@@ -92,6 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             double totalCtns = 0;
             double grandTotal = 0;
+            var arrayGrandTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
             var newItems = new List<GarmentPackingListItemViewModel>();
@@ -131,7 +132,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             ComodityDescription = a.ComodityDescription,
                             OrderNo = a.OrderNo,
                             AVG_GW = a.AVG_GW,
-                            AVG_NW = a.AVG_NW
+                            AVG_NW = a.AVG_NW,
+                            Uom = a.Uom
                         })
                             .Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
@@ -174,10 +176,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 }
 
-                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 10);
+                PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + 11);
                 var width = new List<float> { 2f, 3.5f, 4f, 4f };
                 for (int i = 0; i < SIZES_COUNT; i++) width.Add(1f);
-                width.AddRange(new List<float> { 1.5f, 1f, 1.5f, 1f, 1f, 1.5f });
+                width.AddRange(new List<float> { 1.5f, 1f, 1.5f, 2f, 1.5f, 1.5f, 1.5f });
                 tableDetail.SetWidths(width.ToArray());
 
                 PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 19, Padding = 0.5f, Phrase = new Phrase("") };
@@ -201,9 +203,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBorderBottomRight.Colspan = 1;
                 cellBorderBottomRight.Rowspan = 2;
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("@\nPCS", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("@", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QTY\nPCS", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QTY", normal_font, 0.75f));
+                tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SATUAN", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GW/\nCTN", normal_font, 0.75f));
                 cellBorderBottomRight.Rowspan = 2;
@@ -225,6 +229,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 double subCtns = 0;
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
+
+                var arraySubTotal = new Dictionary<String, double>();
                 foreach (var detail in item.Details)
                 {
                     var ctnsQty = detail.CartonQuantity;
@@ -273,7 +279,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     var totalQuantity = (detail.CartonQuantity * detail.QuantityPCS);
                     subTotal += totalQuantity;
+                    if (!arraySubTotal.ContainsKey(item.Uom.Unit))
+                    {
+                        arraySubTotal.Add(item.Uom.Unit, totalQuantity);
+                    }
+                    else
+                    {
+                        arraySubTotal[item.Uom.Unit] += totalQuantity;
+                    }
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(totalQuantity.ToString(), normal_font, 0.6f));
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.Uom.Unit, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.GrossWeight), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -316,9 +332,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
                 tableDetail.AddCell(cellBorderBottomRight);
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("", normal_font, 0.6f));
+                tableDetail.AddCell(cellBorderBottomRight);
 
                 totalCtns += subCtns;
                 grandTotal += subTotal;
+                if (!arrayGrandTotal.ContainsKey(item.Uom.Unit))
+                {
+                    arrayGrandTotal.Add(item.Uom.Unit, subTotal);
+                }
+                else
+                {
+                    arrayGrandTotal[item.Uom.Unit] += subTotal;
+                }
 
                 tableDetail.AddCell(new PdfPCell()
                 {
@@ -327,7 +353,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
-                cellBorderBottom.Phrase = new Phrase(subTotal.ToString() + " PCS", normal_font);
+
+                var subTotalResult = string.Join(" / ", arraySubTotal.Select(x => x.Value + " " + x.Key).ToArray());
+                cellBorderBottom.Phrase = new Phrase(subTotalResult, normal_font);
                 cellBorderBottom.Colspan = 2;
                 tableDetail.AddCell(cellBorderBottom);
                 cellBorderBottom.Phrase = new Phrase("", normal_font);
@@ -339,7 +367,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 10,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {item.Details.Sum(a => a.GrossWeight * a.CartonQuantity)} Kgs           - Sub N.W. = {item.Details.Sum(a => a.NetWeight * a.CartonQuantity)} Kgs            - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity)} Kgs", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity))} Kgs", normal_font)
                 });
 
                 new PdfPCell(tableDetail);
@@ -355,6 +383,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableGrandTotal.SetWidths(new float[] { 18f + SIZES_COUNT * 1f, 3f });
             PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 2, Padding = 0.5f, Phrase = new Phrase("") };
 
+            var grandTotalResult = string.Join(" / ", arrayGrandTotal.Select(x => x.Value + " " + x.Key).ToArray());
+
             tableGrandTotal.AddCell(cellHeaderLine);
             tableGrandTotal.AddCell(new PdfPCell()
             {
@@ -367,7 +397,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Border = Rectangle.BOTTOM_BORDER,
                 Padding = 4,
                 HorizontalAlignment = Element.ALIGN_CENTER,
-                Phrase = new Phrase(grandTotal.ToString(), normal_font)
+                Phrase = new Phrase(grandTotalResult, normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
             var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
@@ -413,52 +443,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMark.AddCell(cellSideMark);
 
             byte[] shippingMarkImage;
-
-            try
+            if (!String.IsNullOrEmpty(viewModel.ShippingMarkImageFile))
             {
-                shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
-            }
-            catch (Exception)
-            {
-                shippingMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                if (IsBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile)))
+                {
+                    shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
+                    Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
 
-            Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
+                    if (shipMarkImage.Width > 60)
+                    {
+                        float percentage = 0.0f;
+                        percentage = 100 / shipMarkImage.Width;
+                        shipMarkImage.ScalePercent(percentage * 100);
+                    }
 
-            if (shipMarkImage.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / shipMarkImage.Width;
-                shipMarkImage.ScalePercent(percentage * 100);
+                    PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
+                    shipMarkImageCell.Border = Rectangle.NO_BORDER;
+                    tableMark.AddCell(shipMarkImageCell);
+                }
             }
-
-            PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
-            shipMarkImageCell.Border = Rectangle.NO_BORDER;
-            tableMark.AddCell(shipMarkImageCell);
 
             byte[] sideMarkImage;
-
-            try
+            if (!String.IsNullOrEmpty(viewModel.SideMarkImageFile))
             {
-                sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
-            }
-            catch (Exception)
-            {
-                sideMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                if (IsBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile)))
+                {
+                    sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
 
-            Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
+                    Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
 
-            if (_sideMarkImage.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / _sideMarkImage.Width;
-                _sideMarkImage.ScalePercent(percentage * 100);
+                    if (_sideMarkImage.Width > 60)
+                    {
+                        float percentage = 0.0f;
+                        percentage = 100 / _sideMarkImage.Width;
+                        _sideMarkImage.ScalePercent(percentage * 100);
+                    }
+
+                    PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
+                    _sideMarkImageCell.Border = Rectangle.NO_BORDER;
+                    tableMark.AddCell(_sideMarkImageCell);
+                }
             }
-
-            PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
-            _sideMarkImageCell.Border = Rectangle.NO_BORDER;
-            tableMark.AddCell(_sideMarkImageCell);
 
             new PdfPCell(tableMark);
             tableMark.ExtendLastRow = false;
@@ -470,7 +495,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Measurement
 
             PdfPTable tableMeasurement = new PdfPTable(3);
-            tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 7.8f });
+            tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 12f });
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
             cellMeasurement.Phrase = new Phrase("GROSS WEIGHT", normal_font);
@@ -532,7 +557,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             new PdfPCell(tableMeasurementDetail);
             tableMeasurementDetail.ExtendLastRow = false;
-            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = 100 });
+            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = 400 });
             tableMeasurement.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
@@ -547,29 +572,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             });
 
             byte[] remarkImage;
-
-            try
+            if (!String.IsNullOrEmpty(viewModel.RemarkImageFile))
             {
-                remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
-            }
-            catch (Exception)
-            {
-                remarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                if (IsBase64String(Base64.GetBase64File(viewModel.RemarkImageFile)))
+                {
+                    remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
+                    Image images = Image.GetInstance(imgb: remarkImage);
 
-            Image images = Image.GetInstance(imgb: remarkImage);
+                    if (images.Width > 60)
+                    {
+                        float percentage = 0.0f;
+                        percentage = 100 / images.Width;
+                        images.ScalePercent(percentage * 100);
+                    }
 
-            if (images.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / images.Width;
-                images.ScalePercent(percentage * 100);
+                    PdfPCell imageCell = new PdfPCell(images);
+                    imageCell.Border = Rectangle.NO_BORDER;
+                    imageCell.Colspan = 3;
+                    tableMeasurement.AddCell(imageCell);
+                }
             }
-
-            PdfPCell imageCell = new PdfPCell(images);
-            imageCell.Border = Rectangle.NO_BORDER;
-            imageCell.Colspan = 3;
-            tableMeasurement.AddCell(imageCell);
 
             new PdfPCell(tableMeasurement);
             tableMeasurement.ExtendLastRow = false;
@@ -624,6 +646,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Chunk chunk = new Chunk(text, font);
             chunk.SetHorizontalScaling(scalling);
             return chunk;
+        }
+
+        public bool IsBase64String(string base64)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
         }
     }
 
