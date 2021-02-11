@@ -557,7 +557,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             new PdfPCell(tableMeasurementDetail);
             tableMeasurementDetail.ExtendLastRow = false;
-            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = 400 });
+            var paddingRight = SIZES_COUNT > 11 ? 400 : 200;
+            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = paddingRight });
             tableMeasurement.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
