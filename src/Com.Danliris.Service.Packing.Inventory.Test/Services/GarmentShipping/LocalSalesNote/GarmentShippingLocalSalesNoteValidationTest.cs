@@ -56,7 +56,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentShippingLocalSalesNoteItemViewModel
                 {
                     product = new ProductViewModel {id = 0 },
-                    uom = new UnitOfMeasurement { Id = 0 }
+                    uom = new UnitOfMeasurement { Id = 0 },
+                    quantity=10,
+                    remQty=2
                 }
             };
 

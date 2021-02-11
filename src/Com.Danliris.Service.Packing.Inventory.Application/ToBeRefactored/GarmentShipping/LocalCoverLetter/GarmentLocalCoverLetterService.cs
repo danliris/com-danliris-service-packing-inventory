@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<GarmentLocalCoverLetterViewModel> ReadByLocalSalesNoteId(int localsalesnoteid)
         {
             var data = await _repository.ReadByLocalSalesNoteIdAsync(localsalesnoteid);
-            var viewModel = data==null? null : MapToViewModel(data);
+            var viewModel = data == null ? null : MapToViewModel(data);
 
             return viewModel;
         }

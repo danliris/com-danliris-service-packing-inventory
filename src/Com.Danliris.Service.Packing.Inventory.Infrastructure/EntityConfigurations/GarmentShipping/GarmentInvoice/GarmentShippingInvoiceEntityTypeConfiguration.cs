@@ -131,7 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             configuration
                 .Property(shippingInvoice => shippingInvoice.DeliverTo)
-                .HasMaxLength(500);
+                .HasMaxLength(1500);
 
             configuration
 				.HasMany(shippingInvoice => shippingInvoice.Items)

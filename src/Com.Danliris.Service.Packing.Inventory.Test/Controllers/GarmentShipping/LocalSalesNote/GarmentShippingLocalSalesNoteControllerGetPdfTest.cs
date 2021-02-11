@@ -140,15 +140,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                 Id=1,
                                 Unit="asjd"
                             },
-                            packageQuantity=12,
+                            packageQuantity=0,
                             product=new ProductViewModel
                             {
                                 name="aksd",
                             },
-                            packageUom= new UnitOfMeasurement
-                            {
-                                Unit="ksljd"
-                            },
+                            packageUom= null,
                             price=1123
                         }
                     }
@@ -190,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
-            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null );
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null);
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
@@ -215,6 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
             localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
+            //localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null);
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock
