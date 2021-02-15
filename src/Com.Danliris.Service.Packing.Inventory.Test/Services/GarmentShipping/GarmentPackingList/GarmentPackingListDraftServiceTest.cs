@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("2010001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details1) { Id = 1 },
-                new GarmentPackingListItemModel("2020001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details1 { Id = 2 },
+                new GarmentPackingListItemModel("2020001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details1) { Id = 2 },
                 new GarmentPackingListItemModel("2020001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details1) { Id = 3 } 
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
