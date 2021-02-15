@@ -275,13 +275,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1),
-                new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
+                new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 3, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
             var details2 = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("2010006", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details) { Id = 1 },
                 new GarmentPackingListItemModel("2020001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details1) { Id = 2 },
@@ -351,8 +351,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var details = new HashSet<GarmentPackingListDetailModel> { 
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), 
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), 
-                new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), 
+                new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 3, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
             var details2 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
