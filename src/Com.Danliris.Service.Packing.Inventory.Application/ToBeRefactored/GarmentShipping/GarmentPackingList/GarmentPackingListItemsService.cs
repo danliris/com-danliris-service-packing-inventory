@@ -336,7 +336,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                             detailToUpdate.SetGrossWeight(detail.GrossWeight, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetNetWeight(detail.NetWeight, _identityProvider.Username, UserAgent);
-                            detailToUpdate.SetNetNetWeight((int)detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
 
                             detailToUpdate.SetIndex(detail.Index, _identityProvider.Username, UserAgent);
 
