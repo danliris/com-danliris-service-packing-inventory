@@ -205,7 +205,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var items = new HashSet<GarmentPackingListItemModel> { 
                 new GarmentPackingListItemModel("c", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details) { Id = 1 }, 
                 new GarmentPackingListItemModel("b", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details) { Id = 2 }, 
-                new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details2) { Id = 3 } 
+                new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "d", "", "", details2) { Id = 3 } 
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
@@ -272,7 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var items = new HashSet<GarmentPackingListItemModel> { 
                 new GarmentPackingListItemModel("c", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details) { Id = 1 }, 
                 new GarmentPackingListItemModel("b", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details) { Id = 2 }, 
-                new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "c", "", "", details2) { Id = 3 } 
+                new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "d", "", "", details2) { Id = 3 } 
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
