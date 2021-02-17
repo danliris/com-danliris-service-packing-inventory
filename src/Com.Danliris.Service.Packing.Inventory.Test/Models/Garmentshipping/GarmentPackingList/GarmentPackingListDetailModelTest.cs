@@ -12,6 +12,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.Garmentshipping.Gar
         public void should_Success_Instantiate()
         {
             GarmentPackingListDetailModel model = new GarmentPackingListDetailModel();
+            model.SetGrossWeight(1, "asd", "asd");
+            model.SetNetWeight(1, "asd", "asd");
+            model.SetNetNetWeight(1, "asd", "asd");
             Assert.NotNull(model);
         }
     }
