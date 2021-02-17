@@ -216,7 +216,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 0, sizes, 1)
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 0, sizes, 1){Id = 0},
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 1, sizes, 1){Id = 1},
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 0, sizes, 1){Id = 2},
             };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 1, CreatedBy = "UserTest" },
@@ -269,7 +271,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     }
                     item.Details.Add(detail);
                     item.Details.Add(new GarmentPackingListDetailViewModel { Sizes = new List<GarmentPackingListDetailSizeViewModel> { new GarmentPackingListDetailSizeViewModel() } });
-                    break;
                 }
                 ViewModel.Items.Add(item);
             }
