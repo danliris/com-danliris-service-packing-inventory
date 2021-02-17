@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 GarmentPackingListItemViewModel item = new GarmentPackingListItemViewModel { Id = i.Id, Details = new List<GarmentPackingListDetailViewModel>() };
                 foreach (var d in i.Details)
                 {
-                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel { Id = d.Id, Length = d.Length, Width = d.Width, Height = d.Height, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
+                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel { Id = d.Id, Length = d.Length, Width = d.Width, Height = d.Height, GrossWeight = d.GrossWeight, NetWeight = d.NetWeight, NetNetWeight = d.NetNetWeight, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
                     foreach (var s in d.Sizes)
                     {
                         detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel { Id = s.Id });
