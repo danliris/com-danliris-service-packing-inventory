@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
                 else
                 {
-                    if (newItems.Last().OrderNo == x.OrderNo)
+                    if (newItems.Last().OrderNo == x.OrderNo && newItems.Last().Description == x.Description)
                     {
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {
@@ -128,6 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             Id = a.Id,
                             RONo = a.RONo,
+                            Description = a.Description,
                             Article = a.Article,
                             BuyerAgent = a.BuyerAgent,
                             ComodityDescription = a.ComodityDescription,
@@ -136,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             AVG_NW = a.AVG_NW,
                             Uom = a.Uom
                         })
-                            .Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo);
+                            .Single(a => a.OrderNo == x.OrderNo && a.Description == x.Description);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {
@@ -353,7 +354,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 6,
+                    Colspan = SIZES_COUNT + 7,
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
@@ -370,7 +371,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 10,
+                    Colspan = SIZES_COUNT + 11,
                     Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity))} Kgs", normal_font)
                 });
 
