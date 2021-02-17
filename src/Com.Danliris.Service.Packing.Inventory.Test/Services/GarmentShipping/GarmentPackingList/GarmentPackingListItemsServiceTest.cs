@@ -216,9 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 0, sizes, 1){ Id = 1 },
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 2, 3, 1, 2, 3, 0, sizes, 1){ Id = 2 },
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 2, 3, 1, 2, 3, 0, sizes, 1){ Id = 0},
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 0, sizes, 1)
             };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 1, CreatedBy = "UserTest" },
@@ -262,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 GarmentPackingListItemViewModel item = new GarmentPackingListItemViewModel { Id = i.Id, Details = new List<GarmentPackingListDetailViewModel>() };
                 foreach (var d in i.Details)
                 {
-                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel { Id = d.Id, Length = d.Length, Width = d.Width, Height = d.Height, GrossWeight = d.GrossWeight, NetWeight = d.NetWeight, NetNetWeight = d.NetNetWeight, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
+                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel { Id = d.Id, Carton1 = d.Carton1, Carton2 = d.Carton2, Length = d.Length, Width = d.Width, Height = d.Height, GrossWeight = d.GrossWeight, NetWeight = d.NetWeight, NetNetWeight = d.NetNetWeight, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
                     foreach (var s in d.Sizes)
                     {
                         detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel { Id = s.Id });
@@ -274,7 +272,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     break;
                 }
                 ViewModel.Items.Add(item);
-                break;
             }
             var result = await service.Update(1, ViewModel);
 
