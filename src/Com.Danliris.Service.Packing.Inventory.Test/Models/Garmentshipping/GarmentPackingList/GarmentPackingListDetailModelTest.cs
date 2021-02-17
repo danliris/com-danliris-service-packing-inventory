@@ -15,6 +15,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.Garmentshipping.Gar
             model.SetGrossWeight(1, "asd", "asd");
             model.SetNetWeight(1, "asd", "asd");
             model.SetNetNetWeight(1, "asd", "asd");
+            Assert.Equal(1, model.GrossWeight);
+            Assert.Equal(1, model.NetWeight);
+            Assert.Equal(1, model.NetNetWeight);
             Assert.NotNull(model);
         }
     }
