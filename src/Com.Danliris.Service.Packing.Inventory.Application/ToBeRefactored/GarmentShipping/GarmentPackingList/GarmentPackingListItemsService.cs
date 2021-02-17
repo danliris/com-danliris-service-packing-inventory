@@ -369,12 +369,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     foreach (var detail in item.Details.Where(w => w.Id == 0))
                     {
+                        detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
                         detail.FlagForCreate(_identityProvider.Username, UserAgent);
                         foreach (var size in detail.Sizes)
                         {
                             size.FlagForCreate(_identityProvider.Username, UserAgent);
                         }
-                        detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
                         itemToUpdate.Details.Add(detail);
                     }
                 }
