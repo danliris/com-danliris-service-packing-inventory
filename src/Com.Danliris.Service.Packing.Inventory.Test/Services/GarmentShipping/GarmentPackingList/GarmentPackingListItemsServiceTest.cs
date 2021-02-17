@@ -145,6 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1){ Id = 1 },
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 2, 3, 1, 2, 3, 1, sizes, 1){ Id = 2 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 2, 3, 1, 2, 3, 1, sizes, 1){ Id = 0},
             };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 1, CreatedBy = "UserTest" },
