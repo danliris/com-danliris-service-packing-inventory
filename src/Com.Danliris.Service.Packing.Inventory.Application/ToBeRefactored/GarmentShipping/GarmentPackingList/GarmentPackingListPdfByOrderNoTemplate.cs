@@ -233,7 +233,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var sizeSumQty = new Dictionary<int, double>();
 
                 var arraySubTotal = new Dictionary<String, double>();
-                foreach (var detail in item.Details)
+                foreach (var detail in item.Details.OrderBy(a => a.Carton1).ThenBy(a => a.Carton2))
                 {
                     var ctnsQty = detail.CartonQuantity;
 
