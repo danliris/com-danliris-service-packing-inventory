@@ -374,6 +374,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             size.FlagForCreate(_identityProvider.Username, UserAgent);
                         }
+                        detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
                         itemToUpdate.Details.Add(detail);
                     }
                 }
