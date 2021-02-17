@@ -101,6 +101,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     detail.SetLength(1 + detail.Length, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetWidth(1 + detail.Width, detail.LastModifiedBy, detail.LastModifiedAgent);
                     detail.SetHeight(1 + detail.Height, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetGrossWeight(1 + detail.GrossWeight, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetNetWeight(1 + detail.NetWeight, detail.LastModifiedBy, detail.LastModifiedAgent);
+                    detail.SetNetNetWeight(1 + detail.NetNetWeight, detail.LastModifiedBy, detail.LastModifiedAgent);
 
                     foreach (var size in detail.Sizes)
                     {
