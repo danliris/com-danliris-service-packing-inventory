@@ -15,11 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingPaymentDispositionRecapModel> _dbSet;
+        private readonly DbSet<GarmentShippingPaymentDispositionRecapItemModel> _dbSetItem;
 
         public GarmentShippingPaymentDispositionRecapRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingPaymentDispositionRecapModel>();
+            _dbSetItem = dbContext.Set<GarmentShippingPaymentDispositionRecapItemModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -55,6 +57,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public IQueryable<GarmentShippingPaymentDispositionRecapModel> ReadAll()
         {
             return _dbSet.AsNoTracking();
+        }
+
+        public IQueryable<GarmentShippingPaymentDispositionRecapItemModel> ReadItemAll()
+        {
+            return _dbSetItem.AsNoTracking();
         }
 
         public Task<GarmentShippingPaymentDispositionRecapModel> ReadByIdAsync(int id)

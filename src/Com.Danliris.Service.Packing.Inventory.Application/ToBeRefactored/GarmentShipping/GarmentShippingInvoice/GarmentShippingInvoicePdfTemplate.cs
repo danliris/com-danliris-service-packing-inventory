@@ -13,29 +13,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingInvoicePdfTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingInvoiceViewModel viewModel,Buyer buyer, BankAccount bank , GarmentPackingListViewModel pl, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingInvoiceViewModel viewModel, Buyer buyer, BankAccount bank, GarmentPackingListViewModel pl, int timeoffset)
         {
             const int MARGIN = 20;
 
-            Font header_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN,300, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 300, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
-            writer.PageEvent = new GarmentShippingInvoicePDFTemplatePageEvent(viewModel,timeoffset);
+            writer.PageEvent = new GarmentShippingInvoicePDFTemplatePageEvent(viewModel, timeoffset);
 
             document.Open();
 
-
             #region LC
             PdfPTable tableLC = new PdfPTable(3);
-            tableLC.SetWidths(new float[] { 2f,0.1f, 6f });
+            tableLC.SetWidths(new float[] { 2f, 0.1f, 6f });
 
             if (pl.PaymentTerm == "LC")
             {
@@ -74,14 +73,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellLC = new PdfPCell(tableLC);
             tableLC.ExtendLastRow = false;
-            tableLC.SpacingAfter = 15f;
+            tableLC.SpacingAfter = 4f;
             document.Add(tableLC);
             #endregion
 
             #region Body Table
 
             PdfPTable bodyTable = new PdfPTable(8);
-            float[] bodyTableWidths = new float[] { 1.5f, 1.5f, 1.5f, 1.5f, 1f, 0.7f, 1.4f, 1.9f };
+            float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.8f, 0.5f, 1f, 1.3f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
@@ -184,6 +183,99 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellRightBorder);
 
+            //
+
+            bodyTableCellLeftBorder.Phrase = new Phrase(".", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 4;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 2;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellRightBorder);
+
+            //SPACE
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 4;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 2;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellRightBorder);
+
+            //
+            bodyTableCellLeftBorder.Phrase = new Phrase($"{viewModel.Remark}", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 4;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 2;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellRightBorder);
+
+            //SPACE
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 4;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.Colspan = 2;
+            bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTable.AddCell(bodyTableCellRightBorder);
+
 
             decimal totalAmount = 0;
             double totalQuantity = 0;
@@ -223,7 +315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellLeftBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellLeftBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity), body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n0}", item.Quantity), body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
@@ -265,7 +357,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.Colspan = 4;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            var val1 = total.Select(x => String.Format("{0:n2}", x.Value));
+            var val1 = total.Select(x => String.Format("{0:n0}", x.Value));
             var result1 = String.Join("\n", val1);
 
             var key1 = total.Select(x => String.Format("{0}", x.Key));
@@ -290,7 +382,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            bodyTableCellFooter.Phrase = new Phrase(totalAmount!=0 ? string.Format("{0:n2}", totalAmount) : "", body_font);
+            bodyTableCellFooter.Phrase = new Phrase(totalAmount != 0 ? string.Format("{0:n2}", totalAmount) : "", body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTableCellFooter.Border = Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
@@ -310,19 +402,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 document.Add(new Paragraph("PLEASE TT THE ABOVE PAYMENT TO OUR CORRESPONDENCE BANK AS FOLLOW   : ", normal_font));
 
-                document.Add(new Paragraph(viewModel.BankAccount, normal_font));
+                document.Add(new Paragraph(bank.bankName, normal_font));
                 document.Add(new Paragraph(bank.bankAddress, normal_font));
                 document.Add(new Paragraph("ACC NO. " + bank.AccountNumber + $"({bank.Currency.Code})", normal_font));
-                document.Add(new Paragraph("A/N " + bank.accountName, normal_font));
+                document.Add(new Paragraph("A/N. PT. DAN LIRIS", normal_font));
                 document.Add(new Paragraph("SWIFT CODE : " + bank.swiftCode, normal_font));
                 document.Add(new Paragraph("PURPOSE CODE : 1011", normal_font));
                 document.Add(new Paragraph("\n", normal_font));
             }
-            
+
 
             #region MARK
             PdfPTable tableMark = new PdfPTable(2);
-            tableMark.SetWidths(new float[] { 2f,4f });
+            tableMark.SetWidths(new float[] { 2f, 4f });
             tableMark.WidthPercentage = 100;
 
             PdfPCell cellMarkContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -336,15 +428,73 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMark.AddCell(cellMarkContentR);
 
             tableMark.ExtendLastRow = false;
-            tableMark.SpacingAfter = 15f;
+            tableMark.SpacingAfter = 10f;
             document.Add(tableMark);
+
+            //
+            PdfPTable tableMark1 = new PdfPTable(2);
+            tableMark1.SetWidths(new float[] { 2f, 4f });
+            tableMark1.WidthPercentage = 100;
+            byte[] shippingMarkImage;
+
+            try
+            {
+                shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.ShippingMarkImageFile));
+            }
+            catch (Exception)
+            {
+                shippingMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
+            }
+
+            Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
+
+            if (shipMarkImage.Width > 60)
+            {
+                float percentage = 0.0f;
+                percentage = 100 / shipMarkImage.Width;
+                shipMarkImage.ScalePercent(percentage * 100);
+            }
+
+            PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
+            shipMarkImageCell.Border = Rectangle.NO_BORDER;
+            tableMark1.AddCell(shipMarkImageCell);
+
+            byte[] sideMarkImage;
+
+            try
+            {
+                sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.SideMarkImageFile));
+            }
+            catch (Exception)
+            {
+                sideMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
+            }
+
+            Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
+
+            if (_sideMarkImage.Width > 60)
+            {
+                float percentage = 0.0f;
+                percentage = 100 / _sideMarkImage.Width;
+                _sideMarkImage.ScalePercent(percentage * 100);
+            }
+
+            PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
+            _sideMarkImageCell.Border = Rectangle.NO_BORDER;
+            tableMark1.AddCell(_sideMarkImageCell);
+
+            new PdfPCell(tableMark1);
+            tableMark1.ExtendLastRow = false;
+            tableMark1.SpacingAfter = 5f;
+            document.Add(tableMark1);
+
+            //
 
             #endregion
 
-
             #region Weight
             PdfPTable tableWeight = new PdfPTable(3);
-            tableWeight.SetWidths(new float[] { 3f, 1f, 6f });
+            tableWeight.SetWidths(new float[] { 2f, 0.2f, 7.8f });
             tableWeight.WidthPercentage = 100;
 
             PdfPCell cellWeightContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -360,14 +510,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableWeight.AddCell(cellWeightContentCenter);
 
             PdfPCell cellWeightContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellWeightContentRight.AddElement(new Phrase($"{pl.GrossWeight} KGS", normal_font));
-            cellWeightContentRight.AddElement(new Phrase($"{pl.NettWeight} KGS", normal_font));
+
+            cellWeightContentRight.AddElement(new Phrase($"{string.Format("{0:n2}", pl.GrossWeight)} KGS", normal_font));
+            cellWeightContentRight.AddElement(new Phrase($"{string.Format("{0:n2}", pl.NettWeight)} KGS", normal_font));
 
             PdfPTable tableMeasurement = new PdfPTable(5);
-            tableMeasurement.SetWidths(new float[] { 1f,1f,1f,2f,2f });
-            tableMeasurement.WidthPercentage = 100;
+            tableMeasurement.SetWidths(new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f });
+            tableMeasurement.WidthPercentage = 60;
 
-            PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment=Element.ALIGN_RIGHT };
+            PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             if (pl.Measurements.Count > 0)
             {
                 double totalctns = 0;
@@ -376,14 +527,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     double cbm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 1000000;
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Length} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Length) + " X", normal_font);
                     cellMeasurement.PaddingLeft = 1;
                     tableMeasurement.AddCell(cellMeasurement);
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Width} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Width) + " X", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
-                    cellMeasurement.Phrase = new Phrase($"{m.Height} X", normal_font);
+                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Height) + " X", normal_font);
                     tableMeasurement.AddCell(cellMeasurement);
 
                     cellMeasurement.Phrase = new Phrase($"{m.CartonsQuantity} CTNS = ", normal_font);
@@ -400,7 +551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellMeasurement.Colspan = 2;
                 tableMeasurement.AddCell(cellMeasurement);
 
-                cellMeasurement.Phrase = new Phrase($"{totalctns} CTNS", normal_font);
+                cellMeasurement.Phrase = new Phrase("                       " + $"{totalctns} CTNS", normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
 
                 cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", totalCM) + " CBM", normal_font);
@@ -411,21 +562,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             tableWeight.AddCell(cellWeightContentRight);
 
-
-            tableWeight.SpacingAfter = 15f;
+            tableWeight.SpacingAfter = 1f;
             document.Add(tableWeight);
             #endregion
 
-            document.Add(new Paragraph("REMARK : ", normal_font_underlined));
-            document.Add(new Paragraph(pl.Remark, normal_font));
+            //document.Add(new Paragraph("REMARK : ", normal_font_underlined));
+            //document.Add(new Paragraph(pl.Remark, normal_font));
 
-            document.Add(new Paragraph("\n", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
+            //document.Add(new Paragraph("\n", normal_font));
+            //document.Add(new Paragraph("\n", normal_font));
+            //document.Add(new Paragraph("\n", normal_font));
+            //document.Add(new Paragraph("\n", normal_font));
+            //document.Add(new Paragraph("\n", normal_font));
+            //
+            #region REMARK
+            PdfPTable tableRemark = new PdfPTable(1);
+            tableRemark.SetWidths(new float[] { 6f });
+            tableRemark.WidthPercentage = 100;
 
-            Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )",normal_font_underlined);
+            PdfPCell cellRemarkContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            cellRemarkContent.AddElement(new Phrase("REMARK :", normal_font_underlined));
+            cellRemarkContent.AddElement(new Phrase(pl.Remark, normal_font));
+            tableRemark.AddCell(cellRemarkContent);
+
+            tableRemark.ExtendLastRow = false;
+            tableRemark.SpacingAfter = 10f;
+            document.Add(tableRemark);
+
+            //
+            PdfPTable tableRemark2 = new PdfPTable(1);
+            tableRemark2.SetWidths(new float[] { 6f });
+            tableRemark2.WidthPercentage = 100;
+            byte[] shippingRemarkImage;
+
+            try
+            {
+                shippingRemarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.RemarkImageFile));
+            }
+            catch (Exception)
+            {
+                shippingRemarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
+            }
+
+            Image shipRemarkImage = Image.GetInstance(imgb: shippingRemarkImage);
+
+            if (shipRemarkImage.Width > 60)
+            {
+                float percentage = 0.0f;
+                percentage = 100 / shipRemarkImage.Width;
+                shipRemarkImage.ScalePercent(percentage * 100);
+            }
+
+            PdfPCell shipRemarkImageCell = new PdfPCell(shipRemarkImage);
+            shipRemarkImageCell.Border = Rectangle.NO_BORDER;
+            tableRemark2.AddCell(shipRemarkImageCell);
+
+            new PdfPCell(tableRemark2);
+            tableRemark2.ExtendLastRow = false;
+            tableRemark2.SpacingAfter = 5f;
+            document.Add(tableRemark2);
+            //         
+            #endregion
+
+            //
+            Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
             sign.Alignment = Element.ALIGN_RIGHT;
             Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
             author.Alignment = Element.ALIGN_RIGHT;
@@ -454,17 +654,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
         public override void OnStartPage(PdfWriter writer, Document document)
         {
-            
+
             PdfContentByte cb = writer.DirectContent;
             cb.BeginText();
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            BaseFont bf = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
 
             cb.SetFontAndSize(bf, 8);
-            
+
 
             #region CENTER
 
@@ -473,7 +673,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             string[] headOffices = {
-                "Ref. No. : FM-00-SP-24-006",
+                "                                                                                                                   Ref. No. : FM-00-SP-24-006",
             };
             for (int i = 0; i < headOffices.Length; i++)
             {
@@ -482,20 +682,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #endregion
 
-
-            #region RIGHT
-
-
-            BaseColor grey = new BaseColor(128, 128, 128);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Page " + (writer.PageNumber), width - (30 / 2) - marginRight, height - marginTop + 160, 0);
-
-            #endregion
+            //#region RIGHT
+            //BaseColor grey = new BaseColor(128, 128, 128);
+            //cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Page " + (writer.PageNumber), width - (6 / 2) - marginRight, height - marginTop + 160, 0);
+            //#endregion
 
             #region table
             PdfPTable table = new PdfPTable(1);
 
             table.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin; //this centers [table]
-            
+
             PdfPTable tabledetailOrders = new PdfPTable(3);
             tabledetailOrders.SetWidths(new float[] { 0.6f, 1.4f, 2f });
 
@@ -505,11 +701,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                    Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.Colspan = 3;
             tabledetailOrders.AddCell(cellHeaderContentLeft);
-            
+
             cellDetailContentLeft.Phrase = new Phrase("SOLD BY ORDERS AND FOR ACCOUNT AND RISK OF", normal_font);
             cellDetailContentLeft.Colspan = 2;
             tabledetailOrders.AddCell(cellDetailContentLeft);
@@ -541,7 +737,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tabledetailOrders.AddCell(cellDetailContentRight);
 
 
-
             cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
             cellDetailContentRight.Colspan = 1;
             cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
@@ -559,7 +754,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetail.Border = Rectangle.NO_BORDER;
             table.AddCell(cellDetail);
 
-            table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + 150, writer.DirectContent);
+            table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + 130, writer.DirectContent);
             #endregion
 
             cb.EndText();
