@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
 {
     public class GarmentShippingPaymentDispositionRecapItemModel : StandardEntity
     {
-        public int RecapId { get; private set; }
+        public int RecapId { get; set; }
 
         public int PaymentDispositionId { get; private set; }
         public GarmentShippingPaymentDispositionModel PaymentDisposition { get; private set; }

@@ -53,17 +53,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellHeaderLeft = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             cellHeaderLeft.Phrase = new Phrase("Kepada Yth.\n\n" +
-                                               $"{viewModel.emkl.Name} \n\n" +
+                                               //$"{viewModel.emkl.Name} \n\n" +
                                                $"{viewModel.destination} \n" +
                                                $"{viewModel.address} \n" +
                                                $"PIC : {viewModel.pic} \n\n" +
                                                $"Forwarder : {viewModel.forwarder.name} \n\n" +
                                                $"ATTN  : {viewModel.attn} \n" +
                                                $"PHONE : {viewModel.phone}", normal_font);
-            cellHeaderLeft.Rowspan = 5;
+            cellHeaderLeft.Rowspan = 7;
             tableHeader.AddCell(cellHeaderLeft);
 
-            cellHeaderLeft.Phrase = new Phrase("", normal_font);
+            cellHeaderLeft.Phrase = new Phrase("Tanggal", normal_font);
             cellHeaderLeft.Rowspan = 1;
             tableHeader.AddCell(cellHeaderLeft);
             cellHeaderLeft.Phrase = new Phrase(viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
@@ -74,14 +74,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderLeft.Phrase = new Phrase(viewModel.order.Name, normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
-            cellHeaderLeft.Phrase = new Phrase("Jumlah ", normal_font);
+            cellHeaderLeft.Phrase = new Phrase("Jumlah Pcs ", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.pcsQuantity + viewModel.setsQuantity + viewModel.packQuantity}", normal_font);
+            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.pcsQuantity)} PCS", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
+
+            cellHeaderLeft.Phrase = new Phrase("Jumlah Sets", normal_font);
+            tableHeader.AddCell(cellHeaderLeft);
+            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.setsQuantity)} SETS", normal_font);
+            tableHeader.AddCell(cellHeaderLeft);
+
+            cellHeaderLeft.Phrase = new Phrase("Jumlah Packs", normal_font);
+            tableHeader.AddCell(cellHeaderLeft);
+            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.packQuantity)} PACKS", normal_font);
+            tableHeader.AddCell(cellHeaderLeft);
+
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah Collie", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{viewModel.cartoonQuantity}", normal_font);
+            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.cartoonQuantity)} COLLIE", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Invoice No.", normal_font);
@@ -125,7 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetail.Phrase = new Phrase("Jumlah Muatan", normal_font);
             tableDetail.AddCell(cellDetail);
 
-            cellDetail.Phrase = new Phrase(viewModel.truck, normal_font);
+            cellDetail.Phrase = new Phrase(viewModel.emkl.Name, normal_font);
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase(viewModel.plateNumber, normal_font);
             tableDetail.AddCell(cellDetail);
@@ -175,7 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (!string.IsNullOrEmpty(viewModel.emklSeal))
             {
                 sealType += "Seal EMKL \n";
-                seal +=": "+ viewModel.emklSeal + "\n";
+                seal += ": " + viewModel.emklSeal + "\n";
             }
 
 
@@ -244,7 +255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("__________________", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("(    "+viewModel.shippingStaff.name+"    )", normal_font);
+            cellSign.Phrase = new Phrase("(    " + viewModel.shippingStaff.name + "    )", normal_font);
             tableSign.AddCell(cellSign);
 
             cellSign.Phrase = new Phrase("", normal_font);
@@ -256,7 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Phrase = new Phrase("Sat Pam", normal_font);
             tableSign.AddCell(cellSign);
 
-            cellSign.Phrase = new Phrase("Konfeksi "+ $"{viewModel.unit}", normal_font);
+            cellSign.Phrase = new Phrase("Konfeksi " + $"{viewModel.unit}", normal_font);
             tableSign.AddCell(cellSign);
 
             cellSign.Phrase = new Phrase("Shipping Staff", normal_font);
@@ -323,7 +334,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSign.Colspan = 3;
             cellSign.HorizontalAlignment = Element.ALIGN_LEFT;
             tableSign.AddCell(cellSign);
-            
+
             cellSign.Phrase = new Phrase("                              (__________________)", normal_font);
             cellSign.Rowspan = 1;
             tableSign.AddCell(cellSign);
@@ -364,9 +375,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 #region LEFT
 
-                
+
                 var branchOfficeY = height - marginTop + 70;
-                
+
                 byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_58_58);
                 Image imageDL = Image.GetInstance(imageByteDL);
                 imageDL.SetAbsolutePosition(marginLeft, branchOfficeY);
@@ -420,7 +431,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     percentage = 80 / imageIso.Width;
                     imageIso.ScalePercent(percentage * 100);
                 }
-                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight-30, branchOfficeY);
+                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight - 30, branchOfficeY);
                 cb.AddImage(imageIso, inlineImage: true);
                 //cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight-30, headOfficeY, 0);
 

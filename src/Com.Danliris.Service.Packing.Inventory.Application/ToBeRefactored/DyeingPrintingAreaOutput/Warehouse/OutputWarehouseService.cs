@@ -2145,7 +2145,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductPackingCode = p.ProductPackingCode,
                 HasPrintingProductPacking = p.HasPrintingProductPacking,
                 DyeingPrintingAreaInputProductionOrderId = p.Id,
-                DateIn = p.DateIn
+                DateIn = p.DateIn,
+                PreviousQtyPacking = p.PackagingQty
             });
 
             return data.FirstOrDefault();

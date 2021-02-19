@@ -92,6 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             double totalCtns = 0;
             double grandTotal = 0;
+            var uom = "";
             var arrayGrandTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
@@ -114,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
                 else
                 {
-                    if (newItems.Last().OrderNo == x.OrderNo)
+                    if (newItems.Last().OrderNo == x.OrderNo && newItems.Last().Description == x.Description)
                     {
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {
@@ -127,6 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             Id = a.Id,
                             RONo = a.RONo,
+                            Description = a.Description,
                             Article = a.Article,
                             BuyerAgent = a.BuyerAgent,
                             ComodityDescription = a.ComodityDescription,
@@ -135,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             AVG_NW = a.AVG_NW,
                             Uom = a.Uom
                         })
-                            .Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo);
+                            .Single(a => a.OrderNo == x.OrderNo && a.Description == x.Description);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {
@@ -231,9 +233,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var sizeSumQty = new Dictionary<int, double>();
 
                 var arraySubTotal = new Dictionary<String, double>();
-                foreach (var detail in item.Details)
+                foreach (var detail in item.Details.OrderBy(a => a.Carton1).ThenBy(a => a.Carton2))
                 {
                     var ctnsQty = detail.CartonQuantity;
+
+                    var article = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Article;
+                    uom = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Uom.Unit;
                     if (cartonNumbers.Contains($"{detail.Carton1}- {detail.Carton2}"))
                     {
                         ctnsQty = 0;
@@ -246,7 +251,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Colour, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.Article, normal_font, 0.6f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(article, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.OrderNo, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -279,17 +284,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     var totalQuantity = (detail.CartonQuantity * detail.QuantityPCS);
                     subTotal += totalQuantity;
-                    if (!arraySubTotal.ContainsKey(item.Uom.Unit))
+                    if (!arraySubTotal.ContainsKey(uom))
                     {
-                        arraySubTotal.Add(item.Uom.Unit, totalQuantity);
+                        arraySubTotal.Add(uom, totalQuantity);
                     }
                     else
                     {
-                        arraySubTotal[item.Uom.Unit] += totalQuantity;
+                        arraySubTotal[uom] += totalQuantity;
                     }
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(totalQuantity.ToString(), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.Uom.Unit, normal_font, 0.6f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(uom, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(string.Format("{0:n2}", detail.GrossWeight), normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -337,19 +342,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 totalCtns += subCtns;
                 grandTotal += subTotal;
-                if (!arrayGrandTotal.ContainsKey(item.Uom.Unit))
+                if (!arrayGrandTotal.ContainsKey(uom))
                 {
-                    arrayGrandTotal.Add(item.Uom.Unit, subTotal);
+                    arrayGrandTotal.Add(uom, subTotal);
                 }
                 else
                 {
-                    arrayGrandTotal[item.Uom.Unit] += subTotal;
+                    arrayGrandTotal[uom] += subTotal;
                 }
 
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 6,
+                    Colspan = SIZES_COUNT + 7,
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
@@ -366,7 +371,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 10,
+                    Colspan = SIZES_COUNT + 11,
                     Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity))} Kgs", normal_font)
                 });
 
@@ -557,7 +562,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             new PdfPCell(tableMeasurementDetail);
             tableMeasurementDetail.ExtendLastRow = false;
-            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = 400 });
+            var paddingRight = SIZES_COUNT > 11 ? 400 : 200;
+            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = paddingRight });
             tableMeasurement.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
