@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 300, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 350, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -85,13 +85,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.WidthPercentage = 100;
 
             #region Set Body Table Header
-            PdfPCell bodyTableHeader = new PdfPCell() { FixedHeight = 20 };
+            PdfPCell bodyTableHeader = new PdfPCell();// { FixedHeight = 30 };
             //PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            //bodyTableHeader.Rowspan = 2;
+            bodyTableHeader.Rowspan = 2;
             bodyTableHeader.Colspan = 4;
             bodyTable.AddCell(bodyTableHeader);
 
@@ -101,36 +101,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableHeader.Colspan = 2;
             bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase("UNIT PRICE", normal_font);
+            bodyTableHeader.Phrase = new Phrase("UNIT PRICE\n" + viewModel.CPrice + " IN USD", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.Rowspan = 1;
+            //bodyTableHeader.Rowspan = 1;
             bodyTableHeader.Colspan = 1;
             bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase("TOTAL PRICE", normal_font);
+            bodyTableHeader.Phrase = new Phrase("TOTAL PRICE\n" + viewModel.CPrice + " IN USD", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase("", normal_font);
-            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            //bodyTableHeader.Rowspan = 2;
-            bodyTableHeader.Colspan = 4;
-            bodyTable.AddCell(bodyTableHeader);
+            //bodyTableHeader.Phrase = new Phrase("", normal_font);
+            //bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            ////bodyTableHeader.Rowspan = 2;
+            //bodyTableHeader.Colspan = 4;
+            //bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase("", normal_font);
-            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.Colspan = 2;
-            bodyTable.AddCell(bodyTableHeader);
+            //bodyTableHeader.Phrase = new Phrase("", normal_font);
+            //bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.Colspan = 2;
+            //bodyTable.AddCell(bodyTableHeader);
 
-            bodyTableHeader.Phrase = new Phrase(viewModel.CPrice + " IN USD", normal_font);
-            bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableHeader.Colspan = 2;
-            bodyTable.AddCell(bodyTableHeader);
+            //bodyTableHeader.Phrase = new Phrase(viewModel.CPrice + " IN USD", normal_font);
+            //bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableHeader.Colspan = 2;
+            //bodyTable.AddCell(bodyTableHeader);
             #endregion
 
             #region Set Body Table Value
@@ -389,7 +389,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.AddCell(bodyTableCellFooter);
 
             #endregion
-            bodyTable.HeaderRows = 2;
+            bodyTable.HeaderRows = 1;
             document.Add(bodyTable);
             #endregion
 
@@ -754,7 +754,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetail.Border = Rectangle.NO_BORDER;
             table.AddCell(cellDetail);
 
-            table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + 130, writer.DirectContent);
+            table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + tabledetailOrders.TotalHeight+10, writer.DirectContent);
             #endregion
 
             cb.EndText();
