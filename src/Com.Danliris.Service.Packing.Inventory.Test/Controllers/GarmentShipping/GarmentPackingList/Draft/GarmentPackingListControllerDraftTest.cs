@@ -639,7 +639,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             {
                 Items = new List<GarmentPackingListItemViewModel>
                 {
-                    new GarmentPackingListItemViewModel()
+                    new GarmentPackingListItemViewModel
+                        {
+                            Id = 1,
+                            Details = new List<GarmentPackingListDetailViewModel>()
+                            {
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Id = 1,
+                                    NetWeight = 10,
+                                    NetNetWeight = 0,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 1
+                                        }
+                                    }
+                                },
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Id = 2,
+                                    NetWeight = 10,
+                                    NetNetWeight = 10,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 2
+                                        }
+                                    }
+                                },
+                            }
+                        }
                 }
             };
         }
