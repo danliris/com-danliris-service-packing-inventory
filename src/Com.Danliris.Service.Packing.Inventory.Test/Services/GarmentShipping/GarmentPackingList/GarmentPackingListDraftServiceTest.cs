@@ -45,6 +45,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                 new GarmentPackingListDetailViewModel
                                 {
                                     Id = 1,
+                                    NetWeight = 10,
+                                    NetNetWeight = 0,
                                     Sizes = new List<GarmentPackingListDetailSizeViewModel>()
                                     {
                                         new GarmentPackingListDetailSizeViewModel()
@@ -52,7 +54,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                             Id = 1
                                         }
                                     }
-                                }
+                                },
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Id = 2,
+                                    NetWeight = 10,
+                                    NetNetWeight = 10,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 2
+                                        }
+                                    }
+                                },
                             }
                         }
                     },
