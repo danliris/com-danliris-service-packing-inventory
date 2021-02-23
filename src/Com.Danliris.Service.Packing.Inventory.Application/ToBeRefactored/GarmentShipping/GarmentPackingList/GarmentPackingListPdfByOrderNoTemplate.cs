@@ -97,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<string> cartonNumbers = new List<string>();
 
             var newItems = new List<GarmentPackingListItemViewModel>();
+            var newItems2 = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
             foreach (var item in viewModel.Items)
             {
@@ -107,20 +108,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
 
-            foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
+            foreach (var d in newDetails)
             {
                 if (newItems.Count == 0)
                 {
-                    newItems.Add(x);
+                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
+                    i.Details = new List<GarmentPackingListDetailViewModel>();
+                    i.Details.Add(d);
+                    newItems.Add(i);
                 }
                 else
                 {
-                    if (newItems.Last().OrderNo == x.OrderNo && newItems.Last().Description == x.Description)
+                    if (newItems.Last().Id == d.PackingListItemId)
                     {
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems.Last().Details.Add(d);
-                        }
+                        newItems.Last().Details.Add(d);
                     }
                     else
                     {
@@ -128,27 +129,86 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         {
                             Id = a.Id,
                             RONo = a.RONo,
-                            Description = a.Description,
                             Article = a.Article,
                             BuyerAgent = a.BuyerAgent,
                             ComodityDescription = a.ComodityDescription,
                             OrderNo = a.OrderNo,
                             AVG_GW = a.AVG_GW,
                             AVG_NW = a.AVG_NW,
-                            Uom = a.Uom
+                            Description = a.Description
                         })
-                            .Single(a => a.OrderNo == x.OrderNo && a.Description == x.Description);
+                            .Single(a => a.Id == d.PackingListItemId);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            y.Details.Add(d);
-                        }
+                        y.Details.Add(d);
                         newItems.Add(y);
                     }
                 }
             }
 
             foreach (var item in newItems)
+            {
+                if (newItems2.Count == 0)
+                {
+                    newItems2.Add(item);
+                }
+                else
+                {
+                    if (newItems2.Last().OrderNo == item.OrderNo)
+                    {
+                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems2.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        newItems2.Add(item);
+                    }
+                }
+            }
+
+            //foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
+            //{
+            //    if (newItems.Count == 0)
+            //    {
+            //        newItems.Add(x);
+            //    }
+            //    else
+            //    {
+            //        if (newItems.Last().OrderNo == x.OrderNo && newItems.Last().Description == x.Description)
+            //        {
+            //            foreach (var d in x.Details.OrderBy(a => a.Carton1))
+            //            {
+            //                newItems.Last().Details.Add(d);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+            //            {
+            //                Id = a.Id,
+            //                RONo = a.RONo,
+            //                Description = a.Description,
+            //                Article = a.Article,
+            //                BuyerAgent = a.BuyerAgent,
+            //                ComodityDescription = a.ComodityDescription,
+            //                OrderNo = a.OrderNo,
+            //                AVG_GW = a.AVG_GW,
+            //                AVG_NW = a.AVG_NW,
+            //                Uom = a.Uom
+            //            })
+            //                .Single(a => a.OrderNo == x.OrderNo && a.Description == x.Description);
+            //            y.Details = new List<GarmentPackingListDetailViewModel>();
+            //            foreach (var d in x.Details.OrderBy(a => a.Carton1))
+            //            {
+            //                y.Details.Add(d);
+            //            }
+            //            newItems.Add(y);
+            //        }
+            //    }
+            //}
+
+            foreach (var item in newItems2)
             {
                 #region Item
 
