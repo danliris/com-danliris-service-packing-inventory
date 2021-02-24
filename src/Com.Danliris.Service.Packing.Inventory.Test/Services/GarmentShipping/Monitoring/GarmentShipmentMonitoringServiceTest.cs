@@ -67,11 +67,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var iteminv = new List<GarmentShippingInvoiceItemModel>
                         {
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 2)
                              {
                                GarmentShippingInvoiceId = 1
                              },
@@ -140,11 +140,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var iteminv = new List<GarmentShippingInvoiceItemModel>
                         {
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 2)
                              {
                                GarmentShippingInvoiceId = 1
                              },
@@ -214,11 +214,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var iteminv = new List<GarmentShippingInvoiceItemModel>
                         {
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
                              {
                                GarmentShippingInvoiceId = 1
                               },
-                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1)
+                         new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 2)
                              {
                                GarmentShippingInvoiceId = 1
                              },

@@ -52,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(new List<GarmentPackingListModel>() { packingListModel }.AsQueryable());
 
             var invoiceItemModels = new HashSet<GarmentShippingInvoiceItemModel> {
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "Unitbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3)
+                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "Unitbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
                 {
                     Id = 1
                 }
@@ -104,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(new List<GarmentPackingListModel>() { packingListModel }.AsQueryable());
 
             var invoiceItemModels = new HashSet<GarmentShippingInvoiceItemModel> {
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "Unitbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3)
+                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "Unitbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
                 {
                     Id = 1
                 }
