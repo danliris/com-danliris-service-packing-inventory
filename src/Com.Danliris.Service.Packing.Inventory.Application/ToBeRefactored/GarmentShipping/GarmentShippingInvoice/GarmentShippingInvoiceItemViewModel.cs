@@ -25,5 +25,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public string CurrencyCode { get;  set; }
 		public Unit Unit { get; set; }
 		public decimal CMTPrice { get; set; }
+		public int PackingListItemId { get; set; }
 	}
 }
