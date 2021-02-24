@@ -146,7 +146,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 					{
 						Id = i.UnitId,
 						Code = i.UnitCode
-					}
+					},
+					PackingListItemId = i.PackingListItemId
 				}).ToList(),
 				GarmentShippingInvoiceUnits= model.GarmentShippingInvoiceUnit.Select(i => new GarmentShippingInvoiceUnitViewModel
                 {
