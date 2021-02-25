@@ -45,6 +45,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                             {
                                 new GarmentPackingListDetailViewModel
                                 {
+                                    NetWeight = 10,
+                                    NetNetWeight = 0,
+                                    Id = 1,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                    }
+                                },
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    NetWeight = 10,
+                                    NetNetWeight = 10,
+                                    Id = 2,
                                     Sizes = new List<GarmentPackingListDetailSizeViewModel>()
                                     {
                                         new GarmentPackingListDetailSizeViewModel()
@@ -172,8 +185,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentPackingListModel>()))
                 .ReturnsAsync(1);
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.Update(1, ViewModel);
 
