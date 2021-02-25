@@ -421,7 +421,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 cellHeader.Phrase = new Phrase(detail.Packing, TEXT_FONT);
                 table.AddCell(cellHeader);
 
-                var yardLength = 1.093613298 * detail.Qty;
+                var convyardLength = 1.09361 * detail.Qty;
+                var yardLength = Math.Round(convyardLength, 0);
                 cellRight.Phrase = new Phrase(yardLength.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
                 table.AddCell(cellRight);
                 yardLengthTotal += yardLength;
