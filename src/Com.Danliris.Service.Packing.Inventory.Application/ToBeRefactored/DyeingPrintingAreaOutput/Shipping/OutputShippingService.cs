@@ -1748,7 +1748,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductPackingCode = d.ProductPackingCode,
                 HasPrintingProductPacking = d.HasPrintingProductPacking,
                 DateIn = d.DateIn,
-                BonNo = _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo == null ? "-" : _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo
+                BonNo = d.Id != 0 ? _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo == null ? "-" : _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo : "-"
             });
 
         
