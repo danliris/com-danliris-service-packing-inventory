@@ -556,5 +556,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void should_success_GetInputIM()
+        {
+            var serviceMock = new Mock<IInputInspectionMaterialService>();
+            serviceMock.Setup(s => s.ReadInputIM(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns((new ListResult<InputInspectionMaterialProductionOrderViewModel>(new List<InputInspectionMaterialProductionOrderViewModel>(), 1, 1, 1)));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetInputIM("1","{}", DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, 1, 25, "{}");
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void should_exception_GetInputIM()
+        {
+            var serviceMock = new Mock<IInputInspectionMaterialService>();
+            serviceMock.Setup(s => s.ReadInputIM(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetInputIM("1", "{}", DateTime.UtcNow.AddDays(-1), DateTime.UtcNow, 1, 25, "{}");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }

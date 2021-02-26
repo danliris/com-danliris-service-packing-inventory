@@ -269,6 +269,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
+        
+
         public ListResult<InputInspectionMaterialProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword)
         {
             var query = _productionOrderRepository.ReadAll();
@@ -336,6 +338,113 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return new ListResult<InputInspectionMaterialProductionOrderViewModel>(data.ToList(), page, size, query.Count());
         }
+
+        public ListResult<InputInspectionMaterialProductionOrderViewModel> ReadInputIM(string productionOrderId, string unit, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int page, int size, string order, int offset)
+        {
+           long POid = Convert.ToInt64(productionOrderId); 
+
+
+            var query = _productionOrderRepository.ReadAll()
+                .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL);
+            if (dateFrom.HasValue && dateTo.HasValue && productionOrderId==null && unit==null)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                            s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (!dateFrom.HasValue && dateTo.HasValue && productionOrderId==null && unit==null)
+            {
+                query = query.Where(s => s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (dateFrom.HasValue && !dateTo.HasValue && productionOrderId==null && unit==null)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date);
+            }
+            else if (!dateFrom.HasValue && !dateTo.HasValue && productionOrderId!=null && unit==null)
+            {
+                query = query.Where(s => s.ProductionOrderId == POid);
+            }
+            else if (dateFrom.HasValue && dateTo.HasValue && productionOrderId != null && unit == null)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                           s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Value.Date && s.ProductionOrderId == POid);
+            }
+            else if (!dateFrom.HasValue && !dateTo.HasValue && productionOrderId==null && unit!=null)
+            {
+                query = query.Where(s => s.Unit == unit);
+            }
+            else if (!dateFrom.HasValue && !dateTo.HasValue && productionOrderId !=null && unit !=null)
+            {
+                query = query.Where(s => s.ProductionOrderId == POid && s.Unit == unit);
+            }
+            else if (dateFrom.HasValue && dateTo.HasValue && productionOrderId == null && unit != null)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                           s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Value.Date && s.Unit == unit);
+            }
+            else if (dateFrom.HasValue && dateTo.HasValue && productionOrderId!=null && unit!=null)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                           s.DateIn.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateTo.Value.Date && 
+                           s.ProductionOrderId == POid && s.Unit == unit);
+            }
+
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaInputProductionOrderModel>.Order(query, OrderDictionary);
+
+
+            var data = query.Skip((page - 1) * size).Take(size).Select(s => new InputInspectionMaterialProductionOrderViewModel()
+            {
+                Id = s.Id,
+                Balance = s.Balance,
+                BalanceRemains = s.BalanceRemains,
+                InputQuantity = s.InputQuantity,
+                Buyer = s.Buyer,
+                CartNo = s.CartNo,
+                BuyerId = s.BuyerId,
+                Color = s.Color,
+                Construction = s.Construction,
+                HasOutputDocument = s.HasOutputDocument,
+                IsChecked = s.IsChecked,
+                Motif = s.Motif,
+                PackingInstruction = s.PackingInstruction,
+                MaterialWidth = s.MaterialWidth,
+                FinishWidth = s.FinishWidth,
+                BonNo = s.DyeingPrintingAreaInput.BonNo,
+                Material = new Material()
+                {
+                    Id = s.MaterialId,
+                    Name = s.MaterialName
+                },
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.YarnMaterialId,
+                    Name = s.YarnMaterialName
+                },
+                ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                {
+                    Id = s.ProcessTypeId,
+                    Name = s.ProcessTypeName
+                },
+                Grade = s.Grade,
+                MaterialConstruction = new MaterialConstruction()
+                {
+                    Name = s.MaterialConstructionName,
+                    Id = s.MaterialConstructionId
+                },
+                ProductionOrder = new ProductionOrder()
+                {
+                    Id = s.ProductionOrderId,
+                    No = s.ProductionOrderNo,
+                    Type = s.ProductionOrderType
+                },
+                Unit = s.Unit,
+                UomUnit = s.UomUnit,
+                DateIn = s.DateIn,
+                DateOut = s.DateOut
+            });
+            return new ListResult<InputInspectionMaterialProductionOrderViewModel>(data.ToList(), page, size, query.Count());
+        } 
 
         public async Task<int> Delete(int id)
         {
