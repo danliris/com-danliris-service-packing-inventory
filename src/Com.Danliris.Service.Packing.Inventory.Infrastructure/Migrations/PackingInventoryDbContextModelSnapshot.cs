@@ -1646,6 +1646,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<int>("Index");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -2413,7 +2415,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<string>("DeliverTo")
-                        .HasMaxLength(500);
+                        .HasMaxLength(1500);
 
                     b.Property<string>("Description")
                         .HasMaxLength(255);
@@ -2465,6 +2467,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("PaymentDue")
                         .HasMaxLength(5);
+
+                    b.Property<string>("Remark");
 
                     b.Property<DateTimeOffset>("SailingDate");
 
@@ -2996,6 +3000,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(250);
 
                     b.Property<double>("Quantity");
+
+                    b.Property<double>("RemainingQuantity");
 
                     b.Property<int>("UomId");
 

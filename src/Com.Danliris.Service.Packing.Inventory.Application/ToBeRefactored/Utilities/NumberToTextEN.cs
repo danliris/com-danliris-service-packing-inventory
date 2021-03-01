@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
     {
         static string[] th = { "", "THOUSAND", "MILLION", "BILLION", "TRILLION" };
         static string[] dg = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE" };
-        static string[] tn = { "TEN", "EELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN" };
+        static string[] tn = { "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN" };
         static string[] tw = { "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTy", "NINETY" };
 
         public static string toWords(double s)
@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 else if (n.ToString()[i] != '0')
                 { // 0235
                     str += dg[Convert.ToInt16(n.ToString()[i].ToString())] + " ";
-                    if ((x - i) % 3 == 0) str += " HUNDRED AND ";
+                    if ((x - i) % 3 == 0) str += "HUNDRED AND ";
                     sk = 1;
                 }
                 if ((x - i) % 3 == 1)
@@ -66,10 +66,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 var y = s.ToString().Length;
                 str += "AND CENTS ";
                 for (var i = x + 1; i < y; i++)
-                    str += dg[Convert.ToInt16(n.ToString()[i].ToString())] + " ";
+                {
+                    if ((y - i) % 3 == 2)
+                    {
+                        if (n.ToString()[i] == '1')
+                        {
+                            str += tn[Convert.ToInt16(n.ToString()[i + 1].ToString())] + " ";
+                            i++;
+                            sk = 1;
+                        }
+                        else if (n.ToString()[i] != '0')
+                        {
+
+                            str += tw[Convert.ToInt16(n.ToString()[i].ToString()) - 2] + " ";
+                            sk = 1;
+                        }
+                    }
+                    else if (n.ToString()[i] != '0')
+                    {
+                        str += dg[Convert.ToInt16(n.ToString()[i].ToString())] + " ";
+                        sk = 1;
+                    }
+
+                }
             }
             return str;
         }
-    
+
     }
 }

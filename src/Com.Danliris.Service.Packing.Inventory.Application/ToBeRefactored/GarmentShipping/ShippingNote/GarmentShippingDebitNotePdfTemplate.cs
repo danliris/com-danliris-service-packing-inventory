@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeadOffice.Phrase = new Phrase("Head Office : ", normal_font);
             tableHeadOffice.AddCell(cellHeadOffice);
             cellHeadOffice.Phrase = new Phrase("Jl. Merapi No. 23, Kel. Banaran Kec. Grogol Kab. Sukoharjo\nTelp.(0271)714400, Fax.(0271)735222\ne-Mail:", normal_font);
-            cellHeadOffice.Phrase.Add(new Chunk("shipadm.gmt@danliris.com", underlined_font));
+            cellHeadOffice.Phrase.Add(new Chunk("nara.exportgmt@danliris.com", underlined_font));
             tableHeadOffice.AddCell(cellHeadOffice);
             Chunk chunkAddress = new Chunk("MESSRS :\n" + viewModel.buyer.Name + "\n" + viewModel.buyer.Address, normal_font);
             chunkAddress.SetHorizontalScaling(0.8f);
@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
             phraseBuyerHeader.Add(new Chunk("DATE : " + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy"), normal_font));
-      
+
             tableHeadOffice.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Colspan = 2,
                 Padding = 0,
                 Border = Rectangle.NO_BORDER,
-                MinimumHeight = 500
+                MinimumHeight = 400
             };
             new PdfPCell(tableItemsContent);
             pdfPCellItemsContent.AddElement(tableItemsContent);
@@ -143,24 +143,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    Phrase = new Phrase("Please TT the above payment to our correspondence bank as follow :", normal_font)
             //});
             Phrase phraseSign = new Phrase();
+
             phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy") + "\n\n\n\n", normal_font));
             Chunk chunkSignName = new Chunk("A M U M P U N I", normal_font);
             chunkSignName.SetUnderline(1, -1);
             phraseSign.Add(chunkSignName);
             phraseSign.Add(new Chunk("\nAUTHORIZED SIGNATURE", normal_font));
+
+            string branch = "";
+
+            if (viewModel.bank.bankName == "PT. CIMB NIAGA Tbk.")
+            {
+                branch = "SOLO BRANCH OFFICE";
+            }
+            else if (viewModel.bank.bankName == "PANIN BANK")
+            {
+                branch = "SOLO BRANCH OFFICE";
+            }
+            else
+            {
+                branch = "SRIWEDARI BRANCH OFFICE";
+            }
+
+            tableItems.AddCell(new PdfPCell
+            {
+                Border = Rectangle.NO_BORDER,
+                PaddingLeft = 20f,
+                PaddingRight = 10f,
+                Phrase = new Phrase($"{viewModel.bank.bankName}\n{branch}\n{viewModel.bank.bankAddress}\nACC. No. {viewModel.bank.AccountNumber} ({viewModel.bank.Currency.Code})\nA/N. PT. DAN LIRIS\nSWIFT CODE : {viewModel.bank.swiftCode}\nPURPOSE CODE : 1011", normal_font)
+            });
+
             tableItems.AddCell(new PdfPCell
             {
                 Border = Rectangle.NO_BORDER,
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 Rowspan = 2,
                 Phrase = phraseSign
-            });
-            tableItems.AddCell(new PdfPCell
-            {
-                Border = Rectangle.NO_BORDER,
-                PaddingLeft = 20f,
-                PaddingRight = 10f,
-                Phrase = new Phrase($"{viewModel.bank.bankName}\n{viewModel.bank.bankAddress}\nACC. No. {viewModel.bank.AccountNumber} ({viewModel.bank.Currency.Code})\nA/N {viewModel.bank.accountName}\nSWIFT CODE : {viewModel.bank.swiftCode}", normal_font)
             });
 
             new PdfPCell(tableItems);

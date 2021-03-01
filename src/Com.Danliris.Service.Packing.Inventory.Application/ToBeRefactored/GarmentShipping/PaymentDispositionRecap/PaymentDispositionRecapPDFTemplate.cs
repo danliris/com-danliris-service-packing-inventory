@@ -320,13 +320,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableSign.AddCell(cellBodySignNoBorder);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("(  E T T Y  /  A N D R E I  )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("(      A D R I Y A N A      )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("(          L I A            )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("( _________________________ )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
 
             document.Add(tableSign);
@@ -361,7 +361,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region INFO
 
             var infoY = height - marginTop + 10;
-            if(writer.PageNumber!=1)
+            if (writer.PageNumber != 1)
                 cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, no, marginLeft, infoY, 0);
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Page " + writer.PageNumber, width - marginRight, infoY, 0);

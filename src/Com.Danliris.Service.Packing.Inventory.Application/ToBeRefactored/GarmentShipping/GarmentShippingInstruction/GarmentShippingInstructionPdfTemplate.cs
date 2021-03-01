@@ -14,16 +14,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public MemoryStream GeneratePdfTemplate(GarmentShippingInstructionViewModel viewModel, GarmentCoverLetterViewModel cl, GarmentPackingListViewModel pl, GarmentShippingInvoiceViewModel invoice, int timeoffset)
         {
-            const int MARGIN = 20;
+            const int MARGIN = 25;
 
-            Font header_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 10);
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN,100, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 100, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sub.Alignment = Element.ALIGN_CENTER;
             document.Add(sub);
 
-            document.Add(new Paragraph("DEAR SIRS,",normal_font));
+            document.Add(new Paragraph("DEAR SIRS,", normal_font));
             document.Add(new Paragraph("WE REQUEST YOU TO ARRANGE THE FOLLOWING SHIPMENT", normal_font));
 
             document.Add(new Paragraph("\n", normal_font));
@@ -80,14 +80,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region detail
             PdfPTable detailTable = new PdfPTable(3);
             detailTable.HorizontalAlignment = Element.ALIGN_LEFT;
-            float[] detailTableWidths = new float[] { 2.5f,0.5f, 6f };
+            float[] detailTableWidths = new float[] { 2.5f, 0.5f, 6f };
             detailTable.SetWidths(detailTableWidths);
             detailTable.WidthPercentage = 100;
 
             PdfPCell cellLeft = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             double qty = 0;
-            foreach(var invItem in invoice.Items)
+            foreach (var invItem in invoice.Items)
             {
                 qty += invItem.Quantity;
             }
@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(string.Format("{0:n2}", qty), normal_font);
+            cellLeft.Phrase = new Phrase(string.Format("{0:n0}", qty), normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("GROSS WEIGHT", normal_font);
@@ -123,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.WidthPercentage = 100;
 
             double totcbm = 0;
+            double volweight = 0;
 
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             if (pl.Measurements.Count > 0)
@@ -130,6 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 foreach (var m in pl.Measurements)
                 {
                     double cbm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 1000000;
+                    double vlm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 6000;
 
                     cellMeasurement.Phrase = new Phrase($"{string.Format("{0:n2}", m.Length)} X", normal_font);
                     cellMeasurement.PaddingLeft = 1;
@@ -148,6 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableMeasurement.AddCell(cellMeasurement);
 
                     totcbm += cbm;
+                    volweight += vlm;
                 }
 
                 cellMeasurement.Phrase = new Phrase("", normal_font);
@@ -185,6 +188,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellLeft.AddElement(tableMeasurement);
             }
 
+            detailTable.AddCell(cellLeft);
+
+            cellLeft.Phrase = new Phrase("VOLUME WEIGHT", normal_font);
+            detailTable.AddCell(cellLeft);
+            cellLeft.Phrase = new Phrase(":", normal_font);
+            detailTable.AddCell(cellLeft);
+            cellLeft.Phrase = new Phrase($"{string.Format("{0:n0}", volweight)} KGS", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("CARTON", normal_font);
@@ -316,7 +326,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region SIGN
-            document.Add(new Paragraph("\n",normal_font));
+            document.Add(new Paragraph("\n", normal_font));
             document.Add(new Paragraph("THANK YOU,", normal_font));
             document.Add(new Paragraph("WITH BEST REGARDS,", normal_font));
             document.Add(new Paragraph("\n", normal_font));
@@ -341,8 +351,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfContentByte cb = writer.DirectContent;
             cb.BeginText();
-            Font normal_font = FontFactory.GetFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            BaseFont bf = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
@@ -352,16 +362,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region LEFT
 
             var branchOfficeY = height - marginTop + 50;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "HEAD OFFICE :", marginLeft, branchOfficeY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " HEAD OFFICE :", marginLeft, branchOfficeY, 0);
             string[] branchOffices = {
-                "Cable   : DANLIRIS",
-                "Phone   : (62271)740888, 714400",
-                "Website : www.danliris.com",
-                "Fax. : (62271)740777, 735222",
+                " Cable   : DANLIRIS",
+                " Phone   : (62271)740888, 714400",
+                " Website : www.danliris.com",
+                " Fax. : (62271)740777, 735222",
             };
             for (int i = 0; i < branchOffices.Length; i++)
             {
-                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, branchOffices[i], marginLeft, branchOfficeY -10- (i * 10), 0);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, branchOffices[i], marginLeft, branchOfficeY - 10 - (i * 10), 0);
             }
 
             #endregion
@@ -369,19 +379,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region CENTER
 
             var headOfficeX = width / 2 + 30;
-            var headOfficeY = height - marginTop + 50;
+            var headOfficeY = height - marginTop + 60;
 
 
             string[] headOffices = {
+                "                                                                                                                                                                      Ref. No. : FM-00-SP-24-004",
                 "P.T. DAN LIRIS",
-                "                                                                   Ref. No. : FM-00-SP-24-004",
                 "SPINNING - WEAVING - FINISHING - PRINTING - GARMENT",
                 "JL. MERAPI No. 23, KEL. BANARAN, KEC. GROGOL, SUKOHARJO - INDONESIA",
-                "PO. BOX 166 SOLO 57100"
+                "PO. BOX 166 SOLO 57100",
+                "                                                                                                                                                                                        Page " + (writer.PageNumber),
+               // " "
             };
             for (int i = 0; i < headOffices.Length; i++)
             {
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, headOffices[i], headOfficeX, headOfficeY  -(i * 10), 0);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, headOffices[i], headOfficeX, headOfficeY - (i * 10), 0);
             }
 
             #endregion
@@ -389,9 +401,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region RIGHT
 
-
             BaseColor grey = new BaseColor(128, 128, 128);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Page " + (writer.PageNumber), width - (30 / 2) - marginRight, height - marginTop + 20, 0);
+            //cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Page " + (writer.PageNumber), width - (1 / 2) - marginRight, height - marginTop + 20, 0);
 
             #endregion
 

@@ -15,11 +15,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingLocalPriceCuttingNoteModel> _dbSet;
+        private readonly DbSet<GarmentShippingLocalPriceCuttingNoteItemModel> _dbSetItem;
 
         public GarmentShippingLocalPriceCuttingNoteRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingLocalPriceCuttingNoteModel>();
+            _dbSetItem = dbContext.Set<GarmentShippingLocalPriceCuttingNoteItemModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -56,6 +58,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public IQueryable<GarmentShippingLocalPriceCuttingNoteModel> ReadAll()
         {
             return _dbSet.AsNoTracking();
+        }
+
+        public IQueryable<GarmentShippingLocalPriceCuttingNoteItemModel> ReadItemAll()
+        {
+            return _dbSetItem.AsNoTracking();
         }
 
         public Task<GarmentShippingLocalPriceCuttingNoteModel> ReadByIdAsync(int id)

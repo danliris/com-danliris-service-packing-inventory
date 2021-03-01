@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Paragraph title1 = new Paragraph("DISPOSISI BIAYA SHIPMENT", normal_font_underlined);
             Paragraph no = new Paragraph(viewModel.dispositionNo, normal_font);
             Paragraph title2 = new Paragraph("Kepada : \nBp./Ibu Kasir Exp Garment PT Danliris", normal_font);
-            
+
             Paragraph words = new Paragraph($"\nHarap dibayarkan kepada {viewModel.courier.Name} {viewModel.address} " +
                 $"NPWP {viewModel.npwp} untuk tagihan Invoice No. {viewModel.invoiceNumber} Tgl. " +
                 $"{viewModel.invoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}" +
@@ -208,23 +208,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableSign.AddCell(cellBodySignNoBorder);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n\n", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n\n", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Menyetujui,\n\n\n\n", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("Menyetujui,\n\n\n\n\n", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Dicek oleh,\n\n\n\n", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("Dicek oleh,\n\n\n\n\n", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("( Etty / Andrei )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("( Adriyana / Amumpuni )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("( Hendro Suseno )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            cellBodySignNoBorder.Phrase = new Phrase("(    L  i  a    )", normal_font);
             tableSign.AddCell(cellBodySignNoBorder);
 
             document.Add(tableSign);

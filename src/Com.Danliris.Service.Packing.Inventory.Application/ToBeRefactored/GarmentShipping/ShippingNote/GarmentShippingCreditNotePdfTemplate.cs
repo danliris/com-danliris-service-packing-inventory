@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Colspan = 2,
                 Padding = 0,
                 Border = Rectangle.NO_BORDER,
-                MinimumHeight = 500
+                MinimumHeight = 400
             };
             new PdfPCell(tableItemsContent);
             pdfPCellItemsContent.AddElement(tableItemsContent);

@@ -140,15 +140,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                                 Id=1,
                                 Unit="asjd"
                             },
-                            packageQuantity=12,
+                            packageQuantity=0,
                             product=new ProductViewModel
                             {
                                 name="aksd",
                             },
-                            packageUom= new UnitOfMeasurement
-                            {
-                                Unit="ksljd"
-                            },
+                            packageUom= null,
                             price=1123
                         }
                     }
@@ -182,6 +179,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task Should_Success_GetPDF_CoverLetter_Null()
+        {
+            //v
+            var serviceMock = new Mock<IGarmentShippingLocalSalesNoteService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
+            var service = serviceMock.Object;
+            var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
+            localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null);
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingLocalSalesNoteViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, localcoverletterServiceMock.Object, identityProvider, validateService);
+            var response = await controller.GetPDF(1);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task Should_Success_GetPDF_Negative()
         {
             var serviceMock = new Mock<IGarmentShippingLocalSalesNoteService>();
@@ -190,6 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var service = serviceMock.Object;
             var localcoverletterServiceMock = new Mock<IGarmentLocalCoverLetterService>();
             localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync(new GarmentLocalCoverLetterViewModel { });
+            //localcoverletterServiceMock.Setup(s => s.ReadByLocalSalesNoteId(It.IsAny<int>())).ReturnsAsync((GarmentLocalCoverLetterViewModel)null);
 
             var validateServiceMock = new Mock<IValidateService>();
             validateServiceMock

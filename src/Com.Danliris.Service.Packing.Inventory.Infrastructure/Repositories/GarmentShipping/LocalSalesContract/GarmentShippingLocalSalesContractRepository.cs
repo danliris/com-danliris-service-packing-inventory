@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetUomId(item.UomId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPrice(item.Price, _identityProvider.Username, UserAgent);
-
+                    itemToUpdate.SetRemainingQuantity(item.RemainingQuantity, _identityProvider.Username, UserAgent);
                 }
                 else
                 {

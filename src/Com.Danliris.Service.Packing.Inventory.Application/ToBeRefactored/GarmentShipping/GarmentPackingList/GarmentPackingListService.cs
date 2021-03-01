@@ -169,6 +169,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         NetWeight = d.NetWeight,
                         NetNetWeight = d.NetNetWeight,
 
+                        Index = d.Index,
+
                         Sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeModel>()).Select(s => new GarmentPackingListDetailSizeViewModel
                         {
                             Active = s.Active,
@@ -262,7 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity) { Id = s.Id };
                     }).ToList();
 
-                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes) { Id = d.Id };
+                    return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes, d.Index) { Id = d.Id };
                 }).ToList();
 
                 i.BuyerBrand = i.BuyerBrand ?? new Buyer();
@@ -402,6 +404,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var viewModel = MapToViewModel(data);
             viewModel.Items = viewModel.Items.OrderBy(o => o.ComodityDescription).ToList();
 
+            foreach (var items in viewModel.Items)
+            {
+               items.Details = items.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
+            }
+
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
@@ -473,6 +480,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
 
             var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob,cPrice);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+        }
+
+        public virtual async Task<MemoryStreamResult> ReadPdfFilterCarton(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListDraftPdfByCartonTemplate(_identityProvider);
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".pdf");
+        }
+
+        public virtual async Task<MemoryStreamResult> ReadPdfByOrderNo(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListPdfByOrderNoTemplate(_identityProvider);
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob, cPrice);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }

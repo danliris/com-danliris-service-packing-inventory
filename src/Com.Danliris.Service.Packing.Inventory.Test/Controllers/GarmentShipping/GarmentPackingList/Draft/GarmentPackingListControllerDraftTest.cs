@@ -194,6 +194,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task GetPdfFilterCarton_Ok()
+        {
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadPdfFilterCarton(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
+            var response = await controller.GetPdfFilterCarton(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task GetById_Exception_InternalServerError()
         {
             var dataUtil = GetViewModel();
@@ -617,7 +639,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             {
                 Items = new List<GarmentPackingListItemViewModel>
                 {
-                    new GarmentPackingListItemViewModel()
+                    new GarmentPackingListItemViewModel
+                        {
+                            Id = 1,
+                            Details = new List<GarmentPackingListDetailViewModel>()
+                            {
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Id = 1,
+                                    NetWeight = 10,
+                                    NetNetWeight = 0,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 1
+                                        }
+                                    }
+                                },
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Id = 2,
+                                    NetWeight = 10,
+                                    NetNetWeight = 10,
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                        {
+                                            Id = 2
+                                        }
+                                    }
+                                },
+                            }
+                        }
                 }
             };
         }

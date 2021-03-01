@@ -20,6 +20,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Status = GarmentPackingListStatusEnum.DRAFT.ToString();
 
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
+
+            foreach (var item in garmentPackingListModel.Items)
+            {
+                foreach (var detail in item.Details)
+                {
+                    detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
+                }
+            }
             garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status));
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
