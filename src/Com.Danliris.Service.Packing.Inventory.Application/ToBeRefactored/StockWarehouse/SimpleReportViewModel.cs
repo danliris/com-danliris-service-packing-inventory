@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public string Construction { get; set; }
         public string Unit { get; set; }
         public string Motif { get; set; }
+        public string Buyer { get; set; }
         public string Color { get; set; }
         public string Grade { get; set; }
         public string Jenis { get; set; }

@@ -63,10 +63,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
             }
 
-            var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
-                   s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType)).ToList();
+            //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+            //       s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
 
-            var result = data.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = DyeingPrintingArea.AWAL,
@@ -76,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Jenis = d.Key.PackingType,
                 Ket = d.Key.Remark,
                 Motif = d.First().Motif,
+                Buyer = d.First().Buyer,
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
                 Unit = d.First().Unit,
@@ -115,10 +116,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
             }
 
-            var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
-                        s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType)).ToList();
+            //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+            //            s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
 
-            var result = data.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = d.Key.Type,
@@ -128,6 +129,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Jenis = d.Key.PackingType,
                 Ket = d.Key.Remark,
                 Motif = d.First().Motif,
+                Buyer = d.First().Buyer,
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
                 Unit = d.First().Unit,
@@ -155,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Jenis = e.Key.Jenis,
                 Ket = e.Key.Ket,
                 Motif = e.First().Motif,
+                Buyer = e.First().Buyer,
                 Satuan = e.First().Satuan,
                 Unit = e.First().Unit,
                 Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
