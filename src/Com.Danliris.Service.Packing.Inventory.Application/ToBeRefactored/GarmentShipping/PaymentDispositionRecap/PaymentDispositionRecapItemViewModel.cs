@@ -10,6 +10,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public GarmentShippingPaymentDispositionViewModel paymentDisposition { get; set; }
         public double service { get; set; }
+        public double othersPayment { get; set; }
+        public double truckingPayment { get; set; }
+        public double vatService { get; set; }
+        public double amountService { get; set; }
     }
 
     public class GarmentShippingPaymentDispositionViewModel : BaseViewModel {
