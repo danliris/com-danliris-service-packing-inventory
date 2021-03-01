@@ -42,6 +42,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
                     {
                         new PaymentDispositionRecapItemViewModel
                         {
+                            service = 1,
+                            othersPayment = 1,
+                            amountService = 1,
+                            vatService = 1,
+                            truckingPayment = 1,
                             paymentDisposition = new GarmentShippingPaymentDispositionViewModel
                             {
                                 invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
