@@ -42,6 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
                     {
                         new PaymentDispositionRecapItemViewModel
                         {
+                            Id = 1,
                             service = 1,
                             othersPayment = 1,
                             amountService = 1,
@@ -55,9 +56,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
                                     {
 
                                     }
-                                }
+                                },
+                                incomeTaxValue = 1
                             }
-                        }
+                        },
                     },
                 };
             }
@@ -151,8 +153,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRecapRepository>();
             repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingPaymentDispositionRecapModel>()))
                 .ReturnsAsync(1);
+            var dispoRepoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentShippingPaymentDispositionRepository)))
+            .Returns(dispoRepoMock.Object);
+
+            var service = GetService(spMock.Object);
 
             var result = await service.Update(1, ViewModel);
 

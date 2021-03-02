@@ -267,8 +267,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 if(vmItem != null)
                 {
                     var paymentDisposition = await _garmentShippingPaymentDispositionRepository.ReadByIdAsync(item.PaymentDispositionId);
-                    paymentDisposition.SetIncomeTaxValue(vmItem.paymentDisposition.incomeTaxValue, "", "");
-                    item.SetPaymentDisposition(paymentDisposition);
+                    if(paymentDisposition != null)
+                    {
+                        paymentDisposition.SetIncomeTaxValue(vmItem.paymentDisposition.incomeTaxValue, "", "");
+                        item.SetPaymentDisposition(paymentDisposition);
+                    }
                 }
             }
             return await _recapRepository.UpdateAsync(id, model);

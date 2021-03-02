@@ -98,7 +98,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetAmountService(item.AmountService, _identityProvider.Username, UserAgent);
                     
                     var paymentDisposition = _garmentShippingPaymentDispositionDbSet.FirstOrDefault(entity => entity.Id == itemToUpdate.PaymentDispositionId);
-                    paymentDisposition.SetIncomeTaxValue(item.PaymentDisposition.IncomeTaxValue, _identityProvider.Username, UserAgent);
+                    if(paymentDisposition != null)
+                    {
+                        paymentDisposition.SetIncomeTaxValue(item.PaymentDisposition.IncomeTaxValue, _identityProvider.Username, UserAgent);
+                    }
                     itemToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
                 }
             }
