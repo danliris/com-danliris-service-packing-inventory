@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
                             truckingPayment = 1,
                             paymentDisposition = new GarmentShippingPaymentDispositionViewModel
                             {
+                                Id = 1,
                                 invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
                                 {
                                     new GarmentShippingPaymentDispositionInvoiceDetailViewModel()
@@ -153,7 +154,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRecapRepository>();
             repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingPaymentDispositionRecapModel>()))
                 .ReturnsAsync(1);
+
+            var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel("", 1) { Id = 1 } };
+            var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(1, "", 1, 1) { Id = 1 } };
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("", 1, 1, 1, 1, 1, 1, 1) { Id = 1 } };
+            var dispoModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units) { Id = 1 };
+
             var dispoRepoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
+            dispoRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(dispoModel);
 
             var spMock = GetServiceProvider(repoMock.Object);
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingPaymentDispositionRepository)))
