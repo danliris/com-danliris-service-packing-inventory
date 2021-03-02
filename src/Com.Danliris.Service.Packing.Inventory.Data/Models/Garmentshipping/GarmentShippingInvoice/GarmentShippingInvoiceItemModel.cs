@@ -29,8 +29,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public int UnitId { get; set; }
 		public string UnitCode { get; set; }
 		public decimal CMTPrice { get; set; }
+        public int PackingListItemId { get; set; }
 
-        public GarmentShippingInvoiceItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice)
+        public GarmentShippingInvoiceItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice, int packingListItemId)
         {
             this.Id = Id;
             RONo = rONo;
@@ -54,6 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             UnitId = unitId;
             UnitCode = unitCode;
             CMTPrice = cMTPrice;
+			PackingListItemId = packingListItemId;
         }
 
         public void SetQuantity(double quantity, string username, string uSER_AGENT)

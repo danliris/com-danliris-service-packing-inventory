@@ -90,6 +90,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 else
                 {
                     itemToUpdate.SetService(item.Service, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetOthersPayment(item.OthersPayment, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetTruckingPayment(item.TruckingPayment, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetVatService(item.VatService, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetAmountService(item.AmountService, _identityProvider.Username, UserAgent);
                     itemToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
                 }
             }

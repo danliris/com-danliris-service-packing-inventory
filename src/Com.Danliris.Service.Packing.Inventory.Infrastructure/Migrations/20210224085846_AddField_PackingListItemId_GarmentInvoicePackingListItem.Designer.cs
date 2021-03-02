@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210224085846_AddField_PackingListItemId_GarmentInvoicePackingListItem")]
+    partial class AddField_PackingListItemId_GarmentInvoicePackingListItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3555,8 +3557,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<double>("AmountService");
-
                     b.Property<string>("CreatedAgent")
                         .HasMaxLength(128);
 
@@ -3583,17 +3583,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<double>("OthersPayment");
-
                     b.Property<int>("PaymentDispositionId");
 
                     b.Property<int>("RecapId");
 
                     b.Property<double>("Service");
-
-                    b.Property<double>("TruckingPayment");
-
-                    b.Property<double>("VatService");
 
                     b.HasKey("Id");
 
