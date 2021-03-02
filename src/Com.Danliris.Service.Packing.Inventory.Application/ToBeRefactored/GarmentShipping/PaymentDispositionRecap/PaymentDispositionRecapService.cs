@@ -82,7 +82,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         Id = i.PaymentDispositionId
                     },
-                    service = i.Service
+                    service = i.Service,
+                    othersPayment = i.OthersPayment,
+                    truckingPayment = i.TruckingPayment,
+                    vatService = i.VatService,
+                    amountService = i.AmountService
                 }).ToList()
             };
 
@@ -98,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.paymentDisposition = i.paymentDisposition ?? new GarmentShippingPaymentDispositionViewModel();
 
-                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service) { Id = i.Id };
+                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service, i.othersPayment, i.truckingPayment, i.vatService, i.amountService) { Id = i.Id };
             }).ToList();
 
             return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items) { Id = vm.Id };

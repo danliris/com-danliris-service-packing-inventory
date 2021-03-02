@@ -42,6 +42,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
                     {
                         new PaymentDispositionRecapItemViewModel
                         {
+                            service = 1,
+                            othersPayment = 1,
+                            amountService = 1,
+                            vatService = 1,
+                            truckingPayment = 1,
                             paymentDisposition = new GarmentShippingPaymentDispositionViewModel
                             {
                                 invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
@@ -98,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("", 1, 1, 1, 1, 1, 1, 1) { Id = 1 } };
             var dispoModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units) { Id = 1 };
 
-            var item = new GarmentShippingPaymentDispositionRecapItemModel(1, 10) { Id = 1 };
+            var item = new GarmentShippingPaymentDispositionRecapItemModel(1, 10, 10, 10, 10, 10) { Id = 1 };
             item.SetPaymentDisposition(dispoModel);
             var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { item };
             var model = new GarmentShippingPaymentDispositionRecapModel("", DateTimeOffset.Now, 1, "", "", "", "", items) { Id = 1 };
