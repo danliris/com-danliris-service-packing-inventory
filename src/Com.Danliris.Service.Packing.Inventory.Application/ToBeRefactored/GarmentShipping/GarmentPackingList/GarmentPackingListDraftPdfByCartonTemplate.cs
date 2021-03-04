@@ -551,7 +551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 var cbm = (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000;
                 totalCbm += cbm;
-                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", cbm), normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N3} CBM", cbm), normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
             }
 
@@ -563,7 +563,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
+            cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N3} CBM", totalCbm), normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
 
             new PdfPCell(tableMeasurementDetail);
