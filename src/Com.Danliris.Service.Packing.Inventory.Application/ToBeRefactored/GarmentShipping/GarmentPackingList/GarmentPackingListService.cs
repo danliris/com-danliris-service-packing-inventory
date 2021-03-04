@@ -342,6 +342,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
                 }
             }
+            var totalNnw = garmentPackingListModel.Items
+                            .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
+                            .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
+
+            garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
+
             garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status));
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
@@ -472,6 +478,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
                 }
             }
+
+            var totalNnw = garmentPackingListModel.Items
+                            .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
+                            .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
+
+            garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
             return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
         }
