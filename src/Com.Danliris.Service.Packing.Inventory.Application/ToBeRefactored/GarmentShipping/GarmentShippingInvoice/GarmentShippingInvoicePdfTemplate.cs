@@ -493,77 +493,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region Weight
-            PdfPTable tableWeight = new PdfPTable(3);
-            tableWeight.SetWidths(new float[] { 2f, 0.2f, 7.8f });
-            tableWeight.WidthPercentage = 100;
+            PdfPTable tableMeasurement = new PdfPTable(3);
+            tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 12f });
+            PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
-            PdfPCell cellWeightContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellWeightContentLeft.AddElement(new Phrase("GROSS WEIGHT ", normal_font));
-            cellWeightContentLeft.AddElement(new Phrase("NETT WEIGHT ", normal_font));
-            cellWeightContentLeft.AddElement(new Phrase("MEASSUREMENT ", normal_font));
-            tableWeight.AddCell(cellWeightContentLeft);
+            cellMeasurement.Phrase = new Phrase("GROSS WEIGHT", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(":", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(pl.GrossWeight + " KGS", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
 
-            PdfPCell cellWeightContentCenter = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellWeightContentCenter.AddElement(new Phrase(" : ", normal_font));
-            cellWeightContentCenter.AddElement(new Phrase(" : ", normal_font));
-            cellWeightContentCenter.AddElement(new Phrase(" : ", normal_font));
-            tableWeight.AddCell(cellWeightContentCenter);
+            cellMeasurement.Phrase = new Phrase("NET WEIGHT", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(":", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(pl.NettWeight + " KGS", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
 
-            PdfPCell cellWeightContentRight = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            cellMeasurement.Phrase = new Phrase("MEASUREMENT", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
+            cellMeasurement.Phrase = new Phrase(":", normal_font);
+            tableMeasurement.AddCell(cellMeasurement);
 
-            cellWeightContentRight.AddElement(new Phrase($"{string.Format("{0:n2}", pl.GrossWeight)} KGS", normal_font));
-            cellWeightContentRight.AddElement(new Phrase($"{string.Format("{0:n2}", pl.NettWeight)} KGS", normal_font));
-
-            PdfPTable tableMeasurement = new PdfPTable(5);
-            tableMeasurement.SetWidths(new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f });
-            tableMeasurement.WidthPercentage = 60;
-
-            PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
-            if (pl.Measurements.Count > 0)
+            PdfPTable tableMeasurementDetail = new PdfPTable(5);
+            tableMeasurementDetail.SetWidths(new float[] { 1f, 1f, 1f, 1.5f, 2f });
+            PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            decimal totalCbm = 0;
+            foreach (var measurement in pl.Measurements)
             {
-                double totalctns = 0;
-                double totalCM = 0;
-                foreach (var m in pl.Measurements)
-                {
-                    double cbm = (m.Length * m.Width * m.Height * m.CartonsQuantity) / 1000000;
-
-                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Length) + " X", normal_font);
-                    cellMeasurement.PaddingLeft = 1;
-                    tableMeasurement.AddCell(cellMeasurement);
-
-                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Width) + " X", normal_font);
-                    tableMeasurement.AddCell(cellMeasurement);
-
-                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", m.Height) + " X", normal_font);
-                    tableMeasurement.AddCell(cellMeasurement);
-
-                    cellMeasurement.Phrase = new Phrase($"{m.CartonsQuantity} CTNS = ", normal_font);
-                    tableMeasurement.AddCell(cellMeasurement);
-
-                    cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", cbm) + " CBM", normal_font);
-                    tableMeasurement.AddCell(cellMeasurement);
-
-                    totalctns += m.CartonsQuantity;
-                    totalCM += cbm;
-                }
-
-                cellMeasurement.Phrase = new Phrase("", normal_font);
-                cellMeasurement.Colspan = 2;
-                tableMeasurement.AddCell(cellMeasurement);
-
-                cellMeasurement.Phrase = new Phrase("                       " + $"{totalctns} CTNS", normal_font);
-                tableMeasurement.AddCell(cellMeasurement);
-
-                cellMeasurement.Phrase = new Phrase(string.Format("{0:n2}", totalCM) + " CBM", normal_font);
-                tableMeasurement.AddCell(cellMeasurement);
-
-                cellWeightContentRight.AddElement(tableMeasurement);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " CM X ", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + " CM X ", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + " CM X ", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                var cbm = (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000;
+                totalCbm += cbm;
+                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", cbm), normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
             }
 
-            tableWeight.AddCell(cellWeightContentRight);
+            cellMeasurementDetail.Border = Rectangle.TOP_BORDER;
+            cellMeasurementDetail.Phrase = new Phrase("", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase(pl.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
+            tableMeasurementDetail.AddCell(cellMeasurementDetail);
 
-            tableWeight.SpacingAfter = 1f;
-            document.Add(tableWeight);
+            new PdfPCell(tableMeasurementDetail);
+            tableMeasurementDetail.ExtendLastRow = false;
+            var paddingRight = 200;
+            tableMeasurement.AddCell(new PdfPCell(tableMeasurementDetail) { Border = Rectangle.NO_BORDER, PaddingRight = paddingRight });
+
+            new PdfPCell(tableMeasurement);
+            tableMeasurement.ExtendLastRow = false;
+            tableMeasurement.SpacingAfter = 5f;
+            document.Add(tableMeasurement);
             #endregion
 
             //document.Add(new Paragraph("REMARK : ", normal_font_underlined));
