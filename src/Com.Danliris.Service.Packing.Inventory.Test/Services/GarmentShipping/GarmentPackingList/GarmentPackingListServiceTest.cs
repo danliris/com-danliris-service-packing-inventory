@@ -318,7 +318,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             //var spMock = GetServiceProvider(repoMock.Object);
             var imageServiceMock = new Mock<IAzureImageService>();
             imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync("ImageFile");
+                .ReturnsAsync("");
 
             var serviceProviderMock = GetServiceProvider(repoMock.Object);
             serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
@@ -450,7 +450,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             //var spMock = GetServiceProvider(repoMock.Object);
             var imageServiceMock = new Mock<IAzureImageService>();
             imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync("ImageFile");
+                .ReturnsAsync("");
 
             var serviceProviderMock = GetServiceProvider(repoMock.Object);
             serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
