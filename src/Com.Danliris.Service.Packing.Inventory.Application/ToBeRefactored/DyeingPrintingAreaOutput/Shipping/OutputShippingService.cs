@@ -321,9 +321,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
-        private string GenerateBonNoPenjualan(int totalPreviousData, DateTimeOffset date, string shippingCode)
+        private string GenerateBonNoPenjualan(int totalPreviousData, DateTimeOffset date, string shippingCode, string shippingGrade)
         {
-            return string.Format("{0}.{1}.{2}", shippingCode, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            return string.Format("{0}.{1}.{2}.{3}", shippingCode, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'), shippingGrade);
         }
 
         private string GenerateBonNoAdj(int totalPreviousData, DateTimeOffset date, string area, IEnumerable<double> qtys)
@@ -345,17 +345,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (viewModel.DestinationArea == DyeingPrintingArea.PENJUALAN)
             {
-                model = _repository.GetDbSet().AsNoTracking()
-                .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
-                && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
+                //model = _repository.GetDbSet().AsNoTracking()
+                //.FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                //&& s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
+
+                if (viewModel.ShippingProductionOrders.First().ShippingGrade == "BQ")
+                {
+
+                    model = _repository.GetDbSet().AsNoTracking()
+                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                    && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode
+                    && s.BonNo.Contains("BQ"));
+                }
+                else
+                {
+                    model = _repository.GetDbSet().AsNoTracking()
+                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                    && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode
+                    && s.BonNo.Contains("BS"));
+                }
             }
             else
             {
                 if (viewModel.DestinationArea == DyeingPrintingArea.BUYER)
                 {
-                    model = _repository.GetDbSet().AsNoTracking()
+                    if (viewModel.ShippingProductionOrders.First().ShippingGrade == "BQ")
+                    {
+                        model = _repository.GetDbSet().AsNoTracking()
                         .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
-                        && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT);
+                        && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.BonNo.Contains("BQ"));
+                    }
+                    else
+                    {
+                        model = _repository.GetDbSet().AsNoTracking()
+                        .FirstOrDefault(s => s.Area == DyeingPrintingArea.SHIPPING && s.DestinationArea == viewModel.DestinationArea
+                        && s.Date.Date == viewModel.Date.Date & s.Shift == viewModel.Shift && s.DeliveryOrderSalesId == viewModel.DeliveryOrder.Id && s.Type == DyeingPrintingArea.OUT && s.BonNo.Contains("BS"));
+                    }
+
                 }
                 else
                 {
@@ -379,7 +405,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         totalCurrentYearData = _repository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.SHIPPING
                             && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
-                        bonNo = GenerateBonNoPenjualan(totalCurrentYearData + 1, viewModel.Date, viewModel.ShippingCode);
+                        bonNo = GenerateBonNoPenjualan(totalCurrentYearData + 1, viewModel.Date, viewModel.ShippingCode, viewModel.ShippingProductionOrders.First().ShippingGrade);
 
                         model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, false, viewModel.DestinationArea, viewModel.Group,
                                viewModel.DeliveryOrder.Id, viewModel.DeliveryOrder.No, viewModel.HasSalesInvoice, viewModel.Type, viewModel.ShippingCode,
@@ -470,6 +496,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     else
                     {
                         result += await _productionOrderRepository.UpdateFromInputNextAreaFlagAsync(itemVM.Id, true);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                         result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
 
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
@@ -536,6 +563,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     else
                     {
                         result += await _productionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
                         result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Qty, item.QtyPacking);
                         var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                            item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Qty, modelItem.Id, item.ProductionOrder.Type, item.Grade,
@@ -766,77 +794,162 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public List<InputShippingProductionOrderViewModel> GetInputShippingProductionOrdersByDeliveryOrder(long deliveryOrderId)
         {
-            var productionOrders = _inputProductionOrderRepository.ReadAll();
+            var inputOrders = _inputProductionOrderRepository.ReadAll();
+            var ouputOrders = _productionOrderRepository.ReadAll();
+            var productionOrders = (from d in inputOrders
+                                    join a in ouputOrders on d.Id equals a.DyeingPrintingAreaInputProductionOrderId into l
+                                    from a in l.DefaultIfEmpty()
+                                    where 
+                                    d.IsDeleted == false 
+                                    && a.IsDeleted == false 
+                                   // && d.Area == DyeingPrintingArea.SHIPPING
+                                   //&& d.HasOutputDocument == false
+                                    //&& d.DeliveryOrderSalesId == deliveryOrderId
+                                   //&& a.DestinationArea != (string.IsNullOrWhiteSpace(DyeingPrintingArea.PENJUALAN) ? a.DestinationArea : DyeingPrintingArea.PENJUALAN) 
 
-            productionOrders = productionOrders.Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.DeliveryOrderSalesId == deliveryOrderId).OrderByDescending(s => s.LastModifiedUtc);
-            var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
-            {
-                Buyer = d.Buyer,
-                BuyerId = d.BuyerId,
-                CartNo = d.CartNo,
-                Color = d.Color,
-                Construction = d.Construction,
-                HasOutputDocument = d.HasOutputDocument,
-                Motif = d.Motif,
-                BalanceRemains = d.BalanceRemains,
-                ProductionOrder = new ProductionOrder()
-                {
-                    Id = d.ProductionOrderId,
-                    No = d.ProductionOrderNo,
-                    Type = d.ProductionOrderType,
-                    OrderQuantity = d.ProductionOrderOrderQuantity,
-                },
-                MaterialWidth = d.MaterialWidth,
-                FinishWidth = d.FinishWidth,
-                Material = new Material()
-                {
-                    Id = d.MaterialId,
-                    Name = d.MaterialName
-                },
-                MaterialConstruction = new MaterialConstruction()
-                {
-                    Name = d.MaterialConstructionName,
-                    Id = d.MaterialConstructionId
-                },
-                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
-                {
-                    Id = d.YarnMaterialId,
-                    Name = d.YarnMaterialName
-                },
-                ProcessType = new CommonViewModelObjectProperties.ProcessType()
-                {
-                    Id = d.ProcessTypeId,
-                    Name = d.ProcessTypeName
-                },
-                Grade = d.Grade,
-                Id = d.Id,
-                Unit = d.Unit,
-                UomUnit = d.UomUnit,
-                InputId = d.DyeingPrintingAreaInputId,
-                Remark = d.Remark,
-                QtyPacking = d.PackagingQty,
-                PackingType = d.PackagingType,
-                Packing = d.PackagingUnit,
-                DeliveryOrder = new DeliveryOrderSales()
-                {
-                    Id = d.DeliveryOrderSalesId,
-                    No = d.DeliveryOrderSalesNo
-                },
-                Qty = d.Balance,
-                PackingInstruction = d.PackingInstruction,
-                PackingLength = d.PackagingLength,
-                ProductSKUId = d.ProductSKUId,
-                FabricSKUId = d.FabricSKUId,
-                ProductSKUCode = d.ProductSKUCode,
-                HasPrintingProductSKU = d.HasPrintingProductSKU,
-                ProductPackingId = d.ProductPackingId,
-                FabricPackingId = d.FabricPackingId,
-                ProductPackingCode = d.ProductPackingCode,
-                HasPrintingProductPacking = d.HasPrintingProductPacking
+                                    orderby d.LastModifiedUtc
+                                    select new InputShippingProductionOrderViewModel
+                                    {
+                                        Buyer = d.Buyer,
+                                        BuyerId = d.BuyerId,
+                                        CartNo = d.CartNo,
+                                        Color = d.Color,
+                                        Construction = d.Construction,
+                                        HasOutputDocument = d.HasOutputDocument,
+                                        Motif = d.Motif,
+                                        BalanceRemains = d.BalanceRemains,
+                                        ProductionOrder = new ProductionOrder()
+                                        {
+                                            Id = d.ProductionOrderId,
+                                            No = d.ProductionOrderNo,
+                                            Type = d.ProductionOrderType,
+                                            OrderQuantity = d.ProductionOrderOrderQuantity,
+                                        },
+                                        MaterialWidth = d.MaterialWidth,
+                                        FinishWidth = d.FinishWidth,
+                                        Material = new Material()
+                                        {
+                                            Id = d.MaterialId,
+                                            Name = d.MaterialName
+                                        },
+                                        MaterialConstruction = new MaterialConstruction()
+                                        {
+                                            Name = d.MaterialConstructionName,
+                                            Id = d.MaterialConstructionId
+                                        },
+                                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                                        {
+                                            Id = d.YarnMaterialId,
+                                            Name = d.YarnMaterialName
+                                        },
+                                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                                        {
+                                            Id = d.ProcessTypeId,
+                                            Name = d.ProcessTypeName
+                                        },
+                                        Grade = d.Grade,
+                                        Id = d.Id,
+                                        Unit = d.Unit,
+                                        UomUnit = d.UomUnit,
+                                        InputId = d.DyeingPrintingAreaInputId,
+                                        Remark = d.Remark,
+                                        QtyPacking = d.PackagingQty,
+                                        PackingType = d.PackagingType,
+                                        Packing = d.PackagingUnit,
+                                        DeliveryOrder = new DeliveryOrderSales()
+                                        {
+                                            Id = d.DeliveryOrderSalesId,
+                                            No = d.DeliveryOrderSalesNo
+                                        },
+                                        Qty = d.Balance,
+                                        PackingInstruction = d.PackingInstruction,
+                                        PackingLength = d.PackagingLength,
+                                        ProductSKUId = d.ProductSKUId,
+                                        FabricSKUId = d.FabricSKUId,
+                                        ProductSKUCode = d.ProductSKUCode,
+                                        HasPrintingProductSKU = d.HasPrintingProductSKU,
+                                        ProductPackingId = d.ProductPackingId,
+                                        FabricPackingId = d.FabricPackingId,
+                                        ProductPackingCode = d.ProductPackingCode,
+                                        HasPrintingProductPacking = d.HasPrintingProductPacking
 
-            });
 
-            return data.ToList();
+                                    }
+
+
+
+
+                );
+ 
+            //productionOrders = productionOrders.Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.DeliveryOrderSalesId == deliveryOrderId).OrderByDescending(s => s.LastModifiedUtc);
+            //var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
+            //{
+            //    Buyer = d.Buyer,
+            //    BuyerId = d.BuyerId,
+            //    CartNo = d.CartNo,
+            //    Color = d.Color,
+            //    Construction = d.Construction,
+            //    HasOutputDocument = d.HasOutputDocument,
+            //    Motif = d.Motif,
+            //    BalanceRemains = d.BalanceRemains,
+            //    ProductionOrder = new ProductionOrder()
+            //    {
+            //        Id = d.ProductionOrderId,
+            //        No = d.ProductionOrderNo,
+            //        Type = d.ProductionOrderType,
+            //        OrderQuantity = d.ProductionOrderOrderQuantity,
+            //    },
+            //    MaterialWidth = d.MaterialWidth,
+            //    FinishWidth = d.FinishWidth,
+            //    Material = new Material()
+            //    {
+            //        Id = d.MaterialId,
+            //        Name = d.MaterialName
+            //    },
+            //    MaterialConstruction = new MaterialConstruction()
+            //    {
+            //        Name = d.MaterialConstructionName,
+            //        Id = d.MaterialConstructionId
+            //    },
+            //    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+            //    {
+            //        Id = d.YarnMaterialId,
+            //        Name = d.YarnMaterialName
+            //    },
+            //    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+            //    {
+            //        Id = d.ProcessTypeId,
+            //        Name = d.ProcessTypeName
+            //    },
+            //    Grade = d.Grade,
+            //    Id = d.Id,
+            //    Unit = d.Unit,
+            //    UomUnit = d.UomUnit,
+            //    InputId = d.DyeingPrintingAreaInputId,
+            //    Remark = d.Remark,
+            //    QtyPacking = d.PackagingQty,
+            //    PackingType = d.PackagingType,
+            //    Packing = d.PackagingUnit,
+            //    DeliveryOrder = new DeliveryOrderSales()
+            //    {
+            //        Id = d.DeliveryOrderSalesId,
+            //        No = d.DeliveryOrderSalesNo
+            //    },
+            //    Qty = d.Balance,
+            //    PackingInstruction = d.PackingInstruction,
+            //    PackingLength = d.PackagingLength,
+            //    ProductSKUId = d.ProductSKUId,
+            //    FabricSKUId = d.FabricSKUId,
+            //    ProductSKUCode = d.ProductSKUCode,
+            //    HasPrintingProductSKU = d.HasPrintingProductSKU,
+            //    ProductPackingId = d.ProductPackingId,
+            //    FabricPackingId = d.FabricPackingId,
+            //    ProductPackingCode = d.ProductPackingCode,
+            //    HasPrintingProductPacking = d.HasPrintingProductPacking
+
+            //});
+
+            return productionOrders.ToList();
         }
 
         public ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword)

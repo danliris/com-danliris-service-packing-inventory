@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<InputInspectionMaterialViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<InputInspectionMaterialProductionOrderViewModel> ReadProductionOrders(int page, int size, string filter, string order, string keyword);
+        ListResult<InputInspectionMaterialProductionOrderViewModel> ReadInputIM(string productionOrderId, string unit, DateTimeOffset? dateFrom, DateTimeOffset? dateTo,  int page, int size, string order, int offset);
         Task<int> Delete(int id);
         MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }

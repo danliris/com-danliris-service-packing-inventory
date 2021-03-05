@@ -109,6 +109,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        
+       
 
         [HttpGet("production-orders")]
         public IActionResult GetProductionOrders([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
@@ -124,6 +126,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
+            }
+        }
+
+        [HttpGet("monitoring")]
+        public IActionResult GetInputIM(string productionOrderId, string unit, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, 
+            int page = 1, int size = 25, string order = "{}")
+        {
+
+            try
+            {
+                
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.ReadInputIM(productionOrderId, unit, dateFrom, dateTo, page, size, order, offset);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
