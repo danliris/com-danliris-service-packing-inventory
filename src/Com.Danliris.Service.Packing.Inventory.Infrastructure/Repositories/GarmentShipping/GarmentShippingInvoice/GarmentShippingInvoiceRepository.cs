@@ -161,6 +161,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 			foreach (var items in model.Items.Where(w => w.Id == 0))
 			{
 				modelToUpdate.Items.Add(items);
+
+				items.FlagForCreate(_identityProvider.Username, USER_AGENT);
 			}
 			foreach (var adjToUpdate in modelToUpdate.GarmentShippingInvoiceAdjustment)
 			{

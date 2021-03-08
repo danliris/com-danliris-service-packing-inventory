@@ -48,11 +48,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region table
-            PdfPTable tableBody = new PdfPTable(19);
+            PdfPTable tableBody = new PdfPTable(23);
             tableBody.WidthPercentage = 100;
             tableBody.SetWidths(new float[] { 0.4f, 1.1f, 0.8f, 1.1f, 1.1f,
                                                 1f, 1.8f, 0.6f, 0.5f, 1f,
-                                                0.8f, 0.8f, 0.3f, 1f, 0.8f, 0.8f,
+                                                0.8f, 0.8f, 1f, 1f,1f,1f,1f,1f, 0.8f, 0.8f,
                                                 0.8f, 0.8f, 0.8f });
 
             PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
@@ -82,6 +82,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellCenter.Phrase = new Phrase("Amount", small_font);
             tableBody.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("Jasa", small_font);
+            tableBody.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Biaya Lain-Lain", small_font);
+            tableBody.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Biaya Trucking", small_font);
+            tableBody.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("PPN \n( Jasa )", small_font);
+            tableBody.AddCell(cellCenter);
+            cellCenter.Phrase = new Phrase("Amount \n( -Jasa - PPN )", small_font);
             tableBody.AddCell(cellCenter);
             cellCenter.Phrase = new Phrase("PPH", small_font);
             tableBody.AddCell(cellCenter);
@@ -143,6 +151,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         tableBody.AddCell(cellRight);
                         cellRight.Phrase = new Phrase(item.service.ToString("N0"), small_font);
                         tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase(item.othersPayment.ToString("N0"), small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase(item.truckingPayment.ToString("N0"), small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase(item.vatService.ToString("N0"), small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase(item.amountService.ToString("N0"), small_font);
+                        tableBody.AddCell(cellRight);
                         cellRight.Phrase = new Phrase(item.paymentDisposition.incomeTaxValue.ToString("N0"), small_font);
                         tableBody.AddCell(cellRight);
                         cellLeftNoRightBorder.Phrase = new Phrase("Rp ", small_font);
@@ -180,6 +196,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         tableBody.AddCell(cellRight);
                         cellLeft.Phrase = new Phrase(string.Join(", ", detail.invoice.items.Select(s => s.unit).Distinct()), small_font);
                         tableBody.AddCell(cellLeft);
+                        cellRight.Phrase = new Phrase("", small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase("", small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase("", small_font);
+                        tableBody.AddCell(cellRight);
+                        cellRight.Phrase = new Phrase("", small_font);
+                        tableBody.AddCell(cellRight);
                         cellRight.Phrase = new Phrase("", small_font);
                         tableBody.AddCell(cellRight);
                         cellRight.Phrase = new Phrase("", small_font);

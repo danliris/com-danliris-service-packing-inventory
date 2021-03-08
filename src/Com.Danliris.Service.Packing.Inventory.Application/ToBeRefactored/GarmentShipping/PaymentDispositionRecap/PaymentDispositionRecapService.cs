@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
@@ -24,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentShippingPaymentDispositionRepository _paymentDispositionRepository;
         private readonly IGarmentShippingInvoiceRepository _invoiceRepository;
         private readonly IGarmentPackingListRepository _packingListRepository;
+        private readonly IGarmentShippingPaymentDispositionRepository _garmentShippingPaymentDispositionRepository;
 
         public PaymentDispositionRecapService(IServiceProvider serviceProvider)
         {
@@ -33,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _paymentDispositionRepository = serviceProvider.GetService<IGarmentShippingPaymentDispositionRepository>();
             _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
+            _garmentShippingPaymentDispositionRepository = serviceProvider.GetService<IGarmentShippingPaymentDispositionRepository>();
         }
 
         private PaymentDispositionRecapViewModel MapToViewModel(GarmentShippingPaymentDispositionRecapModel model)
@@ -82,7 +85,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         Id = i.PaymentDispositionId
                     },
-                    service = i.Service
+                    service = i.Service,
+                    othersPayment = i.OthersPayment,
+                    truckingPayment = i.TruckingPayment,
+                    vatService = i.VatService,
+                    amountService = i.AmountService
                 }).ToList()
             };
 
@@ -98,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.paymentDisposition = i.paymentDisposition ?? new GarmentShippingPaymentDispositionViewModel();
 
-                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service) { Id = i.Id };
+                return new GarmentShippingPaymentDispositionRecapItemModel(i.paymentDisposition.Id, i.service, i.othersPayment, i.truckingPayment, i.vatService, i.amountService) { Id = i.Id };
             }).ToList();
 
             return new GarmentShippingPaymentDispositionRecapModel(vm.recapNo, vm.date.GetValueOrDefault(), vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.emkl.address, vm.emkl.npwp, items) { Id = vm.Id };
@@ -191,7 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             totalCarton = d.TotalCarton,
                         }).ToList(),
                         amount = s.BillValue + s.VatValue,
-                        paid = s.BillValue + s.VatValue - s.IncomeTaxValue,
+                        paid = s.BillValue + s.VatValue - s.IncomeTaxValue + Convert.ToDecimal(item.othersPayment),
                     })
                     .Single();
 
@@ -254,7 +261,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, PaymentDispositionRecapViewModel viewModel)
         {
             GarmentShippingPaymentDispositionRecapModel model = MapToModel(viewModel);
-
+            foreach(var item in model.Items)
+            {
+                var vmItem = viewModel.items.FirstOrDefault(i => i.Id == item.Id);
+                if(vmItem != null)
+                {
+                    var paymentDisposition = await _garmentShippingPaymentDispositionRepository.ReadByIdAsync(item.PaymentDispositionId);
+                    if(paymentDisposition != null)
+                    {
+                        paymentDisposition.SetIncomeTaxValue(vmItem.paymentDisposition.incomeTaxValue, "", "");
+                        item.SetPaymentDisposition(paymentDisposition);
+                    }
+                }
+            }
             return await _recapRepository.UpdateAsync(id, model);
         }
     }

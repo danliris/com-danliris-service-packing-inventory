@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingPaymentDispositionRecapModel> _dbSet;
         private readonly DbSet<GarmentShippingPaymentDispositionRecapItemModel> _dbSetItem;
-
+        private readonly DbSet<GarmentShippingPaymentDispositionModel> _garmentShippingPaymentDispositionDbSet;
         public GarmentShippingPaymentDispositionRecapRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingPaymentDispositionRecapModel>();
             _dbSetItem = dbContext.Set<GarmentShippingPaymentDispositionRecapItemModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _garmentShippingPaymentDispositionDbSet = dbContext.Set<GarmentShippingPaymentDispositionModel>();
         }
 
         public Task<int> DeleteAsync(int id)
@@ -90,6 +92,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 else
                 {
                     itemToUpdate.SetService(item.Service, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetOthersPayment(item.OthersPayment, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetTruckingPayment(item.TruckingPayment, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetVatService(item.VatService, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetAmountService(item.AmountService, _identityProvider.Username, UserAgent);
+                    
+                    var paymentDisposition = _garmentShippingPaymentDispositionDbSet.FirstOrDefault(entity => entity.Id == itemToUpdate.PaymentDispositionId);
+                    if(paymentDisposition != null)
+                    {
+                        paymentDisposition.SetIncomeTaxValue(item.PaymentDisposition.IncomeTaxValue, _identityProvider.Username, UserAgent);
+                    }
                     itemToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
                 }
             }

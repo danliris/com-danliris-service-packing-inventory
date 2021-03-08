@@ -281,7 +281,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListItemModel("2020001", "", 1, "", 1, "", "", "", 1, 1, "PCS", 1, 1, 1, 1, 1, "", 1, "", "", "C", "", "", details2) { Id = 3 } 
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1) };
-            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", 
+                "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "");
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -363,7 +364,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             //var spMock = GetServiceProvider(repoMock.Object);
             var imageServiceMock = new Mock<IAzureImageService>();
             imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync("ImageFile");
+                .ReturnsAsync("");
 
             var serviceProviderMock = GetServiceProvider(repoMock.Object);
             serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
@@ -418,7 +419,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             //var spMock = GetServiceProvider(repoMock.Object);
             var imageServiceMock = new Mock<IAzureImageService>();
             imageServiceMock.Setup(s => s.DownloadImage(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync("ImageFile");
+                .ReturnsAsync("");
 
             var serviceProviderMock = GetServiceProvider(repoMock.Object);
             serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))

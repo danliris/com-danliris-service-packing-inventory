@@ -508,46 +508,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMark.AddCell(cellSideMark);
 
             byte[] shippingMarkImage;
-            if (!String.IsNullOrEmpty(viewModel.ShippingMarkImageFile))
+            var noImage = "data:image/png;base64,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";
+            if (String.IsNullOrEmpty(viewModel.ShippingMarkImageFile))
             {
-                if (IsBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile)))
+                viewModel.ShippingMarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile)))
+            {
+                shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
+                Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
+
+                if (shipMarkImage.Width > 60)
                 {
-                    shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.ShippingMarkImageFile));
-                    Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
-
-                    if (shipMarkImage.Width > 60)
-                    {
-                        float percentage = 0.0f;
-                        percentage = 100 / shipMarkImage.Width;
-                        shipMarkImage.ScalePercent(percentage * 100);
-                    }
-
-                    PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
-                    shipMarkImageCell.Border = Rectangle.NO_BORDER;
-                    tableMark.AddCell(shipMarkImageCell);
+                    float percentage = 0.0f;
+                    percentage = 100 / shipMarkImage.Width;
+                    shipMarkImage.ScalePercent(percentage * 100);
                 }
+
+                PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
+                shipMarkImageCell.Border = Rectangle.NO_BORDER;
+                tableMark.AddCell(shipMarkImageCell);
             }
 
             byte[] sideMarkImage;
-            if (!String.IsNullOrEmpty(viewModel.SideMarkImageFile))
+            if (String.IsNullOrEmpty(viewModel.SideMarkImageFile))
             {
-                if (IsBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile)))
+                viewModel.SideMarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile)))
+            {
+                sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
+
+                Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
+
+                if (_sideMarkImage.Width > 60)
                 {
-                    sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.SideMarkImageFile));
-
-                    Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
-
-                    if (_sideMarkImage.Width > 60)
-                    {
-                        float percentage = 0.0f;
-                        percentage = 100 / _sideMarkImage.Width;
-                        _sideMarkImage.ScalePercent(percentage * 100);
-                    }
-
-                    PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
-                    _sideMarkImageCell.Border = Rectangle.NO_BORDER;
-                    tableMark.AddCell(_sideMarkImageCell);
+                    float percentage = 0.0f;
+                    percentage = 100 / _sideMarkImage.Width;
+                    _sideMarkImage.ScalePercent(percentage * 100);
                 }
+
+                PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
+                _sideMarkImageCell.Border = Rectangle.NO_BORDER;
+                tableMark.AddCell(_sideMarkImageCell);
             }
 
             new PdfPCell(tableMark);
@@ -638,25 +643,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             });
 
             byte[] remarkImage;
-            if (!String.IsNullOrEmpty(viewModel.RemarkImageFile))
+            if (String.IsNullOrEmpty(viewModel.RemarkImageFile))
             {
-                if (IsBase64String(Base64.GetBase64File(viewModel.RemarkImageFile)))
+                viewModel.RemarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(viewModel.RemarkImageFile)))
+            {
+                remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
+                Image images = Image.GetInstance(imgb: remarkImage);
+
+                if (images.Width > 60)
                 {
-                    remarkImage = Convert.FromBase64String(Base64.GetBase64File(viewModel.RemarkImageFile));
-                    Image images = Image.GetInstance(imgb: remarkImage);
-
-                    if (images.Width > 60)
-                    {
-                        float percentage = 0.0f;
-                        percentage = 100 / images.Width;
-                        images.ScalePercent(percentage * 100);
-                    }
-
-                    PdfPCell imageCell = new PdfPCell(images);
-                    imageCell.Border = Rectangle.NO_BORDER;
-                    imageCell.Colspan = 3;
-                    tableMeasurement.AddCell(imageCell);
+                    float percentage = 0.0f;
+                    percentage = 100 / images.Width;
+                    images.ScalePercent(percentage * 100);
                 }
+
+                PdfPCell imageCell = new PdfPCell(images);
+                imageCell.Border = Rectangle.NO_BORDER;
+                imageCell.Colspan = 3;
+                tableMeasurement.AddCell(imageCell);
             }
 
             new PdfPCell(tableMeasurement);

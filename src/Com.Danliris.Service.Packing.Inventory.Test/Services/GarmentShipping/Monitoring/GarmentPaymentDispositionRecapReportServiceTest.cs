@@ -97,11 +97,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingPaymentDispositionRecapItemModel>
                 {
-                     new GarmentShippingPaymentDispositionRecapItemModel(1, 6000)
+                     new GarmentShippingPaymentDispositionRecapItemModel(1, 6000, 7000, 8000, 9000, 10000)
                          {
                           RecapId =  1
                          },
-                     new GarmentShippingPaymentDispositionRecapItemModel(1, 4000)
+                     new GarmentShippingPaymentDispositionRecapItemModel(1, 4000, 5000, 6000, 7000, 8000)
                          {
                           RecapId =  1
                          },
@@ -194,11 +194,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingPaymentDispositionRecapItemModel>
                 {
-                     new GarmentShippingPaymentDispositionRecapItemModel(1, 6000)
+                     new GarmentShippingPaymentDispositionRecapItemModel(1, 6000, 7000, 8000, 9000, 10000)
                          {
                           RecapId =  1
                          },
-                     new GarmentShippingPaymentDispositionRecapItemModel(1, 4000)
+                     new GarmentShippingPaymentDispositionRecapItemModel(1, 4000, 5000, 6000, 7000, 8000)
                          {
                           RecapId =  1
                          },
