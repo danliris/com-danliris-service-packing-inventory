@@ -801,11 +801,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     from a in l.DefaultIfEmpty()
                                     where 
                                     d.IsDeleted == false 
-                                    && a.IsDeleted == false 
-                                   // && d.Area == DyeingPrintingArea.SHIPPING
-                                   //&& d.HasOutputDocument == false
-                                    //&& d.DeliveryOrderSalesId == deliveryOrderId
-                                   //&& a.DestinationArea != (string.IsNullOrWhiteSpace(DyeingPrintingArea.PENJUALAN) ? a.DestinationArea : DyeingPrintingArea.PENJUALAN) 
+                                    && a.IsDeleted == false
+                                    && d.Area == DyeingPrintingArea.SHIPPING
+                                    && d.HasOutputDocument == false
+                                    && d.DeliveryOrderSalesId == deliveryOrderId
+                                   && a.DestinationArea != (string.IsNullOrWhiteSpace(DyeingPrintingArea.PENJUALAN) ? a.DestinationArea : DyeingPrintingArea.PENJUALAN)
 
                                     orderby d.LastModifiedUtc
                                     select new InputShippingProductionOrderViewModel
@@ -1788,12 +1788,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (productionOrderId == 0)
             {
                 productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                                    .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument);
+                                    .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument).Take(75);
             }
             else
             {
                 productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                                    .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId);
+                                    .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId).Take(75);
 
             }
             var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
@@ -1862,12 +1862,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 HasPrintingProductPacking = d.HasPrintingProductPacking,
                 DateIn = d.DateIn,
                 BonNo = d.Id != 0 ? _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo == null ? "-" : _repository.ReadAll().Where(x => x.DyeingPrintingAreaOutputProductionOrders.Any(s => s.DyeingPrintingAreaInputProductionOrderId == d.Id)).FirstOrDefault().BonNo : "-"
-            });
-
-        
-        
-
-            
+            });         
 
             return data.ToList();
         }
