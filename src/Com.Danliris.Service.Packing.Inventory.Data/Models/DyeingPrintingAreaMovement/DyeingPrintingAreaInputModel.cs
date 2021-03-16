@@ -12,7 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Shift { get; private set; }
         public string BonNo { get; private set; }
         public string Group { get; private set; }
-
         #region isi di aval transform
         public string AvalType { get; private set; }
 

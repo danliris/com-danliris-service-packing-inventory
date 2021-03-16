@@ -30,6 +30,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AdjItemCategory { get; private set; }
 
+        //public string DestinationBuyerName { get; private set; } //NAME
+
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
         public DyeingPrintingAreaOutputModel()
@@ -155,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             HasSalesInvoice = hasSalesInvoice;
             ShippingCode = shippingCode;
+
         }
 
 

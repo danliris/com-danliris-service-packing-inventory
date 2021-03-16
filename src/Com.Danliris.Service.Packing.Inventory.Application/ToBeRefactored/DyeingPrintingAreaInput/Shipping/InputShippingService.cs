@@ -89,7 +89,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DeliveryOrder = new DeliveryOrderSales()
                     {
                         Id = s.DeliveryOrderSalesId,
-                        No = s.DeliveryOrderSalesNo
+                        No = s.DeliveryOrderSalesNo,
+                        Name = s.DestinationBuyerNameInputOrder
                     },
                     QtyPacking = s.PackagingQty,
                     InputQtyPacking = s.InputPackagingQty,
@@ -190,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.PackingType, s.Color, s.Motif, s.Grade, s.InputQtyPacking, s.Packing, s.InputQuantity, s.UomUnit, false, s.InputQuantity, s.Unit,
                          s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name,
                          s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId,
-                         s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, viewModel.Date)).ToList());
+                         s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, viewModel.Date, s.DeliveryOrder.Name)).ToList());
                      
 
                 result = await _repository.InsertAsync(model);
@@ -230,7 +231,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.CartNo, item.Remark,
                         item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode,
                         item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.InputQuantity,
-                        item.InputQtyPacking, item.DeliveryOrderRetur.Id, item.DeliveryOrderRetur.No, item.FinishWidth, viewModel.Date);
+                        item.InputQtyPacking, item.DeliveryOrderRetur.Id, item.DeliveryOrderRetur.No, item.FinishWidth, viewModel.Date, item.DeliveryOrder.Name);
                         
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -307,7 +308,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DeliveryOrder = new DeliveryOrderSales()
                     {
                         Id = d.DeliveryOrderSalesId,
-                        No = d.DeliveryOrderSalesNo
+                        No = d.DeliveryOrderSalesNo,
+                        Name = d.DestinationBuyerNameInputOrder
                     },
                     ProductionOrder = new ProductionOrder()
                     {
@@ -421,7 +423,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DeliveryOrder = new DeliveryOrderSales()
                 {
                     Id = s.DeliveryOrderSalesId,
-                    No = s.DeliveryOrderSalesNo
+                    No = s.DeliveryOrderSalesNo,
+                    Name = s.DestinationBuyerNameInputOrder
                 },
                 DeliveryOrderRetur = new DeliveryOrderRetur()
                 {
@@ -509,7 +512,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DeliveryOrder = new DeliveryOrderSales()
                 {
                     Id = s.DeliveryOrderSalesId,
-                    No = s.DeliveryOrderSalesNo
+                    No = s.DeliveryOrderSalesNo,
+                    Name = s.DestinationBuyerName
                 },
                 ProductionOrder = new ProductionOrder()
                 {
@@ -684,7 +688,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.PackingType, s.Color, s.Motif, s.Grade, s.InputQtyPacking, s.Packing, s.InputQuantity, s.UomUnit, s.HasOutputDocument,
                          s.InputQuantity, s.Unit, s.BuyerId, s.DyeingPrintingAreaInputProductionOrderId, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark,
                          s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU,
-                         s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, s.DateIn)
+                         s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, s.DateIn, s.DeliveryOrder.Name)
 
                      {
                          Id = s.Id
@@ -817,7 +821,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Id = s.DeliveryOrderSalesId,
                         No = s.DeliveryOrderSalesNo
-
                     }
                 });
 

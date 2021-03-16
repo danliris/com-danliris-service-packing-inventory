@@ -61,5 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public bool HasPrintingProductPacking { get; set; }
         public DateTimeOffset DateIn { get; set; }
         public DateTimeOffset DateOut { get; set; }
+
+        public string DestinationBuyerName { get; set; }
     }
 }
