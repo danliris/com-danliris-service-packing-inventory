@@ -160,75 +160,75 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableCellRightBorder);
 
+            ////SPACE
+            //bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 4;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            //bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 2;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            //bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            //bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellRightBorder);
+
+            ////
+
+            //bodyTableCellLeftBorder.Phrase = new Phrase(".", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 4;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            //bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 2;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
+
+            //bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellCenterBorder);
+
+            //bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellRightBorder);
+
             //SPACE
-            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 4;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
+            //bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 4;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
 
-            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 2;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
+            //bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellLeftBorder.Colspan = 2;
+            //bodyTable.AddCell(bodyTableCellLeftBorder);
 
-            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellCenterBorder);
+            //bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellCenterBorder);
 
-            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellRightBorder);
-
-            //
-
-            bodyTableCellLeftBorder.Phrase = new Phrase(".", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 4;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
-
-            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 2;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
-
-            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellCenterBorder);
-
-            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellRightBorder);
-
-            //SPACE
-            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 4;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
-
-            bodyTableCellLeftBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellLeftBorder.Colspan = 2;
-            bodyTable.AddCell(bodyTableCellLeftBorder);
-
-            bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellCenterBorder);
-
-            bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
-            bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTable.AddCell(bodyTableCellRightBorder);
+            //bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
+            //bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTable.AddCell(bodyTableCellRightBorder);
 
             //
             bodyTableCellLeftBorder.Phrase = new Phrase($"{viewModel.Remark}", body_font);

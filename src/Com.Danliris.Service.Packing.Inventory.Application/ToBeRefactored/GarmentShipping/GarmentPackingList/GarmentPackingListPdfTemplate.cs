@@ -406,7 +406,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 10,
+                    Colspan = SIZES_COUNT + 11,
                     Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity))} Kgs", normal_font)
                 });
 
