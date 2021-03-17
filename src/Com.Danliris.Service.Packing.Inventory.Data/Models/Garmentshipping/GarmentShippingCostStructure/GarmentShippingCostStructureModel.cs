@@ -46,15 +46,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             //Items = items;
         }
 
-        public void SetDate(DateTimeOffset date, string userName, string userAgent)
-        {
-            if(Date != date)
-            {
-                Date = date;
-                this.FlagForUpdate(userName, userAgent);
-            }
-        }
-
         public void SetComodityId(int comodityId, string userName, string userAgent)
         {
             if (ComodityId != comodityId)

@@ -10,8 +10,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 {
     public interface IGarmentShippingCostStructureRepository : IRepository<GarmentShippingCostStructureModel>
     {
-        Task<GarmentShippingCostStructureModel> ReadByInvoiceNo(string no);
-        IQueryable<GarmentShippingCostStructureModel> Query { get; }
-        Task<int> SaveChanges();
     }
 }

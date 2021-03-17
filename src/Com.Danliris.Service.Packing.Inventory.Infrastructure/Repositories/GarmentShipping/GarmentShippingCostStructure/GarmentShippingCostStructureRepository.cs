@@ -23,8 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-        public IQueryable<GarmentShippingCostStructureModel> Query => _dbSet.AsQueryable();
-
         public Task<int> DeleteAsync(int id)
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
@@ -51,16 +49,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public Task<GarmentShippingCostStructureModel> ReadByIdAsync(int id)
         {
             return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
-        }
-
-        public Task<GarmentShippingCostStructureModel> ReadByInvoiceNo(string no)
-        {
-            return _dbSet.FirstOrDefaultAsync(s => s.InvoiceNo == no);
-        }
-
-        public Task<int> SaveChanges()
-        {
-            return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> UpdateAsync(int id, GarmentShippingCostStructureModel model)

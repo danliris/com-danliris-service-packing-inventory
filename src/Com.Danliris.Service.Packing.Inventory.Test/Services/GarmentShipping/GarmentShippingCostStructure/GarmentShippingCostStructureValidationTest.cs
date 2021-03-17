@@ -24,9 +24,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 					FabricTypeId = 0,
 					Comodity = new Comodity
                     {
-						Id = 1,
-						Code = "code",
-						Name = "name"
+						Id = 0,
+						Code = null,
+						Name = null
                     },
 					Amount = 0,
 				};
