@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e","rr","1","as","test","unit","color","motif","mtr",1,false,1),
                  new DyeingPrintingAreaInputProductionOrderModel("TRANSIT",1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,false,"s","zimmer","grade","s",1,1,1,1,"name",1,"a","1",1,"a","a",1,"a","a",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1, 1,"a",DateTimeOffset.Now),
-                 new DyeingPrintingAreaInputProductionOrderModel("SHIPPING",1,"A",1,"A","A",1,"a","A","A","A","A","A",1,"A",1,"A",false,1,"unit",1,1,1,"name",1,"a","1","1","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1,1,"a","a", DateTimeOffset.Now),
+                 new DyeingPrintingAreaInputProductionOrderModel("SHIPPING",1,"A",1,"A","A",1,"a","A","A","A","A","A",1,"A",1,"A",false,1,"unit",1,1,1,"name",1,"a","1","1","1",1,"a",1,"a",1,1,"a",false,1,1,"a",false,1,1,1,1,"a","a", DateTimeOffset.Now,"a"),
                  new DyeingPrintingAreaInputProductionOrderModel("IM",1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr",1,1,false,1,1,1,"name",1,"a","1",1,"a",1,"a",1, "a", DateTimeOffset.Now)
                   
             });
@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
             {
                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,null,null,null,null,null,null,null,null,0,true,0),
                  new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,1,null,null,null,null,null,null,null,null,1,true,null,null,null,null,0,0,0,0,null,0,null,"0",0,null,null,0,null,null,0,null,0,null,0,0,null,true,0,0,null,true,0,0,0,null,DateTimeOffset.MinValue),
-                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,0,null,null,0,null,null,null,null,null,null,0,null,0,null,true,0, null,0,0,0,null,0,null,"0",null,null,0,null,0,null,0,0,null,true,0,0,null,true,0,0,0,0,null,null, DateTimeOffset.Now),
+                 new DyeingPrintingAreaInputProductionOrderModel(null,0,null,0,null,null,0,null,null,null,null,null,null,0,null,0,null,true,0, null,0,0,0,null,0,null,"0",null,null,0,null,0,null,0,0,null,true,0,0,null,true,0,0,0,0,null,null, DateTimeOffset.Now,null),
                  new DyeingPrintingAreaInputProductionOrderModel(null,0,null,null,0,null,null,null,null,null,null,null,null,1,1,true,0,0,0,null,0,null,"0",0,null,0,null,0, null, DateTimeOffset.Now),
             });
         }
