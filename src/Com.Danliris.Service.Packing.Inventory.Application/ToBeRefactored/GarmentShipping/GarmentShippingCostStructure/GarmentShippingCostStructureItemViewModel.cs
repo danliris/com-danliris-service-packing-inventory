@@ -9,9 +9,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingCostStructureItemViewModel : BaseViewModel
     {
-        public double SummaryValue { get; set; }
-        public double SummaryPercentage { get; set; }
-        public GarmentShippingCostStructureTypeEnum CostStructureType { get; set; }
-        public ICollection<GarmentShippingCostStructureDetailViewModel> Details { get; set; }
+        //public double SummaryValue { get; set; }
+        //public double SummaryPercentage { get; set; }
+        //public GarmentShippingCostStructureTypeEnum CostStructureType { get; set; }
+        //public ICollection<GarmentShippingCostStructureDetailViewModel> Details { get; set; }
     }
 }

@@ -172,8 +172,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingPaymentDispositionRecapItemModel> GarmentShippingPaymentDispositionRecapItems { get; set; }
 
         public DbSet<GarmentShippingCostStructureModel> GarmentShippingCostStructures { get; set; }
-        //public DbSet<GarmentShippingCostStructureItemModel> GarmentShippingCostStructureItems { get; set; }
-        //public DbSet<GarmentShippingCostStructureDetailModel> GarmentShippingCostStructureDetails { get; set; }
+        public DbSet<GarmentShippingCostStructureItemModel> GarmentShippingCostStructureItems { get; set; }
+        public DbSet<GarmentShippingCostStructureDetailModel> GarmentShippingCostStructureDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -255,8 +255,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
-            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
-            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);
