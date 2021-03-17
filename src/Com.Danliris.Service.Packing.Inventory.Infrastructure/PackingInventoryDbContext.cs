@@ -53,6 +53,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingCostStructure;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -169,6 +171,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingPaymentDispositionRecapModel> GarmentShippingPaymentDispositionRecaps { get; set; }
         public DbSet<GarmentShippingPaymentDispositionRecapItemModel> GarmentShippingPaymentDispositionRecapItems { get; set; }
 
+        public DbSet<GarmentShippingCostStructureModel> GarmentShippingCostStructures { get; set; }
+        //public DbSet<GarmentShippingCostStructureItemModel> GarmentShippingCostStructureItems { get; set; }
+        //public DbSet<GarmentShippingCostStructureDetailModel> GarmentShippingCostStructureDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -247,6 +253,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

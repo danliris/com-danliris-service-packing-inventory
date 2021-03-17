@@ -17,6 +17,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.FabricQualityControl;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
@@ -89,6 +90,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCorrectionNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingCostStructure;
 
 using Com.Danliris.Service.Packing.Inventory.Application.QueueService;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Inventory;
@@ -228,6 +230,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingPaymentDispositionRepository, GarmentShippingPaymentDispositionRepository>();
             services.AddTransient<IGarmentShippingPaymentDispositionRecapRepository, GarmentShippingPaymentDispositionRecapRepository>();
 
+            services.AddTransient<IGarmentShippingCostStructureRepository, GarmentShippingCostStructureRepository>();
+
             services.AddTransient<IRepository<CategoryModel>, CategoryRepository>();
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
@@ -300,6 +304,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingPaymentDispositionService, GarmentShippingPaymentDispositionService>();
             services.AddTransient<IPaymentDispositionRecapService, PaymentDispositionRecapService>();
+
+            services.AddTransient<IGarmentShippingCostStructureService, GarmentShippingCostStructureService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUOMService, UOMService>();
