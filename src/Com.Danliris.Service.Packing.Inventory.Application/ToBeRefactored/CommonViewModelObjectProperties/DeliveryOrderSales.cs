@@ -8,5 +8,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Comm
     {
         public long Id { get; set; }
         public string No { get; set; }
+        public string Name { get; set; }
     }
 }

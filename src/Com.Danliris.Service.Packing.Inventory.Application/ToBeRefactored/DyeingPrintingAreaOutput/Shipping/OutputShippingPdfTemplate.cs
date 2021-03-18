@@ -188,8 +188,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cell.Phrase = new Phrase($"NO. : {model.BonNo}", TEXT_FONT);
             table.AddCell(cell);
 
-            string buyerName = model.ShippingProductionOrders.FirstOrDefault()?.Buyer;
+            string buyerName = model.ShippingProductionOrders.FirstOrDefault()?.DeliveryOrder.Name;
             cell.Phrase = new Phrase($"U/ dikirim kepada: {buyerName}", TEXT_FONT);
+            //string buyerName = model.ShippingProductionOrders.FirstOrDefault()?.Buyer;
+            //cell.Phrase = new Phrase($"U/ dikirim kepada: {buyerName}", TEXT_FONT);
             //string productionNo = model.ShippingProductionOrders.FirstOrDefault()?.ProductionOrder.No;
             //cell.Phrase = new Phrase($"U/ dikirim kepada: {productionNo}", TEXT_FONT);
             table.AddCell(cell);

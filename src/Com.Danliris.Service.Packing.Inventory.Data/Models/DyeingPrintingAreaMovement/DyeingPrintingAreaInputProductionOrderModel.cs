@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Area { get; set; }
 
         public double BalanceRemains { get; set; }
-
+        public string DestinationBuyerName { get; set; }
         #region aval transformasi
         public string InputAvalBonNo { get; private set; }
         public double AvalQuantityKg { get; private set; }
@@ -940,12 +940,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="processTypeName"></param>
         /// <param name="yarnMaterialId"></param>
         /// <param name="yarnMaterialName"></param>
+        /// <param name="destinationBuyerName"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
             string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains,
             string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth,
             string cartNo, string remark, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode,
             bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty,
-            long deliveryOrderReturId, string deliveryOrderReturNo, string finishWidth, DateTimeOffset dateIn)
+            long deliveryOrderReturId, string deliveryOrderReturNo, string finishWidth, DateTimeOffset dateIn, string destinationBuyerName)
 
         {
             ProductionOrderId = productionOrderId;
@@ -1007,6 +1008,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DeliveryOrderReturId = deliveryOrderReturId;
             DeliveryOrderReturNo = deliveryOrderReturNo;
             DateIn = dateIn;
+            DestinationBuyerName = destinationBuyerName;
         }
 
         /// <summary>
