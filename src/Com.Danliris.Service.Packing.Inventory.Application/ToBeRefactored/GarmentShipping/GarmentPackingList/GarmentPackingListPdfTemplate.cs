@@ -392,7 +392,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 6,
                     Padding = 5,
-                    Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
+                    Phrase = new Phrase("SUB TOTAL .............................................................................................................................................. ", normal_font)
                 });
                 var subTotalResult = string.Join(" / ", arraySubTotal.Select(x => x.Value + " " + x.Key).ToArray());
                 cellBorderBottom.Phrase = new Phrase(subTotalResult, normal_font);
