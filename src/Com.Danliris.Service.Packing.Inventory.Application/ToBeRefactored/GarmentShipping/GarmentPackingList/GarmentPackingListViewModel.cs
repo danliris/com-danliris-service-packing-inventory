@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public bool IsUsed { get; set; }
         public bool IsPosted { get; set; }
+        public bool IsCostStructured { get; set; }
 
         public ShippingStaff ShippingStaff { get; set; }
 

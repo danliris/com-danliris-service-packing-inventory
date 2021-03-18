@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Moonlay.Models;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingCostStructure
 {
@@ -15,11 +16,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingCostStructureModel> _dbSet;
+        private readonly DbSet<GarmentPackingListModel> _garmentpackingListDbSet;
 
         public GarmentShippingCostStructureRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingCostStructureModel>();
+            _garmentpackingListDbSet = dbContext.Set<GarmentPackingListModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -29,12 +32,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
+            var packingListModel = _garmentpackingListDbSet.FirstOrDefault(entity => entity.Id == model.PackingListId);
+            packingListModel.SetIsCostStructured(false, _identityProvider.Username, UserAgent);
+
             return _dbContext.SaveChangesAsync();
         }
 
         public Task<int> InsertAsync(GarmentShippingCostStructureModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
+
+            var packingListModel = _garmentpackingListDbSet.FirstOrDefault(entity => entity.Id == model.PackingListId);
+            packingListModel.SetIsCostStructured(true, _identityProvider.Username, UserAgent);
 
             _dbSet.Add(model);
 

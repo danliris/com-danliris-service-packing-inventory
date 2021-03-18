@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingCostStructureViewModel : BaseViewModel, IValidatableObject
     {
+        public int PackingListId { get; set; }
         public string InvoiceNo { get; set; }
         public DateTimeOffset Date { get; set; }
         public Comodity Comodity { get; set; }

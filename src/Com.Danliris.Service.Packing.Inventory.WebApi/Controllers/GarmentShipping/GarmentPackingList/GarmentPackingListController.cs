@@ -144,6 +144,34 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
+        [HttpGet("not-used-cost-structure")]
+        public IActionResult GetNotUsedCostStructure([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}", [FromQuery] string filter = "{}")
+        {
+            try
+            {
+                var data = _service.ReadNotUsedCostStructure(page, size, filter, order, keyword);
+
+                var info = new Dictionary<string, object>
+                    {
+                        { "count", data.Data.Count },
+                        { "total", data.Total },
+                        { "order", order },
+                        { "page", page },
+                        { "size", size }
+                    };
+
+                return Ok(new
+                {
+                    data = data.Data,
+                    info
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}", [FromQuery] string filter = "{}")
         {

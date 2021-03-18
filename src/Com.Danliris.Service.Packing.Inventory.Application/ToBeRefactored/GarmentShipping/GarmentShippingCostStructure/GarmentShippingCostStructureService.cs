@@ -44,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedUtc = model.LastModifiedUtc,
 
                 InvoiceNo = model.InvoiceNo,
+                PackingListId = model.PackingListId,
                 Date = model.Date,
                 Comodity = new Comodity
                 {
@@ -103,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         protected GarmentShippingCostStructureModel MapToModel(GarmentShippingCostStructureViewModel viewModel)
         {
             viewModel.Comodity = viewModel.Comodity ?? new Comodity();
-            GarmentShippingCostStructureModel garmentShippingCostStructureModel = new GarmentShippingCostStructureModel(viewModel.InvoiceNo, viewModel.Date, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.HsCode, viewModel.Destination, viewModel.FabricTypeId, viewModel.FabricType, viewModel.Amount);
+            GarmentShippingCostStructureModel garmentShippingCostStructureModel = new GarmentShippingCostStructureModel(viewModel.InvoiceNo, viewModel.Date, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.HsCode, viewModel.Destination, viewModel.FabricTypeId, viewModel.FabricType, viewModel.Amount, viewModel.PackingListId);
             return garmentShippingCostStructureModel;
         }
 
@@ -127,6 +128,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<string> SearchAttributes = new List<string>()
             {
                 "InvoiceNo",
+                "ComodityName",
+                "HsCode",
+                "Destination",
+                "FabricType"
             };
             query = QueryHelper<GarmentShippingCostStructureModel>.Search(query, SearchAttributes, keyword);
 
