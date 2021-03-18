@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public GarmentShippingCostStructureModel GetModels()
         {
-            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 2);
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 1);
 
             return model;
         }

@@ -141,7 +141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetDestination("data.destination", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetHsCode("data.hsCode", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetFabricType("model.FabricType", data.LastModifiedBy, data.LastModifiedAgent);
-			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPackingListId(2, data.LastModifiedBy, data.LastModifiedAgent);
 
 			var result = await repo2.UpdateAsync(data.Id, data);
 
