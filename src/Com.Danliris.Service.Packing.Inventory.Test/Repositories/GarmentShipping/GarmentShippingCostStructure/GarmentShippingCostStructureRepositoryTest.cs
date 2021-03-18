@@ -1,6 +1,9 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
+﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingCostStructure;
+using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentShippingCostStructure;
 using System;
 using System.Collections.Generic;
@@ -26,9 +29,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			var dbContext = DbContext(testName);
 			var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
 			GarmentShippingCostStructureRepository repo = new GarmentShippingCostStructureRepository(dbContext, serviceProvider);
 			GarmentShippingCostStructureDataUtil costStructureDataUtil = new GarmentShippingCostStructureDataUtil(repo);
 			GarmentShippingCostStructureModel data = costStructureDataUtil.GetModel();
+			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 			var result = await repo.InsertAsync(data);
 			Assert.NotEqual(0, result);
 
@@ -41,9 +50,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			var dbContext = DbContext(testName);
 			var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
 			GarmentShippingCostStructureRepository repo = new GarmentShippingCostStructureRepository(dbContext, serviceProvider);
 			GarmentShippingCostStructureDataUtil costStructureDataUtil = new GarmentShippingCostStructureDataUtil(repo);
 			GarmentShippingCostStructureModel data = costStructureDataUtil.GetModel();
+			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 			var result = await repo.InsertAsync(data);
 			var resultdelete = await repo.DeleteAsync(data.Id);
 			Assert.NotEqual(0, result);
@@ -57,9 +72,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
 			var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
 			GarmentShippingCostStructureRepository repo = new GarmentShippingCostStructureRepository(dbContext, serviceProvider);
 			GarmentShippingCostStructureDataUtil costStructureDataUtil = new GarmentShippingCostStructureDataUtil(repo);
 			GarmentShippingCostStructureModel data = costStructureDataUtil.GetModel();
+			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 
 			var results = await repo.InsertAsync(data);
 			var result = repo.ReadByIdAsync(data.Id);
@@ -75,10 +96,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
 			var serviceProvider = GetServiceProviderMock(dbContext).Object;
 
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
+
 			GarmentShippingCostStructureRepository repo = new GarmentShippingCostStructureRepository(dbContext, serviceProvider);
 			GarmentShippingCostStructureDataUtil costStructureDataUtil = new GarmentShippingCostStructureDataUtil(repo);
 			GarmentShippingCostStructureModel data = costStructureDataUtil.GetModel();
-
+			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 			var results = await repo.InsertAsync(data);
 			var result = repo.ReadAll();
 
@@ -92,6 +118,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			var dbContext = DbContext(testName);
 
 			var serviceProvider = GetServiceProviderMock(dbContext).Object;
+
+			GarmentPackingListRepository repoPL = new GarmentPackingListRepository(dbContext, serviceProvider);
+			GarmentPackingListDataUtil utilPL = new GarmentPackingListDataUtil(repoPL);
+			GarmentPackingListModel dataPL = utilPL.GetModel();
+			var dataPackingList = await repoPL.InsertAsync(dataPL);
 
 			GarmentShippingCostStructureRepository repo = new GarmentShippingCostStructureRepository(dbContext, serviceProvider);
 
@@ -111,6 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetFabricType("data.hsCode", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetHsCode("asdlkjasd", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetFabricType("model.FabricType", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 
 			var result = await repo2.UpdateAsync(data.Id, data);
 

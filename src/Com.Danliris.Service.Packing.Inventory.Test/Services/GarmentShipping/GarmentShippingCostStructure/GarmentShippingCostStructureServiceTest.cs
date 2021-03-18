@@ -86,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000);
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 1);
 
             var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000);
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 1);
 
             var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

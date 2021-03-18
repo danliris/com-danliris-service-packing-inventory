@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
     public class GarmentShippingCostStructureModel : StandardEntity
     {
         #region Header
+        public int PackingListId { get; private set; }
         public string InvoiceNo { get; private set; }
         public DateTimeOffset Date { get; private set; }
 
@@ -31,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             //Items = new HashSet<GarmentShippingCostStructureItemModel>();
         }
 
-        public GarmentShippingCostStructureModel(string invoiceNo, DateTimeOffset date, int comodityId, string comodityCode, string comodityName, string hsCode, string destination, int fabricTypeId, string fabrictype, double amount) //, ICollection<GarmentShippingCostStructureItemModel> items)
+        public GarmentShippingCostStructureModel(string invoiceNo, DateTimeOffset date, int comodityId, string comodityCode, string comodityName, string hsCode, string destination, int fabricTypeId, string fabrictype, double amount, int packingListId) //, ICollection<GarmentShippingCostStructureItemModel> items)
         {
             InvoiceNo = invoiceNo;
             Date = date;
@@ -43,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             FabricTypeId = fabricTypeId;
             FabricType = fabrictype;
             Amount = amount;
+            PackingListId = packingListId;
             //Items = items;
         }
 
@@ -105,6 +107,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (FabricType != fabricType)
             {
                 FabricType = fabricType;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetPackingListId(int packingListId, string userName, string userAgent)
+        {
+            if (PackingListId != packingListId)
+            {
+                PackingListId = packingListId;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
