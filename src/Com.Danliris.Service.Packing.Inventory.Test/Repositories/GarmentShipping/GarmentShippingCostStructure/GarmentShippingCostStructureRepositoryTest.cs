@@ -139,8 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 			data.SetComodityName("data.comodityName", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetComodityId(111, data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetDestination("data.destination", data.LastModifiedBy, data.LastModifiedAgent);
-			data.SetFabricType("data.hsCode", data.LastModifiedBy, data.LastModifiedAgent);
-			data.SetHsCode("asdlkjasd", data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetHsCode("data.hsCode", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetFabricType("model.FabricType", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetPackingListId(dataPL.Id, data.LastModifiedBy, data.LastModifiedAgent);
 
