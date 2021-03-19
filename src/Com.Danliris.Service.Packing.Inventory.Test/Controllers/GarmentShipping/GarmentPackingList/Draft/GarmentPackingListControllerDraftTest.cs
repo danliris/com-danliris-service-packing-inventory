@@ -423,6 +423,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task Cancel_Exception_BadRequest()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetCancel(dataUtil.Id, It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task Cancel_Exception_InternalServerError()
         {
             var dataUtil = GetViewModel();
@@ -471,6 +483,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task RejectMd_Exception_BadRequest()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetRejectMd(dataUtil.Id, It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task RejectMd_Exception_InternalServerError()
         {
             var dataUtil = GetViewModel();
@@ -516,6 +540,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var response = await controller.SetRejectShipping(dataUtil.Id, "Alasan");
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task RejectShipping_Exception_BadRequest()
+        {
+            var dataUtil = GetViewModel();
+
+            var controller = GetControllerSetStatus(true);
+
+            var response = await controller.SetRejectShipping(dataUtil.Id, It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
