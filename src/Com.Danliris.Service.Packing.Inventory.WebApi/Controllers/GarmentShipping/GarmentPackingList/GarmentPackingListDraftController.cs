@@ -214,6 +214,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_CANCELED, reason);
 
                 return Ok();
@@ -248,6 +262,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_MD, reason);
 
                 return Ok();
@@ -282,6 +310,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.DRAFT_REJECTED_SHIPPING, reason);
 
                 return Ok();

@@ -29,9 +29,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetCancel(It.IsAny<int>(), It.IsAny<string>());
+            var response = await controller.SetCancel(It.IsAny<int>(), "Alasan");
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Set_Cancel_Exception_BadRequest()
+        {
+            var serviceMock = new Mock<IGarmentPackingListService>();
+            serviceMock
+                .Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+                .ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = await controller.SetCancel(It.IsAny<int>(), It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
         }
 
         [Fact]
@@ -51,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = await controller.SetCancel(It.IsAny<int>(), It.IsAny<string>());
+            var response = await controller.SetCancel(It.IsAny<int>(), "Alasan");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
