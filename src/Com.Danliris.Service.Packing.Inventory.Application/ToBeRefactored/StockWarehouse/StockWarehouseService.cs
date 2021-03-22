@@ -34,11 +34,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
-        private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
             //var queryTransform = _movementRepository.ReadAll()
             //    .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
-
+            // var invType = inventoryType == "BARU" ? null : inventoryType;
             var queryTransform = _movementRepository.ReadAll()
                 .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
 
@@ -62,11 +62,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             {
                 queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
             }
+            if (inventoryType == "BARU")
+            {
+                queryTransform = queryTransform.Where(s => s.InventoryType == null);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(inventoryType))
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                }
+
+            }
 
             //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
             //       s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
 
-            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = DyeingPrintingArea.AWAL,
@@ -80,6 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
                 Unit = d.First().Unit,
+                InventoryType = d.Key.InventoryType,
                 Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
                     + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
 
@@ -88,8 +101,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
+
+            //var invType = inventoryType == "BARU" ? String.Empty : inventoryType;
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
                         startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
@@ -116,10 +131,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
             }
 
+            if (inventoryType == "BARU")
+            {
+                queryTransform = queryTransform.Where(s => s.InventoryType == null);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(inventoryType))
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                }
+
+            }
+
+
             //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
             //            s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
 
-            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType }).Select(d => new SimpleReportViewModel()
+            var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 Type = d.Key.Type,
@@ -133,21 +162,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 NoSpp = d.First().ProductionOrderNo,
                 Satuan = d.First().UomUnit,
                 Unit = d.First().Unit,
+                InventoryType = d.Key.InventoryType,
                 Quantity = d.Sum(e => e.Balance)
             });
 
             return result;
         }
 
-        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
             var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
-            var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+            var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
             var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-            var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId);
+            var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
             var joinData2 = dataSearchDate.Concat(dataAwal);
-            var result = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket }).Select(e => new ReportStockWarehouseViewModel()
+            var result = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType}).Select(e => new ReportStockWarehouseViewModel()
             {
                 ProductionOrderId = e.Key.ProductionOrderId,
                 NoSpp = e.First().NoSpp,
@@ -160,6 +190,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Buyer = e.First().Buyer,
                 Satuan = e.First().Satuan,
                 Unit = e.First().Unit,
+                InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
                 Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
                 Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
                 Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
@@ -175,9 +206,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
         }
 
-        public MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId)
+        public MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
-            var data = GetReportData(dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId);
+            var data = GetReportData(dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
             DataTable dt = new DataTable();
 
@@ -195,6 +226,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
 
             if (data.Count() == 0)
             {
@@ -206,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 {
                     dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
                         item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
-                        item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan);
+                        item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
                 }
             }
 

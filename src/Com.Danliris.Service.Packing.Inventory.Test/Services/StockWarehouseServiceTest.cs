@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type",1,"unit",1);
+                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type",1,"unit",1,"Lama");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -218,7 +218,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -236,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -245,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -263,7 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1);
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -356,7 +356,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
 
-            var result = service.GetReportData(ModelIn.Date, "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId);
+            var result = service.GetReportData(ModelIn.Date, "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, ModelIn.InventoryType);
+            //var result1 = service.GetReportData(ModelIn.Date, "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, "BARU");
+
+            Assert.NotEmpty(result);
+           // Assert.NotEmpty(result1);
+        }
+
+        //stock Gudang Baru
+        [Fact]
+        public void Should_Success_Read_New()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var outRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSpp = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            outRepoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { OutputModel }.AsQueryable());
+
+            sppRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<DyeingPrintingAreaInputProductionOrderModel> {
+                    new DyeingPrintingAreaInputProductionOrderModel("PACKING", 1, "sd", "sd", "a", "a", "a", "a", "a", "a", "a", "a", 10, true, 10, "A",1,1,1,"s",1,"s",1,"s","1",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now)
+
+                }.AsQueryable());
+            outputSpp.Setup(s => s.ReadAll())
+                .Returns(OutputModel.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
+
+            var ModelAwalOut1 =ModelAwalOut;
+            ModelAwalOut1.InventoryType = null;
+
+            var ModelAwalIn1 = ModelAwalIn;
+            ModelAwalIn1.InventoryType = null;
+
+            var ModelIn1 = ModelIn;
+            ModelIn1.InventoryType = null;
+
+            var ModelOut1 = ModelOut;
+            ModelOut1.InventoryType = null;
+
+            var ModelAdjIn1 = ModelAdjIn;
+            ModelAdjIn1.InventoryType = null;
+
+            var ModelAdjOut1 = ModelAdjOut;
+            ModelAdjOut1.InventoryType = null;
+
+            var ModelAwalAdjIn1 = ModelAwalAdjIn;
+            ModelAwalAdjIn1.InventoryType = null;
+
+            var ModelAwalAdjOut1 = ModelAwalAdjOut;
+            ModelAwalAdjOut1.InventoryType = null;
+
+            var data = new List<DyeingPrintingAreaMovementModel>() { ModelAwalOut1, ModelAwalIn1, ModelIn1, ModelOut1, ModelAdjIn1, ModelAdjOut1, ModelAwalAdjIn1, ModelAwalAdjOut1 };
+            movementRepoMock.Setup(s => s.ReadAll())
+                 .Returns(data.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
+
+            //var result = service.GetReportData(ModelIn.Date, "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, ModelIn.InventoryType);
+            var result = service.GetReportData(ModelIn.Date, "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, "BARU");
 
             Assert.NotEmpty(result);
         }
@@ -421,7 +485,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
             //var service = new StockWarehouseService(serviceMock.Object);
 
-            var result = service.GenerateExcel(ModelIn.Date.AddDays(3), "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId);
+            var result = service.GenerateExcel(ModelIn.Date.AddDays(3), "PACKING", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, ModelIn.InventoryType);
 
 
             Assert.NotNull(result);
@@ -489,7 +553,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outRepoMock.Object, outputSpp.Object).Object);
             //var service = new StockWarehouseService(serviceMock.Object);
 
-            var result = service.GenerateExcel(ModelIn.Date, "TRANSIT", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId);
+            var result = service.GenerateExcel(ModelIn.Date, "TRANSIT", 7, ModelIn.Unit, ModelIn.PackingType, ModelIn.Construction, ModelIn.Buyer, ModelIn.ProductionOrderId, ModelIn.InventoryType);
 
 
             Assert.NotNull(result);

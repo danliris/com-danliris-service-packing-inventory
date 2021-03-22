@@ -398,7 +398,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.MaterialProduct.Name,
                                                                 s.MaterialConstruction.Id,
                                                                 s.MaterialConstruction.Name,
-                                                                s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", s.FinishWidth, DateTimeOffset.Now, s.DestinationBuyerName)).ToList());
+                                                                s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", s.FinishWidth, DateTimeOffset.Now, s.DestinationBuyerName, s.InventoryType)).ToList());
                                                                                                              
             }
         }
@@ -599,7 +599,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.Grade,
                         s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo,
                         true, ViewModelAdj.Area, "", 0, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.AdjDocumentNo,
-                        s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.FinishWidth, s.DateIn,ViewModelAdj.Date, s.DestinationBuyerName)).ToList());
+                        s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.FinishWidth, s.DateIn,ViewModelAdj.Date, s.DestinationBuyerName, s.InventoryType)).ToList());
                     
             }
         }
@@ -1134,7 +1134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.MaterialProduct.Name,
                                                                 s.MaterialConstruction.Id,
                                                                 s.MaterialConstruction.Name,
-                                                                s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", s.FinishWidth, DateTimeOffset.Now, s.DestinationBuyerName)).ToList());
+                                                                s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.Balance, s.PackagingQty, 1, "s", s.FinishWidth, DateTimeOffset.Now, s.DestinationBuyerName, s.InventoryType)).ToList());
                                                                                                              
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {

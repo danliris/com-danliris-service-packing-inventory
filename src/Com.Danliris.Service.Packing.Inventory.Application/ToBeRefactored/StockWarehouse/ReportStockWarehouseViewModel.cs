@@ -21,5 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public decimal Keluar { get; set; }
         public decimal Akhir { get; set; }
         public string Satuan { get; set; }
+        public string InventoryType { get; set; }
     }
 }

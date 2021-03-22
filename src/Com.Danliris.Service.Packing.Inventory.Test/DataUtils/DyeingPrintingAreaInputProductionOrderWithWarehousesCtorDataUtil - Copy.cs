@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
 
         public override DyeingPrintingAreaInputProductionOrderModel GetEmptyModel()
         {
-            var model = new DyeingPrintingAreaInputProductionOrderModel(null, 1, null, null, null, null, null, null, null, null, null, null, 0, true, null, null, 0, null, 10, 0, 0, null, 0, 0, null, 0, null, "0", 0, null, 0, null, 1, 1, "a", false, 1, 1, "a", false, 0, 0, 0, null, DateTimeOffset.MinValue);
+            var model = new DyeingPrintingAreaInputProductionOrderModel(null, 1, null, null, null, null, null, null, null, null, null, null, 0, true, null, null, 0, null, 10, 0, 0, null, 0, 0, null, 0, null, "0", 0, null, 0, null, 1, 1, "a", false, 1, 1, "a", false, 0, 0, 0, null, DateTimeOffset.MinValue,null);
             
             model.DyeingPrintingAreaInput = new DyeingPrintingAreaInputModel();
 
