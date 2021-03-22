@@ -293,7 +293,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.InputQuantity, 
                                                              s.InputPackagingQty, 
                                                              s.FinishWidth, 
-                                                             viewModel.Date
+                                                             viewModel.Date,
+                                                             s.InventoryType
                                                              ))
                      
                                                                                                                                                                 .ToList());
@@ -318,7 +319,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, itemModel.Id, item.ProductionOrder.Type, item.Grade, null,
-                    item.PackagingType, item.InputPackagingQty, item.PackagingUnit, item.Qty);
+                    item.PackagingType, item.InputPackagingQty, item.PackagingUnit, item.Qty, item.InventoryType);
 
 
                 //Insert to Movement Repository
@@ -395,7 +396,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     productionOrder.InputQuantity, 
                     productionOrder.InputPackagingQty, 
                     productionOrder.FinishWidth, 
-                    viewModel.Date
+                    viewModel.Date,
+                    productionOrder.InventoryType
+                   
                     )
 
                 {
@@ -409,7 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.IN, dyeingPrintingAreaInputId, bonNo, productionOrder.ProductionOrder.Id,
                     productionOrder.ProductionOrder.No, productionOrder.CartNo, productionOrder.Buyer, productionOrder.Construction, productionOrder.Unit, productionOrder.Color,
                     productionOrder.Motif, productionOrder.UomUnit, productionOrder.InputQuantity, productionOrderModel.Id, productionOrder.ProductionOrder.Type, productionOrder.Grade,
-                    null, productionOrder.PackagingType, productionOrder.InputPackagingQty, productionOrder.PackagingUnit, productionOrder.Qty);
+                    null, productionOrder.PackagingType, productionOrder.InputPackagingQty, productionOrder.PackagingUnit, productionOrder.Qty, productionOrder.InventoryType);
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
@@ -531,7 +534,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingCode = p.ProductPackingCode,
                     HasPrintingProductPacking = p.HasPrintingProductPacking,
                     PreviousOutputPackagingQty = p.PackagingQty,
-                    PrevSppInJson = p.PrevSppInJson
+                    PrevSppInJson = p.PrevSppInJson,
+                    InventoryType = p.InventoryType
                 }).ToList()
 
             });
