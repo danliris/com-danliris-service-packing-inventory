@@ -124,7 +124,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             ProductPackingId = 1,
                             FabricPackingId = 1,
                             ProductPackingCode = "c",
-                            HasPrintingProductPacking = false
+                            HasPrintingProductPacking = false,
+                            InventoryType = "LAMA"
                             //InputId = 195
                         }
                     }
@@ -1436,7 +1437,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputProductionOrderRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr","", "zimmer", "a", "a", 1, 1, 1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now)
+                new DyeingPrintingAreaOutputProductionOrderModel("IM", "GUDANG JADI", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr","", "zimmer", "a", "a", 1, 1, 1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now, "LAMA")
 
             }.AsQueryable());
 

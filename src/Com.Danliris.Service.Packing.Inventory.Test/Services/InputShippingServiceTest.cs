@@ -574,7 +574,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Qty = 1,
                     PackingType = "df",
                     OutputId = 1,
-                    DyeingPrintingAreaInputProductionOrderId = 1
+                    DyeingPrintingAreaInputProductionOrderId = 1,
+                    InventoryType = "LAMA"
                 };
             }
         }
