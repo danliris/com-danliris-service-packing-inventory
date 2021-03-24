@@ -15,6 +15,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 {
     public class GarmentShippingCostStructureServiceTest
     {
+        private object serviceProviderMock;
+
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingCostStructureRepository repository)
         {
             HttpResponseMessage message = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
@@ -141,6 +143,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
         }
     }
 }

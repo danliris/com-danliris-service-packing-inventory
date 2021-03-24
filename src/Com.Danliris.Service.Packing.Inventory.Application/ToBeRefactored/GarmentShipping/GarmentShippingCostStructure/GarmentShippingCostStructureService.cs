@@ -165,5 +165,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return await _garmentShippingCostStructureRepository.UpdateAsync(id, garmentShippingCostStructure);
         }
+
+        public virtual async Task<MemoryStreamResult> ReadPdfById(int id)
+        {
+            var data = await _garmentShippingCostStructureRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentShippingCostStructurePdfTemplate(_identityProvider);
+
+            var viewModel = MapToViewModel(data);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+        }
     }
 }

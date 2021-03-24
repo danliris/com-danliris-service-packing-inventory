@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         ListResult<GarmentShippingCostStructureViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Update(int id, GarmentShippingCostStructureViewModel viewModel);
         Task<int> Delete(int id);
+        Task<MemoryStreamResult> ReadPdfById(int id);
 
     }
 }
