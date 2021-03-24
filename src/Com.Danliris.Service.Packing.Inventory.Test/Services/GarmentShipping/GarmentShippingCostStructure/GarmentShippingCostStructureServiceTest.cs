@@ -146,9 +146,105 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
-        public async Task ReadPdfById_Success()
+        public async Task ReadPdfById_COTTON_Success()
         {
-            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "fabricType", 10000, 1);
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "COTTON", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Cvc_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "CVC ( COTTON / POLYESTER )", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Polyester_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "POLYESTER", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_TC_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "TC ( POLYESTER / COTTON )", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Viscose_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "VISCOSE", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_ViscosePolyester_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "VISCOSE / POLYESTER", 10000, 1);
+
+            var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_ViscoseFujiette_Success()
+        {
+            var model = new GarmentShippingCostStructureModel("invoiceno", DateTimeOffset.Now, 1, "comodityCode", "comodityName", "hsCode", "destination", 1, "VISCOSE FUJIETTE", 10000, 1);
 
             var repoMock = new Mock<IGarmentShippingCostStructureRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
