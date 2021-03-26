@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingCostStructure;
 using Moq;
 using System;
@@ -31,6 +32,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             spMock
                 .Setup(x => x.GetService(typeof(IHttpClientService)))
                 .Returns(HttpClientService.Object);
+
+            spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider
+                {
+                    TimezoneOffset = 7,
+                    Token = "INITOKEN",
+                    Username = "UserTest"
+                });
 
             return spMock;
         }

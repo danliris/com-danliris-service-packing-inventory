@@ -84,8 +84,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             OrderNo = a.OrderNo,
                             AVG_GW = a.AVG_GW,
                             AVG_NW = a.AVG_NW,
-                            Uom = a.Uom
-                        }).Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo);
+                            Uom = a.Uom,
+                        }).Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo && a.Id == x.Id);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
                         foreach (var d in x.Details.OrderBy(a => a.Carton1))
                         {

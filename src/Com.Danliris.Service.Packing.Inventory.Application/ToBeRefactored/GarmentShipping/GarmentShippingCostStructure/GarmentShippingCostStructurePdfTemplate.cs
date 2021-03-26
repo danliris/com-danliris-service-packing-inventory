@@ -747,7 +747,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellSignature.Phrase = new Phrase("PT DANLIRIS", normal_font);
             cellSignature.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
             tableSignature.AddCell(cellSignature);
-            cellSignature.Phrase = new Phrase("SURAKARTA, " + viewModel.Date.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
+            cellSignature.Phrase = new Phrase("SURAKARTA, " + viewModel.Date != null ? viewModel.Date.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy") : DateTimeOffset.Now.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
             cellSignature.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
             tableSignature.AddCell(cellSignature);
 
