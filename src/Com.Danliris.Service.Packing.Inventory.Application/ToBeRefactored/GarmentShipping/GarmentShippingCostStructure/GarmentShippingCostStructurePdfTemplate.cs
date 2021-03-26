@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region Description
             PdfPTable tableDescription = new PdfPTable(4);
-            tableDescription.SetWidths(new float[] { 4f, 0.2f, 5.8f, 2f });
+            tableDescription.SetWidths(new float[] { 4f, 0.2f, 4.8f, 3f });
             PdfPCell cellDescription = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
             cellDescription.Phrase = new Phrase("INVOICE NO.", normal_font);
@@ -722,7 +722,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDescKomponenLokal.AddCell(cellDescKomponenLokal);
             PdfPCell cellHasil = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
             decimal hasil = (totalBCDEF / jumlahBiayaProduksi) * 100;
-            cellHasil.Phrase = new Phrase(String.Format("{0:N4}", hasil), normal_font);
+            cellHasil.Phrase = new Phrase(String.Format("{0:N4}", hasil) + " %", normal_font);
             cellHasil.HorizontalAlignment = PdfPCell.ALIGN_CENTER;
             tableDescKomponenLokal.AddCell(cellHasil);
             cellDescKomponenLokal.Phrase = new Phrase("", normal_font);
@@ -731,6 +731,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             new PdfPCell(tableDescKomponenLokal);
             tableDescKomponenLokal.ExtendLastRow = false;
             document.Add(tableDescKomponenLokal);
+            #endregion
+
+            #region signature
+            PdfPTable tableSignature = new PdfPTable(1);
+            //actual width of table in points
+
+            tableSignature.TotalWidth = 120f;
+
+            //fix the absolute width of the table
+
+            tableSignature.LockedWidth = true;
+            PdfPCell cellSignature = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+            cellSignature.Phrase = new Phrase("PT DANLIRIS", normal_font);
+            cellSignature.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+            tableSignature.AddCell(cellSignature);
+            cellSignature.Phrase = new Phrase("SURAKARTA, " + viewModel.Date.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy"), normal_font);
+            cellSignature.HorizontalAlignment = PdfPCell.ALIGN_RIGHT;
+            tableSignature.AddCell(cellSignature);
+
+            cellSignature.Phrase = new Phrase("\n", normal_font);
+            tableSignature.AddCell(cellSignature);
+            cellSignature.Phrase = new Phrase("\n", normal_font);
+            tableSignature.AddCell(cellSignature);
+            PdfPCell cellTtd = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
+            cellTtd.Phrase = new Phrase("", normal_font);
+            tableSignature.AddCell(cellTtd);
+
+            new PdfPCell(tableSignature);
+            tableSignature.ExtendLastRow = false;
+            // Creates a paragraph indentated by the left by 20 units.
+            var paragraphSignature = new Paragraph();
+
+            // You insert the table into the indentated paragraph.
+            paragraphSignature.Add(tableSignature);
+
+            paragraphSignature.IndentationLeft = 400f;
+            document.Add(paragraphSignature);
             #endregion
             document.Close();
             byte[] byteInfo = stream.ToArray();
@@ -785,8 +823,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LINE
 
-            cb.MoveTo(marginLeft + 150, height - marginTop + 5);
-            cb.LineTo(width - marginRight - 150, height - marginTop + 5);
+            cb.MoveTo(marginLeft + 200, height - marginTop + 5);
+            cb.LineTo(width - marginRight - 200, height - marginTop + 5);
             cb.Stroke();
 
             #endregion
