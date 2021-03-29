@@ -130,6 +130,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Create(PaymentDispositionRecapViewModel viewModel)
         {
             GarmentShippingPaymentDispositionRecapModel model = MapToModel(viewModel);
+            foreach (var item in model.Items)
+            {
+                var vmItem = viewModel.items.FirstOrDefault(i => i.Id == item.Id);
+                if (vmItem != null)
+                {
+                    var paymentDisposition = await _garmentShippingPaymentDispositionRepository.ReadByIdAsync(item.PaymentDispositionId);
+                    if (paymentDisposition != null)
+                    {
+                        paymentDisposition.SetIncomeTaxValue(vmItem.paymentDisposition.incomeTaxValue, "", "");
+                        item.SetPaymentDisposition(paymentDisposition);
+                    }
+                }
+            }
 
             return await _recapRepository.InsertAsync(model);
         }
