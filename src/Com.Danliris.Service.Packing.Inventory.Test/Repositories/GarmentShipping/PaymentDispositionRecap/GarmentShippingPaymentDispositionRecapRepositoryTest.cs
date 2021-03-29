@@ -67,5 +67,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_Create_Data()
+        {
+            string testName = GetCurrentMethod() + "Create";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            var repo = new GarmentShippingPaymentDispositionRecapRepository(dbContext, serviceProvider);
+            var repoDispo = new GarmentShippingPaymentDispositionRepository(dbContext, serviceProvider);
+
+            var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel("", 1) };
+            var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(1, "", 1, 1) };
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("", 1, 1, 1, 1, 1, 1, 1) };
+            var dispoModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units) { Id = 1 };
+
+            var item = new GarmentShippingPaymentDispositionRecapItemModel(1, 10, 10, 10, 10, 10) { Id = 1 };
+
+            item.SetPaymentDisposition(dispoModel);
+            var items = new HashSet<GarmentShippingPaymentDispositionRecapItemModel> { item };
+
+            var data = new GarmentShippingPaymentDispositionRecapModel("", DateTimeOffset.Now, 1, "", "", "", "", items);
+
+            await repoDispo.InsertAsync(dispoModel);
+
+            foreach (var itemToUpdate in data.Items)
+            {
+                var paymentDisposition = await repoDispo.ReadByIdAsync(itemToUpdate.PaymentDispositionId);
+
+                if (paymentDisposition != null)
+                {
+                    paymentDisposition.SetIncomeTaxValue(1 + item.PaymentDisposition.IncomeTaxValue, "", ""); ;
+                    itemToUpdate.SetPaymentDisposition(paymentDisposition);
+                }
+            }
+
+            var result = await repo.InsertAsync(data);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
