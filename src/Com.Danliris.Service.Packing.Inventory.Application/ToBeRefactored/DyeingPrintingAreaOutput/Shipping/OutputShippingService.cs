@@ -1790,17 +1790,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var data2 = new List<InputShippingProductionOrderViewModel>();
 
-            if (productionOrderId == 0)
-            {
-                productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
-                                    .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument).Take(75);
-            }
-            else
-            {
+            //if (productionOrderId == 0)
+            //{
+            //    productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
+            //                        .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument).Take(75);
+            //}
+            //else
+            //{
                 productionOrders = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc)
                                     .Where(s => s.Area == DyeingPrintingArea.SHIPPING && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId).Take(75);
 
-            }
+            //}
             var data = productionOrders.Select(d => new InputShippingProductionOrderViewModel()
             {
                 Buyer = d.Buyer,
