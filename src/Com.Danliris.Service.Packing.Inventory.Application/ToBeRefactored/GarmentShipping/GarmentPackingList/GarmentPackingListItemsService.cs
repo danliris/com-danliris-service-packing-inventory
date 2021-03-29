@@ -103,6 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 RemarkMd = model.RemarkMd,
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
+                IsCostStructured = model.IsCostStructured,
                 Items = model.Items.Where(i => i.CreatedBy == _identityProvider.Username).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,

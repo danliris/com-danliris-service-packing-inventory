@@ -144,6 +144,34 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
+        [HttpGet("not-used-cost-structure")]
+        public IActionResult GetNotUsedCostStructure([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}", [FromQuery] string filter = "{}")
+        {
+            try
+            {
+                var data = _service.ReadNotUsedCostStructure(page, size, filter, order, keyword);
+
+                var info = new Dictionary<string, object>
+                    {
+                        { "count", data.Data.Count },
+                        { "total", data.Total },
+                        { "order", order },
+                        { "page", page },
+                        { "size", size }
+                    };
+
+                return Ok(new
+                {
+                    data = data.Data,
+                    info
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}", [FromQuery] string filter = "{}")
         {
@@ -259,6 +287,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.CANCELED, reason);
 
                 return Ok();
@@ -277,7 +317,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 VerifyUser();
 
-                if (string.IsNullOrWhiteSpace(reason))
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
                 {
                     var Result = new
                     {
@@ -337,6 +377,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_MD, reason);
 
                 return Ok();
@@ -385,7 +439,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 VerifyUser();
 
-                if (string.IsNullOrWhiteSpace(reason))
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
                 {
                     var Result = new
                     {
@@ -416,7 +470,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 VerifyUser();
 
-                if (string.IsNullOrWhiteSpace(reason))
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
                 {
                     var Result = new
                     {
@@ -446,6 +500,20 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 VerifyUser();
+
+                if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+                {
+                    var Result = new
+                    {
+                        error = "Alasan harus diisi.",
+                        apiVersion = "1.0.0",
+                        statusCode = HttpStatusCode.BadRequest,
+                        message = "Data does not pass validation"
+                    };
+
+                    return new BadRequestObjectResult(Result);
+                }
+
                 await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_SHIPPING, reason);
 
                 return Ok();
