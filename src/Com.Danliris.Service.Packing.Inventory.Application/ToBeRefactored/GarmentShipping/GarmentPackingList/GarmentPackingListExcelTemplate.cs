@@ -22,7 +22,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GenerateExcelTemplate(GarmentPackingListViewModel viewModel, string fob, string cPrice)
         {
-            int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            //int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            int maxSizesCount = 0;
+            var sizesMax = new Dictionary<int, string>();
+            foreach (var item in viewModel.Items)
+            {
+                foreach (var detail in item.Details)
+                {
+                    foreach (var size in detail.Sizes)
+                    {
+                        sizesMax[size.Size.Id] = size.Size.Size;
+                    }
+                }
+            }
+            maxSizesCount = sizesMax.Count;
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
 
             var col = GetColNameFromIndex(4 + SIZES_COUNT);

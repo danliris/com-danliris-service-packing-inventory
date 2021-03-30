@@ -20,7 +20,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel)
         {
-            int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            //int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
+            int maxSizesCount = 0;
+            var sizesMax = new Dictionary<int, string>();
+            foreach (var item in viewModel.Items)
+            {
+                foreach (var detail in item.Details)
+                {
+                    foreach (var size in detail.Sizes)
+                    {
+                        sizesMax[size.Size.Id] = size.Size.Size;
+                    }
+                }
+            }
+            maxSizesCount = sizesMax.Count;
             int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
@@ -237,7 +250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
-                foreach (var detail in item.Details)
+                foreach (var detail in item.Details.OrderBy(o => o.Carton1))
                 {
                     var ctnsQty = detail.CartonQuantity;
                     var grossWeight = detail.GrossWeight;
