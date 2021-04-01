@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public ICollection<GarmentPackingListMeasurementViewModel> Measurements { get; set; }
 
         public string SayUnit { get; set; }
+        public string OtherCommodity { get; set; }
 
         #endregion
 
@@ -301,6 +302,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (string.IsNullOrEmpty(SayUnit))
             {
                 yield return new ValidationResult("Unit SAY tidak boleh kosong", new List<string> { "SayUnit" });
+            }
+
+            if (string.IsNullOrEmpty(OtherCommodity))
+            {
+                yield return new ValidationResult("Other Commodity tidak boleh kosong", new List<string> { "OtherCommodity" });
             }
 
             #endregion
