@@ -75,7 +75,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingPaymentDispositionRecapModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel("", 1) { Id = 1 } };
+            var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(1, "", 1, 1) { Id = 1 } };
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("", 1, 1, 1, 1, 1, 1, 1) { Id = 1 } };
+            var dispoModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units) { Id = 1 };
+
+            var dispoRepoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
+            dispoRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(dispoModel);
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IGarmentShippingPaymentDispositionRepository)))
+            .Returns(dispoRepoMock.Object);
+
+            var service = GetService(spMock.Object);
 
             var result = await service.Create(ViewModel);
 

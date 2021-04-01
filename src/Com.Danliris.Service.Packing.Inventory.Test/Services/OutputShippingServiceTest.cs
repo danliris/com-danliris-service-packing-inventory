@@ -1951,24 +1951,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEmpty(result);
         }
 
-        [Fact]
-        public void Should_Success_GetInputTransitProductionOrders_SPP_All()
-        {
-            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
-            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
-            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+        //[Fact]
+        //public void Should_Success_GetInputTransitProductionOrders_SPP_All()
+        //{
+        //    var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+        //    var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+        //    var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+        //    var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+        //    var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
-            {
-                new DyeingPrintingAreaInputProductionOrderModel("SHIPPING", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
-            }.AsQueryable());
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+        //    sppRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
+        //    {
+        //        new DyeingPrintingAreaInputProductionOrderModel("SHIPPING", 1, "a", "e", "rr", "1", "as", "test", "unit", "color", "motif", "mtr", 2, false, 1)
+        //    }.AsQueryable());
+        //    var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
 
-            var result = service.GetInputShippingProductionOrdersByProductionOrder(0);
+        //    var result = service.GetInputShippingProductionOrdersByProductionOrder(0);
 
-            Assert.NotEmpty(result);
-        }
+        //    Assert.NotEmpty(result);
+        //}
     }
 }

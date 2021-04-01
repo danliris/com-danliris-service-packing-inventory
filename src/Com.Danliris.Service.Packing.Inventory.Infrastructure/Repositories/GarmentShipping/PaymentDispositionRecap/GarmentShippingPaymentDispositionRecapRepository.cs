@@ -50,6 +50,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var item in model.Items)
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                var paymentDisposition = _garmentShippingPaymentDispositionDbSet.FirstOrDefault(entity => entity.Id == item.PaymentDispositionId);
+                if (paymentDisposition != null)
+                {
+                    paymentDisposition.SetIncomeTaxValue(item.PaymentDisposition.IncomeTaxValue, _identityProvider.Username, UserAgent);
+                }
             }
 
             _dbSet.Add(model);
