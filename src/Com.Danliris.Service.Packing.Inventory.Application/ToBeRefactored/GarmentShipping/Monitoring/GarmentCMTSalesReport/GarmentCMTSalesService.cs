@@ -160,7 +160,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             ExcelPackage package = new ExcelPackage();
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+            {
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "");
+                bool styling = true;
+
+                foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
+                {
+                    var sheet = package.Workbook.Worksheets.Add(item.Value);
+
+                    #region KopTable
+                    sheet.Cells[$"A1:L1"].Value = "REPORT REALISASI CMT PENJUALAN";
+                    sheet.Cells[$"A1:L1"].Merge = true;
+                    sheet.Cells[$"A1:L1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A1:L1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A1:L1"].Style.Font.Bold = true;
+                    sheet.Cells[$"A2:L2"].Value = string.Format("Periode Tanggal : {0} s/d {1}", DateFrom.ToString("dd MMM yyyy", new CultureInfo("id-ID")), DateTo.ToString("dd MMM yyyy", new CultureInfo("id-ID")));
+                    sheet.Cells[$"A2:L2"].Merge = true;
+                    sheet.Cells[$"A2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A2:L2"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A2:L2"].Style.Font.Bold = true;
+                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : buyerAgent);
+                    sheet.Cells[$"A3:L3"].Merge = true;
+                    sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A3:L3"].Style.Font.Bold = true;
+                    #endregion
+                    sheet.Cells["A5"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
+
+                    sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+                }
+            }
             else
             {
                 int index = 0;
@@ -180,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string TBPaidIdr = string.Format("{0:N2}", d.ToBePaidIdr);
 
 
-                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, PEBDate,  rate, fobUSD, fobIdr, fabUSD, fabIdr, TBPaid, TBPaidIdr);
+                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, PEBDate, rate, fobUSD, fobIdr, fabUSD, fabIdr, TBPaid, TBPaidIdr);
                 }
 
                 string ifobUSD = string.Format("{0:N2}", Query.Sum(x => x.FOB));
@@ -189,7 +218,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 string ifabIdr = string.Format("{0:N2}", Query.Sum(x => x.FABIdr));
                 string iTBPaid = string.Format("{0:N2}", Query.Sum(x => x.ToBePaid));
 
-                
+
                 string iTBPaidIdr = string.Format("{0:N2}", Query.Sum(x => x.ToBePaidIdr));
                 result.Rows.Add("", "", "", "", "", "TOTAL", ifobUSD, ifobIdr, ifabUSD, ifabIdr, iTBPaid, iTBPaidIdr);
 

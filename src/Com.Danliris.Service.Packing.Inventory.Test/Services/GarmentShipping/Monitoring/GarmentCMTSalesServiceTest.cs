@@ -165,61 +165,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             Assert.NotNull(result);
         }
 
+
         [Fact]
-        public void GenerateExcel__Empty_Success()
+        public void GenerateExcel_Empty_Success()
         {
-            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
-            {
-                Id = 1
-            };
+            
 
-            var model1 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "")
-            {
-                Id = 1
-            };
+            var invoiceRepoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            invoiceRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
-            var model2 = new GarmentShippingCreditAdviceModel(1, 1, "", DateTimeOffset.Now, 1, 1, "", "", true, "", 1, 1, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, 1, 1, DateTimeOffset.Now, 1, 1, 1, 1, 1, 1, 1, "", 1, "", "", 1, "", "", 1, 1, 1, DateTimeOffset.Now, "", DateTimeOffset.Now, 1, "", DateTimeOffset.Now, 1, DateTimeOffset.Now, "");
+            var invoiceItemRepoMock = new Mock<IGarmentShippingInvoiceItemRepository>();
+            invoiceRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
+            var packingListRepoMock = new Mock<IGarmentPackingListRepository>();
+            packingListRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentPackingListModel>().AsQueryable());
 
-            var model3 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
-
-            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
-
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
-
-            var repoMock1 = new Mock<IGarmentPackingListRepository>();
-            repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
-
-            var repoMock2 = new Mock<IGarmentShippingCreditAdviceRepository>();
-            repoMock2.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingCreditAdviceModel>() { model2 }.AsQueryable());
-
-
-            var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
-            repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model3 }.AsQueryable());
-
+            var CARepoMock = new Mock<IGarmentShippingCreditAdviceRepository>();
+            invoiceRepoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
-                });
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
-            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object);
+            var spMock = GetServiceProvider(invoiceRepoMock.Object,packingListRepoMock.Object, CARepoMock.Object, invoiceItemRepoMock.Object);
             spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
                 .Returns(httpMock.Object);
+
             var service = GetService(spMock.Object);
 
-            var result = service.GenerateExcel(null, null, null, 0);
+            var result = service.GenerateExcel("n", null,null,0);
 
             Assert.NotNull(result);
         }
