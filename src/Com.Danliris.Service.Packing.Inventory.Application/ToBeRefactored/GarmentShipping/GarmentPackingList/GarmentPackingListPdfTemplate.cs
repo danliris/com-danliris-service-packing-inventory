@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = identityProvider;
         }
 
-        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob,string cprice)
+        public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob, string cprice)
         {
             //int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
             int maxSizesCount = 0;
@@ -274,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
-                    var size = sizes.OrderBy(a=>a.Value).ElementAtOrDefault(i);
+                    var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(size.Key == 0 ? "" : size.Value, normal_font, 0.5f));
                     cellBorderBottomRight.Rowspan = 1;
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -288,6 +288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     var ctnsQty = detail.CartonQuantity;
                     uom = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Uom.Unit;
+                    var article = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Article;
                     if (cartonNumbers.Contains($"{detail.Carton1}- {detail.Carton2}"))
                     {
                         ctnsQty = 0;
@@ -300,7 +301,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(detail.Colour, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.Article, normal_font, 0.6f));
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(article, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(item.OrderNo, normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -420,7 +421,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 11,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetNetWeight * a.CartonQuantity))} Kgs", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalGrossWeight = d.CartonQuantity * d.GrossWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalGrossWeight).Sum())} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalNetWeight = d.CartonQuantity * d.NetWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalNetWeight).Sum())} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalNetNetWeight = d.CartonQuantity * d.NetNetWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalNetNetWeight).Sum())} Kgs", normal_font)
                 });
 
                 new PdfPCell(tableDetail);
@@ -605,12 +606,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellMeasurementDetail.Phrase = new Phrase("", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
-            tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
-            tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
-            tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            if (viewModel.TotalCartons > 1)
+            {
+                cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+                cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
+                tableMeasurementDetail.AddCell(cellMeasurementDetail);
+            }
+
 
             new PdfPCell(tableMeasurementDetail);
             tableMeasurementDetail.ExtendLastRow = false;
@@ -842,7 +847,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LINE
 
-            cb.MoveTo(marginLeft, height - marginTop +5);
+            cb.MoveTo(marginLeft, height - marginTop + 5);
             cb.LineTo(width - marginRight, height - marginTop + 5);
             cb.Stroke();
 
