@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 300, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, MARGIN);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -481,7 +481,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region calculationTable
             PdfPTable calculationTable = new PdfPTable(4);
             calculationTable.HorizontalAlignment = Element.ALIGN_LEFT;
-            float[] calculationTableWidths = new float[] { 4f, 2f, 2f, 6f };
+            float[] calculationTableWidths = new float[] { 4f, 0.8f, 1.3f, 6f };
             calculationTable.SetWidths(calculationTableWidths);
             calculationTable.WidthPercentage = 100;
 
