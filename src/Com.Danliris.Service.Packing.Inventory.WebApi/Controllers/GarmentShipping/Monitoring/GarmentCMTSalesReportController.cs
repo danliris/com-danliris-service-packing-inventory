@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
     [Authorize]
     public class GarmentCMTSalesReportController: ControllerBase
     {
-        private string ApiVersion = "1.0.0";
+        //private string ApiVersion = "1.0.0";
         private readonly IGarmentCMTSalesService _service;
         private readonly IIdentityProvider _identityProvider;
 
