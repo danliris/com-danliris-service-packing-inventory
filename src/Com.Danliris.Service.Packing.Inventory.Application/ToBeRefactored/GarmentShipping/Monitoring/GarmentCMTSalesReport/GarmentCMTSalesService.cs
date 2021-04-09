@@ -179,7 +179,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A2:L2"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                     sheet.Cells[$"A2:L2"].Style.Font.Bold = true;
-                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : buyerAgent);
+                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : Query.FirstOrDefault().BuyerAgentName);
                     sheet.Cells[$"A3:L3"].Merge = true;
                     sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
@@ -239,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A2:L2"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                     sheet.Cells[$"A2:L2"].Style.Font.Bold = true;
-                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : buyerAgent);
+                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : Query.FirstOrDefault().BuyerAgentName);
                     sheet.Cells[$"A3:L3"].Merge = true;
                     sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
