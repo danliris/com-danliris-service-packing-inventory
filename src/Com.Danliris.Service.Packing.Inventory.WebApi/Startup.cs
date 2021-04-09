@@ -136,6 +136,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInsuranceDispositionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionRecapReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCMTSalesReport;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -346,6 +347,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
             services.AddTransient<IOmzetYearBuyerComodityService, OmzetYearBuyerComodityService>();
             services.AddTransient<IDyeingPrintingProductService, DyeingPrintingProductService>();
+            services.AddTransient<IGarmentCMTSalesService, GarmentCMTSalesService>();
 
             #endregion
 
