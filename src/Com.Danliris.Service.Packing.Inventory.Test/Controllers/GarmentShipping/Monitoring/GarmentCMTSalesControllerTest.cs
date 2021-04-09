@@ -73,9 +73,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         public void Get_Exception_InternalServerError()
         {
             var serviceMock = new Mock<IGarmentCMTSalesService>();
-            serviceMock
-                .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
-                .Returns(new ListResult<GarmentCMTSalesViewModel>(new List<GarmentCMTSalesViewModel>() { new GarmentCMTSalesViewModel() }, 1, 1, 1));
+            //serviceMock
+            //    .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+            //    .Returns(new ListResult<GarmentCMTSalesViewModel>(new List<GarmentCMTSalesViewModel>() { new GarmentCMTSalesViewModel() }, 1, 1, 1));
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
