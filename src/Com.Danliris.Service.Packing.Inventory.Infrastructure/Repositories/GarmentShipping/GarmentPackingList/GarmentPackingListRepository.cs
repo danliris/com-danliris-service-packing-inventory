@@ -136,6 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetNetNetWeight(model.NetNetWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTotalCartons(model.TotalCartons, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSayUnit(model.SayUnit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetOtherCommodity(model.OtherCommodity, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetShippingMark(model.ShippingMark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSideMark(model.SideMark, _identityProvider.Username, UserAgent);

@@ -240,6 +240,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 }).ToList(),
                 SayUnit = model.SayUnit,
+                OtherCommodity = model.OtherCommodity,
 
                 ShippingMark = model.ShippingMark,
                 SideMark = model.SideMark,
