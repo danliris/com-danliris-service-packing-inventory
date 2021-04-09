@@ -91,6 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.SetLeading(0, 1.3f);
             bodyTableHeader.Rowspan = 2;
             bodyTableHeader.Colspan = 4;
             bodyTable.AddCell(bodyTableHeader);
@@ -141,6 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellLeftBorder.Phrase = new Phrase($"{viewModel.Description}", body_font);
             bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
             bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.SetLeading(0, 1.3f);
             bodyTableCellLeftBorder.Colspan = 4;
             bodyTable.AddCell(bodyTableCellLeftBorder);
 
@@ -153,11 +155,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
             bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellCenterBorder);
 
             bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
             bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellRightBorder);
 
             //SPACE
@@ -669,7 +673,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region CENTER
 
             var headOfficeX = width / 2 + 30;
-            var headOfficeY = height - marginTop + 170;
+            var headOfficeY = height - marginTop + 140;
 
 
             string[] headOffices = {
@@ -710,10 +714,115 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentLeft.Colspan = 2;
             tabledetailOrders.AddCell(cellDetailContentLeft);
 
-            cellDetailContentLeft.Phrase = new Phrase("CO NO.  : " + viewModel.CO, normal_font);
+
+            PdfPTable tabledetailOrders2 = new PdfPTable(3);
+            tabledetailOrders2.SetWidths(new float[] { 1.5f, 0.2f, 1.5f });
+
+            cellDetailContentLeft.Phrase = new Phrase("CO NO.", normal_font);
             cellDetailContentLeft.Colspan = 1;
             cellDetailContentLeft.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentLeft);
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.TOP_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.CO, normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.TOP_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase("CONFIRMATION OF ORDER NO.", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.ConfirmationOfOrderNo, normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase("SHIPPED PER", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.ShippingPer, normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+
+            cellDetailContentLeft.Phrase = new Phrase("SAILING ON OR ABOUT", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+
+            cellDetailContentLeft.Phrase = new Phrase("FROM", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.From, normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase("TO", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(":", normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            cellDetailContentLeft.Phrase = new Phrase(viewModel.To, normal_font);
+            cellDetailContentLeft.Colspan = 1;
+            cellDetailContentLeft.Border = Rectangle.NO_BORDER;
+            tabledetailOrders2.AddCell(cellDetailContentLeft);
+
+            PdfPCell  c2 = new PdfPCell(tabledetailOrders2);//this line made the difference
+            c2.Rowspan = 3;
+            tabledetailOrders.AddCell(c2);
+
+            //cellDetailContentRight.Phrase = new Phrase("", normal_font);
+            //cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
+            //cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
+            //// cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
+            //cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
+            //tabledetailOrders.AddCell(cellDetailContentRight);
 
             cellDetailContentRight.AddElement(new Phrase("MESSRS      : ", normal_font));
             cellDetailContentRight.Border = Rectangle.NO_BORDER;
@@ -725,18 +834,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
             tabledetailOrders.AddCell(cellDetailContentCenter);
 
-
-            cellDetailContentRight.Phrase = new Phrase("", normal_font);
-            cellDetailContentRight.AddElement(new Phrase("CONFIRMATION OF ORDER NO. : " + viewModel.ConfirmationOfOrderNo, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("SHIPPED PER : " + viewModel.ShippingPer, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("SAILING ON OR ABOUT : " + viewModel.SailingDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
-            cellDetailContentRight.AddElement(new Phrase("FROM : " + viewModel.From, normal_font));
-            cellDetailContentRight.AddElement(new Phrase("TO   : " + viewModel.To, normal_font));
-            // cellDetailContentRight.AddElement(new Phrase("\n", normal_font));
-            cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
-
-
             cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
             cellDetailContentRight.Colspan = 1;
             cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
@@ -746,7 +843,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentCenter.Border = Rectangle.BOTTOM_BORDER;
             tabledetailOrders.AddCell(cellDetailContentCenter);
 
-            cellDetailContentRight.Phrase = new Phrase("", normal_font);
+            cellDetailContentRight.Phrase = new Phrase("\n", normal_font);
             cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 

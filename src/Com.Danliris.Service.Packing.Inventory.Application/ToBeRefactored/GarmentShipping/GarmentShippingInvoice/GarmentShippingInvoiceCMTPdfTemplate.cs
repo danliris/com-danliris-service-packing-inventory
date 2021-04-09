@@ -171,12 +171,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.WidthPercentage = 100;
 
             #region Set Body Table Header
-            PdfPCell bodyTableHeader = new PdfPCell() { FixedHeight = 20 };
+            PdfPCell bodyTableHeader = new PdfPCell();// { FixedHeight = 20 };
             //PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.SetLeading(0, 1.3f);
             //bodyTableHeader.Rowspan = 2;
             bodyTableHeader.Colspan = 4;
             bodyTable.AddCell(bodyTableHeader);
@@ -244,6 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellLeftBorder.Phrase = new Phrase(viewModel.Description, body_font);
             bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
             bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.SetLeading(0, 1.3f);
             bodyTableCellLeftBorder.Colspan = 4;
             bodyTable.AddCell(bodyTableCellLeftBorder);
 
@@ -256,11 +258,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
             bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellCenterBorder);
 
             bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
             bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellRightBorder);
 
             bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
