@@ -586,6 +586,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurementDetail.SetWidths(new float[] { 1f, 1f, 1f, 1.5f, 2f });
             PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             decimal totalCbm = 0;
+            int countMeasurement = 0;
+            var measurements = new List<(double, double, double)>();
             foreach (var measurement in viewModel.Measurements)
             {
                 cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " CM X ", normal_font);
@@ -600,13 +602,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 totalCbm += cbm;
                 cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", cbm), normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
+
+
+                if (measurements.Contains((measurement.Length, measurement.Width, measurement.Height)) == false)
+                {
+                    measurements.Add((measurement.Length, measurement.Width, measurement.Height));
+                    countMeasurement++;
+                }
             }
 
             cellMeasurementDetail.Border = Rectangle.TOP_BORDER;
             cellMeasurementDetail.Phrase = new Phrase("", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            if (viewModel.TotalCartons > 1)
+            if (countMeasurement > 1)
             {
                 cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
