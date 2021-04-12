@@ -187,6 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                             detailToUpdate.SetCarton1(detail.Carton1, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCarton2(detail.Carton2, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetColour(detail.Colour, _identityProvider.Username, UserAgent);
+                            detailToUpdate.SetStyle(detail.Style, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetCartonQuantity(detail.CartonQuantity, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetQuantityPCS(detail.QuantityPCS, _identityProvider.Username, UserAgent);
                             detailToUpdate.SetTotalQuantity(detail.TotalQuantity, _identityProvider.Username, UserAgent);
