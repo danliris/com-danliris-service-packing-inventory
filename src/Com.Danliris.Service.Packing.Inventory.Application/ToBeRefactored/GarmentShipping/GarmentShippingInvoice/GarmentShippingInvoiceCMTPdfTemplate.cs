@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 40);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -784,13 +784,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //document.Add(new Paragraph("\n", normal_font));
             //document.Add(new Paragraph("\n", normal_font));
 
-            Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
-            sign.Alignment = Element.ALIGN_RIGHT;
-            Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
-            author.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
+            //sign.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
+            //author.Alignment = Element.ALIGN_RIGHT;
 
-            document.Add(sign);
-            document.Add(author);
+            //document.Add(sign);
+            //document.Add(author);
 
             document.Close();
             byte[] byteInfo = stream.ToArray();
