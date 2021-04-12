@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 40);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -629,13 +629,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             //
-            Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
-            sign.Alignment = Element.ALIGN_RIGHT;
-            Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
-            author.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
+            //sign.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
+            //author.Alignment = Element.ALIGN_RIGHT;
 
-            document.Add(sign);
-            document.Add(author);
+            //document.Add(sign);
+            //document.Add(author);
 
             document.Close();
             byte[] byteInfo = stream.ToArray();
@@ -663,6 +663,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cb.BeginText();
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
@@ -852,6 +853,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             table.AddCell(cellDetail);
 
             table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + tabledetailOrders.TotalHeight+10, writer.DirectContent);
+            #endregion
+
+            #region SIGNATURE
+            var printY = document.BottomMargin - 10;
+            var signX = document.RightMargin + 500;
+            var signY = printY + 20;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY, 0);
+            cb.MoveTo(signX - 55, signY - 2);
+            cb.LineTo(signX + 55, signY - 2);
+            cb.Stroke();
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 10, 0);
+            
             #endregion
 
             cb.EndText();
