@@ -47,8 +47,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GetReportData_Success()
         {
+
+            var items = new List<GarmentShippingInvoiceItemModel>
+                {
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2130001", "", 1, "", 21, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "C10", 1, 1)
+                            {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2140001", "", 1, "", 31, 2, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                              {
+                           GarmentShippingInvoiceId = 1
+                         },
+                };
+
             var model = new GarmentShippingInvoiceModel(1, "DL/210001", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
+                                                        "", DateTimeOffset.Now, "", "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
                 Id = 1
             };
@@ -58,12 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
-            var model3 = new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
-
+ 
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
@@ -75,9 +87,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model3 }.AsQueryable());
-
-
+                .Returns(items.AsQueryable());
+          
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -105,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(spMock.Object);
 
-            var result = service.GetReportData(model3.UnitCode, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GetReportData(null, DateTime.MinValue, DateTime.MaxValue, 0);
 
             Assert.NotEmpty(result.Data);
         }
@@ -113,8 +124,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Success()
         {
+            var items = new List<GarmentShippingInvoiceItemModel>
+                {
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2130001", "", 1, "", 21, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "C10", 1, 1)
+                            {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2140001", "", 1, "", 31, 2, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                              {
+                           GarmentShippingInvoiceId = 1
+                         },
+                };
+
             var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
+                                                        "", DateTimeOffset.Now, "", "", items, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
                 Id = 1
             };
@@ -123,12 +150,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
-
-            var model3 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
 
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
@@ -141,9 +162,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model3 }.AsQueryable());
-
-
+                .Returns(items.AsQueryable());
+          
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -172,7 +192,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(httpMock.Object);
             var service = GetService(spMock.Object);
 
-            var result = service.GenerateExcel(model3.UnitCode, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.MaxValue, 0);
 
             Assert.NotNull(result);
         }
@@ -181,36 +201,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Empty_Success()
         {
-            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", null, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
-            {
-                Id = 1
-            };
-
-            var model1 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "")
-            {
-                Id = 1
-            };
-
-            var model3 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
-
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
-
             repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
+                .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
+                .Returns(new List<GarmentPackingListModel>().AsQueryable());
 
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model3 }.AsQueryable());
-
+               .Returns(new List<GarmentShippingInvoiceItemModel>().AsQueryable());
 
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
