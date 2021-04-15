@@ -174,9 +174,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             else if (paymentTerm.ToUpper() == "TT/OA")
             {
-                if (otherCharge <= 0)
+                if (otherCharge < 0)
                 {
-                    yield return new ValidationResult("Other Charge tidak boleh kosong", new List<string> { "otherCharge" });
+                    yield return new ValidationResult("Other Charge tidak boleh < 0", new List<string> { "otherCharge" });
                 }
             }
 

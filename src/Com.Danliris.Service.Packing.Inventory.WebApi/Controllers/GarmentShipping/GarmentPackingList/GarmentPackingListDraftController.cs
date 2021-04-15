@@ -174,6 +174,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
+        [HttpGet("{id}/md/carton")]
+        public async Task<IActionResult> GetPdfFilterCartonMD([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ReadPdfFilterCartonMD(id);
+
+                return File(result.Data.ToArray(), "application/pdf", result.FileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPut("post-booking/{id}")]
         public async Task<IActionResult> PostBooking(int id)
         {

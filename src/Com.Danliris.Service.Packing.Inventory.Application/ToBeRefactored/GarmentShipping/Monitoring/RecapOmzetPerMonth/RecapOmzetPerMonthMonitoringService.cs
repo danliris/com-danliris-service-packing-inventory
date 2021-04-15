@@ -97,15 +97,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             })).ToList();
 
             var currencyFilters = selectedData
-                .GroupBy(o => new { o.truckingDate, o.currency })
-                .Select(o => new CurrencyFilter { date = o.Key.truckingDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.currency })
+                .GroupBy(o => new { o.pebDate, o.currency })
+                .Select(o => new CurrencyFilter { date = o.Key.pebDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.currency })
                 .ToList();
 
             var currencies = GetCurrecncies(currencyFilters).Result;
 
             foreach (var data in selectedData)
             {
-                data.rate = currencies.Where(q => q.code == data.currency && q.date <= data.truckingDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault();
+                data.rate = currencies.Where(q => q.code == data.currency && q.date <= data.pebDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault();
                 data.idrAmount = (decimal)data.rate * data.amount;
             }
 

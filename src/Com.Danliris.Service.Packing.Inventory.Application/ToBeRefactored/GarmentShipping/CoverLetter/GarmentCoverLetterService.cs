@@ -200,9 +200,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<GarmentCoverLetterViewModel> ReadByInvoiceId(int invoiceId)
         {
             var data = await _repository.ReadByInvoiceIdAsync(invoiceId);
-            var viewModel = MapToViewModel(data);
-
-            return viewModel;
+            if (data != null)
+            {
+                return MapToViewModel(data);
+            }
+            else
+            {
+                return new GarmentCoverLetterViewModel();
+            }
         }
 
         public async Task<int> Update(int id, GarmentCoverLetterViewModel viewModel)
