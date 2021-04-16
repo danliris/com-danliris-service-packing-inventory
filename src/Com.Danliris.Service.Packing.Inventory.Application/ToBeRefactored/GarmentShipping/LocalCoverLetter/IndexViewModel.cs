@@ -13,5 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string localCoverLetterNo { get; set; }
         public DateTimeOffset? date { get; set; }
         public Buyer buyer { get; set; }
+        public string bcNo { get; set; }
+        public DateTimeOffset? bcDate { get; set; }
     }
 }
