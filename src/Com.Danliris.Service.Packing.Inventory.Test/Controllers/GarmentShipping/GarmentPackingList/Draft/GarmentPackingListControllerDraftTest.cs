@@ -216,6 +216,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task GetPdfFilterCartonMD_Ok()
+        {
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadPdfFilterCartonMD(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
+            var response = await controller.GetPdfFilterCartonMD(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task GetById_Exception_InternalServerError()
         {
             var dataUtil = GetViewModel();
