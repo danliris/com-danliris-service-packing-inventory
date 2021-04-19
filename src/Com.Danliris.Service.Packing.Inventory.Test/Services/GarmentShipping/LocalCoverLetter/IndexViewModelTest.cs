@@ -18,13 +18,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
                 id = 1,
                 buyer = new Buyer(),
                 localCoverLetterNo = "localCoverLetterNo",
-                noteNo = "noteNo"
+                noteNo = "noteNo",
+                bcNo="bcNo",
+                bcDate = DateTimeOffset.Now,
             };
 
             Assert.NotNull(index.buyer);
             Assert.Equal(1, index.id);
             Assert.Equal("localCoverLetterNo", index.localCoverLetterNo);
             Assert.Equal("noteNo", index.noteNo);
+            Assert.Equal("bcNo", index.bcNo);
+            Assert.True(DateTimeOffset.MinValue < index.bcDate);
             Assert.True(DateTimeOffset.MinValue < index.date);
 
         }

@@ -86,7 +86,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             ToBePaid = a.AmountToBePaid,
                             CADate = CA == null ? new DateTime(1970, 1, 1) : CA.Date,
                             PaymentDate = CA == null ? new DateTime(1970, 1, 1) : CA.PaymentDate,
-                            AmountPaid = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.NettNego + CA.BankCharges + CA.OtherCharge : CA.BankComission + CA.DiscrepancyFee + CA.NettNego + CA.CreditInterest + CA.BankCharges,
+                            //AmountPaid = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.NettNego + CA.BankCharges + CA.OtherCharge : CA.BankComission + CA.DiscrepancyFee + CA.NettNego + CA.CreditInterest + CA.BankCharges,
+                            AmountPaid = CA == null ? 0 : CA.NettNego,
                         });
             return newQ;
         }

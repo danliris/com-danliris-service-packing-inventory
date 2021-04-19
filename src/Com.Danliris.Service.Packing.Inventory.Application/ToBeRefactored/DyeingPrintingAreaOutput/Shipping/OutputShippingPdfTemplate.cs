@@ -483,7 +483,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cellRight.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellRight);
 
-            cellRight.Phrase = new Phrase(yardLengthTotal == 0 ? "" : yardLengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            var convyardLengthTotal = 1.09361 * (double)lengthTotal;
+            var yardLengthTotal1 = Math.Round(convyardLengthTotal, 0);
+
+            cellRight.Phrase = new Phrase(yardLengthTotal1 == 0 ? "" : yardLengthTotal1.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
             cellRight.Phrase = new Phrase(lengthTotal == 0 ? "" : lengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);

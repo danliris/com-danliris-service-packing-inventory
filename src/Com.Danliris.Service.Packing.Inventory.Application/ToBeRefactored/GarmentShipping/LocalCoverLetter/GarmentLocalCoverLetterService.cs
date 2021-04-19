@@ -120,7 +120,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         Code = model.BuyerCode,
                         Name = model.BuyerName
-                    }
+                    },
+                    bcNo = model.BCNo,
+                    bcDate = model.BCDate
                 })
                 .ToList();
 

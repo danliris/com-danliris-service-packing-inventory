@@ -76,17 +76,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah Pcs ", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.pcsQuantity)} PCS", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.pcsQuantity == 0 ? "-" : $"{ string.Format("{0:n0}", viewModel.pcsQuantity)} PCS", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah Sets", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.setsQuantity)} SETS", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.setsQuantity == 0 ? "-" : $"{ string.Format("{0:n0}", viewModel.setsQuantity)} SETS", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
             cellHeaderLeft.Phrase = new Phrase("Jumlah Packs", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
-            cellHeaderLeft.Phrase = new Phrase($"{ string.Format("{0:n0}", viewModel.packQuantity)} PACKS", normal_font);
+            cellHeaderLeft.Phrase = new Phrase(viewModel.packQuantity == 0 ? "-" : $"{ string.Format("{0:n0}", viewModel.packQuantity)} PACKS", normal_font);
             tableHeader.AddCell(cellHeaderLeft);
 
 
@@ -112,9 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("\n", normal_font));
 
             #region detail
-            PdfPTable tableDetail = new PdfPTable(4);
+            PdfPTable tableDetail = new PdfPTable(5);
             tableDetail.WidthPercentage = 100;
-            tableDetail.SetWidths(new float[] { 1f, 1f, 1f, 2f });
+            tableDetail.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f });
             PdfPCell cellDetail = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             double cbmtotal = 0;
@@ -133,14 +133,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase("Pengemudi", normal_font);
             tableDetail.AddCell(cellDetail);
+            cellDetail.Phrase = new Phrase("Seal Pelayaran", normal_font);
+            tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase("Jumlah Muatan", normal_font);
             tableDetail.AddCell(cellDetail);
 
-            cellDetail.Phrase = new Phrase(viewModel.emkl.Name, normal_font);
+            Paragraph Truck = new Paragraph($"EMKL : {viewModel.emkl.Name} \n\n" +
+                                            $"Truk : {viewModel.truck}", normal_font);
+            cellDetail.Phrase = Truck;
+            cellDetail.VerticalAlignment = Element.ALIGN_TOP;
             tableDetail.AddCell(cellDetail);
+
             cellDetail.Phrase = new Phrase(viewModel.plateNumber, normal_font);
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase(viewModel.driver, normal_font);
+            tableDetail.AddCell(cellDetail);
+            cellDetail.Phrase = new Phrase(viewModel.shippingSeal, normal_font);
             tableDetail.AddCell(cellDetail);
             Paragraph weight = new Paragraph($"GW  : {string.Format("{0:n2}", pl.GrossWeight)} KGS \n\n" +
                                            $"NW  : {string.Format("{0:n2}", pl.NettWeight)} KGS \n\n" +

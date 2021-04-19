@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 300, MARGIN);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 40);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -171,12 +171,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTable.WidthPercentage = 100;
 
             #region Set Body Table Header
-            PdfPCell bodyTableHeader = new PdfPCell() { FixedHeight = 20 };
+            PdfPCell bodyTableHeader = new PdfPCell();// { FixedHeight = 20 };
             //PdfPCell table1RightCellHeader = new PdfPCell() { FixedHeight = 20, Colspan = 4 };
 
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableHeader.SetLeading(0, 1.3f);
             //bodyTableHeader.Rowspan = 2;
             bodyTableHeader.Colspan = 4;
             bodyTable.AddCell(bodyTableHeader);
@@ -244,6 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellLeftBorder.Phrase = new Phrase(viewModel.Description, body_font);
             bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_LEFT;
             bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellLeftBorder.SetLeading(0, 1.3f);
             bodyTableCellLeftBorder.Colspan = 4;
             bodyTable.AddCell(bodyTableCellLeftBorder);
 
@@ -256,11 +258,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
             bodyTableCellCenterBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellCenterBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellCenterBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellCenterBorder);
 
             bodyTableCellRightBorder.Phrase = new Phrase("", body_font);
             bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
+            bodyTableCellRightBorder.SetLeading(0, 1.3f);
             bodyTable.AddCell(bodyTableCellRightBorder);
 
             bodyTableCellCenterBorder.Phrase = new Phrase("", body_font);
@@ -477,7 +481,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region calculationTable
             PdfPTable calculationTable = new PdfPTable(4);
             calculationTable.HorizontalAlignment = Element.ALIGN_LEFT;
-            float[] calculationTableWidths = new float[] { 4f, 2f, 2f, 6f };
+            float[] calculationTableWidths = new float[] { 4f, 0.8f, 1.3f, 6f };
             calculationTable.SetWidths(calculationTableWidths);
             calculationTable.WidthPercentage = 100;
 
@@ -780,13 +784,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //document.Add(new Paragraph("\n", normal_font));
             //document.Add(new Paragraph("\n", normal_font));
 
-            Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
-            sign.Alignment = Element.ALIGN_RIGHT;
-            Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
-            author.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph sign = new Paragraph("( MRS. ADRIYANA DAMAYANTI )", normal_font_underlined);
+            //sign.Alignment = Element.ALIGN_RIGHT;
+            //Paragraph author = new Paragraph("AUTHORIZED SIGNATURE  ", normal_font);
+            //author.Alignment = Element.ALIGN_RIGHT;
 
-            document.Add(sign);
-            document.Add(author);
+            //document.Add(sign);
+            //document.Add(author);
 
             document.Close();
             byte[] byteInfo = stream.ToArray();
