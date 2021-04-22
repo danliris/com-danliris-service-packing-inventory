@@ -420,7 +420,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 6,
+                    Colspan = SIZES_COUNT + (viewModel.InvoiceType == "DL" ? 6 : 3),
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL .............................................................................................................................................. ", normal_font)
                 });
@@ -436,14 +436,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 11,
+                    Colspan = SIZES_COUNT + (viewModel.InvoiceType == "DL" ? 11 : 8),
                     Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalGrossWeight = d.CartonQuantity * d.GrossWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalGrossWeight).Sum())} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalNetWeight = d.CartonQuantity * d.NetWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalNetWeight).Sum())} Kgs            - Sub N.N.W. = {String.Format("{0:0.00}", item.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, TotalNetNetWeight = d.CartonQuantity * d.NetNetWeight }).GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().TotalNetNetWeight).Sum())} Kgs", normal_font)
                 });
+
+                cellBorderBottom.Phrase = new Phrase("", normal_font);
+                tableDetail.AddCell(cellBorderBottom);
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
                 tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
+                tableDetail.SpacingAfter = 10f;
                 document.Add(tableDetail);
             }
 
