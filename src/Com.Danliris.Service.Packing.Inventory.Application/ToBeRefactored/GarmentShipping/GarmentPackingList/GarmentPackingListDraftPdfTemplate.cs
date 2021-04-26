@@ -379,7 +379,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(new PdfPCell()
                 {
                     Border = Rectangle.BOTTOM_BORDER,
-                    Colspan = SIZES_COUNT + 6,
+                    Colspan = SIZES_COUNT + 7,
                     Padding = 5,
                     Phrase = new Phrase("SUB TOTAL ....................................................................................................................................................................... ", normal_font)
                 });
@@ -422,7 +422,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 Border = Rectangle.BOTTOM_BORDER,
                 Padding = 5,
-                Phrase = new Phrase("GRAND TOTAL ...................................................................................................................................................................................", normal_font)
+                Phrase = new Phrase("GRAND TOTAL .......................................................................................................................................................................", normal_font)
             });
             var grandTotalResult = string.Join(" / ",arraySubTotal.Select(x => x.Value + " " + x.Key).ToArray());
             tableGrandTotal.AddCell(new PdfPCell()
