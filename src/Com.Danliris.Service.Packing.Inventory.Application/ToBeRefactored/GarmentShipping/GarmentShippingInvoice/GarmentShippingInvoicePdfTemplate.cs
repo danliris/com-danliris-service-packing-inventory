@@ -24,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 40);
+            Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 150);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -286,7 +286,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             Dictionary<string, double> total = new Dictionary<string, double>();
 
-            foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
             {
                 totalAmount += item.Amount;
                 totalQuantity += item.Quantity;
@@ -439,53 +439,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPTable tableMark1 = new PdfPTable(2);
             tableMark1.SetWidths(new float[] { 2f, 4f });
             tableMark1.WidthPercentage = 100;
-            byte[] shippingMarkImage;
 
-            try
+            var noImage = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z";
+            byte[] shippingMarkImage;
+            if (String.IsNullOrEmpty(pl.ShippingMarkImageFile))
+            {
+                pl.ShippingMarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(pl.ShippingMarkImageFile)))
             {
                 shippingMarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.ShippingMarkImageFile));
-            }
-            catch (Exception)
-            {
-                shippingMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
 
-            Image shipMarkImage = Image.GetInstance(imgb: shippingMarkImage);
+                if (shipMarkImage.Width > 60)
+                {
+                    float percentage = 0.0f;
+                    percentage = 100 / shipMarkImage.Width;
+                    shipMarkImage.ScalePercent(percentage * 100);
+                }
 
-            if (shipMarkImage.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / shipMarkImage.Width;
-                shipMarkImage.ScalePercent(percentage * 100);
+                PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
+                shipMarkImageCell.Border = Rectangle.NO_BORDER;
+                tableMark1.AddCell(shipMarkImageCell);
             }
-
-            PdfPCell shipMarkImageCell = new PdfPCell(shipMarkImage);
-            shipMarkImageCell.Border = Rectangle.NO_BORDER;
-            tableMark1.AddCell(shipMarkImageCell);
 
             byte[] sideMarkImage;
 
-            try
+            if (String.IsNullOrEmpty(pl.SideMarkImageFile))
+            {
+                pl.SideMarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(pl.SideMarkImageFile)))
             {
                 sideMarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.SideMarkImageFile));
-            }
-            catch (Exception)
-            {
-                sideMarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
 
-            Image _sideMarkImage = Image.GetInstance(imgb: sideMarkImage);
+                if (_sideMarkImage.Width > 60)
+                {
+                    float percentage = 0.0f;
+                    percentage = 100 / _sideMarkImage.Width;
+                    _sideMarkImage.ScalePercent(percentage * 100);
+                }
 
-            if (_sideMarkImage.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / _sideMarkImage.Width;
-                _sideMarkImage.ScalePercent(percentage * 100);
+                PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
+                _sideMarkImageCell.Border = Rectangle.NO_BORDER;
+                tableMark1.AddCell(_sideMarkImageCell);
             }
-
-            PdfPCell _sideMarkImageCell = new PdfPCell(_sideMarkImage);
-            _sideMarkImageCell.Border = Rectangle.NO_BORDER;
-            tableMark1.AddCell(_sideMarkImageCell);
 
             new PdfPCell(tableMark1);
             tableMark1.ExtendLastRow = false;
@@ -589,29 +590,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPTable tableRemark2 = new PdfPTable(1);
             tableRemark2.SetWidths(new float[] { 6f });
             tableRemark2.WidthPercentage = 100;
+
             byte[] shippingRemarkImage;
 
-            try
+            if (String.IsNullOrEmpty(pl.RemarkImageFile))
+            {
+                pl.RemarkImageFile = noImage;
+            }
+
+            if (IsBase64String(Base64.GetBase64File(pl.RemarkImageFile)))
             {
                 shippingRemarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.RemarkImageFile));
-            }
-            catch (Exception)
-            {
-                shippingRemarkImage = Convert.FromBase64String("/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA0NDQ0ODQ4QEA4UFhMWFB4bGRkbHi0gIiAiIC1EKjIqKjIqRDxJOzc7STxsVUtLVWx9aWNpfZeHh5e+tb75+f8BDQ0NDQ4NDhAQDhQWExYUHhsZGRseLSAiICIgLUQqMioqMipEPEk7NztJPGxVS0tVbH1pY2l9l4eHl761vvn5///CABEIAAoACgMBIgACEQEDEQH/xAAVAAEBAAAAAAAAAAAAAAAAAAAAB//aAAgBAQAAAACnD//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIQAAAAf//EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMQAAAAf//EABQQAQAAAAAAAAAAAAAAAAAAACD/2gAIAQEAAT8AH//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z");
-            }
+                Image shipRemarkImage = Image.GetInstance(imgb: shippingRemarkImage);
 
-            Image shipRemarkImage = Image.GetInstance(imgb: shippingRemarkImage);
+                if (shipRemarkImage.Width > 60)
+                {
+                    float percentage = 0.0f;
+                    percentage = 100 / shipRemarkImage.Width;
+                    shipRemarkImage.ScalePercent(percentage * 100);
+                }
 
-            if (shipRemarkImage.Width > 60)
-            {
-                float percentage = 0.0f;
-                percentage = 100 / shipRemarkImage.Width;
-                shipRemarkImage.ScalePercent(percentage * 100);
+                PdfPCell shipRemarkImageCell = new PdfPCell(shipRemarkImage);
+                shipRemarkImageCell.Border = Rectangle.NO_BORDER;
+                shipRemarkImageCell.Colspan = 3;
+                tableRemark2.AddCell(shipRemarkImageCell);
             }
-
-            PdfPCell shipRemarkImageCell = new PdfPCell(shipRemarkImage);
-            shipRemarkImageCell.Border = Rectangle.NO_BORDER;
-            tableRemark2.AddCell(shipRemarkImageCell);
 
             new PdfPCell(tableRemark2);
             tableRemark2.ExtendLastRow = false;
@@ -635,6 +638,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             stream.Position = 0;
 
             return stream;
+        }
+
+        public bool IsBase64String(string base64)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
         }
     }
 
@@ -694,7 +703,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellDetailContentLeft = new PdfPCell() { Border = Rectangle.TOP_BORDER };
             PdfPCell cellDetailContentRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
+            PdfPCell cellDetailContentRight2 = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER };
             PdfPCell cellDetailContentCenter = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
+            PdfPCell cellDetailContentCenter2 = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
@@ -705,6 +716,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellDetailContentLeft.Phrase = new Phrase("SOLD BY ORDERS AND FOR ACCOUNT AND RISK OF", normal_font);
             cellDetailContentLeft.Colspan = 2;
+            cellDetailContentLeft.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER;
             tabledetailOrders.AddCell(cellDetailContentLeft);
 
 
@@ -818,7 +830,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //tabledetailOrders.AddCell(cellDetailContentRight);
 
             cellDetailContentRight.AddElement(new Phrase("MESSRS      : ", normal_font));
-            cellDetailContentRight.Border = Rectangle.NO_BORDER;
+            cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
             cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
@@ -827,18 +839,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
             tabledetailOrders.AddCell(cellDetailContentCenter);
 
-            cellDetailContentRight.Phrase = new Phrase("DELIVERED TO : ", normal_font);
-            cellDetailContentRight.Colspan = 1;
-            cellDetailContentRight.Border = Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
+            cellDetailContentRight2.AddElement(new Phrase("DELIVERED TO : ", normal_font));
+            cellDetailContentRight2.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentRight2);
 
-            cellDetailContentCenter.Phrase = new Phrase(viewModel.DeliverTo, normal_font);
-            cellDetailContentCenter.Border = Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentCenter);
+            cellDetailContentCenter2.AddElement(new Phrase(viewModel.DeliverTo, normal_font));
+            cellDetailContentCenter2.Border = Rectangle.BOTTOM_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentCenter2);
 
-            cellDetailContentRight.Phrase = new Phrase("\n", normal_font);
-            cellDetailContentRight.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
-            tabledetailOrders.AddCell(cellDetailContentRight);
+            cellDetailContentRight2.Phrase = new Phrase("\n", normal_font);
+            cellDetailContentRight2.Border = Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER;
+            tabledetailOrders.AddCell(cellDetailContentRight2);
 
             PdfPCell cellDetail = new PdfPCell(tabledetailOrders);
             cellDetail.Border = Rectangle.NO_BORDER;
@@ -848,7 +859,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region SIGNATURE
-            var printY = document.BottomMargin - 10;
+            var printY = document.BottomMargin - 100;
             var signX = document.RightMargin + 500;
             var signY = printY + 20;
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY, 0);

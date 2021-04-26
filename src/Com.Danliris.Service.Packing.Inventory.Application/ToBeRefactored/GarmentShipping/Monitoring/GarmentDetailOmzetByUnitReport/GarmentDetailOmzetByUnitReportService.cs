@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
+            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
             List<GarmentDetailOmzetByUnitReportViewModel> omzetgmt = new List<GarmentDetailOmzetByUnitReportViewModel>();
@@ -63,10 +63,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             TruckingDate = c.TruckingDate,
                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
                             ComodityName = b.ComodityName,
-                            UnitCode = b.UnitCode.Substring(0, 3) == "SET" ? "PCS" : b.UnitCode,
+                            UnitCode = b.UnitCode,
                             RONumber = b.RONo,
-                            Quantity = b.UnitCode.Substring(0, 3) == "SET" ? b.Quantity * 2 :  b.Quantity,
-                            UOMUnit = b.UomUnit,
+                            Quantity = b.UomUnit.Substring(0, 3) == "SET" ? b.Quantity * 2 : b.Quantity,
+                            UOMUnit = b.UomUnit.Substring(0, 3) == "SET" ? "PCS" : b.UomUnit,
                             CurrencyCode = b.CurrencyCode,
                             Amount = b.Amount,
 
