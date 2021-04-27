@@ -21,20 +21,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel, string fob, string cprice)
         {
             //int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
-            int maxSizesCount = 0;
-            var sizesMax = new Dictionary<int, string>();
+            var newItems = new List<GarmentPackingListItemViewModel>();
+            var newItems2 = new List<GarmentPackingListItemViewModel>();
+            var newDetails = new List<GarmentPackingListDetailViewModel>();
             foreach (var item in viewModel.Items)
+            {
+                foreach (var detail in item.Details)
+                {
+                    newDetails.Add(detail);
+                }
+            }
+            // if wanna group by order no delete the note by @zhikariz
+            newDetails = newDetails.OrderBy(a => a.Index).ThenBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
+
+            foreach (var d in newDetails)
+            {
+                if (newItems.Count == 0)
+                {
+                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
+                    i.Details = new List<GarmentPackingListDetailViewModel>();
+                    i.Details.Add(d);
+                    newItems.Add(i);
+                }
+                else
+                {
+                    if (newItems.Last().Id == d.PackingListItemId)
+                    {
+                        newItems.Last().Details.Add(d);
+                    }
+                    else
+                    {
+                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+                        {
+                            Id = a.Id,
+                            RONo = a.RONo,
+                            Article = a.Article,
+                            BuyerAgent = a.BuyerAgent,
+                            ComodityDescription = a.ComodityDescription,
+                            OrderNo = a.OrderNo,
+                            AVG_GW = a.AVG_GW,
+                            AVG_NW = a.AVG_NW,
+                            Description = a.Description
+                        })
+                            .Single(a => a.Id == d.PackingListItemId);
+                        y.Details = new List<GarmentPackingListDetailViewModel>();
+                        y.Details.Add(d);
+                        newItems.Add(y);
+                    }
+                }
+            }
+
+            foreach (var item in newItems)
+            {
+                if (newItems2.Count == 0)
+                {
+                    newItems2.Add(item);
+                }
+                else
+                {
+                    if (newItems2.Last().OrderNo == item.OrderNo)
+                    {
+                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems2.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        newItems2.Add(item);
+                    }
+                }
+            }
+
+            var sizesCount = false;
+            foreach (var item in newItems2)
             {
                 foreach (var detail in item.Details)
                 {
                     foreach (var size in detail.Sizes)
                     {
+                        var sizesMax = new Dictionary<int, string>();
                         sizesMax[size.Size.Id] = size.Size.Size;
+                        if (sizesMax.Count > 11)
+                        {
+                            sizesCount = true;
+                        }
                     }
                 }
             }
-            maxSizesCount = sizesMax.Count;
-            int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
+            int SIZES_COUNT = sizesCount ? 20 : 11;
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
@@ -42,7 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 30);
+            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 30);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -109,76 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var arrayGrandTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
-            var newItems = new List<GarmentPackingListItemViewModel>();
-            var newItems2 = new List<GarmentPackingListItemViewModel>();
-            var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items)
-            {
-                foreach (var detail in item.Details)
-                {
-                    newDetails.Add(detail);
-                }
-            }
-            newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
-
-            foreach (var d in newDetails)
-            {
-                if (newItems.Count == 0)
-                {
-                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
-                    i.Details = new List<GarmentPackingListDetailViewModel>();
-                    i.Details.Add(d);
-                    newItems.Add(i);
-                }
-                else
-                {
-                    if (newItems.Last().Id == d.PackingListItemId)
-                    {
-                        newItems.Last().Details.Add(d);
-                    }
-                    else
-                    {
-                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
-                        {
-                            Id = a.Id,
-                            RONo = a.RONo,
-                            Article = a.Article,
-                            BuyerAgent = a.BuyerAgent,
-                            ComodityDescription = a.ComodityDescription,
-                            OrderNo = a.OrderNo,
-                            AVG_GW = a.AVG_GW,
-                            AVG_NW = a.AVG_NW,
-                            Description = a.Description
-                        })
-                            .Single(a => a.Id == d.PackingListItemId);
-                        y.Details = new List<GarmentPackingListDetailViewModel>();
-                        y.Details.Add(d);
-                        newItems.Add(y);
-                    }
-                }
-            }
-
-            foreach (var item in newItems)
-            {
-                if (newItems2.Count == 0)
-                {
-                    newItems2.Add(item);
-                }
-                else
-                {
-                    if (newItems2.Last().OrderNo == item.OrderNo)
-                    {
-                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems2.Last().Details.Add(d);
-                        }
-                    }
-                    else
-                    {
-                        newItems2.Add(item);
-                    }
-                }
-            }
+            
 
             //foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
             //{
@@ -312,13 +318,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     var article = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Article;
                     uom = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Uom.Unit;
-                    if (cartonNumbers.Contains($"{detail.Carton1}- {detail.Carton2}"))
+                    if (cartonNumbers.Contains($"{detail.Index} - {detail.Carton1}- {detail.Carton2}"))
                     {
                         ctnsQty = 0;
                     }
                     else
                     {
-                        cartonNumbers.Add($"{detail.Carton1}- {detail.Carton2}");
+                        cartonNumbers.Add($"{detail.Index} - {detail.Carton1}- {detail.Carton2}");
                     }
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Carton1}- {detail.Carton2}", normal_font, 0.6f));
                     tableDetail.AddCell(cellBorderBottomRight);

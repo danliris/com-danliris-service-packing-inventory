@@ -21,43 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public MemoryStream GeneratePdfTemplate(GarmentPackingListViewModel viewModel)
         {
             //int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
-            int maxSizesCount = 0;
-            var sizesMax = new Dictionary<int, string>();
-            foreach (var item in viewModel.Items)
-            {
-                foreach (var detail in item.Details)
-                {
-                    foreach (var size in detail.Sizes)
-                    {
-                        sizesMax[size.Size.Id] = size.Size.Size;
-                    }
-                }
-            }
-            maxSizesCount = sizesMax.Count;
-            int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
-
-            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-
-            Document document = new Document(maxSizesCount > 11 ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 70, 30);
-            MemoryStream stream = new MemoryStream();
-            PdfWriter writer = PdfWriter.GetInstance(document, stream);
-            writer.PageEvent = new GarmentPackingListDraftPDFTemplatePageEvent(_identityProvider, viewModel);
-
-            document.Open();
-            PdfContentByte cb = writer.DirectContent;
-
-            PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-
-            var cartons = new List<GarmentPackingListDetailViewModel>();
-            double grandTotal = 0;
-
-            var arraySubTotal = new Dictionary<String, double>();
-            List<string> cartonNumbers = new List<string>();
 
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
@@ -108,6 +71,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 }
             }
+            var sizesCount = false;
+            foreach (var item in newItems.OrderBy(a => a.RONo))
+            {
+                foreach (var detail in item.Details)
+                {
+                    foreach (var size in detail.Sizes)
+                    {
+                        var sizesMax = new Dictionary<int, string>();
+                        sizesMax[size.Size.Id] = size.Size.Size;
+                        if (sizesMax.Count > 11)
+                        {
+                            sizesCount = true;
+                        }
+                    }
+                }
+            }
+            int SIZES_COUNT = sizesCount ? 20 : 11;
+
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+
+            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 70, 30);
+            MemoryStream stream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, stream);
+            writer.PageEvent = new GarmentPackingListDraftPDFTemplatePageEvent(_identityProvider, viewModel);
+
+            document.Open();
+            PdfContentByte cb = writer.DirectContent;
+
+            PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+
+            var cartons = new List<GarmentPackingListDetailViewModel>();
+            double grandTotal = 0;
+
+            var arraySubTotal = new Dictionary<String, double>();
+            List<string> cartonNumbers = new List<string>();
+
+           
 
             //foreach (var d in newDetails)
             //{
