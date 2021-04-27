@@ -98,14 +98,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 foreach (var detail in item.Details)
                 {
+                    var sizesMax = new Dictionary<int, string>();
                     foreach (var size in detail.Sizes)
                     {
-                        var sizesMax = new Dictionary<int, string>();
                         sizesMax[size.Size.Id] = size.Size.Size;
-                        if (sizesMax.Count > 11)
-                        {
-                            sizesCount = true;
-                        }
+                    }
+                    if (sizesMax.Count > 11)
+                    {
+                        sizesCount = true;
                     }
                 }
             }
