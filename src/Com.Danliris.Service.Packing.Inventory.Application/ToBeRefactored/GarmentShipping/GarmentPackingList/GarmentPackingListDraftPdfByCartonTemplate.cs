@@ -96,17 +96,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var sizesCount = false;
             foreach (var item in newItems2)
             {
+                var sizesMax = new Dictionary<int, string>();
                 foreach (var detail in item.Details)
                 {
-                    var sizesMax = new Dictionary<int, string>();
                     foreach (var size in detail.Sizes)
                     {
                         sizesMax[size.Size.Id] = size.Size.Size;
                     }
-                    if (sizesMax.Count > 11)
-                    {
-                        sizesCount = true;
-                    }
+                }
+                if (sizesMax.Count > 11)
+                {
+                    sizesCount = true;
                 }
             }
             int SIZES_COUNT = sizesCount ? 20 : 11;
