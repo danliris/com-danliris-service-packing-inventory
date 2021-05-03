@@ -675,7 +675,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region CENTER
 
             var headOfficeX = width / 2 + 30;
-            var headOfficeY = height - marginTop + 135;
+            var headOfficeY = height - marginTop + 200;
 
 
             string[] headOffices = {
