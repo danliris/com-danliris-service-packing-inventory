@@ -22,21 +22,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GenerateExcelTemplate(GarmentPackingListViewModel viewModel, string fob, string cPrice)
         {
-            //int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
-            int maxSizesCount = 0;
-            var sizesMax = new Dictionary<int, string>();
+            var newItems = new List<GarmentPackingListItemViewModel>();
+            var newItems2 = new List<GarmentPackingListItemViewModel>();
+            var newDetails = new List<GarmentPackingListDetailViewModel>();
             foreach (var item in viewModel.Items)
             {
                 foreach (var detail in item.Details)
+                {
+                    newDetails.Add(detail);
+                }
+            }
+            // if wanna group by order no delete the note by @zhikariz
+            newDetails = newDetails.OrderBy(a => a.Index).ThenBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
+
+            foreach (var d in newDetails)
+            {
+                if (newItems.Count == 0)
+                {
+                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
+                    i.Details = new List<GarmentPackingListDetailViewModel>();
+                    i.Details.Add(d);
+                    newItems.Add(i);
+                }
+                else
+                {
+                    if (newItems.Last().Id == d.PackingListItemId)
+                    {
+                        newItems.Last().Details.Add(d);
+                    }
+                    else
+                    {
+                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+                        {
+                            Id = a.Id,
+                            RONo = a.RONo,
+                            Article = a.Article,
+                            BuyerAgent = a.BuyerAgent,
+                            ComodityDescription = a.ComodityDescription,
+                            OrderNo = a.OrderNo,
+                            AVG_GW = a.AVG_GW,
+                            AVG_NW = a.AVG_NW,
+                            Description = a.Description
+                        })
+                            .Single(a => a.Id == d.PackingListItemId);
+                        y.Details = new List<GarmentPackingListDetailViewModel>();
+                        y.Details.Add(d);
+                        newItems.Add(y);
+                    }
+                }
+            }
+
+            foreach (var item in newItems)
+            {
+                if (newItems2.Count == 0)
+                {
+                    newItems2.Add(item);
+                }
+                else
+                {
+                    if (newItems2.Last().OrderNo == item.OrderNo)
+                    {
+                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems2.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        newItems2.Add(item);
+                    }
+                }
+            }
+
+            var sizesCount = false;
+            foreach (var item in newItems2)
+            {
+                var sizesMax = new Dictionary<int, string>();
+                foreach (var detail in item.Details.OrderBy(a => a.Carton1).ThenBy(a => a.Carton2))
                 {
                     foreach (var size in detail.Sizes)
                     {
                         sizesMax[size.Size.Id] = size.Size.Size;
                     }
                 }
+                if (sizesMax.Count > 11)
+                {
+                    sizesCount = true;
+                }
             }
-            maxSizesCount = sizesMax.Count;
-            int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
+            int SIZES_COUNT = sizesCount ? 20 : 11;
 
             var col = GetColNameFromIndex(4 + SIZES_COUNT);
             var colCtns = GetColNameFromIndex(SIZES_COUNT + 5);
@@ -108,78 +182,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var uom = "";
             var arrayGrandTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
-
-            var newItems = new List<GarmentPackingListItemViewModel>();
-            var newItems2 = new List<GarmentPackingListItemViewModel>();
-            var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items.OrderBy(a => a.RONo))
-            {
-                foreach (var detail in item.Details)
-                {
-                    newDetails.Add(detail);
-                }
-            }
-            newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
-
-            foreach (var d in newDetails)
-            {
-                if (newItems.Count == 0)
-                {
-                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
-                    i.Details = new List<GarmentPackingListDetailViewModel>();
-                    i.Details.Add(d);
-                    newItems.Add(i);
-                }
-                else
-                {
-                    if (newItems.Last().Id == d.PackingListItemId)
-                    {
-                        newItems.Last().Details.Add(d);
-                    }
-                    else
-                    {
-                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
-                        {
-                            Id = a.Id,
-                            RONo = a.RONo,
-                            Article = a.Article,
-                            BuyerAgent = a.BuyerAgent,
-                            ComodityDescription = a.ComodityDescription,
-                            OrderNo = a.OrderNo,
-                            AVG_GW = a.AVG_GW,
-                            AVG_NW = a.AVG_NW,
-                            Description = a.Description,
-                            Uom = a.Uom
-                        })
-                            .Single(a => a.Id == d.PackingListItemId);
-                        y.Details = new List<GarmentPackingListDetailViewModel>();
-                        y.Details.Add(d);
-                        newItems.Add(y);
-                    }
-                }
-            }
-
-            foreach (var item in newItems)
-            {
-                if (newItems2.Count == 0)
-                {
-                    newItems2.Add(item);
-                }
-                else
-                {
-                    if (newItems2.Last().OrderNo == item.OrderNo)
-                    {
-                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems2.Last().Details.Add(d);
-                        }
-                    }
-                    else
-                    {
-                        newItems2.Add(item);
-                    }
-                }
-            }
 
             var index = 8;
             var afterSubTotalIndex = 0;
@@ -292,7 +294,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
                 var arraySubTotal = new Dictionary<String, double>();
-                foreach (var detail in item.Details)
+                foreach (var detail in item.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2))
                 {
                     var ctnsQty = detail.CartonQuantity;
                     uom = viewModel.Items.Where(a => a.Id == detail.PackingListItemId).Single().Uom.Unit;
@@ -607,7 +609,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.PrinterSettings.TopMargin = 0;
             sheet.PrinterSettings.RightMargin = 0;
             
-            sheet.PrinterSettings.Orientation = maxSizesCount > 11 ? eOrientation.Landscape : eOrientation.Portrait;
+            sheet.PrinterSettings.Orientation = sizesCount ? eOrientation.Landscape : eOrientation.Portrait;
 
 
             MemoryStream stream = new MemoryStream();
