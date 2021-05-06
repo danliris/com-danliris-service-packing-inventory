@@ -50,6 +50,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         select new GarmentShippingGenerateDataViewModel
                         {
+                            //c.Quantity, c.UomUnit, c.CurrencyCode, c.Price, c.CMTPrice, c.Amount
+
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = b.InvoiceDate,
                             TruckingDate = a.TruckingDate,
@@ -64,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             SailingDate = b.SailingDate,
                             CurrencyCode = "USD",
                             ComodityCode = c.ComodityCode,
-                            ComodityName = c.ComodityName,
+                            ComodityName = c.ComodityDesc,
                             PEBNo = b.PEBNo == null ? "-" : b.PEBNo,
                             PEBDate = b.PEBNo == null ? new DateTime(1970, 1, 1) : b.PEBDate,
                             Def = a.Omzet == false ? "TIDAK" : "YA",
@@ -74,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Quantity = c.Quantity,
                             UomUnit = c.UomUnit,
                             Price = c.Price,
+                            CMTPrice = c.CMTPrice,
                             SubAmount = c.Amount,
                         };
             return Query;
@@ -115,12 +118,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "To Be Paid", DataType = typeof(decimal) });
             result.Columns.Add(new DataColumn() { ColumnName = "Jumlah", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Harga", DataType = typeof(decimal) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Harga FOB", DataType = typeof(decimal) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Harga CMT", DataType = typeof(decimal) });
             result.Columns.Add(new DataColumn() { ColumnName = "Sub Total", DataType = typeof(decimal) });
 
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, "", 0, 0);
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 0, 0, 0, "", 0, 0, 0);
             else
             {
                 int index = 0;
@@ -136,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string MtUang = "USD";
 
                     result.Rows.Add(index, d.InvoiceNo, InvDate, TruckDate, DueDate, d.PaymentTerm, d.LCNo, d.BuyerCode, d.BuyerName, d.RONo, d.SCNo, d.Destination, SailDate,
-                                    MtUang, d.ComodityName, d.PEBNo, PEBDate, d.Def, d.Acc, d.Amount, d.ToBePaid, d.Quantity, d.UomUnit, d.Price, d.SubAmount);
+                                    MtUang, d.ComodityName, d.PEBNo, PEBDate, d.Def, d.Acc, d.Amount, d.ToBePaid, d.Quantity, d.UomUnit, d.Price, d.CMTPrice, d.SubAmount);
                 }
             }
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
