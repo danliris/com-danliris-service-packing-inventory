@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset? date { get; set; }
         public Buyer buyer { get; set; }
         public double totalAmount { get; set; }
+        public string description { get; set; }
 
         public ICollection<GarmentShippingNoteItemViewModel> items { get; set; }
     }

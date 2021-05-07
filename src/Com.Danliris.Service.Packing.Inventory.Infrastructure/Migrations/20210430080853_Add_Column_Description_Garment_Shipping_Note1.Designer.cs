@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210430080853_Add_Column_Description_Garment_Shipping_Note1")]
+    partial class Add_Column_Description_Garment_Shipping_Note1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2605,7 +2607,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(1500);
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(255);
 
                     b.Property<string>("FabricType")
                         .HasMaxLength(100);
@@ -4325,9 +4327,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
-                    b.Property<bool>("IsDeleted");
-
                     b.Property<string>("Description");
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);

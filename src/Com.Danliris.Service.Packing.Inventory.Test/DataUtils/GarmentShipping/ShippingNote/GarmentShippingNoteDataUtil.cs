@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingNoteModel GetModel()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 1, "", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "", "", 1, "", "", 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "", "", "", 1, "", "", 1, items);
 
             return model;
         }
@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingNoteModel GetEmptyModel()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel(null, 0, null, 01) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, null, DateTimeOffset.MinValue, 0, null, null, 0, null, null, 0, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, null, DateTimeOffset.MinValue, 0, null, null, null, 0, null, null, 0, items);
 
             return model;
         }
