@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Body Table
 
             PdfPTable bodyTable = new PdfPTable(8);
-            float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.8f, 0.5f, 1f, 1.3f };
+            float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.6f, 0.7f, 1f, 1.3f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
