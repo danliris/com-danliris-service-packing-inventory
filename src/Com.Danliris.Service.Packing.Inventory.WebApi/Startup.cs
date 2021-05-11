@@ -138,6 +138,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionRecapReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCMTSalesReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentDetailOmzetByUnitReport;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -199,6 +201,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
+
+            services.AddTransient<IDyeingPrintingStockOpnameRepository, DyeingPrintingStockOpnameRepository>();
+
             services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
             services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
@@ -266,6 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOutputShippingService, OutputShippingService>();
             services.AddTransient<IInputWarehouseService, InputWarehouseService>();
             services.AddTransient<IOutputWarehouseService, OutputWarehouseService>();
+            services.AddTransient<IStockOpnameWarehouseService, StockOpnameWarehouseService>();
             services.AddTransient<IInputAvalTransformationService, InputAvalTransformationService>();
             services.AddTransient<IStockWarehouseService, StockWarehouseService>();
             services.AddTransient<IAvalStockReportService, AvalStockReportService>();
