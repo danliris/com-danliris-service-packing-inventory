@@ -13,6 +13,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpna
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -91,7 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Motif,
                                                                 s.PackingInstruction,
                                                                 s.PackagingQty,
-                                                                s.PackagingLength,
+                                                                s.Quantity,
                                                                 s.PackagingType,
                                                                 s.PackagingUnit,
                                                                 s.ProductionOrder.Id,
@@ -134,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Motif,
                                                                 item.PackingInstruction,
                                                                 item.PackagingQty,
-                                                                item.PackagingLength,
+                                                                item.Quantity,
                                                                 item.PackagingType,
                                                                 item.PackagingUnit,
                                                                 item.ProductionOrder.Id,
@@ -276,7 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Motif,
                 s.PackingInstruction,
                 s.PackagingQty,
-                s.PackagingLength,
+                s.Quantity,
                 s.PackagingType,
                 s.PackagingUnit,
                 s.ProductionOrder.Id,
@@ -370,6 +371,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DeletedBy = s.DeletedBy,
                         DeletedUtc = s.DeletedUtc,
                         Grade = s.Grade,
+                        GradeProduct = new GradeProduct()
+                        {
+                            Type = s.Grade
+                        },
                         PackingInstruction = s.PackingInstruction,
                         Remark = s.Remark,
                         Status = s.Status,
@@ -378,6 +383,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         LastModifiedAgent = s.LastModifiedAgent,
                         LastModifiedBy = s.LastModifiedBy,
                         Motif = s.Motif,
+                        
                         ProductionOrder = new ProductionOrder()
                         {
                             Id = s.ProductionOrderId,
@@ -408,6 +414,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Name = s.ProcessTypeName
                         },
                         UomUnit = s.UomUnit,
+                        Uom =new UnitOfMeasurement()
+                        {
+                            Unit= s.PackagingUnit
+                        },
                         PackagingQty = s.PackagingQty,
                         PackagingType = s.PackagingType,
                         PackagingUnit = s.PackagingUnit,
@@ -483,6 +493,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DeletedBy = s.DeletedBy,
                         DeletedUtc = s.DeletedUtc,
                         Grade = s.Grade,
+                        GradeProduct=new GradeProduct { 
+                        Type =s.Grade
+                        },
                         PackingInstruction = s.PackingInstruction,
                         Remark = s.Remark,
                         Status = s.Status,
@@ -499,12 +512,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Type = s.ProductionOrderType
                         },
                         Unit = s.Unit,
+                        Uom =new UnitOfMeasurement()
+                        {
+                            Unit=s.PackagingUnit
+                        },
                         UomUnit = s.UomUnit,
                         PackagingQty = s.PackagingQty,
                         PackagingType = s.PackagingType,
                         PackagingUnit = s.PackagingUnit,
                         ProductionOrderNo = s.ProductionOrderNo,
                         QtyOrder = s.ProductionOrderOrderQuantity,
+                       
                         //DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
                     }).ToList()
                 };

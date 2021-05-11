@@ -102,11 +102,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetProductionOrder(localItem.ProductionOrderId, localItem.ProductionOrderNo, localItem.ProductionOrderType, localItem.ProductionOrderOrderQuantity, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
                     item.SetPackingInstruction(localItem.PackingInstruction, _identityProvider.Username, UserAgent);
+                    item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
+                    item.SetPackagingType(localItem.PackagingType, _identityProvider.Username, UserAgent);
+                    item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
+                    item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                     item.SetStatus(localItem.Status, _identityProvider.Username, UserAgent);
                     item.SetUnit(localItem.Unit, _identityProvider.Username, UserAgent);
                     item.SetUomUnit(localItem.UomUnit, _identityProvider.Username, UserAgent);
                     item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
+                    
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                     item.SetDocumentNo(localItem.DocumentNo, _identityProvider.Username, UserAgent);
                 }
