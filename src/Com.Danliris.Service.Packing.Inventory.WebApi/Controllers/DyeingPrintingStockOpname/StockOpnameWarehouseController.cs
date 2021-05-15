@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
 
         [HttpGet("stock-opname-production-orders/{bonId}")]
-        public async Task<IActionResult> GetOutputProductionOrdersv2(int bonId)
+        public async Task<IActionResult> GetSppByBonNo(int bonId)
         {
             try
             {

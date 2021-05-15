@@ -352,6 +352,58 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
         }
 
         [Fact]
+        public void Should_Succes_GetListBon()
+        {
+            //Arrange
+            var dataUtil = viewModel;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.Read(It.IsAny<string>()))
+                .Returns(new ListResult<IndexViewModel>(new List<IndexViewModel>(),1,1,1) { });
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetListBon();
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Throw_Exception_GetListBon()
+        {
+            //Arrange
+            var dataUtil = viewModel;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.Read(It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetListBon();
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
         public async void Should_Success_Delete()
         {
             //Arrange
