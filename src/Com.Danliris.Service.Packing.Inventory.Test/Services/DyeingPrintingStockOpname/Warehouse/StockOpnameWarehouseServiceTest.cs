@@ -265,6 +265,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public async Task Should_Reurn_Null_ReadById()
+        {
+            //Arrange
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(()=>null);
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            //Act
+            var result = await service.ReadById(1);
+
+            //Assert
+            Assert.Null(result);
+        }
+
 
         [Fact]
         public async Task Should_Success_Delete()
