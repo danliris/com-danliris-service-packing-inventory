@@ -9,7 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
   public  interface IStockOpnameWarehouseService
     {
         Task<int> Create(StockOpnameWarehouseViewModel viewModel);
-        Task<List<StockOpnameWarehouseViewModel>> GetSppByBonNo(int bonId);
+        
         Task<StockOpnameWarehouseViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<IndexViewModel> Read(string keyword);

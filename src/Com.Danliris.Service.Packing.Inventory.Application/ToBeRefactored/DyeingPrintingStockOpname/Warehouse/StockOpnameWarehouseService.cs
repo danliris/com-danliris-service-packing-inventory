@@ -328,224 +328,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private async Task<StockOpnameWarehouseViewModel> MapToViewModel(DyeingPrintingStockOpnameModel model)
         {
             var vm = new StockOpnameWarehouseViewModel();
-            if (model.Type == null || model.Type == DyeingPrintingArea.STOCK_OPNAME)
+            vm = new StockOpnameWarehouseViewModel()
             {
-                vm = new StockOpnameWarehouseViewModel()
+                Active = model.Active,
+                Id = model.Id,
+                Area = model.Area,
+                BonNo = model.BonNo,
+                Type = DyeingPrintingArea.STOCK_OPNAME,
+                Bon = new IndexViewModel
                 {
-                    Active = model.Active,
-                    Id = model.Id,
                     Area = model.Area,
                     BonNo = model.BonNo,
-                    Type = DyeingPrintingArea.STOCK_OPNAME,
-                    Bon = new IndexViewModel
-                    {
-                        Area = model.Area,
-                        BonNo = model.BonNo,
-                        Date = model.Date,
-                        Id = model.Id
-                    },
-                    CreatedAgent = model.CreatedAgent,
-                    CreatedBy = model.CreatedBy,
-                    CreatedUtc = model.CreatedUtc,
                     Date = model.Date,
-                    DeletedAgent = model.DeletedAgent,
-                    DeletedBy = model.DeletedBy,
-                    DeletedUtc = model.DeletedUtc,
-                    IsDeleted = model.IsDeleted,
-                    LastModifiedAgent = model.LastModifiedAgent,
-                    LastModifiedBy = model.LastModifiedBy,
-                    LastModifiedUtc = model.LastModifiedUtc,
-                    WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Select(s => new StockOpnameWarehouseProductionOrderViewModel()
-                    {
-                        Active = s.Active,
-                        LastModifiedUtc = s.LastModifiedUtc,
-                        Balance = s.Balance,
-                        Buyer = s.Buyer,
-                        BuyerId = s.BuyerId,
-                        Color = s.Color,
-                        Construction = s.Construction,
-                        CreatedAgent = s.CreatedAgent,
-                        CreatedBy = s.CreatedBy,
-                        CreatedUtc = s.CreatedUtc,
-                        DeletedAgent = s.DeletedAgent,
-                        DeletedBy = s.DeletedBy,
-                        DeletedUtc = s.DeletedUtc,
-                        Grade = s.Grade,
-                        GradeProduct = new GradeProduct()
-                        {
-                            Type = s.Grade
-                        },
-                        PackingInstruction = s.PackingInstruction,
-                        Remark = s.Remark,
-                        Status = s.Status,
-                        Id = s.Id,
-                        IsDeleted = s.IsDeleted,
-                        LastModifiedAgent = s.LastModifiedAgent,
-                        LastModifiedBy = s.LastModifiedBy,
-                        Motif = s.Motif,
-                        
-                        ProductionOrder = new ProductionOrder()
-                        {
-                            Id = s.ProductionOrderId,
-                            No = s.ProductionOrderNo,
-                            OrderQuantity = s.ProductionOrderOrderQuantity,
-                            Type = s.ProductionOrderType
-                        },
-                        Unit = s.Unit,
-                        MaterialWidth = s.MaterialWidth,
-                        Material = new Material()
-                        {
-                            Id = s.MaterialId,
-                            Name = s.MaterialName
-                        },
-                        MaterialConstruction = new MaterialConstruction()
-                        {
-                            Name = s.MaterialConstructionName,
-                            Id = s.MaterialConstructionId
-                        },
-                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
-                        {
-                            Id = s.YarnMaterialId,
-                            Name = s.YarnMaterialName
-                        },
-                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
-                        {
-                            Id = s.ProcessTypeId,
-                            Name = s.ProcessTypeName
-                        },
-                        UomUnit = s.UomUnit,
-                        Uom =new UnitOfMeasurement()
-                        {
-                            Unit= s.PackagingUnit
-                        },
-                        PackagingQty = s.PackagingQty,
-                        PackagingType = s.PackagingType,
-                        PackagingUnit = s.PackagingUnit,
-                        ProductionOrderNo = s.ProductionOrderNo,
-                        QtyOrder = s.ProductionOrderOrderQuantity,
-                        DocumentNo = s.DocumentNo,
-                        Quantity = s.PackagingLength,
-                    }).ToList()
-                };
-                //foreach (var item in vm.WarehousesProductionOrders)
-                //{
-                //    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
-                //    if (inputData != null)
-                //    {
-                //        item.BalanceRemains = inputData.BalanceRemains + item.Balance;
-                //    }
-                //}
-            }
-            else
-            {
-                vm = new StockOpnameWarehouseViewModel()
+                    Id = model.Id
+                },
+                CreatedAgent = model.CreatedAgent,
+                CreatedBy = model.CreatedBy,
+                CreatedUtc = model.CreatedUtc,
+                Date = model.Date,
+                DeletedAgent = model.DeletedAgent,
+                DeletedBy = model.DeletedBy,
+                DeletedUtc = model.DeletedUtc,
+                IsDeleted = model.IsDeleted,
+                LastModifiedAgent = model.LastModifiedAgent,
+                LastModifiedBy = model.LastModifiedBy,
+                LastModifiedUtc = model.LastModifiedUtc,
+                WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Select(s => new StockOpnameWarehouseProductionOrderViewModel()
                 {
-                    Active = model.Active,
-                    Id = model.Id,
-                    Area = model.Area,
-                    BonNo = model.BonNo,
-                    Bon = new IndexViewModel
+                    Active = s.Active,
+                    LastModifiedUtc = s.LastModifiedUtc,
+                    Balance = s.Balance,
+                    Buyer = s.Buyer,
+                    BuyerId = s.BuyerId,
+                    Color = s.Color,
+                    Construction = s.Construction,
+                    CreatedAgent = s.CreatedAgent,
+                    CreatedBy = s.CreatedBy,
+                    CreatedUtc = s.CreatedUtc,
+                    DeletedAgent = s.DeletedAgent,
+                    DeletedBy = s.DeletedBy,
+                    DeletedUtc = s.DeletedUtc,
+                    Grade = s.Grade,
+                    GradeProduct = new GradeProduct()
                     {
-                        Area = model.Area,
-                        BonNo = model.BonNo,
-                        Date = model.Date,
-
-                        Id = model.Id
+                        Type = s.Grade
                     },
-                    CreatedAgent = model.CreatedAgent,
-                    CreatedBy = model.CreatedBy,
-                    CreatedUtc = model.CreatedUtc,
-                    Date = model.Date,
-                    DeletedAgent = model.DeletedAgent,
-                    DeletedBy = model.DeletedBy,
-                    DeletedUtc = model.DeletedUtc,
-                    Type = DyeingPrintingArea.STOCK_OPNAME,
-                    IsDeleted = model.IsDeleted,
-                    LastModifiedAgent = model.LastModifiedAgent,
-                    LastModifiedBy = model.LastModifiedBy,
-                    LastModifiedUtc = model.LastModifiedUtc,
-                    WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Select(s => new StockOpnameWarehouseProductionOrderViewModel()
+                    PackingInstruction = s.PackingInstruction,
+                    Remark = s.Remark,
+                    Status = s.Status,
+                    Id = s.Id,
+                    IsDeleted = s.IsDeleted,
+                    LastModifiedAgent = s.LastModifiedAgent,
+                    LastModifiedBy = s.LastModifiedBy,
+                    Motif = s.Motif,
+
+                    ProductionOrder = new ProductionOrder()
                     {
-                        Active = s.Active,
-                        LastModifiedUtc = s.LastModifiedUtc,
-                        Balance = s.Balance,
-                        Buyer = s.Buyer,
-                        DocumentNo = s.DocumentNo,
-                        Quantity = s.PackagingLength,
-                        MaterialWidth = s.MaterialWidth,
-                        Material = new Material()
-                        {
-                            Id = s.MaterialId,
-                            Name = s.MaterialName
-                        },
-                        MaterialConstruction = new MaterialConstruction()
-                        {
-                            Name = s.MaterialConstructionName,
-                            Id = s.MaterialConstructionId
-                        },
-                        BuyerId = s.BuyerId,
-                        Color = s.Color,
-                        Construction = s.Construction,
-                        CreatedAgent = s.CreatedAgent,
-                        CreatedBy = s.CreatedBy,
-                        CreatedUtc = s.CreatedUtc,
-                        DeletedAgent = s.DeletedAgent,
-                        DeletedBy = s.DeletedBy,
-                        DeletedUtc = s.DeletedUtc,
-                        Grade = s.Grade,
-                        GradeProduct=new GradeProduct { 
-                        Type =s.Grade
-                        },
-                        PackingInstruction = s.PackingInstruction,
-                        Remark = s.Remark,
-                        Status = s.Status,
-                        Id = s.Id,
-                        IsDeleted = s.IsDeleted,
-                        LastModifiedAgent = s.LastModifiedAgent,
-                        LastModifiedBy = s.LastModifiedBy,
-                        Motif = s.Motif,
-                        ProductionOrder = new ProductionOrder()
-                        {
-                            Id = s.ProductionOrderId,
-                            No = s.ProductionOrderNo,
-                            OrderQuantity = s.ProductionOrderOrderQuantity,
-                            Type = s.ProductionOrderType
-                        },
-                        Unit = s.Unit,
-                        Uom =new UnitOfMeasurement()
-                        {
-                            Unit=s.PackagingUnit
-                        },
-                        UomUnit = s.UomUnit,
-                        PackagingQty = s.PackagingQty,
-                        PackagingType = s.PackagingType,
-                        PackagingUnit = s.PackagingUnit,
-                        ProductionOrderNo = s.ProductionOrderNo,
-                        QtyOrder = s.ProductionOrderOrderQuantity,
-                       
-                        //DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
-                    }).ToList()
-                };
-
-                //foreach (var item in vm.WarehousesProductionOrders)
-                //{
-                //    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
-                //    if (inputData != null)
-                //    {
-                //        item.BalanceRemains = inputData.BalanceRemains + (item.Balance * -1);
-                //    }
-                //}
-
-            }
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+                    },
+                    Unit = s.Unit,
+                    MaterialWidth = s.MaterialWidth,
+                    Material = new Material()
+                    {
+                        Id = s.MaterialId,
+                        Name = s.MaterialName
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Name = s.MaterialConstructionName,
+                        Id = s.MaterialConstructionId
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    },
+                    UomUnit = s.UomUnit,
+                    Uom = new UnitOfMeasurement()
+                    {
+                        Unit = s.PackagingUnit
+                    },
+                    PackagingQty = s.PackagingQty,
+                    PackagingType = s.PackagingType,
+                    PackagingUnit = s.PackagingUnit,
+                    ProductionOrderNo = s.ProductionOrderNo,
+                    QtyOrder = s.ProductionOrderOrderQuantity,
+                    DocumentNo = s.DocumentNo,
+                    Quantity = s.PackagingLength,
+                }).ToList()
+            };
+            //foreach (var item in vm.WarehousesProductionOrders)
+            //{
+            //    var inputData = await _inputProductionOrderRepository.ReadByIdAsync(item.DyeingPrintingAreaInputProductionOrderId);
+            //    if (inputData != null)
+            //    {
+            //        item.BalanceRemains = inputData.BalanceRemains + item.Balance;
+            //    }
+            //}
 
 
             return vm;
         }
 
-        public Task<List<StockOpnameWarehouseViewModel>> GetSppByBonNo(int bonId)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         
     }

@@ -92,25 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
 
-        [HttpGet("stock-opname-production-orders/{bonId}")]
-        public async Task<IActionResult> GetSppByBonNo(int bonId)
-        {
-            try
-            {
-
-                var data = await _service.GetSppByBonNo(bonId);
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
-            }
-        }
-
+       
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
