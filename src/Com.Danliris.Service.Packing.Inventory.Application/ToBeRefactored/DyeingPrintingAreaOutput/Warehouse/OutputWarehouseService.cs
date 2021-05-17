@@ -401,9 +401,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.FabricPackingId,
                                                                 s.ProductPackingCode,
                                                                 s.HasPrintingProductPacking,
-                                                                s.Quantity, s.FinishWidth,
+                                                                s.Quantity, 
+                                                                s.FinishWidth,
                                                                 s.DateIn,
-                                                                viewModel.Date, s.DestinationBuyerName,
+                                                                viewModel.Date,
+                                                                s.DestinationBuyerName,
                                                                 s.InventoryType)).ToList());
 
 

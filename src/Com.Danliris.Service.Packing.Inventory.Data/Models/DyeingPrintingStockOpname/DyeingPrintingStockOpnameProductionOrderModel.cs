@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             PackingInstruction = packingInstruction;
             PackagingQty = packagingQty;
             PackagingLength = packagingLength;
+            
             PackagingType = packagingType;
             PackagingUnit = packagingUnit;
             ProductionOrderId = productionOrderId;
@@ -120,6 +121,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             if (newPackingInstruction != PackingInstruction)
             {
                 PackingInstruction = newPackingInstruction;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingUnit(string newPackagingUnit, string user, string agent)
+        {
+            if (newPackagingUnit != PackingInstruction)
+            {
+                PackagingUnit = newPackagingUnit;
                 this.FlagForUpdate(user, agent);
             }
         }
@@ -253,14 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             }
         }
 
-        public void SetPackagingUnit(string newPackagingUnit, string user, string agent)
-        {
-            if (newPackagingUnit != PackagingUnit)
-            {
-                PackagingUnit = newPackagingUnit;
-                this.FlagForUpdate(user, agent);
-            }
-        }
+      
 
 
 

@@ -3,11 +3,12 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonVi
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
-   public class StockOpnameWarehouseProductionOrderViewModel : BaseViewModel
+    public class StockOpnameWarehouseProductionOrderViewModel : BaseViewModel
     {
 
         public double BalanceRemains { get; set; }
@@ -19,13 +20,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //public string DeliveryOrderSalesNo { get; set; }
         public string DocumentNo { get; set; }
         public string Grade { get; set; }
+        public GradeProduct GradeProduct { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
         public string PackagingType { get; set; }
         public string PackagingUnit { get; set; }
         public decimal PackagingQty { get; set; }
-        public double PackagingLength { get;  set; }
+        public double PackagingLength { get; set; }
         public string PackingInstruction { get; set; }
         public string MaterialWidth { get; set; }
         public string Motif { get; set; }
@@ -38,30 +40,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string ProductionOrderNo { get; set; }
         public bool IsSave { get; set; }
         public int InputId { get; set; }
-       // public string MaterialString { get; set; }
+        // public string MaterialString { get; set; }
         public decimal MtrLength { get; set; }
         public decimal YdsLength { get; set; }
         public double Quantity { get; set; }
-       
+
         public double QtyOrder { get; set; }
-      
+
         public string Status { get; set; }
         // public int DyeingPrintingAreaInputProductionOrderId { get; set; }
+        public UnitOfMeasurement Uom {get; set; }
 
+        public int ProcessTypeId { get;  set; }
+        public string ProcessTypeName { get;  set; }
 
-        public int ProcessTypeId { get; private set; }
-        public string ProcessTypeName { get; private set; }
-
-        public int YarnMaterialId { get; private set; }
-        public string YarnMaterialName { get; private set; }
+        public int YarnMaterialId { get;  set; }
+        public string YarnMaterialName { get;  set; }
 
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
-
-
-
-
-
+      
+        
 
     }
 }

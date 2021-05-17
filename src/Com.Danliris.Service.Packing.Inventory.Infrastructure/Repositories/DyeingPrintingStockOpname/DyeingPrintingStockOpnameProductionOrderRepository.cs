@@ -85,6 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetPackagingType(model.PackagingType, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackagingQty(model.PackagingQty, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPackagingUnit(model.PackagingUnit, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackagingLength(model.PackagingLength, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterial(model.MaterialId, model.MaterialName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialConstruction(model.MaterialConstructionId, model.MaterialConstructionName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetMaterialWidth(model.MaterialWidth, _identityProvider.Username, UserAgent);

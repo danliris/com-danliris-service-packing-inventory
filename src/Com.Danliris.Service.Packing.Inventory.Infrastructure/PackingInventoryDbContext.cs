@@ -56,6 +56,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Payment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.DyeingPrintingStockOpname;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -192,6 +193,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             //modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameProductionOrderEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentPackingListEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListItemEntityTypeConfiguration());

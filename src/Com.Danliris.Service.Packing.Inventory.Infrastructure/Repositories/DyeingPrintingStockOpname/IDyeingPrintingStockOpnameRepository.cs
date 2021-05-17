@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
     {
         IQueryable<DyeingPrintingStockOpnameModel> GetDbSet();
         IQueryable<DyeingPrintingStockOpnameModel> ReadAllIgnoreQueryFilter();
-        Task<int> UpdateStockOpnameData(int id, DyeingPrintingStockOpnameModel model, DyeingPrintingStockOpnameModel dbModel);
+        
 
     }
 }

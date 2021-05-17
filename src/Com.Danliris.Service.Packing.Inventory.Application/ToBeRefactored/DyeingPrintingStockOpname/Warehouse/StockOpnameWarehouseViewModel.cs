@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
@@ -40,6 +41,68 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
+
+            int Count = 0;
+            string DetailErrors = "[";
+
+            if (WarehousesProductionOrders.Count() > 0)
+            {
+                foreach (var item in WarehousesProductionOrders)
+                {
+                    DetailErrors += "{";
+
+                    if (string.IsNullOrWhiteSpace(item.Grade))
+                    {
+                        Count++;
+                        DetailErrors += "Grade: 'Grade harus diisi',";
+                    }
+           
+                    if (item.ProductionOrder == null || item.ProductionOrder.Id == 0)
+                    {
+                        Count++;
+                        DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
+                    }
+
+
+                    if (item.Balance == 0)
+                    {
+                        Count++;
+                        DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
+                    }
+                    //else
+                    //{
+                    //    if (item.Balance > item.BalanceRemains)
+                    //    {
+                    //        Count++;
+                    //        DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", item.BalanceRemains);
+                    //    }
+                    //}
+
+                    if (item.PackagingQty == 0)
+                    {
+                        Count++;
+                        DetailErrors += "QtyPacking: 'Qty Packing Harus Lebih dari 0!',";
+                    }
+
+                    if (string.IsNullOrEmpty(item.PackagingUnit))
+                    {
+                        Count++;
+                        DetailErrors += "PackagingUnit: 'Hanya Barang yang berupa Packing yang bisa dikeluarkan!',";
+                    }
+
+                    DetailErrors += "}, ";
+                }
+            }
+            
+
+            DetailErrors += "]";
+
+            if (Count > 0)
+                yield return new ValidationResult(DetailErrors, new List<string> { "WarehousesProductionOrders" });
         }
+
+
+
+    
     }
 }
