@@ -195,10 +195,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Bank tidak boleh kosong", new List<string> { "bank" });
             }
 
-            if (bankCharges <= 0)
-            {
-                yield return new ValidationResult("Bank Charges tidak boleh kosong", new List<string> { "bankCharges" });
-            }
+            //if (bankCharges < 0)
+            //{
+            //    yield return new ValidationResult("Bank Charges tidak boleh kosong", new List<string> { "bankCharges" });
+            //}
         }
     }
 }
