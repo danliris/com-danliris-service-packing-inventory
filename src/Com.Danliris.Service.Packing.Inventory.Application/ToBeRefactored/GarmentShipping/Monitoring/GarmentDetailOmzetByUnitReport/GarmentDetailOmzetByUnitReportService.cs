@@ -53,24 +53,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var Query = (from a in queryInv
                          join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
                          join c in queryPL on a.PackingListId equals c.Id
-                         where a.IsDeleted == false && b.IsDeleted == false 
+                         where a.IsDeleted == false && b.IsDeleted == false
                                && b.UnitCode == (string.IsNullOrWhiteSpace(unit) ? b.UnitCode : unit)
 
                          select new GarmentDetailOmzetByUnitReportViewModel
                          {
-                            InvoiceNo = a.InvoiceNo,
-                            PEBDate = a.PEBDate,
-                            TruckingDate = c.TruckingDate,
-                            BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
-                            ComodityName = b.ComodityName,
-                            UnitCode = b.UnitCode,
-                            RONumber = b.RONo,
-                            Quantity = b.UomUnit.Substring(0, 3) == "SET" ? b.Quantity * 2 : b.Quantity,
-                            UOMUnit = b.UomUnit.Substring(0, 3) == "SET" ? "PCS" : b.UomUnit,
-                            CurrencyCode = b.CurrencyCode,
-                            Amount = b.Amount,
+                             Urutan = "A",
+                             InvoiceNo = a.InvoiceNo,
+                             PEBDate = a.PEBDate,
+                             TruckingDate = c.TruckingDate,
+                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
+                             ComodityName = b.ComodityName,
+                             UnitCode = b.UnitCode,
+                             RONumber = b.RONo,
+                             Quantity = b.Quantity,
+                             UOMUnit = b.UomUnit,
+                             CurrencyCode = b.CurrencyCode,
+                             Amount = b.Amount,
 
-                        }).ToList();
+                         }).ToList();
 
             //
             var currencyFilters = Query
@@ -84,8 +85,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var data in Query)
             {
-                rate =Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
-              
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+
                 data.Rate = rate;
                 data.AmountIDR = rate * data.Amount;
             }
@@ -96,6 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 omzetgmt.Add(new GarmentDetailOmzetByUnitReportViewModel
                 {
+                    Urutan = i.Urutan,
                     InvoiceNo = i.InvoiceNo,
                     PEBDate = i.PEBDate,
                     TruckingDate = i.TruckingDate,
@@ -104,19 +106,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     UnitCode = i.UnitCode,
                     RONumber = i.RONumber,
                     UOMUnit = i.UOMUnit,
-                    Quantity = i.Quantity,                 
+                    Quantity = i.Quantity,
                     CurrencyCode = i.CurrencyCode,
                     Amount = i.Amount,
-                    Rate = i.Rate, 
+                    Rate = i.Rate,
                     AmountIDR = i.AmountIDR,
                     ArticleStyle = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().Article,
-                    ExpenditureGoodNo = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().ExpenditureGoodNo,                  
+                    ExpenditureGoodNo = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().ExpenditureGoodNo,
+                    QuantityInPCS = data1 == null || data1.Count == 0 ? 0 : data1.FirstOrDefault().TotalQuantity,
                 });
 
             };
 
             return omzetgmt;
-   
+
         }
 
         public ListResult<GarmentDetailOmzetByUnitReportViewModel> GetReportData(string unit, DateTime? dateFrom, DateTime? dateTo, int offset)
@@ -127,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentDetailOmzetByUnitReportViewModel>(data, 1, total, total);
         }
 
-        public MemoryStream GenerateExcel(string unit,  DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(string unit, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
@@ -142,6 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "STYLE   ORD/ART NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY IN PCS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT IN IDR", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "R/O", DataType = typeof(string) });
@@ -153,7 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Query.ToArray().Count() == 0)
             {
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -171,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A2:L2"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                     sheet.Cells[$"A2:L2"].Style.Font.Bold = true;
-                    sheet.Cells[$"A3:L3"].Value = string.Format("KONFEKSI : {0}", string.IsNullOrWhiteSpace(unit) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().UnitCode) );
+                    sheet.Cells[$"A3:L3"].Value = string.Format("KONFEKSI : {0}", string.IsNullOrWhiteSpace(unit) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().UnitCode));
                     sheet.Cells[$"A3:L3"].Merge = true;
                     sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
@@ -190,19 +194,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     index++;
 
                     string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-             
+
                     string Qty = string.Format("{0:N0}", d.Quantity);
+                    string Qty1 = string.Format("{0:N0}", d.QuantityInPCS);
                     string AmtUSD = string.Format("{0:N2}", d.Amount);
                     string AmtIDR = string.Format("{0:N2}", d.AmountIDR);
 
-                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, AmtUSD, AmtIDR, d.RONumber, TruckDate, d.ExpenditureGoodNo);
+                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, Qty1, AmtUSD, AmtIDR, d.RONumber, TruckDate, d.ExpenditureGoodNo);
                 }
 
-                string TotQty = string.Format("{0:N2}", Query.Sum(x => x.Quantity));
+                string TotQty = string.Format("{0:N2}", Query.Sum(x => x.QuantityInPCS));
                 string TotUSD = string.Format("{0:N2}", Query.Sum(x => x.Amount));
                 string TotIDR = string.Format("{0:N2}", Query.Sum(x => x.AmountIDR));
 
-                result.Rows.Add("", "", "", "", "  T  O  T  A  L  : ", TotQty, "PCS", TotUSD, TotIDR, "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "  T  O  T  A  L  : ", TotQty, TotUSD, TotIDR, "", "", "");
 
                 bool styling = true;
 

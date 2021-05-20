@@ -55,6 +55,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Payment
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.DyeingPrintingStockOpname;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -71,6 +73,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         //public DbSet<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
         public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
+
+        public DbSet<DyeingPrintingStockOpnameProductionOrderModel> DyeingPrintingStockOpnameProductionOrders { get; set; }
+        public DbSet<DyeingPrintingStockOpnameModel> DyeingPrintingStockOpnames { get; set; }
+
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
         public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
         public DbSet<CriteriaModel> NewCriterias { get; set; }
@@ -187,6 +193,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             //modelBuilder.ApplyConfiguration(new DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameProductionOrderEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentPackingListEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListItemEntityTypeConfiguration());

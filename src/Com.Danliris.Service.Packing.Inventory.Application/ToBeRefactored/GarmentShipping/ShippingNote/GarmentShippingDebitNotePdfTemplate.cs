@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingDebitNotePdfTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingDebitNoteViewModel viewModel)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingDebitNoteViewModel viewModel, int timeoffset)
         {
             Font normal_font = FontFactory.GetFont(BaseFont.COURIER, 10, Font.NORMAL);
             Font underlined_font = FontFactory.GetFont(BaseFont.COURIER, 10, Font.UNDERLINE);
@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //phraseBuyerHeader.Add(new Chunk("DEBIT NOTE", normal_font));
 
             phraseBuyerHeader.Add(new Chunk(new VerticalPositionMark()));
-            phraseBuyerHeader.Add(new Chunk("DATE : " + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy"), normal_font));
+            phraseBuyerHeader.Add(new Chunk("DATE : " + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")), normal_font));
 
             tableHeadOffice.AddCell(new PdfPCell
             {
@@ -128,6 +128,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER,
                 Phrase = phraseTotalAmount
             });
+            tableItems.AddCell(new PdfPCell
+            {
+                Colspan = 2,
+                PaddingBottom = 10f,
+                Border = Rectangle.NO_BORDER,
+                Phrase = new Phrase("KETERANGAN   : " + viewModel.description, normal_font)
+            });
+
             tableItems.AddCell(new PdfPCell
             {
                 Colspan = 2,

@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal ToBePaid { get; set; }
         public double Quantity { get; set; }
         public decimal Price { get; set; }
+        public decimal CMTPrice { get; set; }
         public decimal SubAmount { get; set; }
         public string UomUnit { get; set; }
     }

@@ -43,6 +43,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 noteNo = model.NoteNo,
                 date = model.Date,
+                description = model.Description,
+                receiptNo = model.ReceiptNo,
+                receiptDate = model.ReceiptDate,
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -99,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount { Currency = new Currency() };
             viewModel.bank.Currency = viewModel.bank.Currency ?? new Currency();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
 
             return model;
         }
@@ -179,10 +182,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var viewModel = MapToViewModel(data);
             viewModel.buyer = await GetBuyer(viewModel.buyer.Id);
             viewModel.bank = await GetBank(viewModel.bank.id);
-
+            var timeoffset = 7;
             var PdfTemplate = new GarmentShippingDebitNotePdfTemplate();
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffset);
 
             return new MemoryStreamResult(stream, "Debit Note " + data.NoteNo + ".pdf");
         }

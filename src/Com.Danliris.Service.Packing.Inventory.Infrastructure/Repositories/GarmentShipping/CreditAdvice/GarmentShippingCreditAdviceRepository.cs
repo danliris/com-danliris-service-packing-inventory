@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSRNo(model.SRNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNegoDate(model.NegoDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPaymentDate(model.PaymentDate, _identityProvider.Username, UserAgent);
+            modelToUpdate .SetReceiptNo(model.ReceiptNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCondition(model.Condition, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankComission(model.BankComission, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDiscrepancyFee(model.DiscrepancyFee, _identityProvider.Username, UserAgent);

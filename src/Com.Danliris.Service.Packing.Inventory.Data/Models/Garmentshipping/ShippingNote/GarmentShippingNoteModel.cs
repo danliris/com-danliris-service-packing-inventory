@@ -13,6 +13,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public int BuyerId { get; private set; }
         public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
+        public string Description { get; private set; }
+        public string ReceiptNo { get; private set; }
+        public DateTimeOffset ReceiptDate { get; private set; }
 
         public int BankId { get; private set; }
         public string BankName { get; private set; }
@@ -26,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, int bankId, string bankName, string bankCurrencyCode, double totalAmount, ICollection<GarmentShippingNoteItemModel> items)
+        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, double totalAmount, ICollection<GarmentShippingNoteItemModel> items)
         {
             NoteType = noteType;
             NoteNo = noteNo;
@@ -34,6 +37,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BuyerId = buyerId;
             BuyerCode = buyerCode;
             BuyerName = buyerName;
+            Description = description;
+            ReceiptNo = receiptNo;
+            ReceiptDate = receiptDate;
             BankId = bankId;
             BankName = bankName;
             BankCurrencyCode = bankCurrencyCode;
@@ -46,6 +52,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (Date != date)
             {
                 Date = date;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDescription(string description, string userName, string userAgent)
+        {
+            if (Description != description)
+            {
+                Description = description;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetReceiptNo(string receiptNo, string userName, string userAgent)
+        {
+            if (ReceiptNo != receiptNo)
+            {
+                ReceiptNo = receiptNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetReceiptDate(DateTimeOffset receiptDate, string userName, string userAgent)
+        {
+            if (ReceiptDate != receiptDate)
+            {
+                ReceiptDate = receiptDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

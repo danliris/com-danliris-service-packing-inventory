@@ -43,6 +43,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 noteNo = model.NoteNo,
                 date = model.Date,
+                description = model.Description,
+                receiptNo = model.ReceiptNo,
+                receiptDate = model.ReceiptDate,
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -88,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }).ToList();
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, 0, null, null, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), 0, null, null, viewModel.totalAmount, items);
 
             return model;
         }
@@ -167,10 +170,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _repository.ReadByIdAsync(id);
             var viewModel = MapToViewModel(data);
             viewModel.buyer = await GetBuyer(viewModel.buyer.Id);
-
+            var timeoffset = 7;
             var PdfTemplate = new GarmentShippingCreditNotePdfTemplate();
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, timeoffset);
 
             return new MemoryStreamResult(stream, "Credit Note " + data.NoteNo + ".pdf");
         }

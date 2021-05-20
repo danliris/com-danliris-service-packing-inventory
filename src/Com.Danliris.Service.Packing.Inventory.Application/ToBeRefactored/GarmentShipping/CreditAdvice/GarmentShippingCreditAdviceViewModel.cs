@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double amount { get; set; }
         public double amountToBePaid { get; set; }
         public string paymentTerm { get; set; }
+        public string receiptNo { get; set; }
 
         public string lcNo { get; set; }
         public bool valas { get; set; }
