@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         public double Amount { get; private set; }
         public double AmountToBePaid { get; private set; }
         public string PaymentTerm { get; private set; }
+        public string ReceiptNo { get; private set; }
 
         public string LCNo { get; private set; }
         public bool Valas { get; private set; }
@@ -65,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, string paymentTerm, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -74,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             Amount = amount;
             AmountToBePaid = amountToBePaid;
             PaymentTerm = paymentTerm;
+            ReceiptNo = receiptNo;
             LCNo = lCNo;
             Valas = valas;
             LCType = lCType;
@@ -113,6 +115,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             AccountsReceivablePolicyValue = accountsReceivablePolicyValue;
             DocumentSendDate = documentSendDate;
             Remark = remark;
+        }
+
+        public void SetReceiptNo(string receiptNo, string userName, string userAgent)
+        {
+            if (ReceiptNo != receiptNo)
+            {
+                ReceiptNo = receiptNo;
+                this.FlagForUpdate(userName, userAgent);
+            }
         }
 
         public void SetValas(bool valas, string userName, string userAgent)

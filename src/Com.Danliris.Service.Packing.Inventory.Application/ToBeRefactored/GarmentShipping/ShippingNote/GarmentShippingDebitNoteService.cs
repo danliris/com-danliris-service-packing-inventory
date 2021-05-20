@@ -44,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 noteNo = model.NoteNo,
                 date = model.Date,
                 description = model.Description,
+                receiptNo = model.ReceiptNo,
+                receiptDate = model.ReceiptDate,
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -100,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount { Currency = new Currency() };
             viewModel.bank.Currency = viewModel.bank.Currency ?? new Currency();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.totalAmount, items);
 
             return model;
         }

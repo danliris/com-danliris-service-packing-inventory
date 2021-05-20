@@ -44,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 noteNo = model.NoteNo,
                 date = model.Date,
                 description = model.Description,
+                receiptNo = model.ReceiptNo,
+                receiptDate = model.ReceiptDate,
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -89,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }).ToList();
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, 0, null, null, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), 0, null, null, viewModel.totalAmount, items);
 
             return model;
         }
