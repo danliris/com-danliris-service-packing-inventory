@@ -72,8 +72,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetReceiptDate(model.ReceiptDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetTotalAmount(model.TotalAmount, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetReceiptNo(model.ReceiptNo, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
