@@ -401,12 +401,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = s.MaterialConstructionName,
                         Id = s.MaterialConstructionId
                     },
-                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    YarnMaterial = new YarnMaterial()
                     {
                         Id = s.YarnMaterialId,
                         Name = s.YarnMaterialName
                     },
-                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    ProcessType = new ProcessType()
                     {
                         Id = s.ProcessTypeId,
                         Name = s.ProcessTypeName
