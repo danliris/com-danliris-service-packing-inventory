@@ -94,14 +94,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
-                var query = _outputProductionOrderRepository.ReadAll();
+                var query = _outputProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode));
                 List<string> SearchAttributes = new List<string>()
                 {
                     "ProductionOrderNo"
                 };
 
                 var orderNos = _dbContext.DyeingPrintingStockOpnameProductionOrders.Select(entity => entity.ProductionOrderNo).ToList();
+                var stockOpnameGrades = _dbContext.DyeingPrintingStockOpnameProductionOrders.Select(entity => entity.Grade).ToList();
+                //var stockOpnameLength = _dbContext.DyeingPrintingStockOpnameProductionOrders.Select(entity => entity.PackagingLength).ToList();
                 query = query.Where(entity => orderNos.Contains(entity.ProductionOrderNo));
+                query = query.Where(entity => stockOpnameGrades.Contains(entity.Grade));
 
                 query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
 
@@ -159,6 +162,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //{
                 //    result += await UpdatePrintingStatusProductPacking(item.Id, true);
                 //}
+
+                var packingCodes = query.Select(entity => entity.ProductPackingCode).ToList();
 
                 return new ListResult<DyeingPrintingProductPackingViewModel>(data.ToList(), page, size, query.Count());
             }
