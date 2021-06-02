@@ -106,9 +106,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null);
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, false);
 
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_Read2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { Model }.AsQueryable());
+
+            repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
+                 .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, true);
+
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
