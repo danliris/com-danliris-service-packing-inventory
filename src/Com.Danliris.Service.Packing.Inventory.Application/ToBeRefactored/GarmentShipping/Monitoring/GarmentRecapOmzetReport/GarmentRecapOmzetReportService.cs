@@ -205,12 +205,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             amount1 = d.AmountIDR
                         });
                     }
-                    else
-                    {
-                        currentUom.quantity += d.Quantity;
-                        currentUom.amount += d.Amount;
-                        currentUom.amount1 += d.AmountIDR;
-                    }
+                    //else
+                    //{
+                    //    currentUom.quantity += d.Quantity;
+                    //    currentUom.amount += d.Amount;
+                    //    currentUom.amount1 += d.AmountIDR;
+                    //}
 
                     string TrckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"));
                     string InvDate = d.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : d.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"));
