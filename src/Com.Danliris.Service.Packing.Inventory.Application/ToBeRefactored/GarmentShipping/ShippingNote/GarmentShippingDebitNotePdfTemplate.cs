@@ -83,6 +83,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPTable tableItemsContent = new PdfPTable(2);
             tableItemsContent.SetWidths(new float[] { 3f, 1f });
 
+            tableItemsContent.AddCell(new PdfPCell
+            {
+                Border = Rectangle.NO_BORDER,
+                Phrase = new Phrase(viewModel.description, normal_font)
+            });
+
+            tableItemsContent.AddCell(new PdfPCell
+            {
+                Border = Rectangle.LEFT_BORDER,
+                Phrase = new Phrase(" ", normal_font)
+            });
+
             foreach (var item in viewModel.items)
             {
                 tableItemsContent.AddCell(new PdfPCell
@@ -120,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Phrase = new Phrase("TOTAL", normal_font)
             });
             Phrase phraseTotalAmount = new Phrase();
-            phraseTotalAmount.Add(new Chunk("US$", normal_font));
+            phraseTotalAmount.Add(new Chunk(viewModel.bank.Currency.Code, normal_font));
             phraseTotalAmount.Add(new Chunk(new VerticalPositionMark()));
             phraseTotalAmount.Add(new Chunk(viewModel.totalAmount.ToString("n"), normal_font));
             tableItems.AddCell(new PdfPCell
@@ -128,21 +140,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Border = Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.BOTTOM_BORDER,
                 Phrase = phraseTotalAmount
             });
-            tableItems.AddCell(new PdfPCell
-            {
-                Colspan = 2,
-                PaddingBottom = 10f,
-                Border = Rectangle.NO_BORDER,
-                Phrase = new Phrase("KETERANGAN   : " + viewModel.description, normal_font)
-            });
+            //tableItems.AddCell(new PdfPCell
+            //{
+            //    Colspan = 2,
+            //    PaddingBottom = 10f,
+            //    Border = Rectangle.NO_BORDER,
+            //    Phrase = new Phrase("KETERANGAN   : " + viewModel.description, normal_font)
+            //});
 
-            tableItems.AddCell(new PdfPCell
+            if (viewModel.bank.Currency.Code == "USD")
             {
-                Colspan = 2,
-                PaddingBottom = 10f,
-                Border = Rectangle.NO_BORDER,
-                Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
-            });
+                tableItems.AddCell(new PdfPCell
+                {
+                    Colspan = 2,
+                    PaddingBottom = 10f,
+                    Border = Rectangle.NO_BORDER,
+                    Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
+                });
+            }
+            else
+            {
+                tableItems.AddCell(new PdfPCell
+                {
+                    Colspan = 2,
+                    PaddingBottom = 10f,
+                    Border = Rectangle.NO_BORDER,
+                    Phrase = new Phrase("TERBILANG : " + NumberToTextIDN.terbilang(viewModel.totalAmount).Trim().ToUpper() + " RUPIAH ///", normal_font)
+                });
+            }
 
             //tableItems.AddCell(new PdfPCell
             //{
