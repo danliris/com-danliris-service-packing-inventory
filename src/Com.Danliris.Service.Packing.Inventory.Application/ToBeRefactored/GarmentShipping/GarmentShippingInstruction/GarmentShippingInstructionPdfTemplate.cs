@@ -300,7 +300,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(cl == null ? "-" : cl.containerNo, normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase("SHIPPENG SEAL.", normal_font);
+            cellLeft.Phrase = new Phrase("SHIPPING SEAL.", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
