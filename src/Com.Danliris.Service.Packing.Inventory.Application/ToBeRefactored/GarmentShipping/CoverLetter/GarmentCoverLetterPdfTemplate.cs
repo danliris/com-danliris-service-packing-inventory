@@ -112,9 +112,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Paragraph("\n", normal_font));
 
             #region detail
-            PdfPTable tableDetail = new PdfPTable(5);
+            PdfPTable tableDetail = new PdfPTable(6);
             tableDetail.WidthPercentage = 100;
-            tableDetail.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f });
+            tableDetail.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f, 1f });
             PdfPCell cellDetail = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.BOTTOM_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER | Rectangle.TOP_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
 
             double cbmtotal = 0;
@@ -135,6 +135,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase("Seal Pelayaran", normal_font);
             tableDetail.AddCell(cellDetail);
+            cellDetail.Phrase = new Phrase("Seal Dan Liris", normal_font);
+            tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase("Jumlah Muatan", normal_font);
             tableDetail.AddCell(cellDetail);
 
@@ -149,6 +151,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetail.Phrase = new Phrase(viewModel.driver, normal_font);
             tableDetail.AddCell(cellDetail);
             cellDetail.Phrase = new Phrase(viewModel.shippingSeal, normal_font);
+            tableDetail.AddCell(cellDetail);
+            cellDetail.Phrase = new Phrase(viewModel.dlSeal, normal_font);
             tableDetail.AddCell(cellDetail);
             Paragraph weight = new Paragraph($"GW  : {string.Format("{0:n2}", pl.GrossWeight)} KGS \n\n" +
                                            $"NW  : {string.Format("{0:n2}", pl.NettWeight)} KGS \n\n" +

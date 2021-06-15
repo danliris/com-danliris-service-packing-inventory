@@ -995,7 +995,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
-            cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
+            if (viewModel.InvoiceNo.Substring(0, 2) == "SM" || viewModel.InvoiceNo.Substring(0, 2) == "DS" || viewModel.InvoiceNo.Substring(0, 3) == "DLR")
+            {
+                cellDetailContentCenter.AddElement(new Phrase(viewModel.Consignee, normal_font));
+            }
+            else
+            {
+                cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
+            }
+
             cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
             cellDetailContentCenter.Border = Rectangle.NO_BORDER;
             //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));
