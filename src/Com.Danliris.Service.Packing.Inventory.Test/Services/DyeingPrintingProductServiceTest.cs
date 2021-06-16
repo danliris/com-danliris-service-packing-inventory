@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null);
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, It.IsAny<bool>());
 
             Assert.NotEmpty(result.Data);
         }
