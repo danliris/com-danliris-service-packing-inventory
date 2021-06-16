@@ -7,15 +7,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 {
     public class NumberToTextIDN
     {
-        static string[] satuan = { "Nol", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan" };
-        static string[] belasan = { "Sepuluh", "Sebelas", "Dua Belas", "Tiga Belas", "Empat Belas", "Lima Belas", "Enam Belas", "Tujuh Belas", "Delapan Belas", "Sembilan Belas" };
-        static string[] puluhan = { "", "", "Dua Puluh", "Tiga Puluh", "Empat Puluh", "Lima Puluh", "Enam Puluh", "Tujuh Puluh", "Delapan Puluh", "Sembilan Puluh" };
-        static string[] ribuan = { "", "ribu", "juta", "milyar", "triliyun", "kuadrilyun", "kuintiliun", "sekstiliun", "septiliun", "oktiliun", "noniliun", "desiliun" };
+        static string[] satuan = { "", "SATU", "DUA", "TIGA", "EMPAT", "LIMA", "ENAM", "TUJUH", "DELAPAN", "SEMBILAN" };
+        static string[] belasan = { "SEPULUH", "SEBELAS", "DUA BELASs", "TIGA BELAS", "EMPAT BELAS", "LIMA BELAS", "ENAM BELAS", "TUJUH BELAS", "DELAPAN BELAS", "SEMBILAN BELAS" };
+        static string[] puluhan = { "", "", "DUA PULUH", "TIGA PLULUH", "EMPAT PULUH", "LIMA PULUH", "ENAM PULUH", "TUJUH PULUH", "DELAPAN PULUH", "SEMBILAN PULUH" };
+        static string[] ribuan = { "", "RIBU", "JUTA", "MILYAR", "TRILIYUN", "KUADRILYUN", "KUINTILIUN", "SEKSTILIUN", "SEPTILIUN", "OKTILIUN", "NONILIUN", "DESILIUN" };
         public static string terbilang(double d)
         {
             var strHasil = "";
             var isNegative = (d) < 0;
-            d = Convert.ToDouble((Math.Round(d,2)).ToString("N2"));
+            d = Convert.ToDouble((Math.Round(d, 2)).ToString("N2"));
             if (isNegative)
             {
                 d = d * -1;
@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 
                         if ((!bAllZeros) && (nPosisi > 1))
                             if ((strTemp.Length == 4) && (strTemp.Substring(0, 1) == "1"))
-                                tmpBuff = "Se" + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
+                                tmpBuff = "SE" + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
                             else
                                 tmpBuff = tmpBuff + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
                         strHasil = tmpBuff + strHasil;
@@ -76,9 +76,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                     case 0:
                         if (nDigit > 0)
                             if (nDigit == 1)
-                                strHasil = "Seratus " + strHasil;
+                                strHasil = "SERATUS " + strHasil;
                             else
-                                strHasil = satuan[nDigit] + " Ratus " + strHasil;
+                                strHasil = satuan[nDigit] + " RATUS " + strHasil;
                         break;
                 }
 
@@ -97,7 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             {
                 if (isNegative)
                 {
-                    strHasil = $"minus { strHasil}";
+                    strHasil = $"MUNIS { strHasil}";
                 }
             }
 
@@ -117,22 +117,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             var fixNumber = "";
             //if (a.Length > 2)
             //{
-            //    fixNumber = (frac.ToString("N2")).ToString(CultureInfo.CreateSpecificCulture("en-us")).Substring((frac.ToString("N2")).ToString(CultureInfo.CreateSpecificCulture("en-us")).IndexOf(".") + 1);
+            fixNumber = (frac.ToString("N2")).ToString(CultureInfo.CreateSpecificCulture("en-us")).Substring((frac.ToString("N2")).ToString(CultureInfo.CreateSpecificCulture("en-us")).IndexOf(".") + 1);
             //}
             //else
             //{
-                fixNumber = a;
+            //    fixNumber = a;
             //}
-            var strHasil = "koma";
-            for (var i = 0; i < fixNumber.Length; i++)
+            var strHasil = "KOMA";
+            //for (var i = 0; i < fixNumber.Length; i++)
+            //{
+            //    var temp = int.Parse(fixNumber[i].ToString());
+            var temp = int.Parse(fixNumber.Substring(0, 1));
+            if (fixNumber.Substring(0, 1) == "0")
             {
-                var temp = int.Parse(fixNumber[i].ToString());
                 strHasil = strHasil + " " + satuan[temp];
             }
+            else if ((fixNumber.Substring(0, 1) == "1") && (fixNumber.Substring(1, 1) == "0"))
+            {
+                strHasil = strHasil + " SEPULUH";
+            }
+            else if ((fixNumber.Substring(0, 1) == "1") && (fixNumber.Substring(1, 1) == "1"))
+            {
+                strHasil = strHasil + " SEBELAS";
+            }
+            else if ((fixNumber.Substring(0, 1) == "1") && (fixNumber.Substring(1, 1) != "0") && (fixNumber.Substring(1, 1) != "1"))
+            {
+                strHasil = strHasil + " " + belasan[temp];
+            }
+            else
+            {
+                strHasil = strHasil + " " + puluhan[temp];
+            }
+            //}
+
+            if ((fixNumber.Substring(1, 1) != "0") && (fixNumber.Substring(1, 1) != "1"))
+            {
+                var temp1 = int.Parse(fixNumber.Substring(1, 1));
+                strHasil = strHasil + " " + satuan[temp1];
+            }
+
             return strHasil;
         }
-
-
 
         public static string terbilangDollar(double d)
         {
@@ -187,7 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 
                         if ((!bAllZeros) && (nPosisi > 1))
                             if ((strTemp.Length == 4) && (strTemp.Substring(0, 1) == "1"))
-                                tmpBuff = "Se" + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
+                                tmpBuff = "SE" + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
                             else
                                 tmpBuff = tmpBuff + ribuan[Convert.ToInt32(Math.Round(Convert.ToDecimal(nPosisi) / 3))] + " ";
                         strHasil = tmpBuff + strHasil;
@@ -199,9 +224,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                     case 0:
                         if (nDigit > 0)
                             if (nDigit == 1)
-                                strHasil = "Seratus " + strHasil;
+                                strHasil = "SERATUS " + strHasil;
                             else
-                                strHasil = satuan[nDigit] + " Ratus " + strHasil;
+                                strHasil = satuan[nDigit] + " RATUS " + strHasil;
                         break;
                 }
 
@@ -211,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             {
                 if (isNegative)
                 {
-                    strHasil = $"minus { strHasil}";
+                    strHasil = $"MINUS { strHasil}";
                 }
             }
 
@@ -237,7 +262,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 var temp = int.Parse(fixNumber[i].ToString());
                 strHasil = strHasil + " " + satuan[temp];
             }
-            strHasil ="us dolar"+ strHasil +" sen";
+            strHasil = "RUPIAH " + strHasil + " SEN";
             return strHasil;
         }
     }

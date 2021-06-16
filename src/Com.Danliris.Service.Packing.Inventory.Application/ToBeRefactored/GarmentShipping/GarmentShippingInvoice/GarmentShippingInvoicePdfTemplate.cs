@@ -398,9 +398,80 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
 
-            string amountToText = NumberToTextEN.toWords((double)totalAmount);
-            document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font));
-            document.Add(new Paragraph("\n", normal_font));
+            //
+            #region calculationTable
+            if (viewModel.GarmentShippingInvoiceAdjustments.Count > 0)
+            {
+                PdfPTable calculationTable = new PdfPTable(4);
+                calculationTable.HorizontalAlignment = Element.ALIGN_LEFT;
+                float[] calculationTableWidths = new float[] { 4f, 0.8f, 1.3f, 6f };
+                calculationTable.SetWidths(calculationTableWidths);
+                calculationTable.WidthPercentage = 100;
+
+                PdfPCell calculationCellRight = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+                PdfPCell calculationCellLeft = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+
+                calculationCellLeft.Phrase = new Phrase("TOTAL AMOUNT FOB ", normal_font);
+                calculationTable.AddCell(calculationCellLeft);
+                calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
+                calculationTable.AddCell(calculationCellLeft);
+                calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalAmount), normal_font);
+                calculationTable.AddCell(calculationCellRight);
+                calculationCellRight.Phrase = new Phrase("", normal_font);
+                calculationTable.AddCell(calculationCellRight);
+
+                decimal totalPaid = totalAmount;
+
+                foreach (var adj in viewModel.GarmentShippingInvoiceAdjustments)
+                {
+                    totalPaid += adj.AdjustmentValue;
+                    calculationCellLeft.Phrase = new Phrase($"{adj.AdjustmentDescription} ", normal_font);
+                    calculationTable.AddCell(calculationCellLeft);
+                    calculationCellLeft.Phrase = new Phrase(": USD ", normal_font);
+                    calculationTable.AddCell(calculationCellLeft);
+                    calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", adj.AdjustmentValue), normal_font);
+                    calculationTable.AddCell(calculationCellRight);
+                    calculationCellRight.Phrase = new Phrase("", normal_font);
+                    calculationTable.AddCell(calculationCellRight);
+                }
+
+                calculationCellLeft.Phrase = new Phrase($"TOTAL AMOUNT TO BE PAID ", bold_font);
+                calculationCellLeft.Border = Rectangle.TOP_BORDER;
+                calculationTable.AddCell(calculationCellLeft);
+                calculationCellLeft.Phrase = new Phrase(": USD ", bold_font);
+                calculationTable.AddCell(calculationCellLeft);
+                calculationCellRight.Phrase = new Phrase(string.Format("{0:n2}", totalPaid), bold_font);
+                calculationCellRight.Border = Rectangle.TOP_BORDER;
+                calculationTable.AddCell(calculationCellRight);
+                calculationCellRight.Phrase = new Phrase("", bold_font);
+                calculationCellRight.Border = Rectangle.NO_BORDER;
+                calculationTable.AddCell(calculationCellRight);
+
+                string amountToText = "";
+                if (totalPaid < 0)
+                {
+                    totalPaid = totalPaid * -1;
+                    amountToText = "MINUS " + NumberToTextEN.toWords((double)totalPaid);
+                }
+                else
+                {
+                    amountToText = NumberToTextEN.toWords((double)totalPaid);
+                }
+                calculationCellLeft.Phrase = new Phrase($"SAY : US DOLLARS {amountToText.ToUpper()} ONLY ///", normal_font);
+                calculationCellLeft.Colspan = 4;
+                calculationCellLeft.Border = Rectangle.NO_BORDER;
+                calculationTable.AddCell(calculationCellLeft);
+
+                document.Add(calculationTable);
+            }
+            else
+            {
+                string amountToText = NumberToTextEN.toWords((double)totalAmount);
+                document.Add(new Paragraph("SAY   : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font));
+                document.Add(new Paragraph("\n", normal_font));
+            }
+            #endregion
+            //
 
             if (bank != null)
             {
@@ -833,7 +904,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellDetailContentRight.Border = Rectangle.LEFT_BORDER;
             tabledetailOrders.AddCell(cellDetailContentRight);
 
-            cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
+            if (viewModel.InvoiceNo.Substring(0, 2) == "SM" || viewModel.InvoiceNo.Substring(0, 2) == "DS" || viewModel.InvoiceNo.Substring(0, 3) == "DLR")
+            {
+                cellDetailContentCenter.AddElement(new Phrase(viewModel.Consignee, normal_font));
+            }
+            else
+            {
+                cellDetailContentCenter.AddElement(new Phrase(viewModel.BuyerAgent.Name, normal_font));
+            }
             cellDetailContentCenter.AddElement(new Phrase(viewModel.ConsigneeAddress, normal_font));
             cellDetailContentCenter.Border = Rectangle.NO_BORDER;
             //cellDetailContentCenter.AddElement(new Phrase(buyer.Country, normal_font));

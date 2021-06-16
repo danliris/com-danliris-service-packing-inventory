@@ -1,9 +1,14 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 {
     public class DyeingPrintingProductServiceTest
     {
+        private const string ENTITY = "DyeingPrintingProduct";
         public DyeingPrintingProductService GetService(IServiceProvider serviceProvider)
         {
             return new DyeingPrintingProductService(serviceProvider);
@@ -25,7 +31,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
                 .Returns(repo);
 
+            var dbContext = DbContext(GetCurrentMethod());
+
+            spMock.Setup(s => s.GetService(typeof(PackingInventoryDbContext)))
+                .Returns(dbContext);
+
             return spMock;
+        }
+
+        protected string GetCurrentMethod()
+        {
+            var st = new StackTrace();
+            var sf = st.GetFrame(1);
+
+            return string.Concat(sf.GetMethod().Name, "_", ENTITY);
+        }
+
+        protected PackingInventoryDbContext DbContext(string testName)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<PackingInventoryDbContext>();
+
+            var serviceProvider = new ServiceCollection()
+               .AddEntityFrameworkInMemoryDatabase()
+               .BuildServiceProvider();
+
+            optionsBuilder
+                .UseInMemoryDatabase(testName)
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .UseInternalServiceProvider(serviceProvider);
+
+            var dbContext = Activator.CreateInstance(typeof(PackingInventoryDbContext), optionsBuilder.Options) as PackingInventoryDbContext;
+
+            return dbContext;
         }
 
         private DyeingPrintingProductPackingViewModel ViewModel
@@ -109,6 +146,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, It.IsAny<bool>());
 
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_Read2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { Model }.AsQueryable());
+
+            repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
+                 .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, true);
+
+            Assert.NotNull(result.Data);
         }
 
         [Fact]

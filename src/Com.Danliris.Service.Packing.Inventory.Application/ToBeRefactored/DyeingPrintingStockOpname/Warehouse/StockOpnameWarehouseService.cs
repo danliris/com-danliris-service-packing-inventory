@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.Area);
 
-                model = new DyeingPrintingStockOpnameModel(viewModel.Area, bonNo, viewModel.Date, viewModel.Type,
+                model = new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, bonNo, viewModel.Date, DyeingPrintingArea.STOCK_OPNAME,
                                                           viewModel.WarehousesProductionOrders.Select(s =>
                                                             new DyeingPrintingStockOpnameProductionOrderModel(
                                                                 s.Balance,
@@ -470,12 +470,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = s.MaterialConstructionName,
                         Id = s.MaterialConstructionId
                     },
-                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    YarnMaterial = new YarnMaterial()
                     {
                         Id = s.YarnMaterialId,
                         Name = s.YarnMaterialName
                     },
-                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    ProcessType = new ProcessType()
                     {
                         Id = s.ProcessTypeId,
                         Name = s.ProcessTypeName
