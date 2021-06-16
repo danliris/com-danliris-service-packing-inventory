@@ -1,7 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -143,15 +145,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, false);
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, It.IsAny<bool>());
 
             Assert.NotEmpty(result.Data);
         }
 
         [Fact]
-        public void Should_Success_Read2()
+        public void Should_Success_Read2_StockOpname()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            var stockOpnameMock = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
 
 
             repoMock.Setup(s => s.ReadAll())
@@ -160,9 +164,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var stockModel = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "test", "color", "construction", "documentNO", "grade", 1, "constructionName", 1, "materialName","materialWidth", "motif", "packingInstruction", 1, 1, "packagingType", "packagingUnit", 1, "orderNo", "orderType", 1, 1, "processTypeName", 1, "yarnName", "remark", "status", "unit", "uomUnit");
+            stockModel.SetPackingCode("1,2");
+            stockOpnameMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameProductionOrderModel>() { stockModel }.AsQueryable());
+
+            //stockOpnameMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
+            //     .ReturnsAsync(1);
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            serviceProviderMock
+                .Setup(sp => sp.GetService(typeof(IDyeingPrintingStockOpnameProductionOrderRepository)))
+                .Returns(stockOpnameMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
 
             var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, true);
+
+            Assert.NotNull(result.Data);
+        }
+
+        [Fact]
+        public void Should_Success_Read2()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            var stockOpnameMock = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { Model }.AsQueryable());
+
+            repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
+                 .ReturnsAsync(1);
+
+            var stockModel = new DyeingPrintingStockOpnameProductionOrderModel();
+            stockModel.SetPackingCode("1,2");
+            stockOpnameMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameProductionOrderModel>() { stockModel }.AsQueryable());
+
+            //stockOpnameMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
+            //     .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.GetDataProductPacking(1, 25, "{}", "{}", null, false);
 
             Assert.NotNull(result.Data);
         }
