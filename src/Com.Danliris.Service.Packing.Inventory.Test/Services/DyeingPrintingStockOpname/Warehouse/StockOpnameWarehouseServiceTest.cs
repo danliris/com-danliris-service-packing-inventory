@@ -233,6 +233,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var service = GetService(serviceProviderMock.Object);
 
             //Act
+            await service.Create(viewModel);
             var result = await service.Create(viewModel);
 
 
