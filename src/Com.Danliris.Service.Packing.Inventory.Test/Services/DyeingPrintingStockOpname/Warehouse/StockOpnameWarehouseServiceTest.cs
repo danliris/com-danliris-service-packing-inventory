@@ -1,7 +1,9 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Moq;
@@ -14,7 +16,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingStockOpname.Warehouse
 {
- public   class StockOpnameWarehouseServiceTest
+    public class StockOpnameWarehouseServiceTest
     {
         public StockOpnameWarehouseService GetService(IServiceProvider serviceProvider)
         {
@@ -31,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             spMock
                 .Setup(s => s.GetService(typeof(IDyeingPrintingStockOpnameProductionOrderRepository)))
                 .Returns(stockOpnameProductionOrderRepo);
-          
+
             return spMock;
         }
 
@@ -113,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                             ProcessTypeId=1,
                             YarnMaterialName="YarnMaterialName",
                             YarnMaterialId=1,
-                            
+
                             MtrLength = 10,
                             YdsLength = 10,
                             Quantity = 10,
@@ -137,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                 stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
                 return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders);
-               
+
             }
         }
 
@@ -148,7 +150,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             //Arrange
             var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
             var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
-            
+            var fabricPackingSKUServiceMock = new Mock<IFabricPackingSKUService>();
+
+            fabricPackingSKUServiceMock
+                .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto());
+
+            fabricPackingSKUServiceMock
+                .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
+                .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+
             stockOpnameRepo
                 .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameModel>()))
                 .ReturnsAsync(1);
@@ -161,7 +172,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                 .Setup(s => s.ReadAllIgnoreQueryFilter())
                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+            var serviceProviderMock = GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object);
+
+            serviceProviderMock
+                .Setup(sp => sp.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 7, Token = "Token", Username = "Username" });
+
+            serviceProviderMock
+                .Setup(sp => sp.GetService(typeof(IFabricPackingSKUService)))
+                .Returns(fabricPackingSKUServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
 
             //Act
             var result = await service.Create(viewModel);
@@ -177,28 +198,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             //Arrange
             var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
             var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            var fabricPackingSKUServiceMock = new Mock<IFabricPackingSKUService>();
 
-            //stockOpnameRepo
-            //   .Setup(s => s.GetDbSet())
-            //   .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
+            fabricPackingSKUServiceMock
+                .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto());
 
-            stockOpnameProductionOrderRepo
-                .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameProductionOrderModel>()))
+            fabricPackingSKUServiceMock
+                .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
+                .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+
+            stockOpnameRepo
+                .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameModel>()))
                 .ReturnsAsync(1);
 
             stockOpnameRepo
                 .Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
+                .Returns(new List<DyeingPrintingStockOpnameModel>() { }.AsQueryable());
 
             stockOpnameRepo
                 .Setup(s => s.ReadAllIgnoreQueryFilter())
                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+            var serviceProviderMock = GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object);
+
+            serviceProviderMock
+                .Setup(sp => sp.GetService(typeof(IIdentityProvider)))
+                .Returns(new IdentityProvider() { TimezoneOffset = 7, Token = "Token", Username = "Username" });
+
+            serviceProviderMock
+                .Setup(sp => sp.GetService(typeof(IFabricPackingSKUService)))
+                .Returns(fabricPackingSKUServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
 
             //Act
             var result = await service.Create(viewModel);
-           
+
 
             //Assert
             Assert.NotEqual(0, result);
@@ -206,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
         [Fact]
         public void Should_Success_Read()
-        {  
+        {
             //Arrange
             var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
             var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
@@ -274,7 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             stockOpnameRepo
                 .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(()=>null);
+                .ReturnsAsync(() => null);
 
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 

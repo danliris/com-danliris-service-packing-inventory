@@ -67,6 +67,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
 
         public DyeingPrintingStockOpnameModel DyeingPrintingStockOpname { get; set; }
 
+        public void SetPackingCode(string packingCode)
+        {
+            ProductPackingCode = packingCode;
+        }
+
         public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName,int  yarnMaterialId,string yarnMaterialName,
