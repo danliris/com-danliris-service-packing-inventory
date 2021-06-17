@@ -37,13 +37,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             if (isStockOpname)
             {
-                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductSKUCode));
+                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode));
                 List<string> SearchAttributes = new List<string>()
                 {
                     "ProductionOrderNo"
                 };
 
-                query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Search(query, SearchAttributes, keyword);
+                //query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+                if (!string.IsNullOrWhiteSpace(keyword))
+                    query = query.Where(entity => entity.ProductionOrderNo.Contains(keyword));
 
                 Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
                 query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Filter(query, FilterDictionary);
