@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             if (isStockOpname)
             {
-                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductSKUCode));
+                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode));
                 List<string> SearchAttributes = new List<string>()
                 {
                     "ProductionOrderNo"

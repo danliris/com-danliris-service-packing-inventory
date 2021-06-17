@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
     public class StockOpnameWarehouseService : IStockOpnameWarehouseService
     {
-
+        private const string UserAgent = "packing-inventory-service";
         private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
         private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameProductionOrderRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
@@ -76,7 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             .Count(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                         s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.STOCK_OPNAME);
 
-                
+
 
                 string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.Area);
 
@@ -137,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     });
 
                     var packingCodes = string.Join(',', packingData.ProductPackingCodes);
-                    item.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, "packing-inventory-service");
+                    item.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, UserAgent);
                 }
 
                 await _stockOpnameRepository.UpdateAsync(model.Id, model);
@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in viewModel.WarehousesProductionOrders)
                 {
 
-                    
+
 
                     var modelItem = new DyeingPrintingStockOpnameProductionOrderModel(
                                                                 item.Balance,
@@ -203,7 +203,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     });
 
                     var packingCodes = string.Join(',', packingData.ProductPackingCodes);
-                    modelItem.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, "packing-inventory-service");
+                    modelItem.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, UserAgent);
                     result += await _stockOpnameProductionOrderRepository.InsertAsync(modelItem);
 
                 }
@@ -305,7 +305,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             string type;
             int result = 0;
             var dbModel = await _stockOpnameRepository.ReadByIdAsync(id);
-            
+
             var model = new DyeingPrintingStockOpnameModel(
                 viewModel.Area,
                 viewModel.BonNo,
@@ -356,40 +356,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var lclModel = model.DyeingPrintingStockOpnameProductionOrders.FirstOrDefault(s => s.Id == item.Id);
                 if (lclModel != null)
                 {
-                    var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
+
+
+                    if (string.IsNullOrWhiteSpace(item.ProductPackingCode))
                     {
-                        Grade = item.Grade,
-                        ProcessType = item.ProcessTypeName,
-                        ProductionOrderNo = item.ProductionOrderNo,
-                        UOM = item.UomUnit
-                    });
+                        var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
+                        {
+                            Grade = lclModel.Grade,
+                            ProcessType = lclModel.ProcessTypeName,
+                            ProductionOrderNo = lclModel.ProductionOrderNo,
+                            UOM = lclModel.UomUnit
+                        });
 
-                    var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                        var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                        {
+                            FabricSKUId = skuData.FabricSKUId,
+                            PackingType = lclModel.PackagingUnit,
+                            Quantity = (int)lclModel.PackagingQty,
+                            Length = lclModel.PackagingLength
+                        });
+
+                        var packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                        lclModel.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, UserAgent);
+                    }
+                    else
                     {
-                        FabricSKUId = skuData.FabricSKUId,
-                        PackingType = item.PackagingType,
-                        Quantity = (int)item.PackagingQty,
-                        Length = item.PackagingLength
-                    });
+                        lclModel.SetPackingCode(item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, false, _identityProvider.Username, UserAgent);
+                    }
 
-                    var packingCodes = string.Join(',', packingData.ProductPackingCodes);
-                    item.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, "packing-inventory-service");
-
-                    var diffBalance = lclModel.Balance - item.Balance;
-                    var diffQtyPacking = lclModel.PackagingQty - item.PackagingQty;
+                    var diffBalance = lclModel.Balance - lclModel.Balance;
+                    var diffQtyPacking = lclModel.PackagingQty - lclModel.PackagingQty;
                     dictBalance.Add(lclModel.Id, diffBalance);
                     dictQtyPacking.Add(lclModel.Id, diffQtyPacking);
                 }
+
+
             }
 
             var deletedData = dbModel.DyeingPrintingStockOpnameProductionOrders.Where(s => !model.DyeingPrintingStockOpnameProductionOrders.Any(d => d.Id == s.Id)).ToList();
 
             // result = await _outputRepository.UpdateAdjustmentData(id, model, dbModel);
-            if(dbModel != null)
+            if (dbModel != null)
             {
                 result = await _stockOpnameRepository.UpdateAsync(id, model);
             }
-          
+
 
             return result;
         }
@@ -491,7 +502,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderNo = s.ProductionOrderNo,
                     QtyOrder = s.ProductionOrderOrderQuantity,
                     DocumentNo = s.DocumentNo,
-                    Quantity = s.PackagingLength,
+                    Quantity = s.PackagingLength
                 }).ToList()
             };
             //foreach (var item in vm.WarehousesProductionOrders)
@@ -507,8 +518,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-       
 
-        
+
+
     }
 }
