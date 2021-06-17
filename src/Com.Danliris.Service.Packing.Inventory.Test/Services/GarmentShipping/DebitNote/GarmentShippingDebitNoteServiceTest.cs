@@ -138,6 +138,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new Buyer() }))
                 });
+            var Currency = new Currency();
+            Currency.Id = 1;
+            Currency.Code = "USD";
+            Currency.Symbol = "$";
+
             httpMock.Setup(s => s.GetAsync(It.Is<string>(i => i.Contains("master/account-banks"))))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
@@ -145,7 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     {
                         data = new BankAccount
                         {
-                            Currency = new Currency()
+                            Currency = Currency
                         }
                     }))
                 });

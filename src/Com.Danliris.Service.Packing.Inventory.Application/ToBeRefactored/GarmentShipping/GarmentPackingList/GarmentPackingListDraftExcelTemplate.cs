@@ -241,7 +241,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
                     var colSize = GetColNameFromIndex(5 + i);
-                    var size = sizes.OrderBy(a => a.Key).ElementAtOrDefault(i);
+                    var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
                     sheet.Cells[$"{colSize}{sizeIndex}"].Value = size.Key == 0 ? "" : size.Value;
                     sheet.Cells[$"{colSize}{sizeIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 }
