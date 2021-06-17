@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
-           
+
         }
 
         public IQueryable<DyeingPrintingStockOpnameModel> GetDbSet()
@@ -77,10 +77,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> UpdateAsync(int id, DyeingPrintingStockOpnameModel model)
         {
             var modelToUpdate = _dbSet.Include(s => s.DyeingPrintingStockOpnameProductionOrders).FirstOrDefault(s => s.Id == id);
-          
+
             modelToUpdate.SetBonNo(model.BonNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
-           
+
             foreach (var item in modelToUpdate.DyeingPrintingStockOpnameProductionOrders)
             {
                 var localItem = model.DyeingPrintingStockOpnameProductionOrders.FirstOrDefault(s => s.Id == item.Id);
@@ -91,7 +91,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
                 else
                 {
-                  
+
+                    item.SetPackingCode(localItem.ProductSKUId, localItem.FabricSKUId, localItem.ProductSKUCode, localItem.ProductPackingId, localItem.FabricPackingId, localItem.ProductPackingCode, false, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetBuyer(localItem.BuyerId, localItem.Buyer, _identityProvider.Username, UserAgent);
                     item.SetCartNo(localItem.CartNo, _identityProvider.Username, UserAgent);
@@ -111,9 +112,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetUomUnit(localItem.UomUnit, _identityProvider.Username, UserAgent);
                     item.SetMaterial(localItem.MaterialId, localItem.MaterialName, _identityProvider.Username, UserAgent);
                     item.SetMaterialConstruction(localItem.MaterialConstructionId, localItem.MaterialConstructionName, _identityProvider.Username, UserAgent);
-                    
+
                     item.SetMaterialWidth(localItem.MaterialWidth, _identityProvider.Username, UserAgent);
                     item.SetDocumentNo(localItem.DocumentNo, _identityProvider.Username, UserAgent);
+                    _dbContext.DyeingPrintingStockOpnameProductionOrders.Update(item);
                 }
             }
 
@@ -126,6 +128,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        
+
     }
 }

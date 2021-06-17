@@ -45,7 +45,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int Count = 0;
             string DetailErrors = "[";
 
-            if (WarehousesProductionOrders.Count() > 0)
+            if (WarehousesProductionOrders == null)
+            {
+                yield return new ValidationResult("Item harus dipilih", new List<string> { "WarehousesProductionOrder" });
+            }
+
+            if (WarehousesProductionOrders != null && WarehousesProductionOrders.Count() > 0)
             {
                 foreach (var item in WarehousesProductionOrders)
                 {
@@ -64,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
 
 
-                    if (item.Balance == 0)
+                    if (item.Balance <= 0)
                     {
                         Count++;
                         DetailErrors += "Balance: 'Qty Terima Harus Lebih dari 0!',";
@@ -78,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //    }
                     //}
 
-                    if (item.PackagingQty == 0)
+                    if (item.PackagingQty <= 0)
                     {
                         Count++;
                         DetailErrors += "QtyPacking: 'Qty Packing Harus Lebih dari 0!',";
