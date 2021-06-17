@@ -43,10 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     "ProductionOrderNo"
                 };
 
-                //query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Search(query, SearchAttributes, keyword);
-
-                if (!string.IsNullOrWhiteSpace(keyword))
-                    query = query.Where(entity => entity.ProductionOrderNo.Contains(keyword));
+                query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Search(query, SearchAttributes, keyword);
 
                 Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
                 query = QueryHelper<DyeingPrintingStockOpnameProductionOrderModel>.Filter(query, FilterDictionary);
