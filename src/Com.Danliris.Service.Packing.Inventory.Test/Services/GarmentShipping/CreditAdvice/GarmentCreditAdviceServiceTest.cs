@@ -32,6 +32,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             {
                 return new GarmentShippingCreditAdviceViewModel
                 {
+                    bankComission = 0,
+                    discrepancyFee = 0,
+                    btbAmount = 0,
+                    btbRatio = 0,
+                    btbRate = 0,
+                    btbTransfer = 0,
+                    btbMaterial = 0,
+                    billDays = 0,
+                    billAmount = 0,
+                    creditInterest = 0,
+                    bankCharges = 0
                 };
             }
         }
