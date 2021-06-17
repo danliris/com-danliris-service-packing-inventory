@@ -335,7 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Quantity=10021,
                             Amount=(decimal)1222.01,
                             Price=1332,
-                            CMTPrice=129,
+                            CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -471,7 +471,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Quantity=10021,
                             Amount=(decimal)1222.01,
                             Price=1332,
-                            CMTPrice=129,
+                            CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -607,7 +607,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Quantity=10021,
                             Amount=(decimal)1222.01,
                             Price=1332,
-                            CMTPrice=129,
+                            CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -636,6 +636,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     //    {
                     //        AdjustmentValue=1000,
                     //        AdjustmentDescription="AA",
+
                     //    }
                     //}
                 };
@@ -1354,35 +1355,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             Assert.NotNull(response);
         }
         //
-        [Fact]
-        public async Task Should_Success_GetPDF_FOB_WITH_DHL()
-        {
-            //v
-            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModel);
-            serviceMock.Setup(s => s.GetBank(It.IsAny<int>())).Returns(bankVm);
-            serviceMock.Setup(s => s.GetBuyer(It.IsAny<int>())).Returns(buyerVm);
-            var service = serviceMock.Object;
-
-            var packingListServiceMock = new Mock<IGarmentPackingListService>();
-            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
-            var packingListService = packingListServiceMock.Object;
-
-            var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
-                .Verifiable();
-            var validateService = validateServiceMock.Object;
-
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-
-            var controller = GetController(service, packingListService, identityProvider, validateService);
-            //controller.ModelState.IsValid == false;
-            var response = await controller.GetPDF(1, "fob");
-
-            Assert.NotNull(response);
-        }
         [Fact]
         public async Task Should_Success_GetPDF_FOB_WITHOUT_DHL()
         {
