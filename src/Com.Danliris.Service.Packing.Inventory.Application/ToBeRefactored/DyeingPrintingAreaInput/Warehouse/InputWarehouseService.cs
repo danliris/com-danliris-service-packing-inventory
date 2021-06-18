@@ -296,8 +296,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              viewModel.Date,
                                                              s.InventoryType
                                                              ))
-                     
-                                                                                                                                                                .ToList());
+                                                         .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
 
