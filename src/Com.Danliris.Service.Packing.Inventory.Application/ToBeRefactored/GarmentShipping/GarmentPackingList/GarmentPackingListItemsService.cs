@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Quantity = s.Quantity
                         }).ToList()
 
-                    }).ToList(),
+                    }).OrderBy(x => x.Carton1).ThenBy(x => x.Carton2).ToList(),
                 }).OrderBy(o => o.ComodityDescription).ToList(),
 
                 GrossWeight = model.GrossWeight,
