@@ -296,8 +296,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              viewModel.Date,
                                                              s.InventoryType
                                                              ))
-                     
-                                                                                                                                                                .ToList());
+                                                         .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
 
@@ -308,12 +307,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     //var outputData = await _outputProductionOrderRepository.ReadByIdAsync(item.Id);
                     var packingData = JsonConvert.DeserializeObject<List<PackingData>>(item.PrevSppInJson);
+                    foreach (var packing in packingData)
+                    {
+                        packing.Balance = (double)item.InputPackagingQty * item.Qty;
+                    }
                     result += await _inputProductionOrderRepository.UpdateFromNextAreaInputPackingAsync(packingData);
                 }
                 else
                 {
-                    
-                    result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.InputQuantity, item.InputPackagingQty);
+                    var balance = (double)item.InputPackagingQty * item.Qty;
+                    result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, balance, item.InputPackagingQty);
                 }
                 
                 //Mapping to DyeingPrintingAreaMovementModel
