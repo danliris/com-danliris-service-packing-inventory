@@ -409,7 +409,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {
-                var measurement = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
+                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
                 if (measurement != null)
                 {
                     measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
@@ -422,7 +422,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var measurement in measurements)
             {
-                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.IsDeleted == false && m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
+                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
                 if (oldMeasurement == null)
                 {
                     measurement.FlagForCreate(_identityProvider.Username, UserAgent);
