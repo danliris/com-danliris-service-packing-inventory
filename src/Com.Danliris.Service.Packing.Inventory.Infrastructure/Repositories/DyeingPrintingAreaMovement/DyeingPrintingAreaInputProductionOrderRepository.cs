@@ -366,7 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> UpdateFromNextAreaInputPackingAsync(List<PackingData> packingData)
         {
-                foreach (var item in packingData)
+            foreach (var item in packingData)
             {
                 var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == item.Id);
                 if (modelToUpdate != null)
