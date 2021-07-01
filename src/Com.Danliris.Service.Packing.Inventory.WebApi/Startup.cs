@@ -360,7 +360,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentCMTSalesService, GarmentCMTSalesService>();
             services.AddTransient<IGarmentDetailOmzetByUnitReportService, GarmentDetailOmzetByUnitReportService>();
             services.AddTransient<IGarmentRecapOmzetReportService, GarmentRecapOmzetReportService>();
-
             #endregion
 
             // Register Provider
