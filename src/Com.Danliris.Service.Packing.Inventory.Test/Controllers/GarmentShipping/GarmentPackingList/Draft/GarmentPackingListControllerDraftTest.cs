@@ -305,6 +305,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task GetXlsByIdFilterCarton_Exception_InternalServerError()
+        {
+            var dataUtil = GetViewModel();
+
+            var serviceMock = new Mock<IGarmentPackingListDraftService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.GetExcelFilterCarton(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
         public async Task Put_Ok()
         {
             var dataUtil = GetViewModel();
