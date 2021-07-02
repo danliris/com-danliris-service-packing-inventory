@@ -218,7 +218,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var model = _inputRepository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
                                                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                        s.Date.Date == viewModel.Date.Date &&
+                                                                        s.Date == viewModel.Date &&
                                                                         s.Shift == viewModel.Shift);
 
             if (model != null)
