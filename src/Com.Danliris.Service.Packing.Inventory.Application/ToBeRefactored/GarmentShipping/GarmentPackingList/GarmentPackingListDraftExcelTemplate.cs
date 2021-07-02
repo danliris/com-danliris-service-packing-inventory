@@ -22,28 +22,81 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public MemoryStream GenerateExcelTemplate(GarmentPackingListViewModel viewModel)
         {
             //int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
-            int maxSizesCount = 0;
-            var sizesMax = new Dictionary<int, string>();
+            var newItems = new List<GarmentPackingListItemViewModel>();
+            var newDetails = new List<GarmentPackingListDetailViewModel>();
             foreach (var item in viewModel.Items)
             {
                 foreach (var detail in item.Details)
+                {
+                    newDetails.Add(detail);
+                }
+            }
+            newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
+
+            foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
+            {
+                if (newItems.Count == 0)
+                {
+                    newItems.Add(x);
+                }
+                else
+                {
+                    if (newItems.Last().RONo == x.RONo && newItems.Last().OrderNo == x.OrderNo)
+                    {
+                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+                        {
+                            Id = a.Id,
+                            RONo = a.RONo,
+                            Article = a.Article,
+                            BuyerAgent = a.BuyerAgent,
+                            ComodityDescription = a.ComodityDescription,
+                            OrderNo = a.OrderNo,
+                            AVG_GW = a.AVG_GW,
+                            AVG_NW = a.AVG_NW,
+                            Uom = a.Uom,
+                        }).Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo && a.Id == x.Id);
+                        y.Details = new List<GarmentPackingListDetailViewModel>();
+                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
+                        {
+                            y.Details.Add(d);
+                        }
+                        newItems.Add(y);
+                    }
+                }
+            }
+            var sizesCount = false;
+            foreach (var item in newItems.OrderBy(a => a.RONo))
+            {
+                var sizesMax = new Dictionary<int, string>();
+                foreach (var detail in item.Details.OrderBy(o => o.Carton1))
                 {
                     foreach (var size in detail.Sizes)
                     {
                         sizesMax[size.Size.Id] = size.Size.Size;
                     }
                 }
+                if (sizesMax.Count > 11)
+                {
+                    sizesCount = true;
+                }
             }
-            maxSizesCount = sizesMax.Count;
-            int SIZES_COUNT = maxSizesCount > 11 ? 20 : 11;
+            int SIZES_COUNT = sizesCount ? 20 : 11;
 
             var col = GetColNameFromIndex(SIZES_COUNT + 4);
             var colCtns = GetColNameFromIndex(SIZES_COUNT + 5);
             var colPcs = GetColNameFromIndex(SIZES_COUNT + 6);
             var colQty = GetColNameFromIndex(SIZES_COUNT + 7);
-            var colGw = GetColNameFromIndex(SIZES_COUNT + 8);
-            var colNw = GetColNameFromIndex(SIZES_COUNT + 9);
-            var colNnw = GetColNameFromIndex(SIZES_COUNT + 10);
+            var colSatuan = GetColNameFromIndex(SIZES_COUNT + 8);
+            var colGw = GetColNameFromIndex(SIZES_COUNT + 9);
+            var colNw = GetColNameFromIndex(SIZES_COUNT + 10);
+            var colNnw = GetColNameFromIndex(SIZES_COUNT + 11);
 
             DataTable result = new DataTable();
 
@@ -79,58 +132,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var cartons = new List<GarmentPackingListDetailViewModel>();
             double grandTotal = 0;
+            var arraySubTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
-            var newItems = new List<GarmentPackingListItemViewModel>();
-            var newDetails = new List<GarmentPackingListDetailViewModel>();
-
-            foreach (var item in viewModel.Items.OrderBy(a => a.RONo))
-            {
-                foreach (var detail in item.Details)
-                {
-                    newDetails.Add(detail);
-                }
-            }
-            newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
-
-            foreach (var d in newDetails)
-            {
-                if (newItems.Count == 0)
-                {
-                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
-                    i.Details = new List<GarmentPackingListDetailViewModel>();
-                    i.Details.Add(d);
-                    newItems.Add(i);
-                }
-                else
-                {
-                    if (newItems.Last().Id == d.PackingListItemId)
-                    {
-                        newItems.Last().Details.Add(d);
-                    }
-                    else
-                    {
-                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
-                        {
-                            Id = a.Id,
-                            RONo = a.RONo,
-                            Article = a.Article,
-                            BuyerAgent = a.BuyerAgent,
-                            ComodityDescription = a.ComodityDescription,
-                            OrderNo = a.OrderNo,
-                            AVG_GW = a.AVG_GW,
-                            AVG_NW = a.AVG_NW
-                        })
-                            .Single(a => a.Id == d.PackingListItemId);
-                        y.Details = new List<GarmentPackingListDetailViewModel>();
-                        y.Details.Add(d);
-                        newItems.Add(y);
-                    }
-                }
-            }
+            
             var index = 8;
             var afterSubTotalIndex = 0;
-            foreach (var item in newItems)
+            foreach (var item in newItems.OrderBy(a => a.RONo))
             {
                 var sizeIndex = index + 1;
                 var valueIndex = sizeIndex + 1;
@@ -208,17 +216,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"{colCtns}{index}:{colCtns}{index}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"{colCtns}{index}:{colCtns}{index}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                sheet.Cells[$"{colPcs}{index}"].Value = "@ PCS";
+                sheet.Cells[$"{colPcs}{index}"].Value = "@";
                 sheet.Column(GetColNumberFromName(colPcs)).Width = 5;
                 sheet.Cells[$"{colPcs}{index}:{colPcs}{index + 1}"].Merge = true;
                 sheet.Cells[$"{colPcs}{index}:{colPcs}{index}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"{colPcs}{index}:{colPcs}{index}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                sheet.Cells[$"{colQty}{index}"].Value = "QTY PCS";
+                sheet.Cells[$"{colQty}{index}"].Value = "QTY";
                 sheet.Column(GetColNumberFromName(colQty)).Width = 4;
                 sheet.Cells[$"{colQty}{index}:{colQty}{index + 1}"].Merge = true;
                 sheet.Cells[$"{colQty}{index}:{colQty}{index}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"{colQty}{index}:{colQty}{index}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                sheet.Cells[$"{colSatuan}{index}"].Value = "SATUAN";
+                sheet.Column(GetColNumberFromName(colSatuan)).Width = 4;
+                sheet.Cells[$"{colSatuan}{index}:{colSatuan}{index + 1}"].Merge = true;
+                sheet.Cells[$"{colSatuan}{index}:{colSatuan}{index}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                sheet.Cells[$"{colSatuan}{index}:{colSatuan}{index}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
                 sheet.Cells[$"{colGw}{index}"].Value = "GW";
                 sheet.Column(GetColNumberFromName(colGw)).Width = 4;
@@ -241,24 +255,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
                     var colSize = GetColNameFromIndex(5 + i);
-                    var size = sizes.OrderBy(a => a.Key).ElementAtOrDefault(i);
+                    var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
                     sheet.Cells[$"{colSize}{sizeIndex}"].Value = size.Key == 0 ? "" : size.Value;
                     sheet.Cells[$"{colSize}{sizeIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 }
 
                 var subCartons = new List<GarmentPackingListDetailViewModel>();
+                var subGrossWeight = new List<GarmentPackingListDetailViewModel>();
+                var subNetWeight = new List<GarmentPackingListDetailViewModel>();
+                var subNetNetWeight = new List<GarmentPackingListDetailViewModel>();
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
-                foreach (var detail in item.Details)
+                foreach (var detail in item.Details.OrderBy(o => o.Carton1))
                 {
                     var ctnsQty = detail.CartonQuantity;
-                    if (cartonNumbers.Contains($"{detail.Carton1}- {detail.Carton2}"))
+                    var grossWeight = detail.GrossWeight;
+                    var netWeight = detail.NetWeight;
+                    var netNetWeight = detail.NetNetWeight;
+                    if (cartonNumbers.Contains($"{detail.Index}-{detail.Carton1}- {detail.Carton2}"))
                     {
                         ctnsQty = 0;
+                        grossWeight = 0;
+                        netWeight = 0;
+                        netNetWeight = 0;
                     }
                     else
                     {
-                        cartonNumbers.Add($"{detail.Carton1}- {detail.Carton2}");
+                        cartonNumbers.Add($"{detail.Index}-{detail.Carton1}- {detail.Carton2}");
                     }
                     sheet.Cells[$"A{valueIndex}"].Value = $"{detail.Carton1}- {detail.Carton2}";
                     sheet.Cells[$"A{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -311,6 +334,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"{colQty}{valueIndex}"].Value = totalQuantity.ToString();
                     sheet.Cells[$"{colQty}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
+                    sheet.Cells[$"{colSatuan}{valueIndex}"].Value = item.Uom.Unit;
+                    sheet.Cells[$"{colSatuan}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
                     sheet.Cells[$"{colGw}{valueIndex}"].Value = string.Format("{0:n2}", detail.GrossWeight);
                     sheet.Cells[$"{colGw}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
@@ -324,9 +350,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
                     }
-                    if (subCartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    if (subCartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2 && c.Index == detail.Index) < 0)
                     {
                         subCartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
+                        subGrossWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, GrossWeight = grossWeight });
+                        subNetWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetWeight = netWeight });
+                        subNetNetWeight.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = detail.CartonQuantity, NetNetWeight = netNetWeight });
+
                     }
                     valueIndex++;
                 }
@@ -349,23 +379,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 sheet.Cells[$"A{valueIndex}:{colNnw}{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
+                if (!arraySubTotal.ContainsKey(item.Uom.Unit))
+                {
+                    arraySubTotal.Add(item.Uom.Unit, subTotal);
+                }
+                else
+                {
+                    arraySubTotal[item.Uom.Unit] += subTotal;
+                }
                 grandTotal += subTotal;
 
                 sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Merge = true;
                 sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Value = "SUB TOTAL";
                 sheet.Cells[$"A{sumValueIndex}:{colPcs}{sumValueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                sheet.Cells[$"{colQty}{sumValueIndex}"].Value = subTotal.ToString();
+                sheet.Cells[$"{colQty}{sumValueIndex}"].Value = subTotal.ToString() + " " + item.Uom.Unit;
                 sheet.Cells[$"{colQty}{sumValueIndex}:{colNnw}{sumValueIndex}"].Merge = true;
                 sheet.Cells[$"{colQty}{sumValueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 sheet.Cells[$"A{sumValueIndex}:{colNnw}{sumValueIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 sheet.Cells[$"A{sumValueIndex}:{colNnw}{sumValueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
-                var subCtns = subCartons.Sum(c => c.CartonQuantity);
                 afterSubTotalIndex = sumValueIndex + 1;
 
+                var subCtns = subCartons.Sum(c => c.CartonQuantity);
+                var subGw = subGrossWeight.Sum(c => c.GrossWeight * c.CartonQuantity);
+                var subNw = subNetWeight.Sum(c => c.NetWeight * c.CartonQuantity);
+                var subNnw = subNetNetWeight.Sum(c => c.NetNetWeight * c.CartonQuantity);
+
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Merge = true;
-                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {item.Details.Sum(a => a.GrossWeight * a.CartonQuantity)} Kgs      - Sub N.W. = {item.Details.Sum(a => a.NetWeight * a.CartonQuantity)} Kgs     - Sub N.N.W. = {item.Details.Sum(a => a.NetNetWeight*a.CartonQuantity)} Kgs";
+                sheet.Cells[$"A{afterSubTotalIndex}"].Value = $"      - Sub Ctns = {subCtns}       - Sub G.W. = {String.Format("{0:0.00}", subGw)} Kgs      - Sub N.W. = {String.Format("{0:0.00}", subNw)} Kgs     - Sub N.N.W. = {String.Format("{0:0.00}", subNnw)} Kgs";
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
@@ -380,7 +422,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"A{grandTotalIndex}:{colPcs}{grandTotalIndex}"].Value = "GRAND TOTAL";
             sheet.Cells[$"A{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
             sheet.Cells[$"A{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
-            sheet.Cells[$"{colQty}{grandTotalIndex}"].Value = grandTotal.ToString();
+            var grandTotalResult = string.Join(" / ", arraySubTotal.Select(x => x.Value + " " + x.Key).ToArray());
+            sheet.Cells[$"{colQty}{grandTotalIndex}"].Value = grandTotalResult;
             sheet.Cells[$"{colQty}{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Merge = true;
             sheet.Cells[$"{colQty}{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
@@ -488,7 +531,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 var cbm = (decimal)measurement.Length * (decimal)measurement.Width * (decimal)measurement.Height * (decimal)measurement.CartonsQuantity / 1000000;
                 totalCbm += cbm;
-                sheet.Cells[$"M{measurementIndex}"].Value = string.Format("{0:N2} CBM", cbm);
+                sheet.Cells[$"M{measurementIndex}"].Value = string.Format("{0:N3} CBM", cbm);
                 sheet.Cells[$"M{measurementIndex}:O{measurementIndex}"].Merge = true;
 
                 measurementIndex++;
@@ -500,7 +543,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             sheet.Cells[$"J{totalMeasurementIndex}"].Value = viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .";
             sheet.Cells[$"J{totalMeasurementIndex}:K{totalMeasurementIndex}"].Merge = true;
-            sheet.Cells[$"M{totalMeasurementIndex}"].Value = string.Format("{0:N2} CBM", totalCbm);
+            sheet.Cells[$"M{totalMeasurementIndex}"].Value = string.Format("{0:N3} CBM", totalCbm);
             sheet.Cells[$"L{totalMeasurementIndex}"].Value = "=";
             sheet.Cells[$"M{totalMeasurementIndex}:O{totalMeasurementIndex}"].Merge = true;
 
@@ -532,7 +575,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.PrinterSettings.LeftMargin = 0.39M;
             sheet.PrinterSettings.TopMargin = 0;
             sheet.PrinterSettings.RightMargin = 0;
-            sheet.PrinterSettings.Orientation = maxSizesCount > 11 ? eOrientation.Landscape : eOrientation.Portrait;
+            sheet.PrinterSettings.Orientation = sizesCount ? eOrientation.Landscape : eOrientation.Portrait;
 
             MemoryStream stream = new MemoryStream();
             package.DoAdjustDrawings = false;
