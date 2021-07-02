@@ -28,5 +28,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task SetApproveShipping(int id, GarmentPackingListViewModel viewModel);
         Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null);
         Task<MemoryStreamResult> ReadExcelById(int id);
+        Task<MemoryStreamResult> ReadExcelByIdFilterCarton(int id);
     }
 }

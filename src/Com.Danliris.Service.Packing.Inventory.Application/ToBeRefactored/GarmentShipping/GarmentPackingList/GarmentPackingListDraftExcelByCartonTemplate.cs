@@ -1,3 +1,4 @@
+﻿using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -5,16 +6,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
-    public class GarmentPackingListDraftExcelTemplate
+    public class GarmentPackingListDraftExcelByCartonTemplate
     {
         private readonly IIdentityProvider _identityProvider;
-        public GarmentPackingListDraftExcelTemplate(IIdentityProvider identityProvider)
+        public GarmentPackingListDraftExcelByCartonTemplate(IIdentityProvider identityProvider)
         {
             _identityProvider = identityProvider;
         }
@@ -23,8 +23,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             //int maxSizesCount = viewModel.Items == null || viewModel.Items.Count < 1 ? 0 : viewModel.Items.Max(i => i.Details == null || i.Details.Count < 1 ? 0 : i.Details.Max(d => d.Sizes == null || d.Sizes.Count < 1 ? 0 : d.Sizes.GroupBy(g => g.Size.Id).Count()));
             var newItems = new List<GarmentPackingListItemViewModel>();
+            var newItems2 = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
-            foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(a => a.RONo))
             {
                 foreach (var detail in item.Details)
                 {
@@ -33,24 +34,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             newDetails = newDetails.OrderBy(a => a.Carton1).ToList();
 
-            foreach (var x in viewModel.Items.OrderBy(o => o.RONo))
+            foreach (var d in newDetails)
             {
                 if (newItems.Count == 0)
                 {
-                    newItems.Add(x);
+                    var i = viewModel.Items.Single(a => a.Id == d.PackingListItemId);
+                    i.Details = new List<GarmentPackingListDetailViewModel>();
+                    i.Details.Add(d);
+                    newItems.Add(i);
                 }
                 else
                 {
-                    if (newItems.Last().RONo == x.RONo && newItems.Last().OrderNo == x.OrderNo)
+                    if (newItems.Last().Id == d.PackingListItemId)
                     {
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            newItems.Last().Details.Add(d);
-                        }
+                        newItems.Last().Details.Add(d);
                     }
                     else
                     {
-                        var y = viewModel.Items.Select(a => new GarmentPackingListItemViewModel
+                        var y = viewModel.Items.OrderBy(o => o.RONo).Select(a => new GarmentPackingListItemViewModel
                         {
                             Id = a.Id,
                             RONo = a.RONo,
@@ -60,22 +61,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             OrderNo = a.OrderNo,
                             AVG_GW = a.AVG_GW,
                             AVG_NW = a.AVG_NW,
-                            Uom = a.Uom,
-                        }).Single(a => a.RONo == x.RONo && a.OrderNo == x.OrderNo && a.Id == x.Id);
+                            Uom = a.Uom
+                        })
+                     .Single(a => a.Id == d.PackingListItemId);
                         y.Details = new List<GarmentPackingListDetailViewModel>();
-                        foreach (var d in x.Details.OrderBy(a => a.Carton1))
-                        {
-                            y.Details.Add(d);
-                        }
+                        y.Details.Add(d);
                         newItems.Add(y);
                     }
                 }
             }
+
+            foreach (var item in newItems)
+            {
+                if (newItems2.Count == 0)
+                {
+                    newItems2.Add(item);
+                }
+                else
+                {
+                    if (newItems2.Last().RONo == item.RONo && newItems2.Last().OrderNo == item.OrderNo)
+                    {
+                        foreach (var d in item.Details.OrderBy(a => a.Carton1))
+                        {
+                            newItems2.Last().Details.Add(d);
+                        }
+                    }
+                    else
+                    {
+                        newItems2.Add(item);
+                    }
+                }
+            }
+
             var sizesCount = false;
-            foreach (var item in newItems.OrderBy(a => a.RONo))
+            foreach (var item in newItems2)
             {
                 var sizesMax = new Dictionary<int, string>();
-                foreach (var detail in item.Details.OrderBy(o => o.Carton1))
+                foreach (var detail in item.Details)
                 {
                     foreach (var size in detail.Sizes)
                     {
@@ -135,10 +157,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var arraySubTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
-            
+
             var index = 8;
             var afterSubTotalIndex = 0;
-            foreach (var item in newItems.OrderBy(a => a.RONo))
+            foreach (var item in newItems2)
             {
                 var sizeIndex = index + 1;
                 var valueIndex = sizeIndex + 1;
@@ -266,7 +288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var subNetNetWeight = new List<GarmentPackingListDetailViewModel>();
                 double subTotal = 0;
                 var sizeSumQty = new Dictionary<int, double>();
-                foreach (var detail in item.Details.OrderBy(o => o.Carton1))
+                foreach (var detail in item.Details)
                 {
                     var ctnsQty = detail.CartonQuantity;
                     var grossWeight = detail.GrossWeight;
