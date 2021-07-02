@@ -765,33 +765,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
-        [Fact]
-        public async Task Should_NotFound_GetPDF()
-        {
-            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(GarmentShippingInvoiceViewModel));
-            var service = serviceMock.Object;
+        //[Fact]
+        //public async Task Should_NotFound_GetPDF()
+        //{
+        //    var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+        //    serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(default(GarmentShippingInvoiceViewModel));
+        //    var service = serviceMock.Object;
 
-            var packingListServiceMock = new Mock<IGarmentPackingListService>();
-            packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
-            var packingListService = packingListServiceMock.Object;
+        //    var packingListServiceMock = new Mock<IGarmentPackingListService>();
+        //    packingListServiceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(packingListVM);
+        //    var packingListService = packingListServiceMock.Object;
 
-            var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
-                .Verifiable();
-            var validateService = validateServiceMock.Object;
+        //    var validateServiceMock = new Mock<IValidateService>();
+        //    validateServiceMock
+        //        .Setup(s => s.Validate(It.IsAny<GarmentShippingInvoiceViewModel>()))
+        //        .Verifiable();
+        //    var validateService = validateServiceMock.Object;
 
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
+        //    var identityProviderMock = new Mock<IIdentityProvider>();
+        //    var identityProvider = identityProviderMock.Object;
 
-            var controller = GetController(service, packingListService, identityProvider, validateService);
-            //controller.ModelState.IsValid == false;
-            //controller.ModelState.IsValid == false;
-            var response = await controller.GetPDF(1, "cmt");
+        //    var controller = GetController(service, packingListService, identityProvider, validateService);
+        //    //controller.ModelState.IsValid == false;
+        //    //controller.ModelState.IsValid == false;
+        //    var response = await controller.GetPDF(1, "cmt");
 
-            Assert.NotNull(response);
-        }
+        //    Assert.NotNull(response);
+        //}
 
         [Fact]
         public async Task Should_Success_GetPDF_LongAmount()
@@ -872,7 +872,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProviderMock = new Mock<IIdentityProvider>();
             var identityProvider = identityProviderMock.Object;
 
->>>>>>>>> Temporary merge branch 2
             var controller = GetController(service, packingListService, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
             var response = await controller.GetPDF(1, "fob");
