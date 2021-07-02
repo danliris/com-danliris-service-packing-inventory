@@ -67,7 +67,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                         s.Date.Date == viewModel.Date.Date &&
-                                                                                        s.Type == DyeingPrintingArea.STOCK_OPNAME);
+                                                                                        s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
             if (model == null)
@@ -131,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
                     {
                         FabricSKUId = skuData.FabricSKUId,
-                        PackingType = item.PackagingType,
+                        PackingType = item.PackagingUnit,
                         Quantity = (int)item.PackagingQty,
                         Length = item.PackagingLength
                     });

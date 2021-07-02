@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public IQueryable<DyeingPrintingStockOpnameModel> ReadAll()
         {
-            return _dbSet.Include(s => s.DyeingPrintingStockOpnameProductionOrders).AsNoTracking();
+            return _dbSet.Include(s => s.DyeingPrintingStockOpnameProductionOrders).AsNoTracking().Where(entity => !entity.IsDeleted);
         }
 
 
