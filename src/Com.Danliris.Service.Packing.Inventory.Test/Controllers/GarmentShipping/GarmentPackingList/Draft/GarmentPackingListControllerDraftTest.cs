@@ -299,7 +299,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider, validateService);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
-            var response = await controller.GetById(1);
+            var response = await controller.GetExcelFilterCarton(1);
 
             Assert.NotNull(response);
         }
