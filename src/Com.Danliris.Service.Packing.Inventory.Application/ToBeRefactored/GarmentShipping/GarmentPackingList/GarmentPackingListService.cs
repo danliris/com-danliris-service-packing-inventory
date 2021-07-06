@@ -606,6 +606,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".xls");
         }
 
+        public virtual async Task<MemoryStreamResult> ReadExcelByIdFilterCarton(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var ExcelTemplate = new GarmentPackingListDraftExcelByCartonTemplate(_identityProvider);
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = ExcelTemplate.GenerateExcelTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Draft Packing List " + data.InvoiceNo + ".xls");
+        }
+
         public async Task SetPost(List<int> ids)
         {
             var models = _packingListRepository.Query.Where(m => ids.Contains(m.Id));
