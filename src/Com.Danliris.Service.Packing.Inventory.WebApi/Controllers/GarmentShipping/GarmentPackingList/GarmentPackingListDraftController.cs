@@ -163,10 +163,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
-                VerifyUser();
-                var result = await _service.ReadPdfFilterCarton(id);
+                    VerifyUser();
+                    var result = await _service.ReadPdfFilterCarton(id);
 
-                return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/carton/xls")]
+        public async Task<IActionResult> GetExcelFilterCarton([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ReadExcelByIdFilterCarton(id);
+
+                return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
             }
             catch (Exception ex)
             {
