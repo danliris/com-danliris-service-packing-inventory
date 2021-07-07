@@ -38,6 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackagingUnit { get; private set; }
         public double PackagingLength { get; private set; }
         public string InventoryType { get; set; }
+        public string MaterialOrigin { get; set; }
 
         public DyeingPrintingAreaMovementModel()
         {
@@ -120,6 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// Main Constructor
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -136,11 +138,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date,  string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType)
         {
             Date = date;
+            MaterialOrigin = materialOrigin;
             Area = area;
             Type = type;
             DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
@@ -157,12 +161,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
             DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
             ProductionOrderType = productionOrderType;
+            
         }
 
         /// <summary>
         /// Constructor With Grade
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -180,9 +186,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
         /// <param name="grade"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade) : this(date, area, type,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade) : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
         {
@@ -193,6 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// Constructor With Grade and Remark
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -211,9 +218,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="productionOrderType"></param>
         /// <param name="grade"></param>
         /// <param name="remark"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin,  string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark) : this(date, area, type,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark) : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade)
         {
@@ -224,6 +231,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// Constructror With Grade and Remark and Packing Data
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -243,11 +251,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="grade"></param>
         /// <param name="remark"></param>
         /// <param name="packingType"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType,
             decimal qtyPacking, string packingUnit, double packingLength)
-            : this(date, area, type,
+            : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
         {
@@ -261,6 +269,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// Aval Constructor
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -280,10 +289,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="avalQuantity"></param>
         /// <param name="avalWeightQuantity"></param>
         /// <param name="avalType"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, double avalQuantity, double avalWeightQuantity, string avalType) :
-            this(date, area, type, dyeingPrintingAreaDocumentId,
+            this(date, materialOrigin, area, type, dyeingPrintingAreaDocumentId,
                 dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
         {
             AvalQuantity = avalQuantity;
@@ -350,6 +359,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// Constructror With Grade and Remark and Packing Data and InventoryType
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
         /// <param name="area"></param>
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaDocumentId"></param>
@@ -370,11 +380,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="remark"></param>
         /// <param name="packingType"></param>
         /// <param name="inventoryType"></param>
-        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType,
             decimal qtyPacking, string packingUnit, double packingLength, string inventoryType)
-            : this(date, area, type,
+            : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
                 dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
         {
