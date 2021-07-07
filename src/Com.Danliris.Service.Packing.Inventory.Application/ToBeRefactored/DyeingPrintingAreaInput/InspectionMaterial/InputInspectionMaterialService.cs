@@ -77,6 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     InitLength = s.InitLength,
                     InputQuantity = s.InputQuantity,
                     MaterialWidth = s.MaterialWidth,
+                    MaterialOrigin = s.MaterialOrigin,
                     FinishWidth = s.FinishWidth,
                     YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
                     {
@@ -234,6 +235,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = d.ProductionOrderOrderQuantity
                     },
                     MaterialWidth = d.MaterialWidth,
+                    MaterialOrigin = d.MaterialOrigin,
                     FinishWidth = d.FinishWidth,
                     Material = new Material()
                     {
@@ -410,6 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Motif = s.Motif,
                 PackingInstruction = s.PackingInstruction,
                 MaterialWidth = s.MaterialWidth,
+                MaterialOrigin = s.MaterialOrigin,
                 FinishWidth = s.FinishWidth,
                 BonNo = s.DyeingPrintingAreaInput.BonNo,
                 Material = new Material()
