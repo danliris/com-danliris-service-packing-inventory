@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentInvoiceMonitoringService>();
             serviceMock
-                .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Returns(new List<GarmentInvoiceMonitoringViewModel>());
 
             var service = serviceMock.Object;
@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            var response = controller.GetReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
+            var response = controller.GetReport(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentInvoiceMonitoringService>();
             serviceMock
-                .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GetReportData(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var identityProvider = identityProviderMock.Object;
 
             var controller = GetController(service, identityProvider);
-            var response = controller.GetReport(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
+            var response = controller.GetReport(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentInvoiceMonitoringService>();
             serviceMock
-                .Setup(s => s.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GenerateExcel(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
 
             var service = serviceMock.Object;
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
-            var response = controller.GetXls(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
+            var response = controller.GetXls(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
             Assert.NotNull(response);
         }
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentInvoiceMonitoringService>();
             serviceMock
-                .Setup(s => s.GenerateExcel(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GenerateExcel(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Returns(new MemoryStream());
 
             var service = serviceMock.Object;
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             var controller = GetController(service, identityProvider);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
-            var response = controller.GetXls(null,null, null, null);
+            var response = controller.GetXls(null, null, null);
 
             Assert.NotNull(response);
         }

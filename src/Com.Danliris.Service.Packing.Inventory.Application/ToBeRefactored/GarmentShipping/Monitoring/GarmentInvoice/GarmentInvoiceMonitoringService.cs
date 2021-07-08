@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-        public IQueryable<GarmentInvoiceMonitoringViewModel> GetData(string buyerAgent, string optionDate, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public IQueryable<GarmentInvoiceMonitoringViewModel> GetData(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var queryInv = repository.ReadAll();
             var queryPL = plrepository.ReadAll();
@@ -44,19 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            if (optionDate == "TGL INVOICE")
-            {
-                queryInv = queryInv.Where(w => w.InvoiceDate.AddHours(offset).Date >= DateFrom.Date && w.InvoiceDate.AddHours(offset).Date <= DateTo.Date);
-            }
-            else if (optionDate == "TGL TRUCKING")
-            {
-                queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
-            }
-            else
-            {
-                queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
-            }
-
+            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
+          
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
 
@@ -92,17 +81,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return newQ;
         }
 
-        public List<GarmentInvoiceMonitoringViewModel> GetReportData(string buyerAgent, string optionDate, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public List<GarmentInvoiceMonitoringViewModel> GetReportData(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var Query = GetData(buyerAgent, optionDate, dateFrom, dateTo, offset);
+            var Query = GetData(buyerAgent, dateFrom, dateTo, offset);
             Query = Query.OrderBy(b => b.InvoiceNo);
             return Query.ToList();
         }
 
-        public MemoryStream GenerateExcel(string buyerAgent, string optionDate, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
-            var Query = GetData(buyerAgent, optionDate, dateFrom, dateTo, offset);
+            var Query = GetData(buyerAgent, dateFrom, dateTo, offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });

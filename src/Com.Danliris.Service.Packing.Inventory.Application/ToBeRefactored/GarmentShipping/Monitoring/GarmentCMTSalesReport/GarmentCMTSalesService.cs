@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
                             PEBDate = a.PEBDate,
                             FOB = a.TotalAmount,
-                            FAB = Convert.ToDecimal(d.Quantity) * d.CMTPrice,
+                            FAB = Convert.ToDecimal(d.Quantity) * (d.Price - d.CMTPrice),
                             ToBePaid = a.AmountToBePaid,
                             CurrencyCode = d.CurrencyCode
                         }).ToList();
