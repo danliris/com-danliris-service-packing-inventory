@@ -262,7 +262,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 var temp = int.Parse(fixNumber[i].ToString());
                 strHasil = strHasil + " " + satuan[temp];
             }
-            strHasil = "RUPIAH " + strHasil + " SEN";
+            strHasil = "DAN " + strHasil + " SEN";
             return strHasil;
         }
     }

@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
             intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
 
-            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR)+ " rupiah";
+            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR)+ " RUPIAH";
 
             intro.Add(new Chunk($" (terbilang : {terbilang}) sesuai disposisi nomor \n", normal_font));
             intro.Add(new Chunk("Disposisi no : " + viewModel.dispositionNo + " tgl. " + viewModel.paymentDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
