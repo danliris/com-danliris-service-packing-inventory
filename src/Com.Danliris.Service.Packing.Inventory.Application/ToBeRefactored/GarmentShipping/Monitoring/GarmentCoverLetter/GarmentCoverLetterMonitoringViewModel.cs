@@ -22,6 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string BuyerAgentName { get; set; }
         public double TotalCarton { get; set; }
         public string ContainerNo { get; set; }
+        public string ShippingSeal { get; set; }
+        public string DLSeal { get; set; }
         public double PCSQuantity { get; set; }
         public double SETSQuantity { get; set; }
         public double PACKQuantity { get; set; }
