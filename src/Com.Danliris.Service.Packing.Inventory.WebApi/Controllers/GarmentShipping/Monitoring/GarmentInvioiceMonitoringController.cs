@@ -28,13 +28,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet]
-        public IActionResult GetReport(string buyerAgent, string optionDate, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
+        public IActionResult GetReport(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
         {
             int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
             string accept = Request.Headers["Accept"];
             try
             {
-                var data = _service.GetReportData(buyerAgent, optionDate, dateFrom, dateTo, offset);
+                var data = _service.GetReportData(buyerAgent, dateFrom, dateTo, offset);
 
                 return Ok(new
                 {
@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet("download")]
-        public IActionResult GetXls(string buyerAgent, string optionDate, DateTime? dateFrom, DateTime? dateTo)
+        public IActionResult GetXls(string buyerAgent, DateTime? dateFrom, DateTime? dateTo)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                var xls = _service.GenerateExcel(buyerAgent, optionDate, dateFrom, dateTo, offset);
+                var xls = _service.GenerateExcel(buyerAgent, dateFrom, dateTo, offset);
 
                 string filename = String.Format("Monitoring Invoice - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 

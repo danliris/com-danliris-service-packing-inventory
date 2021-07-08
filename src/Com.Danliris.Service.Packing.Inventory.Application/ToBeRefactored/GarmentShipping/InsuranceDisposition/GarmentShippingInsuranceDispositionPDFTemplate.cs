@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region header
 
-            Paragraph title = new Paragraph("DISPOSISI PEMBAYARAN", header_font_bold_underlined);
+            Paragraph title = new Paragraph("L A M P I R A N", header_font_bold_underlined);
             title.Alignment = Element.ALIGN_CENTER;
 
             decimal totalPremi = viewModel.items.Sum(a => a.amount * viewModel.rate / 100);
@@ -41,9 +41,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             intro.Add(new Chunk("Mohon dibayarkan uang sebesar ", normal_font));
             intro.Add(new Chunk("USD " + string.Format("{0:n2}", totalPremi), normal_font_bold));
 
-            var terbilang = NumberToTextIDN.terbilangDollar((double)totalPremi).Contains("us dolar") ? NumberToTextIDN.terbilangDollar((double)totalPremi) : NumberToTextIDN.terbilangDollar((double)totalPremi) + " us dolar";
+            var terbilang = NumberToTextIDN.terbilangDollar((double)totalPremi).Contains("UD Dollar") ? NumberToTextIDN.terbilangDollar((double)totalPremi) : NumberToTextIDN.terbilangDollar((double)totalPremi) + " US Dollar";
 
-            intro.Add(new Chunk($" (terbilang : {terbilang}) untuk pembayaran polis asuransi proteksi piutang" +
+            intro.Add(new Chunk($" (terbilang : {terbilang}) untuk pembayaran polis asuransi proteksi piutang " +
                 $"dagang ke {viewModel.insurance.Name}.\n", normal_font));
             intro.Add(new Chunk("Disposisi no : " + viewModel.dispositionNo, normal_font));
 
@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellCurrency.Phrase = new Phrase("$", normal_font);
                 tableBody.AddCell(cellCurrency);
 
-                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", item.amount*viewModel.rate), normal_font);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", (item.amount*viewModel.rate)/100), normal_font);
                 tableBody.AddCell(cellAmount);
             }
 
@@ -183,47 +183,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(closing);
             #endregion
 
-            #region sign
-            Paragraph date = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
-            document.Add(date);
+            //#region sign
+            //Paragraph date = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
+            //document.Add(date);
 
-            PdfPTable tableSign = new PdfPTable(4);
-            tableSign.WidthPercentage = 100;
-            tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f });
+            //PdfPTable tableSign = new PdfPTable(4);
+            //tableSign.WidthPercentage = 100;
+            //tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f });
 
-            PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            //PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Dicek,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Diterima,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-
-
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Dicek,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Diterima,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("STAFF SHIPPING", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("KABAG/KASIE SHIPPING", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("BAGIAN VERIFIKASI", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("BAGIAN KASIR", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
 
-            document.Add(tableSign);
-            #endregion
+
+            //cellBodySignNoBorder.Phrase = new Phrase("STAFF SHIPPING", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("KABAG/KASIE SHIPPING", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("BAGIAN VERIFIKASI", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("BAGIAN KASIR", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+
+            //document.Add(tableSign);
+            //#endregion
 
             document.Close();
             byte[] byteInfo = stream.ToArray();

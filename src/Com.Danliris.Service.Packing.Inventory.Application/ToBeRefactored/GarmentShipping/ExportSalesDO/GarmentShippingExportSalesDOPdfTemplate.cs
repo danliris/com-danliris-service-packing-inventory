@@ -41,7 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFM1.Phrase = new Phrase("",normal_font);
             tableFM.AddCell(cellFM1);
 
-            cellFMBorder.Phrase = new Phrase("FM-00-SP-14-004/R1", header_font_bold);
+            cellFMBorder.Phrase = new Phrase("FM-00-SP-24-007", header_font_bold);
             tableFM.AddCell(cellFMBorder);
 
             cellFM1.Phrase = new Phrase("", normal_font);
