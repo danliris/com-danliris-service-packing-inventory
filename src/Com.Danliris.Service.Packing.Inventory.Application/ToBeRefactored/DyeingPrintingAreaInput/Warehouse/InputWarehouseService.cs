@@ -18,11 +18,14 @@ using Newtonsoft.Json;
 using System.Data;
 using System.IO;
 using OfficeOpenXml;
+using System.ComponentModel.DataAnnotations;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
 {
     public class InputWarehouseService : IInputWarehouseService
-    {
+    {   
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
@@ -33,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public InputWarehouseService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
@@ -224,12 +228,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
+            var errorResult = new List<ValidationResult>();
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 var splitedCode = item.ProductPackingCode.Split(",");
                 foreach (var code in splitedCode)
                 {
-                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().FirstOrDefault(x => 
+                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
                         ids.Contains(x.DyeingPrintingAreaInputId) &&
                         x.ProductPackingCode.Contains(code) &&
                         dateData > x.DateIn
@@ -237,16 +242,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     if (latestDataOnIn != null) {
                         var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                            .OrderByDescending(o => o.DateIn)
                             .FirstOrDefault(x => 
                                 x.ProductPackingCode.Contains(code) && 
                                 x.DateOut > latestDataOnIn.DateIn
                             );
                         
                         if (latestDataOnOut == null) {
-                            throw new Exception("Kode " + code + " belum keluar");
+                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
                         }
                     }
                 }
+            }
+
+            if (errorResult.Count > 0) {
+                var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
             }
 
             if(model != null) {
