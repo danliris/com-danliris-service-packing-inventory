@@ -342,6 +342,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         s.Type == DyeingPrintingArea.OUT);
                              
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
+            var dateData = viewModel.Date;
+                var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
+                
+            foreach (var item in viewModel.WarehousesProductionOrders)
+            {
+                var splitedCode = item.ProductPackingCode.Split(",");
+                foreach (var code in splitedCode)
+                {
+                    var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                            .FirstOrDefault(x => 
+                                x.ProductPackingCode.Contains(code) && 
+                                dateData > x.DateOut
+                            );
+
+                    if (latestDataOnOut != null) {
+                        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().FirstOrDefault(x => 
+                            ids.Contains(x.DyeingPrintingAreaInputId) &&
+                            x.ProductPackingCode.Contains(code) &&
+                            x.DateOut > latestDataOnOut.DateIn
+                        );
+                        
+                        if (latestDataOnOut == null) {
+                            throw new Exception("Kode " + code + " belum keluar");
+                        }
+                    }
+                }
+            }
+
             if (model == null)
             {
                 int totalCurrentYearData = _outputRepository.ReadAllIgnoreQueryFilter()
@@ -588,33 +616,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (viewModel.Type == DyeingPrintingArea.OUT)
             {
-                var dateData = viewModel.Date;
-                var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
-                
-                foreach (var item in viewModel.WarehousesProductionOrders)
-                {
-                    var splitedCode = item.ProductPackingCode.Split(",");
-                    foreach (var code in splitedCode)
-                    {
-                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                                .FirstOrDefault(x => 
-                                    x.ProductPackingCode.Contains(code) && 
-                                    dateData > x.DateOut
-                                );
-
-                        if (latestDataOnOut != null) {
-                            var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().FirstOrDefault(x => 
-                                ids.Contains(x.DyeingPrintingAreaInputId) &&
-                                x.ProductPackingCode.Contains(code) &&
-                                x.DateOut > latestDataOnOut.DateIn
-                            );
-                            
-                            if (latestDataOnOut == null) {
-                                throw new Exception("Kode " + code + " belum keluar");
-                            }
-                        }
-                    }
-                }
                 result = await CreateOut(viewModel);
             }
             else
