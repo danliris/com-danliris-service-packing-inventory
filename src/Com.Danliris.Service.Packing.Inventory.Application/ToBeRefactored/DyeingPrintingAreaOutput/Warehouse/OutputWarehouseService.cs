@@ -371,7 +371,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Grade,
                                                                 s.Status,
-                                                                s.Balance,
+                                                                s.Quantity * (double)s.PackagingQty, //Balance
                                                                 s.PackingInstruction,
                                                                 s.ProductionOrder.Type,
                                                                 s.ProductionOrder.OrderQuantity,
@@ -420,12 +420,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
-
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, item.Balance, item.PackagingQty);
+                        var newBalance = item.Quantity * (double)item.PackagingQty;
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, newBalance, item.PackagingQty);
                     }
                     else
                     {
-
+                        var newBalance = item.Quantity * (double)item.PackagingQty;
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                     }
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,

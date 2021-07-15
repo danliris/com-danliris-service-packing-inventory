@@ -224,7 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (model != null)
             {
-                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
+                result = await UpdateExistingWarehouse(viewModel, model, model.Id, model.BonNo);
             }
             else
             {
@@ -262,7 +262,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.Color,
                                                              s.Motif,
                                                              s.UomUnit,
-                                                             s.InputQuantity,
+                                                             s.Qty * (double)s.InputPackagingQty,
                                                              false,
                                                              s.PackagingUnit,
                                                              s.PackagingType,
@@ -291,8 +291,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.ProductPackingCode,
                                                              s.HasPrintingProductPacking, 
                                                              s.Qty, 
-                                                             s.InputQuantity, 
-                                                             s.InputPackagingQty, 
+                                                             s.Qty * (double)s.InputPackagingQty, 
+                                                             s.InputPackagingQty, // InputPackaging Qty
                                                              s.FinishWidth, 
                                                              viewModel.Date,
                                                              s.InventoryType,
@@ -349,9 +349,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         }
 
         //Create - Update Existing Warehouse
-        public async Task<int> UpdateExistingWarehouse(InputWarehouseCreateViewModel viewModel, int dyeingPrintingAreaInputId, string bonNo)
+        public async Task<int> UpdateExistingWarehouse(InputWarehouseCreateViewModel viewModel, DyeingPrintingAreaInputModel model, int dyeingPrintingAreaInputId, string bonNo)
         {
             int result = 0;
+            var itemNotAvailable = new List<string>();
+            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+            {
+                itemNotAvailable.Add(item.ProductPackingCode);
+            }
+
+            foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            {
+                var splitedCode = item.ProductPackingCode.Split(",");
+                if(splitedCode.Any(el => itemNotAvailable.Contains(el))) {
+                    var notAvailableCode = splitedCode.Where(x => itemNotAvailable.Any(y => x.Equals(y))).ToList();
+                    throw new Exception("Kode " + String.Join(",", notAvailableCode) + " tidak available");
+                }
+            }
 
             foreach (var productionOrder in viewModel.MappedWarehousesProductionOrders)
             {
