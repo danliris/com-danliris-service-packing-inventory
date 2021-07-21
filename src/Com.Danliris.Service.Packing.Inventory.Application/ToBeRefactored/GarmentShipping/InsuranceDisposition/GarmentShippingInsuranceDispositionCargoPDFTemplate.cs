@@ -220,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellLeftBorder.Phrase = new Phrase("IDR", small_font);
                 tableDetail.AddCell(cellLeftBorder);
 
-                cellRightBorder.Phrase = new Phrase(string.Format("{0:n0}", item.amount * item.currencyRate), small_font);
+                cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.amount * item.currencyRate), small_font);
                 tableDetail.AddCell(cellRightBorder);
             }
 
@@ -242,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeftBorder.Phrase = new Phrase("IDR", small_font_bold);
             tableDetail.AddCell(cellLeftBorder);
 
-            cellRightBorder.Phrase = new Phrase(string.Format("{0:n0}", totalAmountIDR), small_font_bold);
+            cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", totalAmountIDR), small_font_bold);
             tableDetail.AddCell(cellRightBorder);
 
             tableDetail.SpacingAfter = 10;
@@ -270,37 +270,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             decimal amount1A = viewModel.items.Sum(a => a.amount1A);
             cellUnitLeft.Phrase = new Phrase("UNIT 1A", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount1A > 0 ? string.Format("{0:n0}", amount1A) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount1A > 0 ? string.Format("{0:n2}", amount1A) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount1B = viewModel.items.Sum(a => a.amount1B);
             cellUnitLeft.Phrase = new Phrase("UNIT 1B", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n0}", amount1B) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n2}", amount1B) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2A = viewModel.items.Sum(a => a.amount2A);
             cellUnitLeft.Phrase = new Phrase("UNIT 2A", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n0}", amount2A) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n2}", amount2A) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2B = viewModel.items.Sum(a => a.amount2B);
             cellUnitLeft.Phrase = new Phrase("UNIT 2B", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n0}", amount2B) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n2}", amount2B) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2C = viewModel.items.Sum(a => a.amount2C);
             cellUnitLeft.Phrase = new Phrase("UNIT 2C", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n0}", amount2C) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n2}", amount2C) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal totalUnitCharge = amount1A + amount1B + amount2A + amount2B + amount2C;
             cellUnitLeft.Phrase = new Phrase("Total", small_font_bold);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(string.Format("{0:n0}", totalUnitCharge), small_font_bold);
+            cellUnitRight.Phrase = new Phrase(string.Format("{0:n2}", totalUnitCharge), small_font_bold);
             tableUnit.AddCell(cellUnitRight);
 
             tableUnit.SpacingAfter = 5;
