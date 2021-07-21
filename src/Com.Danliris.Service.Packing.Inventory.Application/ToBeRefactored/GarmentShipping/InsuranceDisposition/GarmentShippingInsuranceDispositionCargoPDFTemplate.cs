@@ -35,126 +35,126 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region header
 
-            Paragraph title = new Paragraph("DISPOSISI PEMBAYARAN", header_font_bold_underlined);
+            Paragraph title = new Paragraph("L A M P I R A N", header_font_bold_underlined);
             title.Alignment = Element.ALIGN_CENTER;
 
             decimal totalAmountIDR = viewModel.items.Sum(a => a.amount * a.currencyRate);
-            Phrase intro = new Phrase();
-            intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
-            intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
+            //Phrase intro = new Phrase();
+            //intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
+            //intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
 
-            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR)+ " RUPIAH";
+            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR) + " RUPIAH";
 
-            intro.Add(new Chunk($" (terbilang : {terbilang}) sesuai disposisi nomor \n", normal_font));
-            intro.Add(new Chunk("Disposisi no : " + viewModel.dispositionNo + " tgl. " + viewModel.paymentDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
-            intro.Add(new Chunk("\nuntuk pembayaran Polis Asuransi ke " + viewModel.insurance.Name, normal_font));
+            //intro.Add(new Chunk($" (terbilang : {terbilang}) sesuai disposisi nomor \n", normal_font));
+            //intro.Add(new Chunk("Disposisi no : " + viewModel.dispositionNo + " tgl. " + viewModel.paymentDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
+            //intro.Add(new Chunk("\nuntuk pembayaran Polis Asuransi ke " + viewModel.insurance.Name, normal_font));
 
             document.Add(title);
-            document.Add(new Paragraph("\n", normal_font));
-            document.Add(intro);
+            //document.Add(new Paragraph("\n", normal_font));
+            //document.Add(intro);
             #endregion
 
-            #region bank
-            Paragraph bank = new Paragraph("\nMohon ditransfer ke alamat :\n\n", normal_font);
-            document.Add(bank);
+            //#region bank
+            //Paragraph bank = new Paragraph("\nMohon ditransfer ke alamat :\n\n", normal_font);
+            //document.Add(bank);
 
-            PdfPTable tableBank = new PdfPTable(3);
-            tableBank.WidthPercentage = 80;
-            tableBank.SetWidths(new float[] { 3f, 0.5f, 14f });
+            //PdfPTable tableBank = new PdfPTable(3);
+            //tableBank.WidthPercentage = 80;
+            //tableBank.SetWidths(new float[] { 3f, 0.5f, 14f });
 
-            PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-            PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
-            PdfPCell cellRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
+            //PdfPCell cellCenter = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            //PdfPCell cellLeft = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            //PdfPCell cellRight = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
 
-            cellLeft.Phrase = new Phrase("AccountName", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(":", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(viewModel.insurance.Name, normal_font);
-            tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase("AccountName", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(":", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(viewModel.insurance.Name, normal_font);
+            //tableBank.AddCell(cellLeft);
 
-            cellLeft.Phrase = new Phrase("Bank name", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(":", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(viewModel.bankName, normal_font);
-            tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase("Bank name", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(":", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(viewModel.bankName, normal_font);
+            //tableBank.AddCell(cellLeft);
 
-            cellLeft.Phrase = new Phrase("Account no.", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(":", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(insurance.AccountNumber, normal_font);
-            tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase("Account no.", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(":", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(insurance.AccountNumber, normal_font);
+            //tableBank.AddCell(cellLeft);
 
-            cellLeft.Phrase = new Phrase("Swift code", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(":", normal_font);
-            tableBank.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase(insurance.SwiftCode, normal_font);
-            tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase("Swift code", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(":", normal_font);
+            //tableBank.AddCell(cellLeft);
+            //cellLeft.Phrase = new Phrase(insurance.SwiftCode, normal_font);
+            //tableBank.AddCell(cellLeft);
 
-            tableBank.SpacingAfter = 10;
-            tableBank.HorizontalAlignment = Element.ALIGN_LEFT;
-            document.Add(tableBank);
-
-
-            Paragraph closing = new Paragraph("Demikian permohonan kami, terima kasih.\n\n", normal_font);
-            document.Add(closing);
-            #endregion
-
-            #region sign
-            Paragraph date = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
-            document.Add(date);
-
-            PdfPTable tableSign = new PdfPTable(4);
-            tableSign.WidthPercentage = 100;
-            tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f });
-
-            PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-
-            cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Dicek,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("Diterima,\n\n\n\n", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
+            //tableBank.SpacingAfter = 10;
+            //tableBank.HorizontalAlignment = Element.ALIGN_LEFT;
+            //document.Add(tableBank);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
+            //Paragraph closing = new Paragraph("Demikian permohonan kami, terima kasih.\n\n", normal_font);
+            //document.Add(closing);
+            //#endregion
+
+            //#region sign
+            //Paragraph date = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
+            //document.Add(date);
+
+            //PdfPTable tableSign = new PdfPTable(4);
+            //tableSign.WidthPercentage = 100;
+            //tableSign.SetWidths(new float[] { 1f, 1f, 1f, 1f });
+
+            //PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+
+            //cellBodySignNoBorder.Phrase = new Phrase("Hormat kami,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Mengetahui,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Dicek,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("Diterima,\n\n\n\n", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
 
 
-            cellBodySignNoBorder.Phrase = new Phrase("STAFF SHIPPING", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("KABAG/KASIE SHIPPING", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("BAGIAN VERIFIKASI", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
-            cellBodySignNoBorder.Phrase = new Phrase("BAGIAN KASIR", normal_font);
-            tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("(                           )", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
 
-            document.Add(tableSign);
-            #endregion
 
-            document.NewPage();
+            //cellBodySignNoBorder.Phrase = new Phrase("STAFF SHIPPING", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("KABAG/KASIE SHIPPING", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("BAGIAN VERIFIKASI", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+            //cellBodySignNoBorder.Phrase = new Phrase("BAGIAN KASIR", normal_font);
+            //tableSign.AddCell(cellBodySignNoBorder);
+
+            //document.Add(tableSign);
+            //#endregion
+
+            //document.NewPage();
 
             #region intro2
-            Paragraph to = new Paragraph("Kepada : Yth. Bp. Ricky H. - Keuangan \n " +
-                "Mohon dibayarkan kepada " +viewModel.insurance.Name +" biaya asuransi sbb: ",small_font);
+            //Paragraph to = new Paragraph("Kepada : Yth. Bp. Ricky H. - Keuangan \n " +
+            //    "Mohon dibayarkan kepada " +viewModel.insurance.Name +" biaya asuransi sbb: ",small_font);
 
             Paragraph disposisi = new Paragraph("Disposisi No : " + viewModel.dispositionNo, small_font);
             disposisi.Alignment = Element.ALIGN_RIGHT;
 
-            document.Add(to);
+            //document.Add(to);
             document.Add(disposisi);
             #endregion
 
@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableDetail.AddCell(cellCenterBorder);
 
             int index = 0;
-            foreach(var item in viewModel.items)
+            foreach (var item in viewModel.items)
             {
                 index++;
 
@@ -198,7 +198,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 cellCenterBorder.Phrase = new Phrase(item.policyDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), small_font);
                 tableDetail.AddCell(cellCenterBorder);
-                
+
                 cellCenterBorder.Phrase = new Phrase(item.policyNo, small_font);
                 tableDetail.AddCell(cellCenterBorder);
 
@@ -214,13 +214,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.amount), small_font);
                 tableDetail.AddCell(cellRightBorder);
 
-                cellCenterBorder.Phrase = new Phrase(string.Format("{0:n}",item.currencyRate), small_font);
+                cellCenterBorder.Phrase = new Phrase(string.Format("{0:n}", item.currencyRate), small_font);
                 tableDetail.AddCell(cellCenterBorder);
 
                 cellLeftBorder.Phrase = new Phrase("IDR", small_font);
                 tableDetail.AddCell(cellLeftBorder);
 
-                cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", item.amount*item.currencyRate), small_font);
+                cellRightBorder.Phrase = new Phrase(string.Format("{0:n0}", item.amount * item.currencyRate), small_font);
                 tableDetail.AddCell(cellRightBorder);
             }
 
@@ -232,7 +232,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeftBorder.Phrase = new Phrase("USD", small_font_bold);
             tableDetail.AddCell(cellLeftBorder);
 
-            cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", viewModel.items.Sum(a=>a.amount)), small_font_bold);
+            cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", viewModel.items.Sum(a => a.amount)), small_font_bold);
             tableDetail.AddCell(cellRightBorder);
 
             cellCenterBorder.Phrase = new Phrase("", small_font);
@@ -242,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeftBorder.Phrase = new Phrase("IDR", small_font_bold);
             tableDetail.AddCell(cellLeftBorder);
 
-            cellRightBorder.Phrase = new Phrase(string.Format("{0:n2}", totalAmountIDR), small_font_bold);
+            cellRightBorder.Phrase = new Phrase(string.Format("{0:n0}", totalAmountIDR), small_font_bold);
             tableDetail.AddCell(cellRightBorder);
 
             tableDetail.SpacingAfter = 10;
@@ -268,46 +268,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableUnit.AddCell(cellUnitCenter);
 
             decimal amount1A = viewModel.items.Sum(a => a.amount1A);
-            cellUnitLeft.Phrase= new Phrase("UNIT 1A", small_font);
+            cellUnitLeft.Phrase = new Phrase("UNIT 1A", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount1A > 0 ? string.Format("{0:n2}", amount1A) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount1A > 0 ? string.Format("{0:n0}", amount1A) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount1B = viewModel.items.Sum(a => a.amount1B);
             cellUnitLeft.Phrase = new Phrase("UNIT 1B", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n2}", amount1B) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n0}", amount1B) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2A = viewModel.items.Sum(a => a.amount2A);
             cellUnitLeft.Phrase = new Phrase("UNIT 2A", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n2}", amount2A) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n0}", amount2A) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2B = viewModel.items.Sum(a => a.amount2B);
             cellUnitLeft.Phrase = new Phrase("UNIT 2B", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n2}", amount2B) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n0}", amount2B) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal amount2C = viewModel.items.Sum(a => a.amount2C);
             cellUnitLeft.Phrase = new Phrase("UNIT 2C", small_font);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n2}", amount2C) : "", small_font);
+            cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n0}", amount2C) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
             decimal totalUnitCharge = amount1A + amount1B + amount2A + amount2B + amount2C;
             cellUnitLeft.Phrase = new Phrase("Total", small_font_bold);
             tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(string.Format("{0:n2}", totalUnitCharge), small_font_bold);
+            cellUnitRight.Phrase = new Phrase(string.Format("{0:n0}", totalUnitCharge), small_font_bold);
             tableUnit.AddCell(cellUnitRight);
 
             tableUnit.SpacingAfter = 5;
             tableUnit.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableUnit);
 
-            document.Add(new Phrase("[Terbilang : " + terbilang +"]", small_font));
+            document.Add(new Phrase("[Terbilang : " + terbilang + "]", small_font));
             #endregion
 
             #region sign2
