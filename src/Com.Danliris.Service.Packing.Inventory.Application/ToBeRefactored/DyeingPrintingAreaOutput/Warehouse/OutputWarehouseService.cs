@@ -352,26 +352,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var errorResult = new List<ValidationResult>();
             foreach (var item in viewModel.WarehousesProductionOrders)
             {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
                 {
-                    var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.DateOut)
-                            .FirstOrDefault(x => 
-                                x.ProductPackingCode.Contains(code) && 
-                                dateData > x.DateOut
-                            );
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
+                    {
+                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.DateOut)
+                                .FirstOrDefault(x => 
+                                    x.ProductPackingCode.Contains(code) && 
+                                    dateData > x.DateOut
+                                );
 
-                    if (latestDataOnOut != null) {
-                        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
-                            ids.Contains(x.DyeingPrintingAreaInputId) &&
-                            x.ProductPackingCode.Contains(code) &&
-                            x.DateIn > latestDataOnOut.DateOut
-                        );
-                        
-                        if (latestDataOnIn == null) {
-                            errorResult.Add(new ValidationResult("Kode " + code + " belum masuk", new List<string> { "Kode" }));
+                        if (latestDataOnOut != null) {
+                            var latestDataOnIn = _inputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
+                                ids.Contains(x.DyeingPrintingAreaInputId) &&
+                                x.ProductPackingCode.Contains(code) &&
+                                x.DateIn > latestDataOnOut.DateOut
+                            );
+                            
+                            if (latestDataOnIn == null) {
+                                errorResult.Add(new ValidationResult("Kode " + code + " belum masuk", new List<string> { "Kode" }));
+                            }
                         }
                     }
                 }
