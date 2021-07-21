@@ -870,18 +870,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(1);
 
             inputProductionOrderRepoMock.Setup(s => s.GetDbSet()
-                    .OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
-                    It.IsAny<List<int>>().Contains(x.DyeingPrintingAreaInputId) &&
-                    x.ProductPackingCode.Contains(It.IsAny<string>()) &&
-                    x.DateIn > It.IsAny<DateTimeOffset>()
-                ));
+                    .OrderByDescending(o => o.DateIn).FirstOrDefault());
 
             outputProductionOrderRepoMock.Setup(s => s.GetDbSet()
                                 .OrderByDescending(o => o.DateOut)
-                                .FirstOrDefault(x => 
-                                    x.ProductPackingCode.Contains(It.IsAny<string>()) && 
-                                    It.IsAny<DateTimeOffset>() > x.DateOut
-                                ));
+                                .FirstOrDefault());
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
