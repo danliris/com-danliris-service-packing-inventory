@@ -18,11 +18,14 @@ using Newtonsoft.Json;
 using System.Data;
 using System.IO;
 using OfficeOpenXml;
+using System.ComponentModel.DataAnnotations;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
 {
     public class InputWarehouseService : IInputWarehouseService
-    {
+    {   
+        private readonly IServiceProvider _serviceProvider;
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
@@ -33,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public InputWarehouseService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _movementRepository = serviceProvider.GetService<IDyeingPrintingAreaMovementRepository>();
@@ -222,16 +226,111 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                         s.Date == viewModel.Date &&
                                                                         s.Shift == viewModel.Shift);
 
-            if (model != null)
+            var dateData = viewModel.Date;
+            var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
+            var errorResult = new List<ValidationResult>();
+            foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
-                result = await UpdateExistingWarehouse(viewModel, model, model.Id, model.BonNo);
+                var splitedCode = item.ProductPackingCode.Split(",");
+                foreach (var code in splitedCode)
+                {
+                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
+                        ids.Contains(x.DyeingPrintingAreaInputId) &&
+                        x.ProductPackingCode.Contains(code) &&
+                        dateData > x.DateIn
+                    );
+
+                    if (latestDataOnIn != null) {
+                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                            .OrderByDescending(o => o.DateIn)
+                            .FirstOrDefault(x => 
+                                x.ProductPackingCode.Contains(code) && 
+                                x.DateOut > latestDataOnIn.DateIn
+                            );
+                        
+                        if (latestDataOnOut == null) {
+                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+                        }
+                    }
+                }
             }
-            else
+
+            if (errorResult.Count > 0) {
+                var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+            if(model != null) {
+                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
+            } else
             {
                 result = await InsertNewWarehouse(viewModel);
             }
 
             return result;
+
+            // if (model != null)
+            // {
+                // var listOfInId = model.DyeingPrintingAreaInputProductionOrders.Select(x => x.Id).ToList();
+                // var outModel = _outputProductionOrderRepository.GetDbSet().Where(x => listOfInId.Contains(x.DyeingPrintingAreaInputProductionOrderId)).ToList();
+                                                                        
+                // var outModelCode = outModel.Select(x => x.ProductPackingCode).ToList();
+
+                // var outCode = new List<string>();
+                // foreach (var item in outModelCode)
+                // {
+                //     var splitedCode = item.Split(",");
+                //     foreach (var code in splitedCode)
+                //     {
+                //         outCode.Add(code);
+                //     }
+                // }
+
+                // // Cek sudah masuk
+                // var itemNotAvailable = new List<string>();
+                // // var notAvaiableInInput = false;
+                // foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
+                // {
+                //     var splitedCode = item.ProductPackingCode.Split(",");
+                //     foreach(var code in splitedCode) {
+                //         itemNotAvailable.Add(code);
+                //     }
+                // }
+
+                // foreach (var item in viewModel.MappedWarehousesProductionOrders)
+                // {
+                //     var splitedCode = item.ProductPackingCode.Split(",");
+                //     if(splitedCode.Any(el => itemNotAvailable.Contains(el))) {
+                //         var notAvailableCode = splitedCode.Where(x => itemNotAvailable.Any(y => x.Equals(y))).ToList();
+                //         throw new Exception("Kode " + String.Join(",", notAvailableCode) + " tidak available");
+                //     }
+                // }
+
+                // Cek belum keluar
+                // foreach (var item in viewModel.MappedWarehousesProductionOrders)
+                // {
+                //     var splitedCode = item.ProductPackingCode.Split(",");
+                //     foreach (var code in splitedCode)
+                //     {
+                //         var codeAvailableInInput = splitedCode.Any(el => itemNotAvailable.Contains(el));
+                //         if(!outCode.Contains(code) && codeAvailableInInput) {
+                //             var notAvailableCode = splitedCode.Where(x => !outCode.Any(y => x.Equals(y))).ToList();
+                //             throw new Exception("Kode " + String.Join(",", notAvailableCode) + " belum keluar");
+                //         } else if (codeAvailableInInput){
+                //             var notAvailableCode = splitedCode.Where(x => itemNotAvailable.Any(y => x.Equals(y))).ToList();
+                //             throw new Exception("Kode " + String.Join(",", notAvailableCode) + " tidak available");
+                //         }
+                //     }
+                // }
+
+            //     result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
+            // }
+            // else
+            // {
+            //     result = await InsertNewWarehouse(viewModel);
+            // }
+
+            // return result;
         }
 
         //Create - Insert New Warehouse
@@ -301,13 +400,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                          .ToList());
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
-
+            
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id);
                 if (item.Area == DyeingPrintingArea.PACKING)
                 {
-                    //var outputData = await _outputProductionOrderRepository.ReadByIdAsync(item.Id);
+                    var outputData = await _outputProductionOrderRepository.ReadByIdAsync(item.Id);
                     var packingData = JsonConvert.DeserializeObject<List<PackingData>>(item.PrevSppInJson);
                     foreach (var packing in packingData)
                     {
@@ -329,8 +428,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
-            }
 
+                // if (item.Qty * (double)item.InputPackagingQty != item.InputQuantity) {
+                result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, item.InputPackagingQty);
+                // }
+                //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true, DyeingPrintingArea.TERIMA);
+
+                
+            }
+            // var listOfCode = viewModel.MappedWarehousesProductionOrders.Select(x => x.ProductPackingCode).ToList();
             //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
             //List<int> listOfDyeingPrintingAreaIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.OutputId).Distinct().ToList();
             //foreach (var areaId in listOfDyeingPrintingAreaIds)
@@ -339,33 +445,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //}
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
-            foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
-            {
-                result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true, DyeingPrintingArea.TERIMA);
-            }
+            // List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
+            // foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
+            // {
+            //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true, DyeingPrintingArea.TERIMA);
+            // }
 
             return result;
         }
 
         //Create - Update Existing Warehouse
-        public async Task<int> UpdateExistingWarehouse(InputWarehouseCreateViewModel viewModel, DyeingPrintingAreaInputModel model, int dyeingPrintingAreaInputId, string bonNo)
+        public async Task<int> UpdateExistingWarehouse(InputWarehouseCreateViewModel viewModel, int dyeingPrintingAreaInputId, string bonNo)
         {
             int result = 0;
-            var itemNotAvailable = new List<string>();
-            foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
-            {
-                itemNotAvailable.Add(item.ProductPackingCode);
-            }
-
-            foreach (var item in viewModel.MappedWarehousesProductionOrders)
-            {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                if(splitedCode.Any(el => itemNotAvailable.Contains(el))) {
-                    var notAvailableCode = splitedCode.Where(x => itemNotAvailable.Any(y => x.Equals(y))).ToList();
-                    throw new Exception("Kode " + String.Join(",", notAvailableCode) + " tidak available");
-                }
-            }
 
             foreach (var productionOrder in viewModel.MappedWarehousesProductionOrders)
             {
@@ -457,11 +549,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            //List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).ToList();
-            //foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
-            //{
-            //    result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true, DyeingPrintingArea.TERIMA);
-            //}
+            List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).ToList();
+            foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
+            {
+               result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true, DyeingPrintingArea.TERIMA);
+            }
 
             return result;
         }
@@ -472,7 +564,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .OrderByDescending(s => s.LastModifiedUtc)
                                                         .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
-                                                                    !s.HasNextAreaDocument);
+                                                                    s.Balance > 0);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
