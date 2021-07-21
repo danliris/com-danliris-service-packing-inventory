@@ -869,8 +869,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputProductionOrderRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaOutputProductionOrderModel>()))
                 .ReturnsAsync(1);
 
-            inputRepoMock.Setup(s=> s.GetDbSet()).Returns(new List<DyeingPrintingAreaOutputModel>() {
-                OutputModelToShippingArea
+            inputRepoMock.Setup(s => s.GetDbSet().Select(x => x.Id)).Returns(new List<int>() {
+
             }.AsQueryable());
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
