@@ -539,14 +539,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
                 else
                 {
-
                     result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(productionOrder.DyeingPrintingAreaInputProductionOrderId, productionOrder.InputQuantity, productionOrder.InputPackagingQty);
                 }
 
                 if (inputQuantity == productionOrder.InputQuantity)
                     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(productionOrder.Id, true, DyeingPrintingArea.TERIMA);
 
-                result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, productionOrder.InputPackagingQty);
+                
+                // If kode sudah ada di in dia gabisa kurang quantity
+                var splitedCode = productionOrder.ProductPackingCode.Split(",");
+                foreach (var item in splitedCode)
+                {
+                    if (!_inputProductionOrderRepository.CheckIfHasInInput(item)) {
+                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, productionOrder.InputPackagingQty);
+                    }
+                }
                 //result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(productionOrder.DyeingPrintingAreaInputProductionOrderId, productionOrder.InputQuantity, productionOrder.InputPackagingQty);
             }
 
