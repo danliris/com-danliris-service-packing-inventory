@@ -223,8 +223,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var model = _inputRepository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
                                                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                        s.Date == viewModel.Date &&
-                                                                        s.Shift == viewModel.Shift);
+                                                                        s.Date.ToString("dd/MM/YYYY").Equals(viewModel.Date.ToString("dd/MM/YYYY")) &&
+                                                                        s.Shift == viewModel.Shift &&
+                                                                        s.Group == viewModel.Group);
 
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
@@ -258,15 +259,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (errorResult.Count > 0) {
                 var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
                 throw new ServiceValidationException(validationContext, errorResult);
-            }
+            } else {
+                if(model != null) {
+                    result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
+                } else
+                {
+                    result = await InsertNewWarehouse(viewModel);
+                }
 
-            if(model != null) {
-                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
-            } else
-            {
-                result = await InsertNewWarehouse(viewModel);
             }
-
             return result;
 
             // if (model != null)
@@ -545,6 +546,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (inputQuantity == productionOrder.InputQuantity)
                     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(productionOrder.Id, true, DyeingPrintingArea.TERIMA);
 
+                result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, productionOrder.InputPackagingQty);
                 //result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(productionOrder.DyeingPrintingAreaInputProductionOrderId, productionOrder.InputQuantity, productionOrder.InputPackagingQty);
             }
 
