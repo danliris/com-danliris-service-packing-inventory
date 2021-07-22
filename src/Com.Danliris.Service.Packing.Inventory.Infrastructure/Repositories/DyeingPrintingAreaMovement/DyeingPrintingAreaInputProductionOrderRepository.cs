@@ -390,5 +390,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public bool CheckIfHasInInput(string code) {
+            var query = _dbSet.FirstOrDefault(x => x.ProductPackingCode
+                .Contains(code) && x.HasOutputDocument == true &&
+                x.Area == DyeingPrintingArea.GUDANGJADI
+                );
+            if (query != null) {
+                return true;
+            }
+            return false;
+        }
     }
 }
