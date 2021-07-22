@@ -147,12 +147,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             policyDate=DateTimeOffset.Now,
                             policyNo="aa",
                             currencyRate=1.2m,
-                            amount1A=1,
-                            amount1B=2,
-                            amount2A=3,
-                            amount2B=4,
-                            amount2C=5,
-                            
+                            amount1A=1.12m,
+                            amount1B=2.36m,
+                            amount2A=3.25m,
+                            amount2B=4.43m,
+                            amount2C=5.57m,
+
                         }
                     }
                 };
