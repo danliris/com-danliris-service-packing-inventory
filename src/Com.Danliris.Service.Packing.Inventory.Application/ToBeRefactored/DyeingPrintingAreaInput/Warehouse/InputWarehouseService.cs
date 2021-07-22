@@ -237,7 +237,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
                         ids.Contains(x.DyeingPrintingAreaInputId) &&
-                        x.ProductPackingCode.Contains(code.ToUpper()) &&
+                        x.ProductPackingCode.Contains(code) &&
                         dateData > x.DateIn
                     );
 
@@ -245,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
                             .OrderByDescending(o => o.DateIn)
                             .FirstOrDefault(x => 
-                                x.ProductPackingCode.Contains(code.ToUpper()) && 
+                                x.ProductPackingCode.Contains(code) && 
                                 x.DateOut > latestDataOnIn.DateIn
                             );
                         
