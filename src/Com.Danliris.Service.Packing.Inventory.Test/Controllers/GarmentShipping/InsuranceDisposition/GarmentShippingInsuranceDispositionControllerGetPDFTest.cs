@@ -159,11 +159,78 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             }
         }
 
+        protected virtual GarmentShippingInsuranceDispositionViewModel ViewModelKargo1
+        {
+            get
+            {
+                return new GarmentShippingInsuranceDispositionViewModel()
+                {
+                    paymentDate = DateTimeOffset.Now,
+                    policyType = "Kargo",
+                    dispositionNo = "dispo",
+                    rate = 1,
+                    insurance = new Insurance
+                    {
+                        Id = 1,
+                        Name = "name",
+                        Code = "code"
+                    },
+                    bankName = "sda",
+                    items = new List<GarmentShippingInsuranceDispositionItemViewModel>() {
+                        new GarmentShippingInsuranceDispositionItemViewModel()
+                        {
+                            amount=12.34m,
+                            BuyerAgent=new BuyerAgent
+                            {
+                                Name="aa",
+                                Code="aa",
+                                Id=1
+                            },
+                            invoiceId=1,
+                            invoiceNo="aa",
+                            policyDate=DateTimeOffset.Now,
+                            policyNo="aa",
+                            currencyRate=1.2m,
+                            amount1A=0,
+                            amount1B=0,
+                            amount2A=0,
+                            amount2B=0,
+                            amount2C=0,
+
+                        }
+                    }
+                };
+            }
+        }
+
         [Fact]
         public async Task Should_Success_GetPDF()
         {
             var serviceMock = new Mock<IGarmentShippingInsuranceDispositionService>();
             serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModelKargo);
+            serviceMock.Setup(s => s.GetInsurance(It.IsAny<int>())).Returns(insuranceVm);
+            var service = serviceMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            validateServiceMock
+                .Setup(s => s.Validate(It.IsAny<GarmentShippingInsuranceDispositionViewModel>()))
+                .Verifiable();
+            var validateService = validateServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            var response = await controller.GetPDF(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Success_GetPDF_Null_Amount()
+        {
+            var serviceMock = new Mock<IGarmentShippingInsuranceDispositionService>();
+            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(ViewModelKargo1);
             serviceMock.Setup(s => s.GetInsurance(It.IsAny<int>())).Returns(insuranceVm);
             var service = serviceMock.Object;
 
