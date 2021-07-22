@@ -360,7 +360,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
                                 .OrderByDescending(o => o.DateOut)
                                 .FirstOrDefault(x => 
-                                    x.ProductPackingCode.Contains(code) && 
+                                    x.ProductPackingCode.ToLower().Contains(code.ToLower()) && 
                                     dateData > x.DateOut
                                 );
 
@@ -368,7 +368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             var latestDataOnIn = _inputProductionOrderRepository.GetDbSet()
                                 .OrderByDescending(o => o.DateIn).FirstOrDefault(x => 
                                 ids.Contains(x.DyeingPrintingAreaInputId) &&
-                                x.ProductPackingCode.Contains(code) &&
+                                x.ProductPackingCode.ToLower().Contains(code.ToLower()) &&
                                 x.DateIn > latestDataOnOut.DateOut
                             );
                             
