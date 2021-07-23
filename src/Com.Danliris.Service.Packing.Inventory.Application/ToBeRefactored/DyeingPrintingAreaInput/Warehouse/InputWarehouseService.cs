@@ -551,7 +551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in splitedCode)
                 {
                     if (!_inputProductionOrderRepository.CheckIfHasInInput(item)) {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, productionOrder.InputPackagingQty);
+                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, 1);
                     }
                 }
                 //result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(productionOrder.DyeingPrintingAreaInputProductionOrderId, productionOrder.InputQuantity, productionOrder.InputPackagingQty);
@@ -902,105 +902,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public async Task<int> Delete(int bonId)
         {
             var result = 0;
-            //get bon data and check if it has document output
-            var modelBon = _inputRepository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any()).FirstOrDefault();
-            if (modelBon != null)
+            var bonInput = _inputRepository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any());
+
+            foreach (var bon in bonInput)
             {
-                var hasSPPwithOutput = modelBon.DyeingPrintingAreaInputProductionOrders.Where(x => x.HasOutputDocument);
+                var hasSPPwithOutput = bon.DyeingPrintingAreaInputProductionOrders.Where(x => x.HasOutputDocument);
                 if (hasSPPwithOutput.Count() > 0)
                 {
                     throw new Exception("Bon Sudah Berada di Packing Keluar");
                 }
-                else
-                {
-                    //get prev bon id using first spp modelBon and search bonId
-                    var firstSppBonModel = modelBon.DyeingPrintingAreaInputProductionOrders.FirstOrDefault();
-                    int sppIdPrevOutput = firstSppBonModel == null ? 0 : firstSppBonModel.DyeingPrintingAreaOutputProductionOrderId;
-                    var sppPrevOutput = _outputProductionOrderRepository.ReadAll().Where(s => s.Id == sppIdPrevOutput).FirstOrDefault();
-                    int bonIdPrevOutput = sppPrevOutput == null ? 0 : sppPrevOutput.DyeingPrintingAreaOutputId;
-                    var bonPrevOutput = _outputRepository.ReadAll().Where(x =>
-                                                                        x.DyeingPrintingAreaOutputProductionOrders.Any() &&
-                                                                        x.Id == bonIdPrevOutput
-                                                                        );
-                    //get prev bon input using input spp id in prev bon out and search bonId
-                    int sppIdPrevInput = sppPrevOutput == null ? 0 : sppPrevOutput.DyeingPrintingAreaInputProductionOrderId;
-                    var sppPrevInput = _inputProductionOrderRepository.ReadAll().FirstOrDefault(x => x.Id == sppIdPrevInput);
-                    int bonIdPrevInput = sppPrevInput == null ? 0 : sppPrevInput.DyeingPrintingAreaInputId;
-                    var bonPrevInput = _inputRepository.ReadAll().Where(x =>
-                                                            x.DyeingPrintingAreaInputProductionOrders.Any() &&
-                                                            x.Id == bonIdPrevInput
-                                                            );
 
-
-                    //delete entire packing bon and spp using model
-                    result += await _inputRepository.DeleteAsync(bonId);
-
-                    foreach (var item in modelBon.DyeingPrintingAreaInputProductionOrders)
-                    {
-                        var movementModel = new DyeingPrintingAreaMovementModel(modelBon.Date, item.MaterialOrigin, modelBon.Area, DyeingPrintingArea.IN, modelBon.Id, modelBon.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                                item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade,
-                                null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
-                        result += await _movementRepository.InsertAsync(movementModel);
-                    }
-
-                    //activate bon prev hasNextAreaDocument == false;
-                    foreach (var bon in bonPrevOutput)
-                    {
-                        bon.SetHasNextAreaDocument(false, "WAREHOUSESERVICE", "SERVICE");
-                        //activate spp prev from bon
-                        foreach (var spp in bon.DyeingPrintingAreaOutputProductionOrders)
-                        {
-                            spp.SetHasNextAreaDocument(false, "WAREHOUSESERVICE", "SERVICE");
-                            spp.SetNextAreaInputStatus(null, "WAREHOUSESERVICE", "SERVICE");
-                            //update balance input spp from prev spp
-                            IQueryable<DyeingPrintingAreaInputProductionOrderModel> inputSpp;
-                            if (spp.Area == DyeingPrintingArea.PACKING)
-                            {
-                                var packingData = JsonConvert.DeserializeObject<List<PackingData>>(spp.PrevSppInJson);
-                                inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => packingData.Any(e => e.Id == x.Id));
-                            }
-                            else
-                            {
-
-                                inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
-                            }
-                            //var inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
-                            foreach (var modifInputSpp in inputSpp)
-                            {
-                                var newBalance = modifInputSpp.Balance + spp.Balance;
-                                modifInputSpp.SetBalance(newBalance, "WAREHOUSESERVICE", "SERVICE");
-
-                                modifInputSpp.SetHasOutputDocument(false, "WAREHOUSESERVICE", "SERVICE");
-                                result += await _inputProductionOrderRepository.UpdateAsync(modifInputSpp.Id, modifInputSpp);
-                            }
-
-
-                        }
-                        result += await _outputRepository.UpdateAsync(bon.Id, bon);
-                        //result += await _outputRepository.DeleteAsync(bon.Id);
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        public async Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel)
-        {
-            var result = 0;
-            var bonInput = _inputRepository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any());
-            foreach (var bon in bonInput)
-            {
-                var sppInput = bon.DyeingPrintingAreaInputProductionOrders;
-                var sppDeleted = sppInput.Where(x => viewModel.MappedWarehousesProductionOrders.Any(s => x.Id != s.Id));
-                foreach (var spp in sppDeleted)
+                var sppInput = bon.DyeingPrintingAreaInputProductionOrders;// 2355, 2356, 2357
+                //var sppDeleted = sppInput.Where(x => viewModel.MappedWarehousesProductionOrders.Any(s => !sppInputIds.Contains(s.Id)));
+                foreach (var spp in sppInput)
                 {
                     var prevOutput = _outputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
                     foreach (var prevOut in prevOutput)
                     {
                         IQueryable<DyeingPrintingAreaInputProductionOrderModel> prevInput;
-                        if(prevOut.Area == DyeingPrintingArea.PACKING)
+                        if (prevOut.Area == DyeingPrintingArea.PACKING)
                         {
+                            //prevINput masih salah, karena prevsppInJSON salah
                             var packingData = JsonConvert.DeserializeObject<List<PackingData>>(prevOut.PrevSppInJson);
                             prevInput = _inputProductionOrderRepository.ReadAll().Where(x => packingData.Any(e => e.Id == x.Id));
                         }
@@ -1011,11 +933,158 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
                         foreach (var prevIn in prevInput)
                         {
+                            //tidak mengubah row database
                             var newBalance = prevIn.Balance + prevOut.Balance;
                             prevIn.SetBalance(newBalance, "UPDATEWAREHOUSE", "SERVICE");
                         }
+
                         prevOut.SetHasNextAreaDocument(false, "UPDATEWAREHOUSE", "SERVICE");
                         prevOut.SetNextAreaInputStatus(null, "UPDATEWAREHOUSE", "SERVICE");
+
+                        prevOut.SetBalance(prevOut.Balance + spp.Balance, "UPDATEWAREHOUSE", "SERVICE");
+                        prevOut.SetPackagingQty(prevOut.PackagingQty + spp.PackagingQty, "UPDATEWAREHOUSE", "SERVICE");
+                        result += await _outputProductionOrderRepository.UpdateAsync(prevOut.Id, prevOut);
+                    }
+                    result += await _inputProductionOrderRepository.DeleteAsync(spp.Id);
+
+                    var movementModel = new DyeingPrintingAreaMovementModel(bon.Date, spp.MaterialOrigin, bon.Area, DyeingPrintingArea.IN, bon.Id, bon.BonNo, spp.ProductionOrderId, spp.ProductionOrderNo,
+                               spp.CartNo, spp.Buyer, spp.Construction, spp.Unit, spp.Color, spp.Motif, spp.UomUnit, spp.Balance * -1, spp.Id, spp.ProductionOrderType, spp.Grade,
+                               null, spp.PackagingType, spp.PackagingQty * -1, spp.PackagingUnit, spp.PackagingLength);
+                    result += await _movementRepository.InsertAsync(movementModel);
+                }
+
+                //delete entire packing bon and spp using model
+                result += await _inputRepository.DeleteAsync(bonId);
+            }
+            return result;
+
+            //var result = 0;
+            ////get bon data and check if it has document output
+            //var modelBon = _inputRepository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any()).FirstOrDefault();
+            //if (modelBon != null)
+            //{
+            //    var hasSPPwithOutput = modelBon.DyeingPrintingAreaInputProductionOrders.Where(x => x.HasOutputDocument);
+            //    if (hasSPPwithOutput.Count() > 0)
+            //    {
+            //        throw new Exception("Bon Sudah Berada di Packing Keluar");
+            //    }
+            //    else
+            //    {
+            //        //get prev bon id using first spp modelBon and search bonId
+            //        var firstSppBonModel = modelBon.DyeingPrintingAreaInputProductionOrders.FirstOrDefault();
+            //        int sppIdPrevOutput = firstSppBonModel == null ? 0 : firstSppBonModel.DyeingPrintingAreaOutputProductionOrderId;
+            //        var sppPrevOutput = _outputProductionOrderRepository.ReadAll().Where(s => s.Id == sppIdPrevOutput).FirstOrDefault();
+            //        int bonIdPrevOutput = sppPrevOutput == null ? 0 : sppPrevOutput.DyeingPrintingAreaOutputId;
+            //        var bonPrevOutput = _outputRepository.ReadAll().Where(x =>
+            //                                                            x.DyeingPrintingAreaOutputProductionOrders.Any() &&
+            //                                                            x.Id == bonIdPrevOutput
+            //                                                            );
+            //        //get prev bon input using input spp id in prev bon out and search bonId
+            //        int sppIdPrevInput = sppPrevOutput == null ? 0 : sppPrevOutput.DyeingPrintingAreaInputProductionOrderId;
+            //        var sppPrevInput = _inputProductionOrderRepository.ReadAll().FirstOrDefault(x => x.Id == sppIdPrevInput);
+            //        int bonIdPrevInput = sppPrevInput == null ? 0 : sppPrevInput.DyeingPrintingAreaInputId;
+            //        var bonPrevInput = _inputRepository.ReadAll().Where(x =>
+            //                                                x.DyeingPrintingAreaInputProductionOrders.Any() &&
+            //                                                x.Id == bonIdPrevInput
+            //                                                );
+
+
+            //        //delete entire packing bon and spp using model
+            //        result += await _inputRepository.DeleteAsync(bonId);
+
+            //        foreach (var item in modelBon.DyeingPrintingAreaInputProductionOrders)
+            //        {
+            //            var movementModel = new DyeingPrintingAreaMovementModel(modelBon.Date, item.MaterialOrigin, modelBon.Area, DyeingPrintingArea.IN, modelBon.Id, modelBon.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
+            //                    item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade,
+            //                    null, item.PackagingType, item.PackagingQty * -1, item.PackagingUnit, item.PackagingLength);
+            //            result += await _movementRepository.InsertAsync(movementModel);
+            //        }
+
+            //        //activate bon prev hasNextAreaDocument == false;
+            //        foreach (var bon in bonPrevOutput)
+            //        {
+            //            bon.SetHasNextAreaDocument(false, "WAREHOUSESERVICE", "SERVICE");
+            //            //activate spp prev from bon
+            //            foreach (var spp in bon.DyeingPrintingAreaOutputProductionOrders)
+            //            {
+            //                spp.SetHasNextAreaDocument(false, "WAREHOUSESERVICE", "SERVICE");
+            //                spp.SetNextAreaInputStatus(null, "WAREHOUSESERVICE", "SERVICE");
+            //                //update balance input spp from prev spp
+            //                IQueryable<DyeingPrintingAreaInputProductionOrderModel> inputSpp;
+            //                if (spp.Area == DyeingPrintingArea.PACKING)
+            //                {
+            //                    var packingData = JsonConvert.DeserializeObject<List<PackingData>>(spp.PrevSppInJson);
+            //                    inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => packingData.Any(e => e.Id == x.Id));
+            //                }
+            //                else
+            //                {
+
+            //                    inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
+            //                }
+            //                //var inputSpp = _inputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaInputProductionOrderId);
+            //                foreach (var modifInputSpp in inputSpp)
+            //                {
+            //                    var newBalance = modifInputSpp.Balance + spp.Balance;
+            //                    modifInputSpp.SetBalance(newBalance, "WAREHOUSESERVICE", "SERVICE");
+
+            //                    modifInputSpp.SetHasOutputDocument(false, "WAREHOUSESERVICE", "SERVICE");
+            //                    result += await _inputProductionOrderRepository.UpdateAsync(modifInputSpp.Id, modifInputSpp);
+            //                }
+
+
+            //            }
+            //            result += await _outputRepository.UpdateAsync(bon.Id, bon);
+            //            //result += await _outputRepository.DeleteAsync(bon.Id);
+            //        }
+            //    }
+            //}
+
+            //return result;
+        }
+
+        public async Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel)// 2355, 2356
+        {
+            var result = 0;
+            var bonInput = _inputRepository.ReadAll().Where(x => x.Id == bonId && x.DyeingPrintingAreaInputProductionOrders.Any());
+            foreach (var bon in bonInput)
+            {
+                var sppInput = bon.DyeingPrintingAreaInputProductionOrders;// 2355, 2356, 2357
+                
+                var sentedId = viewModel.MappedWarehousesProductionOrders.Select(x => x.Id).ToList(); // 1, 2 -> false, false, true
+                var sppDeleted = sppInput.Where(x => !sentedId.Contains(x.Id));
+
+                //var sppDeleted = sppInput.Where(x => viewModel.MappedWarehousesProductionOrders.Any(s => !sppInputIds.Contains(s.Id)));
+                foreach (var spp in sppDeleted)
+                {
+                    var prevOutput = _outputProductionOrderRepository.ReadAll().Where(x => x.Id == spp.DyeingPrintingAreaOutputProductionOrderId);
+                    foreach (var prevOut in prevOutput)
+                    {
+                        IQueryable<DyeingPrintingAreaInputProductionOrderModel> prevInput;
+                        if(prevOut.Area == DyeingPrintingArea.PACKING)
+                        {
+                            //prevINput masih salah, karena prevsppInJSON salah
+                            var packingData = JsonConvert.DeserializeObject<List<PackingData>>(prevOut.PrevSppInJson);
+                            prevInput = _inputProductionOrderRepository.ReadAll().Where(x => packingData.Any(e => e.Id == x.Id));
+                        }
+                        else
+                        {
+
+                            prevInput = _inputProductionOrderRepository.ReadAll().Where(x => x.Id == prevOut.DyeingPrintingAreaInputProductionOrderId);
+                        }
+                        foreach (var prevIn in prevInput)
+                        {
+                            //tidak mengubah row database
+                            var newBalance = prevIn.Balance + prevOut.Balance;
+                            prevIn.SetBalance(newBalance, "UPDATEWAREHOUSE", "SERVICE");
+                        }
+
+                        if(sppInput.Count() == sppDeleted.Count())
+                        {
+                            prevOut.SetHasNextAreaDocument(false, "UPDATEWAREHOUSE", "SERVICE"); 
+                            prevOut.SetNextAreaInputStatus(null, "UPDATEWAREHOUSE", "SERVICE"); 
+                        }
+                        prevOut.SetBalance(prevOut.Balance + spp.Balance, "UPDATEWAREHOUSE", "SERVICE");
+                        prevOut.SetPackagingQty(prevOut.PackagingQty + spp.PackagingQty, "UPDATEWAREHOUSE", "SERVICE");
                         result += await _outputProductionOrderRepository.UpdateAsync(prevOut.Id, prevOut);
                     }
                     result += await _inputProductionOrderRepository.DeleteAsync(spp.Id);
