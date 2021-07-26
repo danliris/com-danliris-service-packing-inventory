@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Paragraph title = new Paragraph("L A M P I R A N", header_font_bold_underlined);
             title.Alignment = Element.ALIGN_CENTER;
 
-            decimal totalAmountIDR = viewModel.items.Sum(a => a.amount * a.currencyRate);
+            decimal totalAmountIDR = Math.Round(viewModel.items.Sum(a => a.amount * a.currencyRate),0);
             //Phrase intro = new Phrase();
             //intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
             //intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
