@@ -122,8 +122,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             if (modelToUpdate != null)
             {
-                var newBalance = modelToUpdate.BalanceRemains - balance;
-                modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
+                var newPackagingQty = balance / modelToUpdate.PackagingLength;
+                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+                var newBalance = modelToUpdate.Balance - balance;
+                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetPackagingQty((decimal)newPackagingQty, _identityProvider.Username, UserAgent);
+
                 if (newBalance <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
@@ -393,7 +398,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public bool CheckIfHasInInput(string code) {
             var query = _dbSet.FirstOrDefault(x => x.ProductPackingCode
-                .Contains(code) && x.HasOutputDocument == true &&
+                .Contains(code) &&
                 x.Area == DyeingPrintingArea.GUDANGJADI
                 );
             if (query != null) {

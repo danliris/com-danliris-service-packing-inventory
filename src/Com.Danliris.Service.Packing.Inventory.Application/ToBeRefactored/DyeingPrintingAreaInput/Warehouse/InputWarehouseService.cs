@@ -420,7 +420,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var balance = (double)item.InputPackagingQty * item.Qty;
                     result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, balance, item.InputPackagingQty);
                 }
-                
+
+                // If kode sudah ada di in dia gabisa kurang quantity
+                var splitedCode = item.ProductPackingCode.Split(",");
+                foreach (var code in splitedCode)
+                {
+                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                    {
+                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                    }
+                }
+
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, itemModel.Id, item.ProductionOrder.Type, item.Grade, null,
@@ -431,7 +441,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 result += await _movementRepository.InsertAsync(movementModel);
 
                 // if (item.Qty * (double)item.InputPackagingQty != item.InputQuantity) {
-                result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, item.InputPackagingQty);
+                //result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, item.InputPackagingQty);
                 // }
                 //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true, DyeingPrintingArea.TERIMA);
 
