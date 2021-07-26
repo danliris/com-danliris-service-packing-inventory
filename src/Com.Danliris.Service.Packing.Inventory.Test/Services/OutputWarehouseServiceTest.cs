@@ -153,7 +153,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             PackagingType = "s",
                             PackagingUnit = "a",
                             PackagingQty = 10,
-                            QtyOrder = 10
+                            QtyOrder = 10,
+                            ProductPackingCode = "123"
                         }
                     }
                 };
@@ -232,7 +233,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             PackagingType = "s",
                             PackagingUnit = "a",
                             PackagingQty = 10,
-                            QtyOrder = 10
+                            QtyOrder = 10,
+                            ProductPackingCode = "123,124"
                         }
                     }
                 };
