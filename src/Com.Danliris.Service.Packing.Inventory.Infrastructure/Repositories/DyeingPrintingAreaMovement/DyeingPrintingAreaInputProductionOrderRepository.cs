@@ -122,12 +122,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             if (modelToUpdate != null)
             {
-                var newPackagingQty = balance / modelToUpdate.PackagingLength;
+                var packingLength = modelToUpdate.PackagingLength == 0 ? 10 : modelToUpdate.PackagingLength;
+                var newPackagingQty = Convert.ToDecimal(balance / packingLength);
                 var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
                 var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
                 modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetPackagingQty((decimal)newPackagingQty, _identityProvider.Username, UserAgent);
+                modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
 
                 if (newBalance <= 0)
                 {

@@ -432,12 +432,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Grade,
                                                                 s.Status,
-                                                                GetBalance(s), //s.Quantity * (double)1, //Balance
+                                                                s.ProductPackingCode.Split(",").Count() * s.Quantity,
                                                                 s.PackingInstruction,
                                                                 s.ProductionOrder.Type,
                                                                 s.ProductionOrder.OrderQuantity,
                                                                 s.PackagingType,
-                                                                GetPackagingQty(s),
+                                                                s.ProductPackingCode.Split(",").Count(),
                                                                 s.PackagingUnit,
                                                                 s.DeliveryOrderSalesId,
                                                                 s.DeliveryOrderSalesNo,
@@ -498,8 +498,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //    item.PackagingType, item.PackagingQty, item.PackagingUnit, item.Quantity, item.InventoryType);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, GetBalance(item), item.Id, item.ProductionOrder.Type, item.Grade, null,
-                        item.PackagingType, GetPackagingQty(item), item.PackagingUnit, item.Quantity, item.InventoryType);
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.ProductPackingCode.Split(",").Count() * item.Quantity, item.Id, item.ProductionOrder.Type, item.Grade, null,
+                        item.PackagingType, item.ProductPackingCode.Split(",").Count(), item.PackagingUnit, item.Quantity, item.InventoryType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
 
@@ -522,12 +522,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Remark,
                         item.Grade,
                         item.Status,
-                        GetBalance(item),
+                        item.ProductPackingCode.Split(",").Count() * item.Quantity,
                         item.PackingInstruction,
                         item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity,
                         item.PackagingType,
-                        GetPackagingQty(item),
+                        item.ProductPackingCode.Split(",").Count(),
                         item.PackagingUnit,
                         item.DeliveryOrderSalesId,
                         item.DeliveryOrderSalesNo,
@@ -564,8 +564,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
-                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, GetBalance(item), item.Id, item.ProductionOrder.Type, item.Grade, null,
-                        item.PackagingType, GetPackagingQty(item), item.PackagingUnit, item.Quantity, item.InventoryType);
+                        item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.ProductPackingCode.Split(",").Count() * item.Quantity, item.Id, item.ProductionOrder.Type, item.Grade, null,
+                        item.PackagingType, item.ProductPackingCode.Split(",").Count(), item.PackagingUnit, item.Quantity, item.InventoryType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
 
