@@ -18,5 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal ToBePaidIdr { get; set; }
         public string CurrencyCode { get; set; }
         public decimal Rate { get; set; }
+        public double Quantity { get; set; }
     }
 }
