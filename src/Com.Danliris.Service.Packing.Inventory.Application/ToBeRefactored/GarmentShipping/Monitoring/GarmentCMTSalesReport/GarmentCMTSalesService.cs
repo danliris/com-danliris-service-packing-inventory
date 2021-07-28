@@ -80,9 +80,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
                              PEBDate = a.PEBDate,
                              FOB = a.TotalAmount,
-                             FAB = Convert.ToDecimal(d.Quantity) * (d.Price - d.CMTPrice),
+                             FAB = Convert.ToDecimal((d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity)) * (d.Price - d.CMTPrice),
                              ToBePaid = a.AmountToBePaid,
-                             CurrencyCode = d.CurrencyCode
+                             CurrencyCode = d.CurrencyCode,
+                             Quantity = d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity
                          }).ToList();
 
             var newQ = Query.GroupBy(s => new { s.InvoiceNo }).Select(d => new GarmentCMTSalesViewModel()
@@ -98,7 +99,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 FAB = d.Sum(x => x.FAB),
                 ToBePaid = d.FirstOrDefault().ToBePaid,
-                CurrencyCode = d.FirstOrDefault().CurrencyCode
+                CurrencyCode = d.FirstOrDefault().CurrencyCode,
+                Quantity = d.Sum(x=>x.Quantity)
             }).ToList();
 
 
