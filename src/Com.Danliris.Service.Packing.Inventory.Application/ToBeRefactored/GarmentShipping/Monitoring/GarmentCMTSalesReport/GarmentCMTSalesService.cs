@@ -59,8 +59,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
 
-            queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
-            
+            //queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
+
+            queryPL = queryPL.Where(x => x.TruckingDate.AddHours(offset).Date >= DateFrom.Date && x.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
@@ -71,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         from CA in dd.DefaultIfEmpty()
                         join d in quaryInvItem on a.Id equals d.GarmentShippingInvoiceId
                         where a.IsDeleted == false && b.IsDeleted == false && CA.IsDeleted == false
-
+                        && a.PEBDate != DateTimeOffset.MinValue
                         && d.CMTPrice > 0
 
                         select new GarmentCMTSalesViewModel
@@ -80,10 +81,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceDate = a.InvoiceDate,
                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
                             PEBDate = a.PEBDate,
-                            FOB = a.TotalAmount,
-                            FAB = Convert.ToDecimal(d.Quantity) * (d.Price - d.CMTPrice),
+                            FOB =  a.TotalAmount,
+                            FAB = Convert.ToDecimal((d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity)) * (d.Price - d.CMTPrice),
                             ToBePaid = a.AmountToBePaid,
-                            CurrencyCode = d.CurrencyCode
+                            CurrencyCode = d.CurrencyCode,
+                            Quantity = d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity
                         }).ToList();
 
             var newQ = Query.GroupBy(s => new { s.InvoiceNo }).Select(d => new GarmentCMTSalesViewModel()
@@ -99,7 +101,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 FAB = d.Sum(x => x.FAB),
                 ToBePaid = d.FirstOrDefault().ToBePaid,
-                CurrencyCode = d.FirstOrDefault().CurrencyCode
+                CurrencyCode = d.FirstOrDefault().CurrencyCode,
+                Quantity = d.Sum(x => x.Quantity)
             }).ToList();
 
 
