@@ -399,8 +399,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.MaterialOrigin
                                                              ))
                                                          .ToList());
-            //Insert to Input Repository
-            result = await _inputRepository.InsertAsync(model);
             
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
@@ -431,6 +429,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
                 }
 
+                //Insert to Input Repository
+                result = await _inputRepository.InsertAsync(model);
+
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, itemModel.Id, item.ProductionOrder.Type, item.Grade, null,
@@ -444,7 +445,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, item.InputPackagingQty);
                 // }
                 //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true, DyeingPrintingArea.TERIMA);
-
                 
             }
             // var listOfCode = viewModel.MappedWarehousesProductionOrders.Select(x => x.ProductPackingCode).ToList();
