@@ -122,15 +122,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             if (modelToUpdate != null)
             {
-                var packingLength = modelToUpdate.PackagingLength == 0 ? 10 : modelToUpdate.PackagingLength;
-                var newPackagingQty = Convert.ToDecimal(balance / packingLength);
                 var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
-                var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+                // var newBalance = modelToUpdate.Balance - balance;
+                // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
 
-                if (newBalance <= 0)
+                var packingLength = modelToUpdate.PackagingLength;
+                if(packingLength > 0){
+                    var newPackagingQty = Convert.ToDecimal(balance / packingLength);
+                    modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+                }
+
+                if (newBalanceRemains <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }
