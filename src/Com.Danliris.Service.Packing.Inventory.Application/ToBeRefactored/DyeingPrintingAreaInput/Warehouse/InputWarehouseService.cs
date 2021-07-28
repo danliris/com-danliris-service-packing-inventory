@@ -399,6 +399,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.MaterialOrigin
                                                              ))
                                                          .ToList());
+
+            foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            {
+                // If kode sudah ada di in dia gabisa kurang quantity
+                var splitedCode = item.ProductPackingCode.Split(",");
+                foreach (var code in splitedCode)
+                {
+                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                    {
+                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                    }
+                }
+            }
+
+            //Insert to Input Repository
+            result = await _inputRepository.InsertAsync(model);
             
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
@@ -419,25 +435,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, balance, item.InputPackagingQty);
                 }
 
-                // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
-                {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
-                    {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
-                    }
-                }
-            }
-
-            //Insert to Input Repository
-            result = await _inputRepository.InsertAsync(model);
-
-            //update Movement Repository
-            foreach (var item in viewModel.MappedWarehousesProductionOrders)
-            {
-                var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id);
-                
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, itemModel.Id, item.ProductionOrder.Type, item.Grade, null,
@@ -447,7 +444,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
             }
-            
+
             return result;
         }
 
