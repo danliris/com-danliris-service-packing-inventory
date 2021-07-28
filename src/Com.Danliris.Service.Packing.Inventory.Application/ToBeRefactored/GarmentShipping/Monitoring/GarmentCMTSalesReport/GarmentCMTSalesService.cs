@@ -59,8 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
 
-            queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
-            
+            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
+
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
@@ -71,8 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         from CA in dd.DefaultIfEmpty()
                         join d in quaryInvItem on a.Id equals d.GarmentShippingInvoiceId
                         where a.IsDeleted == false && b.IsDeleted == false && CA.IsDeleted == false
-
-                        && d.CMTPrice > 0
+                        && a.PEBDate != DateTimeOffset.MinValue && d.CMTPrice > 0
 
                         select new GarmentCMTSalesViewModel
                         {

@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join c in quaryInvItem on b.Id equals c.GarmentShippingInvoiceId
                         where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false
                               && a.Accounting == true && a.Omzet == true && b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
-
+                              && b.PEBDate != DateTimeOffset.MinValue
                         select new GarmentRecapOmzetReportViewModel
                         {
                             TruckingDate = a.TruckingDate,
