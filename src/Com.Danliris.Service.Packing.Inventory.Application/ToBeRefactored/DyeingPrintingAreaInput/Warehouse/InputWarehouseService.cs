@@ -372,7 +372,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.BuyerId,
                                                              s.Id,
                                                              s.Remark,
-                                                             s.InputQuantity,
+                                                             s.Qty * (double)s.InputPackagingQty,
                                                              s.MaterialProduct.Id,
                                                              s.MaterialProduct.Name,
                                                              s.MaterialConstruction.Id,
