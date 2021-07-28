@@ -131,8 +131,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
-            var data = await DataUtil(repo, dbContext).GetTestData();
-            var result = await repo.UpdateFromOutputAsync(data.Id, 1);
+            //var data = await DataUtil(repo, dbContext).GetTestData();
+            
+            var model = new DyeingPrintingAreaInputProductionOrderModel()
+            {
+                ProductionOrderId = 1,
+                ProductionOrderNo = "no",
+                ProductionOrderOrderQuantity = 1,
+                CartNo = "1",
+                Buyer = "bb",
+                Construction = "ma",
+                Unit = "unit",
+                Color = "col",
+                Motif = "mot",
+                UomUnit = "uuni",
+                Balance = 2,
+                HasOutputDocument = false,
+                PackingInstruction = "ins",
+                ProductionOrderType = "type",
+                BalanceRemains = 2,
+                Area = "IM",
+                BuyerId = 1,
+                DyeingPrintingAreaOutputProductionOrderId = 1,
+                MaterialId = 1,
+                MaterialName = "name",
+                MaterialConstructionName = "a",
+                MaterialConstructionId = 1,
+                MaterialWidth = "1",
+                FinishWidth = "a",
+                ProcessTypeId = 1,
+                ProcessTypeName = "a",
+                YarnMaterialId = 1,
+                YarnMaterialName = "a",
+                MaterialOrigin = "a",
+                PackagingLength = 10,
+                DateIn = DateTimeOffset.Now,
+                InputQuantity = 1
+            };
+
+            repo.InsertAsync(model);
+            var result = await repo.UpdateFromOutputAsync(1, 1);
 
             Assert.NotEqual(0, result);
         }
@@ -173,8 +211,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
 
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
-            var data = await DataUtil(repo, dbContext).GetTestData();
-            var result = await repo.UpdateFromOutputAsync(data.Id, 2);
+            //var data = await DataUtil(repo, dbContext).GetTestData();
+            
+            var model = new DyeingPrintingAreaInputProductionOrderModel()
+            {
+                ProductionOrderId = 1,
+                ProductionOrderNo = "no",
+                ProductionOrderOrderQuantity = 1,
+                CartNo = "1",
+                Buyer = "bb",
+                Construction = "ma",
+                Unit = "unit",
+                Color = "col",
+                Motif = "mot",
+                UomUnit = "uuni",
+                Balance = 2,
+                HasOutputDocument = false,
+                PackingInstruction = "ins",
+                ProductionOrderType = "type",
+                BalanceRemains = 2,
+                Area = "IM",
+                BuyerId = 1,
+                DyeingPrintingAreaOutputProductionOrderId = 1,
+                MaterialId = 1,
+                MaterialName = "name",
+                MaterialConstructionName = "a",
+                MaterialConstructionId = 1,
+                MaterialWidth = "1",
+                FinishWidth = "a",
+                ProcessTypeId = 1,
+                ProcessTypeName = "a",
+                YarnMaterialId = 1,
+                YarnMaterialName = "a",
+                MaterialOrigin = "a",
+                PackagingLength = 10,
+                DateIn = DateTimeOffset.Now,
+                InputQuantity = 1
+            };
+
+            repo.InsertAsync(model);
+            var result = await repo.UpdateFromOutputAsync(1, 2);
 
             Assert.NotEqual(0, result);
         }
