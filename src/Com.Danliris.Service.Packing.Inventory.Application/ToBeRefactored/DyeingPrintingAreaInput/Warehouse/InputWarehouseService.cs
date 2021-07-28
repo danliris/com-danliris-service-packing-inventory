@@ -428,10 +428,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
                     }
                 }
+            }
 
-                //Insert to Input Repository
-                result = await _inputRepository.InsertAsync(model);
+            //Insert to Input Repository
+            result = await _inputRepository.InsertAsync(model);
 
+            //update Movement Repository
+            foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            {
+                var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id);
+                
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, itemModel.Id, item.ProductionOrder.Type, item.Grade, null,
@@ -440,28 +446,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
-
-                // if (item.Qty * (double)item.InputPackagingQty != item.InputQuantity) {
-                //result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, item.InputPackagingQty);
-                // }
-                //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(item.Id, true, DyeingPrintingArea.TERIMA);
-                
             }
-            // var listOfCode = viewModel.MappedWarehousesProductionOrders.Select(x => x.ProductPackingCode).ToList();
-            //Update from Output Only (Parent) Flag for HasNextAreaDocument == True (Because Not All Production Order Checked from UI)
-            //List<int> listOfDyeingPrintingAreaIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.OutputId).Distinct().ToList();
-            //foreach (var areaId in listOfDyeingPrintingAreaIds)
-            //{
-            //    result += await _outputRepository.UpdateFromInputNextAreaFlagParentOnlyAsync(areaId, true);
-            //}
-
-            //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
-            // List<int> listOfOutputProductionOrderIds = viewModel.MappedWarehousesProductionOrders.Select(o => o.Id).Distinct().ToList();
-            // foreach (var outputProductionOrderId in listOfOutputProductionOrderIds)
-            // {
-            //     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(outputProductionOrderId, true, DyeingPrintingArea.TERIMA);
-            // }
-
+            
             return result;
         }
 
