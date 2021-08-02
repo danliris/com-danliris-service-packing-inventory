@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryModel.cs" />
+    <Compile Remove="Models\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemModel.cs" />
+    <Compile Remove="Models\DyeingPrintingAreaMovement\OldDyeingPrintingAreaMovementModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Com.Moonlay.Models" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>

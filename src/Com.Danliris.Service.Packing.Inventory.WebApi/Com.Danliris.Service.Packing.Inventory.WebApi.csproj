@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AvalAreaNoteController.cs" />
+    <Compile Remove="Controllers\AvalInputController.cs" />
+    <Compile Remove="Controllers\InspectionBalanceIMController.cs" />
+    <Compile Remove="Controllers\InspectionDocumentController.cs" />
+    <Compile Remove="Controllers\InspectionMaterialController.cs" />
+    <Compile Remove="Controllers\PackingAreaNoteController.cs" />
+    <Compile Remove="Controllers\ShipmentInputController.cs" />
+    <Compile Remove="Controllers\ShippingAreaNoteController.cs" />
+    <Compile Remove="Controllers\TransitAreaNoteController.cs" />
+    <Compile Remove="Controllers\TransitInputController.cs" />
+    <Compile Remove="Helper\FormatResult.cs" />
+    <Compile Remove="Helper\ValidateModelStateAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Com.Moonlay.Data.EntityFrameworkCore" Version="1.1.0" />
+    <PackageReference Include="Com.Moonlay.NetCore.Lib" Version="1.0.0-alpha-20171102-001" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Application\Com.Danliris.Service.Packing.Inventory.Application.csproj" />
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Infrastructure\Com.Danliris.Service.Packing.Inventory.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
