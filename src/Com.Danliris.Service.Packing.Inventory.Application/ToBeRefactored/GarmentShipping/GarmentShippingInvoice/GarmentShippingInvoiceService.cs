@@ -292,7 +292,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
         }
 
-        public IQueryable<ShippingPackingListViewModel> ReadShippingPackingList(int month, int year)
+        public IQueryable<ShippingPackingListViewModel> ReadShippingPackingListBalance(int month, int year)
         {
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
@@ -300,7 +300,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id
-                        where b.TruckingDate.Month == month && b.TruckingDate.Year == year
+                        where b.TruckingDate.Month < month && b.TruckingDate.Year == year
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
@@ -309,6 +309,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceId = a.Id
                         };
             
+            return query.AsQueryable();
+
+        }
+        public IQueryable<ShippingPackingListViewModel> ReadShippingPackingList(int month, int year)
+        {
+            var queryInv = _repository.ReadAll();
+            var queryPL = plrepository.ReadAll();
+
+            var query = from a in queryInv
+                        join b in queryPL
+                        on a.PackingListId equals b.Id
+                        where b.TruckingDate.Month== month && b.TruckingDate.Year == year
+                        select new ShippingPackingListViewModel
+                        {
+                            BuyerAgentCode = a.BuyerAgentCode,
+                            BuyerAgentName = a.BuyerAgentName,
+                            Amount = a.TotalAmount,
+                            InvoiceId = a.Id
+                        };
+
             return query.AsQueryable();
 
         }
