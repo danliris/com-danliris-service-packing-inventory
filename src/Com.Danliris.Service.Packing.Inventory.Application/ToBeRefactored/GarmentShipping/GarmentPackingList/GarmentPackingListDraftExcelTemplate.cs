@@ -135,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var arraySubTotal = new Dictionary<String, double>();
             List<string> cartonNumbers = new List<string>();
 
-            
+            var indexHeader = 5;
             var index = 8;
             var afterSubTotalIndex = 0;
             foreach (var item in newItems.OrderBy(a => a.RONo))
@@ -144,29 +144,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var valueIndex = sizeIndex + 1;
 
                 #region Item
-                sheet.Cells["A5"].Value = "RO No";
-                sheet.Cells["A5:B5"].Merge = true;
-                sheet.Cells["C5"].Value = ":";
-                sheet.Cells["D5"].Value = item.RONo;
-                sheet.Cells["D5:H5"].Merge = true;
+                sheet.Cells[$"A{indexHeader}"].Value = "RO No";
+                sheet.Cells[$"A{indexHeader}:B{indexHeader}"].Merge = true;
+                sheet.Cells[$"C{indexHeader}"].Value = ":";
+                sheet.Cells[$"D{indexHeader}"].Value = item.RONo;
+                sheet.Cells[$"D{indexHeader}:H{indexHeader}"].Merge = true;
 
-                sheet.Cells["I5"].Value = "ARTICLE";
-                sheet.Cells["I5:O5"].Merge = true;
-                sheet.Cells["P5"].Value = ":";
-                sheet.Cells["Q5"].Value = item.Article;
-                sheet.Cells[$"Q5:{colNnw}5"].Merge = true;
+                sheet.Cells[$"I{indexHeader}"].Value = "ARTICLE";
+                sheet.Cells[$"I{indexHeader}:O{indexHeader}"].Merge = true;
+                sheet.Cells[$"P{indexHeader}"].Value = ":";
+                sheet.Cells[$"Q{indexHeader}"].Value = item.Article;
+                sheet.Cells[$"Q{indexHeader}:{colNnw}{indexHeader}"].Merge = true;
 
-                sheet.Cells["A6"].Value = "BUYER";
-                sheet.Cells["A6:B6"].Merge = true;
-                sheet.Cells["C6"].Value = ":";
-                sheet.Cells["D6"].Value = viewModel.BuyerAgent.Name;
-                sheet.Cells["D6:H6"].Merge = true;
+                sheet.Cells[$"A{indexHeader + 1}"].Value = "BUYER";
+                sheet.Cells[$"A{indexHeader + 1 }:B{indexHeader + 1}"].Merge = true;
+                sheet.Cells[$"C{indexHeader + 1}"].Value = ":";
+                sheet.Cells[$"D{indexHeader + 1}"].Value = viewModel.BuyerAgent.Name;
+                sheet.Cells[$"D{indexHeader + 1}:H{indexHeader + 1}"].Merge = true;
 
-                sheet.Cells["I6"].Value = "DESCRIPTION OF GOODS";
-                sheet.Cells["I6:O6"].Merge = true;
-                sheet.Cells["P6"].Value = ":";
-                sheet.Cells["Q6"].Value = item.ComodityDescription;
-                sheet.Cells[$"Q6:{colNnw}6"].Merge = true;
+                sheet.Cells[$"I{indexHeader + 1}"].Value = "DESCRIPTION OF GOODS";
+                sheet.Cells[$"I{indexHeader + 1}:O{indexHeader + 1}"].Merge = true;
+                sheet.Cells[$"P{indexHeader + 1}"].Value = ":";
+                sheet.Cells[$"Q{indexHeader + 1}"].Value = item.ComodityDescription;
+                sheet.Cells[$"Q{indexHeader + 1}:{colNnw}{indexHeader + 1}"].Merge = true;
                 #endregion
 
                 var sizes = new Dictionary<int, string>();
@@ -346,7 +346,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"{colNnw}{valueIndex}"].Value = string.Format("{0:n2}", detail.NetNetWeight);
                     sheet.Cells[$"{colNnw}{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                    if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2) < 0)
+                    if (cartons.FindIndex(c => c.Carton1 == detail.Carton1 && c.Carton2 == detail.Carton2 && c.Index == detail.Index) < 0)
                     {
                         cartons.Add(new GarmentPackingListDetailViewModel { Carton1 = detail.Carton1, Carton2 = detail.Carton2, CartonQuantity = ctnsQty });
                     }
@@ -413,7 +413,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"A{afterSubTotalIndex}:{colNnw}{afterSubTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
 
 
-                index = afterSubTotalIndex + 2;
+                index = afterSubTotalIndex + 3;
+                indexHeader = afterSubTotalIndex + 1;
             }
 
             #region GrandTotal

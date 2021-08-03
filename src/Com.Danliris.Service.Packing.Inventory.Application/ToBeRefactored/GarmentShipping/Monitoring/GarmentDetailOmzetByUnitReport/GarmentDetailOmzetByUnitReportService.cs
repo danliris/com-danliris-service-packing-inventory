@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                          join c in queryPL on a.PackingListId equals c.Id
                          where a.IsDeleted == false && b.IsDeleted == false
                                && b.UnitCode == (string.IsNullOrWhiteSpace(unit) ? b.UnitCode : unit)
-
+                               && a.PEBDate != DateTimeOffset.MinValue
                          select new GarmentDetailOmzetByUnitReportViewModel
                          {
                              Urutan = "A",
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     AmountIDR = i.AmountIDR,
                     ArticleStyle = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().Article,
                     ExpenditureGoodNo = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().ExpenditureGoodNo,
-                    QuantityInPCS = data1 == null || data1.Count == 0 ? 0 : data1.FirstOrDefault().TotalQuantity,
+                    QuantityInPCS = i.UOMUnit.Substring(0, 3) == "SET" || i.UOMUnit.Substring(0, 3) == "PAC" ? i.Quantity * 2 : i.Quantity,
                 });
 
             };

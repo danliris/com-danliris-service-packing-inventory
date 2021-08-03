@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MaterialConstruction MaterialConstruction { get; set; }
         // Lebar Material (SPP)
         public string MaterialWidth { get; set; }
+        public string MaterialOrigin { get; set; }
         // Lebar Finish (SPP)
         public string FinishWidth { get; set; }
         // Warna

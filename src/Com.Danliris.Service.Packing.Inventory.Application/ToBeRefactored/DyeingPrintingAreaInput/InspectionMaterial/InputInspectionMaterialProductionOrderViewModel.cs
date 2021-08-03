@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Grade { get; set; }
         public double InitLength { get; set; }
         public string BonNo { get; set; }
+        public string MaterialOrigin { get; set; }
         //public double AvalALength { get; set; }
         //public double AvalBLength { get; set; }
         //public double AvalConnectionLength { get; set; }

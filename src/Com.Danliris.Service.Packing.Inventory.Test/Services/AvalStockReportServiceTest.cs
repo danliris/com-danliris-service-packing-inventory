@@ -53,7 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                     "unit", 1, 1, "type", ViewModel.InAvalQuantity, ViewModel.InAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -71,7 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -80,7 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.OutAvalQuantity, ViewModel.OutAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -89,7 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "DL", "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "DL", "GUDANG AVAL", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -107,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "DL", "GUDANG AVAL", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -116,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-1), "DL", "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -124,7 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "DL", "GUDANG AVAL", "TRANSFORM", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         {
             get
             {
-                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
+                return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddDays(-2), "DL", "GUDANG AVAL", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
                      "unit", 1, 1, "type", ViewModel.StartAvalQuantity, ViewModel.StartAvalWeightQuantity, ViewModel.AvalType);
             }
         }
