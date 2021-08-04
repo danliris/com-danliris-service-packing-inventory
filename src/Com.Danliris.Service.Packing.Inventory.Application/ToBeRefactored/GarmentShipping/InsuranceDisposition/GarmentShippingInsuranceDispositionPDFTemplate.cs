@@ -109,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellCurrency.Phrase = new Phrase("$", normal_font);
                 tableBody.AddCell(cellCurrency);
 
-                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", (item.amount * viewModel.rate) / 100), normal_font);
+                cellAmount.Phrase = new Phrase(string.Format("{0:n2}", (item.amount*viewModel.rate)/100), normal_font);
                 tableBody.AddCell(cellAmount);
             }
 

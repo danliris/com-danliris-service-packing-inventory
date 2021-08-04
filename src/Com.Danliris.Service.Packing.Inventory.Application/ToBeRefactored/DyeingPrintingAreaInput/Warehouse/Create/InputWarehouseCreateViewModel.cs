@@ -61,11 +61,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var detail in item)
                     {
                         DetailErrors += "{";
-                        if (detail.PreviousOutputPackagingQty != detail.InputPackagingQty)
-                        {
-                            Count++;
-                            DetailErrors += $"InputPackagingQty: 'Qty Packing harus berjumlah {detail.PreviousOutputPackagingQty}!',";
-                        }
+                        //if (detail.PreviousOutputPackagingQty != detail.InputPackagingQty)
+                        //{
+                        //    Count++;
+                        //    DetailErrors += $"InputPackagingQty: 'Qty Packing harus berjumlah {detail.PreviousOutputPackagingQty}!',";
+                        //}
 
                         DetailErrors += "}, ";
                     }

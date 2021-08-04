@@ -149,6 +149,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingLocalPriceCuttingNoteItemModel> GarmentShippingLocalPriceCuttingNoteItems { get; set; }
         public DbSet<GarmentDebiturBalanceModel> GarmentDebiturBalances { get; set; }
 
+        public DbSet<GarmentDebiturBalanceModel> GarmentDebiturBalances { get; set; }
+
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
         public DbSet<WarpTypeModel> IPWarpTypes { get; set; }
