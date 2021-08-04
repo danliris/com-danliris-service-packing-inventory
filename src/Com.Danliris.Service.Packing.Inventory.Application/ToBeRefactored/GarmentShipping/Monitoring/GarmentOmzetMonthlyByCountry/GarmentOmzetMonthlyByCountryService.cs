@@ -1,6 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList; 
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var newQ = (from a in queryPL
                         join b in query on a.Id equals b.PackingListId
                         join c in queryitem on b.Id equals c.GarmentShippingInvoiceId
-      
+
                         select new GarmentOmzetMonthlyByCountryListViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             UOMUnit = c.UomUnit,
                             Amount = c.Amount, 
                             Quantity = c.Quantity,
-                        }).OrderBy(o => o.Destination).ThenBy(o => o.BuyerName).ThenBy(o => o.TruckingDate).ThenBy(o => o.InvoiceNo);              
+                        }).OrderBy(o => o.Destination).ThenBy(o => o.BuyerName).ThenBy(o => o.TruckingDate).ThenBy(o => o.InvoiceNo);
 
             var garmentomzets = newQ.ToList()
                 .GroupBy(gmtomzt => {
@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var Query = GetData(dateFrom, dateTo, offset);
             var data = Query.ToList();
             DataTable result = new DataTable();
-           
+
             result.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "N E G A R A", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NAMA BUYER", DataType = typeof(string) });
@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "GarmentOmzet") }, true);
-      
+
             return excel;
         }
 

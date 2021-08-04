@@ -337,12 +337,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
         }
 
+
         private double GetBalance(OutputWarehouseProductionOrderViewModel productionOrder) {
             var splitedCode = productionOrder.ProductPackingCode.Split(",");
             var productPackingCodeCount = splitedCode.Count();
 
             var balance = productPackingCodeCount * productionOrder.Quantity;
-            
             return balance;
         }
 
@@ -362,7 +362,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         s.Date.Date == viewModel.Date.Date &&
                                                                                         s.Shift == viewModel.Shift &&
                                                                                         s.Type == DyeingPrintingArea.OUT);
-                             
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area != null && s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
@@ -464,7 +463,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.FabricPackingId,
                                                                 s.ProductPackingCode,
                                                                 s.HasPrintingProductPacking,
-                                                                s.Quantity, 
+                                                                s.Quantity,
                                                                 s.FinishWidth,
                                                                 s.DateIn,
                                                                 viewModel.Date, s.DestinationBuyerName,
@@ -1077,7 +1076,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 HasPrintingProductPacking = s.HasPrintingProductPacking,
                 //DeliveryOrderSalesNo = s.DeliveryOrderSalesNo,
                 DateIn = s.DateIn,
-                
+
             });
 
             return data.ToList();
@@ -2099,7 +2098,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     DyeingPrintingAreaInputProductionOrderId = p.Id,
                     DateIn = p.DateIn,
                     InventoryType = p.InventoryType
-                    
+
                 }).ToList()
 
             });
