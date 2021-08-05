@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     Code = "aa",
                     SwiftCode = "aa",
                     AccountNumber = "aa",
-                    
+
                 };
             }
         }
@@ -85,17 +85,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             {
                 return new GarmentShippingInsuranceDispositionViewModel()
                 {
-                    paymentDate=DateTimeOffset.Now,
-                    policyType="Piutang",
-                    dispositionNo="dispo",
-                    rate=1,
-                    insurance=new Insurance
+                    paymentDate = DateTimeOffset.Now,
+                    policyType = "Piutang",
+                    dispositionNo = "dispo",
+                    rate = 1,
+                    insurance = new Insurance
                     {
-                        Id=1,
-                        Name="name",
-                        Code="code"
+                        Id = 1,
+                        Name = "name",
+                        Code = "code"
                     },
-                    bankName="sda",
+                    bankName = "sda",
                     items = new List<GarmentShippingInsuranceDispositionItemViewModel>() {
                         new GarmentShippingInsuranceDispositionItemViewModel()
                         {

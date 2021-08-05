@@ -85,7 +85,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellCenter.Phrase = new Phrase("Premi", normal_font);
             tableBody.AddCell(cellCenter);
 
-            foreach(var item in viewModel.items)
+            foreach (var item in viewModel.items)
             {
                 cellLeft.Phrase = new Phrase(item.policyNo, normal_font);
                 cellLeft.Colspan = 1;
@@ -142,7 +142,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable tableBank = new PdfPTable(3);
             tableBank.WidthPercentage = 80;
-            tableBank.SetWidths(new float[] { 3f, 0.5f,14f });
+            tableBank.SetWidths(new float[] { 3f, 0.5f, 14f });
 
 
             cellLeft.Phrase = new Phrase("AccountName", normal_font);

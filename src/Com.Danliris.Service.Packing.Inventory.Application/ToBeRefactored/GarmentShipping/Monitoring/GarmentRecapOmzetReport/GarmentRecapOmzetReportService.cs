@@ -34,7 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             itemrepository = serviceProvider.GetService<IGarmentShippingInvoiceItemRepository>();
-             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         public List<GarmentRecapOmzetReportViewModel> GetData(DateTime? dateFrom, DateTime? dateTo, int offset)
@@ -91,8 +91,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 UOMUnit = d.Key.UOMUnit,
                 CurrencyCode = d.FirstOrDefault().CurrencyCode,
                 Omzet = d.FirstOrDefault().Omzet,
-                Amount = d.Sum(x => x.Amount),   
-                
+                Amount = d.Sum(x => x.Amount),
+
             }).ToList();
 
             var currencyFilters = newQ
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var data in newQ)
             {
-///                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+                ///                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
                 rate = currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault();
                 data.Rate = rate;
                 data.AmountIDR = (decimal)rate * data.Amount;
@@ -115,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return newQ;
         }
 
-        public ListResult<GarmentRecapOmzetReportViewModel> GetReportData( DateTime? dateFrom, DateTime? dateTo, int offset)
+        public ListResult<GarmentRecapOmzetReportViewModel> GetReportData(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var data = GetData(dateFrom, dateTo, offset);
             var total = data.Count;
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentRecapOmzetReportViewModel>(data, 1, total, total);
         }
 
-        public MemoryStream GenerateExcel( DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
@@ -177,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                     sheet.Cells[$"A3:L3"].Style.Font.Bold = true;
-                                       
+
                     #endregion
                     sheet.Cells["A5"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
 
@@ -216,7 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string InvDate = d.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : d.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"));
                     string PEBDate = d.PEBDate == DateTimeOffset.MinValue ? "-" : d.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd/MM/yyyy", new CultureInfo("id-ID"));
 
-                    result.Rows.Add(index, TrckDate, d.BuyerAgentName, d.Destination, d.BuyerAgentCode, d.ComodityName, d.InvoiceNo, InvDate, d.PEBNo, 
+                    result.Rows.Add(index, TrckDate, d.BuyerAgentName, d.Destination, d.BuyerAgentCode, d.ComodityName, d.InvoiceNo, InvDate, d.PEBNo,
                                     PEBDate, d.Quantity, d.UOMUnit, d.CurrencyCode, d.Amount, d.Rate, d.AmountIDR);
                 }
                 //
