@@ -72,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
-        public void ReadShippingPackingListNow()
+        public void ReadShippingPackingList()
         {
 
             var model1 = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "",
