@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public double Balance { get; set; }
-        public double InputQuantity { get; private set; }
+        public double InputQuantity { get; set; }
         public bool HasOutputDocument { get; set; }
         public bool IsChecked { get; set; }
         public string PackingInstruction { get; set; }
@@ -62,8 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
-        public decimal InputPackagingQty { get; private set; }
-        public double PackagingLength { get; private set; }
+        public decimal InputPackagingQty { get; set; }
+        public double PackagingLength { get; set; }
 
         public string Area { get; set; }
 
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int DyeingPrintingAreaInputId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
-        public DateTimeOffset DateIn { get; private  set; }
+        public DateTimeOffset DateIn { get;  set; }
         public DateTimeOffset DateOut { get; private set; }
 
         public DyeingPrintingAreaInputProductionOrderModel()
