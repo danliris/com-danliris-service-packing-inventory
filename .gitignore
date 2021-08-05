@@ -328,3 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+.vscode/
+src/Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.json
+src/Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.Development.json

@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="15.0.5" />
+    <Compile Remove="Com\**" />
+    <Compile Remove="Master\DyeingPrinting\**" />
+    <Compile Remove="ToBeRefactored\AreaNote\**" />
+    <Compile Remove="ToBeRefactored\AvalInput\**" />
+    <Compile Remove="ToBeRefactored\InspectionBalanceIM\**" />
+    <Compile Remove="ToBeRefactored\InspectionDocumentReport\**" />
+    <Compile Remove="ToBeRefactored\InspectionMaterial\**" />
+    <Compile Remove="ToBeRefactored\ShipmentInput\**" />
+    <Compile Remove="ToBeRefactored\TransitInput\**" />
+    <EmbeddedResource Remove="Com\**" />
+    <EmbeddedResource Remove="Master\DyeingPrinting\**" />
+    <EmbeddedResource Remove="ToBeRefactored\AreaNote\**" />
+    <EmbeddedResource Remove="ToBeRefactored\AvalInput\**" />
+    <EmbeddedResource Remove="ToBeRefactored\InspectionBalanceIM\**" />
+    <EmbeddedResource Remove="ToBeRefactored\InspectionDocumentReport\**" />
+    <EmbeddedResource Remove="ToBeRefactored\InspectionMaterial\**" />
+    <EmbeddedResource Remove="ToBeRefactored\ShipmentInput\**" />
+    <EmbeddedResource Remove="ToBeRefactored\TransitInput\**" />
+    <None Remove="Com\**" />
+    <None Remove="Master\DyeingPrinting\**" />
+    <None Remove="ToBeRefactored\AreaNote\**" />
+    <None Remove="ToBeRefactored\AvalInput\**" />
+    <None Remove="ToBeRefactored\InspectionBalanceIM\**" />
+    <None Remove="ToBeRefactored\InspectionDocumentReport\**" />
+    <None Remove="ToBeRefactored\InspectionMaterial\**" />
+    <None Remove="ToBeRefactored\ShipmentInput\**" />
+    <None Remove="ToBeRefactored\TransitInput\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ToBeRefactored\DyeingPrintingAreaInput\InspectionMaterial\ProductionOrderIndexViewModel.cs" />
+    <Compile Remove="ToBeRefactored\Utilities\ValidatorWithFullIndexerPath.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.3" />
+    <PackageReference Include="MlkPwgen" Version="0.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Infrastructure\Com.Danliris.Service.Packing.Inventory.Infrastructure.csproj" />
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.Data\Com.Danliris.Service.Packing.Inventory.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Master\Greige\" />
+    <Folder Include="Master\Yarn\" />
+    <Folder Include="InventoryPacking\" />
+  </ItemGroup>
+
+</Project>

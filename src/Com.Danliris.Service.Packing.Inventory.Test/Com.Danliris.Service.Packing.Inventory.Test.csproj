@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\AvalAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\AvalInputControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionBalanceIMControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionDocumentControllerTest.cs" />
+    <Compile Remove="Controllers\InspectionMaterialControllerTest.cs" />
+    <Compile Remove="Controllers\PackingAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\ShipmentInputControllerTest.cs" />
+    <Compile Remove="Controllers\ShippingAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\TransitAreaNoteControllerTest.cs" />
+    <Compile Remove="Controllers\TransitInputControllerTest.cs" />
+    <Compile Remove="DataUtils\DyeingPrintingAreaMovementHistoryDataUtil.cs" />
+    <Compile Remove="DataUtils\DyeingPrintingAreaOutputAvalItemDataUtil.cs" />
+    <Compile Remove="DataUtils\OldDyeingPrintingAreaMovementDataUtil.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaMovementHistoryRepositoryTest.cs" />
+    <Compile Remove="Repositories\DyeingPrintingAreaOutputAvalItemRepositoryTest.cs" />
+    <Compile Remove="Repositories\OldDyeingPrintingAreaMovementRepositoryTest.cs" />
+    <Compile Remove="Services\AvalAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\AvalInputServiceTest.cs" />
+    <Compile Remove="Services\InspectionMaterialServiceTest.cs" />
+    <Compile Remove="Services\PackingAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\ShipmentInputServiceTest.cs" />
+    <Compile Remove="Services\ShippingAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\TransitAreaNoteServiceTest.cs" />
+    <Compile Remove="Services\TransitInputServiceTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="MockQueryable.Moq" Version="1.0.0" />
+    <PackageReference Include="Moq" Version="4.14.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Danliris.Service.Packing.Inventory.WebApi\Com.Danliris.Service.Packing.Inventory.WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\NewFolder\" />
+    <Folder Include="Services\QueueService\" />
+  </ItemGroup>
+
+</Project>
