@@ -310,7 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             TruckingDate = b.TruckingDate
                         };
 
-            return query.AsQueryable();
+             return query.AsQueryable();
         }
 
         public IQueryable<ShippingPackingListViewModel> ReadShippingPackingListNow(int month, int year)
