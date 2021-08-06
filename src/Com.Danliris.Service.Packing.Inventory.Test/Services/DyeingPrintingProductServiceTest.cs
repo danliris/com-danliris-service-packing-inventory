@@ -110,7 +110,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     {
                         Id = 1,
                         Name = "s"
-                    }
+                    },
+                    Grade = "A",
+                    DocumentNo = "T1" 
                 };
             }
         }
