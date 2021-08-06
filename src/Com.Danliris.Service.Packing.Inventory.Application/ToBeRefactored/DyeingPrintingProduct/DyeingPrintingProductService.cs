@@ -90,7 +90,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     Quantity = s.PackagingQty,
                     ProductPackingLength = s.PackagingLength,
-                    ProductPackingType = s.PackagingUnit
+                    ProductPackingType = s.PackagingUnit,
+                    DocumentNo = s.DocumentNo,
+                    Grade = s.Grade
                 });
 
                 //int result = 0;
