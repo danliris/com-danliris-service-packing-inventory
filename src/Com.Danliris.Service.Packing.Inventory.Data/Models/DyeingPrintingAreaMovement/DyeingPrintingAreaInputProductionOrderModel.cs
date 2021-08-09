@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string Motif { get; set; }
         public string UomUnit { get; set; }
         public double Balance { get; set; }
-        public double InputQuantity { get; private set; }
+        public double InputQuantity { get; set; }
         public bool HasOutputDocument { get; set; }
         public bool IsChecked { get; set; }
         public string PackingInstruction { get; set; }
@@ -62,8 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
         public decimal PackagingQty { get; set; }
-        public decimal InputPackagingQty { get; private set; }
-        public double PackagingLength { get; private set; }
+        public decimal InputPackagingQty { get; set; }
+        public double PackagingLength { get; set; }
 
         public string Area { get; set; }
 
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int DyeingPrintingAreaInputId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
-        public DateTimeOffset DateIn { get; private  set; }
+        public DateTimeOffset DateIn { get; set; }
         public DateTimeOffset DateOut { get; private set; }
 
         public DyeingPrintingAreaInputProductionOrderModel()
@@ -146,7 +146,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin)
-           
+
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -563,7 +563,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="hasPrintingProductPacking"></param>
         /// <param name="materialOrigin"></param>
         /// 
-        
+
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument,
             string remark, string productionMachine, string grade, string status, double balanceRemains, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName,
@@ -591,7 +591,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductionMachine = productionMachine;
             Grade = grade;
             Status = status;
-           
+
             Area = area;
 
             BalanceRemains = balanceRemains;
@@ -713,7 +713,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
             bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputQtyPacking, DateTimeOffset dateIn, string finishWidth)
-            
+
         {
             AvalType = avalType;
             AvalCartNo = avalCartNo;
