@@ -116,5 +116,110 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var response = controller.GetExportSalesDebtor(1, 1);
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task GetPLForDebtorCard()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentShippingInvoiceViewModel());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListViewModel());
+            var packingListService = packingListServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            var response = controller.GetPLForDebtorCard(1, 1, It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task GetPLForDebtorCardNow()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentShippingInvoiceViewModel());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListViewModel());
+            var packingListService = packingListServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            var response = controller.GetPLForDebtorCardNow(1, 1, It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Error_GetPLForDebtorCardNow()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock
+                .Setup(s => s.ReadShippingPackingListForDebtorCardNow(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListViewModel());
+            var packingListService = packingListServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            var response = controller.GetPLForDebtorCardNow(1, 1, "aa");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+        [Fact]
+        public void Should_Error_GetPLForDebtorCard()
+        {
+            var serviceMock = new Mock<IGarmentShippingInvoiceService>();
+            serviceMock
+                .Setup(s => s.ReadShippingPackingListForDebtorCard(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var packingListServiceMock = new Mock<IGarmentPackingListService>();
+            packingListServiceMock
+                .Setup(s => s.ReadById(It.IsAny<int>()))
+                .ReturnsAsync(new GarmentPackingListViewModel());
+            var packingListService = packingListServiceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, packingListService, identityProvider, validateService);
+            var response = controller.GetPLForDebtorCard(1, 1, "aa");
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
