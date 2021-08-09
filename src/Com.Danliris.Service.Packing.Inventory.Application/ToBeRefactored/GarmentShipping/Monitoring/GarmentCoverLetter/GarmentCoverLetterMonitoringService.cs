@@ -63,6 +63,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Phone = a.Phone,
                             TotalCarton = a.CartoonQuantity,
                             ContainerNo = a.ContainerNo,
+                            ShippingSeal = a.ShippingSeal,
+                            DLSeal = a.DLSeal,
                             PCSQuantity = a.PCSQuantity,
                             SETSQuantity = a.SETSQuantity,
                             PACKQuantity = a.PACKQuantity,
@@ -103,6 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Phone", DataType = typeof(string) });
 
             result.Columns.Add(new DataColumn() { ColumnName = "Container No", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Shipping Seal", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Dan Liris Seal", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Total Karton", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Quantity PCS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Quantity SETS", DataType = typeof(string) });
@@ -114,7 +118,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Unit", DataType = typeof(string) });
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
             {
                 int index = 0;
@@ -134,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string CTNS = string.Format("{0:N2}", d.TotalCarton);
                     
                     result.Rows.Add(index, d.InvoiceNo, CLDate, EstDate, BookDate, d.EMKLName, d.ForwarderName, d.ShippingStaffName, Agent, d.Destination, d.Address,
-                                    d.PIC, d.ATTN, d.Phone, d.ContainerNo, CTNS, PcsQ, SetQ, PckQ, d.Truck, d.PlateNumber, d.DriverName, d.UnitName);
+                                    d.PIC, d.ATTN, d.Phone, d.ContainerNo, d.ShippingSeal, d.DLSeal, CTNS, PcsQ, SetQ, PckQ, d.Truck, d.PlateNumber, d.DriverName, d.UnitName);
                 }
             }
           

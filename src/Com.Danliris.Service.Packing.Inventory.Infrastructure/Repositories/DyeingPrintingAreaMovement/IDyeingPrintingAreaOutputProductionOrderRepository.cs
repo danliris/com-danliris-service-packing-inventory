@@ -18,5 +18,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdateFromInputAsync(IEnumerable<int> ids, bool hasNextAreaDocument, string nextAreaInputStatus);
         Task<int> UpdateHasSalesInvoice(int id, bool hasSalesInvoice);
         Task<int> UpdateHasPrintingProductPacking(int id, bool hasPrintingProductPacking);
+        Task<int> UpdateOutputBalancePackingQtyFromInput(int id, decimal inputPackingQty);
     }
 }

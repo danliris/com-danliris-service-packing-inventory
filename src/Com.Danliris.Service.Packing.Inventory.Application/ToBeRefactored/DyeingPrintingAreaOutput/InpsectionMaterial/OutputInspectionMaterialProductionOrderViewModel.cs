@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int DyeingPrintingAreaInputProductionOrderId { get; set; }
         public DateTimeOffset DateIn { get; set; }
         public DateTimeOffset DateOut { get; set; }
+        public string MaterialOrigin { get; set; }
 
         public ICollection<OutputInspectionMaterialProductionOrderDetailViewModel> ProductionOrderDetails { get; set; }
     }

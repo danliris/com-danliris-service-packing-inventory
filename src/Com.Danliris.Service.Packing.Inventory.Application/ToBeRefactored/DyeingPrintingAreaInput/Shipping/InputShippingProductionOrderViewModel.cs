@@ -60,5 +60,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset DateOut { get; set; }
         public string BonNo { get; set; }
         public string InventoryType { get; set; }
+        public string MaterialOrigin { get; set; }
     }
 }

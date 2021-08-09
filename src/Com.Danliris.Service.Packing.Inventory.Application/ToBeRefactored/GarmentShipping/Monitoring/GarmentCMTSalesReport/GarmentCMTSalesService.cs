@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             carepository = serviceProvider.GetService<IGarmentShippingCreditAdviceRepository>();
             itemrepository = serviceProvider.GetService<IGarmentShippingInvoiceItemRepository>();
-             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         public List<GarmentCMTSalesViewModel> GetData(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
@@ -47,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var quaryInvItem = itemrepository.ReadAll();
             var queryPL = plrepository.ReadAll();
             var queryCA = carepository.ReadAll();
-            
+
 
 
             if (!string.IsNullOrWhiteSpace(buyerAgent))
@@ -59,32 +59,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
 
-            queryInv = queryInv.Where(w => w.PEBDate.AddHours(offset).Date >= DateFrom.Date && w.PEBDate.AddHours(offset).Date <= DateTo.Date);
-            
+            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
+
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
 
             var Query = (from a in queryInv
-                        join b in queryPL on a.PackingListId equals b.Id
-                        join c in queryCA on a.Id equals c.InvoiceId into dd
-                        from CA in dd.DefaultIfEmpty()
-                        join d in quaryInvItem on a.Id equals d.GarmentShippingInvoiceId
-                        where a.IsDeleted == false && b.IsDeleted == false && CA.IsDeleted == false
+                         join b in queryPL on a.PackingListId equals b.Id
+                         join c in queryCA on a.Id equals c.InvoiceId into dd
+                         from CA in dd.DefaultIfEmpty()
+                         join d in quaryInvItem on a.Id equals d.GarmentShippingInvoiceId
+                         where a.IsDeleted == false && b.IsDeleted == false && CA.IsDeleted == false
+                         && a.PEBDate != DateTimeOffset.MinValue && d.CMTPrice > 0
 
-                        && d.CMTPrice > 0
-
-                        select new GarmentCMTSalesViewModel
-                        {
-                            InvoiceNo = a.InvoiceNo,
-                            InvoiceDate = a.InvoiceDate,
-                            BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
-                            PEBDate = a.PEBDate,
-                            FOB = a.TotalAmount,
-                            FAB = Convert.ToDecimal(d.Quantity) * d.CMTPrice,
-                            ToBePaid = a.AmountToBePaid,
-                            CurrencyCode = d.CurrencyCode
-                        }).ToList();
+                         select new GarmentCMTSalesViewModel
+                         {
+                             InvoiceNo = a.InvoiceNo,
+                             InvoiceDate = a.InvoiceDate,
+                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
+                             PEBDate = a.PEBDate,
+                             FOB = a.TotalAmount,
+                             FAB = Convert.ToDecimal((d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity)) * (d.Price - d.CMTPrice),
+                             ToBePaid = a.AmountToBePaid,
+                             CurrencyCode = d.CurrencyCode,
+                             Quantity = d.UomUnit != "PCS" ? d.Quantity * 2 : d.Quantity
+                         }).ToList();
 
             var newQ = Query.GroupBy(s => new { s.InvoiceNo }).Select(d => new GarmentCMTSalesViewModel()
             {
@@ -99,7 +99,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 FAB = d.Sum(x => x.FAB),
                 ToBePaid = d.FirstOrDefault().ToBePaid,
-                CurrencyCode = d.FirstOrDefault().CurrencyCode
+                CurrencyCode = d.FirstOrDefault().CurrencyCode,
+                Quantity = d.Sum(x=>x.Quantity)
             }).ToList();
 
 
@@ -114,12 +115,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var data in newQ)
             {
-                rate =Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
                 //rate = 0;
                 data.Rate = rate;
-                data.FOBIdr= rate * data.FOB;
+                data.FOBIdr = rate * data.FOB;
                 //data.FAB = data.Quantity * data.CMTPrice;
-                data.FABIdr = rate* data.FAB;
+                data.FABIdr = rate * data.FAB;
                 data.ToBePaidIdr = rate * data.ToBePaid;
             }
 
@@ -128,20 +129,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return newQ;
         }
 
-        public ListResult<GarmentCMTSalesViewModel> GetReportData(string buyerAgent,  DateTime? dateFrom, DateTime? dateTo, int offset)
+        public ListResult<GarmentCMTSalesViewModel> GetReportData(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var data = GetData(buyerAgent,  dateFrom, dateTo, offset);
+            var data = GetData(buyerAgent, dateFrom, dateTo, offset);
             var total = data.Count;
 
             return new ListResult<GarmentCMTSalesViewModel>(data, 1, total, total);
         }
 
-        public MemoryStream GenerateExcel(string buyerAgent,  DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
-            var Query = GetData(buyerAgent,  dateFrom, dateTo, offset);
+            var Query = GetData(buyerAgent, dateFrom, dateTo, offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
@@ -179,7 +180,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A2:L2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A2:L2"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                     sheet.Cells[$"A2:L2"].Style.Font.Bold = true;
-                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" :(Query.Count() == 0 ? "-" : Query.FirstOrDefault().BuyerAgentName) );
+                    sheet.Cells[$"A3:L3"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().BuyerAgentName));
                     sheet.Cells[$"A3:L3"].Merge = true;
                     sheet.Cells[$"A3:L3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A3:L3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
