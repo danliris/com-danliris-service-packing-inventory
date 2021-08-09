@@ -87,7 +87,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     {
                         Id = 1,
                         Name = "s"
-                    }
+                    },
+                    DocumentNo = "T1",
+                    Grade ="A"
                 };
             }
         }
