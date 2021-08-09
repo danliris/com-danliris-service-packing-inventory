@@ -329,7 +329,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             BuyerAgentName = a.BuyerAgentName,
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
-                            TruckingDate = b.TruckingDate
+                            TruckingDate = b.TruckingDate,
+                            InvoiceNo = b.InvoiceNo
                         };
 
             return query.AsQueryable();
@@ -352,7 +353,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
-                            Date = b.Date
+                            Date = b.Date,
+                            InvoiceNo= b.InvoiceNo
                         };
 
             return query.AsQueryable();
