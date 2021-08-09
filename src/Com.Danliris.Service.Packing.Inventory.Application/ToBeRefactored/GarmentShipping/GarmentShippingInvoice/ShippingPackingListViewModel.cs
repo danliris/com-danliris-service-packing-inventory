@@ -11,5 +11,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string BuyerAgentName { get; set; }
         public decimal Amount { get; set; }
         public DateTimeOffset TruckingDate { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

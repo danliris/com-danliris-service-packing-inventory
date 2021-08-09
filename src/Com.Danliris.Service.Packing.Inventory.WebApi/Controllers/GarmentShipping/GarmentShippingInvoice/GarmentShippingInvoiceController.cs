@@ -255,5 +255,41 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("packing-list-for-debtor-card")]
+        public IActionResult GetPLForDebtorCard(int month, int year, string buyer)
+        {
+            try
+            {
+                var data = _service.ReadShippingPackingListForDebtorCard(month, year, buyer);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("packing-list-for-debtor-card-now")]
+        public IActionResult GetPLForDebtorCardNow(int month, int year, string buyer)
+        {
+            try
+            {
+                var data = _service.ReadShippingPackingListForDebtorCardNow(month, year, buyer);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
