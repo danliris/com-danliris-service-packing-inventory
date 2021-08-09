@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
-            
+
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
         }
@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> InsertAsync(DyeingPrintingAreaOutputProductionOrderModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
-            
+
             _dbSet.Add(model);
 
             return _dbContext.SaveChangesAsync();
@@ -69,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetArea(model.Area, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDestinationArea(model.DestinationArea, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasNextAreaDocument(model.HasNextAreaDocument, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetNextAreaInputStatus(model.NextAreaInputStatus, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyer(model.BuyerId, model.Buyer, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
@@ -106,8 +107,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> UpdateFromInputNextAreaFlagAsync(int id, bool hasNextAreaDocument)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
-            
-            if(modelToUpdate != null)
+
+            if (modelToUpdate != null)
             {
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
             }
@@ -122,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             if (modelToUpdate != null)
             {
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetNextAreaInputStatus(nextAreaInputStatus,_identityProvider.Username, UserAgent);
+                modelToUpdate.SetNextAreaInputStatus(nextAreaInputStatus, _identityProvider.Username, UserAgent);
             }
 
             return _dbContext.SaveChangesAsync();
@@ -168,5 +169,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> UpdateOutputBalancePackingQtyFromInput(int Id, decimal inputPackingQty)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == Id);
+            if (modelToUpdate != null)
+            {
+                var newQtyPacking = modelToUpdate.PackagingQty - inputPackingQty;
+                modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
+
+                var newBalance = modelToUpdate.PackagingLength * (double)newQtyPacking;
+                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+            }
+            return _dbContext.SaveChangesAsync();
+        }
+
     }
 }
