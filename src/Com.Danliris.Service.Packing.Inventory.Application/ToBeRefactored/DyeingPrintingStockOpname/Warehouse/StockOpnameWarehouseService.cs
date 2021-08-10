@@ -571,7 +571,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingType = s.PackagingUnit,
                     Grade = s.Grade,
                     Unit = s.Unit,
-                    Buyer = s.Buyer
+                    Buyer = s.Buyer,
+                    ProcessType = new ProcessType()
+                    {
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    }
                 }).FirstOrDefault();
 
                 if (packing == null)
@@ -618,7 +623,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingType = s.PackagingUnit,
                         Grade = s.Grade,
                         Unit = s.Unit,
-                        Buyer = s.Buyer
+                        Buyer = s.Buyer,
+                        ProcessType = new ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        }
                     }).FirstOrDefault();
                 }
 
@@ -656,8 +666,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Unit = stockOpnameForm.UomUnit
                         },
-                        PackagingLength = stockOpnameForm.ProductPackingLength
+                        PackagingLength = stockOpnameForm.ProductPackingLength,
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Code = stockOpnameForm.MaterialConstruction.Code,
+                            Id = stockOpnameForm.MaterialConstruction.Id,
+                            Name = stockOpnameForm.MaterialConstruction.Name
+                        },
+                        ProcessType = new ProcessType()
+                        {
+                            Id = stockOpnameForm.ProcessType.Id,
+                            Name = stockOpnameForm.ProcessType.Name
+                        },
+                        Material = new Material()
+                        {
+                            Code = stockOpnameForm.Material.Code,
+                            Name = stockOpnameForm.Material.Name,
+                            Id = stockOpnameForm.Material.Id
+                        },
+                        YarnMaterial = new YarnMaterial()
+                        {
+                            Id = stockOpnameForm.YarnMaterial.Id,
+                            Name = stockOpnameForm.YarnMaterial.Name
+                        }
                     };
+
+                    items.Add(item);
                 }
 
                 var createForm = new StockOpnameWarehouseViewModel()
