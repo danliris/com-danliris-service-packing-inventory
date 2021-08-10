@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int DyeingPrintingAreaInputId { get; set; }
         public int DyeingPrintingAreaOutputProductionOrderId { get; set; }
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
-        public DateTimeOffset DateIn { get; set; }
+        public DateTimeOffset DateIn { get;  set; }
         public DateTimeOffset DateOut { get; private set; }
 
         public DyeingPrintingAreaInputProductionOrderModel()

@@ -57,6 +57,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentDebiturBalance;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDebiturBalance;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -120,9 +122,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingNoteItemModel> GarmentShippingNoteItems { get; set; }
 
 
-		public DbSet<GarmentShippingInvoiceModel> GarmentShippingInvoices { get; set; }
-		public DbSet<GarmentShippingInvoiceItemModel> GarmentShippingInvoiceItems { get; set; }
-		public DbSet<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustments { get; set; }
+        public DbSet<GarmentShippingInvoiceModel> GarmentShippingInvoices { get; set; }
+        public DbSet<GarmentShippingInvoiceItemModel> GarmentShippingInvoiceItems { get; set; }
+        public DbSet<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustments { get; set; }
         public DbSet<GarmentShippingInvoiceUnitModel> GarmentShippingInvoiceUnitPercentages { get; set; }
 
         public DbSet<GarmentShippingAmendLetterOfCreditModel> GarmentShippingAmendLetterOfCredits { get; set; }
@@ -145,6 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalPriceCuttingNoteModel> GarmentShippingLocalPriceCuttingNotes { get; set; }
         public DbSet<GarmentShippingLocalPriceCuttingNoteItemModel> GarmentShippingLocalPriceCuttingNoteItems { get; set; }
+        public DbSet<GarmentDebiturBalanceModel> GarmentDebiturBalances { get; set; }
 
         #region master
         public DbSet<WeftTypeModel> IPWeftTypes { get; set; }
@@ -216,8 +219,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new ItemsEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceEntityTypeConfiguration());
-			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
-			modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceAdjustmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingInvoiceUnitEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentAmendLetterOfCreditEntityTypeConfiguration());
@@ -231,6 +234,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentLocalCoverLetterConfig());
+            modelBuilder.ApplyConfiguration(new GarmentDebiturBalanceEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOItemConfig());
