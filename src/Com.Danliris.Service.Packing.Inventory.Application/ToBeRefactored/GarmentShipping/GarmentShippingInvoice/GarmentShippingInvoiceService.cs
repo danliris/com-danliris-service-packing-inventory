@@ -340,11 +340,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
-
+            DateTime date = new DateTime(year, month, 1);
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id
-                        where b.TruckingDate.Month < month && b.TruckingDate.Year <= year && b.BuyerAgentCode == buyer
+                        where b.TruckingDate.AddHours(7).Date < date && b.BuyerAgentCode == buyer
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
@@ -367,7 +367,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id
-                        where b.TruckingDate.Month == month && b.TruckingDate.Year == year && b.BuyerAgentCode == buyer
+                        where b.TruckingDate.AddHours(7).Date.Month == month && b.TruckingDate.AddHours(7).Date.Year == year && b.BuyerAgentCode == buyer
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
