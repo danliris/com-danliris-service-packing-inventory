@@ -16,6 +16,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingP
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -28,6 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameProductionOrderRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
         private readonly IIdentityProvider _identityProvider;
+        private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
 
         public StockOpnameWarehouseService(IServiceProvider serviceProvider)
         {
@@ -35,6 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _stockOpnameProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
         }
 
         public async Task<int> Create(StockOpnameWarehouseViewModel viewModel)
@@ -519,8 +522,267 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
+        public async Task<int> Create(StockOpnameBarcodeFormDto form)
+        {
+            var packingCodes = form.Data.Distinct().ToList();
+
+            var stockOpnameForms = new List<DyeingPrintingProductPackingViewModel>();
+            foreach (var packingCode in packingCodes)
+            {
+                var packing = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).Select(s => new DyeingPrintingProductPackingViewModel()
+                {
+                    Color = s.Color,
+                    FabricPackingId = s.FabricPackingId,
+                    FabricSKUId = s.FabricSKUId,
+                    ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+                    },
+                    HasPrintingProductPacking = s.HasPrintingProductPacking,
+                    HasPrintingProductSKU = s.HasPrintingProductSKU,
+                    Id = s.Id,
+                    Material = new Application.CommonViewModelObjectProperties.Material()
+                    {
+                        Id = s.MaterialId,
+                        Name = s.MaterialName
+                    },
+                    MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
+                    {
+                        Name = s.MaterialConstructionName,
+                        Id = s.MaterialConstructionId
+                    },
+                    MaterialWidth = s.MaterialWidth,
+                    Motif = s.Motif,
+                    ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                    ProductPackingId = s.ProductPackingId,
+                    ProductSKUCode = s.ProductSKUCode,
+                    ProductSKUId = s.ProductSKUId,
+                    UomUnit = s.UomUnit,
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
+                    },
+                    Quantity = s.PackagingQty,
+                    ProductPackingLength = s.PackagingLength,
+                    ProductPackingType = s.PackagingUnit,
+                    Grade = s.Grade,
+                    Unit = s.Unit,
+                    Buyer = s.Buyer
+                }).FirstOrDefault();
+
+                if (packing == null)
+                {
+                    packing = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).Select(s => new DyeingPrintingProductPackingViewModel()
+                    {
+                        Color = s.Color,
+                        FabricPackingId = s.FabricPackingId,
+                        FabricSKUId = s.FabricSKUId,
+                        ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                        {
+                            Id = s.ProductionOrderId,
+                            No = s.ProductionOrderNo,
+                            OrderQuantity = s.ProductionOrderOrderQuantity,
+                            Type = s.ProductionOrderType
+                        },
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        HasPrintingProductSKU = s.HasPrintingProductSKU,
+                        Id = s.Id,
+                        Material = new Application.CommonViewModelObjectProperties.Material()
+                        {
+                            Id = s.MaterialId,
+                            Name = s.MaterialName
+                        },
+                        MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
+                        {
+                            Name = s.MaterialConstructionName,
+                            Id = s.MaterialConstructionId
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        Motif = s.Motif,
+                        ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                        ProductPackingId = s.ProductPackingId,
+                        ProductSKUCode = s.ProductSKUCode,
+                        ProductSKUId = s.ProductSKUId,
+                        UomUnit = s.UomUnit,
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        Quantity = s.PackagingQty,
+                        ProductPackingLength = s.PackagingLength,
+                        ProductPackingType = s.PackagingUnit,
+                        Grade = s.Grade,
+                        Unit = s.Unit,
+                        Buyer = s.Buyer
+                    }).FirstOrDefault();
+                }
+
+                if (packing != null)
+                    stockOpnameForms.Add(packing);
+            }
+
+            stockOpnameForms =  stockOpnameForms.Distinct().ToList();
+            var result = 0;
+            if (stockOpnameForms.Count > 0)
+            {
+                var items = new List<StockOpnameWarehouseProductionOrderViewModel>();
+                foreach (var stockOpnameForm in stockOpnameForms)
+                {
+                    var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
+                    var item = new StockOpnameWarehouseProductionOrderViewModel()
+                    {
+                        ProductionOrder = new ProductionOrder()
+                        {
+                            Code = stockOpnameForm.ProductionOrder.Code,
+                            Id = stockOpnameForm.ProductionOrder.Id,
+                            No = stockOpnameForm.ProductionOrder.No,
+                            OrderQuantity = stockOpnameForm.ProductionOrder.OrderQuantity,
+                            Type = stockOpnameForm.ProductionOrder.Type
+                        },
+                        Construction = stockOpnameForm.MaterialConstruction.Name,
+                        Unit = stockOpnameForm.Unit,
+                        Buyer = stockOpnameForm.Buyer,
+                        Color = stockOpnameForm.Color,
+                        Motif = stockOpnameForm.Motif,
+                        Grade = stockOpnameForm.Grade,
+                        PackagingQty = scannedQuantity,
+                        PackagingUnit = stockOpnameForm.ProductPackingType,
+                        Uom = new UnitOfMeasurement()
+                        {
+                            Unit = stockOpnameForm.UomUnit
+                        },
+                        PackagingLength = stockOpnameForm.ProductPackingLength
+                    };
+                }
+
+                var createForm = new StockOpnameWarehouseViewModel()
+                {
+                    Type = "STOCK OPNAME",
+                    Date = DateTimeOffset.UtcNow,
+                    WarehousesProductionOrders = items
+                };
+
+                result = await CreateStockOpnameV2(createForm);
+            }
+
+            return result;
+        }
+
+        private async Task<int> CreateStockOpnameV2(StockOpnameWarehouseViewModel viewModel)
+        {
+            int result = 0;
+            var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                                                                                        s.Date.Date == viewModel.Date.Date &&
+                                                                                        s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && !s.IsDeleted);
+            //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
+            viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
+            if (model == null)
+            {
+                int totalCurrentYearData = _stockOpnameRepository.ReadAllIgnoreQueryFilter()
+                                                            .Count(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                                                                        s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.STOCK_OPNAME);
 
 
+
+                string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.Area);
+
+                model = new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, bonNo, viewModel.Date, DyeingPrintingArea.STOCK_OPNAME,
+                                                          viewModel.WarehousesProductionOrders.Select(s =>
+                                                            new DyeingPrintingStockOpnameProductionOrderModel(
+                                                                s.Balance,
+                                                                s.BuyerId,
+                                                                s.Buyer,
+                                                                s.Color,
+                                                                s.Construction,
+                                                                s.DocumentNo,
+                                                                s.Grade,
+                                                                s.MaterialConstruction.Id,
+                                                                s.MaterialConstruction.Name,
+                                                                s.Material.Id,
+                                                                s.Material.Name,
+                                                                s.MaterialWidth,
+                                                                s.Motif,
+                                                                s.PackingInstruction,
+                                                                s.PackagingQty,
+                                                                s.Quantity,
+                                                                s.PackagingType,
+                                                                s.PackagingUnit,
+                                                                s.ProductionOrder.Id,
+                                                                s.ProductionOrder.No,
+                                                                s.ProductionOrder.Type,
+                                                                s.ProductionOrder.OrderQuantity,
+                                                                s.ProcessType.Id,
+                                                                s.ProcessType.Name,
+                                                                s.YarnMaterial.Id,
+                                                                s.YarnMaterial.Name,
+                                                                s.Remark,
+                                                                s.Status,
+                                                                s.Unit,
+                                                                s.UomUnit
+                                                                )).ToList());
+
+
+                result = await _stockOpnameRepository.InsertAsync(model);
+
+                await _stockOpnameRepository.UpdateAsync(model.Id, model);
+
+            }
+            else
+            {
+                foreach (var item in viewModel.WarehousesProductionOrders)
+                {
+
+
+
+                    var modelItem = new DyeingPrintingStockOpnameProductionOrderModel(
+                                                                item.Balance,
+                                                                item.BuyerId,
+                                                                item.Buyer,
+                                                                item.Color,
+                                                                item.Construction,
+                                                                item.DocumentNo,
+                                                                item.Grade,
+                                                                item.MaterialConstruction.Id,
+                                                                item.MaterialConstruction.Name,
+                                                                item.Material.Id,
+                                                                item.Material.Name,
+                                                                item.MaterialWidth,
+                                                                item.Motif,
+                                                                item.PackingInstruction,
+                                                                item.PackagingQty,
+                                                                item.Quantity,
+                                                                item.PackagingType,
+                                                                item.PackagingUnit,
+                                                                item.ProductionOrder.Id,
+                                                                item.ProductionOrder.No,
+                                                                item.ProductionOrder.Type,
+                                                                item.ProductionOrder.OrderQuantity,
+                                                                item.ProcessType.Id,
+                                                                item.ProcessType.Name,
+                                                                item.YarnMaterial.Id,
+                                                                item.YarnMaterial.Name,
+                                                                item.Remark,
+                                                                item.Status,
+                                                                item.Unit,
+                                                                item.UomUnit
+                                                                );
+
+                    modelItem.DyeingPrintingStockOpnameId = model.Id;
+
+                    result += await _stockOpnameProductionOrderRepository.InsertAsync(modelItem);
+
+                }
+
+            }
+
+            return result;
+        }
 
     }
 }
