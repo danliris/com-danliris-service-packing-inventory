@@ -48,34 +48,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Service
             return spMock;
         }
 
-        [Fact]
-        public void Should_Success_GetExcel()
-        {
-            //setup
-            var repoMock = new Mock<IGoodsWarehouseDocumentsService>();
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //[Fact]
+        //public void Should_Success_GetExcel()
+        //{
+        //    //setup
+        //    var repoMock = new Mock<IGoodsWarehouseDocumentsService>();
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            //act
-            var result = service.GetExcel(new DateTimeOffset(new DateTime(2020, 04, 04)), "PAGI", "PROD", 7);
+        //    //act
+        //    var result = service.GetExcel(new DateTimeOffset(new DateTime(2020, 04, 04)), "PAGI", "PROD", 7);
 
-            //assert
-            Assert.NotNull(result);
-        }
+        //    //assert
+        //    Assert.NotNull(result);
+        //}
 
-        [Fact]
-        public void Should_Success_GetData()
-        {
-            List<IndexViewModel> resultData = new List<IndexViewModel>();
-            resultData.Add(ViewModel);
-            var repoMock = new Mock<IGoodsWarehouseDocumentsService>();
-            repoMock.Setup(s => s.GetList(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(resultData);
+        //[Fact]
+        //public void Should_Success_GetData()
+        //{
+        //    List<IndexViewModel> resultData = new List<IndexViewModel>();
+        //    resultData.Add(ViewModel);
+        //    var repoMock = new Mock<IGoodsWarehouseDocumentsService>();
+        //    repoMock.Setup(s => s.GetList(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
+        //        .Returns(resultData);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetList(new DateTimeOffset(new DateTime(2020,04,04)),"PAGI","PROD",7);
+        //    var result = service.GetList(It.IsAny<DateTimeOffset>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
 
-            Assert.NotEmpty(result);
-        }
+        //    Assert.NotEmpty(result);
+        //}
     }
 }
