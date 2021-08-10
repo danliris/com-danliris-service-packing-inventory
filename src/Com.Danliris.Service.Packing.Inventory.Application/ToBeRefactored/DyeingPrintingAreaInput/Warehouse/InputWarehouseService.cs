@@ -232,37 +232,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var errorResult = new List<ValidationResult>();
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
                 {
-                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
-                        ids.Contains(x.DyeingPrintingAreaInputId) &&
-                        x.ProductPackingCode.Contains(code) &&
-                        dateData > x.DateIn
-                    );
-
-                    if (latestDataOnIn != null)
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
                     {
-                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.DateIn)
-                            .FirstOrDefault(x =>
-                                x.ProductPackingCode.Contains(code) &&
-                                x.DateOut > latestDataOnIn.DateIn
-                            );
-                        if (latestDataOnOut == null)
+                        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
+                            ids.Contains(x.DyeingPrintingAreaInputId) &&
+                            x.ProductPackingCode.Contains(code) &&
+                            dateData > x.DateIn
+                        );
+
+                        if (latestDataOnIn != null)
                         {
-                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+                            var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.DateIn)
+                                .FirstOrDefault(x =>
+                                    x.ProductPackingCode.Contains(code) &&
+                                    x.DateOut > latestDataOnIn.DateIn
+                                );
+                            if (latestDataOnOut == null)
+                            {
+                                errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+                            }
                         }
                     }
                 }
-            }
-            if (model != null)
-            {
-                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
-            }
-            else
-            {
-                result = await InsertNewWarehouse(viewModel);
+                
             }
 
             if (errorResult.Count > 0)
@@ -416,12 +412,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
                 {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
                     {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                        if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                        {
+                            result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                        }
                     }
                 }
             }
