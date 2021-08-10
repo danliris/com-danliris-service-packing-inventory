@@ -45,5 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string ProductPackingType { get; set; }
         // Quantity Packing
         public decimal Quantity { get; set; }
+        public string Unit { get; set; }
+        public string Buyer { get; set; }
     }
 }
