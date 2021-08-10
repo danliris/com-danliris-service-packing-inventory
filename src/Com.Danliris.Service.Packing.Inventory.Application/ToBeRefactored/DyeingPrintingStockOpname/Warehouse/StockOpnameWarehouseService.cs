@@ -658,6 +658,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         },
                         PackagingLength = stockOpnameForm.ProductPackingLength
                     };
+
+                    items.Add(item);
                 }
 
                 var createForm = new StockOpnameWarehouseViewModel()
