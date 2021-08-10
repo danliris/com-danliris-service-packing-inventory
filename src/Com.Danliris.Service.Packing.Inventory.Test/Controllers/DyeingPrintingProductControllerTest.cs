@@ -87,7 +87,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                     {
                         Id = 1,
                         Name = "s"
-                    }
+                    },
+                    DocumentNo = "T1",
+                    Grade ="A"
                 };
             }
         }
@@ -97,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IDyeingPrintingProductService>();
-            serviceMock.Setup(s => s.GetDataProductPacking(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            serviceMock.Setup(s => s.GetDataProductPacking(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ListResult<DyeingPrintingProductPackingViewModel>(new List<DyeingPrintingProductPackingViewModel>(), 1, 1, 1));
             var service = serviceMock.Object;
 
@@ -117,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IDyeingPrintingProductService>();
-            serviceMock.Setup(s => s.GetDataProductPacking(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Throws(new Exception());
+            serviceMock.Setup(s => s.GetDataProductPacking(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Throws(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
             //var data = await DataUtil(repo, dbContext).GetTestData();
-
+            
             var model = new DyeingPrintingAreaInputProductionOrderModel()
             {
                 ProductionOrderId = 1,
@@ -212,7 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories
             var serviceProvider = GetServiceProviderMock(dbContext).Object;
             var repo = new DyeingPrintingAreaInputProductionOrderRepository(dbContext, serviceProvider);
             //var data = await DataUtil(repo, dbContext).GetTestData();
-
+            
             var model = new DyeingPrintingAreaInputProductionOrderModel()
             {
                 ProductionOrderId = 1,

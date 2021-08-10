@@ -33,12 +33,28 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
 
         [HttpGet("packing")]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
-            [FromQuery] string filter = "{}")
+            [FromQuery] string filter = "{}", [FromQuery] bool isStockOpname = false)
         {
             try
             {
 
-                var data = _service.GetDataProductPacking(page, size, filter, order, keyword);
+                var data = _service.GetDataProductPacking(page, size, filter, order, keyword, isStockOpname);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet("packing/{packingCode}")]
+        public IActionResult GetByPackingCode([FromRoute] string packingCode)
+        {
+            try
+            {
+
+                var data = _service.GetDataProductByPackingCode(packingCode);
                 return Ok(data);
             }
             catch (Exception ex)
