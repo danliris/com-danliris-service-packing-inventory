@@ -47,5 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal Quantity { get; set; }
         public string Unit { get; set; }
         public string Buyer { get; set; }
+        public ProcessType ProcessType { get; set; }
     }
 }
