@@ -310,6 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
                             PEBDate= a.PEBDate
+
                         };
 
              return query.AsQueryable();
