@@ -33,6 +33,103 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbContext = serviceProvider.GetService<PackingInventoryDbContext>();
         }
 
+        public DyeingPrintingProductPackingViewModel GetDataProductByPackingCode(string packingCode)
+        {
+            var result = (DyeingPrintingProductPackingViewModel)null;
+
+            result = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == packingCode).Select(s => new DyeingPrintingProductPackingViewModel()
+            {
+                Color = s.Color,
+                FabricPackingId = s.FabricPackingId,
+                FabricSKUId = s.FabricSKUId,
+                ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                {
+                    Id = s.ProductionOrderId,
+                    No = s.ProductionOrderNo,
+                    OrderQuantity = s.ProductionOrderOrderQuantity,
+                    Type = s.ProductionOrderType
+                },
+                HasPrintingProductPacking = s.HasPrintingProductPacking,
+                HasPrintingProductSKU = s.HasPrintingProductSKU,
+                Id = s.Id,
+                Material = new Application.CommonViewModelObjectProperties.Material()
+                {
+                    Id = s.MaterialId,
+                    Name = s.MaterialName
+                },
+                MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
+                {
+                    Name = s.MaterialConstructionName,
+                    Id = s.MaterialConstructionId
+                },
+                MaterialWidth = s.MaterialWidth,
+                Motif = s.Motif,
+                ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                ProductPackingId = s.ProductPackingId,
+                ProductSKUCode = s.ProductSKUCode,
+                ProductSKUId = s.ProductSKUId,
+                UomUnit = s.UomUnit,
+                YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                {
+                    Id = s.YarnMaterialId,
+                    Name = s.YarnMaterialName
+                },
+                Quantity = s.PackagingQty,
+                ProductPackingLength = s.PackagingLength,
+                ProductPackingType = s.PackagingUnit,
+                DocumentNo = s.DocumentNo,
+                Grade = s.Grade
+            }).FirstOrDefault();
+
+            if (result == null)
+            {
+                result = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == packingCode && entity.Area == DyeingPrintingArea.PACKING && entity.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT).Select(s => new DyeingPrintingProductPackingViewModel()
+                {
+                    Color = s.Color,
+                    FabricPackingId = s.FabricPackingId,
+                    FabricSKUId = s.FabricSKUId,
+                    ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+                    },
+                    HasPrintingProductPacking = s.HasPrintingProductPacking,
+                    HasPrintingProductSKU = s.HasPrintingProductSKU,
+                    Id = s.Id,
+                    Material = new Application.CommonViewModelObjectProperties.Material()
+                    {
+                        Id = s.MaterialId,
+                        Name = s.MaterialName
+                    },
+                    MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
+                    {
+                        Name = s.MaterialConstructionName,
+                        Id = s.MaterialConstructionId
+                    },
+                    MaterialWidth = s.MaterialWidth,
+                    Motif = s.Motif,
+                    ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                    ProductPackingId = s.ProductPackingId,
+                    ProductSKUCode = s.ProductSKUCode,
+                    ProductSKUId = s.ProductSKUId,
+                    UomUnit = s.UomUnit,
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.YarnMaterialId,
+                        Name = s.YarnMaterialName
+                    },
+                    Quantity = s.PackagingQty,
+                    ProductPackingLength = s.PackagingLength,
+                    ProductPackingType = s.PackagingUnit,
+                    Grade = s.Grade
+                }).FirstOrDefault();
+            }
+
+            return result;
+        }
+
         public ListResult<DyeingPrintingProductPackingViewModel> GetDataProductPacking(int page, int size, string filter, string order, string keyword, bool isStockOpname)
         {
             if (isStockOpname)
@@ -90,7 +187,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     Quantity = s.PackagingQty,
                     ProductPackingLength = s.PackagingLength,
-                    ProductPackingType = s.PackagingUnit
+                    ProductPackingType = s.PackagingUnit,
+                    DocumentNo = s.DocumentNo,
+                    Grade = s.Grade
                 });
 
                 //int result = 0;
@@ -157,7 +256,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     },
                     Quantity = s.PackagingQty,
                     ProductPackingLength = s.PackagingLength,
-                    ProductPackingType = s.PackagingUnit
+                    ProductPackingType = s.PackagingUnit,
+                    Grade = s.Grade
                 });
 
                 //int result = 0;
