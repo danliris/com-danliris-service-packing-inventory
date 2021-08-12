@@ -297,25 +297,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
 
+            DateTime date = new DateTime(year, month, 1);
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id
-                        where b.TruckingDate.Month < month && b.TruckingDate.Year == year
+                        where b.TruckingDate.AddHours(7).Date < date
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
                             BuyerAgentName = a.BuyerAgentName,
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
-                            TruckingDate = b.TruckingDate
+                            TruckingDate = b.TruckingDate,
+                            PEBDate= a.PEBDate
+
                         };
 
              return query.AsQueryable();
         }
-
         public IQueryable<ShippingPackingListViewModel> ReadShippingPackingListNow(int month, int year)
         {
-
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
 
@@ -329,13 +330,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             BuyerAgentName = a.BuyerAgentName,
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
-                            TruckingDate = b.TruckingDate
+                            TruckingDate = b.TruckingDate,
+                            PEBDate = a.PEBDate
                         };
 
             return query.AsQueryable();
         }
-
-
         public IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCard(int month, int year, string buyer)
         {
             var queryInv = _repository.ReadAll();
@@ -353,7 +353,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
                             Date = b.Date,
-                            InvoiceNo= a.InvoiceNo
+                            InvoiceNo = a.InvoiceNo
                         };
 
             return query.AsQueryable();
@@ -381,6 +381,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return query.AsQueryable();
         }
+
+        
     }
-    
 }
+
+    
+
