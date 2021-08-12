@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var validateService = validateServiceMock.Object;
 
             var controller = GetController(service, packingListService, identityProvider, validateService);
-            var response = controller.GetExportSalesDebtor(DateTimeOffset.Now);
+            var response = controller.GetExportSalesDebtor(1,1);
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         {
             var serviceMock = new Mock<IGarmentShippingInvoiceService>();
             serviceMock
-                .Setup(s => s.ReadShippingPackingList(It.IsAny<DateTimeOffset>()))
+                .Setup(s => s.ReadShippingPackingList(1,1))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -113,7 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var validateService = validateServiceMock.Object;
 
             var controller = GetController(service, packingListService, identityProvider, validateService);
-            var response = controller.GetExportSalesDebtor(DateTimeOffset.Now);
+            var response = controller.GetExportSalesDebtor(1,2021);
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
