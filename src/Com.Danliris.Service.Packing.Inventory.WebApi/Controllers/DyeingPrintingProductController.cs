@@ -48,6 +48,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers
             }
         }
 
+        [HttpGet("packing/{packingCode}")]
+        public IActionResult GetByPackingCode([FromRoute] string packingCode)
+        {
+            try
+            {
+
+                var data = _service.GetDataProductByPackingCode(packingCode);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpPut("packing/status/{id}")]
         public async Task<IActionResult> UpdatePrintingStatusProductPacking([FromRoute] int id, [FromBody] bool hasProductPacking)
         {

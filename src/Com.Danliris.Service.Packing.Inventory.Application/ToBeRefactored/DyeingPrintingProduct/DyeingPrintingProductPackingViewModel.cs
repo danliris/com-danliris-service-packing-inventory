@@ -17,6 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public IEnumerable<string> ProductPackingCodes { get; set; }
         public bool HasPrintingProductSKU { get; set; }
         public bool HasPrintingProductPacking { get; set; }
+        public string DocumentNo { get; set; }
+        public string Grade { get; set; }
         
         // Anyaman
         public Material Material { get; set; }
