@@ -456,7 +456,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
-                tableDetail.KeepTogether = true;
+                tableDetail.HeaderRows = 1;
+                //tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
                 tableDetail.SpacingAfter = 10f;
                 document.Add(tableDetail);
