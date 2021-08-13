@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newItems2 = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
+            
             foreach (var item in viewModel.Items)
             {
                 foreach (var detail in item.Details)
@@ -83,7 +84,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         foreach (var d in item.Details.OrderBy(a => a.Carton1))
                         {
-                            newItems2.Last().Details.Add(d);
+                            var x = newItems.Last().Details.Single(w => w.Id == d.Id);
+                            if (x.Index == d.Index && x.Carton1 == d.Carton1 && x.Carton2 == d.Carton2)
+                            {
+                                newItems2.Add(item);
+                            } else
+                            {
+                                newItems2.Last().Details.Add(d);
+                            }
                         }
                     }
                     else
