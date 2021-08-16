@@ -1,6 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList; 
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
@@ -43,26 +43,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
-            queryPL = queryPL.Where(w => w.Omzet == true);     
+            queryPL = queryPL.Where(w => w.Omzet == true);            
             queryPL = queryPL.Where(w => w.IsUsed == true);
 
             var newQ = (from a in queryPL
                         join b in query on a.Id equals b.PackingListId
                         join c in queryitem on b.Id equals c.GarmentShippingInvoiceId
-      
+
                         select new GarmentOmzetMonthlyByComodityListViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
                             TruckingDate = a.TruckingDate,
                             BuyerName = a.BuyerAgentName,
                             RO_Number = c.RONo,
-                            ComodityName = c.ComodityCode +" - " + c.ComodityName,
+                            ComodityName = c.ComodityCode + " - " + c.ComodityName,
                             ComodityDesc = c.ComodityDesc,
                             UnitCode = c.UnitCode,
                             UOMUnit = c.UomUnit,
                             Amount = c.Amount, 
                             Quantity = c.Quantity,
-                        }).OrderBy(o => o.ComodityName).ThenBy(o => o.BuyerName).ThenBy(o => o.TruckingDate).ThenBy(o => o.InvoiceNo);              
+                        }).OrderBy(o => o.ComodityName).ThenBy(o => o.BuyerName).ThenBy(o => o.TruckingDate).ThenBy(o => o.InvoiceNo);
 
             var garmentomzets = newQ.ToList()
                 .GroupBy(gmtomzt => {
@@ -119,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var Query = GetData(dateFrom, dateTo, offset);
             var data = Query.ToList();
             DataTable result = new DataTable();
-           
+
             result.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "KOMODITI", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NAMA BUYER", DataType = typeof(string) });
@@ -210,7 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "GarmentOmzet") }, true);
-      
+
             return excel;
         }
 

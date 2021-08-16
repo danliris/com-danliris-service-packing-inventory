@@ -231,30 +231,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var errorResult = new List<ValidationResult>();
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
                 {
-                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
-                        ids.Contains(x.DyeingPrintingAreaInputId) &&
-                        x.ProductPackingCode.Contains(code) &&
-                        dateData > x.DateIn
-                    );
-
-                    if (latestDataOnIn != null)
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
                     {
-                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.DateIn)
-                            .FirstOrDefault(x =>
-                                x.ProductPackingCode.Contains(code) &&
-                                x.DateOut > latestDataOnIn.DateIn
-                            );
+                        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
+                            ids.Contains(x.DyeingPrintingAreaInputId) &&
+                            x.ProductPackingCode.Contains(code) &&
+                            dateData > x.DateIn
+                        );
 
-                        if (latestDataOnOut == null)
+                        if (latestDataOnIn != null)
                         {
-                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+                            var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.DateIn)
+                                .FirstOrDefault(x =>
+                                    x.ProductPackingCode.Contains(code) &&
+                                    x.DateOut > latestDataOnIn.DateIn
+                                );
+                            if (latestDataOnOut == null)
+                            {
+                                errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+                            }
                         }
                     }
                 }
+                
             }
 
             if (errorResult.Count > 0)
@@ -280,7 +283,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             // {
             // var listOfInId = model.DyeingPrintingAreaInputProductionOrders.Select(x => x.Id).ToList();
             // var outModel = _outputProductionOrderRepository.GetDbSet().Where(x => listOfInId.Contains(x.DyeingPrintingAreaInputProductionOrderId)).ToList();
-
             // var outModelCode = outModel.Select(x => x.ProductPackingCode).ToList();
 
             // var outCode = new List<string>();
@@ -409,19 +411,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
                 {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
                     {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                        if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                        {
+                            result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                        }
                     }
                 }
             }
 
             //Insert to Input Repository
             result = await _inputRepository.InsertAsync(model);
-
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 var itemModel = model.DyeingPrintingAreaInputProductionOrders.FirstOrDefault(s => s.DyeingPrintingAreaOutputProductionOrderId == item.Id);
@@ -511,7 +515,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.Date,
                     productionOrder.InventoryType,
                     productionOrder.MaterialOrigin
-
                     )
 
                 {
@@ -544,7 +547,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (inputQuantity == productionOrder.InputQuantity)
                     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(productionOrder.Id, true, DyeingPrintingArea.TERIMA);
 
-
                 // If kode sudah ada di in dia gabisa kurang quantity
                 var splitedCode = productionOrder.ProductPackingCode.Split(",");
                 foreach (var item in splitedCode)
@@ -573,7 +575,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .OrderByDescending(s => s.LastModifiedUtc)
                                                         .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
-                                                                    s.Balance > 0);
+                                                                    s.Balance > 0 && s.HasNextAreaDocument == false);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
@@ -1049,7 +1051,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var bon in bonInput)
             {
                 var sppInput = bon.DyeingPrintingAreaInputProductionOrders;// 2355, 2356, 2357
-
                 var sentedId = viewModel.MappedWarehousesProductionOrders.Select(x => x.Id).ToList(); // 1, 2 -> false, false, true
                 var sppDeleted = sppInput.Where(x => !sentedId.Contains(x.Id));
 

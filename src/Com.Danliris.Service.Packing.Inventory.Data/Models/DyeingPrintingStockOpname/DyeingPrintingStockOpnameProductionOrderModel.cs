@@ -44,7 +44,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string YarnMaterialName { get; private set; }
         public string Unit { get; private set; }
         public string UomUnit { get; private set; }
+
+        #region Product SKU Packing
+
+        public int ProductSKUId { get; private set; }
+
+        public int FabricSKUId { get; private set; }
+
+        public string ProductSKUCode { get; private set; }
+
+        public int ProductPackingId { get; private set; }
+
+        public int FabricPackingId { get; private set; }
+
+        public string ProductPackingCode { get; private set; }
+
+        public bool HasPrintingProductSKU { get; private set; }
+
+        public bool HasPrintingProductPacking { get; private set; }
+
+        #endregion
+
         public DyeingPrintingStockOpnameModel DyeingPrintingStockOpname { get; set; }
+
+        public void SetPackingCode(string packingCode)
+        {
+            ProductPackingCode = packingCode;
+        }
 
         public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,
@@ -87,6 +113,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public DyeingPrintingStockOpnameProductionOrderModel()
         {
 
+        }
+
+        public void SetPackingCode(int productSKUId, int fabricSKUId, string productSKUCode, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductSKU, string user, string agent)
+        {
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+            this.FlagForUpdate(user, agent);
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
