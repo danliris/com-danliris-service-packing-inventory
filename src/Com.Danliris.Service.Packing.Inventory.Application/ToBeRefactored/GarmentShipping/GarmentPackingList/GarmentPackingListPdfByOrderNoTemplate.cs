@@ -84,14 +84,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         foreach (var d in item.Details.OrderBy(a => a.Carton1))
                         {
-                            var x = newItems.Last().Details.Single(w => w.Id == d.Id);
-                            if (x.Index == d.Index && x.Carton1 == d.Carton1 && x.Carton2 == d.Carton2)
+                            var x = newItems.Last().Details.FirstOrDefault(w => w.Id == d.Id);
+                            if(x != null)
                             {
-                                newItems2.Add(item);
+                                if (x.Index == d.Index && x.Carton1 == d.Carton1 && x.Carton2 == d.Carton2)
+                                {
+                                    newItems2.Add(item);
+                                }
+                                else
+                                {
+                                    newItems2.Last().Details.Add(d);
+                                }
                             } else
                             {
                                 newItems2.Last().Details.Add(d);
                             }
+                            
                         }
                     }
                     else
