@@ -45,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                        where a.IsDeleted == false && b.IsDeleted == false
                        select new GarmentFinanceExportSalesJournalViewModel
                        {
-                           remark= b.InvoiceType== "DL" || b.InvoiceType == "DS" ? "       PNJ. BR. JADI EXPORT LANGSUNG" : "       PNJ. LAIN-LAIN",
+                           remark= b.InvoiceType== "DL" || b.InvoiceType == "DS" ? "       PNJ. BR. JADI EXPORT LANGSUNG" : "       PNJ. LAIN-LAIN EXPORT LANGSUNG",
                            credit= a.TotalAmount,
                            debit= 0,
                            account= b.InvoiceType == "DL" || b.InvoiceType == "DS" ? "5024.00.4.00" : "5026.00.4.00"
