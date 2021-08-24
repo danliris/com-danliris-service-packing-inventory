@@ -419,12 +419,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public bool CheckIfHasInInput(string code) {
+        public bool CheckIfHasInInput(string code)
+        {
             var query = _dbSet.FirstOrDefault(x => x.ProductPackingCode
                 .Contains(code) &&
                 x.Area == DyeingPrintingArea.GUDANGJADI
                 );
-            if (query != null) {
+            if (query != null)
+            {
                 return true;
             }
             return false;
