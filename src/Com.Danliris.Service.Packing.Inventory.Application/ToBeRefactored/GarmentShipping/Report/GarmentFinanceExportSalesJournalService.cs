@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime dateFrom = new DateTime(year, month, 1);
             int nextYear = month == 12 ? year + 1 : year;
             int nextMonth = month == 12 ? 1 : month + 1;
-            DateTime dateTo = new DateTime(nextYear, nextMonth + 1, 1);
+            DateTime dateTo = new DateTime(nextYear, nextMonth, 1);
             List<GarmentFinanceExportSalesJournalViewModel> data = new List<GarmentFinanceExportSalesJournalViewModel>();
             
             var queryInv = repository.ReadAll();
