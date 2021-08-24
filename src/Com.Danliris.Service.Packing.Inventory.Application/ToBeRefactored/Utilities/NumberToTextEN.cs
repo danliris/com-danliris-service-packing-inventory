@@ -16,18 +16,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
         {
 
             Regex pattern = new Regex("[,]");
+            string Dcml = string.Format("{0:n2}", s).Replace(",", "");
             s = Convert.ToDouble(s.ToString().Replace(",", ""));
 
             double number;
             bool isNumeric = double.TryParse(s.ToString(), out number);
 
             if (!isNumeric) return "not a number";
-            var x = s.ToString().IndexOf(".");
+            var x = Dcml.ToString().IndexOf(".");
             if (x == -1)
-                x = s.ToString().Length;
+                x = Dcml.ToString().Length;
             if (x > 15)
                 return "too big";
-            var n = s;
+            var n = Dcml;
             var str = "";
             var sk = 0;
             for (var i = 0; i < x; i++)
@@ -61,9 +62,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 }
             }
 
-            if (x != Convert.ToString(s).Length)
+            if (x != Convert.ToString(Dcml).Length)
             {
-                var y = s.ToString().Length;
+                var y = Dcml.ToString().Length;
                 str += "AND CENTS ";
                 for (var i = x + 1; i < y; i++)
                 {
@@ -77,7 +78,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                         }
                         else if (n.ToString()[i] != '0')
                         {
-
                             str += tw[Convert.ToInt16(n.ToString()[i].ToString()) - 2] + " ";
                             sk = 1;
                         }
