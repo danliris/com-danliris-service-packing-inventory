@@ -116,7 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Status,
                                                                 s.Unit,
-                                                                s.UomUnit
+                                                                s.UomUnit,
+                                                                false
                                                                 )).ToList());
 
 
@@ -185,7 +186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Remark,
                                                                 item.Status,
                                                                 item.Unit,
-                                                                item.UomUnit
+                                                                item.UomUnit,
+                                                                false
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -345,7 +347,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Remark,
                 s.Status,
                 s.Unit,
-                s.UomUnit
+                s.UomUnit,
+                false
                      )
 
                 {
@@ -688,7 +691,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Id = stockOpnameForm.YarnMaterial.Id,
                             Name = stockOpnameForm.YarnMaterial.Name
-                        }
+                        },
+                        IsStockOpname = true
                     };
 
                     items.Add(item);
@@ -758,7 +762,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Status,
                                                                 s.Unit,
-                                                                s.UomUnit
+                                                                s.UomUnit,
+                                                                s.IsStockOpname
                                                                 )).ToList());
 
 
@@ -804,7 +809,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Remark,
                                                                 item.Status,
                                                                 item.Unit,
-                                                                item.UomUnit
+                                                                item.UomUnit,
+                                                                item.IsStockOpname
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
