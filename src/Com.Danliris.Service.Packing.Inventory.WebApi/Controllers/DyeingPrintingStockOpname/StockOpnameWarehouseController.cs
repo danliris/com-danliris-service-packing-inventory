@@ -73,6 +73,44 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
 
+        [HttpPost("mobile")]
+        public async Task<IActionResult> PostMobile([FromBody] StockOpnameBarcodeFormDto viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var excpetion = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(excpetion);
+            }
+            try
+            {
+                VerifyUser();
+                ValidateService.Validate(viewModel);
+                var result = await _service.Create(viewModel);
+
+                return Created("/", result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
