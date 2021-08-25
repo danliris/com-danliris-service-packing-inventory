@@ -368,6 +368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area != null && s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
             var errorResult = new List<ValidationResult>();
+
             foreach (var item in viewModel.WarehousesProductionOrders)
             {
                 if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
@@ -484,8 +485,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
                     if (viewModel.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
-                    {
-                        //var newBalance = item.Quantity * (double)1;
+                    
+                        //var newBalance = item.Quantity;
                         var newBalance = GetBalance(item);
                         var packagingQty = GetPackagingQty(item);
                         //result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.Id, newBalance, item.PackagingQty);

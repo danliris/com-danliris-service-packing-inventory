@@ -59,8 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
-      
-        
+
+        public bool IsStockOpname { get; set; }
 
     }
 }
