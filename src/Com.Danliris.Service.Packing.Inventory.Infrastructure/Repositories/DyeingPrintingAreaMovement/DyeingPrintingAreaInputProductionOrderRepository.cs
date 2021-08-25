@@ -128,8 +128,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
 
                 var packingLength = modelToUpdate.PackagingLength;
-                if (packingLength > 0)
-                {
+
+                if(packingLength > 0){
                     var newPackagingQty = Convert.ToDecimal(balance / packingLength);
                     modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
                 }
