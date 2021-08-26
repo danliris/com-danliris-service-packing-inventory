@@ -252,10 +252,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                  .Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
 
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(model.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
             //Act
-            var result = service.Read(1, 25, "{}", "{}", null);
+            var result = service.Read(1, 25, "{}", "{}", null, It.IsAny<bool>());
 
             //Assert
             Assert.NotEmpty(result.Data);
