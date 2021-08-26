@@ -233,10 +233,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
 
-        public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword, bool isStockOpname)
         {
-            var query = _stockOpnameRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI);
-
+            var validIds = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.IsStockOpname == isStockOpname).Select(entity => entity.DyeingPrintingStockOpnameId).ToList();
+            var query = _stockOpnameRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && validIds.Contains(s.Id));
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 Id = s.Id,
                 Area = s.Area,
-                Type = s.Type == null || s.Type == DyeingPrintingArea.STOCK_OPNAME ? DyeingPrintingArea.STOCK_OPNAME : DyeingPrintingArea.STOCK_OPNAME,
+                Type = DyeingPrintingArea.STOCK_OPNAME,
                 BonNo = s.BonNo,
                 Date = s.Date,
 
@@ -639,7 +639,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     stockOpnameForms.Add(packing);
             }
 
-            stockOpnameForms =  stockOpnameForms.Distinct().ToList();
+            stockOpnameForms = stockOpnameForms.Distinct().ToList();
             var result = 0;
             if (stockOpnameForms.Count > 0)
             {
