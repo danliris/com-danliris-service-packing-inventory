@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                          {
                              Urutan = "A",
                              InvoiceNo = a.InvoiceNo,
+                             PEBNo = a.PEBNo,
                              PEBDate = a.PEBDate,
                              TruckingDate = c.TruckingDate,
                              BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
@@ -99,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Urutan = i.Urutan,
                     InvoiceNo = i.InvoiceNo,
+                    PEBNo = i.PEBNo,
                     PEBDate = i.PEBDate,
                     TruckingDate = i.TruckingDate,
                     BuyerAgentName = i.BuyerAgentName,
@@ -147,17 +149,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY IN PCS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "RATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT IN IDR", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "R/O", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TRUCKING", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "NO PEB", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "TGL PEB", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO BON", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
 
 
             ExcelPackage package = new ExcelPackage();
 
             if (Query.ToArray().Count() == 0)
             {
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -194,20 +200,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     index++;
 
                     string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    string PEBDate = d.PEBDate == new DateTime(1970, 1, 1) ? "-" : d.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
 
                     string Qty = string.Format("{0:N0}", d.Quantity);
                     string Qty1 = string.Format("{0:N0}", d.QuantityInPCS);
                     string AmtUSD = string.Format("{0:N2}", d.Amount);
+                    string Rate = string.Format("{0:N2}", d.Rate);
                     string AmtIDR = string.Format("{0:N2}", d.AmountIDR);
 
-                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, Qty1, AmtUSD, AmtIDR, d.RONumber, TruckDate, d.ExpenditureGoodNo);
+                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, Qty1, AmtUSD, Rate, AmtIDR, d.RONumber, TruckDate, d.PEBNo, PEBDate, d.ExpenditureGoodNo, d.UnitCode);
                 }
 
                 string TotQty = string.Format("{0:N2}", Query.Sum(x => x.QuantityInPCS));
                 string TotUSD = string.Format("{0:N2}", Query.Sum(x => x.Amount));
                 string TotIDR = string.Format("{0:N2}", Query.Sum(x => x.AmountIDR));
 
-                result.Rows.Add("", "", "", "", "", "", "  T  O  T  A  L  : ", TotQty, TotUSD, TotIDR, "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "  T  O  T  A  L  : ", TotQty, TotUSD, "", TotIDR, "", "", "", "", "", "");
 
                 bool styling = true;
 
