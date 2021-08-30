@@ -309,7 +309,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
-                            PEBDate= a.PEBDate
+                            PEBDate= a.PEBDate,
+                            PaymentDue= a.PaymentDue
 
                         };
 
@@ -331,7 +332,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
-                            PEBDate = a.PEBDate
+                            PEBDate = a.PEBDate,
+                            PaymentDue = a.PaymentDue
                         };
 
             return query.AsQueryable();
