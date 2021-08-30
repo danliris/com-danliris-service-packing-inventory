@@ -153,12 +153,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         [HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
-           [FromQuery] string filter = "{}")
+           [FromQuery] string filter = "{}", [FromQuery] bool isStockOpname = false)
         {
             try
             {
 
-                var data = _service.Read(page, size, filter, order, keyword);
+                var data = _service.Read(page, size, filter, order, keyword, isStockOpname);
                 return Ok(data);
             }
             catch (Exception ex)
