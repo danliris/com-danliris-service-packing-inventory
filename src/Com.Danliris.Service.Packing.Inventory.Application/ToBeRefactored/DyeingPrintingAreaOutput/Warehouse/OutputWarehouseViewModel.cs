@@ -67,9 +67,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
                 else
                 {
-                   
+
                     var Items = WarehousesProductionOrders.GroupBy(s => s.ProductionOrder.Id);
-                    
+
                     foreach (var item in Items)
                     {
                         DetailErrors += "{";
@@ -156,11 +156,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     Count++;
                                     DetailErrors += "PackagingQty: 'Qty Packing Terima Harus Lebih dari 0!',";
                                 }
-                                else {
-                                    if(detail1.PackagingQty > detail.PreviousQtyPacking)
+                                else
+                                {
+                                    if (detail1.PackagingQty > detail.PreviousQtyPacking)
                                     {
                                         Count++;
-                                        DetailErrors += string.Format("PackagingQty: 'Qty Packing Tidak Boleh Lebih dari Qty Packing {0}!',",detail.PreviousQtyPacking);
+                                        DetailErrors += string.Format("PackagingQty: 'Qty Packing Tidak Boleh Lebih dari Qty Packing {0}!',", detail.PreviousQtyPacking);
                                     }
                                 }
 

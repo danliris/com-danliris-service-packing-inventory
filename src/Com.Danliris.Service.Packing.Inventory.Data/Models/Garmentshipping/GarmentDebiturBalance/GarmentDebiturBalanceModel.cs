@@ -13,14 +13,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public string BuyerAgentCode { get; set; }
 		public string BuyerAgentName { get; set; }
 		public decimal BalanceAmount { get; set; }
-		
-		public GarmentDebiturBalanceModel(DateTimeOffset balanceDate, int buyerAgentId, string buyerAgentCode, string buyerAgentName, decimal balanceAmount)
+        public decimal BalanceAmountIDR { get; set; }
+
+        public GarmentDebiturBalanceModel(DateTimeOffset balanceDate, int buyerAgentId, string buyerAgentCode, string buyerAgentName, decimal balanceAmount, decimal balanceAmountIDR)
 		{
 			this.BalanceDate = balanceDate;
 			this.BuyerAgentId = buyerAgentId;
 			this.BuyerAgentCode = buyerAgentCode;
 			this.BuyerAgentName = buyerAgentName;
 			this.BalanceAmount = balanceAmount;
+            this.BalanceAmountIDR = balanceAmountIDR;
         }
 
         public void SetBalanceDate(DateTimeOffset balanceDate, string userName, string userAgent)
@@ -64,6 +66,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (BalanceAmount != balanceAmount)
             {
                 BalanceAmount = balanceAmount;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBalanceAmountIDR(decimal balanceAmountIDR, string userName, string userAgent)
+        {
+            if (BalanceAmountIDR != balanceAmountIDR)
+            {
+                BalanceAmountIDR = balanceAmountIDR;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

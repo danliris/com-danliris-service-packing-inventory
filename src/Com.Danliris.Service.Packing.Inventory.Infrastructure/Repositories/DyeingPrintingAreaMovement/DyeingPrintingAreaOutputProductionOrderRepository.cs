@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
             model.FlagForDelete(_identityProvider.Username, UserAgent);
-            
+
             _dbSet.Update(model);
             return _dbContext.SaveChangesAsync();
         }
@@ -42,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> InsertAsync(DyeingPrintingAreaOutputProductionOrderModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
-            
+
             _dbSet.Add(model);
 
             return _dbContext.SaveChangesAsync();
@@ -107,8 +107,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         public Task<int> UpdateFromInputNextAreaFlagAsync(int id, bool hasNextAreaDocument)
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
-            
-            if(modelToUpdate != null)
+
+            if (modelToUpdate != null)
             {
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
             }
@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             if (modelToUpdate != null)
             {
                 modelToUpdate.SetHasNextAreaDocument(hasNextAreaDocument, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetNextAreaInputStatus(nextAreaInputStatus,_identityProvider.Username, UserAgent);
+                modelToUpdate.SetNextAreaInputStatus(nextAreaInputStatus, _identityProvider.Username, UserAgent);
             }
 
             return _dbContext.SaveChangesAsync();

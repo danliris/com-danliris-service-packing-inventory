@@ -94,8 +94,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.IPPr
 
         public ListResult<IPProcessTypeViewModel> ReadByPage(string keyword, string order, int page, int size)
         {
-            var data = _repository.ReadAll().Skip((page - 1) * size).Take(size);
-            var dataCount = data.Count();
+            var query = _repository.ReadAll();
+            var data = query.Skip((page - 1) * size).Take(size);
+            var dataCount = query.Count();
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
