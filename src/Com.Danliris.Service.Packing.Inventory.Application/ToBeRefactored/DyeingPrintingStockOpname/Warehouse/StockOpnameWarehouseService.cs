@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                                        s.Date.Date == viewModel.Date.Date &&
+                                                                                        s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                         s.Type == DyeingPrintingArea.STOCK_OPNAME
                                                                                         && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
@@ -116,7 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Status,
                                                                 s.Unit,
-                                                                s.UomUnit
+                                                                s.UomUnit,
+                                                                false
                                                                 )).ToList());
 
 
@@ -185,7 +186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Remark,
                                                                 item.Status,
                                                                 item.Unit,
-                                                                item.UomUnit
+                                                                item.UomUnit,
+                                                                false
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -231,10 +233,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
 
-        public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword, bool isStockOpname)
         {
-            var query = _stockOpnameRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI);
-
+            var validIds = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.IsStockOpname == isStockOpname).Select(entity => entity.DyeingPrintingStockOpnameId).ToList();
+            var query = _stockOpnameRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && validIds.Contains(s.Id));
 
             List<string> SearchAttributes = new List<string>()
             {
@@ -252,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 Id = s.Id,
                 Area = s.Area,
-                Type = s.Type == null || s.Type == DyeingPrintingArea.STOCK_OPNAME ? DyeingPrintingArea.STOCK_OPNAME : DyeingPrintingArea.STOCK_OPNAME,
+                Type = DyeingPrintingArea.STOCK_OPNAME,
                 BonNo = s.BonNo,
                 Date = s.Date,
 
@@ -345,7 +347,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Remark,
                 s.Status,
                 s.Unit,
-                s.UomUnit
+                s.UomUnit,
+                false
                      )
 
                 {
@@ -636,7 +639,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     stockOpnameForms.Add(packing);
             }
 
-            stockOpnameForms =  stockOpnameForms.Distinct().ToList();
+            stockOpnameForms = stockOpnameForms.Distinct().ToList();
             var result = 0;
             if (stockOpnameForms.Count > 0)
             {
@@ -688,7 +691,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Id = stockOpnameForm.YarnMaterial.Id,
                             Name = stockOpnameForm.YarnMaterial.Name
-                        }
+                        },
+                        IsStockOpname = true
                     };
 
                     items.Add(item);
@@ -758,7 +762,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Remark,
                                                                 s.Status,
                                                                 s.Unit,
-                                                                s.UomUnit
+                                                                s.UomUnit,
+                                                                s.IsStockOpname
                                                                 )).ToList());
 
 
@@ -804,7 +809,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Remark,
                                                                 item.Status,
                                                                 item.Unit,
-                                                                item.UomUnit
+                                                                item.UomUnit,
+                                                                item.IsStockOpname
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
