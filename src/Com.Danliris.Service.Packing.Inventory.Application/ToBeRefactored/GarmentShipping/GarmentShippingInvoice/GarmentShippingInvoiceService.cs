@@ -310,7 +310,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceId = a.Id,
                             TruckingDate = b.TruckingDate,
                             PEBDate= a.PEBDate,
-                            PaymentDue= a.PaymentDue
+                            PaymentDue= a.PaymentDue,
+                            InvoiceNo= a.InvoiceNo
 
                         };
 
@@ -331,6 +332,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             BuyerAgentName = a.BuyerAgentName,
                             Amount = a.TotalAmount,
                             InvoiceId = a.Id,
+                            InvoiceNo = a.InvoiceNo,
                             TruckingDate = b.TruckingDate,
                             PEBDate = a.PEBDate,
                             PaymentDue = a.PaymentDue
