@@ -328,7 +328,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //     result = await InsertNewWarehouse(viewModel);
             // }
 
-            // return result;
+            return result;
 
         }
 
