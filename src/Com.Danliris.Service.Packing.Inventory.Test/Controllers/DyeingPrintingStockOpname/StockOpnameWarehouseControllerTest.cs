@@ -581,5 +581,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task Should_Success_GetStockOpnameExcel()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelDocumentAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcel(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetStockOpnameExcel()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelDocumentAsync(It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetExcel(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
     }
 }
