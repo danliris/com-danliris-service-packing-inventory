@@ -13,9 +13,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 
             if (input.Contains(","))
             {
+                var a = input.IndexOf(",");
                 decimals = input.Substring(input.IndexOf(",") + 1);
                 // remove decimal part from input
                 input = input.Remove(input.IndexOf(","));
+            } else if(input.Contains("."))
+            {
+                var a = input.IndexOf(".");
+                decimals = input.Substring(input.IndexOf(".") + 1);
+                // remove decimal part from input
+                input = input.Remove(input.IndexOf("."));
             }
 
             // Convert input into words. save it into strWords
