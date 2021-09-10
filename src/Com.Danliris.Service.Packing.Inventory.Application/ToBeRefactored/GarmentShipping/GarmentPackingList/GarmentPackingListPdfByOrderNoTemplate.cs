@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                 newItems2.Last().Details.Add(d);
                             }*/
 
-                            var x = item.Details.Single(a => a.Index == d.Index && a.Carton1 == d.Carton1 && a.Carton2 == d.Carton2);
+                            var x = item.Details.FirstOrDefault(a => a.Id == d.Id && a.Index == d.Index && a.Carton1 == d.Carton1 && a.Carton2 == d.Carton2);
                             newItems2.Last().Details.Add(x);
 
                         }
