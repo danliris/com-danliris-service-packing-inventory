@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Utilities
         [Fact]
         public void Should_Success_ConvertWithDecimal()
         {
-            var currency = CurrencyToText.ToWords(3.45M);
+            var currency = CurrencyToText.ToWords((decimal)3.45);
             Assert.NotEmpty(currency);
         }
     }
