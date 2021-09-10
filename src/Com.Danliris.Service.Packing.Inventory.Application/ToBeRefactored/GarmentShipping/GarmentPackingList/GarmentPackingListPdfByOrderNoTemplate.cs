@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         foreach (var d in item.Details.OrderBy(a => a.Carton1))
                         {
-                            var x = newItems.Last().Details.FirstOrDefault(w => w.Id == d.Id);
+                            /*var x = newItems.Last().Details.FirstOrDefault(w => w.Id == d.Id);
                             if(x != null)
                             {
                                 if (x.Index == d.Index && x.Carton1 == d.Carton1 && x.Carton2 == d.Carton2)
@@ -98,8 +98,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             } else
                             {
                                 newItems2.Last().Details.Add(d);
-                            }
-                            
+                            }*/
+
+                            var x = item.Details.Single(a => a.Index == d.Index && a.Carton1 == d.Carton1 && a.Carton2 == d.Carton2);
+                            newItems2.Last().Details.Add(x);
+
                         }
                     }
                     else
