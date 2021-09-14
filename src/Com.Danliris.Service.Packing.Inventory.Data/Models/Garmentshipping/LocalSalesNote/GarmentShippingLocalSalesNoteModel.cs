@@ -27,6 +27,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public bool UseVat { get; set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public bool IsApproveShipping { get; set; }
+        public bool IsApproveFinance { get; set; }
+        public string ApproveShippingBy { get; set; }
+        public string ApproveFinanceBy { get; set; }
+        public DateTimeOffset ApproveShippingDate { get; private set; }
+        public DateTimeOffset ApproveFinanceDate { get; private set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemModel> Items { get; private set; }
 
@@ -34,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, string remark, bool isUsed, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             SalesContractNo = salesContractNo;
             LocalSalesContractId = localSalesContractId;
@@ -55,6 +61,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             UseVat = useVat;
             Remark = remark;
             IsUsed = isUsed;
+            IsApproveShipping = isApproveShipping;
+            IsApproveFinance = isApproveFinance;
+            ApproveShippingBy = approveShippingBy;
+            ApproveFinanceBy = approveFinanceBy;
+            ApproveShippingDate = approveShippingDate;
+            ApproveFinanceDate = approveFinanceDate;
             Items = items;
         }
 
@@ -126,6 +138,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (IsUsed != isUsed)
             {
                 IsUsed = isUsed;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsApproveShipping(bool isApproveShipping, string userName, string userAgent)
+        {
+            if (IsApproveShipping != isApproveShipping)
+            {
+                IsApproveShipping = isApproveShipping;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsApproveFinance(bool isApproveFinance, string userName, string userAgent)
+        {
+            if (IsApproveFinance != isApproveFinance)
+            {
+                IsApproveFinance = isApproveFinance;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetApproveFinanceBy(string approveFinanceBy, string userName, string userAgent)
+        {
+            if (ApproveFinanceBy != approveFinanceBy)
+            {
+                ApproveFinanceBy = approveFinanceBy;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetApproveShippingBy(string approveShippingBy, string userName, string userAgent)
+        {
+            if (ApproveShippingBy != approveShippingBy)
+            {
+                ApproveShippingBy = approveShippingBy;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetApproveFinanceDate(DateTimeOffset approveFinanceDate, string userName, string userAgent)
+        {
+            if (ApproveFinanceDate != approveFinanceDate)
+            {
+                ApproveFinanceDate = approveFinanceDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetApproveShippingDate(DateTimeOffset approveShippingDate, string userName, string userAgent)
+        {
+            if (ApproveShippingDate != approveShippingDate)
+            {
+                ApproveShippingDate = approveShippingDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

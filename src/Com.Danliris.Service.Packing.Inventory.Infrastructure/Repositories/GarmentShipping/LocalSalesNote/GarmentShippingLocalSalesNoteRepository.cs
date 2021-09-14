@@ -136,5 +136,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             return _dbContext.SaveChangesAsync();
         }
+
+        public Task<int> ApproveFinanceAsync(int id)
+        {
+            var modelToUpdate = _dbSet
+                .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetApproveFinanceDate(DateTimeOffset.Now, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsApproveFinance(true, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetApproveFinanceBy(_identityProvider.Username, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> ApproveShippingAsync(int id)
+        {
+            var modelToUpdate = _dbSet
+                .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetApproveShippingDate(DateTimeOffset.Now, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsApproveShipping(true, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetApproveShippingBy(_identityProvider.Username, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }
