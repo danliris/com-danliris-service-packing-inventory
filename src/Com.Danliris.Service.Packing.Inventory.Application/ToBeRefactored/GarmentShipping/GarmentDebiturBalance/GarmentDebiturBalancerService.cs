@@ -53,7 +53,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Code=model.BuyerAgentCode,
                     Name = model.BuyerAgentName,
                 },
-                balanceAmount = model.BalanceAmount,                
+                balanceAmount = model.BalanceAmount,
+                balanceAmountIDR = model.BalanceAmountIDR,
             };
 
             return viewModel;
@@ -63,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyerAgent = viewModel.buyerAgent ?? new BuyerAgent();
 
-            GarmentDebiturBalanceModel model = new GarmentDebiturBalanceModel(viewModel.balanceDate.GetValueOrDefault(), viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.balanceAmount);
+            GarmentDebiturBalanceModel model = new GarmentDebiturBalanceModel(viewModel.balanceDate.GetValueOrDefault(), viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.balanceAmount, viewModel.balanceAmountIDR);
 
             return await _repository.InsertAsync(model);
         }
@@ -98,6 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     buyerAgentCode = model.BuyerAgentCode,
                     buyerAgentName = model.BuyerAgentName,
                     balanceAmount = model.BalanceAmount,
+                    balanceAmountIDR = model.BalanceAmountIDR,
                     balanceDate = model.BalanceDate,
                 })
                 .ToList();
@@ -116,7 +118,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentDebiturBalanceViewModel viewModel)
         {
             viewModel.buyerAgent = viewModel.buyerAgent ?? new BuyerAgent();
-            GarmentDebiturBalanceModel model = new GarmentDebiturBalanceModel(viewModel.balanceDate.GetValueOrDefault(), viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.balanceAmount);
+            GarmentDebiturBalanceModel model = new GarmentDebiturBalanceModel(viewModel.balanceDate.GetValueOrDefault(), viewModel.buyerAgent.Id, viewModel.buyerAgent.Code, viewModel.buyerAgent.Name, viewModel.balanceAmount, viewModel.balanceAmount);
 
             return await _repository.UpdateAsync(id, model);
         }
