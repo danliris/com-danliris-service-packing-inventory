@@ -4400,6 +4400,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                 b.Property<bool>("Active");
 
+                b.Property<string>("ApproveFinanceBy");
+
+                b.Property<DateTimeOffset>("ApproveFinanceDate");
+
+                b.Property<string>("ApproveShippingBy");
+
+                b.Property<DateTimeOffset>("ApproveShippingDate");
+
                 b.Property<string>("BuyerCode")
                     .HasMaxLength(100);
 
@@ -4434,6 +4442,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                 b.Property<string>("ExpenditureNo")
                     .HasMaxLength(50);
+
+                b.Property<bool>("IsApproveFinance");
+
+                b.Property<bool>("IsApproveShipping");
 
                 b.Property<bool>("IsDeleted");
 
