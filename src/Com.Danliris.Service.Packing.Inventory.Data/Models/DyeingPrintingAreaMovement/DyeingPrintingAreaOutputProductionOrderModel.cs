@@ -97,6 +97,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public bool HasPrintingProductPacking { get; private set; }
 
+        public string ProductPackingCodeRemains { get; private set; }
+
         #endregion
 
 
