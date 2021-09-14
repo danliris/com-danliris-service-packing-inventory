@@ -432,6 +432,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -829,6 +831,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
+
+                    b.Property<string>("ProductPackingCodeRemains");
 
                     b.Property<int>("ProductPackingId");
 
