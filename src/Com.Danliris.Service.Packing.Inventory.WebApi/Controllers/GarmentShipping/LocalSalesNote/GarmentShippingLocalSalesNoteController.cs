@@ -146,6 +146,40 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
+        [HttpPut("approve-shipping/{id}")]
+        public async Task<IActionResult> PutApproveShipping([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ApproveShipping(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-finance/{id}")]
+        public async Task<IActionResult> PutApproveFinance([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ApproveFinance(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
