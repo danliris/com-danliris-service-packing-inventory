@@ -197,5 +197,63 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             Assert.NotEqual(0, result);
         }
+
+        [Fact]
+        public async Task Should_Success_ApproveShipping_Data()
+        {
+            string testName = GetCurrentMethod() + "Update";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
+            GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
+            GarmentShippingLocalSalesNoteModel oldModel = salesNoteDataUtil.GetModel();
+            oldModel.LocalSalesContractId = dataSC.Id;
+            await repo.InsertAsync(oldModel);
+
+            var model = repo.ReadAll().FirstOrDefault();
+            var data = await repo.ReadByIdAsync(model.Id);
+            data.SetApproveShippingDate(data.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetApproveShippingBy("approve", data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetIsApproveShipping(true, data.LastModifiedBy, data.LastModifiedAgent);
+
+            var result = await repo.ApproveShippingAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ApproveFinance_Data()
+        {
+            string testName = GetCurrentMethod() + "Update";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
+            GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
+            GarmentShippingLocalSalesNoteModel oldModel = salesNoteDataUtil.GetModel();
+            oldModel.LocalSalesContractId = dataSC.Id;
+            await repo.InsertAsync(oldModel);
+
+            var model = repo.ReadAll().FirstOrDefault();
+            var data = await repo.ReadByIdAsync(model.Id);
+            data.SetApproveFinanceDate(data.Date.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetApproveFinanceBy("approve", data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetIsApproveFinance(true, data.LastModifiedBy, data.LastModifiedAgent);
+
+            var result = await repo.ApproveFinanceAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
     }
 }
