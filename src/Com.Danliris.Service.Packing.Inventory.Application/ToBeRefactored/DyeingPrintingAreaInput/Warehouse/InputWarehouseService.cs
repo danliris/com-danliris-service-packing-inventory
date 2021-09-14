@@ -276,7 +276,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             }
             return result;
-
+            
             // if (model != null)
             // {
             // var listOfInId = model.DyeingPrintingAreaInputProductionOrders.Select(x => x.Id).ToList();
