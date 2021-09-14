@@ -143,6 +143,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             }
         }
 
+        private DyeingPrintingStockOpnameModel EmptyModelItem
+        {
+            get
+            {
+                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, new List<DyeingPrintingStockOpnameProductionOrderModel>());
+
+            }
+        }
 
         [Fact]
         public async Task Should_Success_Create()
@@ -380,6 +388,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             //Assert
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_GenerateExcel()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = await service.GenerateExcelDocumentAsync(1, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Empty_GenerateExcel()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(EmptyModelItem);
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = await service.GenerateExcelDocumentAsync(1, 7);
+
+            Assert.NotNull(result);
         }
     }
 }
