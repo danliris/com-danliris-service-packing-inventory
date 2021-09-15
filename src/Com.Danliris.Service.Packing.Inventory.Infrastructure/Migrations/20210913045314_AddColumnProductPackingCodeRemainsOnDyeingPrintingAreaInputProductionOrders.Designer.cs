@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210913045314_AddColumnProductPackingCodeRemainsOnDyeingPrintingAreaInputProductionOrders")]
+    partial class AddColumnProductPackingCodeRemainsOnDyeingPrintingAreaInputProductionOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1076,8 +1078,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<bool>("IsStockOpname");
-
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
 
@@ -1834,8 +1834,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<decimal>("BalanceAmount");
-
-                    b.Property<decimal>("BalanceAmountIDR");
 
                     b.Property<DateTimeOffset>("BalanceDate");
 
@@ -4404,14 +4402,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("ApproveFinanceBy");
-
-                    b.Property<DateTimeOffset>("ApproveFinanceDate");
-
-                    b.Property<string>("ApproveShippingBy");
-
-                    b.Property<DateTimeOffset>("ApproveShippingDate");
-
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
 
@@ -4446,10 +4436,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ExpenditureNo")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("IsApproveFinance");
-
-                    b.Property<bool>("IsApproveShipping");
 
                     b.Property<bool>("IsDeleted");
 
