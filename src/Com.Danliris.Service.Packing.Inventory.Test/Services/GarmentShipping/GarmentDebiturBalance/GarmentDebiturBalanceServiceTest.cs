@@ -59,7 +59,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0);
+            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0,0);
 
             var repoMock = new Mock<IGarmentDebiturBalanceRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0);
+            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0,0);
 
             var repoMock = new Mock<IGarmentDebiturBalanceRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task Delete_Success()
         {
-            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0);
+            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "", 0,0);
 
             var repoMock = new Mock<IGarmentDebiturBalanceRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
