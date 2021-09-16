@@ -224,6 +224,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 {
 
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                    result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.PackagingQty * -1);
+                }
+
+                if (item.ProductPackingCode != null && item.ProductPackingCode != "")
+                {
+                    await _inputProductionOrderRepository.RestoreProductPackingCodeRemains(item.DyeingPrintingAreaInputProductionOrderId, item.ProductPackingCode);
                 }
             }
 
@@ -811,32 +817,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.FlagForDelete(_identityProvider.Username, UserAgent);
                     if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1, item.PackagingQty * -1);
                     }
                     else
                     {
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance * -1);
+                        result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.PackagingQty * -1);
                     }
 
+                    if (item.ProductPackingCode != null && item.ProductPackingCode != "")
+                    {
+                        await _inputProductionOrderRepository.RestoreProductPackingCodeRemains(item.DyeingPrintingAreaInputProductionOrderId, item.ProductPackingCode);
+                    }
                 }
                 else
                 {
                     var diffBalance = item.Balance - localItem.Balance;
+                    var diffPackingQty = item.PackagingQty - localItem.PackagingQty;
 
                     if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                     {
-                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
+                        result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1, diffPackingQty * -1);
                     }
                     else
                     {
                         result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffBalance * -1);
+                        result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, diffPackingQty * -1);
                     }
+
+                    if (item.ProductPackingCode != null && item.ProductPackingCode != "")
+                    {
+                        var listExistingCode = item.ProductPackingCode.Split(",");
+                        var listproductPackingCodeSave = localItem.ProductPackingCode.Split(",");
+                        var restoreProductPackingCodeRemains = listExistingCode.Except(listproductPackingCodeSave);
+                        var restoreProductPackingCodeRemainsStr = String.Join(",", restoreProductPackingCodeRemains.ToArray());
+
+                        await _inputProductionOrderRepository.RestoreProductPackingCodeRemains(item.DyeingPrintingAreaInputProductionOrderId, restoreProductPackingCodeRemainsStr);
+                    }
+
                     item.SetDeliveryOrderSales(localItem.DeliveryOrderSalesId, localItem.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
                     item.SetPackagingQty(localItem.PackagingQty, _identityProvider.Username, UserAgent);
                     item.SetPackagingUnit(localItem.PackagingUnit, _identityProvider.Username, UserAgent);
                     item.SetPackagingLength(localItem.PackagingLength, _identityProvider.Username, UserAgent);
                     item.SetBalance(localItem.Balance, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
+                    item.SetProductPackingCode(localItem.ProductPackingCode, _identityProvider.Username, UserAgent);
                 }
             }
 
