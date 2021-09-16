@@ -31,8 +31,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public bool IsApproveFinance { get; set; }
         public string ApproveShippingBy { get; set; }
         public string ApproveFinanceBy { get; set; }
-        public DateTimeOffset ApproveShippingDate { get; private set; }
-        public DateTimeOffset ApproveFinanceDate { get; private set; }
+        public DateTimeOffset ApproveShippingDate { get; set; }
+        public DateTimeOffset ApproveFinanceDate { get; set; }
+        public bool IsRejectedFinance{ get; set; }
+        public bool IsRejectedShipping { get; set; }
+        public string RejectedReason { get; set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemModel> Items { get; private set; }
 
@@ -40,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             SalesContractNo = salesContractNo;
             LocalSalesContractId = localSalesContractId;
@@ -67,6 +70,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             ApproveFinanceBy = approveFinanceBy;
             ApproveShippingDate = approveShippingDate;
             ApproveFinanceDate = approveFinanceDate;
+            IsRejectedFinance = isRejectedFinance;
+            IsRejectedShipping = isRejectedShipping;
+            RejectedReason = rejectedReason;
             Items = items;
         }
 
@@ -192,6 +198,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (ApproveShippingDate != approveShippingDate)
             {
                 ApproveShippingDate = approveShippingDate;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsRejectedFinance(bool isRejectedFinance, string userName, string userAgent)
+        {
+            if (IsRejectedFinance != isRejectedFinance)
+            {
+                IsRejectedFinance = isRejectedFinance;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsRejectedShipping(bool isRejectedShipping, string userName, string userAgent)
+        {
+            if (IsRejectedShipping != isRejectedShipping)
+            {
+                IsRejectedShipping = isRejectedShipping;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRejectedReason(string rejectedReason, string userName, string userAgent)
+        {
+            if (RejectedReason != rejectedReason)
+            {
+                RejectedReason = rejectedReason;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

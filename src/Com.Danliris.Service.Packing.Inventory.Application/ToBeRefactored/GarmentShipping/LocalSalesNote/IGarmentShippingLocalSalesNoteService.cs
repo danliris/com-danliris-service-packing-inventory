@@ -14,5 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Buyer GetBuyer(int id);
         Task<int> ApproveShipping(int id);
         Task<int> ApproveFinance(int id);
+        Task<int> RejectedFinance(int id, GarmentShippingLocalSalesNoteViewModel viewModel);
+        Task<int> RejectedShipping(int id, GarmentShippingLocalSalesNoteViewModel viewModel);
     }
 }

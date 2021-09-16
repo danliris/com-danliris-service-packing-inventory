@@ -93,6 +93,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetUseVat(model.UseVat, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPaymentType(model.PaymentType, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPaymentType(model.PaymentType, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRejectedReason(null, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsRejectedShipping(false, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsRejectedFinance(false, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
@@ -157,6 +161,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetApproveShippingDate(DateTimeOffset.Now, _identityProvider.Username, UserAgent);
             modelToUpdate.SetIsApproveShipping(true, _identityProvider.Username, UserAgent);
             modelToUpdate.SetApproveShippingBy(_identityProvider.Username, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> RejectShippingAsync(int id, GarmentShippingLocalSalesNoteModel model)
+        {
+            var modelToUpdate = _dbSet
+                .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetIsRejectedShipping(true, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRejectedReason(model.RejectedReason, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> RejectFinanceAsync(int id, GarmentShippingLocalSalesNoteModel model)
+        {
+            var modelToUpdate = _dbSet
+                .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetIsRejectedFinance(true, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRejectedReason(model.RejectedReason, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsApproveShipping(false, _identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }

@@ -180,6 +180,40 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
+        [HttpPut("reject-shipping/{id}")]
+        public async Task<IActionResult> PutRejectShipping([FromRoute] int id, [FromBody] GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.RejectedShipping(id, viewModel);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-finance/{id}")]
+        public async Task<IActionResult> PutRejectFinance([FromRoute] int id, [FromBody] GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.RejectedFinance(id, viewModel);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

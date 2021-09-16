@@ -178,6 +178,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetUseVat(!model.UseVat, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetRemark(model.Remark + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetPaymentType(model.PaymentType + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetPaymentType(model.PaymentType + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetRejectedReason(null, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetIsRejectedShipping(false, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetIsRejectedFinance(false, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {
@@ -252,6 +256,64 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetIsApproveFinance(true, data.LastModifiedBy, data.LastModifiedAgent);
 
             var result = await repo.ApproveFinanceAsync(data.Id);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_RejectFinance_Data()
+        {
+            string testName = GetCurrentMethod() + "Update";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
+            GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
+            GarmentShippingLocalSalesNoteModel oldModel = salesNoteDataUtil.GetModel();
+            oldModel.LocalSalesContractId = dataSC.Id;
+            await repo.InsertAsync(oldModel);
+
+            var model = repo.ReadAll().FirstOrDefault();
+            var data = await repo.ReadByIdAsync(model.Id);
+            data.SetIsRejectedFinance(true, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetRejectedReason("reject!", data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetIsApproveShipping(false, data.LastModifiedBy, data.LastModifiedAgent);
+
+            var result = await repo.RejectFinanceAsync(data.Id,data);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_RejectShipping_Data()
+        {
+            string testName = GetCurrentMethod() + "Update";
+            var dbContext = DbContext(testName);
+
+            var serviceProvider = GetServiceProviderMock(dbContext).Object;
+            GarmentShippingLocalSalesContractRepository repoSC = new GarmentShippingLocalSalesContractRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesContractDataUtil utilSC = new GarmentShippingLocalSalesContractDataUtil(repoSC);
+            GarmentShippingLocalSalesContractModel dataSC = utilSC.GetModel();
+            var dataSalesContract = await repoSC.InsertAsync(dataSC);
+
+            GarmentShippingLocalSalesNoteRepository repo = new GarmentShippingLocalSalesNoteRepository(dbContext, serviceProvider);
+            GarmentShippingLocalSalesNoteDataUtil salesNoteDataUtil = new GarmentShippingLocalSalesNoteDataUtil(repo, utilSC);
+            GarmentShippingLocalSalesNoteModel oldModel = salesNoteDataUtil.GetModel();
+            oldModel.LocalSalesContractId = dataSC.Id;
+            await repo.InsertAsync(oldModel);
+
+            var model = repo.ReadAll().FirstOrDefault();
+            var data = await repo.ReadByIdAsync(model.Id);
+
+            data.SetIsRejectedShipping(true, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetRejectedReason("reject!", data.LastModifiedBy, data.LastModifiedAgent);
+
+            var result = await repo.RejectShippingAsync(data.Id, data);
 
             Assert.NotEqual(0, result);
         }
