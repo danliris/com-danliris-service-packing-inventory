@@ -26,8 +26,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool isApproveFinance { get; set; }
         public string approveShippingBy { get; set; }
         public string approveFinanceBy { get; set; }
-        public DateTimeOffset approveShippingDate { get; private set; }
-        public DateTimeOffset approveFinanceDate { get; private set; }
+        public DateTimeOffset approveShippingDate { get; set; }
+        public DateTimeOffset approveFinanceDate { get; set; }
+        public bool isRejectedShipping { get; set; }
+        public bool isRejectedFinance { get; set; }
+        public string rejectedReason { get; set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemViewModel> items { get; set; }
 

@@ -8,5 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
     {
         Task<int> ApproveShippingAsync(int id);
         Task<int> ApproveFinanceAsync(int id);
+        Task<int> RejectFinanceAsync(int id, GarmentShippingLocalSalesNoteModel model);
+        Task<int> RejectShippingAsync(int id, GarmentShippingLocalSalesNoteModel model);
     }
 }
