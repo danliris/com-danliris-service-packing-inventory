@@ -865,6 +865,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
             }
 
+            //untuk DyeingPrintingAreaOutputProductionOrders yang ganti DOSalesNo
             foreach (var item in model.DyeingPrintingAreaOutputProductionOrders.Where(s => s.Id == 0))
             {
                 item.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -873,11 +874,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
                 if (model.DestinationArea == DyeingPrintingArea.INSPECTIONMATERIAL)
                 {
-                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdateBalanceAndRemainsWithFlagAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance, item.PackagingQty);
                 }
                 else
                 {
                     result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.Balance);
+                    result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.PackagingQty);
+                }
+
+                if (item.ProductPackingCode != null && item.ProductPackingCode != "")
+                {
+                    await _inputProductionOrderRepository.UpdateProductPackingCodeRemains(item.DyeingPrintingAreaInputProductionOrderId, item.ProductPackingCode);
                 }
             }
 

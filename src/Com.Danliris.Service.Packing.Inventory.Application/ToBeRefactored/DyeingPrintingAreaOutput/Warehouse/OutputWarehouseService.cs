@@ -373,6 +373,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         s.DestinationArea == viewModel.DestinationArea &&
                                                                                         s.Date.Date == viewModel.Date.Date &&
                                                                                         s.Shift == viewModel.Shift &&
+                                                                                        s.Group == viewModel.Group &&
                                                                                         s.Type == DyeingPrintingArea.OUT);
 
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
