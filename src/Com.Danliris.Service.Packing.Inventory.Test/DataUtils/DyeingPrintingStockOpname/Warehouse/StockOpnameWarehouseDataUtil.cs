@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
         }
         public override DyeingPrintingStockOpnameModel GetModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1,1,"buyer","color", "construction","documentNo","A",1,"MaterialConstructionName",1,"MaterialName","MaterialWitdh","Motif","PackingInstruction",1,1,"PackagingType","PackagingUnit",1,"ProductionorederName","productionOrderType",1,1,"ProcessTypeName",1,"yarnMaterialName","Remark","Status","Unit","UomUnit");
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1,1,"buyer","color", "construction","documentNo","A",1,"MaterialConstructionName",1,"MaterialName","MaterialWitdh","Motif","PackingInstruction",1,1,"PackagingType","PackagingUnit",1,"ProductionorederName","productionOrderType",1,1,"ProcessTypeName",1,"yarnMaterialName","Remark","Status","Unit","UomUnit", false);
            
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
 
         public override DyeingPrintingStockOpnameModel GetEmptyModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(0, 0, null, null, null, null, null, 0, null, 0, null, null, null, null, 0, 0, null, null, 0, null, null, 0, 0, null, 0, null, null, null, null, null);
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(0, 0, null, null, null, null, null, 0, null, 0, null, null, null, null, 0, 0, null, null, 0, null, null, 0, 0, null, 0, null, null, null, null, null, false);
 
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
 
         public  DyeingPrintingStockOpnameModel GetNewModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit");
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", false);
 
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);

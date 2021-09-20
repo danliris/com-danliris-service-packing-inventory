@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var result = (DyeingPrintingProductPackingViewModel)null;
 
-            result = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == packingCode).Select(s => new DyeingPrintingProductPackingViewModel()
+            result = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).Select(s => new DyeingPrintingProductPackingViewModel()
             {
                 Color = s.Color,
                 FabricPackingId = s.FabricPackingId,
@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (result == null)
             {
-                result = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == packingCode && entity.Area == DyeingPrintingArea.PACKING && entity.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT).Select(s => new DyeingPrintingProductPackingViewModel()
+                result = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).Select(s => new DyeingPrintingProductPackingViewModel()
                 {
                     Color = s.Color,
                     FabricPackingId = s.FabricPackingId,
