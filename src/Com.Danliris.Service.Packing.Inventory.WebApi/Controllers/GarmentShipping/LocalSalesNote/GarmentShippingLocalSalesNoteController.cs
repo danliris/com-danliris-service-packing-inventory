@@ -204,5 +204,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("finance-reports")]
+        public IActionResult GetSalesNoteFinanceReport(string type, int month, int year, string buyer)
+        {
+            try
+            {
+                var data = _service.ReadSalesNoteForFinance(type, month, year, buyer);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }

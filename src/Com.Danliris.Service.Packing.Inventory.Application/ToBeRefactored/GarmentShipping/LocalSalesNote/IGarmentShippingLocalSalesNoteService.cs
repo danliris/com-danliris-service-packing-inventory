@@ -1,5 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote
@@ -12,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Update(int id, GarmentShippingLocalSalesNoteViewModel viewModel);
         Task<int> Delete(int id);
         Buyer GetBuyer(int id);
+        IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer);
     }
 }
