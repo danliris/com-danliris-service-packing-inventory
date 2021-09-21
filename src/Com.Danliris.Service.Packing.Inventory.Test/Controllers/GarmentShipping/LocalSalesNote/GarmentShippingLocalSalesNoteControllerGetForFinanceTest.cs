@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 {
     public class GarmentShippingLocalSalesNoteControllerGetForFinanceTest : GarmentShippingLocalSalesNoteControllerTest
     {
+        
         [Fact]
         public void Get_Ok()
         {
@@ -36,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
         [Fact]
-        public void Should_Error_GetPLForDebtorCardNow()
+        public void Should_Error_GetForFinanceReport()
         {
             var serviceMock = new Mock<IGarmentShippingLocalSalesNoteService>();
             serviceMock
