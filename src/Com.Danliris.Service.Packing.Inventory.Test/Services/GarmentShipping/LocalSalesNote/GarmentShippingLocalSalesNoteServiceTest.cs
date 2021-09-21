@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "code", "name", 1, 1, "uom", 1, 1, 1, "uom");
             var items = new List<GarmentShippingLocalSalesNoteItemModel>();
             items.Add(item);
-            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, items);
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
