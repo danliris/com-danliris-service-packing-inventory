@@ -118,41 +118,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> UpdateFromOutputAsync(int id, double balance)
         {
-            //var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
-
-            //if (modelToUpdate != null)
-            //{
-            //    var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
-            //    modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
-            //    // var newBalance = modelToUpdate.Balance - balance;
-            //    // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-
-            //    var packingLength = modelToUpdate.PackagingLength;
-            //    if(packingLength > 0){
-            //        var newPackagingQty = Convert.ToDecimal(balance / packingLength);
-            //        modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
-            //    }
-
-            //    if (newBalanceRemains <= 0)
-            //    {
-            //        modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
-            //    }
-            //    else
-            //    {
-            //        modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
-            //    }
-            //}
-
-            //return _dbContext.SaveChangesAsync();
-
-
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
 
             if (modelToUpdate != null)
             {
-                var newBalance = modelToUpdate.BalanceRemains - balance;
-                modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
-                if (newBalance <= 0)
+                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+                // var newBalance = modelToUpdate.Balance - balance;
+                // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+
+                //var packingLength = modelToUpdate.PackagingLength;
+                //if(packingLength > 0){
+                //    var newPackagingQty = Convert.ToDecimal(balance / packingLength);
+                //    modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+                //}
+
+                if (newBalanceRemains <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }
@@ -241,7 +222,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
                 var newBalance = modelToUpdate.Balance - balance;
                 modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
-                modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+                //modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
 
                 var newQtyPacking = modelToUpdate.PackagingQty - qtyPacking;
                 modelToUpdate.SetPackagingQty(newQtyPacking, _identityProvider.Username, UserAgent);
@@ -428,6 +409,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 return true;
             }
             return false;
+        }
+
+        public Task<int> UpdateProductPackingCodeRemains(int id, string productPackingCodeOut)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var existingCode = modelToUpdate.ProductPackingCodeRemains;
+                if (existingCode != null && existingCode != "")
+                {
+                    var listExistingCode = existingCode.Split(",");
+                    var listproductPackingCodeOut = productPackingCodeOut.Split(",");
+                    var newListProductPackingCodeRemains = listExistingCode.Except(listproductPackingCodeOut);
+                    var newProductPackingCodeRemains = String.Join(",", newListProductPackingCodeRemains.ToArray());
+
+                    modelToUpdate.SetProductPackingCodeRemains(newProductPackingCodeRemains, _identityProvider.Username, UserAgent);
+                }
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> RestoreProductPackingCodeRemains(int id, string productPackingCode)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var existingCode = modelToUpdate.ProductPackingCodeRemains;
+                var newRemainCode = "";
+                if (existingCode == "")
+                {
+                    newRemainCode = productPackingCode;
+                }
+                else
+                {
+                    if (productPackingCode != "")
+                    {
+                        newRemainCode = existingCode + "," + productPackingCode;
+                    }
+                    else
+                    {
+                        newRemainCode = existingCode;
+                    }
+                }
+                modelToUpdate.SetProductPackingCodeRemains(newRemainCode, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdatePackingQtyFromOutputAsync(int id, decimal packagingQtyOut)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newPackagingQty = modelToUpdate.PackagingQty - packagingQtyOut;
+                modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }
