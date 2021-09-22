@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
@@ -242,6 +243,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 return null;
             }
+        }
+
+        public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
+        {
+            var salesNote = _repository.ReadAll();
+            DateTime dateFrom = type=="now" ? new DateTime(year, month, 1) : DateTime.MinValue;
+            DateTime dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+            var query = from a in salesNote
+                        where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo 
+                    && a.BuyerCode==(buyer!=null ? buyer : a.BuyerCode)
+                    select new LocalSalesNoteFinanceReportViewModel
+                    {
+                        BuyerCode = a.BuyerCode,
+                        BuyerName = a.BuyerName,
+                        Amount =a.UseVat ? (a.Items.Sum(b=>b.Price * b.Quantity) * 110/100) : a.Items.Sum(b => b.Price * b.Quantity),
+                        SalesNoteId = a.Id,
+                        SalesNoteNo = a.NoteNo,
+                        Date=a.Date
+                    };
+
+            return query.AsQueryable();
         }
     }
 }
