@@ -248,8 +248,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
         {
             var salesNote = _repository.ReadAll();
-            DateTime dateFrom = type=="now" ? new DateTime(year, month, 1) : DateTime.MinValue;
-            DateTime dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+
+            DateTime dateFrom = DateTime.MinValue;
+            DateTime dateTo = month == 1 ? new DateTime(year, 1, 1) : new DateTime(year, month, 1);
+            if (type == "now")
+            {
+                dateFrom = new DateTime(year, month, 1);
+                dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+            }
+            
+            
             var query = from a in salesNote
                         where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo 
                     && a.BuyerCode==(buyer!=null ? buyer : a.BuyerCode)
