@@ -223,7 +223,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result.ToList());
 
-            var result2 = service.ReadSalesNoteForFinance("", model.Date.Month, model.Date.Year, null);
+            var result2 = service.ReadSalesNoteForFinance("", model.Date.Month+1, model.Date.Year, null);
 
             Assert.NotEmpty(result2.ToList());
         }
