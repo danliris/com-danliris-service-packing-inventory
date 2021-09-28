@@ -299,7 +299,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Amount = a.UseVat ? (a.Items.Sum(b => b.Price * b.Quantity) * 110 / 100) : a.Items.Sum(b => b.Price * b.Quantity),
                             Id = a.Id,
                             noteNo = a.NoteNo,
-                            date = a.Date
+                            date = a.Date,
+                            tempo = a.Tempo
                         };
 
             return query.AsQueryable();
