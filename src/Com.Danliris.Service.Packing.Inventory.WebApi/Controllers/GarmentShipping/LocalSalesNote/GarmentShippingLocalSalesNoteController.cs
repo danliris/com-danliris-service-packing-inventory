@@ -291,7 +291,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
         
-        HttpGet("localSalesDebtor")]
+        [HttpGet("localSalesDebtor")]
         public IActionResult GetLocalSalesDebtor([FromQuery] string type, [FromQuery] int month, [FromQuery] int year)
         {
             try
