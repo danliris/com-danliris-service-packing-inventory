@@ -596,8 +596,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                         s.DestinationArea == viewModel.DestinationArea &&
                                                                                         s.Date.Date == viewModel.Date.Date &&
                                                                                         s.Shift == viewModel.Shift &&
+                                                                                        s.Group == viewModel.Group &&
                                                                                         s.Type == DyeingPrintingArea.OUT);
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
+
+            var dateData = viewModel.Date;
+            var ids = _inputRepository.GetDbSet().Where(s => s.Area != null && s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
+            var errorResult = new List<ValidationResult>();
+
+            foreach (var item in viewModel.WarehousesProductionOrders)
+            {
+                if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
+                {
+                    var splitedCode = item.ProductPackingCode.Split(",");
+                    foreach (var code in splitedCode)
+                    {
+                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.CreatedUtc)
+                                .FirstOrDefault(x =>
+                                    x.ProductPackingCode.Contains(code)
+                                );
+
+                        if (latestDataOnOut != null)
+                        {
+                            var latestDataOnIn = _inputProductionOrderRepository.GetDbSet()
+                                .OrderByDescending(o => o.CreatedUtc).FirstOrDefault(x =>
+                                x.Area == DyeingPrintingArea.GUDANGJADI &&
+                                x.ProductPackingCode.Contains(code) &&
+                                x.CreatedUtc > latestDataOnOut.CreatedUtc
+                            );
+
+                            if (latestDataOnIn == null)
+                            {
+                                errorResult.Add(new ValidationResult("Kode " + code + " belum masuk", new List<string> { "Kode" }));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (errorResult.Count > 0)
+            {
+                var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
             if (model == null)
             {
                 int totalCurrentYearData = _outputRepository.ReadAllIgnoreQueryFilter()
@@ -682,9 +725,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
                     else
                     {
+                        //var newBalance = item.Quantity * (double)1;
+                        var newBalance = GetBalance(item);
+                        var packagingQty = GetPackagingQty(item);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, newBalance);
+                        result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.Id, packagingQty);
 
-                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
                     }
+                    //var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
+                    //    item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
+                    //    item.PackagingType, item.PackagingQty, item.PackagingUnit, item.Quantity, item.InventoryType);
+
+                    // update productPackingCodeRemains
+                    if(item.ProductPackingCode != null && item.ProductPackingCode != "")
+                    {
+                        await _inputProductionOrderRepository.UpdateProductPackingCodeRemains(item.Id, item.ProductPackingCode);
+                    }
+
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrder.Type, item.Grade, null,
                         item.PackagingType, item.PackagingQty, item.PackagingUnit, item.Quantity, item.InventoryType);
@@ -744,8 +801,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
                     else
                     {
+                        //result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                        var newBalance = GetBalance(item);
+                        var packagingQty = GetPackagingQty(item);
+                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, newBalance);
+                        result += await _inputProductionOrderRepository.UpdatePackingQtyFromOutputAsync(item.Id, packagingQty);
+                    }
 
-                        result += await _inputProductionOrderRepository.UpdateFromOutputAsync(item.Id, item.Balance);
+                    // update productPackingCodeRemains
+                    if (item.ProductPackingCode != null && item.ProductPackingCode != "")
+                    {
+                        await _inputProductionOrderRepository.UpdateProductPackingCodeRemains(item.Id, item.ProductPackingCode);
                     }
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -2213,6 +2279,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductionOrderType = s.Key.ProductionOrderType,
                 ProductionOrderItems = s.Select(p => new InputSppWarehouseItemListViewModel()
                 {
+                    BalanceRemains = p.BalanceRemains,
+                    ProductPackingCodeRemains = p.ProductPackingCodeRemains,
                     PreviousBalance = p.BalanceRemains,
                     PreviousQtyPacking = p.PackagingQty,
                     Id = p.Id,

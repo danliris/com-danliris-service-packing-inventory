@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
@@ -67,6 +68,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 localSalesContractId=model.LocalSalesContractId,
                 salesContractNo=model.SalesContractNo,
                 paymentType=model.PaymentType,
+                isRejectedFinance=model.IsRejectedFinance,
+                isRejectedShipping=model.IsRejectedShipping,
+                isApproveFinance=model.IsApproveFinance,
+                isApproveShipping=model.IsApproveShipping,
+                rejectedReason=model.RejectedReason,
+                approveFinanceBy=model.ApproveFinanceBy,
+                approveFinanceDate=model.ApproveFinanceDate,
+                approveShippingBy=model.ApproveShippingBy,
+                approveShippingDate=model.ApproveShippingDate,
                 items = (model.Items ?? new List<GarmentShippingLocalSalesNoteItemModel>()).Select(i => new GarmentShippingLocalSalesNoteItemViewModel
                 {
                     Active = i.Active,
@@ -120,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, vm.expenditureNo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed, items) { Id = vm.Id };
+            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, vm.expenditureNo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed,vm.isApproveShipping,vm.isApproveFinance,vm.approveShippingBy,vm.approveFinanceBy,vm.approveShippingDate,vm.approveFinanceDate, vm.isRejectedShipping,vm.isRejectedFinance,vm.rejectedReason, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteViewModel vm)
@@ -192,6 +202,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _repository.UpdateAsync(id, model);
         }
 
+        public async Task<int> ApproveFinance(int id)
+        {
+            return await _repository.ApproveFinanceAsync(id);
+        }
+
+        public async Task<int> ApproveShipping(int id)
+        {
+            return await _repository.ApproveShippingAsync(id);
+        }
+
+        public async Task<int> RejectedShipping(int id, GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            var model = MapToModel(viewModel);
+
+            return await _repository.RejectShippingAsync(id, model);
+        }
+
+        public async Task<int> RejectedFinance(int id, GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            var model = MapToModel(viewModel);
+
+            return await _repository.RejectFinanceAsync(id, model);
+        }
+
         public Buyer GetBuyer(int id)
         {
             string buyerUri = "master/garment-leftover-warehouse-buyers";
@@ -209,6 +243,67 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 return null;
             }
+        }
+        
+        public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
+        {
+            var salesNote = _repository.ReadAll();
+
+            DateTime dateFrom = DateTime.MinValue;
+            DateTime dateTo = month == 1 ? new DateTime(year, 1, 1) : new DateTime(year, month, 1);
+            if (type == "now")
+            {
+                dateFrom = new DateTime(year, month, 1);
+                dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+            }  
+            
+            var query = from a in salesNote
+                        where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo 
+                    && a.BuyerCode==(buyer!=null ? buyer : a.BuyerCode)
+                    select new LocalSalesNoteFinanceReportViewModel
+                    {
+                        BuyerCode = a.BuyerCode,
+                        BuyerName = a.BuyerName,
+                        Amount =a.UseVat ? (a.Items.Sum(b=>b.Price * b.Quantity) * 110/100) : a.Items.Sum(b => b.Price * b.Quantity),
+                        SalesNoteId = a.Id,
+                        SalesNoteNo = a.NoteNo,
+                        Date=a.Date
+                    };
+
+            return query.AsQueryable();
+        }
+        
+        public IQueryable<GarmentShippingLocalSalesNoteViewModel> ReadLocalSalesDebtor(string type, int month, int year)
+        {
+            var salesNote = _repository.ReadAll();
+
+            DateTime dateFrom = DateTime.MinValue;
+            DateTime dateTo = month == 1 ? new DateTime(year, 1, 1) : new DateTime(year, month, 1);
+            if (type == "now")
+            {
+                dateFrom = new DateTime(year, month, 1);
+                dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+            }
+
+
+            var query = from a in salesNote
+                        where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo
+                        select new GarmentShippingLocalSalesNoteViewModel
+                        {
+                            buyer = new Buyer
+                            {
+                                Id = a.BuyerId,
+                                Name = a.BuyerName,
+                                Code = a.BuyerCode
+                            },
+                            Amount = a.UseVat ? (a.Items.Sum(b => b.Price * b.Quantity) * 110 / 100) : a.Items.Sum(b => b.Price * b.Quantity),
+                            Id = a.Id,
+                            noteNo = a.NoteNo,
+                            date = a.Date,
+                            tempo = a.Tempo
+                        };
+
+            return query.AsQueryable();
         }
     }
 }

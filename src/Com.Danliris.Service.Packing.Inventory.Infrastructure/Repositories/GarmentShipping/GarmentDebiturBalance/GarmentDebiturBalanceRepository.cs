@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBuyerAgentCode(model.BuyerAgentCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBuyerAgentName(model.BuyerAgentName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalanceAmount(model.BalanceAmount, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBalanceAmountIDR(model.BalanceAmountIDR, _identityProvider.Username, UserAgent);
 
             return await _dbContext.SaveChangesAsync();
         }
