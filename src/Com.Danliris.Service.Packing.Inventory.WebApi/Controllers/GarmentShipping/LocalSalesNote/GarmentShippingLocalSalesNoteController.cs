@@ -204,5 +204,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("localSalesDebtor")]
+        public IActionResult GetLocalSalesDebtor([FromQuery] string type, [FromQuery] int month, [FromQuery] int year)
+        {
+            try
+            {
+                var data = _service.ReadLocalSalesDebtor(type, month, year);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
