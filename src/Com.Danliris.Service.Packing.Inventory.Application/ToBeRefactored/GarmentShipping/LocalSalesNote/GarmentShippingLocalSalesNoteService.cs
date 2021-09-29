@@ -273,7 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return query.AsQueryable();
             //throw new NotImplementedException();
-        
+            }        
         public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
         {
             var salesNote = _repository.ReadAll();

@@ -187,10 +187,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotNull(result);
         }
+
         [Fact]
         public void ReadShippingLocalSalesNoteListNow_Success()
         {
-            var model1 = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "A99", "", 1, "", "", "", "", 1, "", "", true, "", true, new List<GarmentShippingLocalSalesNoteItemModel>())
+            var model1 = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "A99", "", 1, "", "", "", "", 1, "", "", true, "", true, true,true,"","", DateTimeOffset.Now, DateTimeOffset.Now, true,true,"" ,new List<GarmentShippingLocalSalesNoteItemModel>())
             {
                 Id = 1
             };
