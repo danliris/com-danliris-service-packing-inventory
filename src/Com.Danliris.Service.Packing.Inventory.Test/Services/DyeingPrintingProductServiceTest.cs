@@ -167,7 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             repoMock.Setup(s => s.UpdateHasPrintingProductPacking(It.IsAny<int>(), It.IsAny<bool>()))
                  .ReturnsAsync(1);
 
-            var stockModel = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "test", "color", "construction", "documentNO", "grade", 1, "constructionName", 1, "materialName","materialWidth", "motif", "packingInstruction", 1, 1, "packagingType", "packagingUnit", 1, "orderNo", "orderType", 1, 1, "processTypeName", 1, "yarnName", "remark", "status", "unit", "uomUnit");
+            var stockModel = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "test", "color", "construction", "documentNO", "grade", 1, "constructionName", 1, "materialName","materialWidth", "motif", "packingInstruction", 1, 1, "packagingType", "packagingUnit", 1, "orderNo", "orderType", 1, 1, "processTypeName", 1, "yarnName", "remark", "status", "unit", "uomUnit", false, null);
             stockModel.SetPackingCode("1,2");
             stockOpnameMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingStockOpnameProductionOrderModel>() { stockModel }.AsQueryable());

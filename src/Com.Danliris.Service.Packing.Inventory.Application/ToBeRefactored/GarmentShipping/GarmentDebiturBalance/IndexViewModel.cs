@@ -12,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string buyerAgentName { get; set; }
         public DateTimeOffset? balanceDate { get; set; }
         public decimal balanceAmount { get; set; }
+        public decimal balanceAmountIDR { get; set; }
     }
 }

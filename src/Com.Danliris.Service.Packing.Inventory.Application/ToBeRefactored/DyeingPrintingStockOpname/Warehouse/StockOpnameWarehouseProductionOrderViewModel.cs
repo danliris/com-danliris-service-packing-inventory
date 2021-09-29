@@ -49,18 +49,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public string Status { get; set; }
         // public int DyeingPrintingAreaInputProductionOrderId { get; set; }
-        public UnitOfMeasurement Uom {get; set; }
+        public UnitOfMeasurement Uom { get; set; }
 
-        public int ProcessTypeId { get;  set; }
-        public string ProcessTypeName { get;  set; }
+        public int ProcessTypeId { get; set; }
+        public string ProcessTypeName { get; set; }
 
-        public int YarnMaterialId { get;  set; }
-        public string YarnMaterialName { get;  set; }
+        public int YarnMaterialId { get; set; }
+        public string YarnMaterialName { get; set; }
 
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
-      
-        
 
+        public bool IsStockOpname { get; set; }
+        public string PackingCodes { get; set; }
     }
 }

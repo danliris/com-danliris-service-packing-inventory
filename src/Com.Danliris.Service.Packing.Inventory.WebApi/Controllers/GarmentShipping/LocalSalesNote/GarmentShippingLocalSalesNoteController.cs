@@ -146,6 +146,74 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
+        [HttpPut("approve-shipping/{id}")]
+        public async Task<IActionResult> PutApproveShipping([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ApproveShipping(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("approve-finance/{id}")]
+        public async Task<IActionResult> PutApproveFinance([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ApproveFinance(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-shipping/{id}")]
+        public async Task<IActionResult> PutRejectShipping([FromRoute] int id, [FromBody] GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.RejectedShipping(id, viewModel);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("reject-finance/{id}")]
+        public async Task<IActionResult> PutRejectFinance([FromRoute] int id, [FromBody] GarmentShippingLocalSalesNoteViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.RejectedFinance(id, viewModel);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -212,6 +280,41 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 var data = _service.ReadShippingLocalSalesNoteListNow(month, year);
 
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+                
+        [HttpGet("finance-reports")]
+        public IActionResult GetSalesNoteFinanceReport(string type, int month, int year, string buyer)
+        {
+            try
+            {
+                var data = _service.ReadSalesNoteForFinance(type, month, year, buyer);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        
+        [HttpGet("localSalesDebtor")]
+        public IActionResult GetLocalSalesDebtor([FromQuery] string type, [FromQuery] int month, [FromQuery] int year)
+        {
+            try
+            {
+                var data = _service.ReadLocalSalesDebtor(type, month, year);
                 return Ok(new
                 {
                     data
