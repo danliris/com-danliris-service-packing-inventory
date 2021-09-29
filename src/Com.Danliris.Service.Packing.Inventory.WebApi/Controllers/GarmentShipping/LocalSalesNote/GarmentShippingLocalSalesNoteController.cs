@@ -273,6 +273,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
+        [HttpGet("localSalesDebtorNow")]
+        public IActionResult GetLocalSalesDebtorNow(int month, int year)
+        {
+            try
+            {
+                var data = _service.ReadShippingLocalSalesNoteListNow(month, year);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+                
         [HttpGet("finance-reports")]
         public IActionResult GetSalesNoteFinanceReport(string type, int month, int year, string buyer)
         {
@@ -297,7 +315,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             try
             {
                 var data = _service.ReadLocalSalesDebtor(type, month, year);
-
                 return Ok(new
                 {
                     data

@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Update(int id, GarmentShippingLocalSalesNoteViewModel viewModel);
         Task<int> Delete(int id);
         Buyer GetBuyer(int id);
+        IQueryable<GarmentShippingLocalSalesNoteViewModel> ReadShippingLocalSalesNoteListNow(int month, int year);
         IQueryable<GarmentShippingLocalSalesNoteViewModel> ReadLocalSalesDebtor(string type, int month, int year);
         IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer);
         Task<int> ApproveShipping(int id);
