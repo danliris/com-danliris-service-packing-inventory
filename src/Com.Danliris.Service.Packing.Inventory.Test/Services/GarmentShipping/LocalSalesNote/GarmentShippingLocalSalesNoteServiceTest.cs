@@ -187,6 +187,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotNull(result);
         }
+        [Fact]
+        public void ReadShippingLocalSalesNoteListNow_Success()
+        {
+            var model1 = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "A99", "", 1, "", "", "", "", 1, "", "", true, "", true, new List<GarmentShippingLocalSalesNoteItemModel>())
+            {
+                Id = 1
+            };
+
+
+            var repoMock1 = new Mock<IGarmentShippingLocalSalesNoteRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model1 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock1.Object).Object);
+
+            var result = service.ReadShippingLocalSalesNoteListNow(DateTimeOffset.Now.Month, DateTimeOffset.Now.Year);
+
+            Assert.NotEmpty(result.ToList());
+        }
 
         [Fact]
         public void Should_Null_Get_BuyerViewModel()
