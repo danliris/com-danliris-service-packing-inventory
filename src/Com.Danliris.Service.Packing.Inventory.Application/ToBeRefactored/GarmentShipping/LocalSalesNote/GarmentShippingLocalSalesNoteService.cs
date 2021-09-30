@@ -253,7 +253,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         where a.Date.AddHours(7).Month == month && a.Date.AddHours(7).Year == year
                         select new GarmentShippingLocalSalesNoteViewModel
                         {
-                            id = a.Id,
+                            Id = a.Id,
                             date = a.Date,
                             noteNo = a.NoteNo,
                             useVat = a.UseVat,

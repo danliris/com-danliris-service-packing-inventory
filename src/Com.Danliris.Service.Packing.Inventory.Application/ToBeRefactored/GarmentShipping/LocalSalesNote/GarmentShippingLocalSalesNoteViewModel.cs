@@ -9,7 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingLocalSalesNoteViewModel : BaseViewModel, IValidatableObject
     {
-        public int id { get; set; }
         public string salesContractNo { get; set; }
         public int localSalesContractId { get; set; }
         public string noteNo { get; set; }
