@@ -236,18 +236,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var code in splitedCode)
                 {
                     var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
-                        ids.Contains(x.DyeingPrintingAreaInputId) &&
-                        x.ProductPackingCode.Contains(code) &&
-                        dateData > x.DateIn
+                        x.Area == DyeingPrintingArea.GUDANGJADI &&
+                        x.ProductPackingCode.Contains(code)
                     );
 
                     if (latestDataOnIn != null)
                     {
                         var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.DateIn)
+                            .OrderByDescending(o => o.CreatedUtc)
                             .FirstOrDefault(x =>
                                 x.ProductPackingCode.Contains(code) &&
-                                x.DateOut >= latestDataOnIn.DateIn
+                                x.CreatedUtc > latestDataOnIn.CreatedUtc
                             );
 
                         if (latestDataOnOut == null)

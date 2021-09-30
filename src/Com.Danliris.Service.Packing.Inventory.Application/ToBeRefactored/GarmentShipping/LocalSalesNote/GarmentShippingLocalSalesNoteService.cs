@@ -244,7 +244,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 return null;
             }
         }
-
+        
         public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
         {
             var salesNote = _repository.ReadAll();
@@ -255,8 +255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 dateFrom = new DateTime(year, month, 1);
                 dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
-            }
-            
+            }  
             
             var query = from a in salesNote
                         where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo 
@@ -270,6 +269,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         SalesNoteNo = a.NoteNo,
                         Date=a.Date
                     };
+
+            return query.AsQueryable();
+        }
+        
+        public IQueryable<GarmentShippingLocalSalesNoteViewModel> ReadLocalSalesDebtor(string type, int month, int year)
+        {
+            var salesNote = _repository.ReadAll();
+
+            DateTime dateFrom = DateTime.MinValue;
+            DateTime dateTo = month == 1 ? new DateTime(year, 1, 1) : new DateTime(year, month, 1);
+            if (type == "now")
+            {
+                dateFrom = new DateTime(year, month, 1);
+                dateTo = month == 12 ? new DateTime(year + 1, 1, 1) : new DateTime(year, month + 1, 1);
+            }
+
+
+            var query = from a in salesNote
+                        where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo
+                        select new GarmentShippingLocalSalesNoteViewModel
+                        {
+                            buyer = new Buyer
+                            {
+                                Id = a.BuyerId,
+                                Name = a.BuyerName,
+                                Code = a.BuyerCode
+                            },
+                            Amount = a.UseVat ? (a.Items.Sum(b => b.Price * b.Quantity) * 110 / 100) : a.Items.Sum(b => b.Price * b.Quantity),
+                            Id = a.Id,
+                            noteNo = a.NoteNo,
+                            date = a.Date,
+                            tempo = a.Tempo
+                        };
 
             return query.AsQueryable();
         }
