@@ -446,7 +446,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
                 else
                 {
-                    newRemainCode = existingCode + "," + productPackingCode;
+                    if (productPackingCode != "")
+                    {
+                        newRemainCode = existingCode + "," + productPackingCode;
+                    }
+                    else
+                    {
+                        newRemainCode = existingCode;
+                    }
                 }
                 modelToUpdate.SetProductPackingCodeRemains(newRemainCode, _identityProvider.Username, UserAgent);
             }
