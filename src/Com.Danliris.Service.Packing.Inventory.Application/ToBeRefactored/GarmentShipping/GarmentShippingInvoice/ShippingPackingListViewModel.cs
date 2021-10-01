@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset PEBDate { get; set; }
         public DateTimeOffset Date { get; set; }
         public string InvoiceNo { get; set; }
+        public int PaymentDue { get; set; }
     }
 }
