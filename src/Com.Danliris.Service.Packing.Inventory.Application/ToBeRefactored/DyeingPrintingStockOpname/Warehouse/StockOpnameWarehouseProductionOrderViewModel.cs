@@ -61,6 +61,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public YarnMaterial YarnMaterial { get; set; }
 
         public bool IsStockOpname { get; set; }
+        public string PackingCodes { get; set; }
+        public int ProductSKUId { get; set; }
+        public int FabricSKUId { get; set; }
+        public string ProductSKUCode { get; set; }
+        public int ProductPackingId { get; set; }
+        public int FabricPackingId { get; set; }
+        public IEnumerable<string> ProductPackingCodes { get; set; }
+        public bool HasPrintingProductSKU { get; set; }
 
     }
 }
