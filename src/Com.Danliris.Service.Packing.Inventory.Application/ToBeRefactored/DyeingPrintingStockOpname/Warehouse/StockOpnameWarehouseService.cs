@@ -21,6 +21,8 @@ using OfficeOpenXml;
 using System.IO;
 using System.Globalization;
 using System.Data;
+using System.ComponentModel.DataAnnotations;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -34,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
         private readonly IIdentityProvider _identityProvider;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
+        private readonly IServiceProvider _serviceProvider;
 
         public StockOpnameWarehouseService(IServiceProvider serviceProvider)
         {
@@ -42,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<int> Create(StockOpnameWarehouseViewModel viewModel)
@@ -121,7 +125,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                false
+                                                                false,
+                                                                null
                                                                 )).ToList());
 
 
@@ -191,7 +196,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                false
+                                                                false,
+                                                                null
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -352,7 +358,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Status,
                 s.Unit,
                 s.UomUnit,
-                false
+                false,
+                null
                      )
 
                 {
@@ -533,6 +540,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var packingCodes = form.Data.Distinct().ToList();
 
+            var existingCodes = new List<string>();
+
+            foreach (var packingCode in packingCodes)
+            {
+                if (_stockOpnameProductionOrderRepository.ReadAll().Any(element => element.IsStockOpname && element.ProductPackingCode.Contains(packingCode)))
+                    existingCodes.Add(packingCode);
+            }
+
+            if (existingCodes.Count > 0)
+            {
+                var codes = string.Join(',', existingCodes);
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode packing sudah tersimpan: " + codes, new List<string> { "Message" }),
+                    new ValidationResult(codes, new List<string> { "PackingCodes" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+
+
             var stockOpnameForms = new List<DyeingPrintingProductPackingViewModel>();
             foreach (var packingCode in packingCodes)
             {
@@ -650,6 +679,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var items = new List<StockOpnameWarehouseProductionOrderViewModel>();
                 foreach (var stockOpnameForm in stockOpnameForms)
                 {
+                    var scannedPackingCodes = packingCodes.Where(element => stockOpnameForm.ProductPackingCodes.Contains(element)).ToList();
                     var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
                     var item = new StockOpnameWarehouseProductionOrderViewModel()
                     {
@@ -696,7 +726,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = stockOpnameForm.YarnMaterial.Id,
                             Name = stockOpnameForm.YarnMaterial.Name
                         },
-                        IsStockOpname = true
+                        IsStockOpname = true,
+                        PackingCodes = string.Join(',', scannedPackingCodes)
                     };
 
                     items.Add(item);
@@ -767,7 +798,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                s.IsStockOpname
+                                                                s.IsStockOpname,
+                                                                s.PackingCodes
                                                                 )).ToList());
 
 
@@ -814,7 +846,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                item.IsStockOpname
+                                                                item.IsStockOpname,
+                                                                item.PackingCodes
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;

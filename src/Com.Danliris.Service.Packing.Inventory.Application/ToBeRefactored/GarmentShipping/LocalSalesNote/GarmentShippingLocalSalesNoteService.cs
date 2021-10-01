@@ -244,7 +244,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 return null;
             }
         }
-        
+
+        public IQueryable<GarmentShippingLocalSalesNoteViewModel> ReadShippingLocalSalesNoteListNow(int month, int year)
+        {
+            var queryInv = _repository.ReadAll();
+
+            var query = from a in queryInv
+                        where a.Date.AddHours(7).Month == month && a.Date.AddHours(7).Year == year
+                        select new GarmentShippingLocalSalesNoteViewModel
+                        {
+                            Id = a.Id,
+                            date = a.Date,
+                            noteNo = a.NoteNo,
+                            useVat = a.UseVat,
+                            buyer = new Buyer
+                            {
+                                Id = a.BuyerId,
+                                Code = a.BuyerCode,
+                                Name = a.BuyerName,
+                                npwp = a.BuyerNPWP
+                            },
+                            items = a.Items.Select(s => new GarmentShippingLocalSalesNoteItemViewModel
+                            {
+                                price = s.Price,
+                                quantity = s.Quantity
+                            }).ToList()
+                        };
+
+            return query.AsQueryable();
+            //throw new NotImplementedException();
+            }        
         public IQueryable<LocalSalesNoteFinanceReportViewModel> ReadSalesNoteForFinance(string type, int month, int year, string buyer)
         {
             var salesNote = _repository.ReadAll();
