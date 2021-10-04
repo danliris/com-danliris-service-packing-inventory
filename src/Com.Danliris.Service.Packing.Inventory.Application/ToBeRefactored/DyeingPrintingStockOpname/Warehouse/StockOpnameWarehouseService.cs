@@ -825,7 +825,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Unit,
                                                                 s.UomUnit,
                                                                 true,
-                                                                s.PackingCodes
+                                                                s.PackingCodes,
+                                                                s.ProductSKUId,
+                                                                s.FabricSKUId,
+                                                                s.ProductSKUCode,
+                                                                s.ProductPackingId,
+                                                                s.FabricPackingId
                                                                 )).ToList(), true);
 
 
