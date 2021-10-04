@@ -79,6 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                         s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                         s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && !s.IsStockOpname
                                                                                         && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
@@ -127,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.UomUnit,
                                                                 false,
                                                                 null
-                                                                )).ToList());
+                                                                )).ToList(), false);
 
 
                 result = await _stockOpnameRepository.InsertAsync(model);
@@ -359,12 +360,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Unit,
                 s.UomUnit,
                 false,
-                null
-                     )
-
+                null)
                 {
                     Id = s.Id
-                }).ToList());
+                }).ToList(), false);
 
 
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
@@ -762,7 +761,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Type = "STOCK OPNAME",
                     Date = DateTimeOffset.UtcNow,
-                    WarehousesProductionOrders = items
+                    WarehousesProductionOrders = items,
+                    IsStockOpname = true
                 };
 
                 result = await CreateStockOpnameV2(createForm);
@@ -777,6 +777,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                         s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                         s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && s.IsStockOpname
                                                                                         && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
@@ -823,9 +824,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                s.IsStockOpname,
+                                                                true,
                                                                 s.PackingCodes
-                                                                )).ToList());
+                                                                )).ToList(), true);
 
 
                 result = await _stockOpnameRepository.InsertAsync(model);
@@ -877,7 +878,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                item.IsStockOpname,
+                                                                true,
                                                                 item.PackingCodes
                                                                 );
 
