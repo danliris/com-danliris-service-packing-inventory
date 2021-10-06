@@ -271,7 +271,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 _unitOfWork.ProductSKUs.Insert(model);
                 _unitOfWork.Commit();
 
-                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, 0, gradeId, uom.Id);
+                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, 0, gradeId, uom.Id,
+                    form.materialId,form.materialName,form.materialConstructionId,form.materialConstructionName,
+                    form.yarnMaterialId,form.yarnMaterialName,form.ProductionOrderNo,form.uomUnit,form.motif,form.color,form.Grade);
+
                 _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                 _unitOfWork.Commit();
             }

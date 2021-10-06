@@ -140,7 +140,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = item.Grade,
                         ProcessType = item.ProcessTypeName,
                         ProductionOrderNo = item.ProductionOrderNo,
-                        UOM = item.UomUnit
+                        UOM = item.UomUnit,
+                        materialId = item.MaterialId,
+                        materialName = item.MaterialName,
+                        materialConstructionId = item.MaterialConstructionId,
+                        materialConstructionName = item.MaterialConstructionName,
+                        yarnMaterialId = item.YarnMaterialId,
+                        yarnMaterialName = item.YarnMaterialName,
+                        uomUnit = item.UomUnit,
+                        motif = item.Motif,
+                        color = item.Color
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -206,9 +215,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = item.Grade,
-                        ProcessType = modelItem.ProcessTypeName,
-                        ProductionOrderNo = modelItem.ProductionOrderNo,
-                        UOM = item.UomUnit
+                        ProcessType = item.ProcessTypeName,
+                        ProductionOrderNo = item.ProductionOrderNo,
+                        UOM = item.UomUnit,
+                        materialId = item.Material.Id,
+                        materialName = item.Material.Name,
+                        materialConstructionId = item.MaterialConstruction.Id,
+                        materialConstructionName = item.MaterialConstruction.Name,
+                        yarnMaterialId = item.YarnMaterialId,
+                        yarnMaterialName = item.YarnMaterialName,
+                        uomUnit = item.UomUnit,
+                        motif = item.Motif,
+                        color = item.Color
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -379,10 +397,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                         {
-                            Grade = lclModel.Grade,
-                            ProcessType = lclModel.ProcessTypeName,
-                            ProductionOrderNo = lclModel.ProductionOrderNo,
-                            UOM = lclModel.UomUnit
+                            Grade = item.Grade,
+                            ProcessType = item.ProcessTypeName,
+                            ProductionOrderNo = item.ProductionOrderNo,
+                            UOM = item.UomUnit,
+                            materialId = item.MaterialId,
+                            materialName = item.MaterialName,
+                            materialConstructionId = item.MaterialConstructionId,
+                            materialConstructionName = item.MaterialConstructionName,
+                            yarnMaterialId = item.YarnMaterialId,
+                            yarnMaterialName = item.YarnMaterialName,
+                            uomUnit = item.UomUnit,
+                            motif = item.Motif,
+                            color = item.Color
                         });
 
                         var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
