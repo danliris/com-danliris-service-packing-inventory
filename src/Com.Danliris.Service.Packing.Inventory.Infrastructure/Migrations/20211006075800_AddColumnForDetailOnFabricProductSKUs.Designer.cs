@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211006075800_AddColumnForDetailOnFabricProductSKUs")]
+    partial class AddColumnForDetailOnFabricProductSKUs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -5815,9 +5817,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("PackingSize");
 
-                    b.Property<string>("PackingType")
-                        .HasMaxLength(64);
-
                     b.Property<int>("ProductPackingId");
 
                     b.Property<int>("ProductSKUId");
@@ -5898,9 +5897,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<int>("WarpId");
 
                     b.Property<int>("WeftId");
-
-                    b.Property<string>("Width")
-                        .HasMaxLength(32);
 
                     b.Property<int>("WidthId");
 
