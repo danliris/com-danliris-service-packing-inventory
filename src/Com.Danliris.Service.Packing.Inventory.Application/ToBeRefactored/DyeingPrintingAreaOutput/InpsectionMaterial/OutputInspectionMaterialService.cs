@@ -319,7 +319,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             yarnMaterialName = item.YarnMaterial.Name,
                             uomUnit = item.UomUnit,
                             motif = item.Motif,
-                            color = item.Color
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         
@@ -379,7 +380,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             yarnMaterialName = item.YarnMaterial.Name,
                             uomUnit = item.UomUnit,
                             motif = item.Motif,
-                            color = item.Color
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -737,7 +739,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         yarnMaterialName = item.YarnMaterial.Name,
                         uomUnit = item.UomUnit,
                         motif = item.Motif,
-                        color = item.Color
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
 

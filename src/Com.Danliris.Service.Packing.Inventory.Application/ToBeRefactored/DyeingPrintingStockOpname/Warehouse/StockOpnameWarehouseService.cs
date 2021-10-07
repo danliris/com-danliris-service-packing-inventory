@@ -149,7 +149,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         yarnMaterialName = item.YarnMaterialName,
                         uomUnit = item.UomUnit,
                         motif = item.Motif,
-                        color = item.Color
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -215,18 +216,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = item.Grade,
-                        ProcessType = item.ProcessTypeName,
-                        ProductionOrderNo = item.ProductionOrderNo,
+                        ProcessType = item.ProcessType.Name,
+                        ProductionOrderNo = item.ProductionOrder.No,
                         UOM = item.UomUnit,
                         materialId = item.Material.Id,
                         materialName = item.Material.Name,
                         materialConstructionId = item.MaterialConstruction.Id,
                         materialConstructionName = item.MaterialConstruction.Name,
-                        yarnMaterialId = item.YarnMaterialId,
-                        yarnMaterialName = item.YarnMaterialName,
+                        yarnMaterialId = item.YarnMaterial.Id,
+                        yarnMaterialName = item.YarnMaterial.Name,
                         uomUnit = item.UomUnit,
                         motif = item.Motif,
-                        color = item.Color
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -409,7 +411,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             yarnMaterialName = item.YarnMaterialName,
                             uomUnit = item.UomUnit,
                             motif = item.Motif,
-                            color = item.Color
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
