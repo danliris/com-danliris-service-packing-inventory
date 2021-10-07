@@ -334,9 +334,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         {
             var fabricProductSKUs = _dbContext.FabricProductSKUs.AsQueryable();
             var fabricProductPackings = _dbContext.FabricProductPackings.Where(entity => entity.Code == barcode);
+            var uoms = _dbContext.IPUnitOfMeasurements.AsQueryable();
 
             var result = (from fabricProductSKU in fabricProductSKUs
                           join fabricProductPacking in fabricProductPackings on fabricProductSKU.Id equals fabricProductPacking.FabricProductSKUId
+                          join uom in uoms on fabricProductPacking.UOMId equals uom.Id
 
                           select new FabricProductBarcodeDetail()
                           {
@@ -351,7 +353,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                               Motif = fabricProductSKU.Motif,
                               Grade = fabricProductSKU.Grade,
                               Color = fabricProductSKU.Color,
-                              JenisPacking = fabricProductPacking.PackingType
+                              JenisPacking = uom.Unit
                           }).FirstOrDefault();
 
             return result;
