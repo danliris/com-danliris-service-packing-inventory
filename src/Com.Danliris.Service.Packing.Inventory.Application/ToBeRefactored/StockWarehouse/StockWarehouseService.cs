@@ -237,15 +237,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 {
                     var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
 
+                    var gudangJadiBalance = (decimal)0;
                     if (dpWarehouse != null)
                     {
-
+                        gudangJadiBalance = dpWarehouse.Akhir;
                     }
-                    else
+
+                    result.Add(new ReportStockWarehouseViewModel()
                     {
+                        NoSpp = stockOpname.NoSpp,
+                        Construction = stockOpname.Construction,
+                        Unit = stockOpname.Unit,
+                        Motif = stockOpname.Motif,
+                        Buyer = stockOpname.Buyer,
+                        Color = stockOpname.Color,
+                        Grade = stockOpname.Grade,
+                        Jenis = stockOpname.Jenis,
+                        StockOpname = stockOpname.Quantity,
+                        StorageBalance = gudangJadiBalance,
+                        Difference = gudangJadiBalance - stockOpname.Quantity
+                    });
 
-                    }
                 }
+
+                result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
             }
             else
             {
