@@ -1197,7 +1197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    }));
 
             var query = _inputProductionOrderRepository.ReadAll()
-                .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument)
+                .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
                 .Select(d => new PlainAdjInspectionMaterialProductionOrder()
                 {
                     Id = d.Id,
