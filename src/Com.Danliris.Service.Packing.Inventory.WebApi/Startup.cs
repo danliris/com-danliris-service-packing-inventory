@@ -144,6 +144,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentDraftPackingListItem;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentDraftPackingListItem;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -263,6 +265,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingInsuranceDispositionRepository, GarmentShippingInsuranceDispositionRepository>();
             services.AddTransient<IGarmentDebiturBalanceRepository, GarmentDebiturBalanceRepository>();
 
+            services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
+
             #endregion
 
             #region Service
@@ -370,6 +374,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentFinanceExportSalesJournalService, GarmentFinanceExportSalesJournalService>();
             services.AddTransient<IGarmentFinanceLocalSalesJournalService, GarmentFinanceLocalSalesJournalService>();
 
+            services.AddTransient<IGarmentDraftPackingListItemService, GarmentDraftPackingListItemService>();
             #endregion
 
             // Register Provider
