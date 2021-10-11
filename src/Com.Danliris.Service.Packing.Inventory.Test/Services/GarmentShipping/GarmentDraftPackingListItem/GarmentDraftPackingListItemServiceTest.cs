@@ -138,7 +138,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentDraftPackingListItemModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            var service = GetService(serviceProviderMock.Object);
 
             var result = await service.Create(ViewModels.Items.ToList());
 
@@ -159,6 +160,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = service.Read(1, 25, "{}", "{}", "");
 
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public async Task ReadById_Success()
+        {
+            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(1, "", 1) };
+            var details = new HashSet<GarmentDraftPackingListDetailModel> { new GarmentDraftPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1) };
+            var model = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details);
+
+            var repoMock = new Mock<IGarmentDraftPackingListItemRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var serviceProviderMock = GetServiceProvider(repoMock.Object);
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.ReadById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Update_Success()
+        {
+            var repoMock = new Mock<IGarmentDraftPackingListItemRepository>();
+            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentDraftPackingListItemModel>()))
+                .ReturnsAsync(1);
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
+
+            var result = await service.Update(1, ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Delete_Success()
+        {
+            var repoMock = new Mock<IGarmentDraftPackingListItemRepository>();
+            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(1);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = await service.Delete(1);
+
+            Assert.NotEqual(0, result);
         }
     }
 }
