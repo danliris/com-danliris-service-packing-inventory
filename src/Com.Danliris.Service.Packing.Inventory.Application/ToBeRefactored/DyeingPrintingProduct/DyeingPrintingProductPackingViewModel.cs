@@ -48,5 +48,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Unit { get; set; }
         public string Buyer { get; set; }
         public ProcessType ProcessType { get; set; }
+        public int BuyerId { get; set; }
+        public double Balance { get; set; }
+        public string PackingInstruction { get; set; }
+        public double PackagingLength { get; set; }
+        public string Construction { get; set; }
     }
 }

@@ -75,8 +75,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
 
         public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,
-            long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName,int  yarnMaterialId,string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, bool isStockOpname)
+            long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+             string remark, string status, string unit, string uomUnit, bool isStockOpname, string packingCodes)
         {
             Balance = balance;
             BuyerId = buyerId;
@@ -94,7 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             PackingInstruction = packingInstruction;
             PackagingQty = packagingQty;
             PackagingLength = packagingLength;
-            
+
             PackagingType = packagingType;
             PackagingUnit = packagingUnit;
             ProductionOrderId = productionOrderId;
@@ -110,6 +110,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             Unit = unit;
             UomUnit = uomUnit;
             IsStockOpname = isStockOpname;
+            ProductPackingCode = packingCodes;
+        }
+
+        public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
+            string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,
+            long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+             string remark, string status, string unit, string uomUnit, bool isStockOpname, string packingCodes, int productSKUId, int fabricSKUId, string productSKUCode, int productPackingId, int fabricPackingId, bool hasPrintingProductSKU)
+        {
+            Balance = balance;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Color = color;
+            Construction = construction;
+            DocumentNo = documentNo;
+            Grade = grade;
+            MaterialConstructionId = materialConstructionId;
+            MaterialConstructionName = materialConstructionName;
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialWidth = materialWidth;
+            Motif = motif;
+            PackingInstruction = packingInstruction;
+            PackagingQty = packagingQty;
+            PackagingLength = packagingLength;
+
+            PackagingType = packagingType;
+            PackagingUnit = packagingUnit;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            ProcessTypeId = processTypeId;
+            Remark = remark;
+            Status = status;
+            Unit = unit;
+            UomUnit = uomUnit;
+            IsStockOpname = isStockOpname;
+            ProductPackingCode = packingCodes;
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            HasPrintingProductSKU = hasPrintingProductSKU;
         }
 
         public DyeingPrintingStockOpnameProductionOrderModel()
@@ -303,7 +350,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             }
         }
 
-      
+
 
 
 

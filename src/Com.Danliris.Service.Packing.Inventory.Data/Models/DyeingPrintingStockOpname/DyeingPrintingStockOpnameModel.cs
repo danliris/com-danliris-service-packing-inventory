@@ -11,19 +11,21 @@ public    class DyeingPrintingStockOpnameModel : StandardEntity
         public string BonNo { get; private set; }
         public DateTimeOffset Date { get; private set; }
         public string Type { get; private set; }
-       
+        public bool IsStockOpname { get; private set; }
+
         public ICollection<DyeingPrintingStockOpnameProductionOrderModel> DyeingPrintingStockOpnameProductionOrders { get; set; }
         public DyeingPrintingStockOpnameModel()
         {
             DyeingPrintingStockOpnameProductionOrders = new HashSet<DyeingPrintingStockOpnameProductionOrderModel>();
         }
-        public DyeingPrintingStockOpnameModel(string area, string bonNo,  DateTimeOffset date, string type, ICollection<DyeingPrintingStockOpnameProductionOrderModel> dyeingPrintingStockOpnameProductionOrders)
+        public DyeingPrintingStockOpnameModel(string area, string bonNo,  DateTimeOffset date, string type, ICollection<DyeingPrintingStockOpnameProductionOrderModel> dyeingPrintingStockOpnameProductionOrders, bool isStockOpname)
         {
             Area = area;
             BonNo = bonNo;
             Date = date;
             Type = type;
             DyeingPrintingStockOpnameProductionOrders = dyeingPrintingStockOpnameProductionOrders;
+            IsStockOpname = isStockOpname;
         }
 
         public void SetArea(string newArea, string user, string agent)

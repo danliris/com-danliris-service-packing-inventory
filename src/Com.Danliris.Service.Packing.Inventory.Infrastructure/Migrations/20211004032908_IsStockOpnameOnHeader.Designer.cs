@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    [Migration("20210805063218_addGarmentDebiturBalance")]
-    partial class addGarmentDebiturBalance
+    [Migration("20211004032908_IsStockOpnameOnHeader")]
+    partial class IsStockOpnameOnHeader
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -434,6 +434,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -832,6 +834,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -1000,6 +1004,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<bool>("IsStockOpname");
+
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
 
@@ -1061,10 +1067,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("DyeingPrintingStockOpnameId");
 
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
                     b.Property<string>("Grade")
                         .HasMaxLength(128);
 
+                    b.Property<bool>("HasPrintingProductPacking");
+
+                    b.Property<bool>("HasPrintingProductSKU");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsStockOpname");
 
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
@@ -1107,6 +1123,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<int>("ProcessTypeId");
 
                     b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
 
                     b.Property<long>("ProductionOrderId");
 
@@ -1814,6 +1838,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<decimal>("BalanceAmount");
+
+                    b.Property<decimal>("BalanceAmountIDR");
 
                     b.Property<DateTimeOffset>("BalanceDate");
 
@@ -4382,6 +4408,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<string>("ApproveFinanceBy");
+
+                    b.Property<DateTimeOffset>("ApproveFinanceDate");
+
+                    b.Property<string>("ApproveShippingBy");
+
+                    b.Property<DateTimeOffset>("ApproveShippingDate");
+
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
 
@@ -4417,7 +4451,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ExpenditureNo")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsApproveFinance");
+
+                    b.Property<bool>("IsApproveShipping");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsRejectedFinance");
+
+                    b.Property<bool>("IsRejectedShipping");
 
                     b.Property<bool>("IsUsed");
 
@@ -4439,6 +4481,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("PaymentType")
                         .HasMaxLength(20);
+
+                    b.Property<string>("RejectedReason");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
