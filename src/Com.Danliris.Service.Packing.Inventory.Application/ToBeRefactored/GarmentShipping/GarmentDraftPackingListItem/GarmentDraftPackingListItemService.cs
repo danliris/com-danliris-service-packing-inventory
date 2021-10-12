@@ -82,6 +82,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 OrderNo = model.OrderNo,
                 Description = model.Description,
                 DescriptionMd = model.DescriptionMd,
+                Section=new Section
+                {
+                    Code=model.SectionCode
+                },
+                Buyer= new Buyer
+                {
+                    Id=model.BuyerId,
+                    Code=model.BuyerCode
+                },
 
                 Details = (model.Details ?? new List<GarmentDraftPackingListDetailModel>()).Select(d => new GarmentDraftPackingListDetailViewModel
                 {
@@ -163,7 +172,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Uom = viewModel.Uom ?? new UnitOfMeasurement();
             viewModel.Unit = viewModel.Unit ?? new Unit();
             viewModel.Comodity = viewModel.Comodity ?? new Comodity();
-            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, details);
+            viewModel.Buyer = viewModel.Buyer ?? new Buyer();
+            viewModel.Section = viewModel.Section ?? new Section();
+            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Section.Code, details);
            
             return GarmentDraftPackingListItemModel;
         }

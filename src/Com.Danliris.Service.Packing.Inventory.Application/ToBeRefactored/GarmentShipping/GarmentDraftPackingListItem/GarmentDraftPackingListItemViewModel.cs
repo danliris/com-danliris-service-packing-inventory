@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string RONo { get; set; }
         public string SCNo { get; set; }
 
-        public Buyer BuyerAgent { get; set; }
+        public Buyer Buyer { get; set; }
         public Buyer BuyerBrand { get; set; }
         public Section Section { get; set; }
 

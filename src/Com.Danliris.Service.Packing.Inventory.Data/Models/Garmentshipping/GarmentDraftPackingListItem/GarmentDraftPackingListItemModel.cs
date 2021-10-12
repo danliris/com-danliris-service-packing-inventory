@@ -13,6 +13,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public int BuyerBrandId { get; private set; }
         public string BuyerBrandName { get; private set; }
 
+        public int BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
+        public string SectionCode { get; private set; }
+
         public int ComodityId { get; private set; }
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
@@ -46,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentDraftPackingListDetailModel>();
         }
 
-        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, ICollection<GarmentDraftPackingListDetailModel> details)
+        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, int buyerId, string buyerCode, string sectionCode, ICollection<GarmentDraftPackingListDetailModel> details)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -72,6 +76,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Description = description;
             DescriptionMd = descriptionMd;
             Details = details;
+            BuyerId = buyerId;
+            BuyerCode = buyerCode;
+            SectionCode = sectionCode;
         }
 
         public void SetRONo(string rONo, string userName, string userAgent)
@@ -104,6 +111,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (BuyerBrandName != buyerBrandName)
             {
                 BuyerBrandName = buyerBrandName; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerId(int buyerId, string userName, string userAgent)
+        {
+            if (BuyerId != buyerId)
+            {
+                BuyerId = buyerId; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerCode(string buyerCode, string userName, string userAgent)
+        {
+            if (BuyerCode != buyerCode)
+            {
+                BuyerCode = buyerCode; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetSectionCode(string sectionCode, string userName, string userAgent)
+        {
+            if (SectionCode != sectionCode)
+            {
+                SectionCode = sectionCode; this.FlagForUpdate(userName, userAgent);
             }
         }
 

@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     },1)
             };
             
-            var oldModel = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details);
+            var oldModel = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", 1, "", "", details);
 
             await repo.InsertAsync(oldModel);
 
@@ -66,6 +66,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             item.SetOrderNo("Updated " + item.OrderNo, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetDescription("Updated " + item.Description, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetDescriptionMd("Updated " + item.DescriptionMd, item.LastModifiedBy, item.LastModifiedAgent);
+            item.SetBuyerId(1 + item.BuyerId, item.LastModifiedBy, item.LastModifiedAgent);
+            item.SetBuyerCode("Updated " + item.BuyerCode, item.LastModifiedBy, item.LastModifiedAgent);
+            item.SetSectionCode("Updated " + item.SectionCode, item.LastModifiedBy, item.LastModifiedAgent);
 
             foreach (var detail in item.Details)
             {
