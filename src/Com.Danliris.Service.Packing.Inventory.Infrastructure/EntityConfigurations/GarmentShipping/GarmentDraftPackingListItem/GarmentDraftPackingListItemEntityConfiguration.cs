@@ -35,6 +35,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(50);
 
             builder
+                .Property(s => s.BuyerCode)
+                .HasMaxLength(50);
+
+            builder
+                .Property(s => s.SectionCode)
+                .HasMaxLength(5);
+
+            builder
                 .Property(s => s.ComodityCode)
                 .HasMaxLength(50);
 

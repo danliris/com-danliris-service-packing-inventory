@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211012075735_Add_buyer_section_DraftPLItems")]
+    partial class Add_buyer_section_DraftPLItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,6 +434,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -830,6 +834,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -997,6 +1003,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("DeletedUtc");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsStockOpname");
 
                     b.Property<string>("LastModifiedAgent")
                         .HasMaxLength(128);
@@ -1830,6 +1838,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<decimal>("BalanceAmount");
+
+                    b.Property<decimal>("BalanceAmountIDR");
 
                     b.Property<DateTimeOffset>("BalanceDate");
 
@@ -4627,6 +4637,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<string>("ApproveFinanceBy");
+
+                    b.Property<DateTimeOffset>("ApproveFinanceDate");
+
+                    b.Property<string>("ApproveShippingBy");
+
+                    b.Property<DateTimeOffset>("ApproveShippingDate");
+
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
 
@@ -4662,7 +4680,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ExpenditureNo")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsApproveFinance");
+
+                    b.Property<bool>("IsApproveShipping");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsRejectedFinance");
+
+                    b.Property<bool>("IsRejectedShipping");
 
                     b.Property<bool>("IsUsed");
 
@@ -4684,6 +4710,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("PaymentType")
                         .HasMaxLength(20);
+
+                    b.Property<string>("RejectedReason");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
@@ -6018,6 +6046,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("PackingSize");
 
+                    b.Property<string>("PackingType")
+                        .HasMaxLength(64);
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<int>("ProductSKUId");
@@ -6040,6 +6071,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .HasMaxLength(64);
 
+                    b.Property<string>("Color")
+                        .HasMaxLength(64);
+
                     b.Property<int>("ConstructionId");
 
                     b.Property<string>("CreatedAgent");
@@ -6054,6 +6088,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("DeletedUtc");
 
+                    b.Property<string>("Grade")
+                        .HasMaxLength(64);
+
                     b.Property<int>("GradeId");
 
                     b.Property<bool>("IsDeleted");
@@ -6064,19 +6101,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName")
+                        .HasMaxLength(225);
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName")
+                        .HasMaxLength(225);
+
+                    b.Property<string>("Motif")
+                        .HasMaxLength(64);
+
                     b.Property<int>("ProcessTypeId");
 
                     b.Property<int>("ProductSKUId");
 
+                    b.Property<string>("ProductionOrderNo")
+                        .HasMaxLength(64);
+
                     b.Property<int>("UOMId");
+
+                    b.Property<string>("UomUnit")
+                        .HasMaxLength(64);
 
                     b.Property<int>("WarpId");
 
                     b.Property<int>("WeftId");
 
+                    b.Property<string>("Width")
+                        .HasMaxLength(32);
+
                     b.Property<int>("WidthId");
 
                     b.Property<int>("WovenTypeId");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName")
+                        .HasMaxLength(225);
 
                     b.Property<int>("YarnTypeId");
 
