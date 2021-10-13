@@ -12,7 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public BuyerAgent buyerAgent { get; set; }
         public DateTimeOffset? balanceDate { get; set; }
         public decimal balanceAmount { get; set; }
-        
+        public decimal balanceAmountIDR { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 

@@ -17,6 +17,12 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonVi
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingProduct;
+using OfficeOpenXml;
+using System.IO;
+using System.Globalization;
+using System.Data;
+using System.ComponentModel.DataAnnotations;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -30,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
         private readonly IIdentityProvider _identityProvider;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
+        private readonly IServiceProvider _serviceProvider;
 
         public StockOpnameWarehouseService(IServiceProvider serviceProvider)
         {
@@ -38,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<int> Create(StockOpnameWarehouseViewModel viewModel)
@@ -117,7 +125,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                false
+                                                                false,
+                                                                null
                                                                 )).ToList());
 
 
@@ -187,7 +196,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                false
+                                                                false,
+                                                                null
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -348,7 +358,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Status,
                 s.Unit,
                 s.UomUnit,
-                false
+                false,
+                null
                      )
 
                 {
@@ -529,6 +540,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var packingCodes = form.Data.Distinct().ToList();
 
+            var existingCodes = new List<string>();
+
+            foreach (var packingCode in packingCodes)
+            {
+                if (_stockOpnameProductionOrderRepository.ReadAll().Any(element => element.IsStockOpname && element.ProductPackingCode.Contains(packingCode)))
+                    existingCodes.Add(packingCode);
+            }
+
+            if (existingCodes.Count > 0)
+            {
+                var codes = string.Join(',', existingCodes);
+                var errorResult = new List<ValidationResult>()
+                {
+                    new ValidationResult("Kode packing sudah tersimpan: " + codes, new List<string> { "Message" }),
+                    new ValidationResult(codes, new List<string> { "PackingCodes" })
+                };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
+            }
+
+
+
             var stockOpnameForms = new List<DyeingPrintingProductPackingViewModel>();
             foreach (var packingCode in packingCodes)
             {
@@ -646,6 +679,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var items = new List<StockOpnameWarehouseProductionOrderViewModel>();
                 foreach (var stockOpnameForm in stockOpnameForms)
                 {
+                    var scannedPackingCodes = packingCodes.Where(element => stockOpnameForm.ProductPackingCodes.Contains(element)).ToList();
                     var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
                     var item = new StockOpnameWarehouseProductionOrderViewModel()
                     {
@@ -692,7 +726,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = stockOpnameForm.YarnMaterial.Id,
                             Name = stockOpnameForm.YarnMaterial.Name
                         },
-                        IsStockOpname = true
+                        IsStockOpname = true,
+                        PackingCodes = string.Join(',', scannedPackingCodes)
                     };
 
                     items.Add(item);
@@ -763,7 +798,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                s.IsStockOpname
+                                                                s.IsStockOpname,
+                                                                s.PackingCodes
                                                                 )).ToList());
 
 
@@ -810,7 +846,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                item.IsStockOpname
+                                                                item.IsStockOpname,
+                                                                item.PackingCodes
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -822,6 +859,183 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             return result;
+        }
+
+        public async Task<MemoryStream> GenerateExcelDocumentAsync(int id, int offSet)
+        {
+            DyeingPrintingStockOpnameModel model = await _stockOpnameRepository.ReadByIdAsync(id);
+            var query = model.DyeingPrintingStockOpnameProductionOrders;
+
+            var indexNumber = 1;
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY ORDER", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "JENIS ORDER", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "MATERIAL", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BUYER", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "WARNA", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "MOTIF", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "GRADE", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKAGING", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "SATUAN PACK", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY SATUAN", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY TOTAL", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO DOKUMEN", DataType = typeof(string) });
+
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", 0, "", "", "", "", "", "", "", 0, "", "", 0, 0, "");
+            }
+            else
+            {
+                foreach (var item in query)
+                {
+                    //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                    dt.Rows.Add(indexNumber,
+                                item.ProductionOrderNo,
+                                item.ProductionOrderOrderQuantity,
+                                item.ProductionOrderType,
+                                item.Construction,
+                                item.Unit,
+                                item.Buyer,
+                                item.Color,
+                                item.Motif,
+                                item.Grade,
+                                item.PackagingQty,
+                                item.PackagingUnit,
+                                item.UomUnit,
+                                item.PackagingLength,
+                                item.Balance,
+                                item.DocumentNo
+                                );
+                    indexNumber++;
+                }
+            }
+
+            ExcelPackage package = new ExcelPackage();
+            #region Header
+            var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
+
+            sheet.Cells[1, 1].Value = "TANGGAL";
+            sheet.Cells[1, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+
+            sheet.Cells[2, 1].Value = "NO. BON";
+            sheet.Cells[2, 2].Value = model.BonNo;
+            sheet.Cells[2, 2, 2, 3].Merge = true;
+
+            sheet.Cells[4, 1].Value = "NO.";
+            sheet.Cells[4, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 1, 5, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 1, 5, 1].Merge = true;
+
+            sheet.Cells[4, 2].Value = "NO. SPP";
+            sheet.Cells[4, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 2, 5, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 2, 5, 2].Merge = true;
+
+            sheet.Cells[4, 3].Value = "QTY ORDER";
+            sheet.Cells[4, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 3, 5, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 3, 5, 3].Merge = true;
+
+            sheet.Cells[4, 4].Value = "JENIS ORDER";
+            sheet.Cells[4, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 4, 5, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 4, 5, 4].Merge = true;
+
+            sheet.Cells[4, 5].Value = "MATERIAL";
+            sheet.Cells[4, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 5, 5, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 5, 5, 5].Merge = true;
+
+            sheet.Cells[4, 6].Value = "UNIT";
+            sheet.Cells[4, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 6, 5, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 6, 5, 6].Merge = true;
+
+            sheet.Cells[4, 7].Value = "BUYER";
+            sheet.Cells[4, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 7, 5, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 7, 5, 7].Merge = true;
+
+            sheet.Cells[4, 8].Value = "WARNA";
+            sheet.Cells[4, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 8, 5, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 8, 5, 8].Merge = true;
+
+            sheet.Cells[4, 9].Value = "MOTIF";
+            sheet.Cells[4, 9].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 9].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 9, 5, 9].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 9, 5, 9].Merge = true;
+
+            sheet.Cells[4, 10].Value = "GRADE";
+            sheet.Cells[4, 10].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 10].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 10, 5, 10].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 10, 5, 10].Merge = true;
+
+            sheet.Cells[4, 11].Value = "QTY PACKAGING";
+            sheet.Cells[4, 11].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 11].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 11, 5, 11].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 11, 5, 11].Merge = true;
+
+            sheet.Cells[4, 12].Value = "SATUAN PACK";
+            sheet.Cells[4, 12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 12].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 12, 5, 12].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 12, 5, 12].Merge = true;
+
+            sheet.Cells[4, 13].Value = "SATUAN";
+            sheet.Cells[4, 13].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 13].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 13, 5, 13].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 13, 5, 13].Merge = true;
+
+            sheet.Cells[4, 14].Value = "QTY SATUAN";
+            sheet.Cells[4, 14].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 14].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 14, 5, 14].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 14, 5, 14].Merge = true;
+
+            sheet.Cells[4, 15].Value = "QTY TOTAL";
+            sheet.Cells[4, 15].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 15].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 15, 5, 15].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 15, 5, 15].Merge = true;
+
+            sheet.Cells[4, 16].Value = "NO DOKUMEN";
+            sheet.Cells[4, 16].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[4, 16].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[4, 16, 5, 16].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[4, 16, 5, 16].Merge = true;
+            #endregion
+
+            int tableRowStart = 6;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
         }
 
     }

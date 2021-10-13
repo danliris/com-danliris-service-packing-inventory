@@ -432,6 +432,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeRemains");
+
                     b.Property<int>("ProductPackingId");
 
                     b.Property<string>("ProductSKUCode")
@@ -829,6 +831,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
+
+                    b.Property<string>("ProductPackingCodeRemains");
 
                     b.Property<int>("ProductPackingId");
 
@@ -1830,6 +1834,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<bool>("Active");
 
                     b.Property<decimal>("BalanceAmount");
+
+                    b.Property<decimal>("BalanceAmountIDR");
 
                     b.Property<DateTimeOffset>("BalanceDate");
 
@@ -4627,6 +4633,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<string>("ApproveFinanceBy");
+
+                    b.Property<DateTimeOffset>("ApproveFinanceDate");
+
+                    b.Property<string>("ApproveShippingBy");
+
+                    b.Property<DateTimeOffset>("ApproveShippingDate");
+
                     b.Property<string>("BuyerCode")
                         .HasMaxLength(100);
 
@@ -4662,7 +4676,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ExpenditureNo")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsApproveFinance");
+
+                    b.Property<bool>("IsApproveShipping");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsRejectedFinance");
+
+                    b.Property<bool>("IsRejectedShipping");
 
                     b.Property<bool>("IsUsed");
 
@@ -4684,6 +4706,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("PaymentType")
                         .HasMaxLength(20);
+
+                    b.Property<string>("RejectedReason");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);
