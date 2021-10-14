@@ -319,23 +319,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             Assert.NotEmpty(result.data);
         }
 
-        [Fact]
-        public void AutoCreateSKU_Return_Success()
-        {
-            //Setup
-            PackingInventoryDbContext dbContext = GetDbContext(Entity);
+        //[Fact]
+        //public void AutoCreateSKU_Return_Success()
+        //{
+        //    //Setup
+        //    PackingInventoryDbContext dbContext = GetDbContext(Entity);
             
-            //act
-            var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
-            var form = new FabricSKUAutoCreateFormDto() 
-            {
-                ProductionOrderNo = "TEST12345"
-            };
-            FabricSKUIdCodeDto result =  service.AutoCreateSKU(form);
+        //    //act
+        //    var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
+        //    var form = new FabricSKUAutoCreateFormDto() 
+        //    {
+        //        ProductionOrderNo = "TEST12345"
+        //    };
+        //    FabricSKUIdCodeDto result =  service.AutoCreateSKU(form);
 
-            //assert
-            Assert.NotNull(result);
-        }
+        //    //assert
+        //    Assert.NotNull(result);
+        //}
 
         [Fact]
         public void AutoCreatePacking_Return_Success()
@@ -368,20 +368,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
            // Assert.NotEqual(0,result);
         }
 
-        [Fact]
-        public void AutoCreateSKU_with_NewFabricSKUAutoCreateFormDto_Return_Success()
-        {
-            //Setup
-            PackingInventoryDbContext dbContext = GetDbContext(Entity);
+        //[Fact]
+        //public void AutoCreateSKU_with_NewFabricSKUAutoCreateFormDto_Return_Success()
+        //{
+        //    //Setup
+        //    PackingInventoryDbContext dbContext = GetDbContext(Entity);
 
-            //act
-            var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
-            var form = new NewFabricSKUAutoCreateFormDto();
-            FabricSKUIdCodeDto result = service.AutoCreateSKU(form);
+        //    //act
+        //    var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
+        //    var form = new NewFabricSKUAutoCreateFormDto();
+        //    FabricSKUIdCodeDto result = service.AutoCreateSKU(form);
 
-            //assert
-            Assert.NotNull(result);
-        }
+        //    //assert
+        //    Assert.NotNull(result);
+        //}
 
     }
 }
