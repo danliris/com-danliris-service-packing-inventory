@@ -310,7 +310,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Grade = detail.Grade,
                             ProcessType = item.ProcessType.Name,
                             ProductionOrderNo = item.ProductionOrder.No,
-                            UOM = item.UomUnit
+                            UOM = item.UomUnit,
+                            materialId = item.Material.Id,
+                            materialName = item.Material.Name,
+                            materialConstructionId = item.MaterialConstruction.Id,
+                            materialConstructionName = item.MaterialConstruction.Name,
+                            yarnMaterialId = item.YarnMaterial.Id,
+                            yarnMaterialName = item.YarnMaterial.Name,
+                            uomUnit = item.UomUnit,
+                            motif = item.Motif,
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         
@@ -361,7 +371,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Grade = detail.Grade,
                             ProcessType = item.ProcessType.Name,
                             ProductionOrderNo = item.ProductionOrder.No,
-                            UOM = item.UomUnit
+                            UOM = item.UomUnit,
+                            materialId = item.Material.Id,
+                            materialName = item.Material.Name,
+                            materialConstructionId = item.MaterialConstruction.Id,
+                            materialConstructionName = item.MaterialConstruction.Name,
+                            yarnMaterialId = item.YarnMaterial.Id,
+                            yarnMaterialName = item.YarnMaterial.Name,
+                            uomUnit = item.UomUnit,
+                            motif = item.Motif,
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -710,7 +730,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = detail.Grade,
                         ProcessType = item.ProcessType.Name,
                         ProductionOrderNo = item.ProductionOrder.No,
-                        UOM = item.UomUnit
+                        UOM = item.UomUnit,
+                        materialId = item.Material.Id,
+                        materialName = item.Material.Name,
+                        materialConstructionId = item.MaterialConstruction.Id,
+                        materialConstructionName = item.MaterialConstruction.Name,
+                        yarnMaterialId = item.YarnMaterial.Id,
+                        yarnMaterialName = item.YarnMaterial.Name,
+                        uomUnit = item.UomUnit,
+                        motif = item.Motif,
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
 
@@ -1167,7 +1197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    }));
 
             var query = _inputProductionOrderRepository.ReadAll()
-                .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL && !s.HasOutputDocument)
+                .Where(s => s.Area == DyeingPrintingArea.INSPECTIONMATERIAL)
                 .Select(d => new PlainAdjInspectionMaterialProductionOrder()
                 {
                     Id = d.Id,

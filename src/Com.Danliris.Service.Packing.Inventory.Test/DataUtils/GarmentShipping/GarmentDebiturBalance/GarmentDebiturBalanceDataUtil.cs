@@ -12,14 +12,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentDebiturBalanceModel GetModel()
         {
-            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "",1);
+            var model = new GarmentDebiturBalanceModel(DateTimeOffset.Now, 1, "", "",1,14000);
 
             return model;
         }
 
         public override GarmentDebiturBalanceModel GetEmptyModel()
         {
-            var model = new GarmentDebiturBalanceModel(DateTimeOffset.MinValue, 0, null, null, 0);
+            var model = new GarmentDebiturBalanceModel(DateTimeOffset.MinValue, 0, null, null, 0, 0);
 
             return model;
         }

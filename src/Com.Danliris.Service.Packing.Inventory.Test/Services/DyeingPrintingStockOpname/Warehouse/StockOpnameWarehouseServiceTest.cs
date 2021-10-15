@@ -133,16 +133,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
         {
             get
             {
-                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit");
+                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", false, null);
 
                 var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
                 stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
-                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders);
+                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false);
 
             }
         }
 
+        private DyeingPrintingStockOpnameModel EmptyModelItem
+        {
+            get
+            {
+                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, new List<DyeingPrintingStockOpnameProductionOrderModel>(), false);
+
+            }
+        }
 
         [Fact]
         public async Task Should_Success_Create()
@@ -252,10 +260,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                  .Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
 
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(model.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
             //Act
-            var result = service.Read(1, 25, "{}", "{}", null);
+            var result = service.Read(1, 25, "{}", "{}", null, It.IsAny<bool>());
 
             //Assert
             Assert.NotEmpty(result.Data);
@@ -376,6 +388,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             //Assert
             Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_GenerateExcel()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = await service.GenerateExcelDocumentAsync(1, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Empty_GenerateExcel()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                .Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(EmptyModelItem);
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = await service.GenerateExcelDocumentAsync(1, 7);
+
+            Assert.NotNull(result);
         }
     }
 }

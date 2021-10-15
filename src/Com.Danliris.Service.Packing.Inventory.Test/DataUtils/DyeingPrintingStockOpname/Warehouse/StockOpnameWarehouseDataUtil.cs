@@ -15,38 +15,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
         }
         public override DyeingPrintingStockOpnameModel GetModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1,1,"buyer","color", "construction","documentNo","A",1,"MaterialConstructionName",1,"MaterialName","MaterialWitdh","Motif","PackingInstruction",1,1,"PackagingType","PackagingUnit",1,"ProductionorederName","productionOrderType",1,1,"ProcessTypeName",1,"yarnMaterialName","Remark","Status","Unit","UomUnit");
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1,1,"buyer","color", "construction","documentNo","A",1,"MaterialConstructionName",1,"MaterialName","MaterialWitdh","Motif","PackingInstruction",1,1,"PackagingType","PackagingUnit",1,"ProductionorederName","productionOrderType",1,1,"ProcessTypeName",1,"yarnMaterialName","Remark","Status","Unit","UomUnit", false, null);
            
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                "GUDANG_JADI", "BON_NO",DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders
+                "GUDANG_JADI", "BON_NO",DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false
                 );
         }
 
         public override DyeingPrintingStockOpnameModel GetEmptyModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(0, 0, null, null, null, null, null, 0, null, 0, null, null, null, null, 0, 0, null, null, 0, null, null, 0, 0, null, 0, null, null, null, null, null);
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(0, 0, null, null, null, null, null, 0, null, 0, null, null, null, null, 0, 0, null, null, 0, null, null, 0, 0, null, 0, null, null, null, null, null, false, null);
 
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                null, null, DateTimeOffset.Now, null, stockOpnameProductionOrders
+                null, null, DateTimeOffset.Now, null, stockOpnameProductionOrders, false
                 );
         }
 
 
         public  DyeingPrintingStockOpnameModel GetNewModel()
         {
-            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit");
+            var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", false, null);
 
             var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                "GUDANG_JADI", "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders
+                "GUDANG_JADI", "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false
                 );
         }
     }

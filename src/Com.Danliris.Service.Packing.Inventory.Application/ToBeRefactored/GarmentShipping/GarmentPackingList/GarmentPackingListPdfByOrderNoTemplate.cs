@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var newItems = new List<GarmentPackingListItemViewModel>();
             var newItems2 = new List<GarmentPackingListItemViewModel>();
             var newDetails = new List<GarmentPackingListDetailViewModel>();
+            
             foreach (var item in viewModel.Items)
             {
                 foreach (var detail in item.Details)
@@ -79,11 +80,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
                 else
                 {
-                    if (newItems2.Last().OrderNo == item.OrderNo)
+                    if (newItems2.Last().OrderNo == item.OrderNo && newItems2.Last().Description == item.Description)
                     {
                         foreach (var d in item.Details.OrderBy(a => a.Carton1))
                         {
-                            newItems2.Last().Details.Add(d);
+                            /*var x = newItems.Last().Details.FirstOrDefault(w => w.Id == d.Id);
+                            if(x != null)
+                            {
+                                if (x.Index == d.Index && x.Carton1 == d.Carton1 && x.Carton2 == d.Carton2)
+                                {
+                                    newItems2.Add(item);
+                                }
+                                else
+                                {
+                                    newItems2.Last().Details.Add(d);
+                                }
+                            } else
+                            {
+                                newItems2.Last().Details.Add(d);
+                            }*/
+
+                            var x = item.Details.FirstOrDefault(a => a.Id == d.Id && a.Index == d.Index && a.Carton1 == d.Carton1 && a.Carton2 == d.Carton2);
+                            newItems2.Last().Details.Add(x);
+
                         }
                     }
                     else
@@ -456,7 +475,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
-                tableDetail.KeepTogether = true;
+                tableDetail.HeaderRows = 1;
+                //tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
                 tableDetail.SpacingAfter = 10f;
                 document.Add(tableDetail);

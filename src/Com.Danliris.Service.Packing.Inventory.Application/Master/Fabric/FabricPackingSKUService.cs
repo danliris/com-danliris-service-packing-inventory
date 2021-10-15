@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Helper;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
@@ -22,12 +24,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PackingInventoryDbContext _dbContext;
+        private readonly IServiceProvider _serviceProvider;
         private const string TYPE = "FABRIC";
 
         public FabricPackingSKUService(IServiceProvider serviceProvider, PackingInventoryDbContext dbContext)
         {
             _unitOfWork = serviceProvider.GetService<IUnitOfWork>();
             _dbContext = dbContext;
+            _serviceProvider = serviceProvider;
         }
         public int CreateSKU(FabricSKUFormDto form)
         {
@@ -271,9 +275,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 _unitOfWork.ProductSKUs.Insert(model);
                 _unitOfWork.Commit();
 
-                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, 0, gradeId, uom.Id);
+                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
+                    form.materialId,form.materialName,form.materialConstructionId,form.materialConstructionName,
+                    form.yarnMaterialId,form.yarnMaterialName,form.ProductionOrderNo,form.uomUnit,form.motif,form.color,form.Grade, form.Width);
+
                 _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                 _unitOfWork.Commit();
+            }
+            else
+            {
+                var errorResult = new List<ValidationResult>()
+                    {
+                        new ValidationResult("Satuan dan Kategori SKU tidak ditemukan periksa data master", new List<string> { "UOMCategory" })
+                    };
+                var validationContext = new ValidationContext(model, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
             }
             return new FabricSKUIdCodeDto() { FabricSKUId = productFabricSKU.Id, ProductSKUCode = code, ProductSKUId = model.Id };
         }
@@ -307,12 +323,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     _unitOfWork.Commit();
                     packingCodes.Add(code);
 
-                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length);
+                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType);
                     _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                 }
 
                 _dbContext.SaveChanges();
 
+                if (packingCodes.Count < 1)
+                {
+                    var errorResult = new List<ValidationResult>()
+                    {
+                        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+                    };
+                    var validationContext = new ValidationContext(packingModel, _serviceProvider, null);
+                    throw new ServiceValidationException(validationContext, errorResult);
+                }
 
                 return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
             }
@@ -322,9 +347,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             }
         }
 
-        public FabricSKUIdCodeDto AutoCreateSKU(NewFabricSKUAutoCreateFormDto form)
+        //public FabricSKUIdCodeDto AutoCreateSKU(NewFabricSKUAutoCreateFormDto form)
+        //{
+        //    return new FabricSKUIdCodeDto() { FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
+        //}
+
+        public FabricProductBarcodeDetail GetBarcodeDetail(string barcode)
         {
-            return new FabricSKUIdCodeDto() { FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
+            var fabricProductSKUs = _dbContext.FabricProductSKUs.AsQueryable();
+            var fabricProductPackings = _dbContext.FabricProductPackings.Where(entity => entity.Code == barcode);
+            var uoms = _dbContext.IPUnitOfMeasurements.AsQueryable();
+
+            var result = (from fabricProductSKU in fabricProductSKUs
+                          join fabricProductPacking in fabricProductPackings on fabricProductSKU.Id equals fabricProductPacking.FabricProductSKUId
+                          join uom in uoms on fabricProductPacking.UOMId equals uom.Id
+
+                          select new FabricProductBarcodeDetail()
+                          {
+                              KodePacking = barcode,
+                              KodeSKU = fabricProductSKU.Code,
+                              NoOrder = fabricProductSKU.ProductionOrderNo,
+                              UkuranPacking = fabricProductPacking.PackingSize,
+                              Satuan = fabricProductSKU.UomUnit,
+                              Material = fabricProductSKU.MaterialName,
+                              MaterialConstruction = fabricProductSKU.MaterialConstructionName,
+                              YarnMaterial = fabricProductSKU.YarnMaterialName,
+                              Motif = fabricProductSKU.Motif,
+                              Grade = fabricProductSKU.Grade,
+                              Color = fabricProductSKU.Color,
+                              JenisPacking = uom.Unit
+                          }).FirstOrDefault();
+
+            return result;
         }
     }
 }

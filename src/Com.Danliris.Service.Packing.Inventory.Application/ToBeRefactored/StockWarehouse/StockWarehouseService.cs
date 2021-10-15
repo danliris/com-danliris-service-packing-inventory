@@ -12,6 +12,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovem
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Globalization;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
@@ -23,6 +24,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputSppRepository;
         private readonly IDyeingPrintingAreaInputRepository _inputBonRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputSppRepository;
+        private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameItemRepository;
+        private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
 
         public StockWarehouseService(IServiceProvider serviceProvider)
         {
@@ -32,6 +35,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _inputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _inputBonRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _stockOpnameItemRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            _stockOpnameRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameRepository>();
         }
 
         private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
@@ -171,39 +176,152 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
         public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
-            var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
-            var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
-            var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-            var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+            var result = new List<ReportStockWarehouseViewModel>();
 
-            var joinData2 = dataSearchDate.Concat(dataAwal);
-            var result = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType}).Select(e => new ReportStockWarehouseViewModel()
+            if (zona == "STOCK OPNAME")
             {
-                ProductionOrderId = e.Key.ProductionOrderId,
-                NoSpp = e.First().NoSpp,
-                Color = e.First().Color,
-                Construction = e.First().Construction,
-                Grade = e.Key.Grade,
-                Jenis = e.Key.Jenis,
-                Ket = e.Key.Ket,
-                Motif = e.First().Motif,
-                Buyer = e.First().Buyer,
-                Satuan = e.First().Satuan,
-                Unit = e.First().Unit,
-                InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
-                Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
-                Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
-                Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
-                Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
-            });
+                var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+                var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
-            return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+                var joinData2 = dataSearchDate.Concat(dataAwal);
+                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                {
+                    ProductionOrderId = e.Key.ProductionOrderId,
+                    NoSpp = e.First().NoSpp,
+                    Color = e.First().Color,
+                    Construction = e.First().Construction,
+                    Grade = e.Key.Grade,
+                    Jenis = e.Key.Jenis,
+                    Ket = e.Key.Ket,
+                    Motif = e.First().Motif,
+                    Buyer = e.First().Buyer,
+                    Satuan = e.First().Satuan,
+                    Unit = e.First().Unit,
+                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                });
+
+                var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+
+                var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
+                var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Unit == unit).ToList();
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.PackagingType == packingType).ToList();
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Construction == construction).ToList();
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Buyer == buyer).ToList();
+                }
+                if (productionOrderId != 0)
+                {
+                    stockOpnames = stockOpnames.Where(s => s.ProductionOrderId == productionOrderId).ToList();
+                }
+
+                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
+                    .Select(d => new
+                    {
+                        ProductionOrderId = d.Key.ProductionOrderId,
+                        Color = d.First().Color,
+                        Construction = d.First().Construction,
+                        Grade = d.Key.Grade,
+                        Jenis = d.First().PackagingType,
+                        Motif = d.First().Motif,
+                        Buyer = d.First().Buyer,
+                        NoSpp = d.First().ProductionOrderNo,
+                        Satuan = d.First().UomUnit,
+                        Unit = d.First().Unit,
+                        Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength)
+                    }).ToList();
+
+                foreach (var stockOpname in stockOpnameTempResult)
+                {
+                    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
+
+                    var gudangJadiBalance = (decimal)0;
+                    if (dpWarehouse != null)
+                    {
+                        gudangJadiBalance = dpWarehouse.Akhir;
+                    }
+
+                    result.Add(new ReportStockWarehouseViewModel()
+                    {
+                        NoSpp = stockOpname.NoSpp,
+                        Construction = stockOpname.Construction,
+                        Unit = stockOpname.Unit,
+                        Motif = stockOpname.Motif,
+                        Buyer = stockOpname.Buyer,
+                        Color = stockOpname.Color,
+                        Grade = stockOpname.Grade,
+                        Jenis = stockOpname.Jenis,
+                        StockOpname = stockOpname.Quantity,
+                        StorageBalance = gudangJadiBalance,
+                        Difference = gudangJadiBalance - stockOpname.Quantity
+                    });
+
+                }
+
+                result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
+            }
+            else
+            {
+                var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+                var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+
+                var joinData2 = dataSearchDate.Concat(dataAwal);
+                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                {
+                    ProductionOrderId = e.Key.ProductionOrderId,
+                    NoSpp = e.First().NoSpp,
+                    Color = e.First().Color,
+                    Construction = e.First().Construction,
+                    Grade = e.Key.Grade,
+                    Jenis = e.Key.Jenis,
+                    Ket = e.Key.Ket,
+                    Motif = e.First().Motif,
+                    Buyer = e.First().Buyer,
+                    Satuan = e.First().Satuan,
+                    Unit = e.First().Unit,
+                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                });
+
+                result = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+            }
+
+
+            return result;
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
@@ -212,33 +330,94 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
-
-            if (data.Count() == 0)
+            if (zona == "GUDANG JADI" || zona == "SHIPPING")
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
+
+                if (data.Count() == 0)
+                {
+                    dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis,
+                            item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
+                    }
+                }
+            }
+            else if (zona == "STOCK OPNAME")
+            {
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Stock Opname", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Gudang", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(string) });
+
+                if (data.Count() == 0)
+                {
+                    dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0);
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
+                            item.StockOpname.ToString("N2", CultureInfo.InvariantCulture), item.StorageBalance.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Difference.ToString("N2", CultureInfo.InvariantCulture));
+                    }
+                }
             }
             else
             {
-                foreach (var item in data)
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+
+                if (data.Count() == 0)
                 {
-                    dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
-                        item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
-                        item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
+                    dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
+                            item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan);
+                    }
                 }
             }
 
