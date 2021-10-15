@@ -217,6 +217,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
                 var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
 
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Unit == unit).ToList();
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.PackagingType == packingType).ToList();
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Construction == construction).ToList();
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Buyer == buyer).ToList();
+                }
+                if (productionOrderId != 0)
+                {
+                    stockOpnames = stockOpnames.Where(s => s.ProductionOrderId == productionOrderId).ToList();
+                }
+
                 var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
                     .Select(d => new
                     {
