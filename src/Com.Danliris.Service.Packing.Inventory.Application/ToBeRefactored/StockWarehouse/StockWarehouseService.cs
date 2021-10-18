@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
                 var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
                 var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var dataAwal = GetAwalData(startDate, "GUDANG JADI", productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
                 var joinData2 = dataSearchDate.Concat(dataAwal);
                 var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
@@ -238,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     stockOpnames = stockOpnames.Where(s => s.ProductionOrderId == productionOrderId).ToList();
                 }
 
-                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
+                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.PackagingType })
                     .Select(d => new
                     {
                         ProductionOrderId = d.Key.ProductionOrderId,
@@ -254,32 +254,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                         Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength)
                     }).ToList();
 
-                foreach (var stockOpname in stockOpnameTempResult)
+                var productionOrders = new List<ProductionOrderGroup>();
+
+                foreach (var item in dpWarehouseResult)
                 {
-                    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
-
-                    var gudangJadiBalance = (decimal)0;
-                    if (dpWarehouse != null)
+                    productionOrders.Add(new ProductionOrderGroup()
                     {
-                        gudangJadiBalance = dpWarehouse.Akhir;
-                    }
-
-                    result.Add(new ReportStockWarehouseViewModel()
-                    {
-                        NoSpp = stockOpname.NoSpp,
-                        Construction = stockOpname.Construction,
-                        Unit = stockOpname.Unit,
-                        Motif = stockOpname.Motif,
-                        Buyer = stockOpname.Buyer,
-                        Color = stockOpname.Color,
-                        Grade = stockOpname.Grade,
-                        Jenis = stockOpname.Jenis,
-                        StockOpname = stockOpname.Quantity,
-                        StorageBalance = gudangJadiBalance,
-                        Difference = gudangJadiBalance - stockOpname.Quantity
+                        ProductionOrderId = item.ProductionOrderId,
+                        Grade = item.Grade,
+                        PackagingType = item.Jenis
                     });
+                };
 
+                foreach (var item in stockOpnameTempResult)
+                {
+                    productionOrders.Add(new ProductionOrderGroup()
+                    {
+                        ProductionOrderId = item.ProductionOrderId,
+                        Grade = item.Grade,
+                        PackagingType = item.Jenis
+                    });
                 }
+
+                productionOrders = productionOrders.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.PackagingType })
+                    .Select(d => new ProductionOrderGroup 
+                    { 
+                        ProductionOrderId = d.Key.ProductionOrderId,
+                        Grade = d.Key.Grade,
+                        PackagingType = d.Key.PackagingType
+                    }).ToList();
+
+                foreach (var item in productionOrders)
+                {
+                    var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade && element.Jenis == item.PackagingType).ToList();
+
+                    var stockOpnamesResult = stockOpnameTempResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade && element.Jenis == item.PackagingType).ToList();
+
+                    if (stockOpnamesResult.Count != 0)
+                    {
+                        var StorageBalance = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+
+                        var gudangJadiBalance = (decimal)0;
+                        if (dpWarehouse != null)
+                        {
+                            gudangJadiBalance = StorageBalance.Sum(element => element.Akhir);
+                        }
+
+                        foreach (var stock in stockOpnamesResult)
+                        {
+                            result.Add(new ReportStockWarehouseViewModel()
+                            {
+                                NoSpp = stock.NoSpp,
+                                Construction = stock.Construction,
+                                Unit = stock.Unit,
+                                Motif = stock.Motif,
+                                Buyer = stock.Buyer,
+                                Color = stock.Color,
+                                Grade = stock.Grade,
+                                Jenis = stock.Jenis,
+                                StockOpname = stock.Quantity,
+                                StorageBalance = gudangJadiBalance,
+                                Difference = gudangJadiBalance - stock.Quantity
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var stock in dpWarehouse)
+                        {
+                            result.Add(new ReportStockWarehouseViewModel()
+                            {
+                                NoSpp = stock.NoSpp,
+                                Construction = stock.Construction,
+                                Unit = stock.Unit,
+                                Motif = stock.Motif,
+                                Buyer = stock.Buyer,
+                                Color = stock.Color,
+                                Grade = stock.Grade,
+                                Jenis = stock.Jenis,
+                                StockOpname = stock.StockOpname,
+                                StorageBalance = stock.Akhir,
+                                Difference = stock.Akhir - stock.StockOpname
+                            });
+                        }
+                    }
+                }
+
+                //foreach (var stockOpname in stockOpnameTempResult)
+                //{
+                //    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
+
+                //    var gudangJadiBalance = (decimal)0;
+                //    if (dpWarehouse != null)
+                //    {
+                //        gudangJadiBalance = dpWarehouse.Akhir;
+                //    }
+
+                //    result.Add(new ReportStockWarehouseViewModel()
+                //    {
+                //        NoSpp = stockOpname.NoSpp,
+                //        Construction = stockOpname.Construction,
+                //        Unit = stockOpname.Unit,
+                //        Motif = stockOpname.Motif,
+                //        Buyer = stockOpname.Buyer,
+                //        Color = stockOpname.Color,
+                //        Grade = stockOpname.Grade,
+                //        Jenis = stockOpname.Jenis,
+                //        StockOpname = stockOpname.Quantity,
+                //        StorageBalance = gudangJadiBalance,
+                //        Difference = gudangJadiBalance - stockOpname.Quantity
+                //    });
+                //}
 
                 result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
             }
@@ -375,6 +460,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Gudang", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(string) });
 
+                decimal sumStockOpname = 0;
+                decimal sumStorageBalance = 0;
+                decimal sumDifference = 0;
+
                 if (data.Count() == 0)
                 {
                     dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0);
@@ -386,8 +475,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                         dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
                             item.StockOpname.ToString("N2", CultureInfo.InvariantCulture), item.StorageBalance.ToString("N2", CultureInfo.InvariantCulture),
                             item.Difference.ToString("N2", CultureInfo.InvariantCulture));
+
+                        sumStockOpname += item.StockOpname;
+                        sumStorageBalance += item.StorageBalance;
+                        sumDifference += item.Difference;
                     }
                 }
+
+                dt.Rows.Add("", "", "", "", "", "", "", "Total", sumStockOpname.ToString("N2", CultureInfo.InvariantCulture), sumStorageBalance.ToString("N2", CultureInfo.InvariantCulture), sumDifference.ToString("N2", CultureInfo.InvariantCulture));
             }
             else
             {
