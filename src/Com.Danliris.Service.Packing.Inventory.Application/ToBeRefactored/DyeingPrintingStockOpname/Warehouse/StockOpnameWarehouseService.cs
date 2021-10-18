@@ -23,6 +23,7 @@ using System.Globalization;
 using System.Data;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacking;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -34,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
         private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameProductionOrderRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
+        private readonly IProductPackingService _productPackingService;
         private readonly IIdentityProvider _identityProvider;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
         private readonly IServiceProvider _serviceProvider;
@@ -43,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _stockOpnameRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameRepository>();
             _stockOpnameProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
+            _productPackingService = serviceProvider.GetService<IProductPackingService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _serviceProvider = serviceProvider;
@@ -79,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                         s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                         s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && !s.IsStockOpname
                                                                                         && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
@@ -127,7 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.UomUnit,
                                                                 false,
                                                                 null
-                                                                )).ToList());
+                                                                )).ToList(), false);
 
 
                 result = await _stockOpnameRepository.InsertAsync(model);
@@ -139,7 +143,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Grade = item.Grade,
                         ProcessType = item.ProcessTypeName,
                         ProductionOrderNo = item.ProductionOrderNo,
-                        UOM = item.UomUnit
+                        UOM = item.UomUnit,
+                        materialId = item.MaterialId,
+                        materialName = item.MaterialName,
+                        materialConstructionId = item.MaterialConstructionId,
+                        materialConstructionName = item.MaterialConstructionName,
+                        yarnMaterialId = item.YarnMaterialId,
+                        yarnMaterialName = item.YarnMaterialName,
+                        uomUnit = item.UomUnit,
+                        motif = item.Motif,
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -205,9 +219,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = item.Grade,
-                        ProcessType = modelItem.ProcessTypeName,
-                        ProductionOrderNo = modelItem.ProductionOrderNo,
-                        UOM = item.UomUnit
+                        ProcessType = item.ProcessType.Name,
+                        ProductionOrderNo = item.ProductionOrder.No,
+                        UOM = item.UomUnit,
+                        materialId = item.Material.Id,
+                        materialName = item.Material.Name,
+                        materialConstructionId = item.MaterialConstruction.Id,
+                        materialConstructionName = item.MaterialConstruction.Name,
+                        yarnMaterialId = item.YarnMaterial.Id,
+                        yarnMaterialName = item.YarnMaterial.Name,
+                        uomUnit = item.UomUnit,
+                        motif = item.Motif,
+                        color = item.Color,
+                        Width = item.MaterialWidth
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -359,12 +383,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Unit,
                 s.UomUnit,
                 false,
-                null
-                     )
-
+                null)
                 {
                     Id = s.Id
-                }).ToList());
+                }).ToList(), false);
 
 
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
@@ -380,10 +402,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
                         {
-                            Grade = lclModel.Grade,
-                            ProcessType = lclModel.ProcessTypeName,
-                            ProductionOrderNo = lclModel.ProductionOrderNo,
-                            UOM = lclModel.UomUnit
+                            Grade = item.Grade,
+                            ProcessType = item.ProcessTypeName,
+                            ProductionOrderNo = item.ProductionOrderNo,
+                            UOM = item.UomUnit,
+                            materialId = item.MaterialId,
+                            materialName = item.MaterialName,
+                            materialConstructionId = item.MaterialConstructionId,
+                            materialConstructionName = item.MaterialConstructionName,
+                            yarnMaterialId = item.YarnMaterialId,
+                            yarnMaterialName = item.YarnMaterialName,
+                            uomUnit = item.UomUnit,
+                            motif = item.Motif,
+                            color = item.Color,
+                            Width = item.MaterialWidth
                         });
 
                         var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
@@ -612,7 +644,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Id = s.ProcessTypeId,
                         Name = s.ProcessTypeName
-                    }
+                    },
+                    BuyerId = s.BuyerId,
+                    PackingInstruction = s.PackingInstruction,
+                    Construction = s.Construction
                 }).FirstOrDefault();
 
                 if (packing == null)
@@ -664,7 +699,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Id = s.ProcessTypeId,
                             Name = s.ProcessTypeName
-                        }
+                        },
+                        DocumentNo = s.DocumentNo,
+                        BuyerId = s.BuyerId,
+                        PackingInstruction = s.PackingInstruction,
+                        Construction = s.Construction
                     }).FirstOrDefault();
                 }
 
@@ -681,8 +720,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     var scannedPackingCodes = packingCodes.Where(element => stockOpnameForm.ProductPackingCodes.Contains(element)).ToList();
                     var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
+                    var productIds = await _productPackingService.GetByCode(string.Join(',', scannedPackingCodes));
                     var item = new StockOpnameWarehouseProductionOrderViewModel()
                     {
+                        Balance = stockOpnameForm.ProductPackingLength * scannedQuantity,
+                        BuyerId = stockOpnameForm.BuyerId,
+                        DocumentNo = stockOpnameForm.DocumentNo,
+                        MaterialWidth = stockOpnameForm.MaterialWidth,
+                        PackingInstruction = stockOpnameForm.PackingInstruction,
                         ProductionOrder = new ProductionOrder()
                         {
                             Code = stockOpnameForm.ProductionOrder.Code,
@@ -691,7 +736,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             OrderQuantity = stockOpnameForm.ProductionOrder.OrderQuantity,
                             Type = stockOpnameForm.ProductionOrder.Type
                         },
-                        Construction = stockOpnameForm.MaterialConstruction.Name,
+                        Construction = stockOpnameForm.Construction,
                         Unit = stockOpnameForm.Unit,
                         Buyer = stockOpnameForm.Buyer,
                         Color = stockOpnameForm.Color,
@@ -703,6 +748,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Unit = stockOpnameForm.UomUnit
                         },
+                        UomUnit = stockOpnameForm.UomUnit,
                         PackagingLength = stockOpnameForm.ProductPackingLength,
                         MaterialConstruction = new MaterialConstruction()
                         {
@@ -727,17 +773,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Name = stockOpnameForm.YarnMaterial.Name
                         },
                         IsStockOpname = true,
-                        PackingCodes = string.Join(',', scannedPackingCodes)
+                        PackingCodes = string.Join(',', scannedPackingCodes),
+                        ProductSKUId = stockOpnameForm.ProductSKUId,
+                        FabricSKUId = stockOpnameForm.FabricSKUId,
+                        ProductSKUCode = stockOpnameForm.ProductSKUCode,
+                        ProductPackingId = productIds == null ? stockOpnameForm.ProductPackingId : productIds.Id,
+                        FabricPackingId = stockOpnameForm.FabricPackingId,
+                        HasPrintingProductSKU = stockOpnameForm.HasPrintingProductSKU
+
                     };
 
-                    items.Add(item);
+                    if (items.Where(s => s.PackingCodes == item.PackingCodes).Count() == 0)
+                    {
+                        items.Add(item);
+                    }
                 }
 
                 var createForm = new StockOpnameWarehouseViewModel()
                 {
                     Type = "STOCK OPNAME",
                     Date = DateTimeOffset.UtcNow,
-                    WarehousesProductionOrders = items
+                    WarehousesProductionOrders = items,
+                    IsStockOpname = true
                 };
 
                 result = await CreateStockOpnameV2(createForm);
@@ -750,8 +807,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
             var model = _stockOpnameRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                                        s.Date.Date == viewModel.Date.Date &&
+                                                                                        s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                         s.Type == DyeingPrintingArea.STOCK_OPNAME
+                                                                                        && s.IsStockOpname
                                                                                         && !s.IsDeleted);
             //viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.Where(s => s.IsSave).ToList();
             viewModel.WarehousesProductionOrders = viewModel.WarehousesProductionOrders.ToList();
@@ -783,7 +841,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Motif,
                                                                 s.PackingInstruction,
                                                                 s.PackagingQty,
-                                                                s.Quantity,
+                                                                s.PackagingLength,
                                                                 s.PackagingType,
                                                                 s.PackagingUnit,
                                                                 s.ProductionOrder.Id,
@@ -798,9 +856,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Status,
                                                                 s.Unit,
                                                                 s.UomUnit,
-                                                                s.IsStockOpname,
-                                                                s.PackingCodes
-                                                                )).ToList());
+                                                                true,
+                                                                s.PackingCodes,
+                                                                s.ProductSKUId,
+                                                                s.FabricSKUId,
+                                                                s.ProductSKUCode,
+                                                                s.ProductPackingId,
+                                                                s.FabricPackingId,
+                                                                false
+                                                                )).ToList(), true);
 
 
                 result = await _stockOpnameRepository.InsertAsync(model);
@@ -831,7 +895,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Motif,
                                                                 item.PackingInstruction,
                                                                 item.PackagingQty,
-                                                                item.Quantity,
+                                                                item.PackagingLength,
                                                                 item.PackagingType,
                                                                 item.PackagingUnit,
                                                                 item.ProductionOrder.Id,
@@ -846,8 +910,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Status,
                                                                 item.Unit,
                                                                 item.UomUnit,
-                                                                item.IsStockOpname,
-                                                                item.PackingCodes
+                                                                true,
+                                                                item.PackingCodes,
+                                                                item.ProductSKUId,
+                                                                item.FabricSKUId,
+                                                                item.ProductSKUCode,
+                                                                item.ProductPackingId,
+                                                                item.FabricPackingId,
+                                                                false
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;

@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                "GUDANG_JADI", "BON_NO",DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders
+                "GUDANG_JADI", "BON_NO",DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false
                 );
         }
 
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                null, null, DateTimeOffset.Now, null, stockOpnameProductionOrders
+                null, null, DateTimeOffset.Now, null, stockOpnameProductionOrders, false
                 );
         }
 
@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingSt
             stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
             return new DyeingPrintingStockOpnameModel(
-                "GUDANG_JADI", "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders
+                "GUDANG_JADI", "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false
                 );
         }
     }

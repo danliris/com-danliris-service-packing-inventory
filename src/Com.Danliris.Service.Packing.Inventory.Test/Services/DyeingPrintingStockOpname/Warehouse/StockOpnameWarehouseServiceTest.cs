@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                 var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
                 stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
 
-                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders);
+                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameProductionOrders, false);
 
             }
         }
@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
         {
             get
             {
-                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, new List<DyeingPrintingStockOpnameProductionOrderModel>());
+                return new DyeingPrintingStockOpnameModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, new List<DyeingPrintingStockOpnameProductionOrderModel>(), false);
 
             }
         }
