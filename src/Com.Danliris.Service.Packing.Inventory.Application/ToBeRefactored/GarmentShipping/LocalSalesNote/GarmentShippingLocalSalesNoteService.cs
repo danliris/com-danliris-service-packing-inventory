@@ -251,6 +251,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var query = from a in queryInv
                         where a.Date.AddHours(7).Month == month && a.Date.AddHours(7).Year == year
+                        && a.TransactionTypeCode != "SML" && a.TransactionTypeCode != "LMS"
                         select new GarmentShippingLocalSalesNoteViewModel
                         {
                             Id = a.Id,
@@ -318,6 +319,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var query = from a in salesNote
                         where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo
+                        && a.TransactionTypeCode != "SML" && a.TransactionTypeCode != "LMS"
                         select new GarmentShippingLocalSalesNoteViewModel
                         {
                             buyer = new Buyer
