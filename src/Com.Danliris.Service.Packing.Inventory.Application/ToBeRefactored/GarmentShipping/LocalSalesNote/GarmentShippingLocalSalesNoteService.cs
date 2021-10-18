@@ -289,6 +289,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = from a in salesNote
                         where a.Date.AddHours(7).Date >= dateFrom && a.Date.AddHours(7).Date < dateTo 
                     && a.BuyerCode==(buyer!=null ? buyer : a.BuyerCode)
+                    && a.TransactionTypeCode!="SML" && a.TransactionTypeCode!="LMS"
                     select new LocalSalesNoteFinanceReportViewModel
                     {
                         BuyerCode = a.BuyerCode,
