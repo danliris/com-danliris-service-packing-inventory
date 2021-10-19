@@ -261,8 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     productionOrders.Add(new ProductionOrderGroup()
                     {
                         ProductionOrderId = item.ProductionOrderId,
-                        Grade = item.Grade,
-                        PackagingType = item.Jenis
+                        Grade = item.Grade
                     });
                 };
 
@@ -271,8 +270,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     productionOrders.Add(new ProductionOrderGroup()
                     {
                         ProductionOrderId = item.ProductionOrderId,
-                        Grade = item.Grade,
-                        PackagingType = item.Jenis
+                        Grade = item.Grade
                     });
                 }
 
@@ -280,15 +278,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     .Select(d => new ProductionOrderGroup 
                     { 
                         ProductionOrderId = d.Key.ProductionOrderId,
-                        Grade = d.Key.Grade,
-                        PackagingType = d.Key.PackagingType
+                        Grade = d.Key.Grade
                     }).ToList();
 
                 foreach (var item in productionOrders)
                 {
-                    var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade && element.Jenis == item.PackagingType).ToList();
+                    var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
 
-                    var stockOpnamesResult = stockOpnameTempResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade && element.Jenis == item.PackagingType).ToList();
+                    var stockOpnamesResult = stockOpnameTempResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
 
                     if (stockOpnamesResult.Count != 0)
                     {
@@ -302,6 +299,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                         foreach (var stock in stockOpnamesResult)
                         {
+                            var JenisdpWarehouse = dpWarehouse.Where(element => element.ProductionOrderId == stock.ProductionOrderId && element.Grade == stock.Grade).FirstOrDefault();
+
                             result.Add(new ReportStockWarehouseViewModel()
                             {
                                 NoSpp = stock.NoSpp,
@@ -311,7 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                                 Buyer = stock.Buyer,
                                 Color = stock.Color,
                                 Grade = stock.Grade,
-                                Jenis = stock.Jenis,
+                                Jenis = JenisdpWarehouse == null ? stock.Jenis : JenisdpWarehouse.Jenis,
                                 StockOpname = stock.Quantity,
                                 StorageBalance = gudangJadiBalance,
                                 Difference = gudangJadiBalance - stock.Quantity
