@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentDraftPackingListItemModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet.Include(i => i.Details).AsNoTracking();
         }
 
         public Task<GarmentDraftPackingListItemModel> ReadByIdAsync(int id)
@@ -109,6 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
             itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
             itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
+            itemToUpdate.SetRemarks(item.Remarks, _identityProvider.Username, UserAgent);
 
             foreach (var detailToUpdate in itemToUpdate.Details)
             {

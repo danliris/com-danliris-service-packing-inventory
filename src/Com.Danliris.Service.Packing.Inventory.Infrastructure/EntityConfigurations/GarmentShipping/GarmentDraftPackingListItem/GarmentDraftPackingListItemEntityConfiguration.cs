@@ -83,6 +83,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .HasMaxLength(1000);
 
             builder
+                .Property(s => s.Remarks)
+                .HasMaxLength(1000);
+
+            builder
                 .HasMany(h => h.Details)
                 .WithOne()
                 .HasForeignKey(f => f.PackingListItemId);
