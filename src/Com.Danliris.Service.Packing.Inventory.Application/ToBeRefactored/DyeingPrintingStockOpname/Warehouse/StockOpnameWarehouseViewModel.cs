@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset Date { get; set; }
         public string DestinationArea { get; set; }
         public string Type { get; set; }
+        public bool IsStockOpname { get; set; }
         public ICollection<StockOpnameWarehouseProductionOrderViewModel> WarehousesProductionOrders { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

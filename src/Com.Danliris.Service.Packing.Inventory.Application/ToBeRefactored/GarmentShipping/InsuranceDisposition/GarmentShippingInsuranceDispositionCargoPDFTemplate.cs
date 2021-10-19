@@ -38,12 +38,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Paragraph title = new Paragraph("L A M P I R A N", header_font_bold_underlined);
             title.Alignment = Element.ALIGN_CENTER;
 
-            decimal totalAmountIDR = Math.Round(viewModel.items.Sum(a => a.amount * a.currencyRate),0);
+            decimal totalAmountIDR = Math.Round(viewModel.items.Sum(a => a.amount * a.currencyRate), 0);
             //Phrase intro = new Phrase();
             //intro.Add(new Chunk("Mohon dibayarkan uang sejumlah ", normal_font));
             //intro.Add(new Chunk("Rp " + string.Format("{0:n2}", totalAmountIDR), normal_font_bold));
 
-            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR) + " RUPIAH";
+            var terbilang = NumberToTextIDN.terbilang((double)totalAmountIDR) + " Rupiah";
 
             //intro.Add(new Chunk($" (terbilang : {terbilang}) sesuai disposisi nomor \n", normal_font));
             //intro.Add(new Chunk("Disposisi no : " + viewModel.dispositionNo + " tgl. " + viewModel.paymentDate.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
@@ -310,47 +310,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(new Phrase("[Terbilang : " + terbilang + "]", small_font));
             #endregion
 
-            #region sign2
-            Paragraph date2 = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", small_font);
-            document.Add(date2);
+            //#region sign2
+            //Paragraph date2 = new Paragraph($"Sukoharjo, {DateTimeOffset.Now.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", small_font);
+            //document.Add(date2);
 
-            PdfPTable tableSign2 = new PdfPTable(4);
-            tableSign2.WidthPercentage = 100;
-            tableSign2.SetWidths(new float[] { 1f, 1f, 1f, 1f });
+            //PdfPTable tableSign2 = new PdfPTable(4);
+            //tableSign2.WidthPercentage = 100;
+            //tableSign2.SetWidths(new float[] { 1f, 1f, 1f, 1f });
 
-            PdfPCell cellBodySignNoBorder2 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            //PdfPCell cellBodySignNoBorder2 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellBodySignNoBorder2.Phrase = new Phrase("Hormat kami,\n\n\n\n", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("Mengetahui,\n\n\n\n", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("Dicek,\n\n\n\n", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("Diterima,\n\n\n\n", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-
-
-            cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("Hormat kami,\n\n\n\n", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("Mengetahui,\n\n\n\n", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("Dicek,\n\n\n\n", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("Diterima,\n\n\n\n", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
 
 
-            cellBodySignNoBorder2.Phrase = new Phrase("STAFF SHIPPING", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("KABAG/KASIE SHIPPING", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("BAGIAN VERIFIKASI", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
-            cellBodySignNoBorder2.Phrase = new Phrase("BAGIAN KASIR", small_font);
-            tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("(                           )", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
 
-            document.Add(tableSign2);
-            #endregion
+
+            //cellBodySignNoBorder2.Phrase = new Phrase("STAFF SHIPPING", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("KABAG/KASIE SHIPPING", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("BAGIAN VERIFIKASI", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+            //cellBodySignNoBorder2.Phrase = new Phrase("BAGIAN KASIR", small_font);
+            //tableSign2.AddCell(cellBodySignNoBorder2);
+
+            //document.Add(tableSign2);
+            //#endregion
 
             document.Close();
             byte[] byteInfo = stream.ToArray();
