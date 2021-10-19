@@ -118,22 +118,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<int> UpdateFromOutputAsync(int id, double balance)
         {
+            //var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            //if (modelToUpdate != null)
+            //{
+            //    var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
+            //    modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
+            //    // var newBalance = modelToUpdate.Balance - balance;
+            //    // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
+
+            //    var packingLength = modelToUpdate.PackagingLength;
+            //    if(packingLength > 0){
+            //        var newPackagingQty = Convert.ToDecimal(balance / packingLength);
+            //        modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
+            //    }
+
+            //    if (newBalanceRemains <= 0)
+            //    {
+            //        modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
+            //    }
+            //    else
+            //    {
+            //        modelToUpdate.SetHasOutputDocument(false, _identityProvider.Username, UserAgent);
+            //    }
+            //}
+
+            //return _dbContext.SaveChangesAsync();
+
+
             var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
 
             if (modelToUpdate != null)
             {
-                var newBalanceRemains = modelToUpdate.BalanceRemains - balance;
-                modelToUpdate.SetBalanceRemains(newBalanceRemains, _identityProvider.Username, UserAgent);
-                // var newBalance = modelToUpdate.Balance - balance;
-                // modelToUpdate.SetBalance(newBalance, _identityProvider.Username, UserAgent);
-
-                var packingLength = modelToUpdate.PackagingLength;
-                if(packingLength > 0){
-                    var newPackagingQty = Convert.ToDecimal(balance / packingLength);
-                    modelToUpdate.SetPackagingQty(newPackagingQty, _identityProvider.Username, UserAgent);
-                }
-
-                if (newBalanceRemains <= 0)
+                var newBalance = modelToUpdate.BalanceRemains - balance;
+                modelToUpdate.SetBalanceRemains(newBalance, _identityProvider.Username, UserAgent);
+                if (newBalance <= 0)
                 {
                     modelToUpdate.SetHasOutputDocument(true, _identityProvider.Username, UserAgent);
                 }
@@ -400,12 +419,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             return _dbContext.SaveChangesAsync();
         }
 
-        public bool CheckIfHasInInput(string code) {
+        public bool CheckIfHasInInput(string code)
+        {
             var query = _dbSet.FirstOrDefault(x => x.ProductPackingCode
                 .Contains(code) &&
                 x.Area == DyeingPrintingArea.GUDANGJADI
                 );
-            if (query != null) {
+            if (query != null)
+            {
                 return true;
             }
             return false;
