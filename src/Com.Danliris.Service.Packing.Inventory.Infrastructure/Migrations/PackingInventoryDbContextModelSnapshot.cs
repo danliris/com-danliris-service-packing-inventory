@@ -2319,8 +2319,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Remarks");
 
-                    b.Property<string>("RoType");
-
                     b.Property<string>("SCNo")
                         .HasMaxLength(50);
 
