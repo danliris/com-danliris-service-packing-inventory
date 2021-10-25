@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
             var result = new List<ReportStockWarehouseViewModel>();
 
-            if (inventoryType == "STOCK OPNAME")
+            if (zona == "STOCK OPNAME")
             {
                 var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
                 var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
@@ -216,6 +216,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
                 var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Unit == unit).ToList();
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.PackagingType == packingType).ToList();
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Construction == construction).ToList();
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    stockOpnames = stockOpnames.Where(s => s.Buyer == buyer).ToList();
+                }
+                if (productionOrderId != 0)
+                {
+                    stockOpnames = stockOpnames.Where(s => s.ProductionOrderId == productionOrderId).ToList();
+                }
 
                 var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
                     .Select(d => new
@@ -309,33 +330,94 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
-
-            if (data.Count() == 0)
+            if (zona == "GUDANG JADI" || zona == "SHIPPING")
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Gudang", DataType = typeof(string) });
+
+                if (data.Count() == 0)
+                {
+                    dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis,
+                            item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
+                    }
+                }
+            }
+            else if (zona == "STOCK OPNAME")
+            {
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Stock Opname", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Gudang", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(string) });
+
+                if (data.Count() == 0)
+                {
+                    dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0);
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
+                            item.StockOpname.ToString("N2", CultureInfo.InvariantCulture), item.StorageBalance.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Difference.ToString("N2", CultureInfo.InvariantCulture));
+                    }
+                }
             }
             else
             {
-                foreach (var item in data)
+                dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Akhir", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+
+                if (data.Count() == 0)
                 {
-                    dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
-                        item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
-                        item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
+                    dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                }
+                else
+                {
+                    foreach (var item in data)
+                    {
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
+                            item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
+                            item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan);
+                    }
                 }
             }
 
