@@ -91,6 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Id=model.BuyerId,
                     Code=model.BuyerCode
                 },
+                Remarks = model.Remarks,
 
                 Details = (model.Details ?? new List<GarmentDraftPackingListDetailModel>()).Select(d => new GarmentDraftPackingListDetailViewModel
                 {
@@ -174,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Comodity = viewModel.Comodity ?? new Comodity();
             viewModel.Buyer = viewModel.Buyer ?? new Buyer();
             viewModel.Section = viewModel.Section ?? new Section();
-            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Section.Code, details);
+            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Section.Code, details, viewModel.Remarks);
            
             return GarmentDraftPackingListItemModel;
         }
@@ -208,6 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public ListResult<GarmentDraftPackingListItemViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _draftPackingListItemRepository.ReadAll();
+
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
             query = QueryHelper<GarmentDraftPackingListItemModel>.Filter(query, FilterDictionary);
