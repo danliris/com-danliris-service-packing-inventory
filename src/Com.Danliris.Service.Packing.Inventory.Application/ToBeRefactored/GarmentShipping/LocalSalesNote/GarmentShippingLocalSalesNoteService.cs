@@ -250,7 +250,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var queryInv = _repository.ReadAll();
 
             var query = from a in queryInv
-                        where a.Date.AddHours(7).Month == month && a.Date.AddHours(7).Year == year
+                        where a.Date.AddHours(7).Month < month && a.Date.AddHours(7).Year < year
                         && a.TransactionTypeCode != "SML" && a.TransactionTypeCode != "LMS"
                         select new GarmentShippingLocalSalesNoteViewModel
                         {
