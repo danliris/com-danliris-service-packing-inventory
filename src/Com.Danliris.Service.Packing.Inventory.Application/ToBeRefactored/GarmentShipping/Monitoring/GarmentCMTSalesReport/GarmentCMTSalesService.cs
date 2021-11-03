@@ -76,6 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         select new GarmentCMTSalesViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
+                            Ronos = d.RONo,
                             InvoiceDate = a.InvoiceDate,
                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
                             PEBDate = a.PEBDate,
@@ -88,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var newQ = Query.GroupBy(s => new { s.InvoiceNo }).Select(d => new GarmentCMTSalesViewModel()
             {
                 InvoiceNo = d.Key.InvoiceNo,
+                Ronos = string.Join(",",d.Select(x=>x.Ronos)),
                 InvoiceDate = d.FirstOrDefault().InvoiceDate,
                 BuyerAgentName = d.FirstOrDefault().BuyerAgentName,
 
