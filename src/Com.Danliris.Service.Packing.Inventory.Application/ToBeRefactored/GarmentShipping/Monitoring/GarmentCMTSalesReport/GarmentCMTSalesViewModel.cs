@@ -7,6 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentCMTSalesViewModel
     {
         public string InvoiceNo { get; set; }
+        public string Ronos { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
         public string BuyerAgentName { get; set; }
         public DateTimeOffset PEBDate { get; set; }
