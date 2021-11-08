@@ -335,12 +335,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 1, 1, 1, sizes, 1){ Id = 1 },
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 0 },
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 0},
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 2 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 3},
             };
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 1, CreatedBy = "UserTest" },
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel>()){ Id = 2, CreatedBy = "UserTest" }
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 2, CreatedBy = "UserTest" }
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
                 new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 1 },
