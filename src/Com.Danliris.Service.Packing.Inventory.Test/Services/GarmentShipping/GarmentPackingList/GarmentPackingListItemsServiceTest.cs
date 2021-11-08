@@ -42,7 +42,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                     Width = 20,
                                     Height =30,
                                     CartonQuantity = 1,
-                                }
+                                },
+                                new GarmentPackingListDetailViewModel()
                             }
                         }
                     },
@@ -54,43 +55,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                            Width = 20,
                            Height =30,
                            CartonsQuantity = 1,
-                        }
-                    },
-                    ShippingMarkImagePath = "IMG_1_000101010000000000_ShippingMarkImageFile",
-                    ShippingMarkImageFile = "ShippingMarkImageFile",
-                    SideMarkImagePath = null,
-                    SideMarkImageFile = "SideMarkImageFile",
-                    RemarkImagePath = "IMG_1_000101010000000000_RemarkImagePath",
-                    RemarkImageFile = null,
-                };
-            }
-        }
-
-        protected GarmentPackingListViewModel ViewModelNoMeasurement
-        {
-            get
-            {
-                return new GarmentPackingListViewModel
-                {
-                    Items = new List<GarmentPackingListItemViewModel>
-                    {
-                        new GarmentPackingListItemViewModel
-                        {
-                            Details = new List<GarmentPackingListDetailViewModel>()
-                            {
-                                new GarmentPackingListDetailViewModel
-                                {
-                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
-                                    {
-                                        new GarmentPackingListDetailSizeViewModel()
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    Measurements = new List<GarmentPackingListMeasurementViewModel>
-                    {
-                        new GarmentPackingListMeasurementViewModel()
+                        },
+                        new GarmentPackingListMeasurementViewModel(),
                     },
                     ShippingMarkImagePath = "IMG_1_000101010000000000_ShippingMarkImageFile",
                     ShippingMarkImageFile = "ShippingMarkImageFile",
@@ -352,7 +318,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             List<GarmentPackingListModel> models = new List<GarmentPackingListModel> { model };
 
-            var ViewModel = this.ViewModelNoMeasurement;
+            var ViewModel = this.ViewModel;
 
             var mockModels = models.AsQueryable().BuildMock();
             var repoMock = new Mock<IGarmentPackingListRepository>();
