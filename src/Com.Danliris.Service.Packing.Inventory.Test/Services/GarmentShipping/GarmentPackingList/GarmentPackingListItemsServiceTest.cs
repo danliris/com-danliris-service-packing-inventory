@@ -315,9 +315,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 2, CreatedBy = "UserTest" }
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
-                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 1 },
-                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 2 },
-                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 3 },
             };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "") { Id = 1 };
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED, ""));
