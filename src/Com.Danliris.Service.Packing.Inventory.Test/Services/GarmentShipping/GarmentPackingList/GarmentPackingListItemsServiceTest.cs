@@ -66,6 +66,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             }
         }
 
+        protected GarmentPackingListViewModel ViewModelNoMeasurement
+        {
+            get
+            {
+                return new GarmentPackingListViewModel
+                {
+                    Items = new List<GarmentPackingListItemViewModel>
+                    {
+                        new GarmentPackingListItemViewModel
+                        {
+                            Details = new List<GarmentPackingListDetailViewModel>()
+                            {
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                    },
+                                }
+                            }
+                        }
+                    },
+                    Measurements = new List<GarmentPackingListMeasurementViewModel>
+                    {
+                        new GarmentPackingListMeasurementViewModel()
+                    },
+                    ShippingMarkImagePath = "IMG_1_000101010000000000_ShippingMarkImageFile",
+                    ShippingMarkImageFile = "ShippingMarkImageFile",
+                    SideMarkImagePath = null,
+                    SideMarkImageFile = "SideMarkImageFile",
+                    RemarkImagePath = "IMG_1_000101010000000000_RemarkImagePath",
+                    RemarkImageFile = null,
+                };
+            }
+        }
+
         private Mock<IServiceProvider> GetServiceProviderWithIdentity(IGarmentPackingListRepository repository)
         {
             var spMock = new Mock<IServiceProvider>();
@@ -284,6 +320,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                     item.Details.Add(new GarmentPackingListDetailViewModel { Sizes = new List<GarmentPackingListDetailSizeViewModel> { new GarmentPackingListDetailSizeViewModel() } });
                 }
                 ViewModel.Items.Add(item);
+            }
+            var result = await service.Update(1, ViewModel);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Update_SuccessNoMeasurement()
+        {
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> {
+                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 1 },
+                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
+            };
+            var details = new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 1, 1, 1, sizes, 1){ Id = 1 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 2 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 0},
+            };
+            var items = new HashSet<GarmentPackingListItemModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", details){ Id = 1, CreatedBy = "UserTest" },
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel>()){ Id = 2, CreatedBy = "UserTest" }
+            };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> {
+                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 1 },
+                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 2 },
+                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 2 },
+            };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "") { Id = 1 };
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED, ""));
+
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel> { model };
+
+            var ViewModel = this.ViewModelNoMeasurement;
+
+            var mockModels = models.AsQueryable().BuildMock();
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock
+                .Setup(s => s.Query)
+                .Returns(mockModels.Object);
+            repoMock
+                .Setup(s => s.SaveChanges())
+                .ReturnsAsync(1);
+
+            var imageServiceMock = new Mock<IAzureImageService>();
+            imageServiceMock.Setup(s => s.GetFileNameFromPath(It.Is<string>(str => str == ViewModel.ShippingMarkImagePath)))
+                .Returns(ViewModel.ShippingMarkImagePath);
+            imageServiceMock.Setup(s => s.UploadImage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync("ImagePath");
+
+            var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+            serviceProviderMock.Setup(s => s.GetService(typeof(IAzureImageService)))
+                .Returns(imageServiceMock.Object);
+
+            var service = GetService(serviceProviderMock.Object);
+
+            foreach (var i in model.Items)
+            {
+                GarmentPackingListItemViewModel item = new GarmentPackingListItemViewModel { Id = i.Id, Details = new List<GarmentPackingListDetailViewModel>() };
+                foreach (var d in i.Details)
+                {
+                    GarmentPackingListDetailViewModel detail = new GarmentPackingListDetailViewModel { Id = d.Id, Length = d.Length, Width = d.Width, Height = d.Height, GrossWeight = d.GrossWeight, NetWeight = d.NetWeight, NetNetWeight = d.NetNetWeight, CartonQuantity = d.CartonQuantity, Sizes = new List<GarmentPackingListDetailSizeViewModel>() };
+                    foreach (var s in d.Sizes)
+                    {
+                        detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel { Id = s.Id });
+                        detail.Sizes.Add(new GarmentPackingListDetailSizeViewModel());
+                        break;
+                    }
+                    item.Details.Add(detail);
+                    item.Details.Add(new GarmentPackingListDetailViewModel { Sizes = new List<GarmentPackingListDetailSizeViewModel> { new GarmentPackingListDetailSizeViewModel() } });
+                    break;
+                }
+                ViewModel.Items.Add(item);
+                break;
             }
             var result = await service.Update(1, ViewModel);
 
