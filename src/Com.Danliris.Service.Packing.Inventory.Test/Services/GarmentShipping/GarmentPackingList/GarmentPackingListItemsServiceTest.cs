@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                     Sizes = new List<GarmentPackingListDetailSizeViewModel>()
                                     {
                                         new GarmentPackingListDetailSizeViewModel()
-                                    },
+                                    }
                                 }
                             }
                         }
@@ -335,7 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 1, 1, 1, sizes, 1){ Id = 1 },
-                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 2 },
+                new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 0 },
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 2, 3, 1, sizes, 1){ Id = 0},
             };
             var items = new HashSet<GarmentPackingListItemModel> {
@@ -345,7 +345,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
                 new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 1 },
                 new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 2 },
-                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 2 },
+                new GarmentPackingListMeasurementModel(10, 20, 30, 1){ Id = 3 },
             };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "") { Id = 1 };
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED, ""));
