@@ -43,7 +43,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                     Height =30,
                                     CartonQuantity = 1,
                                 },
-                                new GarmentPackingListDetailViewModel()
+                                new GarmentPackingListDetailViewModel
+                                {
+                                    Sizes = new List<GarmentPackingListDetailSizeViewModel>()
+                                    {
+                                        new GarmentPackingListDetailSizeViewModel()
+                                    },
+                                }
                             }
                         }
                     },
