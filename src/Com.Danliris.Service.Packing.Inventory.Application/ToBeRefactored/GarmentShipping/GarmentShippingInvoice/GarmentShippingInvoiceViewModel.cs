@@ -87,7 +87,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			//if (string.IsNullOrEmpty(BankAccount))
 			//	yield return new ValidationResult("BankDetail harus diisi", new List<string> { "BankAccount" });
 
-			if (PaymentDue.Equals(0))
+			if (PaymentDue.Equals(0) && !InvoiceNo.Contains("SM/"))
 				yield return new ValidationResult("PaymentDue harus diisi", new List<string> { "PaymentDue" });
 
 			if (string.IsNullOrEmpty(CPrice))
