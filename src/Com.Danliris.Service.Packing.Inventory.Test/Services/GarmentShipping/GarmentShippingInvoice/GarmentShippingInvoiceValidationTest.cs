@@ -154,6 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 		public void Validate_AdjustmentDescriptionValue()
 		{
 			GarmentShippingInvoiceViewModel viewModel = ViewModel;
+            viewModel.InvoiceNo = "SM/";
 			viewModel.GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>
 			{
 				new GarmentShippingInvoiceAdjustmentViewModel
