@@ -90,10 +90,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } } ))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -151,10 +151,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(items.AsQueryable());
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -182,10 +182,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "usd" } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
