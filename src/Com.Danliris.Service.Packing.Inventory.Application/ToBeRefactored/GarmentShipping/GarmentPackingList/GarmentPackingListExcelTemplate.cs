@@ -140,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"A1:{colNnw}1"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
             sheet.Cells["E1"].Value = "Date : " + viewModel.Date.GetValueOrDefault().ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).ToString("MMM dd, yyyy.");
             sheet.Cells[$"E1:{col}1"].Merge = true;
-            sheet.Cells[$"{colCtns}1"].Value = "Ref No. :  FM-00-SP-24-005 ";
+            sheet.Cells[$"{colCtns}1"].Value = " ";
             sheet.Cells[$"{colCtns}1"].Style.Font.Bold = true;
             sheet.Cells[$"{colCtns}1:{colNnw}1"].Merge = true;
             sheet.Cells["A3"].Value = cPrice;
