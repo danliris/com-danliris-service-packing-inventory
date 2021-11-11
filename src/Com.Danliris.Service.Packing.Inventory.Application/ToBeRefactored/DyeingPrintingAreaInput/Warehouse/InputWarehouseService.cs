@@ -410,14 +410,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
-                {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
-                    {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
-                    }
-                }
+                //var splitedCode = item.ProductPackingCode.Split(",");
+                //foreach (var code in splitedCode)
+                //{
+                //    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                //    {
+                //        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                //    }
+                //}
             }
 
             //Insert to Input Repository
@@ -532,14 +532,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = productionOrder.ProductPackingCode.Split(",");
-                foreach (var item in splitedCode)
-                {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(item))
-                    {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, 1);
-                    }
-                }
+                //var splitedCode = productionOrder.ProductPackingCode.Split(",");
+                //foreach (var item in splitedCode)
+                //{
+                //    if (!_inputProductionOrderRepository.CheckIfHasInInput(item))
+                //    {
+                //        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, 1);
+                //    }
+                //}
 
                 //Insert to Input Production Order Repository
                 result += await _inputProductionOrderRepository.InsertAsync(productionOrderModel);
