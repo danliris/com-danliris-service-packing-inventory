@@ -70,43 +70,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             no.Alignment = Element.ALIGN_CENTER;
             document.Add(no);
 
-            if (viewModel.buyer.KaberType == "KABER")
-            {
-                Paragraph location = new Paragraph("PPN BERFASILITAS", normal_font_bold);
-                location.Alignment = Element.ALIGN_RIGHT;
-                document.Add(location);
-            }
+            //if (viewModel.buyer.KaberType == "KABER")
+            //{
+            //    Paragraph location = new Paragraph("PPN BERFASILITAS", normal_font_bold);
+            //    location.Alignment = Element.ALIGN_RIGHT;
+            //    document.Add(location);
+            //}
+            PdfPTable tableTitle = new PdfPTable(6);
+            tableTitle.WidthPercentage = 100;
+            tableTitle.SetWidths(new float[] { 1.5f, 2f, 1.5f, 2f, 1.5f, 1f });
 
-            PdfPTable tableTitle = new PdfPTable(3);
-            tableTitle.WidthPercentage = 40;
-            tableTitle.SetWidths(new float[] { 3f, 0.5f, 4f });
+            PdfPCell cellFooterContent1x = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent2x = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent31 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent41 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent51 = new PdfPCell() { Border = Rectangle.NO_BORDER };
+            PdfPCell cellFooterContent61 = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
-            PdfPCell cellTitle1 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+            cellFooterContent1x.Phrase = new Phrase("NPWP Penjual :", normal_font);
+            tableTitle.AddCell(cellFooterContent1x);
+            cellFooterContent2x.Phrase = new Phrase("01.139.907.8-532.000", normal_font);
+            tableTitle.AddCell(cellFooterContent2x);
 
-            cellTitle1.Phrase= new Phrase("NPWP Penjual", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(":", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase("01.139.907.8-532.000", normal_font);
-            tableTitle.AddCell(cellTitle1);
+            cellFooterContent31.Phrase = new Phrase("NPWP Pembeli :", normal_font);
+            tableTitle.AddCell(cellFooterContent31);
+            cellFooterContent41.Phrase = new Phrase(buyer.npwp, normal_font);
+            tableTitle.AddCell(cellFooterContent41);
 
-            cellTitle1.Phrase = new Phrase("NPWP Pembeli", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(":", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(buyer.npwp, normal_font);
-            tableTitle.AddCell(cellTitle1);
-
-            cellTitle1.Phrase = new Phrase("NIK Pembeli", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(":", normal_font);
-            tableTitle.AddCell(cellTitle1);
-            cellTitle1.Phrase = new Phrase(buyer.NIK, normal_font);
-            tableTitle.AddCell(cellTitle1);
-
-            tableTitle.SpacingAfter = 5;
+            cellFooterContent51.Phrase = new Phrase("NIK Pembeli :", normal_font);
+            tableTitle.AddCell(cellFooterContent51);
+            cellFooterContent61.Phrase = new Phrase("", normal_font);
+            tableTitle.AddCell(cellFooterContent61);
+            tableTitle.SpacingAfter = 3;
             tableTitle.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableTitle);
+            //PdfPTable tableTitle = new PdfPTable(3);
+            //tableTitle.WidthPercentage = 40;
+            //tableTitle.SetWidths(new float[] { 3f, 0.5f, 4f });
+
+            //PdfPCell cellTitle1 = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
+
+            //cellTitle1.Phrase= new Phrase("NPWP Penjual", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase(":", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase("01.139.907.8-532.000", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+
+            //cellTitle1.Phrase = new Phrase("NPWP Pembeli", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase(":", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase(buyer.npwp, normal_font);
+            //tableTitle.AddCell(cellTitle1);
+
+            //cellTitle1.Phrase = new Phrase("NIK Pembeli", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase(":", normal_font);
+            //tableTitle.AddCell(cellTitle1);
+            //cellTitle1.Phrase = new Phrase(buyer.NIK, normal_font);
+            //tableTitle.AddCell(cellTitle1);
+
+            //tableTitle.SpacingAfter = 5;
+            //tableTitle.HorizontalAlignment = Element.ALIGN_LEFT;
+            //document.Add(tableTitle);
             #endregion
 
             #region bodyTable
@@ -257,10 +284,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFooterContent21.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
             tableFooter1.AddCell(cellFooterContent21);
 
-            cellFooterContent11.Phrase = (new Phrase("Catatan     :", normal_font));
-            tableFooter1.AddCell(cellFooterContent11);
-            cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
-            tableFooter1.AddCell(cellFooterContent21);
+            //cellFooterContent11.Phrase = (new Phrase("Catatan     :", normal_font));
+            //tableFooter1.AddCell(cellFooterContent11);
+            //cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
+            //tableFooter1.AddCell(cellFooterContent21);
 
             tableFooter1.SpacingAfter = 4;
             document.Add(tableFooter1);
