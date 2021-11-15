@@ -221,7 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("QTY", normal_font, 0.75f));
                 tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SATUAN", normal_font, 0.75f));
+                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("UNIT", normal_font, 0.75f));
                 cellBorderBottomRight.Colspan = 1;
                 tableDetail.AddCell(cellBorderBottomRight);
                 cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GW/\nCTN", normal_font, 0.75f));
@@ -412,7 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable tableGrandTotal = new PdfPTable(2);
             tableGrandTotal.SetWidths(new float[] { 18f + SIZES_COUNT * 1f, 5f });
-            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 2, Padding = 0.5f, Phrase = new Phrase("") };
+            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Padding = 0.5f, Phrase = new Phrase("") };
 
             tableGrandTotal.AddCell(cellHeaderLine);
             tableGrandTotal.AddCell(new PdfPCell()
@@ -536,21 +536,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(viewModel.GrossWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(String.Format("{0:0.00}", viewModel.GrossWeight) + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("NET WEIGHT", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(viewModel.NettWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(String.Format("{0:0.00}", viewModel.NettWeight) + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("NET NET WEIGHT", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(viewModel.NetNetWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(String.Format("{0:0.00}", viewModel.NetNetWeight) + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("MEASUREMENT", normal_font);
@@ -559,16 +559,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
 
             PdfPTable tableMeasurementDetail = new PdfPTable(5);
-            tableMeasurementDetail.SetWidths(new float[] { 1f, 1f, 1f, 1.5f, 2f });
+            tableMeasurementDetail.SetWidths(new float[] { 2f, 2f, 2f, 2f, 2f });
             PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             decimal totalCbm = 0;
             foreach (var measurement in viewModel.Measurements)
             {
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Length) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Width) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Height) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);

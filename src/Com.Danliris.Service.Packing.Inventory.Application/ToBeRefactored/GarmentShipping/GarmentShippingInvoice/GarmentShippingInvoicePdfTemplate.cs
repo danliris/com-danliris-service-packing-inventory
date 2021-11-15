@@ -498,8 +498,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMark.AddCell(cellMarkContent);
 
             PdfPCell cellMarkContentR = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellMarkContentR.AddElement(new Phrase("SIDE MARKS :", normal_font_underlined));
-            cellMarkContentR.AddElement(new Phrase(pl.SideMark, normal_font));
+            cellMarkContentR.AddElement(new Phrase(pl.SideMark != null ? "SIDE MARKS :" : "", normal_font_underlined));
+            cellMarkContentR.AddElement(new Phrase(pl.SideMark != null ? pl.SideMark : "", normal_font));
             tableMark.AddCell(cellMarkContentR);
 
             tableMark.ExtendLastRow = false;
@@ -577,14 +577,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(pl.GrossWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(String.Format("{0:0.00}", pl.GrossWeight) + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("NET WEIGHT", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(pl.NettWeight + " KGS", normal_font);
+            cellMeasurement.Phrase = new Phrase(String.Format("{0:0.00}", pl.NettWeight) + " KGS", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
 
             cellMeasurement.Phrase = new Phrase("MEASUREMENT", normal_font);
@@ -593,16 +593,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurement.AddCell(cellMeasurement);
 
             PdfPTable tableMeasurementDetail = new PdfPTable(5);
-            tableMeasurementDetail.SetWidths(new float[] { 1f, 1f, 1f, 1.5f, 2f });
+            tableMeasurementDetail.SetWidths(new float[] { 2f, 2f, 2f, 2f, 2f });
             PdfPCell cellMeasurementDetail = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
             decimal totalCbm = 0;
             foreach (var measurement in pl.Measurements)
             {
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Length + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Length) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Width + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Width) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
-                cellMeasurementDetail.Phrase = new Phrase(measurement.Height + " CM X ", normal_font);
+                cellMeasurementDetail.Phrase = new Phrase(String.Format("{0:0.00}", measurement.Height) + " CM X ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
                 cellMeasurementDetail.Phrase = new Phrase(measurement.CartonsQuantity + " CTNS = ", normal_font);
                 tableMeasurementDetail.AddCell(cellMeasurementDetail);
@@ -644,53 +644,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //document.Add(new Paragraph("\n", normal_font));
             //
             #region REMARK
-            PdfPTable tableRemark = new PdfPTable(1);
-            tableRemark.SetWidths(new float[] { 6f });
-            tableRemark.WidthPercentage = 100;
-
-            PdfPCell cellRemarkContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellRemarkContent.AddElement(new Phrase("REMARK :", normal_font_underlined));
-            cellRemarkContent.AddElement(new Phrase(pl.Remark, normal_font));
-            tableRemark.AddCell(cellRemarkContent);
-
-            tableRemark.ExtendLastRow = false;
-            tableRemark.SpacingAfter = 10f;
-            document.Add(tableRemark);
-
-            //
-            PdfPTable tableRemark2 = new PdfPTable(1);
-            tableRemark2.SetWidths(new float[] { 6f });
-            tableRemark2.WidthPercentage = 100;
-
-            byte[] shippingRemarkImage;
-
-            if (String.IsNullOrEmpty(pl.RemarkImageFile))
+            if (pl.Remark != null)
             {
-                pl.RemarkImageFile = noImage;
-            }
+                PdfPTable tableRemark = new PdfPTable(1);
+                tableRemark.SetWidths(new float[] { 6f });
+                tableRemark.WidthPercentage = 100;
 
-            if (IsBase64String(Base64.GetBase64File(pl.RemarkImageFile)))
-            {
-                shippingRemarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.RemarkImageFile));
-                Image shipRemarkImage = Image.GetInstance(imgb: shippingRemarkImage);
+                PdfPCell cellRemarkContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
+                cellRemarkContent.AddElement(new Phrase("REMARK :", normal_font_underlined));
+                cellRemarkContent.AddElement(new Phrase(pl.Remark, normal_font));
+                tableRemark.AddCell(cellRemarkContent);
 
-                if (shipRemarkImage.Width > 60)
+                tableRemark.ExtendLastRow = false;
+                tableRemark.SpacingAfter = 10f;
+                document.Add(tableRemark);
+
+                //
+                PdfPTable tableRemark2 = new PdfPTable(1);
+                tableRemark2.SetWidths(new float[] { 6f });
+                tableRemark2.WidthPercentage = 100;
+
+                byte[] shippingRemarkImage;
+
+                if (String.IsNullOrEmpty(pl.RemarkImageFile))
                 {
-                    float percentage = 0.0f;
-                    percentage = 100 / shipRemarkImage.Width;
-                    shipRemarkImage.ScalePercent(percentage * 100);
+                    pl.RemarkImageFile = noImage;
                 }
 
-                PdfPCell shipRemarkImageCell = new PdfPCell(shipRemarkImage);
-                shipRemarkImageCell.Border = Rectangle.NO_BORDER;
-                shipRemarkImageCell.Colspan = 3;
-                tableRemark2.AddCell(shipRemarkImageCell);
-            }
+                if (IsBase64String(Base64.GetBase64File(pl.RemarkImageFile)))
+                {
+                    shippingRemarkImage = Convert.FromBase64String(Base64.GetBase64File(pl.RemarkImageFile));
+                    Image shipRemarkImage = Image.GetInstance(imgb: shippingRemarkImage);
 
-            new PdfPCell(tableRemark2);
-            tableRemark2.ExtendLastRow = false;
-            tableRemark2.SpacingAfter = 5f;
-            document.Add(tableRemark2);
+                    if (shipRemarkImage.Width > 60)
+                    {
+                        float percentage = 0.0f;
+                        percentage = 100 / shipRemarkImage.Width;
+                        shipRemarkImage.ScalePercent(percentage * 100);
+                    }
+
+                    PdfPCell shipRemarkImageCell = new PdfPCell(shipRemarkImage);
+                    shipRemarkImageCell.Border = Rectangle.NO_BORDER;
+                    shipRemarkImageCell.Colspan = 3;
+                    tableRemark2.AddCell(shipRemarkImageCell);
+                }
+
+                new PdfPCell(tableRemark2);
+                tableRemark2.ExtendLastRow = false;
+                tableRemark2.SpacingAfter = 5f;
+                document.Add(tableRemark2);
+            }
             //         
             #endregion
 
