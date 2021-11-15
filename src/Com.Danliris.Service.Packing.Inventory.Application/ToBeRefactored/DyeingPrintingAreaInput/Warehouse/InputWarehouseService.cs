@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
-
+        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public InputWarehouseService(IServiceProvider serviceProvider)
         {
@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         //Get All (List)
@@ -410,14 +411,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach (var item in viewModel.MappedWarehousesProductionOrders)
             {
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
-                {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
-                    {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
-                    }
-                }
+                //var splitedCode = item.ProductPackingCode.Split(",");
+                //foreach (var code in splitedCode)
+                //{
+                //    if (!_inputProductionOrderRepository.CheckIfHasInInput(code))
+                //    {
+                //        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(item.Id, 1);
+                //    }
+                //}
             }
 
             //Insert to Input Repository
@@ -454,6 +455,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
+
+                var areaReference = new DyeingPrintingAreaReferenceModel("IN", itemModel.Id, itemModel.DyeingPrintingAreaOutputProductionOrderId);
+                await _areaReferenceRepository.InsertAsync(areaReference);
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
@@ -532,14 +536,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
                 // If kode sudah ada di in dia gabisa kurang quantity
-                var splitedCode = productionOrder.ProductPackingCode.Split(",");
-                foreach (var item in splitedCode)
-                {
-                    if (!_inputProductionOrderRepository.CheckIfHasInInput(item))
-                    {
-                        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, 1);
-                    }
-                }
+                //var splitedCode = productionOrder.ProductPackingCode.Split(",");
+                //foreach (var item in splitedCode)
+                //{
+                //    if (!_inputProductionOrderRepository.CheckIfHasInInput(item))
+                //    {
+                //        result += await _outputProductionOrderRepository.UpdateOutputBalancePackingQtyFromInput(productionOrder.Id, 1);
+                //    }
+                //}
 
                 //Insert to Input Production Order Repository
                 result += await _inputProductionOrderRepository.InsertAsync(productionOrderModel);
@@ -586,7 +590,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .OrderByDescending(s => s.LastModifiedUtc)
                                                         .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
-                                                                    (/*s.Balance > 0 || */!s.HasNextAreaDocument));
+                                                                    s.Balance > 0);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 

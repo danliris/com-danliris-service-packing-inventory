@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Transit;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
@@ -54,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
         public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository repository, IDyeingPrintingAreaMovementRepository movementRepo,
-           IDyeingPrintingAreaSummaryRepository summaryRepo, IDyeingPrintingAreaInputProductionOrderRepository sppRepo, IDyeingPrintingAreaOutputRepository outputRepo, IDyeingPrintingAreaOutputProductionOrderRepository outputSpp)
+           IDyeingPrintingAreaSummaryRepository summaryRepo, IDyeingPrintingAreaInputProductionOrderRepository sppRepo, IDyeingPrintingAreaOutputRepository outputRepo, IDyeingPrintingAreaOutputProductionOrderRepository outputSpp, IDyeingPrintingAreaReferenceRepository areaReferenceRepo)
         {
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
@@ -70,8 +71,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(outputRepo);
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
                 .Returns(outputSpp);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaReferenceRepository)))
+                .Returns(areaReferenceRepo);
             return spMock;
         }
+
+        //public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaOutputRepository repository, IDyeingPrintingAreaMovementRepository movementRepo,
+        //   IDyeingPrintingAreaSummaryRepository summaryRepo, IDyeingPrintingAreaInputProductionOrderRepository sppRepo, IDyeingPrintingAreaOutputProductionOrderRepository outSppRepo,
+        //   IFabricPackingSKUService fabricService, IDyeingPrintingAreaReferenceRepository areaReferenceRepo)
+        //{
+        //    var spMock = new Mock<IServiceProvider>();
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputRepository)))
+        //        .Returns(repository);
+
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaMovementRepository)))
+        //        .Returns(movementRepo);
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaSummaryRepository)))
+        //        .Returns(summaryRepo);
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+        //        .Returns(sppRepo);
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+        //        .Returns(outSppRepo);
+        //    spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaReferenceRepository)))
+        //        .Returns(areaReferenceRepo);
+        //    spMock.Setup(s => s.GetService(typeof(IFabricPackingSKUService)))
+        //        .Returns(fabricService);
+
+        //    return spMock;
+        //}
+
         private InputPackagingViewModel ViewModel
         {
             get
@@ -357,7 +385,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(Model.DyeingPrintingAreaInputProductionOrders.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSpp.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSpp.Object, areaReferenceMock.Object).Object);
             //ViewModel.PackagingProductionOrders.FirstOrDefault().Id = 0;
             var result = await service.CreateAsync(ViewModel);
 
@@ -407,7 +438,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             sppRepoMock.Setup(s => s.ReadAll())
                 .Returns(Model.DyeingPrintingAreaInputProductionOrders.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSpp.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSpp.Object, areaReferenceMock.Object).Object);
 
             var result = await service.CreateAsync(ViewModel);
 
@@ -474,7 +508,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSppRepoMock.Setup(s => s.ReadAll())
                 .Returns(OutputModel2.DyeingPrintingAreaOutputProductionOrders.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSppRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, areaOutputRepoMock.Object, outputSppRepoMock.Object, areaReferenceMock.Object).Object);
 
             var result = service.ReadInProducionOrders(1, 25, "{}", "{}", null);
 
@@ -575,7 +612,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
             var test = new List<InputPackagingProductionOrdersViewModel>();
             foreach (var items in ViewModel.PackagingProductionOrders)
@@ -637,7 +677,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inSPPRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel>() { InputSppModel }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
             var test = new List<InputPackagingProductionOrdersViewModel>();
             foreach (var items in ViewModel.PackagingProductionOrders)
@@ -698,7 +741,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
             var test = new List<InputPackagingProductionOrdersViewModel>();
             foreach (var items in ViewModel.PackagingProductionOrders)
@@ -774,7 +820,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             inSPPRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputProductionOrderModel>() { InputSppModel }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
             var test = new List<InputPackagingProductionOrdersViewModel>();
             foreach (var items in ViewModel.PackagingProductionOrders)
@@ -826,7 +875,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
             var result = await service.Reject(ViewModel);
 
@@ -871,7 +923,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(ViewModelIM);
@@ -918,7 +973,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(ViewModel);
@@ -965,7 +1023,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(ViewModel);
@@ -1016,7 +1077,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1075,7 +1139,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1134,7 +1201,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1185,7 +1255,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1244,7 +1317,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1303,7 +1379,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1354,7 +1433,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1413,7 +1495,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1472,7 +1557,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputSPPRepoMock.Setup(s => s.UpdateFromInputAsync(It.IsAny<IEnumerable<int>>(), It.IsAny<bool>()))
                 .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inSPPRepoMock.Object, outputRepoMock.Object, outputSPPRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Reject(vm);
@@ -1539,7 +1627,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = await service.Delete(1);
@@ -1607,7 +1698,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             await Assert.ThrowsAnyAsync<Exception>(() => service.Delete(1));
@@ -1674,7 +1768,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
             var inputan = ViewModelIM;
             foreach (var n in inputan.PackagingProductionOrders)
@@ -1714,7 +1811,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel> { Model }.AsQueryable());
 
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = service.GenerateExcelAll(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
@@ -1736,7 +1836,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel> { Model }.AsQueryable());
 
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = service.GenerateExcelAll(Model.Date.AddDays(-1), null, 7);
@@ -1758,7 +1861,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel> { Model }.AsQueryable());
 
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = service.GenerateExcelAll(null, Model.Date.AddDays(1), 7);
@@ -1780,7 +1886,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .Returns(new List<DyeingPrintingAreaInputModel> { Model }.AsQueryable());
 
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object).Object);
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
+            var service = GetService(GetServiceProvider(inputRepoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, inputProductionOrderRepoMock.Object, outputRepoMock.Object, outputProductionOrderRepoMock.Object, areaReferenceMock.Object).Object);
 
 
             var result = service.GenerateExcelAll(null, null, 7);
