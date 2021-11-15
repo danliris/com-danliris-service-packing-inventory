@@ -108,6 +108,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DateTimeOffset DateIn { get;  set; }
         public DateTimeOffset DateOut { get; private set; }
 
+        public double PackagingQuantityBalance { get; private set; }
+        public double PackagingQuantity { get; private set; }
+
         public DyeingPrintingAreaInputProductionOrderModel()
         {
 
@@ -1612,6 +1615,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         {
             ProductPackingCodeRemains = NewProductPackingCodeRemains;
             this.FlagForUpdate(user, agent);
+        }
+        
+        public void SetPackagingQuantity(double packagingQuantity)
+        {
+            PackagingQuantity = packagingQuantity;
+        }
+
+        public void SetPackagingQuantityBalance(double currentBalance, double mutation)
+        {
+            PackagingQuantityBalance = currentBalance - mutation;
         }
     }
 }
