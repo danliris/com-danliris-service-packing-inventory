@@ -29,6 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
+        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public OutputInspectionMaterialService(IServiceProvider serviceProvider)
         {
@@ -38,6 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
+            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         private async Task<OutputInspectionMaterialViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -321,6 +323,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, false, item.FinishWidth,item.DateIn,viewModel.Date,item.MaterialOrigin);
                            
                         productionOrders.Add(outputProductionOrder);
+
+                        
                     }
                 }
 
@@ -346,6 +350,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance, item.Id, item.ProductionOrderType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
+
+                    var areaReference = new DyeingPrintingAreaReferenceModel("OUT", item.Id, item.DyeingPrintingAreaInputProductionOrderId);
+                    await _areaReferenceRepository.InsertAsync(areaReference);
 
                 }
             }
@@ -388,6 +395,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Balance, modelItem.Id, item.ProductionOrder.Type);
 
                         result += await _movementRepository.InsertAsync(movementModel);
+
+                        var areaReference = new DyeingPrintingAreaReferenceModel("OUT", modelItem.Id, modelItem.DyeingPrintingAreaInputProductionOrderId);
+                        await _areaReferenceRepository.InsertAsync(areaReference);
                     }
                 }
             }

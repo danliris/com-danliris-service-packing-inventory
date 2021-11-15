@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
-
+        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public InputWarehouseService(IServiceProvider serviceProvider)
         {
@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         //Get All (List)
@@ -454,6 +455,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
+
+                var areaReference = new DyeingPrintingAreaReferenceModel("IN", itemModel.Id, itemModel.DyeingPrintingAreaOutputProductionOrderId);
+                await _areaReferenceRepository.InsertAsync(areaReference);
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True

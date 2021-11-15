@@ -33,6 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputRepository _inputRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
+        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public OutputWarehouseService(IServiceProvider serviceProvider)
         {
@@ -43,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _inputRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
+            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         private async Task<OutputWarehouseViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -601,6 +603,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.PackagingType, GetPackagingQty(item), item.PackagingUnit, item.Quantity, item.InventoryType);
 
                     result += await _movementRepository.InsertAsync(movementModel);
+
+                    var areaReference = new DyeingPrintingAreaReferenceModel("OUT", item.Id, item.DyeingPrintingAreaInputProductionOrderId);
+                    await _areaReferenceRepository.InsertAsync(areaReference);
 
                 }
 
