@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<DyeingPrintingAreaReferenceModel> _dbSet;
+
+        public DyeingPrintingAreaReferenceRepository(IServiceProvider serviceProvider)
+        {
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _dbContext = serviceProvider.GetService<PackingInventoryDbContext>();
+            _dbSet = _dbContext.Set<DyeingPrintingAreaReferenceModel>();
+        }
+
         public Task<int> DeleteAsync(int id)
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
