@@ -208,6 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
+            services.AddTransient<IDyeingPrintingAreaReferenceRepository, DyeingPrintingAreaReferenceRepository>();
 
             services.AddTransient<IDyeingPrintingStockOpnameRepository, DyeingPrintingStockOpnameRepository>();
 

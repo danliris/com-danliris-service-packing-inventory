@@ -230,53 +230,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
-            var errorResult = new List<ValidationResult>();
-            foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            //var errorResult = new List<ValidationResult>();
+            //foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            //{
+            //    var splitedCode = item.ProductPackingCode.Split(",");
+            //    foreach (var code in splitedCode)
+            //    {
+            //        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
+            //            x.Area == DyeingPrintingArea.GUDANGJADI &&
+            //            x.ProductPackingCode.Contains(code)
+            //        );
+
+            //        if (latestDataOnIn != null)
+            //        {
+            //            var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+            //                .OrderByDescending(o => o.CreatedUtc)
+            //                .FirstOrDefault(x =>
+            //                    x.ProductPackingCode.Contains(code) &&
+            //                    x.CreatedUtc > latestDataOnIn.CreatedUtc
+            //                );
+
+            //            if (latestDataOnOut == null)
+            //            {
+            //                //errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+            //            }
+            //        }
+            //    }
+            //}
+
+            //if (errorResult.Count > 0)
+            //{
+            //    var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
+            //    throw new ServiceValidationException(validationContext, errorResult);
+            //}
+            //else
+            //{
+            if (model != null)
             {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
-                {
-                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
-                        x.Area == DyeingPrintingArea.GUDANGJADI &&
-                        x.ProductPackingCode.Contains(code)
-                    );
-
-                    if (latestDataOnIn != null)
-                    {
-                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.CreatedUtc)
-                            .FirstOrDefault(x =>
-                                x.ProductPackingCode.Contains(code) &&
-                                x.CreatedUtc > latestDataOnIn.CreatedUtc
-                            );
-
-                        if (latestDataOnOut == null)
-                        {
-                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
-                        }
-                    }
-                }
-            }
-
-            if (errorResult.Count > 0)
-            {
-                var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
-                throw new ServiceValidationException(validationContext, errorResult);
+                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
             }
             else
             {
-                if (model != null)
-                {
-                    result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
-                }
-                else
-                {
-                    result = await InsertNewWarehouse(viewModel);
-                }
-
+                result = await InsertNewWarehouse(viewModel);
             }
+
+            //}
             return result;
-            
+
             // if (model != null)
             // {
             // var listOfInId = model.DyeingPrintingAreaInputProductionOrders.Select(x => x.Id).ToList();
