@@ -59,6 +59,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpna
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDebiturBalance;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentDraftPackingListItem;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -73,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DyeingPrintingAreaOutputModel> DyeingPrintingAreaOutputs { get; set; }
         public DbSet<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
         //public DbSet<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; set; }
+        public DbSet<DyeingPrintingAreaReferenceModel> DyeingPrintingAreaReferences { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
         public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
 
@@ -114,6 +117,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentPackingListDetailSizeModel> GarmentPackingListDetailSizes { get; set; }
         public DbSet<GarmentPackingListMeasurementModel> GarmentPackingListMeasurements { get; set; }
         public DbSet<GarmentPackingListStatusActivityModel> GarmentPackingListStatusActivities { get; set; }
+
+
+        public DbSet<GarmentDraftPackingListItemModel> GarmentDraftPackingListItems { get; set; }
+        public DbSet<GarmentDraftPackingListDetailModel> GarmentDraftPackingListDetails { get; set; }
+        public DbSet<GarmentDraftPackingListDetailSizeModel> GarmentDraftPackingListDetailSizes { get; set; }
+
+
         public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
         public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
@@ -205,6 +215,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListStatusActivityEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new GarmentDraftPackingListItemEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentDraftPackingListDetailEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentDraftPackingListDetailSizeEntityConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());

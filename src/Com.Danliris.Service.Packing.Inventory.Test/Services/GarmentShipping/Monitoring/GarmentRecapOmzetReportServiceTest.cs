@@ -1,4 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentRecapOmzetReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
@@ -93,7 +93,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
+
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } }))
+
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -220,7 +222,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     },
             };
 
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+
 
             repoMock.Setup(s => s.ReadAll())
                 .Returns(model.AsQueryable());
@@ -266,8 +270,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
+
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "usd" } }))
                 });
 
