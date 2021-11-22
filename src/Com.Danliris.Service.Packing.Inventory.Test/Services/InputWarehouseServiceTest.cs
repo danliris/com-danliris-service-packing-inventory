@@ -2005,7 +2005,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1), 7);
+            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1),"", 7);
 
             Assert.NotNull(result);
         }
@@ -2031,7 +2031,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), null, 7);
+            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), null,null, 7);
 
             Assert.NotNull(result);
         }
@@ -2057,7 +2057,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcelAll(null, InputModelExcel.Date.AddDays(1), 7);
+            var result = service.GenerateExcelAll(null, InputModelExcel.Date.AddDays(1), null, 7);
 
             Assert.NotNull(result);
         }
@@ -2083,7 +2083,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputRepoMock.Object,
                                                         outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcelAll(null, null, 7);
+            var result = service.GenerateExcelAll(null, null, null, 7);
 
             Assert.NotNull(result);
         }
