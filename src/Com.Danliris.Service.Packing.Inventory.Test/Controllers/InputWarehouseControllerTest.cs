@@ -405,7 +405,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ReturnsAsync(DetailViewModel);
+            serviceMock.Setup(s => s.ReadByIdBon(It.IsAny<int>())).ReturnsAsync(DetailViewModel);
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
@@ -429,7 +429,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
             var dataUtil = ViewModel;
             //v
             var serviceMock = new Mock<IInputWarehouseService>();
-            serviceMock.Setup(s => s.ReadById(It.IsAny<int>())).ThrowsAsync(new Exception());
+            serviceMock.Setup(s => s.ReadByIdBon(It.IsAny<int>())).ThrowsAsync(new Exception());
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();
