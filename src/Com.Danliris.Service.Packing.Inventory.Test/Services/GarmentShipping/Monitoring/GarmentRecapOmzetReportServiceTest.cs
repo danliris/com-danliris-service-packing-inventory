@@ -272,7 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
 
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-
+                {
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "usd" } }))
                 });
 
