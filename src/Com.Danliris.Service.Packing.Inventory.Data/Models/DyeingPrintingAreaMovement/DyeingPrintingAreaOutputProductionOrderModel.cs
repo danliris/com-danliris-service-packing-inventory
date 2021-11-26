@@ -43,6 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public decimal PackagingQty { get; private set; }
         public string PackagingUnit { get; private set; }
         public double PackagingLength { get; private set; }
+        public double PackagingQuantityBalance { get; private set; }
+        public double PackagingQuantity { get; private set; }
 
         public double AvalALength { get; private set; }
         public double AvalBLength { get; private set; }
@@ -1604,6 +1606,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 DateIn = NewDateIn;
                 this.FlagForUpdate(user, agent);
             }
+        }
+
+        public void SetPackagingQuantity(double packagingQuantity)
+        {
+            PackagingQuantity = packagingQuantity;
+        }
+
+        public void SetPackagingQuantityBalance(double currentBalance, double mutation)
+        {
+            PackagingQuantityBalance = currentBalance - mutation;
         }
     }
 }

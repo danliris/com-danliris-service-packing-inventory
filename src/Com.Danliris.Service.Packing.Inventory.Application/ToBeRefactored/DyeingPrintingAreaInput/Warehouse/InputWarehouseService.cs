@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
-
+        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public InputWarehouseService(IServiceProvider serviceProvider)
         {
@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         //Get All (List)
@@ -362,53 +363,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
-            var errorResult = new List<ValidationResult>();
-            foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            //var errorResult = new List<ValidationResult>();
+            //foreach (var item in viewModel.MappedWarehousesProductionOrders)
+            //{
+            //    var splitedCode = item.ProductPackingCode.Split(",");
+            //    foreach (var code in splitedCode)
+            //    {
+            //        var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
+            //            x.Area == DyeingPrintingArea.GUDANGJADI &&
+            //            x.ProductPackingCode.Contains(code)
+            //        );
+
+            //        if (latestDataOnIn != null)
+            //        {
+            //            var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+            //                .OrderByDescending(o => o.CreatedUtc)
+            //                .FirstOrDefault(x =>
+            //                    x.ProductPackingCode.Contains(code) &&
+            //                    x.CreatedUtc > latestDataOnIn.CreatedUtc
+            //                );
+
+            //            if (latestDataOnOut == null)
+            //            {
+            //                //errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
+            //            }
+            //        }
+            //    }
+            //}
+
+            //if (errorResult.Count > 0)
+            //{
+            //    var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
+            //    throw new ServiceValidationException(validationContext, errorResult);
+            //}
+            //else
+            //{
+            if (model != null)
             {
-                var splitedCode = item.ProductPackingCode.Split(",");
-                foreach (var code in splitedCode)
-                {
-                    var latestDataOnIn = _inputProductionOrderRepository.GetDbSet().OrderByDescending(o => o.DateIn).FirstOrDefault(x =>
-                        x.Area == DyeingPrintingArea.GUDANGJADI &&
-                        x.ProductPackingCode.Contains(code)
-                    );
-
-                    if (latestDataOnIn != null)
-                    {
-                        var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
-                            .OrderByDescending(o => o.CreatedUtc)
-                            .FirstOrDefault(x =>
-                                x.ProductPackingCode.Contains(code) &&
-                                x.CreatedUtc > latestDataOnIn.CreatedUtc
-                            );
-
-                        if (latestDataOnOut == null)
-                        {
-                            errorResult.Add(new ValidationResult("Kode " + code + " belum keluar", new List<string> { "Kode" }));
-                        }
-                    }
-                }
-            }
-
-            if (errorResult.Count > 0)
-            {
-                var validationContext = new ValidationContext(viewModel, _serviceProvider, null);
-                throw new ServiceValidationException(validationContext, errorResult);
+                result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
             }
             else
             {
-                if (model != null)
-                {
-                    result = await UpdateExistingWarehouse(viewModel, model.Id, model.BonNo);
-                }
-                else
-                {
-                    result = await InsertNewWarehouse(viewModel);
-                }
-
+                result = await InsertNewWarehouse(viewModel);
             }
+
+            //}
             return result;
-            
+
             // if (model != null)
             // {
             // var listOfInId = model.DyeingPrintingAreaInputProductionOrders.Select(x => x.Id).ToList();
@@ -587,6 +588,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
+
+                var areaReference = new DyeingPrintingAreaReferenceModel("IN", itemModel.Id, itemModel.DyeingPrintingAreaOutputProductionOrderId);
+                await _areaReferenceRepository.InsertAsync(areaReference);
             }
 
             //Update from Output Production Order (Child) Flag for HasNextAreaDocument == True
@@ -719,7 +723,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .OrderByDescending(s => s.LastModifiedUtc)
                                                         .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
-                                                                    (/*s.Balance > 0 || */!s.HasNextAreaDocument));
+                                                                    s.Balance > 0);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
