@@ -9,6 +9,10 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using System.Data;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using System.Threading.Tasks;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Newtonsoft.Json;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report
 {
@@ -18,14 +22,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentPackingListRepository plrepository;
 
         private readonly IIdentityProvider _identityProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         public GarmentFinanceExportSalesJournalService(IServiceProvider serviceProvider)
         {
             repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _serviceProvider = serviceProvider;
         }
+        private GarmentCurrency GetCurrencyPEBDate(string stringDate)
+        {
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
 
+            var httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+            var currencyUri = ApplicationSetting.CoreEndpoint + $"master/garment-currencies/sales-debtor-currencies-peb?stringDate={stringDate}";
+            var currencyResponse = httpClient.GetAsync(currencyUri).Result.Content.ReadAsStringAsync(); 
+
+            var currencyResult = new BaseResponse<GarmentCurrency>()
+            {
+                data = new GarmentCurrency()
+            };
+            Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(currencyResponse.Result);
+            var json = result.Single(p => p.Key.Equals("data")).Value;
+            var data = JsonConvert.DeserializeObject<GarmentCurrency>(json.ToString());
+
+            return data;
+        }
         public List<GarmentFinanceExportSalesJournalViewModel> GetReportQuery(int month, int year, int offset)
         {
 
@@ -36,19 +63,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<GarmentFinanceExportSalesJournalViewModel> data = new List<GarmentFinanceExportSalesJournalViewModel>();
             
             var queryInv = repository.ReadAll();
+            
             var queryPL = plrepository.ReadAll()
                 .Where(w => w.TruckingDate.AddHours(offset).Date >= dateFrom && w.TruckingDate.AddHours(offset).Date < dateTo.Date
                     && (w.InvoiceType == "DL" || w.InvoiceType == "DS" || w.InvoiceType == "DLR" || w.InvoiceType == "SMR"));
-            
-            var join = from a in queryInv
-                       join b in queryPL on a.PackingListId equals b.Id
-                       where a.IsDeleted == false && b.IsDeleted == false
+
+            var joinQuery = from a in queryInv
+                            join b in queryPL on a.PackingListId equals b.Id
+                            where a.IsDeleted == false && b.IsDeleted == false
+                            select new dataQuery
+                            {
+                                InvoiceType= b.InvoiceType,
+                                TotalAmount=a.TotalAmount,
+                                PEBDate=a.PEBDate
+                            };
+
+            List<dataQuery> dataQuery = new List<dataQuery>();
+
+            foreach (var invoice in joinQuery.ToList())
+            {
+                GarmentCurrency currency = GetCurrencyPEBDate(invoice.PEBDate.Date.ToShortDateString());
+                var rate = currency != null ? Convert.ToDecimal(currency.rate) : 0;
+                invoice.Rate = rate;
+                dataQuery.Add(invoice);
+            }
+
+            var join = from a in dataQuery
                        select new GarmentFinanceExportSalesJournalViewModel
                        {
-                           remark= b.InvoiceType== "DL" || b.InvoiceType == "DS" ? "       PNJ. BR. JADI EXPORT LANGSUNG" : "       PNJ. LAIN-LAIN EXPORT LANGSUNG",
-                           credit= a.TotalAmount,
+                           remark= a.InvoiceType== "DL" || a.InvoiceType == "DS" ? "       PNJ. BR. JADI EXPORT LANGSUNG" : "       PNJ. LAIN-LAIN EXPORT LANGSUNG",
+                           credit= a.TotalAmount * a.Rate,
                            debit= 0,
-                           account= b.InvoiceType == "DL" || b.InvoiceType == "DS" ? "5024.00.4.00" : "5026.00.4.00"
+                           account= a.InvoiceType == "DL" || a.InvoiceType == "DS" ? "5024.00.4.00" : "5026.00.4.00"
                        };
 
             var debit = new GarmentFinanceExportSalesJournalViewModel
@@ -93,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public List<GarmentFinanceExportSalesJournalViewModel> GetReportData(int month, int year, int offset)
         {
-            var Query = GetReportQuery(month, year, offset);
+            var Query =  GetReportQuery(month, year, offset);
             return Query.ToList();
         }
 
@@ -124,5 +170,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
+    }
+
+    public class BaseResponse<T>
+    {
+        public string apiVersion { get; set; }
+        public int statusCode { get; set; }
+        public string message { get; set; }
+        public T data { get; set; }
+
+        public static implicit operator BaseResponse<T>(BaseResponse<string> v)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class dataQuery
+    {
+        public string InvoiceType { get; set; }
+        public DateTimeOffset PEBDate { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Rate { get; set; }
+
     }
 }
