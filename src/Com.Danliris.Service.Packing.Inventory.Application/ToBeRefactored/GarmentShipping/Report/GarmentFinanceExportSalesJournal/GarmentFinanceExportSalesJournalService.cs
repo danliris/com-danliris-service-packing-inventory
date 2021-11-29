@@ -40,7 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var currencyUri = ApplicationSetting.CoreEndpoint + $"master/garment-currencies/sales-debtor-currencies-peb?stringDate={stringDate}";
+            var currencyUri = ApplicationSetting.CoreEndpoint + $"master/garment-detail-currencies/sales-debtor-currencies-peb?stringDate={stringDate}";
             var currencyResponse = httpClient.GetAsync(currencyUri).Result.Content.ReadAsStringAsync(); 
 
             var currencyResult = new BaseResponse<GarmentCurrency>()
