@@ -92,6 +92,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("bon/{id}")]
+        public async Task<IActionResult> GetByIdBon([FromRoute] int id)
+        {
+            try
+            {
+
+                var data = await _service.ReadByIdBon(id);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] InputWarehouseCreateViewModel viewModel)
         {
@@ -234,14 +253,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
         [HttpGet("xls")]
-        public IActionResult GetExcelAll([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null)
+        public IActionResult GetExcelAll([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null, [FromQuery] string type = null)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(timezone);
-                var Result = _service.GenerateExcelAll(dateFrom, dateTo, clientTimeZoneOffset);
+                var Result = _service.GenerateExcelAll(dateFrom, dateTo, type, clientTimeZoneOffset);
                 string filename = "Penerimaan Gudang Jadi Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
