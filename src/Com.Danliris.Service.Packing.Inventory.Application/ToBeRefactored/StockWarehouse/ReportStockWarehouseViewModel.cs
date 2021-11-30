@@ -22,5 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public decimal Akhir { get; set; }
         public string Satuan { get; set; }
         public string InventoryType { get; set; }
+        public decimal StockOpname { get; internal set; }
+        public decimal StorageBalance { get; internal set; }
+        public decimal Difference { get; internal set; }
     }
 }

@@ -12,6 +12,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovem
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Globalization;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
@@ -23,6 +24,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputSppRepository;
         private readonly IDyeingPrintingAreaInputRepository _inputBonRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputSppRepository;
+        private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameItemRepository;
+        private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
 
         public StockWarehouseService(IServiceProvider serviceProvider)
         {
@@ -32,6 +35,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _inputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _inputBonRepository = serviceProvider.GetService<IDyeingPrintingAreaInputRepository>();
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _stockOpnameItemRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            _stockOpnameRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameRepository>();
         }
 
         private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
@@ -171,39 +176,131 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
         public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
-            var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
-            var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
-            var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-            var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+            var result = new List<ReportStockWarehouseViewModel>();
 
-            var joinData2 = dataSearchDate.Concat(dataAwal);
-            var result = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType}).Select(e => new ReportStockWarehouseViewModel()
+            if (inventoryType == "STOCK OPNAME")
             {
-                ProductionOrderId = e.Key.ProductionOrderId,
-                NoSpp = e.First().NoSpp,
-                Color = e.First().Color,
-                Construction = e.First().Construction,
-                Grade = e.Key.Grade,
-                Jenis = e.Key.Jenis,
-                Ket = e.Key.Ket,
-                Motif = e.First().Motif,
-                Buyer = e.First().Buyer,
-                Satuan = e.First().Satuan,
-                Unit = e.First().Unit,
-                InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
-                Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
-                Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
-                Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
-                Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
-                    - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                    + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
-            });
+                var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+                var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
-            return result.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+                var joinData2 = dataSearchDate.Concat(dataAwal);
+                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                {
+                    ProductionOrderId = e.Key.ProductionOrderId,
+                    NoSpp = e.First().NoSpp,
+                    Color = e.First().Color,
+                    Construction = e.First().Construction,
+                    Grade = e.Key.Grade,
+                    Jenis = e.Key.Jenis,
+                    Ket = e.Key.Ket,
+                    Motif = e.First().Motif,
+                    Buyer = e.First().Buyer,
+                    Satuan = e.First().Satuan,
+                    Unit = e.First().Unit,
+                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                });
+
+                var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+
+                var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
+                var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+
+                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
+                    .Select(d => new
+                    {
+                        ProductionOrderId = d.Key.ProductionOrderId,
+                        Color = d.First().Color,
+                        Construction = d.First().Construction,
+                        Grade = d.Key.Grade,
+                        Jenis = d.First().PackagingType,
+                        Motif = d.First().Motif,
+                        Buyer = d.First().Buyer,
+                        NoSpp = d.First().ProductionOrderNo,
+                        Satuan = d.First().UomUnit,
+                        Unit = d.First().Unit,
+                        Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength)
+                    }).ToList();
+
+                foreach (var stockOpname in stockOpnameTempResult)
+                {
+                    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
+
+                    var gudangJadiBalance = (decimal)0;
+                    if (dpWarehouse != null)
+                    {
+                        gudangJadiBalance = dpWarehouse.Akhir;
+                    }
+
+                    result.Add(new ReportStockWarehouseViewModel()
+                    {
+                        NoSpp = stockOpname.NoSpp,
+                        Construction = stockOpname.Construction,
+                        Unit = stockOpname.Unit,
+                        Motif = stockOpname.Motif,
+                        Buyer = stockOpname.Buyer,
+                        Color = stockOpname.Color,
+                        Grade = stockOpname.Grade,
+                        Jenis = stockOpname.Jenis,
+                        StockOpname = stockOpname.Quantity,
+                        StorageBalance = gudangJadiBalance,
+                        Difference = gudangJadiBalance - stockOpname.Quantity
+                    });
+
+                }
+
+                result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
+            }
+            else
+            {
+                var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+                var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+
+                var joinData2 = dataSearchDate.Concat(dataAwal);
+                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                {
+                    ProductionOrderId = e.Key.ProductionOrderId,
+                    NoSpp = e.First().NoSpp,
+                    Color = e.First().Color,
+                    Construction = e.First().Construction,
+                    Grade = e.Key.Grade,
+                    Jenis = e.Key.Jenis,
+                    Ket = e.Key.Ket,
+                    Motif = e.First().Motif,
+                    Buyer = e.First().Buyer,
+                    Satuan = e.First().Satuan,
+                    Unit = e.First().Unit,
+                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                });
+
+                result = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+            }
+
+
+            return result;
         }
 
         public MemoryStream GenerateExcel(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)

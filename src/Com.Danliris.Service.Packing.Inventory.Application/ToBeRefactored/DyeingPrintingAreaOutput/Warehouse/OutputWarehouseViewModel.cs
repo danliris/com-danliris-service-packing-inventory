@@ -158,11 +158,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 }
                                 else
                                 {
-                                    if (detail1.PackagingQty > detail.PreviousQtyPacking)
-                                    {
-                                        Count++;
-                                        DetailErrors += string.Format("PackagingQty: 'Qty Packing Tidak Boleh Lebih dari Qty Packing {0}!',", detail.PreviousQtyPacking);
-                                    }
+                                    //if (detail1.PackagingQty > detail.PreviousQtyPacking)
+                                    //{
+                                    //    Count++;
+                                    //    DetailErrors += string.Format("PackagingQty: 'Qty Packing Tidak Boleh Lebih dari Qty Packing {0}!',", detail.PreviousQtyPacking);
+                                    //}
                                 }
 
                                 if (string.IsNullOrEmpty(detail.PackagingUnit))
@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 }
                                 else
                                 {
-                                    if (detail1.Balance > detail1.PreviousBalance)
+                                    if (detail1.BalanceRemains > detail1.PreviousBalance)
                                     {
                                         Count++;
                                         DetailErrors += string.Format("Balance: 'Qty Keluar Tidak boleh Lebih dari sisa saldo {0}!',", detail.PreviousBalance);
