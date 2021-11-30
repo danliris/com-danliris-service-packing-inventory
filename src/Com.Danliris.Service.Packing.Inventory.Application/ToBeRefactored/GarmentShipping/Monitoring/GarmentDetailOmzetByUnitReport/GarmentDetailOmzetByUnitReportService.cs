@@ -274,6 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
             //result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY IN PCS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "RATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT IN IDR", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "R/O", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TRUCKING", DataType = typeof(string) });
@@ -284,6 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Query.ToArray().Count() == 0)
             {
+
                 result.Rows.Add("", "", "", "", "", "", "", "", "", "", "");
                 bool styling = true;
 
@@ -321,10 +323,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     index++;
 
                     string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    string PEBDate = d.PEBDate == new DateTime(1970, 1, 1) ? "-" : d.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
 
                     string Qty = string.Format("{0:N0}", d.QuantityInPCS);
                     //string Qty1 = string.Format("{0:N0}", d.QuantityInPCS);
                     string AmtUSD = string.Format("{0:N2}", d.Amount);
+                    string Rate = string.Format("{0:N2}", d.Rate);
                     string AmtIDR = string.Format("{0:N2}", d.AmountIDR);
 
                     result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, /*Qty1,*/ AmtUSD, AmtIDR, d.RONumber, TruckDate/*, d.ExpenditureGoodNo*/);
@@ -335,7 +339,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 string TotIDR = string.Format("{0:N2}", Query.Sum(x => x.AmountIDR));
 
                 result.Rows.Add("", "", "", "", " T  O  T  A  L  : ", TotQty, "",TotUSD, TotIDR, "", "");
-
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
