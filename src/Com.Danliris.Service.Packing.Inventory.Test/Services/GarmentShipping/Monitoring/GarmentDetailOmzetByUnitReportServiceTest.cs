@@ -102,6 +102,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() { 
                         Id = "111",
                         RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1A",
+                            Name = "CENTRAL 1A"
+                        },
                         Invoice = "DL/210001",
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",
@@ -179,6 +194,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                        data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1A",
+                            Name = "CENTRAL 1A"
+                        },
                         Invoice = "DL/210001",
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",

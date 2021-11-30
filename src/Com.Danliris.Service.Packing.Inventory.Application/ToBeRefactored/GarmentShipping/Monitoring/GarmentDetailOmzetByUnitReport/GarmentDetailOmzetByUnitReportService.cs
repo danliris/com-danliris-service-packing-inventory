@@ -46,32 +46,157 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
+            var expendGood = GetExpenditureGood(DateFrom, DateTo, unit, offset);
+
+            var ROs = expendGood.Select(x => x.RONo).ToArray();
+            var invo = expendGood.Select(x => x.Invoice).ToArray();
+
+            queryInv = queryInv.Where(x => x.PEBDate != DateTimeOffset.MinValue);
+
+            //queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
             List<GarmentDetailOmzetByUnitReportViewModel> omzetgmt = new List<GarmentDetailOmzetByUnitReportViewModel>();
-            var Query = (from a in queryInv
-                         join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
-                         join c in queryPL on a.PackingListId equals c.Id
-                         where a.IsDeleted == false && b.IsDeleted == false
-                               && b.UnitCode == (string.IsNullOrWhiteSpace(unit) ? b.UnitCode : unit)
-                               && a.PEBDate != DateTimeOffset.MinValue
+
+            var Queryshipping = (from a in queryInv
+                                join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
+                                join c in queryPL on a.PackingListId equals c.Id
+                                where ROs.Contains(b.RONo)
+                                && a.PEBDate != DateTimeOffset.MinValue
+                                select new GarmentDetailOmzetByUnitReportViewModel
+                                {
+                                    Urutan = "A",
+                                    PEBDate = a.PEBDate,
+                                    TruckingDate = c.TruckingDate,
+                                    RONumber = b.RONo,
+                                    InvoiceNo = a.InvoiceNo,
+                                    Quantity = b.UomUnit.Substring(0, 3) == "SET" || b.UomUnit.Substring(0, 3) == "PAC" ? b.Quantity * 2 : b.Quantity,
+                                    UOMUnit = b.UomUnit,
+                                    CurrencyCode = b.CurrencyCode,
+                                    Amount = b.Amount,
+
+                                }).Distinct().ToList();
+
+        var Query =  (from a in expendGood
+                         join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
+                         from bb in omzets.DefaultIfEmpty()
                          select new GarmentDetailOmzetByUnitReportViewModel
                          {
                              Urutan = "A",
-                             InvoiceNo = a.InvoiceNo,
-                             PEBDate = a.PEBDate,
-                             TruckingDate = c.TruckingDate,
-                             BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
-                             ComodityName = b.ComodityName,
-                             UnitCode = b.UnitCode,
-                             RONumber = b.RONo,
-                             Quantity = b.Quantity,
-                             UOMUnit = b.UomUnit,
-                             CurrencyCode = b.CurrencyCode,
-                             Amount = b.Amount,
+                             InvoiceNo = a.Invoice.TrimEnd(),
+                             PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
+                             TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
+                             BuyerAgentName = a.Buyer.Code.TrimEnd() + " - " + a.Buyer.Name.TrimEnd(),
+                             ComodityName = a.Comodity.Name.TrimEnd(),
+                             UnitCode = a.Unit.Code.TrimEnd(),
+                             RONumber = a.RONo.TrimEnd(),
+                             Quantity = 0,
+                             UOMUnit = "PCS",
+                             CurrencyCode = bb == null ? "-" : bb.CurrencyCode,
+                             Amount = bb == null ? 0 : bb.Amount,
+                             ArticleStyle = a.Article.TrimEnd(),
+                             //ExpenditureGoodNo = a.ExpenditureGoodNo.TrimEnd(),
+                             QuantityInPCS = a.TotalQuantity,
+                         }).Where(x => x.InvoiceNo == "DL/211525").Distinct().ToList();
+        
+            //.GroupBy(x=> new { x.Urutan, x.InvoiceNo, x.PEBDate, x.TruckingDate, x.BuyerAgentName, x.ComodityName, x.UnitCode, x.RONumber, x.UOMUnit, x.CurrencyCode, x.ArticleStyle, x.ExpenditureGoodNo, x.QuantityInPCS }, (key, group) => new GarmentDetailOmzetByUnitReportViewModel {
+            //    Urutan = key.Urutan,
+            //    InvoiceNo = key.InvoiceNo,
+            //    PEBDate = key.PEBDate,
+            //    TruckingDate = key.TruckingDate,
+            //    BuyerAgentName = key.BuyerAgentName,
+            //    ComodityName = key.ComodityName,
+            //    UnitCode = key.UnitCode,
+            //    RONumber = key.RONumber,
+            //    Quantity = group.Sum(x => x.Quantity),
+            //    UOMUnit = key.UOMUnit,
+            //    CurrencyCode = key.CurrencyCode,
+            //    Amount = group.Sum(x => x.Amount),
+            //    ArticleStyle = key.ArticleStyle,
+            //    ExpenditureGoodNo = key.ExpenditureGoodNo,
+            //    QuantityInPCS = key.QuantityInPCS,
+            //})
 
-                         }).ToList();
+            //var Query2 = (from a in expendGood
+            //              join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
+            //              from bb in omzets.DefaultIfEmpty()
+            //              select new GarmentDetailOmzetByUnitReportViewModel
+            //              {
+            //                  Urutan = "A",
+            //                  InvoiceNo = a.Invoice.TrimEnd(),
+            //                  PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
+            //                  TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
+            //                  BuyerAgentName = a.Buyer.Code + " - " + a.Buyer.Name,
+            //                  ComodityName = a.Comodity.Name,
+            //                  UnitCode = a.Unit.Code,
+            //                  RONumber = a.RONo,
+            //                  Quantity = 0,
+            //                  UOMUnit = "PCS",
+            //                  CurrencyCode = bb == null ? "-" : bb.CurrencyCode,
+            //                  Amount = bb == null ? 0 : bb.Amount,
+            //                  ArticleStyle = a.Article,
+            //                  ExpenditureGoodNo = "",
+            //                  QuantityInPCS = 0,
+            //              }).GroupBy(x=> new { x.Urutan, x.InvoiceNo, x.PEBDate, x.TruckingDate, x.BuyerAgentName, x.ComodityName, x.UnitCode, x.RONumber, x.UOMUnit, x.CurrencyCode, x.ArticleStyle, x.ExpenditureGoodNo, x.Amount }, (key, group) => new GarmentDetailOmzetByUnitReportViewModel {
+            //                  Urutan = key.Urutan,
+            //                  InvoiceNo = key.InvoiceNo,
+            //                  PEBDate = key.PEBDate,
+            //                  TruckingDate = key.TruckingDate,
+            //                  BuyerAgentName = key.BuyerAgentName,
+            //                  ComodityName = key.ComodityName,
+            //                  UnitCode = key.UnitCode,
+            //                  RONumber = key.RONumber,
+            //                  Quantity = group.Sum(x => x.Quantity),
+            //                  UOMUnit = key.UOMUnit,
+            //                  CurrencyCode = key.CurrencyCode,
+            //                  Amount = key.Amount,
+            //                  ArticleStyle = key.ArticleStyle,
+            //                  ExpenditureGoodNo = key.ExpenditureGoodNo,
+            //                  QuantityInPCS = group.Sum(x => x.QuantityInPCS),
+            //              }).Where(x => x.InvoiceNo == "DL/211521").Distinct().ToList();
+
+            //var dataunion = Query.Union(Query2).AsEnumerable();
+            //var omzet = dataunion.GroupBy(x => new { x.Urutan, x.InvoiceNo, x.PEBDate, x.TruckingDate, x.BuyerAgentName, x.ComodityName, x.UnitCode, x.RONumber, x.UOMUnit, x.CurrencyCode, x.ArticleStyle, x.ExpenditureGoodNo }, (key, group) => new GarmentDetailOmzetByUnitReportViewModel
+            //{
+            //    Urutan = key.Urutan,
+            //    InvoiceNo = key.InvoiceNo,
+            //    PEBDate = key.PEBDate,
+            //    TruckingDate = key.TruckingDate,
+            //    BuyerAgentName = key.BuyerAgentName,
+            //    ComodityName = key.ComodityName,
+            //    UnitCode = key.UnitCode,
+            //    RONumber = key.RONumber,
+            //    Quantity = group.Sum(x => x.Quantity),
+            //    UOMUnit = key.UOMUnit,
+            //    CurrencyCode = key.CurrencyCode,
+            //    Amount = group.Sum(x => x.Amount),
+            //    ArticleStyle = key.ArticleStyle,
+            //    ExpenditureGoodNo = key.ExpenditureGoodNo,
+            //    QuantityInPCS = group.Sum(x => x.QuantityInPCS),
+            //}).ToList();
+
+            //var Query = (from a in queryInv
+            //             join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
+            //             join c in queryPL on a.PackingListId equals c.Id
+            //             where a.IsDeleted == false && b.IsDeleted == false
+            //                   && b.UnitCode == (string.IsNullOrWhiteSpace(unit) ? b.UnitCode : unit)
+            //                   && a.PEBDate != DateTimeOffset.MinValue
+            //             select new GarmentDetailOmzetByUnitReportViewModel
+            //             {
+            //                 Urutan = "A",
+            //                 InvoiceNo = a.InvoiceNo,
+            //                 PEBDate = a.PEBDate,
+            //                 TruckingDate = c.TruckingDate,
+            //                 BuyerAgentName = a.BuyerAgentCode + " - " + a.BuyerAgentName,
+            //                 ComodityName = b.ComodityName,
+            //                 UnitCode = b.UnitCode,
+            //                 RONumber = b.RONo,
+            //                 Quantity = b.Quantity,
+            //                 UOMUnit = b.UomUnit,
+            //                 CurrencyCode = b.CurrencyCode,
+            //                 Amount = b.Amount,
+
+            //             }).ToList();
 
             //
             var currencyFilters = Query
@@ -89,36 +214,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 data.Rate = rate;
                 data.AmountIDR = rate * data.Amount;
+                //var GarmentExpenditureGood = expendGood.Where(x => x.RONo == data.RONumber && x.Invoice == data.InvoiceNo && x.TotalQuantity == data.QuantityInPCS).FirstOrDefault();
+                //data.ExpenditureGoodNo = expendGood.Where(x => x.RONo == data.RONumber && x.Invoice == data.InvoiceNo && x.TotalQuantity == data.QuantityInPCS).FirstOrDefault().ExpenditureGoodNo;
             }
             //   
-            foreach (GarmentDetailOmzetByUnitReportViewModel i in Query)
-            {
-                var data1 = GetExpenditureGood(i.RONumber);
+            //foreach (GarmentDetailOmzetByUnitReportViewModel i in Query)
+            //{
+            //    var data1 = GetExpenditureGood(i.RONumber);
 
-                omzetgmt.Add(new GarmentDetailOmzetByUnitReportViewModel
-                {
-                    Urutan = i.Urutan,
-                    InvoiceNo = i.InvoiceNo,
-                    PEBDate = i.PEBDate,
-                    TruckingDate = i.TruckingDate,
-                    BuyerAgentName = i.BuyerAgentName,
-                    ComodityName = i.ComodityName,
-                    UnitCode = i.UnitCode,
-                    RONumber = i.RONumber,
-                    UOMUnit = i.UOMUnit,
-                    Quantity = i.Quantity,
-                    CurrencyCode = i.CurrencyCode,
-                    Amount = i.Amount,
-                    Rate = i.Rate,
-                    AmountIDR = i.AmountIDR,
-                    ArticleStyle = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().Article,
-                    ExpenditureGoodNo = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().ExpenditureGoodNo,
-                    QuantityInPCS = i.UOMUnit.Substring(0, 3) == "SET" || i.UOMUnit.Substring(0, 3) == "PAC" ? i.Quantity * 2 : i.Quantity,
-                });
+            //    omzetgmt.Add(new GarmentDetailOmzetByUnitReportViewModel
+            //    {
+            //        Urutan = i.Urutan,
+            //        InvoiceNo = i.InvoiceNo,
+            //        PEBDate = i.PEBDate,
+            //        TruckingDate = i.TruckingDate,
+            //        BuyerAgentName = i.BuyerAgentName,
+            //        ComodityName = i.ComodityName,
+            //        UnitCode = i.UnitCode,
+            //        RONumber = i.RONumber,
+            //        UOMUnit = i.UOMUnit,
+            //        Quantity = i.Quantity,
+            //        CurrencyCode = i.CurrencyCode,
+            //        Amount = i.Amount,
+            //        Rate = i.Rate,
+            //        AmountIDR = i.AmountIDR,
+            //        ArticleStyle = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().Article,
+            //        ExpenditureGoodNo = data1 == null || data1.Count == 0 ? "-" : data1.FirstOrDefault().ExpenditureGoodNo,
+            //        QuantityInPCS = i.UOMUnit.Substring(0, 3) == "SET" || i.UOMUnit.Substring(0, 3) == "PAC" ? i.Quantity * 2 : i.Quantity,
+            //    });
 
-            };
+            //};
 
-            return omzetgmt;
+            return Query.ToList();
 
         }
 
@@ -145,19 +272,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "STYLE   ORD/ART NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY IN PCS", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY IN PCS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT IN IDR", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "R/O", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TRUCKING", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "NO BON", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "NO BON", DataType = typeof(string) });
 
 
             ExcelPackage package = new ExcelPackage();
 
             if (Query.ToArray().Count() == 0)
             {
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "");
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -195,19 +322,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                     string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
 
-                    string Qty = string.Format("{0:N0}", d.Quantity);
-                    string Qty1 = string.Format("{0:N0}", d.QuantityInPCS);
+                    string Qty = string.Format("{0:N0}", d.QuantityInPCS);
+                    //string Qty1 = string.Format("{0:N0}", d.QuantityInPCS);
                     string AmtUSD = string.Format("{0:N2}", d.Amount);
                     string AmtIDR = string.Format("{0:N2}", d.AmountIDR);
 
-                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, Qty1, AmtUSD, AmtIDR, d.RONumber, TruckDate, d.ExpenditureGoodNo);
+                    result.Rows.Add(index, d.InvoiceNo, d.BuyerAgentName, d.ComodityName, d.ArticleStyle, Qty, d.UOMUnit, /*Qty1,*/ AmtUSD, AmtIDR, d.RONumber, TruckDate/*, d.ExpenditureGoodNo*/);
                 }
 
                 string TotQty = string.Format("{0:N2}", Query.Sum(x => x.QuantityInPCS));
                 string TotUSD = string.Format("{0:N2}", Query.Sum(x => x.Amount));
                 string TotIDR = string.Format("{0:N2}", Query.Sum(x => x.AmountIDR));
 
-                result.Rows.Add("", "", "", "", "", "", "  T  O  T  A  L  : ", TotQty, TotUSD, TotIDR, "", "", "");
+                result.Rows.Add("", "", "", "", " T  O  T  A  L  : ", TotQty, "",TotUSD, TotIDR, "", "");
 
                 bool styling = true;
 
@@ -261,31 +388,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
         }
 
-        public List<GarmentExpenditureGood> GetExpenditureGood(string RONo)
+        //public List<GarmentExpenditureGood> GetExpenditureGood(string RONo)
+        //{
+        //    string expenditureUri = "expenditure-goods/byRO";
+        //    IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+        //    var response = httpClient.GetAsync($"{ApplicationSetting.ProductionEndpoint}{expenditureUri}?RONo={RONo}").Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var content = response.Content.ReadAsStringAsync().Result;
+        //        Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+
+        //        List<GarmentExpenditureGood> viewModel;
+        //        if (result.GetValueOrDefault("data") == null)
+        //        {
+        //            viewModel = null;
+        //        }
+        //        else
+        //        {
+        //            viewModel = JsonConvert.DeserializeObject<List<GarmentExpenditureGood>>(result.GetValueOrDefault("data").ToString());
+        //        }
+        //        return viewModel;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
+
+        public List<GarmentExpenditureGood> GetExpenditureGood(DateTime dateFrom, DateTime dateTo, string unitcode, int offset)
         {
-            string expenditureUri = "expenditure-goods/byRO";
+            string expenditureUri = "expenditure-goods/forOmzet";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = httpClient.GetAsync($"{ApplicationSetting.ProductionEndpoint}{expenditureUri}?RONo={RONo}").Result;
+            var response = httpClient.GetAsync($"{ApplicationSetting.ProductionEndpoint}{expenditureUri}?dateFrom={dateFrom}&dateTo={dateTo}&unitcode={unitcode}&offset={offset}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
 
                 List<GarmentExpenditureGood> viewModel;
-                if (result.GetValueOrDefault("data") == null)
-                {
-                    viewModel = null;
-                }
-                else
-                {
+                //{
                     viewModel = JsonConvert.DeserializeObject<List<GarmentExpenditureGood>>(result.GetValueOrDefault("data").ToString());
-                }
+                //}
                 return viewModel;
             }
             else
             {
-                return null;
+                return new List<GarmentExpenditureGood>();
             }
         }
     }
