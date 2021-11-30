@@ -97,7 +97,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              ArticleStyle = a.Article.TrimEnd(),
                              //ExpenditureGoodNo = a.ExpenditureGoodNo.TrimEnd(),
                              QuantityInPCS = a.TotalQuantity,
-                         }).Where(x => x.InvoiceNo == "DL/211525").Distinct().ToList();
+                         }).Distinct().ToList();
         
             //.GroupBy(x=> new { x.Urutan, x.InvoiceNo, x.PEBDate, x.TruckingDate, x.BuyerAgentName, x.ComodityName, x.UnitCode, x.RONumber, x.UOMUnit, x.CurrencyCode, x.ArticleStyle, x.ExpenditureGoodNo, x.QuantityInPCS }, (key, group) => new GarmentDetailOmzetByUnitReportViewModel {
             //    Urutan = key.Urutan,
