@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Update(int id, OutputShippingViewModel viewModel);
         Task<int> Create(OutputShippingViewModel viewModel);
         Task<OutputShippingViewModel> ReadById(int id);
+        Task<OutputShippingViewModel> ReadByIdBon(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<IndexViewModel> ReadForSales(int page, int size, string filter, string order, string keyword);
         List<InputShippingProductionOrderViewModel> GetInputShippingProductionOrdersByDeliveryOrder(long deliveryOrderId);
@@ -21,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //List<OutputShippingProductionOrderViewModel> GetOutputShippingProductionOrdersByBon(int shippingInputId);
         MemoryStream GenerateExcel(OutputShippingViewModel viewModel);
         MemoryStream GenerateExcel(OutputShippingViewModel viewModel, int offSet);
-        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
         ListResult<AdjShippingProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
         ListResult<InputShippingProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
         List<InputShippingProductionOrderViewModel> GetInputShippingProductionOrdersByProductionOrder(long productionOrderId);
