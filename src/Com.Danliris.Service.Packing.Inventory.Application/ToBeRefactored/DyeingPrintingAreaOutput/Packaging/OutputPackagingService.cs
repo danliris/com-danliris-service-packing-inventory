@@ -416,7 +416,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DestinationArea = model.DestinationArea,
                 HasNextAreaDocument = model.HasNextAreaDocument,
                 Group = model.Group,
-                PackagingProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.GroupBy( x => new { x.ProductionOrderNo, x.Grade}).Select(s => new OutputPackagingProductionOrderViewModel()
+                PackagingProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.GroupBy( x => new { x.ProductionOrderNo, x.Grade, x.NextAreaInputStatus}).Select(s => new OutputPackagingProductionOrderViewModel()
                 {
                     Active = s.First().Active,
                     LastModifiedUtc = s.First().LastModifiedUtc,
@@ -1277,7 +1277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 modelAll = modelAll.Select(s => new
                 {
-                    SppList = s.SppList.GroupBy(r => new { r.NoSPP, r.Grade }).Select(d => new
+                    SppList = s.SppList.GroupBy(r => new { r.NoSPP, r.Grade, r.NextAreaInputStatus }).Select(d => new
                     {
                         BonNo = d.First().BonNo,
                         NoSPP = d.Key.NoSPP,
