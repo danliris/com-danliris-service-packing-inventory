@@ -13,6 +13,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System.Globalization;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
+using Com.Danliris.Service.Packing.Inventory.Data;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.StockWarehouse
 {
@@ -26,6 +27,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputSppRepository;
         private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameItemRepository;
         private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
+        private readonly IRepository<StockOpnameReportHeaderModel> _stockOpnameReportHeaderRepository;
+        private readonly IRepository<StockOpnameReportItemModel> _stockOpnameReportItemRepository;
 
         public StockWarehouseService(IServiceProvider serviceProvider)
         {
@@ -37,6 +40,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             _outputSppRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _stockOpnameItemRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
             _stockOpnameRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameRepository>();
+            _stockOpnameReportHeaderRepository = serviceProvider.GetService<IRepository<StockOpnameReportHeaderModel>>();
+            _stockOpnameReportItemRepository = serviceProvider.GetService<IRepository<StockOpnameReportItemModel>>();
         }
 
         private IEnumerable<SimpleReportViewModel> GetAwalData(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
@@ -364,6 +369,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 //        Difference = gudangJadiBalance - stockOpname.Quantity
                 //    });
                 //}
+
+                var header = new StockOpnameReportHeaderModel(dateReport.DateTime, zona, unit, construction, buyer, productionOrderId);
+                var headerSaved = _stockOpnameReportHeaderRepository.InsertAsync(header).Result;
+                var items = result.Select(element => new StockOpnameReportItemModel(element.NoSpp, element.Construction, element.Unit, element.Motif, element.Buyer, element.Color, element.Grade, element.Jenis, (double)element.StockOpname, (double)element.StorageBalance, (double)element.Difference, header.Id));
+                foreach (var item in items)
+                {
+                    headerSaved += _stockOpnameReportItemRepository.InsertAsync(item).Result;
+                }
 
                 result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
             }
