@@ -675,6 +675,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = p.ProductPackingId,
                     FabricPackingId = p.FabricPackingId,
                     ProductPackingCode = p.ProductPackingCode,
+                    ProductPackingCodeCreated = p.ProductPackingCodeCreated,
                     HasPrintingProductPacking = p.HasPrintingProductPacking,
                     PreviousOutputPackagingQty = p.PackagingQty,
                     PrevSppInJson = p.PrevSppInJson,
