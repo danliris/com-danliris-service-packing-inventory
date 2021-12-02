@@ -243,7 +243,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result.ToList());
 
-            var result2 = service.ReadSalesNoteForFinance("", model.Date.Month+1, model.Date.Year, null);
+            int month = 0;
+            int year = 0;
+            if (model.Date.Month == 12)
+            {
+                month = 1;
+                year = model.Date.Year+1;
+            }
+            else {
+                month = model.Date.Month+1;
+                year = model.Date.Year;
+            }
+
+            var result2 = service.ReadSalesNoteForFinance("", month, year, null);
+            //var result2 = service.ReadSalesNoteForFinance("", model.Date.Month, model.Date.Year, null);
 
             Assert.NotEmpty(result2.ToList());
         }
@@ -322,7 +335,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result.ToList());
 
-            var result2 = service.ReadLocalSalesDebtor("", model.Date.Month + 1, model.Date.Year);
+            int month = 0;
+            int year = 0;
+            if (model.Date.Month == 12)
+            {
+                month = 1;
+                year = model.Date.Year + 1;
+            }
+            else
+            {
+                month = model.Date.Month + 1;
+                year = model.Date.Year;
+            }
+
+            var result2 = service.ReadLocalSalesDebtor("", month, year);
 
             Assert.NotEmpty(result2.ToList());
         }
