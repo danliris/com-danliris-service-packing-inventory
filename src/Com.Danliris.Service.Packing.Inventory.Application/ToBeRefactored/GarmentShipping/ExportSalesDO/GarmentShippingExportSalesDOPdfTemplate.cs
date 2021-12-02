@@ -41,8 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFM1.Phrase = new Phrase("",normal_font);
             tableFM.AddCell(cellFM1);
 
-            cellFMBorder.Phrase = new Phrase("FM-00-SP-24-007", header_font_bold);
-            tableFM.AddCell(cellFMBorder);
+            //cellFMBorder.Phrase = new Phrase("FM-00-SP-24-007", header_font_bold);
+            //tableFM.AddCell(cellFMBorder);
 
             cellFM1.Phrase = new Phrase("", normal_font);
             tableFM.AddCell(cellFM1);
@@ -71,6 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase(viewModel.exportSalesDONo, bold_font));
             cellHeaderContent1.AddElement(new Phrase(viewModel.buyerAgent.Name, normal_font));
+            cellHeaderContent1.AddElement(new Phrase("NO. Invoice :  " + viewModel.invoiceNo, normal_font));
             tableHeader.AddCell(cellHeaderContent1);
 
             //cellHeaderContent2.AddElement(new Phrase("FM-00-SP-14-004/R1", header_font_bold));
@@ -85,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent2.AddElement(new Phrase("Untuk melengkapi nota No. ", small_font));
             cellHeaderContent2.AddElement(new Phrase("Harap dikeluarkan barang-barang tersebut dibawah ini.", small_font));
+            cellHeaderContent2.AddElement(new Phrase("  ", small_font));
             tableHeader.AddCell(cellHeaderContent2);
 
             tableHeader.SpacingAfter = 15;

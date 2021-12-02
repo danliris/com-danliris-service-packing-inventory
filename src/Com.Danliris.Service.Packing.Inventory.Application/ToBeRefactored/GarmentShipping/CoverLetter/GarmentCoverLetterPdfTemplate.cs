@@ -36,8 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableTitle.SetWidths(new float[] { 2f, 2f, 2f });
             PdfPCell cellTitle = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-            cellTitle.Phrase = new Phrase("Ref No. : FM-00-SP-24-008", header_font);
-            tableTitle.AddCell(cellTitle);
+            //cellTitle.Phrase = new Phrase("Ref No. : FM-00-SP-24-008", header_font);
+            //tableTitle.AddCell(cellTitle);
             cellTitle.Phrase = new Phrase("SURAT PENGANTAR", header_font_bold);
             tableTitle.AddCell(cellTitle);
             cellTitle.Phrase = new Phrase(viewModel.invoiceNo, header_font);
