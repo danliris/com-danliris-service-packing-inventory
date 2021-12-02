@@ -39,6 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string DescriptionMd { get; private set; }
 
+        public string Remarks { get; private set; }
+
         public ICollection<GarmentPackingListDetailModel> Details { get; private set; }
 
         public GarmentPackingListItemModel()
@@ -46,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentPackingListDetailModel>();
         }
 
-        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, ICollection<GarmentPackingListDetailModel> details)
+        public GarmentPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, string remarks, ICollection<GarmentPackingListDetailModel> details)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -71,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             OrderNo = orderNo;
             Description = description;
             DescriptionMd = descriptionMd;
+            Remarks = remarks;
             Details = details;
         }
 
@@ -256,6 +259,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (DescriptionMd != descriptionMd)
             {
                 DescriptionMd = descriptionMd; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemarks(string remarks, string userName, string userAgent)
+        {
+            if (Remarks != remarks)
+            {
+                Remarks = remarks; this.FlagForUpdate(userName, userAgent);
             }
         }
 

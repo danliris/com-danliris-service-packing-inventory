@@ -519,7 +519,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //    item.PackagingType, item.PackagingQty, item.PackagingUnit, item.Quantity, item.InventoryType);
 
                     // update productPackingCodeRemains
-                    if(item.ProductPackingCode != null && item.ProductPackingCode != "")
+                    if (item.ProductPackingCode != null && item.ProductPackingCode != "")
                     {
                         await _inputProductionOrderRepository.UpdateProductPackingCodeRemains(item.Id, item.ProductPackingCode);
                     }
