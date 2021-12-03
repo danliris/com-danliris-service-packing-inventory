@@ -151,6 +151,119 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
+        private InputShippingViewModel MapToViewModelBon(DyeingPrintingAreaInputModel model)
+        {
+            var vm = new InputShippingViewModel()
+            {
+                Active = model.Active,
+                Id = model.Id,
+                Area = model.Area,
+                BonNo = model.BonNo,
+                CreatedAgent = model.CreatedAgent,
+                CreatedBy = model.CreatedBy,
+                CreatedUtc = model.CreatedUtc,
+                Date = model.Date,
+                DeletedAgent = model.DeletedAgent,
+                DeletedBy = model.DeletedBy,
+                Group = model.Group,
+                DeletedUtc = model.DeletedUtc,
+                IsDeleted = model.IsDeleted,
+                LastModifiedAgent = model.LastModifiedAgent,
+                LastModifiedBy = model.LastModifiedBy,
+                LastModifiedUtc = model.LastModifiedUtc,
+                Shift = model.Shift,
+                ShippingType = model.ShippingType,
+                ShippingProductionOrders = model.DyeingPrintingAreaInputProductionOrders.GroupBy( r => new { r.ProductionOrderNo , r.Grade}).Select(s => new InputShippingProductionOrderViewModel()
+                {
+                    Active = s.First().Active,
+                    LastModifiedUtc = s.First().LastModifiedUtc,
+                    Buyer = s.First().Buyer,
+                    BuyerId = s.First().BuyerId,
+                    CartNo = s.First().CartNo,
+                    Color = s.First().Color,
+                    Construction = s.First().Construction,
+                    CreatedAgent = s.First().CreatedAgent,
+                    CreatedBy = s.First().CreatedBy,
+                    CreatedUtc = s.First().CreatedUtc,
+                    DeletedAgent = s.First().DeletedAgent,
+                    DeletedBy = s.First().DeletedBy,
+                    DeletedUtc = s.First().DeletedUtc,
+                    Remark = s.First().Remark,
+                    PackingInstruction = s.First().PackingInstruction,
+                    Area = s.First().Area,
+                    HasOutputDocument = s.First().HasOutputDocument,
+                    Id = s.First().Id,
+                    IsDeleted = s.First().IsDeleted,
+                    LastModifiedAgent = s.First().LastModifiedAgent,
+                    LastModifiedBy = s.First().LastModifiedBy,
+                    Packing = s.First().PackagingUnit,
+                    Motif = s.First().Motif,
+                    Grade = s.First().Grade,
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = s.First().DeliveryOrderSalesId,
+                        No = s.First().DeliveryOrderSalesNo
+                    },
+                    QtyPacking = s.Sum( d => d.PackagingQty),
+                    InputQtyPacking = s.Sum( d => d.InputPackagingQty),
+                    PackingType = s.First().PackagingType,
+                    Qty = s.Sum( d => d.Balance),
+                    InputQuantity = s.Sum( d=> d.InputQuantity),
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.First().ProductionOrderId,
+                        No = s.First().ProductionOrderNo,
+                        OrderQuantity = s.First().ProductionOrderOrderQuantity,
+                        Type = s.First().ProductionOrderType
+                    },
+                    DeliveryOrderRetur = new DeliveryOrderRetur()
+                    {
+                        Id = s.First().DeliveryOrderReturId,
+                        No = s.First().DeliveryOrderReturNo
+                    },
+                    MaterialWidth = s.First().MaterialWidth,
+                    MaterialOrigin = s.First().MaterialOrigin,
+                    FinishWidth = s.First().FinishWidth,
+                    Material = new Material()
+                    {
+                        Id = s.First().MaterialId,
+                        Name = s.First().MaterialName
+                    },
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Name = s.First().MaterialConstructionName,
+                        Id = s.First().MaterialConstructionId
+                    },
+                    PackingLength = s.First().PackagingLength,
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = s.First().ProcessTypeId,
+                        Name = s.First().ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = s.First().YarnMaterialId,
+                        Name = s.First().YarnMaterialName
+                    },
+                    Unit = s.First().Unit,
+                    UomUnit = s.First().UomUnit,
+                    ProductSKUId = s.First().ProductSKUId,
+                    FabricSKUId = s.First().FabricSKUId,
+                    ProductSKUCode = s.First().ProductSKUCode,
+                    HasPrintingProductSKU = s.First().HasPrintingProductSKU,
+                    ProductPackingId = s.First().ProductPackingId,
+                    FabricPackingId = s.First().FabricPackingId,
+                    ProductPackingCode = s.First().ProductPackingCode,
+                    HasPrintingProductPacking = s.First().HasPrintingProductPacking,
+                    DateIn = s.First().DateIn,
+                    DateOut = s.First().DateOut,
+                }).ToList()
+            };
+
+
+            return vm;
+        }
+
         private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, string area)
         {
             if (area == DyeingPrintingArea.PACKING)
@@ -369,6 +482,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 return null;
 
             var vm = MapToViewModel(model);
+
+            return vm;
+        }
+
+        public async Task<InputShippingViewModel> ReadByIdBon(int id)
+        {
+            var model = await _repository.ReadByIdAsync(id);
+            if (model == null)
+                return null;
+
+            var vm = MapToViewModelBon(model);
 
             return vm;
         }
@@ -717,7 +841,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
+        public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet)
         {
             //var query = _repository.ReadAll()
             //    .Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
@@ -738,8 +862,97 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 query = query.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date);
             }
 
+            query = query.OrderBy(x => x.BonNo);
 
-            query = query.OrderBy(s => s.BonNo);
+            var modelAll = query.Select(s => new
+            {
+
+                SppList = s.DyeingPrintingAreaInputProductionOrders.Select(d => new
+                {
+                    s.BonNo,
+                    d.DeliveryOrderSalesNo,
+                    d.ProductionOrderId,
+                    d.ProductionOrderNo,
+                    d.DateIn,
+                    d.ProductionOrderOrderQuantity,
+                    d.Construction,
+                    d.MaterialOrigin,
+                    d.Unit,
+                    d.Buyer,
+                    d.Color,
+                    d.Motif,
+                    d.Grade,
+                    d.Remark,
+                    d.InputPackagingQty,
+                    d.PackagingUnit,
+                    d.InputQuantity,
+                    d.UomUnit
+                })
+            });
+
+            if (type == "BON")
+            {
+                modelAll = modelAll.Select(s => new
+                {
+
+                    SppList = s.SppList.GroupBy(r => new { r.ProductionOrderId, r.Grade }).Select(d => new
+                    {
+                        d.First().BonNo,
+                        d.First().DeliveryOrderSalesNo,
+                        d.First().ProductionOrderId,
+                        d.First().ProductionOrderNo,
+                        d.First().DateIn,
+                        d.First().ProductionOrderOrderQuantity,
+                        d.First().Construction,
+                        d.First().MaterialOrigin,
+                        d.First().Unit,
+                        d.First().Buyer,
+                        d.First().Color,
+                        d.First().Motif,
+                        d.First().Grade,
+                        d.First().Remark,
+                        InputPackagingQty = d.Sum( x => x.InputPackagingQty),
+                        d.First().PackagingUnit,
+                        InputQuantity = d.Sum( x => x.InputQuantity),
+                        d.First().UomUnit
+
+
+                    })
+                });
+            }
+            else {
+                modelAll = modelAll.Select(s => new
+                {
+
+                    SppList = s.SppList.Select(d => new
+                    {
+                        d.BonNo,
+                        d.DeliveryOrderSalesNo,
+                        d.ProductionOrderId,
+                        d.ProductionOrderNo,
+                        d.DateIn,
+                        d.ProductionOrderOrderQuantity,
+                        d.Construction,
+                        d.MaterialOrigin,
+                        d.Unit,
+                        d.Buyer,
+                        d.Color,
+                        d.Motif,
+                        d.Grade,
+                        d.Remark,
+                        d.InputPackagingQty,
+                        d.PackagingUnit,
+                        d.InputQuantity,
+                        d.UomUnit
+
+
+                    })
+                });
+            }
+
+            
+            
+            var query1 = modelAll;
 
             DataTable dt = new DataTable();
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
@@ -761,23 +974,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
 
-            if (query.Count() == 0)
+            if (query1.Count() == 0)
             {
                 dt.Rows.Add("", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
-                foreach (var model in query)
+                foreach (var model in query1)
                 {
                     //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
-                    foreach (var item in model.DyeingPrintingAreaInputProductionOrders.OrderBy(s => s.ProductionOrderNo))
+                    foreach (var item in model.SppList.OrderBy(s => s.ProductionOrderNo))
                     {
                         var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                       
-                        dt.Rows.Add(model.BonNo, 
-                                     item.DeliveryOrderSalesNo, 
-                                     item.ProductionOrderNo, 
-                                     dateIn, 
+
+                        dt.Rows.Add(item.BonNo,
+                                     item.DeliveryOrderSalesNo,
+                                     item.ProductionOrderNo,
+                                     dateIn,
                                      item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                      item.Construction,
                                      item.MaterialOrigin,

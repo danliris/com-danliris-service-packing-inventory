@@ -291,6 +291,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         }
 
         [Fact]
+        public async Task Should_Success_GetByIdBon()
+        {
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.ReadByIdBon(It.IsAny<int>())).ReturnsAsync(ViewModel);
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetByIdBon(1);
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public async Task Should_Exception_GetByIdBon()
+        {
+            var dataUtil = ViewModel;
+            //v
+            var serviceMock = new Mock<IInputShippingService>();
+            serviceMock.Setup(s => s.ReadByIdBon(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = await controller.GetByIdBon(1);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
         public void Should_Success_Get()
         {
             //v
@@ -711,7 +754,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputShippingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<string>(),It.IsAny<int>()))
                 .Returns(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -734,7 +777,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IInputShippingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset?>(), It.IsAny<DateTimeOffset?>(), It.IsAny<string>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 

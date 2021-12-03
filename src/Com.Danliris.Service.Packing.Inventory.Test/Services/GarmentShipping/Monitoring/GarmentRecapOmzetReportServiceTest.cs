@@ -93,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } } ))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -228,7 +228,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(model1.AsQueryable());
-          
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
                 .Returns(items.AsQueryable());
