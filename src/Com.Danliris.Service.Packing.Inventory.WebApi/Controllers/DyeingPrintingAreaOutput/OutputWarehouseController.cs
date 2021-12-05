@@ -90,6 +90,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -216,6 +218,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
+
         [HttpGet("output-production-orders/{bonId}")]
         public async Task<IActionResult> GetOutputProductionOrdersv2(int bonId)
         {
@@ -234,6 +237,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
             }
         }
+
+        [HttpGet("output-production-orders/bon/{bonId}")]
+        public async Task<IActionResult> GetOutputProductionOrdersBon(int bonId)
+        {
+            try
+            {
+
+                var data = await _service.GetOutputSppWarehouseItemListAsyncBon(bonId);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+
+            }
+        }
+
         [HttpGet("xls/{id}")]
         public async Task<IActionResult> GetExcel(int id)
         {
@@ -254,14 +277,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
         [HttpGet("xls")]
-        public IActionResult GetExcelAll([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null)
+        public IActionResult GetExcelAll([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null, [FromQuery] string type = null)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(timezone);
-                var Result = _service.GenerateExcelAll(dateFrom, dateTo, clientTimeZoneOffset);
+                var Result = _service.GenerateExcelAll(dateFrom, dateTo, type, clientTimeZoneOffset);
                 string filename = "Pencatatan Keluar Gudang Jadi Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

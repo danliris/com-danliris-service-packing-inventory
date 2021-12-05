@@ -14,7 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<OutputWarehouseViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<IndexViewModel> Read(string keyword);
-
         Task<MemoryStream> GenerateExcel(int id);
         Task<MemoryStream> GenerateExcel(int id,int  offSet);
         List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders();
@@ -23,7 +22,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         InputSppWarehouseItemListViewModel GetInputSppWarehouseItemListV2(string productPackingCode);
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
         Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsync(int bonId);
-        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsyncBon(int bonId);
+        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
         Task<int> Delete(int bonId);
         Task<int> Update(int id, OutputWarehouseViewModel viewModel);
         ListResult<AdjWarehouseProductionOrderViewModel> GetDistinctAllProductionOrder(int page, int size, string filter, string order, string keyword);
