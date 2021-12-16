@@ -1086,6 +1086,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_Success_ReadByIdBon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
+
+            var result = await service.ReadByIdBon(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Null_ReadByIdBon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(default(DyeingPrintingAreaOutputModel));
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
+
+            var result = await service.ReadByIdBon(1);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task Should_Success_ReadByIdAdj()
         {
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
@@ -1799,7 +1837,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1),"", 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelAllBon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var sppoutRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+
+            var modelN = Model;
+            modelN.SetType(null, "", "");
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), "BON", 7);
 
             Assert.NotNull(result);
         }
@@ -1820,7 +1879,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), null, 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), null, null, 7);
 
             Assert.NotNull(result);
         }
@@ -1841,7 +1900,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-            var result = service.GenerateExcel(null, Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(null, Model.Date.AddDays(1), null, 7);
 
             Assert.NotNull(result);
         }
@@ -1862,7 +1921,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { Model, ModelAdj, modelN }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-            var result = service.GenerateExcel(null, null, 7);
+            var result = service.GenerateExcel(null, null, null, 7);
 
             Assert.NotNull(result);
         }
@@ -1881,7 +1940,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { }.AsQueryable());
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, sppoutRepoMock.Object).Object);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), "", 7);
 
             Assert.NotNull(result);
         }
