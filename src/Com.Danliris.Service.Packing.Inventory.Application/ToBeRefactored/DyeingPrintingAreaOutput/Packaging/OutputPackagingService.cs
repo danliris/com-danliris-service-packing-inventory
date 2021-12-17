@@ -336,7 +336,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         PackagingType = s.PackagingType,
                         PackagingUnit = s.PackagingUnit,
                         QtyOrder = s.ProductionOrderOrderQuantity,
-                        QtyOut = s.Balance,
+                        QtyOut = (double)s.PackagingQty * s.PackagingLength,
                         ProductionOrderNo = s.ProductionOrderNo,
                         Keterangan = s.Description,
                         ProductSKUId = s.ProductSKUId,
@@ -371,18 +371,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //    }
                 //}
 
-                foreach (var item in vm.PackagingProductionOrders)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.ProductPackingCodeCreated))
-                    {
-                        item.QtyOut = item.ProductPackingCodeCreated.Split(',').Count();
-                    }
-                    else
-                    {
-                        item.QtyOut = 0;
-                    }
+                //foreach (var item in vm.PackagingProductionOrders)
+                //{
+                //    if (!string.IsNullOrWhiteSpace(item.ProductPackingCodeCreated))
+                //    {
+                //        item.QtyOut = item.ProductPackingCodeCreated.Split(',').Count();
+                //    }
+                //    else
+                //    {
+                //        item.QtyOut = 0;
+                //    }
 
-                }
+                //}
 
                 foreach (var item in vm.PackagingProductionOrders.GroupBy(s => new { s.ProductionOrderNo, s.Grade }))
                 {
@@ -401,7 +401,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         detail.BalanceRemains = inputData.Sum(e => e.BalanceRemains);
                         detail.PreviousBalance = inputData.Sum(e => e.BalanceRemains) + sumQtyOut;
                     }
-
                 }
 
                 return vm;
@@ -561,7 +560,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     detail.BalanceRemains = inputData.Sum(e => e.BalanceRemains);
                     detail.PreviousBalance = inputData.Sum(e => e.BalanceRemains) + sumQtyOut;
                 }
-
             }
 
             return vm;
