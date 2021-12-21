@@ -229,7 +229,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderType = item.First().ProductionOrderType,
                     ProductionOrderOrderQuantity = item.First().ProductionOrderOrderQuantity,
 
-                    ProductionOrderItems = item.GroupBy( r => new { r.ProductionOrderId, r.Grade}).Select(s => new ProductionOrderItemListDetailViewModel()
+                    ProductionOrderItems = item.GroupBy(r => new { r.ProductionOrderId, r.Grade }).Select(s => new ProductionOrderItemListDetailViewModel()
                     {
                         Active = s.First().Active,
                         CreatedAgent = s.First().CreatedAgent,
@@ -285,12 +285,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Remark = s.First().Remark,
                         Grade = s.Key.Grade,
                         Status = s.First().Status,
-                        Balance = s.Sum( d => d.Balance),
-                        InputQuantity = s.Sum( d=> d.InputQuantity),
-                        InputPackagingQty = s.Sum( d => d.InputPackagingQty),
+                        Balance = s.Sum(d => d.Balance),
+                        InputQuantity = s.Sum(d => d.InputQuantity),
+                        InputPackagingQty = s.Sum(d => d.InputPackagingQty),
                         PackingInstruction = s.First().PackingInstruction,
                         PackagingType = s.First().PackagingType,
-                        PackagingQty = s.Sum( d => d.PackagingQty),
+                        PackagingQty = s.Sum(d => d.PackagingQty),
                         PackagingUnit = s.First().PackagingUnit,
                         AvalALength = s.First().AvalALength,
                         AvalBLength = s.First().AvalBLength,
@@ -312,7 +312,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricPackingId = s.First().FabricPackingId,
                         ProductPackingCode = s.First().ProductPackingCode,
                         HasPrintingProductPacking = s.First().HasPrintingProductPacking,
-                        PreviousOutputPackagingQty = s.Sum( d => d.InputPackagingQty),
+                        PreviousOutputPackagingQty = s.Sum(d => d.InputPackagingQty),
 
                     }).Distinct(new PackingComparer()).ToList()
                 }).ToList()
@@ -683,7 +683,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Insert to Input Production Order Repository
                 result += await _inputProductionOrderRepository.InsertAsync(productionOrderModel);
 
-                
+
 
                 if (productionOrder.Area == DyeingPrintingArea.PACKING)
                 {
@@ -1254,7 +1254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo,  string type, int offSet)
+        public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet)
         {
             //var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI);
@@ -1344,13 +1344,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Buyer = d.Buyer,
                         Warna = d.Warna,
                         Motif = d.Motif,
-                        
+
                         Jenis = d.Jenis,
                         Grade = d.Grade,
                         QtyPack = d.QtyPack,
                         Pack = d.Pack,
                         Qty = d.Qty,
-                        
+
                         SAT = d.SAT,
                         DateIn = d.DateIn,
                     })
@@ -1466,6 +1466,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
+        //    public OutputPreWarehouseItemListViewModel GetOutputPreWarehouseProductionOrdersByCode(string packingCode)
+        //    {
+        //        var query = _outputProductionOrderRepository.ReadAll()
+        //                                                    .OrderByDescending(s => s.LastModifiedUtc)
+        //                                                    .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+        //                                                                s.Balance > 0).Select(p => new OutputPreWarehouseItemListViewModel()
+        //                                                                {
+
+        //                                                                    Id = p.Id,
+        //                                                                    ProductionOrder = new ProductionOrder()
+        //                                                                    {
+        //                                                                        Id = p.ProductionOrderId,
+        //                                                                        No = p.ProductionOrderNo,
+        //                                                                        Type = p.ProductionOrderType,
+        //                                                                        OrderQuantity = p.ProductionOrderOrderQuantity
+        //                                                                    },
+        //                                                                    MaterialWidth = p.MaterialWidth,
+        //                                                                    MaterialOrigin = p.MaterialOrigin,
+        //                                                                    FinishWidth = p.FinishWidth,
+        //                                                                    MaterialConstruction = new MaterialConstruction()
+        //                                                                    {
+        //                                                                        Id = p.MaterialConstructionId,
+        //                                                                        Name = p.MaterialConstructionName
+        //                                                                    },
+        //                                                                    MaterialProduct = new Material()
+        //                                                                    {
+        //                                                                        Id = p.MaterialId,
+        //                                                                        Name = p.MaterialName
+        //                                                                    },
+        //                                                                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+        //                                                                    {
+        //                                                                        Id = p.ProcessTypeId,
+        //                                                                        Name = p.ProcessTypeName
+        //                                                                    },
+        //                                                                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+        //                                                                    {
+        //                                                                        Id = p.YarnMaterialId,
+        //                                                                        Name = p.YarnMaterialName
+        //                                                                    },
+        //                                                                    CartNo = p.CartNo,
+        //                                                                    Buyer = p.Buyer,
+        //                                                                    BuyerId = p.BuyerId,
+        //                                                                    Construction = p.Construction,
+        //                                                                    Unit = p.Unit,
+        //                                                                    Color = p.Color,
+        //                                                                    Motif = p.Motif,
+        //                                                                    UomUnit = p.UomUnit,
+        //                                                                    Remark = p.Remark,
+        //                                                                    OutputId = p.DyeingPrintingAreaOutputId,
+        //                                                                    Grade = p.Grade,
+        //                                                                    Status = p.Status,
+        //                                                                    Balance = p.Balance,
+        //                                                                    InputQuantity = p.Balance,
+        //                                                                    PackingInstruction = p.PackingInstruction,
+        //                                                                    PackagingType = p.PackagingType,
+        //                                                                    PackagingQty = p.PackagingQty,
+        //                                                                    InputPackagingQty = p.PackagingQty,
+        //                                                                    PackagingUnit = p.PackagingUnit,
+        //                                                                    AvalALength = p.AvalALength,
+        //                                                                    AvalBLength = p.AvalBLength,
+        //                                                                    AvalConnectionLength = p.AvalConnectionLength,
+        //                                                                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+        //                                                                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+        //                                                                    AvalType = p.AvalType,
+        //                                                                    AvalCartNo = p.AvalCartNo,
+        //                                                                    AvalQuantityKg = p.AvalQuantityKg,
+        //                                                                    Description = p.Description,
+        //                                                                    DeliveryNote = p.DeliveryNote,
+        //                                                                    Area = p.Area,
+        //                                                                    DestinationArea = p.DestinationArea,
+        //                                                                    HasNextAreaDocument = p.HasNextAreaDocument,
+        //                                                                    DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+        //                                                                    Qty = p.PackagingLength,
+        //                                                                    ProductSKUId = p.ProductSKUId,
+        //                                                                    FabricSKUId = p.FabricSKUId,
+        //                                                                    ProductSKUCode = p.ProductSKUCode,
+        //                                                                    HasPrintingProductSKU = p.HasPrintingProductSKU,
+        //                                                                    ProductPackingId = p.ProductPackingId,
+        //                                                                    FabricPackingId = p.FabricPackingId,
+        //                                                                    ProductPackingCode = p.ProductPackingCode,
+        //                                                                    HasPrintingProductPacking = p.HasPrintingProductPacking,
+        //                                                                    PreviousOutputPackagingQty = p.PackagingQty,
+        //                                                                    PrevSppInJson = p.PrevSppInJson
+        //                                                                });
+
+        //        return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
+        //    }
+        //}
+
         public OutputPreWarehouseItemListViewModel GetOutputPreWarehouseProductionOrdersByCode(string packingCode)
         {
             var query = _outputProductionOrderRepository.ReadAll()
@@ -1552,6 +1641,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                     });
 
             return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
+        }
+
+        public string GetValidationMessage(string packingCode)
+        {
+            var input = _inputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
+            if (input != null)
+            {
+                var output = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode) && entity.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+                                                                    entity.Balance > 0).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
+                if (output != null)
+                {
+                    if (input.CreatedUtc > output.CreatedUtc)
+                        return "Kode Packing Sudah Diterima";
+                }
+            } else
+            {
+                return "Kode Packing Tidak Ditemukan";
+            }
+
+            return "";
         }
     }
 
