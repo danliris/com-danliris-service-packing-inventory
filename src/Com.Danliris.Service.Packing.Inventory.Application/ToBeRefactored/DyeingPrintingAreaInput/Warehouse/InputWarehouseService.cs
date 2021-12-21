@@ -1642,6 +1642,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
         }
+
+        public string GetValidationMessage(string packingCode)
+        {
+            var input = _inputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
+            if (input != null)
+            {
+                var output = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode) && entity.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+                                                                    entity.Balance > 0).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
+                if (output != null)
+                {
+                    if (input.CreatedUtc > output.CreatedUtc)
+                        return "Kode Packing Sudah Diterima";
+                }
+            } else
+            {
+                return "Kode Packing Tidak Ditemukan";
+            }
+
+            return "";
+        }
     }
 
     public class PackingComparer : IEqualityComparer<ProductionOrderItemListDetailViewModel>
