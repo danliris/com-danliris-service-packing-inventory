@@ -438,7 +438,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             if (latestDataOnIn == null)
                             {
-                                errorResult.Add(new ValidationResult("Kode " + code + " sudah keluar", new List<string> { "Kode" }));
+                                errorResult.Add(new ValidationResult("Kode " + code + " sudah keluar ke " + latestDataOnOut.DestinationArea, new List<string> { "Kode" }));
                             }
                         }
                     }
