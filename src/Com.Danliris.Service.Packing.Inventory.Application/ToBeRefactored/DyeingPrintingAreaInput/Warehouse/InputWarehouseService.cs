@@ -1646,18 +1646,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string GetValidationMessage(string packingCode)
         {
             var input = _inputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
-            if (input != null)
+            if (input == null)
             {
                 var output = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode) && entity.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
                                                                     entity.Balance > 0).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
-                if (output != null)
+                if (output == null)
+                {
+                    //if (input.CreatedUtc > output.CreatedUtc)
+                    return "Kode Packing Tidak Dapat Diterima";
+                }
+            }
+            else
+            {
+                var output = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode) && entity.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+                                                                    entity.Balance > 0).OrderByDescending(entity => entity.CreatedUtc).FirstOrDefault();
+
+                if (output == null)
                 {
                     if (input.CreatedUtc > output.CreatedUtc)
-                        return "Kode Packing Sudah Diterima";
+                        return "Kode Packing Masih di Gudang";
                 }
-            } else
-            {
-                return "Kode Packing Tidak Ditemukan";
             }
 
             return "";
