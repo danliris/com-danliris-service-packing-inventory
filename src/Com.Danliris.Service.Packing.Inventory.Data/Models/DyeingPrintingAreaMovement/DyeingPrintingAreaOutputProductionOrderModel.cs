@@ -1,6 +1,7 @@
 ﻿using Com.Moonlay.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -43,6 +44,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public decimal PackagingQty { get; private set; }
         public string PackagingUnit { get; private set; }
         public double PackagingLength { get; private set; }
+        public double PackagingQuantityBalance { get; private set; }
+        public double PackagingQuantity { get; private set; }
 
         public double AvalALength { get; private set; }
         public double AvalBLength { get; private set; }
@@ -92,6 +95,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public int FabricPackingId { get; private set; }
 
         public string ProductPackingCode { get; private set; }
+        public string ProductPackingCodeCreated { get; private set; }
+
+        public void  UpdateBalance(List<string> packingCodesToCreate)
+        {
+            var packingCodesCreated = ProductPackingCodeCreated == null ? new List<string>() : ProductPackingCodeCreated.Split(',').ToList();
+            packingCodesCreated.AddRange(packingCodesToCreate);
+            var packingOutQty = packingCodesToCreate.Count;
+            Balance = Balance - (packingOutQty * PackagingLength);
+            PackagingQuantityBalance = PackagingQuantityBalance - packingOutQty;
+            ProductPackingCodeCreated = string.Join(',', packingCodesCreated);
+        }
 
         public bool HasPrintingProductSKU { get; private set; }
 
@@ -1604,6 +1618,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                 DateIn = NewDateIn;
                 this.FlagForUpdate(user, agent);
             }
+        }
+
+        public void SetPackagingQuantity(double packagingQuantity)
+        {
+            PackagingQuantity = packagingQuantity;
+        }
+
+        public void SetPackagingQuantityBalance(double currentBalance, double mutation)
+        {
+            PackagingQuantityBalance = currentBalance - mutation;
         }
     }
 }

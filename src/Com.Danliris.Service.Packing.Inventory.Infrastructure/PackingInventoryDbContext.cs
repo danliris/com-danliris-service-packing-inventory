@@ -25,7 +25,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentPackingList;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
+//using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingInstruction;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LetterOfCredit;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNote;
@@ -53,12 +53,14 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDispositionRecap;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingCostStructure;
+//using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingCostStructure;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.DyeingPrintingStockOpname;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDebiturBalance;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentDraftPackingListItem;
+//using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 {
@@ -73,8 +75,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DyeingPrintingAreaOutputModel> DyeingPrintingAreaOutputs { get; set; }
         public DbSet<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
         //public DbSet<DyeingPrintingAreaOutputAvalItemModel> DyeingPrintingAreaOutputAvalItems { get; set; }
+        public DbSet<DyeingPrintingAreaReferenceModel> DyeingPrintingAreaReferences { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
         public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
+        public DbSet<StockOpnameReportHeaderModel> StockOpnameReportHeaders { get; set; }
+        public DbSet<StockOpnameReportItemModel> StockOpnameReportItems { get; set; }
 
         public DbSet<DyeingPrintingStockOpnameProductionOrderModel> DyeingPrintingStockOpnameProductionOrders { get; set; }
         public DbSet<DyeingPrintingStockOpnameModel> DyeingPrintingStockOpnames { get; set; }
@@ -114,6 +119,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentPackingListDetailSizeModel> GarmentPackingListDetailSizes { get; set; }
         public DbSet<GarmentPackingListMeasurementModel> GarmentPackingListMeasurements { get; set; }
         public DbSet<GarmentPackingListStatusActivityModel> GarmentPackingListStatusActivities { get; set; }
+
+
+        public DbSet<GarmentDraftPackingListItemModel> GarmentDraftPackingListItems { get; set; }
+        public DbSet<GarmentDraftPackingListDetailModel> GarmentDraftPackingListDetails { get; set; }
+        public DbSet<GarmentDraftPackingListDetailSizeModel> GarmentDraftPackingListDetailSizes { get; set; }
+
+
         public DbSet<GarmentShippingCoverLetterModel> GarmentShippingCoverLetters { get; set; }
 
         public DbSet<GarmentShippingInstructionModel> GarmentShippingInstructions { get; set; }
@@ -197,16 +209,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaMovementEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingAreaSummaryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameProductionOrderEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new DyeingPrintingStockOpnameProductionOrderEntityTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentPackingListEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentPackingListMeasurementEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new GarmentPackingListStatusActivityEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentPackingListStatusActivityEntityTypeConfiguration());
 
-            modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentDraftPackingListItemEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentDraftPackingListDetailEntityConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentDraftPackingListDetailSizeEntityConfiguration());
+
+            //modelBuilder.ApplyConfiguration(new GarmentShippingInstructionEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentCoverLetterEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentLetterOfCreditEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteConfig());
@@ -240,7 +256,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteConfig());
-            modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteItemConfig());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingLocalPriceCorrectionNoteItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalReturnNoteItemConfig());
@@ -256,7 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesContractItemConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionConfiguration());
-            modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionItemConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingInsuranceDispositionItemConfiguration());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionBillDetailConfig());
@@ -266,9 +282,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());
 
-            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
 
             //modelBuilder.Entity<InventoryDocumentPackingItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<InventoryDocumentPackingModel>().HasQueryFilter(entity => !entity.IsDeleted);

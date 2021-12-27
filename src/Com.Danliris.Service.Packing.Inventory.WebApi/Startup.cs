@@ -133,9 +133,9 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInvoiceHistory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesBook;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingGenerateData;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInsuranceDispositionReport;
+//using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInsuranceDispositionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionReport;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionRecapReport;
+//using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentPaymentDispositionRecapReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCMTSalesReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentDetailOmzetByUnitReport;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingStockOpname;
@@ -144,7 +144,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentDraftPackingListItem;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentDraftPackingListItem;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByBrand;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -207,6 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDyeingPrintingAreaOutputRepository, DyeingPrintingAreaOutputRepository>();
             services.AddTransient<IDyeingPrintingAreaOutputProductionOrderRepository, DyeingPrintingAreaOutputProductionOrderRepository>();
             services.AddTransient<IDyeingPrintingAreaSummaryRepository, DyeingPrintingAreaSummaryRepository>();
+            services.AddTransient<IDyeingPrintingAreaReferenceRepository, DyeingPrintingAreaReferenceRepository>();
 
             services.AddTransient<IDyeingPrintingStockOpnameRepository, DyeingPrintingStockOpnameRepository>();
 
@@ -263,6 +267,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLocalSalesContractRepository, GarmentShippingLocalSalesContractRepository>();
             services.AddTransient<IGarmentShippingInsuranceDispositionRepository, GarmentShippingInsuranceDispositionRepository>();
             services.AddTransient<IGarmentDebiturBalanceRepository, GarmentDebiturBalanceRepository>();
+
+            services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
+            services.AddTransient<IRepository<StockOpnameReportItemModel>, StockOpnameReportItemRepository>(); 
+            services.AddTransient<IRepository<StockOpnameReportHeaderModel>, StockOpnameReportHeaderRepository>();
 
             #endregion
 
@@ -347,7 +355,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearUnitService, OmzetYearUnitService>();
             services.AddTransient<IOmzetYearSectionService, OmzetYearSectionService>();
             services.AddTransient<IGarmentLocalSalesReportByBuyerService, GarmentLocalSalesReportByBuyerService>();
-            services.AddTransient<IGarmentShippingInstructionMonitoringService, GarmentShippingInstructionMonitoringService>();
+            //services.AddTransient<IGarmentShippingInstructionMonitoringService, GarmentShippingInstructionMonitoringService>();
             services.AddTransient<IGarmentCoverLetterMonitoringService, GarmentCoverLetterMonitoringService>();
             services.AddTransient<IGarmentShipmentMonitoringService, GarmentShipmentMonitoringService>();
             services.AddTransient<IGarmentLetterOfCreditMonitoringService, GarmentLetterOfCreditMonitoringService>();
@@ -356,9 +364,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalSalesBookService, GarmentLocalSalesBookService>();
             services.AddTransient<IGarmentShippingGenerateDataService, GarmentShippingGenerateDataService>();
             services.AddTransient<IDyeingPrintingStockOpnameProductionOrderRepository, DyeingPrintingStockOpnameProductionOrderRepository>();
-            services.AddTransient<IGarmentInsuranceDispositionReportService, GarmentInsuranceDispositionReportService>();
-            services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>(); services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>();
-            services.AddTransient<IGarmentPaymentDispositionRecapReportService, GarmentPaymentDispositionRecapReportService>();
+            //services.AddTransient<IGarmentInsuranceDispositionReportService, GarmentInsuranceDispositionReportService>();
+            //services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>(); services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>();
+            //services.AddTransient<IGarmentPaymentDispositionRecapReportService, GarmentPaymentDispositionRecapReportService>();
 
             services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
             services.AddTransient<IOmzetYearCountryService, OmzetYearCountryService>();
@@ -372,6 +380,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentFinanceLocalSalesJournalService, GarmentFinanceLocalSalesJournalService>();
             services.AddTransient<IGarmentOmzetMonthlyByBrandService, GarmentOmzetMonthlyByBrandService>();
 
+            services.AddTransient<IGarmentDraftPackingListItemService, GarmentDraftPackingListItemService>();
             #endregion
 
             // Register Provider
