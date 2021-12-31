@@ -145,6 +145,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentDebiturBalance;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByBrand;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -369,6 +370,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDebiturBalanceService, GarmentDebiturBalanceService>();
             services.AddTransient<IGarmentFinanceExportSalesJournalService, GarmentFinanceExportSalesJournalService>();
             services.AddTransient<IGarmentFinanceLocalSalesJournalService, GarmentFinanceLocalSalesJournalService>();
+            services.AddTransient<IGarmentOmzetMonthlyByBrandService, GarmentOmzetMonthlyByBrandService>();
 
             #endregion
 
