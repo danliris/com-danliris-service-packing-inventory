@@ -987,7 +987,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
                        
-                        dt.Rows.Add(model.BonNo, 
+                        dt.Rows.Add(item.BonNo, 
                                      item.DeliveryOrderSalesNo, 
                                      item.ProductionOrderNo, 
                                      dateIn, 
