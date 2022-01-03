@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
             var result = new List<ReportStockWarehouseViewModel>();
 
-            if (inventoryType == "STOCK OPNAME")
+            if (zona == "STOCK OPNAME")
             {
                 var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
                 var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
@@ -215,7 +215,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
 
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
-                var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+                var stockOpnameQuery = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId));
+
+                if (productionOrderId != 0)
+                {
+                    stockOpnameQuery = stockOpnameQuery.Where(entity => entity.ProductionOrderId == productionOrderId);
+                }
+
+                var stockOpnames = stockOpnameQuery.ToList();
 
                 var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
                     .Select(d => new
