@@ -91,6 +91,24 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("bon/{id}")]
+        public async Task<IActionResult> GetByIdBon([FromRoute] int id)
+        {
+            try
+            {
+
+                var data = await _service.ReadByIdBon(id);
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery] string order = "{}",
             [FromQuery] string filter = "{}")
@@ -132,14 +150,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("xls")]
-        public IActionResult GetExcel([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null)
+        public IActionResult GetExcel([FromHeader(Name = "x-timezone-offset")] string timezone, [FromQuery] DateTimeOffset? dateFrom = null, [FromQuery] DateTimeOffset? dateTo = null, [FromQuery] string type = null)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(timezone);
-                var Result = _service.GenerateExcel(dateFrom, dateTo, clientTimeZoneOffset);
+                var Result = _service.GenerateExcel(dateFrom, dateTo, type, clientTimeZoneOffset);
                 string filename = "Pencatatan Pengeluaran Area Shipping Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
@@ -212,12 +230,21 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
 
-        [HttpGet("pdf/{id}")]
-        public async Task<IActionResult> GetPdfById([FromRoute] int id, [FromHeader(Name = "x-timezone-offset")] string timezone)
+        [HttpGet("pdf/{id}/{type}")]
+        public async Task<IActionResult> GetPdfById([FromRoute] int id, [FromRoute] bool type, [FromHeader(Name = "x-timezone-offset")] string timezone)
         {
             try
             {
-                var model = await _service.ReadById(id);
+                var model = new OutputShippingViewModel();
+
+                if (!type)
+                {
+                    model = await _service.ReadById(id);
+                }
+                else {
+                    model = await _service.ReadByIdBon(id);
+                }
+                
                 if (model == null)
                 {
                     var Result = new
