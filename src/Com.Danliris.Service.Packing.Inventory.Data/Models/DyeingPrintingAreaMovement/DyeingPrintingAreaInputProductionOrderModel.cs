@@ -72,6 +72,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set; }
 
+        public bool IsFromStockOpname { get; set; }
+
         #region aval transformasi
         public string InputAvalBonNo { get; private set; }
         public double AvalQuantityKg { get; private set; }
