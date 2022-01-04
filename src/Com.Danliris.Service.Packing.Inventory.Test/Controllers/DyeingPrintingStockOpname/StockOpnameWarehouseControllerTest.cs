@@ -120,6 +120,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             }
         }
 
+        private StockOpnameWarehouseProductionOrderViewModel ViewModel
+        {
+            get
+            {
+                return new StockOpnameWarehouseProductionOrderViewModel
+                {
+                    Id = 1,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Code = "SLD",
+                        Id = 62,
+                        Type = "SOLID",
+                        No = "F/2020/000"
+                    },
+                    PackingInstruction = "a",
+                    Construction = "a",
+                    Unit = "a",
+                    Buyer = "a",
+                    Color = "a",
+                    Motif = "a",
+                    UomUnit = "a",
+                    Remark = "a",
+                    Grade = "a",
+                    Status = "a",
+                    Balance = 50,
+                    PreviousBalance = 100,
+                    InputId = 2,
+                    ProductionOrderNo = "asd",
+                    Material = new Material()
+                    {
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    MtrLength = 10,
+                    YdsLength = 10,
+                    Quantity = 10,
+                    PackagingType = "s",
+                    PackagingUnit = "a",
+                    PackagingQty = 10,
+                    QtyOrder = 10
+                };
+            }
+        }
+
         [Fact]
         public async Task Should_Success_Post()
         {
@@ -624,5 +668,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Success_GetScanView()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GetMonitoringScan( It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { ViewModel });
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetScanView()
+        {
+            //Arrange
+            var dataUtil = viewModel;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            //var response = controller.GetListBon();
+
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
     }
 }

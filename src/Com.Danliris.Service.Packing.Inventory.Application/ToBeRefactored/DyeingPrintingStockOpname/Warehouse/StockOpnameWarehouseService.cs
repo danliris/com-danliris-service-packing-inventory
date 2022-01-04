@@ -450,7 +450,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedAgent = model.LastModifiedAgent,
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
-                WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Select(s => new StockOpnameWarehouseProductionOrderViewModel()
+                WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Where( x => !x.IsDeleted).Select(s => new StockOpnameWarehouseProductionOrderViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
@@ -1175,6 +1175,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             package.SaveAs(stream);
 
             return stream;
+        }
+
+        public List<StockOpnameWarehouseProductionOrderViewModel> GetMonitoringScan(long productionOrderId, string documentNo, string grade) {
+
+
+            var query = _stockOpnameProductionOrderRepository.ReadAll().Where(x => x.IsStockOpname == true);
+
+            //var query = _stockOpnameProductionOrderRepository.GetDbSet().Where(x => x.IsStockOpname == true);
+
+            if (!string.IsNullOrEmpty(documentNo))
+            {
+                query = query.Where(s => documentNo.Contains(s.DocumentNo));
+            }
+
+            if (!string.IsNullOrEmpty(grade))
+            {
+                query = query.Where(s => s.Grade == grade);
+            }
+            if (productionOrderId != 0)
+            {
+                query = query.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            var result = query.Select(x => new StockOpnameWarehouseProductionOrderViewModel()
+            {
+                ProductionOrderNo = x.ProductionOrderNo,
+                Grade = x.Grade,
+                ProductPackingCodes = x.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                PackagingQty = x.PackagingQty,
+                PackagingLength = x.PackagingLength,
+                Balance = x.Balance,
+                DocumentNo = x.DocumentNo
+
+            }).ToList();
+
+
+            return result;
         }
 
     }

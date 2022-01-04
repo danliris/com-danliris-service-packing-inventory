@@ -249,6 +249,21 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("monitoring")]
+        public IActionResult GetScanView([FromQuery] long productionOrderId = 0, [FromQuery] string documentNo = null, [FromQuery] string grade = null )
+        {
+            try
+            {
+                VerifyUser();
+                //int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var data = _service.GetMonitoringScan(productionOrderId, documentNo, grade);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
 
     }

@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         Task<int> Create(StockOpnameWarehouseViewModel viewModel);
         Task<int> Create(StockOpnameBarcodeFormDto form);
-
+        List<StockOpnameWarehouseProductionOrderViewModel> GetMonitoringScan(long productionOrderId, string documentNo, string grade);
         Task<StockOpnameWarehouseViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword, bool isStockOpname);
         ListResult<IndexViewModel> Read(string keyword);
