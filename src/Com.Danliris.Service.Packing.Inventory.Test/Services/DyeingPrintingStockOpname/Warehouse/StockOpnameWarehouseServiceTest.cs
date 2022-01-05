@@ -448,14 +448,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                  .Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
 
+            model2.DyeingPrintingStockOpnameProductionOrders.FirstOrDefault().CreatedBy = "dev2";
             stockOpnameProductionOrderRepo
                  .Setup(s => s.ReadAll())
                  .Returns(model2.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+            
 
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
             //Act
-            var result = service.GetMonitoringScan(1, "", "documentNo", "A", "");
+            var result = service.GetMonitoringScan(1, "productPackingCode", "documentNo", "A","dev2" );
 
             //Assert
             Assert.NotEmpty(result);
