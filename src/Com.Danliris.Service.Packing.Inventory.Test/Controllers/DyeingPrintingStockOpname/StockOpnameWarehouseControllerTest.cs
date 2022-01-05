@@ -674,7 +674,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
         {
             //v
             var serviceMock = new Mock<IStockOpnameWarehouseService>();
-            serviceMock.Setup(s => s.GetMonitoringScan( It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>()))
+            serviceMock.Setup(s => s.GetMonitoringScan( It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { ViewModel });
             var service = serviceMock.Object;
 
@@ -685,7 +685,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
 
             var controller = GetController(service, identityProvider, validateService);
 
-            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
 
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
         }
@@ -697,7 +697,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             var dataUtil = viewModel;
             var serviceMock = new Mock<IStockOpnameWarehouseService>();
             serviceMock
-                .Setup(s => s.GetMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Setup(s => s.GetMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
             var service = serviceMock.Object;
@@ -712,7 +712,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //Act
             //var response = controller.GetListBon();
 
-            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>());
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
