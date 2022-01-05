@@ -455,7 +455,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
             //Act
-            var result = service.GetMonitoringScan(1, "documentNo", "A");
+            var result = service.GetMonitoringScan(1, "", "documentNo", "A", "");
 
             //Assert
             Assert.NotEmpty(result);
