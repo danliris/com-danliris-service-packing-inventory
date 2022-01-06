@@ -1219,7 +1219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DocumentNo = x.DocumentNo,
                 CreatedBy = x.CreatedBy
 
-            }).ToList();
+            }).OrderBy( x => x.CreatedUtc).ToList();
 
 
             return result;
