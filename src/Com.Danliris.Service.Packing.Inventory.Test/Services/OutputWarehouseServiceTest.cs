@@ -70,6 +70,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             return spMock;
         }
 
+        public Mock<IServiceProvider> GetServiceProvider(IDyeingPrintingAreaInputRepository inputRepo,
+                                                         IDyeingPrintingAreaInputProductionOrderRepository inputProductionRepo,
+                                                         IDyeingPrintingAreaMovementRepository movementRepo,
+                                                         IDyeingPrintingAreaSummaryRepository summaryRepo,
+                                                         IDyeingPrintingAreaOutputRepository outputRepo,
+                                                         IDyeingPrintingAreaOutputProductionOrderRepository outputProductionRepo,
+                                                         IDyeingPrintingAreaReferenceRepository areaReferenceRepo)
+        {
+            var spMock = new Mock<IServiceProvider>();
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputRepository)))
+                .Returns(inputRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
+                .Returns(inputProductionRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaMovementRepository)))
+                .Returns(movementRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaSummaryRepository)))
+                .Returns(summaryRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputRepository)))
+                .Returns(outputRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaOutputProductionOrderRepository)))
+                .Returns(outputProductionRepo);
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaReferenceRepository)))
+                .Returns(areaReferenceRepo);
+
+            return spMock;
+        }
+
         private OutputWarehouseViewModel ViewModelToShipping
         {
             get
@@ -829,12 +856,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.UpdateAsync(SummaryModel.Id, It.IsAny<DyeingPrintingAreaSummaryModel>()))
                  .ReturnsAsync(1);
 
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object,
+                                                        areaReferenceMock.Object).Object);
 
             var result = await service.Create(ViewModelToShipping);
 
@@ -877,12 +908,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.InsertAsync(SummaryModel))
                  .ReturnsAsync(1);
 
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object,
+                                                        areaReferenceMock.Object).Object);
 
             var result = await service.Create(ViewModelToShipping);
 
@@ -922,12 +957,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.UpdateAsync(SummaryModel.Id, It.IsAny<DyeingPrintingAreaSummaryModel>()))
                  .ReturnsAsync(1);
 
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object,
+                                                        areaReferenceMock.Object).Object);
 
             var result = await service.Create(ViewModelToIM);
 
@@ -1313,12 +1352,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             summaryRepoMock.Setup(s => s.InsertAsync(SummaryModel))
                  .ReturnsAsync(1);
 
+            var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
+            areaReferenceMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaReferenceModel>()))
+                .ReturnsAsync(1);
             var service = GetService(GetServiceProvider(inputRepoMock.Object,
                                                         inputProductionOrderRepoMock.Object,
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object,
+                                                        areaReferenceMock.Object).Object);
 
             var result = await service.Create(ViewModelToIM);
 
