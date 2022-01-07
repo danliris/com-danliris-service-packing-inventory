@@ -1185,7 +1185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (!string.IsNullOrEmpty(documentNo))
             {
-                query = query.Where(s => s.DocumentNo.Contains(documentNo));
+                query = query.Where(s => s.DocumentNo == documentNo);
             }
 
             if (!string.IsNullOrEmpty(barcode))
