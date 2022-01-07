@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -249,6 +250,49 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("monitoring")]
+        public IActionResult GetScanView([FromQuery] long productionOrderId = 0, [FromQuery] string barcode = null, [FromQuery] string documentNo = null, [FromQuery] string grade = null, [FromQuery] string userFilter = null)
+        {
+            try
+            {
+                VerifyUser();
+                //int clientTimeZoneOffset = Convert.ToInt32(timezone);
+                var data = _service.GetMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        //[HttpGet("monitoring/download")]
+        //public IActionResult GetXls([FromQuery] long productionOrderId = 0, [FromQuery] string barcode = null, [FromQuery] string documentNo = null, [FromQuery] string grade = null, [FromQuery] string userFilter = null)
+        //{
+
+        //    try
+        //    {
+                
+
+        //        byte[] xlsInBytes;
+        //        int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+        //        //DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
+        //        //DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
+
+        //        MemoryStream xls = _service.GenerateExcelMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+
+
+        //        string filename = String.Format("Laporan Stock Gudang All Unit - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+        //        xlsInBytes = xls.ToArray();
+        //        var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+        //        return file;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //    }
+        //}
 
 
     }
