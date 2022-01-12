@@ -178,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 .ReturnsAsync(1);
 
             var packingListData = new GarmentPackingListModel() { Id = model.Id };
-            packingListData.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.APPROVED_SHIPPING));
+            packingListData.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.APPROVED_SHIPPING.ToString()));
 
             var repoPackingListMock = new Mock<IGarmentPackingListRepository>();
             repoPackingListMock.Setup(s => s.Query)
