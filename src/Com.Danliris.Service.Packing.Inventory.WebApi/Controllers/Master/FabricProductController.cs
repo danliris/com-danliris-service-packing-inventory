@@ -166,20 +166,5 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.Master
                 return StatusCode((int)HttpStatusCode.InternalServerError, error);
             }
         }
-
-        [HttpGet("scan-barcode/{barcode}")]
-        public IActionResult GetBarcodeDetail([FromRoute] string barcode)
-        {
-            try
-            {
-                var data = _service.GetBarcodeDetail(barcode);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-
-            }
-        }
     }
 }

@@ -275,10 +275,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 _unitOfWork.ProductSKUs.Insert(model);
                 _unitOfWork.Commit();
 
-                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
-                    form.materialId,form.materialName,form.materialConstructionId,form.materialConstructionName,
-                    form.yarnMaterialId,form.yarnMaterialName,form.ProductionOrderNo,form.uomUnit,form.motif,form.color,form.Grade, form.Width);
-
+                productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, 0, gradeId, uom.Id);
                 _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                 _unitOfWork.Commit();
             }
@@ -323,7 +320,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     _unitOfWork.Commit();
                     packingCodes.Add(code);
 
-                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType);
+                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length);
                     _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                 }
 
@@ -351,34 +348,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         //{
         //    return new FabricSKUIdCodeDto() { FabricSKUId = 1, ProductSKUCode = "code", ProductSKUId = 1 };
         //}
-
-        public FabricProductBarcodeDetail GetBarcodeDetail(string barcode)
-        {
-            var fabricProductSKUs = _dbContext.FabricProductSKUs.AsQueryable();
-            var fabricProductPackings = _dbContext.FabricProductPackings.Where(entity => entity.Code == barcode);
-            var uoms = _dbContext.IPUnitOfMeasurements.AsQueryable();
-
-            var result = (from fabricProductSKU in fabricProductSKUs
-                          join fabricProductPacking in fabricProductPackings on fabricProductSKU.Id equals fabricProductPacking.FabricProductSKUId
-                          join uom in uoms on fabricProductPacking.UOMId equals uom.Id
-
-                          select new FabricProductBarcodeDetail()
-                          {
-                              KodePacking = barcode,
-                              KodeSKU = fabricProductSKU.Code,
-                              NoOrder = fabricProductSKU.ProductionOrderNo,
-                              UkuranPacking = fabricProductPacking.PackingSize,
-                              Satuan = fabricProductSKU.UomUnit,
-                              Material = fabricProductSKU.MaterialName,
-                              MaterialConstruction = fabricProductSKU.MaterialConstructionName,
-                              YarnMaterial = fabricProductSKU.YarnMaterialName,
-                              Motif = fabricProductSKU.Motif,
-                              Grade = fabricProductSKU.Grade,
-                              Color = fabricProductSKU.Color,
-                              JenisPacking = uom.Unit
-                          }).FirstOrDefault();
-
-            return result;
-        }
     }
 }

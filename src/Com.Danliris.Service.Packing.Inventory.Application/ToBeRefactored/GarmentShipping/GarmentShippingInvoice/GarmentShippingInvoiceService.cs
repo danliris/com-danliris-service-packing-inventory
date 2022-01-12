@@ -301,8 +301,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id
-                        where b.TruckingDate.AddHours(7).Date < date 
-                        && b.Omzet==true
+                        where b.TruckingDate.AddHours(7).Date < date
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
@@ -327,7 +326,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join b in queryPL
                         on a.PackingListId equals b.Id
                         where b.TruckingDate.AddHours(7).Month == month && b.TruckingDate.AddHours(7).Year == year
-                        && b.Omzet == true
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
@@ -351,7 +349,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join b in queryPL
                         on a.PackingListId equals b.Id
                         where b.TruckingDate.AddHours(7).Date < date && b.BuyerAgentCode == buyer
-                        && b.Omzet == true
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
@@ -375,7 +372,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join b in queryPL
                         on a.PackingListId equals b.Id
                         where b.TruckingDate.AddHours(7).Date.Month == month && b.TruckingDate.AddHours(7).Date.Year == year && b.BuyerAgentCode == buyer
-                        && b.Omzet == true
                         select new ShippingPackingListViewModel
                         {
                             BuyerAgentCode = a.BuyerAgentCode,
