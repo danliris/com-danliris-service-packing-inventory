@@ -23,6 +23,7 @@ using System.Globalization;
 using System.Data;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using OfficeOpenXml.Style;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -1225,123 +1226,139 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        //public MemoryStream GenerateExcelMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
-        //{
+        public MemoryStream GenerateExcelMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
+        {
+
+            var query = GetMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+
+            var indexNumber = 1;
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BARCODE", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PER ROLL", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "JALUR", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "USER", DataType = typeof(string) });
+
+            decimal qtyRoll = 0;
+            double qtyBalance = 0;
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", 0, 0, 0, "", "");
+            }
+            else
+            {
+                
+                foreach (var item in query)
+                {
+                    //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    qtyRoll += item.PackagingQty;
+                    qtyBalance += item.Balance;
+                    dt.Rows.Add(indexNumber,
+                                item.ProductionOrderNo,
+                                String.Join(',', item.ProductPackingCodes) ,
+                                item.PackagingQty,
+                                item.PackagingLength,
+                                item.Balance,
+                                item.DocumentNo,
+                                item.CreatedBy
+                                );
+                    indexNumber++;
+                }
+            }
+
+            ExcelPackage package = new ExcelPackage();
+            #region Header
+            var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
+
+            //sheet.Cells[1, 1].Value = "TANGGAL";
+            //sheet.Cells[1, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+
+            //sheet.Cells[2, 1].Value = "NO. BON";
+            //sheet.Cells[2, 2].Value = model.BonNo;
+            //sheet.Cells[2, 2, 2, 3].Merge = true;
+
+            var row = 3;
+            var merge = 4;
+
+            sheet.Cells[row, 1].Value = "NO.";
+            sheet.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 1, merge, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 1, merge, 1].Merge = true;
+
+            sheet.Cells[row, 2].Value = "NO.SPP";
+            sheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 2, merge, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 2, merge, 2].Merge = true;
+
+            sheet.Cells[row, 3].Value = "BARCODE";
+            sheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 3, merge, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 3, merge, 3].Merge = true;
+
+            sheet.Cells[row, 4].Value = "QTY ROLL";
+            sheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 4, merge, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 4, merge, 4].Merge = true;
+
+            sheet.Cells[row, 5].Value = "QTY PER ROLL";
+            sheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 5, merge, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 5, merge, 5].Merge = true;
+
+            sheet.Cells[row, 6].Value = "QUANTITY";
+            sheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 6, merge, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 6, merge, 6].Merge = true;
+
+            sheet.Cells[row, 7].Value = "JALUR";
+            sheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 7, merge, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 7, merge, 7].Merge = true;
+
+            sheet.Cells[row, 8].Value = "USER";
+            sheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 8, merge, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 8, merge, 8].Merge = true;
+            #endregion
+
+            //var a = query.Count();
             
-        //    var query = GetMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+            var a = query.Count();
+            sheet.Cells[$"A{5 + a}"].Value = "T O T A L  . . . . . . . . . . . . . . .";
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Merge = true;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.Font.Bold = true;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            sheet.Cells[$"D{5 + a}"].Value = qtyRoll;
+            sheet.Cells[$"F{5 + a}"].Value = qtyBalance;
+            //sheet.Cells[$"K{6 + a}"].Value = CorrQtyTotal;
+            //sheet.Cells[$"M{6 + a}"].Value = ExpendQtyTotal;
+            //sheet.Cells[$"O{6 + a}"].Value = EndingQtyTotal;
 
-        //    var indexNumber = 1;
-        //    DataTable dt = new DataTable();
+            int tableRowStart = 5;
+            int tableColStart = 1;
 
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(string) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "BARCODE", DataType = typeof(string) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "QTY PER ROLL", DataType = typeof(double) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "JALUR", DataType = typeof(string) });
-        //    dt.Columns.Add(new DataColumn() { ColumnName = "USER", DataType = typeof(string) });
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
 
-        //    if (query.Count() == 0)
-        //    {
-        //        dt.Rows.Add("", "", "",0,0,0,"","");
-        //    }
-        //    else
-        //    {
-        //        foreach (var item in query)
-        //        {
-        //            //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-        //            //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
 
-        //            dt.Rows.Add(indexNumber,
-        //                        item.ProductionOrderNo,
-        //                        item.ProductPackingCodes,
-        //                        item.PackagingQty,
-        //                        item.PackagingLength,
-        //                        item.Balance,
-        //                        item.DocumentNo,
-        //                        item.CreatedBy
-        //                        );
-        //            indexNumber++;
-        //        }
-        //    }
-
-        //    ExcelPackage package = new ExcelPackage();
-        //    #region Header
-        //    var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
-
-        //    //sheet.Cells[1, 1].Value = "TANGGAL";
-        //    //sheet.Cells[1, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
-
-        //    //sheet.Cells[2, 1].Value = "NO. BON";
-        //    //sheet.Cells[2, 2].Value = model.BonNo;
-        //    //sheet.Cells[2, 2, 2, 3].Merge = true;
-
-        //    var row = 3;
-        //    var merge = 4;
-
-        //    sheet.Cells[row, 1].Value = "NO.";
-        //    sheet.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 1, merge, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 1, merge, 1].Merge = true;
-
-        //    sheet.Cells[row, 2].Value = "NO.SPP";
-        //    sheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 2, merge, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 2, merge, 2].Merge = true;
-
-        //    sheet.Cells[row, 3].Value = "BARCODE";
-        //    sheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 3, merge, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 3, merge, 3].Merge = true;
-
-        //    sheet.Cells[row, 4].Value = "QTY PER PACK";
-        //    sheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 4, merge, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 4, merge, 4].Merge = true;
-
-        //    sheet.Cells[row, 5].Value = "QTY PER ROLL";
-        //    sheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 5, merge, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 5, merge, 5].Merge = true;
-
-        //    sheet.Cells[row, 6].Value = "QUANTITY";
-        //    sheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 6, merge, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 6, merge, 6].Merge = true;
-
-        //    sheet.Cells[row, 7].Value = "JALUR";
-        //    sheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 7, merge, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 7, merge, 7].Merge = true;
-
-        //    sheet.Cells[row, 8].Value = "USER";
-        //    sheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-        //    sheet.Cells[row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-        //    sheet.Cells[row, 8, merge, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
-        //    sheet.Cells[row, 8, merge, 8].Merge = true;
-        //    #endregion
-
-        //    var a = query.Count();
-        //    int tableRowStart = 6;
-        //    int tableColStart = 1;
-        //    sheet.Cells[$"O{7 + a}"].Value = 0;
-
-        //    sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
-        //    sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
-
-        //    MemoryStream stream = new MemoryStream();
-        //    package.SaveAs(stream);
-
-        //    return stream;
-        //}
+            return stream;
+        }
 
     }
 }
