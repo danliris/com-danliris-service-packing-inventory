@@ -412,7 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable tableGrandTotal = new PdfPTable(2);
             tableGrandTotal.SetWidths(new float[] { 18f + SIZES_COUNT * 1f, 5f });
-            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 2, Padding = 0.5f, Phrase = new Phrase("") };
+            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Padding = 0.5f, Phrase = new Phrase("") };
 
             tableGrandTotal.AddCell(cellHeaderLine);
             tableGrandTotal.AddCell(new PdfPCell()

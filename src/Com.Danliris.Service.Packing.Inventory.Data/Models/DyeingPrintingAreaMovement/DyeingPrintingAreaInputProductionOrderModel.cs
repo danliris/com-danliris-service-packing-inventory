@@ -72,6 +72,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set; }
 
+        public bool IsFromStockOpname { get; set; }
+        public bool IsAfterStockOpname { get; set; }
+
         #region aval transformasi
         public string InputAvalBonNo { get; private set; }
         public double AvalQuantityKg { get; private set; }
@@ -107,6 +110,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaInputModel DyeingPrintingAreaInput { get; set; }
         public DateTimeOffset DateIn { get;  set; }
         public DateTimeOffset DateOut { get; private set; }
+
+        public double PackagingQuantityBalance { get; private set; }
+        public double PackagingQuantity { get; private set; }
 
         public DyeingPrintingAreaInputProductionOrderModel()
         {
@@ -515,6 +521,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
             ProductPackingCodeRemains = productPackingCodeRemains;
+
+            IsAfterStockOpname = true;
         }
 
         /// <summary>
@@ -1612,6 +1620,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         {
             ProductPackingCodeRemains = NewProductPackingCodeRemains;
             this.FlagForUpdate(user, agent);
+        }
+        
+        public void SetPackagingQuantity(double packagingQuantity)
+        {
+            PackagingQuantity = packagingQuantity;
+        }
+
+        public void SetPackagingQuantityBalance(double currentBalance, double mutation)
+        {
+            PackagingQuantityBalance = currentBalance - mutation;
         }
     }
 }
