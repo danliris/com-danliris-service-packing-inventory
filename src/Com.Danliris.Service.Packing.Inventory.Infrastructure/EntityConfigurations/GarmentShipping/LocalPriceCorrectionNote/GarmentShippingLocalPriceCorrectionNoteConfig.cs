@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalPriceCorrectionNote
 {
-    public class GarmentShippingLocalPriceCorrectionNoteItemConfig : IEntityTypeConfiguration<GarmentShippingLocalPriceCorrectionNoteItemModel>
+    public class GarmentShippingLocalPriceCorrectionNoteConfig : IEntityTypeConfiguration<GarmentShippingLocalPriceCorrectionNoteModel>
     {
-        public void Configure(EntityTypeBuilder<GarmentShippingLocalPriceCorrectionNoteItemModel> builder)
+        public void Configure(EntityTypeBuilder<GarmentShippingLocalPriceCorrectionNoteModel> builder)
         {
             /* StandardEntity */
             builder.HasKey(s => s.Id);
@@ -20,10 +20,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             /* StandardEntity */
 
             builder
-                .HasOne(h => h.SalesNoteItem)
+                .Property(s => s.CorrectionNoteNo)
+                .HasMaxLength(50);
+
+            builder
+                .HasIndex(i => i.CorrectionNoteNo)
+                .IsUnique()
+                .HasFilter("[IsDeleted]=(0)");
+
+            builder
+                .Property(s => s.Remark)
+                .HasMaxLength(1000);
+
+            builder
+                .HasMany(h => h.Items)
+                .WithOne()
+                .HasForeignKey(f => f.PriceCorrectionNoteId);
+
+            builder
+                .HasOne(h => h.SalesNote)
                 .WithMany()
-                .HasForeignKey(f => f.SalesNoteItemId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(f => f.SalesNoteId);
         }
     }
 }
