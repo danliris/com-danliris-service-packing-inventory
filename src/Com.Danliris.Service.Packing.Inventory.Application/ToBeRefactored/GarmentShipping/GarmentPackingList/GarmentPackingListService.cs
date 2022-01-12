@@ -351,7 +351,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
-            garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status));
+            garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status.ToString()));
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
 
@@ -630,7 +630,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 model.SetIsPosted(true, _identityProvider.Username, UserAgent);
                 model.SetStatus(GarmentPackingListStatusEnum.POSTED, _identityProvider.Username, UserAgent);
-                model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.POSTED));
+                model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.POSTED.ToString()));
             }
 
             await _packingListRepository.SaveChanges();
@@ -641,7 +641,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetIsPosted(false, _identityProvider.Username, UserAgent);
             model.SetStatus(GarmentPackingListStatusEnum.CREATED, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED));
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
             await _packingListRepository.SaveChanges();
         }
@@ -657,7 +657,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (oldModel.Status != status)
             {
                 oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
-                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
             }
@@ -674,7 +674,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (oldModel.Status != status)
             {
                 oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
-                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
             }
@@ -684,7 +684,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetStatus(status, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status, remark));
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString(), remark));
 
             return _packingListRepository.SaveChanges();
         }

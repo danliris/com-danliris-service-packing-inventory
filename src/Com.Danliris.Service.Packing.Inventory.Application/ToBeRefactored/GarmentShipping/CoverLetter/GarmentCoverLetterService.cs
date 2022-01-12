@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (packingList != null )
             {
                 packingList.SetStatus(status, _identityProvider.Username, UserAgent);
-                packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
             }
             else
             {
@@ -140,10 +140,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var usedCount = _repository.ReadAll().Count(w => w.Id != id && w.PackingListId == packingList.Id);
                 if (usedCount == 0)
                 {
-                    var statusActivity = packingList.StatusActivities.LastOrDefault(s => s.Status != GarmentPackingListStatusEnum.DELIVERED);
-                    var status = statusActivity != null ? statusActivity.Status : GarmentPackingListStatusEnum.CREATED;
+                    var statusActivity = packingList.StatusActivities.LastOrDefault(s => s.Status != GarmentPackingListStatusEnum.DELIVERED.ToString());
+                    Enum.TryParse(statusActivity.Status, true, out GarmentPackingListStatusEnum statusParsed);
+                    var status = statusActivity != null ? statusParsed : GarmentPackingListStatusEnum.CREATED;
                     packingList.SetStatus(status, _identityProvider.Username, UserAgent);
-                    packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                    packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
                 }
             }
             else
