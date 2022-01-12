@@ -485,7 +485,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
-            var result = service.GetMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev2");
+            var result = service.GenerateExcelMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev2");
 
             Assert.NotNull(result);
         }
@@ -510,7 +510,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
-            var result = service.GetMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev");
+            var result = service.GenerateExcelMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev");
 
             Assert.NotNull(result);
         }
