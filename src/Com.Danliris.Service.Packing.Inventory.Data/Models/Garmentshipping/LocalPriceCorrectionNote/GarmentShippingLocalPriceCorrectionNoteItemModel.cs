@@ -6,7 +6,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
     public class GarmentShippingLocalPriceCorrectionNoteItemModel : StandardEntity
     {
         public int PriceCorrectionNoteId { get; private set; }
-        public int? SalesNoteItemId { get; private set; }
+        public int SalesNoteItemId { get; private set; }
         public GarmentShippingLocalSalesNoteItemModel SalesNoteItem { get; private set; }
         public double PriceCorrection { get; private set; }
 

@@ -24,7 +24,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _productionOrderRepository;
         private readonly IDyeingPrintingAreaOutputRepository _repositoryAreaOutput;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _repositoryAreaProductionOrderOutput;
-        private readonly IDyeingPrintingAreaReferenceRepository _areaReferenceRepository;
 
         public InputPackagingService(IServiceProvider serviceProvider)
         {
@@ -34,7 +33,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _repositoryAreaOutput = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
             _repositoryAreaProductionOrderOutput = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
-            _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
         }
 
         public async Task<int> CreateAsync(InputPackagingViewModel viewModel)
@@ -54,12 +52,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      
 
                 result = await _repository.InsertAsync(model);
-
-                //foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
-                //{
-                //    var areaReference = new DyeingPrintingAreaReferenceModel("IN", item.Id, item.DyeingPrintingAreaOutputProductionOrderId);
-                //    await _areaReferenceRepository.InsertAsync(areaReference);
-                //}
             }
             else
             {
@@ -72,11 +64,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      
                 model.Id = prevBon.Id;
 
-                //foreach (var item in model.DyeingPrintingAreaInputProductionOrders)
-                //{
-                //    var areaReference = new DyeingPrintingAreaReferenceModel("IN", item.Id, item.DyeingPrintingAreaOutputProductionOrderId);
-                //    await _areaReferenceRepository.InsertAsync(areaReference);
-                //}
             }
 
             //var modelOutput = _repositoryAreaOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.BonNo == viewModel.BonNo && s.DyeingPrintingAreaOutputProductionOrders.Any(d => d.DyeingPrintingAreaOutputId == s.Id)).FirstOrDefault();
@@ -126,9 +113,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, item.Id, item.ProductionOrderType, item.Grade);
 
                 result += await _movementRepository.InsertAsync(movementModel);
-
-                var areaReference = new DyeingPrintingAreaReferenceModel("IN", item.Id, item.DyeingPrintingAreaOutputProductionOrderId);
-                await _areaReferenceRepository.InsertAsync(areaReference);
 
             }
 
