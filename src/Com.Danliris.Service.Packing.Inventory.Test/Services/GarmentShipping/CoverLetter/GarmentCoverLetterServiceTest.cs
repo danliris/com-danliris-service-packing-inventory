@@ -135,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             Assert.NotEqual(0, result);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task Delete_Success()
         {
             var model = new GarmentShippingCoverLetterModel(1, 1, "", DateTimeOffset.Now, 1, "", "", "", "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, 1, 1, 1, 1, "", "", "", "", "", "", "", "", "", "", DateTimeOffset.Now, "", 1, "") { Id = 1 };
@@ -164,7 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var result = await service.Delete(1);
 
             Assert.NotEqual(0, result);
-        }
+        }*/
 
         [Fact]
         public async Task Delete_NoStatus_Success()
