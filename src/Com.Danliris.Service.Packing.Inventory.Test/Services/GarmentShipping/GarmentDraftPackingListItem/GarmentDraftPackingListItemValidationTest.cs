@@ -54,6 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                             },
                             Article = null,
                             OrderNo = null,
+                            Remarks = null,
                             Description = null,
                             Details = new List<GarmentDraftPackingListDetailViewModel>
                             {

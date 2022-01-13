@@ -462,7 +462,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
-            bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty, string finishWidth, DateTimeOffset dataIn, string inventoryType, string materialOrigin, string productPackingCodeRemains)
+            bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty, string finishWidth, DateTimeOffset dataIn, string inventoryType, string materialOrigin, string productPackingCodeToCreate)
 
         {
             ProductionOrderId = productionOrderId;
@@ -510,7 +510,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             ProductPackingId = productPackingId;
             FabricPackingId = fabricPackingId;
-            ProductPackingCode = productPackingCode;
+            //ProductPackingCode = productPackingCode;
             HasPrintingProductPacking = hasPrintingProductPacking;
 
             PackagingLength = packingLength;
@@ -520,9 +520,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DateIn = dataIn;
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
-            ProductPackingCodeRemains = productPackingCodeRemains;
-
-            IsAfterStockOpname = true;
+            ProductPackingCode = productPackingCodeToCreate;
         }
 
         /// <summary>

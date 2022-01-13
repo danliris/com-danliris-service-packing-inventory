@@ -23,5 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Delete(int bonId);
         Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel);
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
+        string GetValidationMessage(string packingCode);
     }
 }
