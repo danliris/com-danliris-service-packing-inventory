@@ -220,7 +220,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
 
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
-                var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+                var stockOpnameQuery = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId));
+
+                if (productionOrderId != 0)
+                {
+                    stockOpnameQuery = stockOpnameQuery.Where(entity => entity.ProductionOrderId == productionOrderId);
+                }
+
+                var stockOpnames = stockOpnameQuery.ToList();
 
                 if (!string.IsNullOrEmpty(unit))
                 {

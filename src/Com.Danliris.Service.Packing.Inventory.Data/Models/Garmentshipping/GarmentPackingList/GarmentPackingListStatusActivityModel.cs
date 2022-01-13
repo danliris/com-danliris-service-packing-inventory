@@ -9,10 +9,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public DateTimeOffset CreatedDate { get; protected set; }
         public string CreatedBy { get; protected set; }
         public string CreatedAgent { get; protected set; }
-        public GarmentPackingListStatusEnum Status { get; protected set; }
+        public string Status { get; protected set; }
         public string Remark { get; protected set; }
 
-        public GarmentPackingListStatusActivityModel(string createdBy, string createdAgent, GarmentPackingListStatusEnum status, string remark = null)
+        public GarmentPackingListStatusActivityModel(string createdBy, string createdAgent, string status, string remark = null)
         {
             CreatedDate = DateTimeOffset.Now;
             CreatedBy = createdBy;
