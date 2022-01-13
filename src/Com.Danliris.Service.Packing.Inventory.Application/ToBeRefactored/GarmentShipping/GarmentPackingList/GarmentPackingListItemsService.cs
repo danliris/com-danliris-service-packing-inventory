@@ -219,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 NettWeight = model.NettWeight,
                 NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
-                Measurements = model.Measurements.Select(m => new GarmentPackingListMeasurementViewModel
+                Measurements = model.Measurements.Where(i => i.CreatedBy == _identityProvider.Username).Select(m => new GarmentPackingListMeasurementViewModel
                 {
                     Active = m.Active,
                     Id = m.Id,
@@ -410,15 +410,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     foreach (var detail in items.Details)
                     {
                         var measurement = model.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height);
-                        var measurementDB = measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height);
+                        var measurementDB = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height);
                         if (measurement == null)
                         {
                             measurementDB.FlagForDelete(_identityProvider.Username, UserAgent);
+                            // harusnya udah kehapus
+                        }
+                        var detailToDelete = items.Details.FirstOrDefault(d => d.Id == detail.Id);
+                        if (detailToDelete != null)
+                        {
+                            detailToDelete.FlagForDelete(_identityProvider.Username, UserAgent);
                         }
                     }
                     
 
                     itemToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                    
                 }
 
             }
@@ -476,6 +483,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             sumQty = measurementToUpdate.CartonsQuantity - diffQty;
                         }
                         measurementToUpdate.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
+                        // disini
                     } else
                     {
                         measurementToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
