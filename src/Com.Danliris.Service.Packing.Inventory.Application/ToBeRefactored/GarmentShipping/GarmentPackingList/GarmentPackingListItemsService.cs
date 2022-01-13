@@ -496,7 +496,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var measurement in measurements)
             {
-                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
+                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height && m.CreatedBy == _identityProvider.Username);
                 if (oldMeasurement == null)
                 {
                     measurement.FlagForCreate(_identityProvider.Username, UserAgent);
