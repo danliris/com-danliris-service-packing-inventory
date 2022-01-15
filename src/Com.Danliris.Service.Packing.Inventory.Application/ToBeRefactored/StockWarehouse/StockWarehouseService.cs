@@ -178,8 +178,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
 
             //var invType = inventoryType == "BARU" ? String.Empty : inventoryType;
+            var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
+                        inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
                         startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
                         s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
 
@@ -250,7 +252,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
-                        inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
                         startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
                         s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
 
