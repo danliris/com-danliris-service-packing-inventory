@@ -501,6 +501,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
+                context.Database.SetCommandTimeout(1000);
                 context.Database.Migrate();
 
                 //var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();

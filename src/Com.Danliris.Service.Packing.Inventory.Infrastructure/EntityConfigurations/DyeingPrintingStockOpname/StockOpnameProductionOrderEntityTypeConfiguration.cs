@@ -124,7 +124,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
              .Property(s => s.DocumentNo)
              .HasMaxLength(128);
 
-           
+            builder.HasIndex(entity => entity.ProductionOrderNo);
+            builder.HasIndex(entity => entity.ProductionOrderId);
+
+
         }
     }
 }
