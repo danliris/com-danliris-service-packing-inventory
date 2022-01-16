@@ -111,9 +111,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             //var queryTransform = _movementRepository.ReadAll()
             //    .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
             // var invType = inventoryType == "BARU" ? null : inventoryType;
-            var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
+            //var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
             var queryTransform = _movementRepository.ReadAll()
-                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) && s.Type == "IN");
+                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
 
             if (!string.IsNullOrEmpty(unit))
             {
@@ -178,11 +178,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
 
             //var invType = inventoryType == "BARU" ? String.Empty : inventoryType;
-            var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
             var queryTransform = _movementRepository.ReadAll()
                    .Where(s => s.Area == area &&
-                        inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
-                        s.Type == "IN" &&
                         startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
                         s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
 
