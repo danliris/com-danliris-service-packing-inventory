@@ -1479,6 +1479,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             warehouseData = warehouseData.OrderBy(s => s.BonNo);
+
+            //var countData = warehouseData.Count();
             //var model = await _repository.ReadByIdAsync(id);
             //var modelWhere = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             _barcodes = new List<BarcodeInfoViewModel2>();

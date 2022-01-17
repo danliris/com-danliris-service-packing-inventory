@@ -2190,31 +2190,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public void Should_Empty_GenerateExcelAll6()
-        {
-            var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
-            var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
-            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
-            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
-            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
-            var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+        //[Fact]
+        //public void Should_Empty_GenerateExcelAll6()
+        //{
+        //    var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+        //    var inputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+        //    var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+        //    var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+        //    var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+        //    var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            inputRepoMock.Setup(s => s.ReadAll())
-                .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
+        //    inputRepoMock.Setup(s => s.ReadAll())
+        //        .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
 
 
-            var service = GetService(GetServiceProvider(inputRepoMock.Object,
-                                                        inputProductionOrderRepoMock.Object,
-                                                        movementRepoMock.Object,
-                                                        summaryRepoMock.Object,
-                                                        outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(inputRepoMock.Object,
+        //                                                inputProductionOrderRepoMock.Object,
+        //                                                movementRepoMock.Object,
+        //                                                summaryRepoMock.Object,
+        //                                                outputRepoMock.Object,
+        //                                                outputProductionOrderRepoMock.Object).Object);
 
-            var result = service.GenerateExcelAllBarcode(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(-1), 7);
+        //    var result = service.GenerateExcelAllBarcode(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(-1), 7);
 
-            Assert.NotNull(result);
-        }
+        //    Assert.NotNull(result);
+        //}
 
 
 
