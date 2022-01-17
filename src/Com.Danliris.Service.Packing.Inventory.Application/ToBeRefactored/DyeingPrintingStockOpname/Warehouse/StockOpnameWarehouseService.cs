@@ -24,6 +24,7 @@ using System.Data;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using OfficeOpenXml.Style;
+using System.Collections.ObjectModel;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -38,6 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IIdentityProvider _identityProvider;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
         private readonly IServiceProvider _serviceProvider;
+        public List<BarcodeInfoViewModel> _barcodes;
+        //public ObservableCollection<BarcodeInfo> BarcodeList { get; set; }
 
         public StockOpnameWarehouseService(IServiceProvider serviceProvider)
         {
@@ -1178,7 +1181,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
-        public List<StockOpnameWarehouseProductionOrderViewModel> GetMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
+        
+
+        public List<BarcodeInfoViewModel> GetMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
         {
             var query = _stockOpnameProductionOrderRepository.ReadAll().Where(x => x.IsStockOpname == true);
 
@@ -1208,7 +1213,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
 
+            //var barcodeList = query.Select(x => new NewBarcodeInfo()
+            //{
+            //    productionOrderNo = x.ProductionOrderNo,
+            //    grade = x.Grade,
+            //    productPackingCodes = x.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+            //    PackagingQty = x.PackagingQty,
+            //    PackagingLength = x.PackagingLength,
+            //    Balance = x.Balance,
+            //    DocumentNo = x.DocumentNo,
+            //    CreatedBy = x.CreatedBy
 
+            //}).OrderBy(x => x.CreatedUtc);
+
+            _barcodes = new List<BarcodeInfoViewModel>();
             var result = query.Select(x => new StockOpnameWarehouseProductionOrderViewModel()
             {
                 ProductionOrderNo = x.ProductionOrderNo,
@@ -1220,10 +1238,62 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DocumentNo = x.DocumentNo,
                 CreatedBy = x.CreatedBy
 
-            }).OrderBy( x => x.CreatedUtc).ToList();
+            }).OrderBy(x => x.DocumentNo).ToList();
 
 
-            return result;
+            //foreach (var data in result) {
+
+            //    foreach (var packingCode in data.ProductPackingCodes) {
+            //        var barcodeInfo = new BarcodeInfo()
+            //        {
+
+            //            OrderNo = data.ProductionOrderNo,
+            //            PackingCode = packingCode,
+            //            PackingLength = data.PackagingLength,
+            //            Balance = data.Balance,
+            //            CreatedBy = data.CreatedBy,
+
+            //            UOMSKU = data.UomUnit,
+            //            DocumentNo = data.DocumentNo,
+            //            Grade = data.Grade
+            //        };
+            //        _barcodes.Add(barcodeInfo);
+            //    }
+            //}
+
+            foreach (var data in result)
+            {
+
+                foreach (var packingCode in data.ProductPackingCodes)
+                {
+                    var barcodeInfo = new BarcodeInfoViewModel()
+                    {
+
+                        OrderNo = data.ProductionOrderNo,
+                        PackingCode = packingCode,
+                        PackingLength = data.PackagingLength,
+                        Balance = data.Balance,
+                        CreatedBy = data.CreatedBy,
+                        PackagingQty = 1,
+
+                        UOMSKU = data.UomUnit,
+                        DocumentNo = data.DocumentNo,
+                        Grade = data.Grade
+                    };
+                    _barcodes.Add(barcodeInfo);
+                }
+
+
+            }
+
+
+
+           
+
+
+
+
+            return _barcodes ;
         }
 
         public MemoryStream GenerateExcelMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
@@ -1256,13 +1326,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
                     //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                    qtyRoll += item.PackagingQty;
+                    //qtyRoll += item.PackagingQty;
                     qtyBalance += item.Balance;
                     dt.Rows.Add(indexNumber,
-                                item.ProductionOrderNo,
-                                String.Join(',', item.ProductPackingCodes) ,
+                                item.OrderNo,
+                                item.PackingCode ,
                                 item.PackagingQty,
-                                item.PackagingLength,
+                               item.PackingLength,
                                 item.Balance,
                                 item.DocumentNo,
                                 item.CreatedBy
@@ -1360,5 +1430,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
+
+        public class BarcodeInfoViewModel
+        {
+            public string PackingCode { get; set; }
+            public string MaterialName { get; set; }
+            public string MaterialConstructionName { get; set; }
+            public string YarnMaterialName { get; set; }
+            public double PackingLength { get; set; }
+            public string PackingType { get; set; }
+            public string Color { get; set; }
+            public string OrderNo { get; set; }
+            public string UOMSKU { get; set; }
+            public string DocumentNo { get; set; }
+            public string Grade { get; set; }
+            public double Balance { get; set; }
+            public string CreatedBy { get; set; }
+            public decimal PackagingQty { get; set; }
+        }
+
+        public class NewBarcodeInfo
+        {
+            public NewBarcodeInfo()
+            {
+                productPackingCodes = new List<string>();
+            }
+
+            public List<string> productPackingCodes { get; set; }
+
+            public double productPackingLength { get; set; }
+            public string productPackingType { get; set; }
+            public string color { get; set; }
+            public string uomUnit { get; set; }
+            public string productionOrderNo { get; set; }
+            public string documentNo { get; set; }
+            public string grade { get; set; }
+
+        }
     }
 }

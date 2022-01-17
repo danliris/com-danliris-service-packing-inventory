@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
@@ -16,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse.StockOpnameWarehouseService;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrintingStockOpname
 {
@@ -120,46 +122,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             }
         }
 
-        private StockOpnameWarehouseProductionOrderViewModel ViewModel
+        private BarcodeInfoViewModel ViewModel
         {
             get
             {
-                return new StockOpnameWarehouseProductionOrderViewModel
+                return new BarcodeInfoViewModel
                 {
-                    Id = 1,
-                    ProductionOrder = new ProductionOrder()
-                    {
-                        Code = "SLD",
-                        Id = 62,
-                        Type = "SOLID",
-                        No = "F/2020/000"
-                    },
-                    PackingInstruction = "a",
-                    Construction = "a",
-                    Unit = "a",
-                    Buyer = "a",
+                    PackingCode = "a",
+                    MaterialName = "a",
+                    MaterialConstructionName =  "a",
+                    YarnMaterialName = "a",
+                    PackingLength = 1,
+                    PackingType = "a",
                     Color = "a",
-                    Motif = "a",
-                    UomUnit = "a",
-                    Remark = "a",
+                    OrderNo = "P001",
+                    UOMSKU = "mtr",
+                    DocumentNo = "a",
                     Grade = "a",
-                    Status = "a",
-                    Balance = 50,
-                    PreviousBalance = 100,
-                    InputId = 2,
-                    ProductionOrderNo = "asd",
-                    Material = new Material()
-                    {
-                        Code = "Code",
-                        Name = "Name"
-                    },
-                    MtrLength = 10,
-                    YdsLength = 10,
-                    Quantity = 10,
-                    PackagingType = "s",
-                    PackagingUnit = "a",
-                    PackagingQty = 10,
-                    QtyOrder = 10
+                    Balance = 1,
+                    CreatedBy = "dev2",
+                    PackagingQty = 1
                 };
             }
         }
@@ -675,7 +657,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //v
             var serviceMock = new Mock<IStockOpnameWarehouseService>();
             serviceMock.Setup(s => s.GetMonitoringScan( It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { ViewModel });
+                .Returns(new List<BarcodeInfoViewModel>() { ViewModel });
             var service = serviceMock.Object;
 
             var identityProviderMock = new Mock<IIdentityProvider>();

@@ -20,6 +20,7 @@ using System.IO;
 using OfficeOpenXml;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using OfficeOpenXml.Style;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse
 {
@@ -32,6 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
+        public List<BarcodeInfoViewModel2> _barcodes;
 
 
         public InputWarehouseService(IServiceProvider serviceProvider)
@@ -1456,6 +1458,219 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
+        public MemoryStream GenerateExcelAllBarcode(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
+        {
+            //var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI);
+
+
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                warehouseData = warehouseData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (!dateFrom.HasValue && dateTo.HasValue)
+            {
+                warehouseData = warehouseData.Where(s => s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (dateFrom.HasValue && !dateTo.HasValue)
+            {
+                warehouseData = warehouseData.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date);
+            }
+
+            warehouseData = warehouseData.OrderBy(s => s.BonNo);
+            //var model = await _repository.ReadByIdAsync(id);
+            //var modelWhere = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            _barcodes = new List<BarcodeInfoViewModel2>();
+            var modelAll = warehouseData.Select(s =>
+                new
+                {
+                    SppList = s.DyeingPrintingAreaInputProductionOrders.Select(d => new
+                    {
+                        BonNo = s.BonNo,
+                        ProductionOrderNo = d.ProductionOrderNo,
+                        Construction = d.Construction,
+                        Unit = d.Unit,
+                        Color = d.Color,
+                        Motif = d.Motif,
+                        ProductPackingCodes = d.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                        PackagingType = d.PackagingType,
+                        Grade = d.Grade,
+                        InputPackagingQty = d.InputPackagingQty,
+                        PackagingUnit = d.PackagingUnit,
+                        InputQuantity = d.InputQuantity,
+                        UomUnit = d.UomUnit,
+                        DateIn = d.DateIn,
+                        PackingLength = d.PackagingLength
+
+                    })
+                });
+
+            foreach (var data in modelAll.Select( x => x.SppList).SingleOrDefault())
+            {
+    
+
+                foreach (var packingCode in data.ProductPackingCodes)
+                {
+                    var barcodeInfo = new BarcodeInfoViewModel2()
+                    {
+                        BonNo = data.BonNo,
+                        OrderNo = data.ProductionOrderNo,
+                        Construction =data.Construction,
+                        Unit = data.Unit,
+                        Color = data.Color,
+                        PackingCode = packingCode,
+                        PackingType = data.PackagingType,
+                        
+                        PackingLength = data.PackingLength,
+                        
+                        PackagingQty = 1,
+
+                        UOMSKU = data.UomUnit,
+                        Grade = data.Grade,
+                    };
+                    _barcodes.Add(barcodeInfo);
+                }
+
+
+            }
+
+
+            //var model = modelAll.First();
+            //var query = model.DyeingPrintingAreaOutputProductionOrders;
+            //var query = modelAll.SelectMany(s => s.SppList);
+            var query = _barcodes;
+
+
+            var indexNumber = 1;
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "KONSTRUKSI", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "COLOR", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BARCODE", DataType = typeof(string) });
+
+            decimal qtyRoll = 0;
+            double qtyBalance = 0;
+            //if (warehouseData.Count() == 0)
+            //{
+            //    dt.Rows.Add(0, "", "", "", "", "", 0, 0);
+            //}
+            //else
+            //{
+
+                foreach (var item in query)
+                {
+                    //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    qtyRoll += item.PackagingQty;
+                    qtyBalance += item.PackingLength;
+                    dt.Rows.Add(indexNumber,
+                                item.OrderNo,
+                                item.Construction,
+                                item.Unit,
+                               item.Color,
+                                item.PackagingQty,
+                                item.PackingLength,
+                                item.PackingCode
+                                );
+                    indexNumber++;
+                }
+            //}
+
+            ExcelPackage package = new ExcelPackage();
+            #region Header
+            var sheet = package.Workbook.Worksheets.Add("Barcode List");
+
+            ////sheet.Cells[1, 1].Value = "TANGGAL";
+            ////sheet.Cells[1, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+
+            ////sheet.Cells[2, 1].Value = "NO. BON";
+            ////sheet.Cells[2, 2].Value = model.BonNo;
+            ////sheet.Cells[2, 2, 2, 3].Merge = true;
+
+            var row = 1;
+            var merge = 2;
+
+            sheet.Cells[row, 1].Value = "NO.";
+            sheet.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 1, merge, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 1, merge, 1].Merge = true;
+
+            sheet.Cells[row, 2].Value = "NO.SPP";
+            sheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 2, merge, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 2, merge, 2].Merge = true;
+
+            sheet.Cells[row, 3].Value = "KONSTRUKSI";
+            sheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 3, merge, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 3, merge, 3].Merge = true;
+
+            sheet.Cells[row, 4].Value = "UNIT";
+            sheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 4, merge, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 4, merge, 4].Merge = true;
+
+            sheet.Cells[row, 5].Value = "WARNA";
+            sheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 5, merge, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 5, merge, 5].Merge = true;
+
+            sheet.Cells[row, 6].Value = "QUANTITY  ROLL";
+            sheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 6, merge, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 6, merge, 6].Merge = true;
+
+            sheet.Cells[row, 7].Value = "QUANTITY";
+            sheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 7, merge, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 7, merge, 7].Merge = true;
+
+            sheet.Cells[row, 8].Value = "BARCODE";
+            sheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 8, merge, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 8, merge, 8].Merge = true;
+#endregion
+
+           // var a = query.Count();
+
+            var a = query.Count();
+            sheet.Cells[$"A{3 + a}"].Value = "T O T A L  . . . . . . . . . . . . . . .";
+            sheet.Cells[$"A{3 + a}:E{6 + a}"].Merge = true;
+            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.Font.Bold = true;
+            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            sheet.Cells[$"F{3 + a}"].Value = qtyRoll;
+            sheet.Cells[$"G{3 + a}"].Value = qtyBalance;
+            //sheet.Cells[$"K{6 + a}"].Value = CorrQtyTotal;
+            //sheet.Cells[$"M{6 + a}"].Value = ExpendQtyTotal;
+            //sheet.Cells[$"O{6 + a}"].Value = EndingQtyTotal;
+
+            int tableRowStart = 3;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
+        }
+
         public OutputPreWarehouseItemListViewModel GetOutputPreWarehouseProductionOrdersByCode(string packingCode)
         {
             var query = _outputProductionOrderRepository.ReadAll()
@@ -1556,5 +1771,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             return obj.Id.GetHashCode();
         }
+    }
+
+    public class BarcodeInfoViewModel2
+    {
+        public string BonNo { get; set; }
+        public string Construction { get; set; }
+        public string Unit { get; set; }
+        public string Motif { get; set; }
+        public string PackingCode { get; set; }
+        public string MaterialName { get; set; }
+        public string MaterialConstructionName { get; set; }
+        public string YarnMaterialName { get; set; }
+        public double PackingLength { get; set; }
+        public string PackingType { get; set; }
+        public string Color { get; set; }
+        public string OrderNo { get; set; }
+        public string UOMSKU { get; set; }
+        public string DocumentNo { get; set; }
+        public string Grade { get; set; }
+        public double Balance { get; set; }
+        public string CreatedBy { get; set; }
+        public decimal PackagingQty { get; set; }
     }
 }
