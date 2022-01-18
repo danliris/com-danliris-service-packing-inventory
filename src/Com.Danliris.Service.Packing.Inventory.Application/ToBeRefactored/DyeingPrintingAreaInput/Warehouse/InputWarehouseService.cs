@@ -1510,7 +1510,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var data in modelAll.Select( x => x.SppList).SingleOrDefault())
             {
-    
 
                 foreach (var packingCode in data.ProductPackingCodes)
                 {
@@ -1522,13 +1521,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Unit = data.Unit,
                         Color = data.Color,
                         PackingCode = packingCode,
-                        PackingType = data.PackagingType,
-                        
                         PackingLength = data.PackingLength,
-                        
                         PackagingQty = 1,
-
-                        UOMSKU = data.UomUnit,
                         Grade = data.Grade,
                     };
                     _barcodes.Add(barcodeInfo);
@@ -1548,6 +1542,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BON NO", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "KONSTRUKSI", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
@@ -1555,6 +1550,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "BARCODE", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "GRADE", DataType = typeof(string) });
 
             decimal qtyRoll = 0;
             double qtyBalance = 0;
@@ -1572,13 +1568,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     qtyRoll += item.PackagingQty;
                     qtyBalance += item.PackingLength;
                     dt.Rows.Add(indexNumber,
+                                item.BonNo,
                                 item.OrderNo,
                                 item.Construction,
                                 item.Unit,
-                               item.Color,
+                                item.Color,
                                 item.PackagingQty,
                                 item.PackingLength,
-                                item.PackingCode
+                                item.PackingCode,
+                                item.Grade
                                 );
                     indexNumber++;
                 }
@@ -1604,59 +1602,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             sheet.Cells[row, 1, merge, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 1, merge, 1].Merge = true;
 
-            sheet.Cells[row, 2].Value = "NO.SPP";
+            sheet.Cells[row, 2].Value = "BON NO";
             sheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 2, merge, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 2, merge, 2].Merge = true;
 
-            sheet.Cells[row, 3].Value = "KONSTRUKSI";
+            sheet.Cells[row, 3].Value = "NO.SPP";
             sheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 3, merge, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 3, merge, 3].Merge = true;
 
-            sheet.Cells[row, 4].Value = "UNIT";
+            sheet.Cells[row, 4].Value = "KONSTRUKSI";
             sheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 4, merge, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 4, merge, 4].Merge = true;
 
-            sheet.Cells[row, 5].Value = "WARNA";
+            sheet.Cells[row, 5].Value = "UNIT";
             sheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 5, merge, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 5, merge, 5].Merge = true;
 
-            sheet.Cells[row, 6].Value = "QUANTITY  ROLL";
+            sheet.Cells[row, 6].Value = "WARNA";
             sheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 6, merge, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 6, merge, 6].Merge = true;
 
-            sheet.Cells[row, 7].Value = "QUANTITY";
+            sheet.Cells[row, 7].Value = "QUANTITY  ROLL";
             sheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 7, merge, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 7, merge, 7].Merge = true;
 
-            sheet.Cells[row, 8].Value = "BARCODE";
+            sheet.Cells[row, 8].Value = "QUANTITY";
             sheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[row, 8, merge, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
             sheet.Cells[row, 8, merge, 8].Merge = true;
-#endregion
 
-           // var a = query.Count();
+            sheet.Cells[row, 9].Value = "BARCODE";
+            sheet.Cells[row, 9].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 9].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 9, merge, 9].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 9, merge, 9].Merge = true;
+
+            sheet.Cells[row, 10].Value = "GRADE";
+            sheet.Cells[row, 10].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 10].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 10, merge, 10].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 10, merge, 10].Merge = true;
+            #endregion
+
+            // var a = query.Count();
 
             var a = query.Count();
             sheet.Cells[$"A{3 + a}"].Value = "T O T A L  . . . . . . . . . . . . . . .";
-            sheet.Cells[$"A{3 + a}:E{6 + a}"].Merge = true;
-            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.Font.Bold = true;
-            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-            sheet.Cells[$"A{3 + a}:E{6 + a}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            sheet.Cells[$"F{3 + a}"].Value = qtyRoll;
-            sheet.Cells[$"G{3 + a}"].Value = qtyBalance;
+            sheet.Cells[$"A{3 + a}:F{4 + a}"].Merge = true;
+            sheet.Cells[$"A{3 + a}:F{4 + a}"].Style.Font.Bold = true;
+            sheet.Cells[$"A{3 + a}:F{4 + a}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            sheet.Cells[$"A{3 + a}:F{4 + a}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            sheet.Cells[$"G{3 + a}"].Value = qtyRoll;
+            sheet.Cells[$"H{3 + a}"].Value = qtyBalance;
             //sheet.Cells[$"K{6 + a}"].Value = CorrQtyTotal;
             //sheet.Cells[$"M{6 + a}"].Value = ExpendQtyTotal;
             //sheet.Cells[$"O{6 + a}"].Value = EndingQtyTotal;
@@ -1780,20 +1790,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string BonNo { get; set; }
         public string Construction { get; set; }
         public string Unit { get; set; }
-        public string Motif { get; set; }
         public string PackingCode { get; set; }
-        public string MaterialName { get; set; }
-        public string MaterialConstructionName { get; set; }
-        public string YarnMaterialName { get; set; }
         public double PackingLength { get; set; }
-        public string PackingType { get; set; }
         public string Color { get; set; }
         public string OrderNo { get; set; }
-        public string UOMSKU { get; set; }
-        public string DocumentNo { get; set; }
         public string Grade { get; set; }
-        public double Balance { get; set; }
-        public string CreatedBy { get; set; }
         public decimal PackagingQty { get; set; }
     }
 }
