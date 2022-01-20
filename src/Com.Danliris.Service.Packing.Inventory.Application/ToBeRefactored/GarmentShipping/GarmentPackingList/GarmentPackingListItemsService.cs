@@ -155,6 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     OrderNo = i.OrderNo,
                     Description = i.Description,
                     DescriptionMd = i.DescriptionMd,
+                    Remarks = i.Remarks,
 
                     Details = i.Details.Select(d => new GarmentPackingListDetailViewModel
                     {
@@ -322,6 +323,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetRemarks(item.Remarks, _identityProvider.Username, UserAgent);
 
                     foreach (var detailToUpdate in itemToUpdate.Details)
                     {
