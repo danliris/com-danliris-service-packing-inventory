@@ -86,6 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
                 IsCostStructured = model.IsCostStructured,
+                IsShipping = model.IsShipping,
                 Description = model.Description,
                 Items = (model.Items ?? new List<GarmentPackingListItemModel>()).Select(i => new GarmentPackingListItemViewModel
                 {
@@ -202,25 +203,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 NettWeight = model.NettWeight,
                 NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
-                Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).Select(m => new GarmentPackingListMeasurementViewModel
+                Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).GroupBy(g => new { g.Length, g.Width, g.Height }).Select(m => new GarmentPackingListMeasurementViewModel
                 {
-                    Active = m.Active,
-                    Id = m.Id,
-                    CreatedAgent = m.CreatedAgent,
-                    CreatedBy = m.CreatedBy,
-                    CreatedUtc = m.CreatedUtc,
-                    DeletedAgent = m.DeletedAgent,
-                    DeletedBy = m.DeletedBy,
-                    DeletedUtc = m.DeletedUtc,
-                    IsDeleted = m.IsDeleted,
-                    LastModifiedAgent = m.LastModifiedAgent,
-                    LastModifiedBy = m.LastModifiedBy,
-                    LastModifiedUtc = m.LastModifiedUtc,
+                    Active = m.FirstOrDefault().Active,
+                    Id = m.FirstOrDefault().Id,
+                    CreatedAgent = m.FirstOrDefault().CreatedAgent,
+                    CreatedBy = m.FirstOrDefault().CreatedBy,
+                    CreatedUtc = m.FirstOrDefault().CreatedUtc,
+                    DeletedAgent = m.FirstOrDefault().DeletedAgent,
+                    DeletedBy = m.FirstOrDefault().DeletedBy,
+                    DeletedUtc = m.FirstOrDefault().DeletedUtc,
+                    IsDeleted = m.FirstOrDefault().IsDeleted,
+                    LastModifiedAgent = m.FirstOrDefault().LastModifiedAgent,
+                    LastModifiedBy = m.FirstOrDefault().LastModifiedBy,
+                    LastModifiedUtc = m.FirstOrDefault().LastModifiedUtc,
 
-                    Length = m.Length,
-                    Width = m.Width,
-                    Height = m.Height,
-                    CartonsQuantity = m.CartonsQuantity,
+                    Length = m.FirstOrDefault().Length,
+                    Width = m.FirstOrDefault().Width,
+                    Height = m.FirstOrDefault().Height,
+                    CartonsQuantity = m.Sum(s => s.CartonsQuantity),
 
                 }).ToList(),
                 SayUnit = model.SayUnit,
@@ -273,13 +274,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 i.Uom = i.Uom ?? new UnitOfMeasurement();
                 i.Unit = i.Unit ?? new Unit();
                 i.Comodity = i.Comodity ?? new Comodity();
-                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, details)
+                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks, details)
                 {
                     Id = i.Id
                 };
             }).ToList();
 
-            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity)
+            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity, m.CreatedBy)
             {
                 Id = m.Id
             }).ToList();
@@ -289,7 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.InvoiceNo = viewModel.InvoiceNo ?? GenerateInvoiceNo(viewModel);
             viewModel.ShippingStaff = viewModel.ShippingStaff ?? new ShippingStaff();
             Enum.TryParse(viewModel.Status, true, out GarmentPackingListStatusEnum status);
-            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.NetNetWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description, viewModel.IsCostStructured, viewModel.OtherCommodity);
+            GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.NetNetWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description, viewModel.IsCostStructured, viewModel.OtherCommodity, viewModel.IsShipping);
 
             return garmentPackingListModel;
         }
@@ -350,7 +351,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
-            garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status));
+            garmentPackingListModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, garmentPackingListModel.Status.ToString()));
 
             await _packingListRepository.InsertAsync(garmentPackingListModel);
 
@@ -406,6 +407,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = query
                 .Skip((page - 1) * size)
                 .Take(size)
+                .ToList()
                 .Select(model => MapToViewModel(model))
                 .ToList();
 
@@ -421,7 +423,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var items in viewModel.Items)
             {
-               items.Details = items.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
+                items.Details = items.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
             }
 
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
@@ -549,7 +551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob,cPrice);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob, cPrice);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
@@ -629,7 +631,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 model.SetIsPosted(true, _identityProvider.Username, UserAgent);
                 model.SetStatus(GarmentPackingListStatusEnum.POSTED, _identityProvider.Username, UserAgent);
-                model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.POSTED));
+                model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.POSTED.ToString()));
             }
 
             await _packingListRepository.SaveChanges();
@@ -640,7 +642,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetIsPosted(false, _identityProvider.Username, UserAgent);
             model.SetStatus(GarmentPackingListStatusEnum.CREATED, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED));
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
             await _packingListRepository.SaveChanges();
         }
@@ -656,7 +658,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (oldModel.Status != status)
             {
                 oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
-                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
             }
@@ -673,7 +675,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (oldModel.Status != status)
             {
                 oldModel.SetStatus(status, _identityProvider.Username, UserAgent);
-                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status));
+                oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
             }
@@ -683,7 +685,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
             model.SetStatus(status, _identityProvider.Username, UserAgent);
-            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status, remark));
+            model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString(), remark));
 
             return _packingListRepository.SaveChanges();
         }

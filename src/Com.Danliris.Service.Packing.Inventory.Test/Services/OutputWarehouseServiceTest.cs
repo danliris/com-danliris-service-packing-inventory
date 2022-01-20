@@ -2419,7 +2419,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEqual(0, result);
         }
 
-        [Fact]
+        /*[Fact]
         public void Should_Success_GetInputSppWarehouseItemListV2()
         {
             var inputRepoMock = new Mock<IDyeingPrintingAreaInputRepository>();
@@ -2477,7 +2477,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var result = service.GetInputSppWarehouseItemListV2(InputModelToShippingArea.DyeingPrintingAreaInputProductionOrders.FirstOrDefault().ProductionOrderId);
 
             Assert.NotEmpty(result);
-        }
+        }*/
 
         [Fact]
         public void Should_Success_GetDistinctProductionOrders()
