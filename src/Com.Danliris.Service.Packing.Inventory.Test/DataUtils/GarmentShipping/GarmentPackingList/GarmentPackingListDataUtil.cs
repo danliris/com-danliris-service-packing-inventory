@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
                     }
                     details.Add(new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes, d.Index) { Id = d.Id });
                 }
-                items.Add(new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrandId, i.BuyerBrandName, i.ComodityId, i.ComodityCode, i.ComodityName, i.ComodityDescription, i.Quantity, i.UomId, i.UomUnit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.UnitId, i.UnitCode, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks, i.RoType, details) { Id = i.Id });
+                items.Add(new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrandId, i.BuyerBrandName, i.ComodityId, i.ComodityCode, i.ComodityName, i.ComodityDescription, i.Quantity, i.UomId, i.UomUnit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.UnitId, i.UnitCode, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks, details) { Id = i.Id });
             }
             var measurements = new HashSet<GarmentPackingListMeasurementModel>();
             foreach (var measurement in om.Measurements)
