@@ -274,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 i.Uom = i.Uom ?? new UnitOfMeasurement();
                 i.Unit = i.Unit ?? new Unit();
                 i.Comodity = i.Comodity ?? new Comodity();
-                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, details)
+                return new GarmentPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks, details)
                 {
                     Id = i.Id
                 };
@@ -423,7 +423,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var items in viewModel.Items)
             {
-               items.Details = items.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
+                items.Details = items.Details.OrderBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
             }
 
             viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
@@ -551,7 +551,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
             viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
 
-            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob,cPrice);
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob, cPrice);
 
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
