@@ -203,25 +203,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 NettWeight = model.NettWeight,
                 NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
-                Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).Select(m => new GarmentPackingListMeasurementViewModel
+                Measurements = (model.Measurements ?? new List<GarmentPackingListMeasurementModel>()).GroupBy(g => new { g.Length, g.Width, g.Height }).Select(m => new GarmentPackingListMeasurementViewModel
                 {
-                    Active = m.Active,
-                    Id = m.Id,
-                    CreatedAgent = m.CreatedAgent,
-                    CreatedBy = m.CreatedBy,
-                    CreatedUtc = m.CreatedUtc,
-                    DeletedAgent = m.DeletedAgent,
-                    DeletedBy = m.DeletedBy,
-                    DeletedUtc = m.DeletedUtc,
-                    IsDeleted = m.IsDeleted,
-                    LastModifiedAgent = m.LastModifiedAgent,
-                    LastModifiedBy = m.LastModifiedBy,
-                    LastModifiedUtc = m.LastModifiedUtc,
+                    Active = m.FirstOrDefault().Active,
+                    Id = m.FirstOrDefault().Id,
+                    CreatedAgent = m.FirstOrDefault().CreatedAgent,
+                    CreatedBy = m.FirstOrDefault().CreatedBy,
+                    CreatedUtc = m.FirstOrDefault().CreatedUtc,
+                    DeletedAgent = m.FirstOrDefault().DeletedAgent,
+                    DeletedBy = m.FirstOrDefault().DeletedBy,
+                    DeletedUtc = m.FirstOrDefault().DeletedUtc,
+                    IsDeleted = m.FirstOrDefault().IsDeleted,
+                    LastModifiedAgent = m.FirstOrDefault().LastModifiedAgent,
+                    LastModifiedBy = m.FirstOrDefault().LastModifiedBy,
+                    LastModifiedUtc = m.FirstOrDefault().LastModifiedUtc,
 
-                    Length = m.Length,
-                    Width = m.Width,
-                    Height = m.Height,
-                    CartonsQuantity = m.CartonsQuantity,
+                    Length = m.FirstOrDefault().Length,
+                    Width = m.FirstOrDefault().Width,
+                    Height = m.FirstOrDefault().Height,
+                    CartonsQuantity = m.Sum(s => s.CartonsQuantity),
 
                 }).ToList(),
                 SayUnit = model.SayUnit,
@@ -280,7 +280,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 };
             }).ToList();
 
-            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity)
+            var measurements = (viewModel.Measurements ?? new List<GarmentPackingListMeasurementViewModel>()).Select(m => new GarmentPackingListMeasurementModel(m.Length, m.Width, m.Height, m.CartonsQuantity, m.CreatedBy)
             {
                 Id = m.Id
             }).ToList();
@@ -407,6 +407,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = query
                 .Skip((page - 1) * size)
                 .Take(size)
+                .ToList()
                 .Select(model => MapToViewModel(model))
                 .ToList();
 
