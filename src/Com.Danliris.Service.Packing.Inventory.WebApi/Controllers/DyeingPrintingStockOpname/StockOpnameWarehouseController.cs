@@ -266,33 +266,33 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        //[HttpGet("monitoring/download")]
-        //public IActionResult GetXls([FromQuery] long productionOrderId = 0, [FromQuery] string barcode = null, [FromQuery] string documentNo = null, [FromQuery] string grade = null, [FromQuery] string userFilter = null)
-        //{
+        [HttpGet("monitoring/download")]
+        public IActionResult GetXlsScanView([FromQuery] long productionOrderId = 0, [FromQuery] string barcode = null, [FromQuery] string documentNo = null, [FromQuery] string grade = null, [FromQuery] string userFilter = null)
+        {
 
-        //    try
-        //    {
-                
-
-        //        byte[] xlsInBytes;
-        //        int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //        //DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
-        //        //DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
-
-        //        MemoryStream xls = _service.GenerateExcelMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+            try
+            {
 
 
-        //        string filename = String.Format("Laporan Stock Gudang All Unit - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
-        //        xlsInBytes = xls.ToArray();
-        //        var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
-        //        return file;
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                //DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
+                //DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-        //    }
-        //}
+                MemoryStream xls = _service.GenerateExcelMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+
+
+                string filename = String.Format("Laporan Stock Gudang All Unit - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
 
     }
