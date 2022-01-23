@@ -12,5 +12,14 @@
         public string WovenType { get; set; }
         public string YarnType { get; set; }
         public string ProductionOrderNo { get; set; }
+        public int materialId { get; set; }
+        public string materialName { get; set; }
+        public int materialConstructionId { get; set; }
+        public string materialConstructionName { get; set; }
+        public int yarnMaterialId { get; set; }
+        public string yarnMaterialName { get; set; }
+        public string uomUnit { get; set; }
+        public string motif { get; set; }
+        public string color { get; set; }
     }
 }

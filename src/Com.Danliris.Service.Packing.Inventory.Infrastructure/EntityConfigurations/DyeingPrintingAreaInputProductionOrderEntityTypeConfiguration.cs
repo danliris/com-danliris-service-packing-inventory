@@ -161,6 +161,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder
              .Property(s => s.YarnMaterialName)
              .HasMaxLength(1024);
+
+            builder.HasIndex(element => element.ProductionOrderNo);
+            builder.HasIndex(element => element.ProductionOrderId);
+            builder.HasIndex(element => element.ProcessTypeName);
         }
     }
 }
