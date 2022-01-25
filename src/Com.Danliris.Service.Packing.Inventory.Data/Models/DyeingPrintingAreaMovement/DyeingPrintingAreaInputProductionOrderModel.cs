@@ -73,6 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string MaterialOrigin { get; set; }
 
         public bool IsFromStockOpname { get; set; }
+        public bool IsAfterStockOpname { get; set; }
 
         #region aval transformasi
         public string InputAvalBonNo { get; private set; }
@@ -520,6 +521,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
             ProductPackingCodeRemains = productPackingCodeRemains;
+
+            IsAfterStockOpname = true;
         }
 
         /// <summary>

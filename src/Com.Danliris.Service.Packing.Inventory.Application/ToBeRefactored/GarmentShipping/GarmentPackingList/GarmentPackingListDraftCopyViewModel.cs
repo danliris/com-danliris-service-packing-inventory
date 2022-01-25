@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
 
                     
-                    if (string.IsNullOrWhiteSpace(item.OrderNo))
+                    if (string.IsNullOrWhiteSpace(item. OrderNo))
                     {
                         errorItem["OrderNo"] = "PO Buyer tidak boleh kosong";
                         errorItemsCount++;

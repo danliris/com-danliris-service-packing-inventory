@@ -377,6 +377,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("InventoryType");
 
+                    b.Property<bool>("IsAfterStockOpname");
+
                     b.Property<bool>("IsChecked");
 
                     b.Property<bool>("IsDeleted");
@@ -480,6 +482,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DyeingPrintingAreaInputId");
+
+                    b.HasIndex("ProcessTypeName");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionOrderNo");
 
                     b.ToTable("DyeingPrintingAreaInputProductionOrders");
                 });
@@ -892,6 +900,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DyeingPrintingAreaOutputId");
+
+                    b.HasIndex("ProcessTypeName");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionOrderNo");
 
                     b.ToTable("DyeingPrintingAreaOutputProductionOrders");
                 });
@@ -2080,6 +2094,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("RONo");
 
+                    b.Property<string>("Remarks");
+
                     b.Property<string>("SCNo");
 
                     b.Property<string>("SectionCode");
@@ -2301,6 +2317,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("RONo")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Remarks");
+
                     b.Property<string>("SCNo")
                         .HasMaxLength(50);
 
@@ -2442,6 +2460,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsPosted");
 
+                    b.Property<bool>("IsShipping");
+
                     b.Property<bool>("IsUsed");
 
                     b.Property<string>("IssuedBy")
@@ -2546,7 +2566,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Remark");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status");
 
                     b.HasKey("Id");
 

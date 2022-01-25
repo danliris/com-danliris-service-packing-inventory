@@ -454,7 +454,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             stockOpnameProductionOrderRepo
                  .Setup(s => s.ReadAll())
                  .Returns(vm.AsQueryable());
-            
+
 
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
@@ -463,6 +463,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             //Assert
             Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelScanView()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
+
+            var vm = model2.DyeingPrintingStockOpnameProductionOrders;
+
+            vm.FirstOrDefault().CreatedBy = "dev2";
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(vm.AsQueryable());
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = service.GenerateExcelMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev2");
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Empty_GenerateExcelScanView()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
+
+            var vm = model2.DyeingPrintingStockOpnameProductionOrders;
+
+            vm.FirstOrDefault().CreatedBy = "dev2";
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(vm.AsQueryable());
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = service.GenerateExcelMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev");
+
+            Assert.NotNull(result);
         }
     }
 }

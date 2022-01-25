@@ -42,6 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string Description { get; private set; }
 
         public string DescriptionMd { get; private set; }
+        public string Remarks { get; private set; }
 
         public ICollection<GarmentDraftPackingListDetailModel> Details { get; private set; }
 
@@ -50,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentDraftPackingListDetailModel>();
         }
 
-        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, int buyerId, string buyerCode, string sectionCode, ICollection<GarmentDraftPackingListDetailModel> details)
+        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, int buyerId, string buyerCode, string sectionCode, ICollection<GarmentDraftPackingListDetailModel> details, string remarks)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -79,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             BuyerId = buyerId;
             BuyerCode = buyerCode;
             SectionCode = sectionCode;
+            Remarks = remarks;
         }
 
         public void SetRONo(string rONo, string userName, string userAgent)
@@ -287,6 +289,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (DescriptionMd != descriptionMd)
             {
                 DescriptionMd = descriptionMd; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemarks(string remarks, string userName, string userAgent)
+        {
+            if (Remarks != remarks)
+            {
+                Remarks = remarks; this.FlagForUpdate(userName, userAgent);
             }
         }
 

@@ -10,17 +10,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public double Width { get; private set; }
         public double Height { get; private set; }
         public double CartonsQuantity { get; private set; }
+        public string CreatedBy { get; private set; }
 
         public GarmentPackingListMeasurementModel()
         {
         }
 
-        public GarmentPackingListMeasurementModel(double length, double width, double height, double cartonsQuantity)
+        public GarmentPackingListMeasurementModel(double length, double width, double height, double cartonsQuantity, string createdBy)
         {
             Length = length;
             Width = width;
             Height = height;
             CartonsQuantity = cartonsQuantity;
+            CreatedBy = createdBy;
         }
 
         public void SetLength(double length, string userName, string userAgent)
