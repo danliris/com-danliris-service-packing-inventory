@@ -2277,6 +2277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2287,7 +2288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1), 7);
 
@@ -2303,6 +2304,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2313,7 +2315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(InputModelExcel.Date.AddDays(-1), null, 7);
 
@@ -2329,6 +2331,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2339,7 +2342,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(null, InputModelExcel.Date.AddDays(1), 7);
 
