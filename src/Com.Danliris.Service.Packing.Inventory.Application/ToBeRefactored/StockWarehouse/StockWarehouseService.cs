@@ -47,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             if (area == "GUDANG JADI")
             {
-                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
+                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname || entity.IsAfterStockOpname).Select(entity => entity.Id).ToList();
                 var queryTransform = _movementRepository.ReadAll()
                 .Where(s => s.Area == area && s.Type == "IN" && inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
 
@@ -318,10 +318,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             if (area == "GUDANG JADI")
             {
-                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
+                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname || entity.IsAfterStockOpname).Select(entity => entity.Id).ToList();
                 var queryTransform = _movementRepository.ReadAll()
                        .Where(s => s.Area == area &&
-                            s.Type == "IN" &&
+                            //s.Type == "IN" &&
                             inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
                             startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
                             s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
