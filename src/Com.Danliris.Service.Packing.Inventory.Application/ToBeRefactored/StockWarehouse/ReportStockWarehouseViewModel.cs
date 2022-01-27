@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public long ProductionOrderId { get; set; }
         public string NoSpp { get; set; }
         public string Construction { get; set; }
+        public string ProcessTypeName { get; set; }
         public string Unit { get; set; }
         public string Motif { get; set; }
         public string Buyer { get; set; }
