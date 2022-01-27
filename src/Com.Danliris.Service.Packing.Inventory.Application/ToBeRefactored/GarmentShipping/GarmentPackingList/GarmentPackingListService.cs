@@ -692,5 +692,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return _packingListRepository.SaveChanges();
         }
+
+        public async Task SetSampleDelivered(List<int> ids)
+        {
+            var models = _packingListRepository.Query.Where(m => ids.Contains(m.Id));
+            foreach (var model in models)
+            {
+                model.SetIsSampleDelivered(true, _identityProvider.Username, UserAgent);
+            }
+
+            await _packingListRepository.SaveChanges();
+        }
     }
 }
