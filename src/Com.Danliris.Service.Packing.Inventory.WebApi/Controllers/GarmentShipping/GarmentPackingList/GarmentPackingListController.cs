@@ -604,5 +604,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("delivered")]
+        public async Task<IActionResult> DeliveredSample([FromBody] List<int> ids)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetSampleDelivered(ids);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
