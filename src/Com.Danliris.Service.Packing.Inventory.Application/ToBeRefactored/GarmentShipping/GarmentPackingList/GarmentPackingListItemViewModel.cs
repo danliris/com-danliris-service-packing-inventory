@@ -39,6 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string Remarks { get; set; }
 
+        public string RoType { get; set; }
+
         public ICollection<GarmentPackingListDetailViewModel> Details { get; set; }
     }
 }

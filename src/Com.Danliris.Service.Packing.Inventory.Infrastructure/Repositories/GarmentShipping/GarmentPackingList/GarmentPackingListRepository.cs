@@ -154,6 +154,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 modelToUpdate.SetIsShipping(model.IsShipping, _identityProvider.Username, UserAgent);
             }
 
+            modelToUpdate.SetIsSampleDelivered(model.IsSampleDelivered, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsSampleExpenditureGood(model.IsSampleExpenditureGood, _identityProvider.Username, UserAgent);
+
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
                 var item = model.Items.FirstOrDefault(i => i.Id == itemToUpdate.Id);

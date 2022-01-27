@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220126010458_Add_Some_Field_GarmentPackingList_EnhancePackingListMD")]
+    partial class Add_Some_Field_GarmentPackingList_EnhancePackingListMD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -483,12 +485,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.HasIndex("DyeingPrintingAreaInputId");
 
-                    b.HasIndex("ProcessTypeName");
-
-                    b.HasIndex("ProductionOrderId");
-
-                    b.HasIndex("ProductionOrderNo");
-
                     b.ToTable("DyeingPrintingAreaInputProductionOrders");
                 });
 
@@ -787,8 +783,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("InventoryType");
 
-                    b.Property<bool>("IsAfterStockOpname");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -852,6 +846,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("ProductPackingCode")
                         .HasMaxLength(4096);
 
+                    b.Property<string>("ProductPackingCodeCreated");
+
                     b.Property<string>("ProductPackingCodeRemains");
 
                     b.Property<int>("ProductPackingId");
@@ -902,12 +898,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DyeingPrintingAreaOutputId");
-
-                    b.HasIndex("ProcessTypeName");
-
-                    b.HasIndex("ProductionOrderId");
-
-                    b.HasIndex("ProductionOrderNo");
 
                     b.ToTable("DyeingPrintingAreaOutputProductionOrders");
                 });
@@ -1031,6 +1021,120 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DyeingPrintingAreaSummaries");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.StockOpnameReportHeaderModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Buyer")
+                        .HasMaxLength(1024);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Material")
+                        .HasMaxLength(1024);
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Zone")
+                        .HasMaxLength(128);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StockOpnameReportHeaders");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.StockOpnameReportItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Buyer")
+                        .HasMaxLength(1024);
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<double>("Difference");
+
+                    b.Property<string>("Grade")
+                        .HasMaxLength(128);
+
+                    b.Property<int>("HeaderId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Jenis")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Material")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Motif")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ProductionOrderNo")
+                        .HasMaxLength(128);
+
+                    b.Property<double>("StockOpnameQuantity");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(128);
+
+                    b.Property<double>("WarehouseQuantity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StockOpnameReportItems");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameModel", b =>
@@ -2321,8 +2425,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Remarks");
 
-                    b.Property<string>("RoType");
-
                     b.Property<string>("SCNo")
                         .HasMaxLength(50);
 
@@ -2511,6 +2613,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("RemarkMd")
                         .HasMaxLength(2000);
+
+                    b.Property<string>("RoType");
 
                     b.Property<string>("SayUnit")
                         .HasMaxLength(50);
