@@ -1184,5 +1184,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             await service.SetApproveShipping(id, ViewModel);
         }
+
+        [Fact]
+        public async Task Set_Sample_Delivered_Success()
+        {
+            List<GarmentPackingListModel> models = new List<GarmentPackingListModel>
+            {
+                new GarmentPackingListModel { Id = 1 },
+                new GarmentPackingListModel { Id = 2 },
+                new GarmentPackingListModel { Id = 3 },
+            };
+
+            var spMock = GetServiceProviderWithIdentity(GetRepositoryMock(models).Object);
+
+            var service = GetService(spMock.Object);
+
+            var ids = models.Select(s => s.Id).ToList();
+
+            await service.SetSampleDelivered(ids);
+        }
     }
 }
