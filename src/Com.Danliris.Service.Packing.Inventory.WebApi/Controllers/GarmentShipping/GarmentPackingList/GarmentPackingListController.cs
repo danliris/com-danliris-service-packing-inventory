@@ -525,28 +525,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
-        [HttpPut("setIsGarmentSampleExpenditureGood/{invoiceNo}")]
-        public async Task<IActionResult> SetIsGarmentSampleExpenditureGood([FromRoute] string invoiceNo, [FromBody] GarmentPackingListViewModel viewModel)
+        [HttpPut("setIsGarmentSampleExpenditureGood")]
+        public async Task<IActionResult> SetIsGarmentSampleExpenditureGood([FromBody] GarmentPackingListShippingViewModel viewModel)
         {
             try
             {
                 VerifyUser();
-                _validateService.Validate(viewModel);
-                //await _service.SetApproveMd(id, viewModel);
+                await _service.SetSampleExpenditureGood(viewModel.InvoiceNo, viewModel.IsSampleExpenditureGood);
 
                 return Ok();
-            }
-            catch (ServiceValidationException ex)
-            {
-                var Result = new
-                {
-                    error = ResultFormatter.Fail(ex),
-                    apiVersion = "1.0.0",
-                    statusCode = HttpStatusCode.BadRequest,
-                    message = "Data does not pass validation"
-                };
-
-                return new BadRequestObjectResult(Result);
             }
             catch (Exception ex)
             {

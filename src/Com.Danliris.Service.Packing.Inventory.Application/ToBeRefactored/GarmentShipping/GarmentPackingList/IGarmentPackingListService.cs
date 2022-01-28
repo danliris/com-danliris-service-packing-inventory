@@ -30,5 +30,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<MemoryStreamResult> ReadExcelById(int id);
         Task<MemoryStreamResult> ReadExcelByIdFilterCarton(int id);
         Task SetSampleDelivered(List<int> ids);
+        Task SetSampleExpenditureGood(string invoiceNo, bool isSampleExpenditureGood);
     }
 }
