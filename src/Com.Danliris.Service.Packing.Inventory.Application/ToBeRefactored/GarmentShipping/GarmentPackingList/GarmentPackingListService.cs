@@ -740,5 +740,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             await _packingListRepository.SaveChanges();
         }
+
+        public async Task SetSampleExpenditureGood(string invoiceNo, bool isSampleExpenditureGood)
+        {
+            var model = _packingListRepository.Query.Where(m => m.InvoiceNo == invoiceNo).FirstOrDefault();
+            model.SetIsSampleExpenditureGood(isSampleExpenditureGood, _identityProvider.Username, UserAgent);
+            await _packingListRepository.SaveChanges();
+        }
     }
 }
