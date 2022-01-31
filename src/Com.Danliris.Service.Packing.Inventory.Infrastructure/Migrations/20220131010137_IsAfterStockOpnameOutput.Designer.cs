@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220131010137_IsAfterStockOpnameOutput")]
+    partial class IsAfterStockOpnameOutput
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2096,8 +2098,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("RONo");
 
-                    b.Property<string>("Remarks");
-
                     b.Property<string>("SCNo");
 
                     b.Property<string>("SectionCode");
@@ -2319,8 +2319,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("RONo")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Remarks");
-
                     b.Property<string>("SCNo")
                         .HasMaxLength(50);
 
@@ -2462,8 +2460,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsPosted");
 
-                    b.Property<bool>("IsShipping");
-
                     b.Property<bool>("IsUsed");
 
                     b.Property<string>("IssuedBy")
@@ -2568,7 +2564,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Remark");
 
-                    b.Property<string>("Status");
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
