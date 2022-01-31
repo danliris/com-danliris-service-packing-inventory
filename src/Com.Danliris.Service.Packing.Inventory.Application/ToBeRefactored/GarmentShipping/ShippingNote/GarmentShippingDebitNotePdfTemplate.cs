@@ -147,7 +147,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    Border = Rectangle.NO_BORDER,
             //    Phrase = new Phrase("KETERANGAN   : " + viewModel.description, normal_font)
             //});
-
+            string amountToText = "";
+            amountToText = CurrencyToText.ToWords(Convert.ToDecimal(viewModel.totalAmount));
             if (viewModel.bank.Currency.Code == "USD")
             {
                 tableItems.AddCell(new PdfPCell
@@ -155,7 +156,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Colspan = 2,
                     PaddingBottom = 10f,
                     Border = Rectangle.NO_BORDER,
-                    Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
+                    //Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
+                    Phrase = new Phrase("SAY : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font)
                 });
             }
             else

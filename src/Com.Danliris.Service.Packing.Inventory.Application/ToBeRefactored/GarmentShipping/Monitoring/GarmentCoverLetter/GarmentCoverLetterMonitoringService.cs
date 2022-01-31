@@ -137,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string PckQ = string.Format("{0:N2}", d.PACKQuantity);
                     string CTNS = string.Format("{0:N2}", d.TotalCarton);
                     
-                    result.Rows.Add(index, d.InvoiceNo, CLDate, EstDate, BookDate, d.EMKLName, d.ForwarderName, d.ShippingStaffName, Agent, d.Destination, d.Address,
+                    result.Rows.Add(index, d.InvoiceNo, CLDate, BookDate, EstDate, d.EMKLName, d.ForwarderName, d.ShippingStaffName, Agent, d.Destination, d.Address,
                                     d.PIC, d.ATTN, d.Phone, d.ContainerNo, d.ShippingSeal, d.DLSeal, CTNS, PcsQ, SetQ, PckQ, d.Truck, d.PlateNumber, d.DriverName, d.UnitName);
                 }
             }
