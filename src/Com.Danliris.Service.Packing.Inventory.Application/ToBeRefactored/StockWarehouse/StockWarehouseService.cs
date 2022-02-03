@@ -44,6 +44,143 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             //var queryTransform = _movementRepository.ReadAll()
             //    .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
             // var invType = inventoryType == "BARU" ? null : inventoryType;
+
+            if (area == "GUDANG JADI")
+            {
+                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
+                var queryTransform = _movementRepository.ReadAll()
+                .Where(s => s.Area == area && s.Type == "IN" && inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    queryTransform = queryTransform.Where(s => s.Unit == unit);
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    queryTransform = queryTransform.Where(s => s.Construction == construction);
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+                }
+                if (productionOrderId != 0)
+                {
+                    queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+                }
+                if (inventoryType == "BARU")
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == null);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(inventoryType))
+                    {
+                        queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                    }
+
+                }
+
+                //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                //       s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
+
+                var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
+                {
+                    ProductionOrderId = d.Key.ProductionOrderId,
+                    Type = DyeingPrintingArea.AWAL,
+                    Color = d.First().Color,
+                    Construction = d.First().Construction,
+                    Grade = d.Key.Grade,
+                    Jenis = d.Key.PackingType,
+                    Ket = d.Key.Remark,
+                    Motif = d.First().Motif,
+                    Buyer = d.First().Buyer,
+                    NoSpp = d.First().ProductionOrderNo,
+                    Satuan = d.First().UomUnit,
+                    Unit = d.First().Unit,
+                    InventoryType = d.Key.InventoryType,
+                    Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
+                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+
+                });
+
+                return result;
+            }
+            else
+            {
+                var queryTransform = _movementRepository.ReadAll()
+                .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    queryTransform = queryTransform.Where(s => s.Unit == unit);
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    queryTransform = queryTransform.Where(s => s.Construction == construction);
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+                }
+                if (productionOrderId != 0)
+                {
+                    queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+                }
+                if (inventoryType == "BARU")
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == null);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(inventoryType))
+                    {
+                        queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                    }
+
+                }
+
+                //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                //       s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
+
+                var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
+                {
+                    ProductionOrderId = d.Key.ProductionOrderId,
+                    Type = DyeingPrintingArea.AWAL,
+                    Color = d.First().Color,
+                    Construction = d.First().Construction,
+                    Grade = d.Key.Grade,
+                    Jenis = d.Key.PackingType,
+                    Ket = d.Key.Remark,
+                    Motif = d.First().Motif,
+                    Buyer = d.First().Buyer,
+                    NoSpp = d.First().ProductionOrderNo,
+                    Satuan = d.First().UomUnit,
+                    Unit = d.First().Unit,
+                    InventoryType = d.Key.InventoryType,
+                    Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
+                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+
+                });
+
+                return result;
+            }
+            
+        }
+
+        private IEnumerable<SimpleReportViewModel> GetAwalDataStockOpname(DateTimeOffset dateFrom, string area, IEnumerable<long> productionOrderIds, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
+        {
+            //var queryTransform = _movementRepository.ReadAll()
+            //    .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
+            // var invType = inventoryType == "BARU" ? null : inventoryType;
+            //var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
             var queryTransform = _movementRepository.ReadAll()
                 .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
 
@@ -106,7 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
-        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
+        private IEnumerable<SimpleReportViewModel> GetDataByDateStockOpname(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
 
             //var invType = inventoryType == "BARU" ? String.Empty : inventoryType;
@@ -174,6 +311,147 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             return result;
         }
 
+        private IEnumerable<SimpleReportViewModel> GetDataByDate(DateTime startDate, DateTimeOffset dateReport, string area, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
+        {
+
+            //var invType = inventoryType == "BARU" ? String.Empty : inventoryType;
+
+            if (area == "GUDANG JADI")
+            {
+                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
+                var queryTransform = _movementRepository.ReadAll()
+                       .Where(s => s.Area == area &&
+                            s.Type == "IN" &&
+                            inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
+                            startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    queryTransform = queryTransform.Where(s => s.Unit == unit);
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    queryTransform = queryTransform.Where(s => s.Construction == construction);
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+                }
+                if (productionOrderId != 0)
+                {
+                    queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+                }
+
+                if (inventoryType == "BARU")
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == null);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(inventoryType))
+                    {
+                        queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                    }
+
+                }
+
+
+                //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                //            s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
+
+                var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
+                {
+                    ProductionOrderId = d.Key.ProductionOrderId,
+                    Type = d.Key.Type,
+                    Color = d.First().Color,
+                    Construction = d.First().Construction,
+                    Grade = d.Key.Grade,
+                    Jenis = d.Key.PackingType,
+                    Ket = d.Key.Remark,
+                    Motif = d.First().Motif,
+                    Buyer = d.First().Buyer,
+                    NoSpp = d.First().ProductionOrderNo,
+                    Satuan = d.First().UomUnit,
+                    Unit = d.First().Unit,
+                    InventoryType = d.Key.InventoryType,
+                    Quantity = d.Sum(e => e.Balance)
+                });
+
+                return result;
+            }
+            else
+            {
+                var queryTransform = _movementRepository.ReadAll()
+                       .Where(s => s.Area == area &&
+                            startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
+
+                if (!string.IsNullOrEmpty(unit))
+                {
+                    queryTransform = queryTransform.Where(s => s.Unit == unit);
+                }
+                if (!string.IsNullOrEmpty(packingType))
+                {
+                    queryTransform = queryTransform.Where(s => s.PackingType == packingType);
+                }
+                if (!string.IsNullOrEmpty(construction))
+                {
+                    queryTransform = queryTransform.Where(s => s.Construction == construction);
+                }
+                if (!string.IsNullOrEmpty(buyer))
+                {
+                    queryTransform = queryTransform.Where(s => s.Buyer == buyer);
+                }
+                if (productionOrderId != 0)
+                {
+                    queryTransform = queryTransform.Where(s => s.ProductionOrderId == productionOrderId);
+                }
+
+                if (inventoryType == "BARU")
+                {
+                    queryTransform = queryTransform.Where(s => s.InventoryType == null);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(inventoryType))
+                    {
+                        queryTransform = queryTransform.Where(s => s.InventoryType == inventoryType);
+                    }
+
+                }
+
+
+                //var data = queryTransform.Select(s => new DyeingPrintingAreaMovementModel(s.Date, s.Area, s.Type, s.ProductionOrderId, s.ProductionOrderNo, s.ProductionOrderType, s.Construction, s.Color,
+                //            s.Grade, s.Remark, s.Motif, s.Unit, s.UomUnit, s.Balance, s.PackingType, s.Buyer)).ToList();
+
+                var result = queryTransform.GroupBy(s => new { s.ProductionOrderId, s.Type, s.Grade, s.Remark, s.PackingType, s.InventoryType }).Select(d => new SimpleReportViewModel()
+                {
+                    ProductionOrderId = d.Key.ProductionOrderId,
+                    Type = d.Key.Type,
+                    Color = d.First().Color,
+                    Construction = d.First().Construction,
+                    Grade = d.Key.Grade,
+                    Jenis = d.Key.PackingType,
+                    Ket = d.Key.Remark,
+                    Motif = d.First().Motif,
+                    Buyer = d.First().Buyer,
+                    NoSpp = d.First().ProductionOrderNo,
+                    Satuan = d.First().UomUnit,
+                    Unit = d.First().Unit,
+                    InventoryType = d.Key.InventoryType,
+                    Quantity = d.Sum(e => e.Balance)
+                });
+
+                return result;
+            }
+            
+        }
+
         public List<ReportStockWarehouseViewModel> GetReportData(DateTimeOffset dateReport, string zona, int offset, string unit, string packingType, string construction, string buyer, long productionOrderId, string inventoryType)
         {
             var result = new List<ReportStockWarehouseViewModel>();
@@ -181,9 +459,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             if (zona == "STOCK OPNAME")
             {
                 var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
-                var dataSearchDate = GetDataByDate(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var dataSearchDate = GetDataByDateStockOpname(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
                 var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var dataAwal = GetAwalDataStockOpname(startDate, "GUDANG JADI", productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
                 var joinData2 = dataSearchDate.Concat(dataAwal);
                 var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
@@ -215,7 +493,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
 
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
-                var stockOpnames = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId)).ToList();
+                var stockOpnameQuery = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId));
+
+                if (productionOrderId != 0)
+                {
+                    stockOpnameQuery = stockOpnameQuery.Where(entity => entity.ProductionOrderId == productionOrderId);
+                }
+
+                var stockOpnames = stockOpnameQuery.ToList();
 
                 if (!string.IsNullOrEmpty(unit))
                 {
@@ -238,7 +523,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     stockOpnames = stockOpnames.Where(s => s.ProductionOrderId == productionOrderId).ToList();
                 }
 
-                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade })
+                var stockOpnameTempResult = stockOpnames.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.PackagingType })
                     .Select(d => new
                     {
                         ProductionOrderId = d.Key.ProductionOrderId,
@@ -254,34 +539,154 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                         Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength)
                     }).ToList();
 
-                foreach (var stockOpname in stockOpnameTempResult)
+                var productionOrders = new List<ProductionOrderGroup>();
+
+                foreach (var item in dpWarehouseResult)
                 {
-                    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
-
-                    var gudangJadiBalance = (decimal)0;
-                    if (dpWarehouse != null)
+                    productionOrders.Add(new ProductionOrderGroup()
                     {
-                        gudangJadiBalance = dpWarehouse.Akhir;
-                    }
-
-                    result.Add(new ReportStockWarehouseViewModel()
-                    {
-                        NoSpp = stockOpname.NoSpp,
-                        Construction = stockOpname.Construction,
-                        Unit = stockOpname.Unit,
-                        Motif = stockOpname.Motif,
-                        Buyer = stockOpname.Buyer,
-                        Color = stockOpname.Color,
-                        Grade = stockOpname.Grade,
-                        Jenis = stockOpname.Jenis,
-                        StockOpname = stockOpname.Quantity,
-                        StorageBalance = gudangJadiBalance,
-                        Difference = gudangJadiBalance - stockOpname.Quantity
+                        ProductionOrderId = item.ProductionOrderId,
+                        Grade = item.Grade
                     });
+                };
 
+                foreach (var item in stockOpnameTempResult)
+                {
+                    productionOrders.Add(new ProductionOrderGroup()
+                    {
+                        ProductionOrderId = item.ProductionOrderId,
+                        Grade = item.Grade
+                    });
                 }
 
+                productionOrders = productionOrders.GroupBy(s => new { s.ProductionOrderId, s.Grade, s.PackagingType })
+                    .Select(d => new ProductionOrderGroup 
+                    { 
+                        ProductionOrderId = d.Key.ProductionOrderId,
+                        Grade = d.Key.Grade
+                    }).ToList();
+
+                foreach (var item in productionOrders)
+                {
+                    var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+
+                    var stockOpnamesResult = stockOpnameTempResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+
+                    if (stockOpnamesResult.Count != 0)
+                    {
+                        var StorageBalance = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+
+                        var gudangJadiBalance = (decimal)0;
+                        if (dpWarehouse != null)
+                        {
+                            gudangJadiBalance = StorageBalance.Sum(element => element.Akhir);
+                        }
+
+                        foreach (var stock in stockOpnamesResult)
+                        {
+                            var JenisdpWarehouse = dpWarehouse.Where(element => element.ProductionOrderId == stock.ProductionOrderId && element.Grade == stock.Grade).FirstOrDefault();
+
+                            result.Add(new ReportStockWarehouseViewModel()
+                            {
+                                NoSpp = stock.NoSpp,
+                                Construction = stock.Construction,
+                                Unit = stock.Unit,
+                                Motif = stock.Motif,
+                                Buyer = stock.Buyer,
+                                Color = stock.Color,
+                                Grade = stock.Grade,
+                                Jenis = JenisdpWarehouse == null ? stock.Jenis : JenisdpWarehouse.Jenis,
+                                StockOpname = stock.Quantity,
+                                StorageBalance = gudangJadiBalance,
+                                Difference = gudangJadiBalance - stock.Quantity
+                            });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var stock in dpWarehouse)
+                        {
+                            result.Add(new ReportStockWarehouseViewModel()
+                            {
+                                NoSpp = stock.NoSpp,
+                                Construction = stock.Construction,
+                                Unit = stock.Unit,
+                                Motif = stock.Motif,
+                                Buyer = stock.Buyer,
+                                Color = stock.Color,
+                                Grade = stock.Grade,
+                                Jenis = stock.Jenis,
+                                StockOpname = stock.StockOpname,
+                                StorageBalance = stock.Akhir,
+                                Difference = stock.Akhir - stock.StockOpname
+                            });
+                        }
+                    }
+                }
+
+                //foreach (var stockOpname in stockOpnameTempResult)
+                //{
+                //    var dpWarehouse = dpWarehouseResult.FirstOrDefault(element => element.ProductionOrderId == stockOpname.ProductionOrderId && element.Grade == stockOpname.Grade);
+
+                //    var gudangJadiBalance = (decimal)0;
+                //    if (dpWarehouse != null)
+                //    {
+                //        gudangJadiBalance = dpWarehouse.Akhir;
+                //    }
+
+                //    result.Add(new ReportStockWarehouseViewModel()
+                //    {
+                //        NoSpp = stockOpname.NoSpp,
+                //        Construction = stockOpname.Construction,
+                //        Unit = stockOpname.Unit,
+                //        Motif = stockOpname.Motif,
+                //        Buyer = stockOpname.Buyer,
+                //        Color = stockOpname.Color,
+                //        Grade = stockOpname.Grade,
+                //        Jenis = stockOpname.Jenis,
+                //        StockOpname = stockOpname.Quantity,
+                //        StorageBalance = gudangJadiBalance,
+                //        Difference = gudangJadiBalance - stockOpname.Quantity
+                //    });
+                //}
+
                 result = result.OrderBy(element => element.NoSpp).ThenBy(element => element.Construction).ToList();
+            }
+            else if (zona == "GUDANG JADI")
+            {
+                var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
+                var dataSearchDate = GetDataByDate(startDate, dateReport, zona, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
+                var dataAwal = GetAwalData(startDate, zona, productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+
+                var joinData2 = dataSearchDate.Concat(dataAwal);
+                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                {
+                    ProductionOrderId = e.Key.ProductionOrderId,
+                    NoSpp = e.First().NoSpp,
+                    Color = e.First().Color,
+                    Construction = e.First().Construction,
+                    Grade = e.Key.Grade,
+                    Jenis = e.Key.Jenis,
+                    Ket = e.Key.Ket,
+                    Motif = e.First().Motif,
+                    Buyer = e.First().Buyer,
+                    Satuan = e.First().Satuan,
+                    Unit = e.First().Unit,
+                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                });
+
+                result = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
             }
             else
             {
@@ -375,6 +780,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Gudang", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Selisih", DataType = typeof(string) });
 
+                decimal sumStockOpname = 0;
+                decimal sumStorageBalance = 0;
+                decimal sumDifference = 0;
+
                 if (data.Count() == 0)
                 {
                     dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0);
@@ -386,8 +795,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                         dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
                             item.StockOpname.ToString("N2", CultureInfo.InvariantCulture), item.StorageBalance.ToString("N2", CultureInfo.InvariantCulture),
                             item.Difference.ToString("N2", CultureInfo.InvariantCulture));
+
+                        sumStockOpname += item.StockOpname;
+                        sumStorageBalance += item.StorageBalance;
+                        sumDifference += item.Difference;
                     }
                 }
+
+                dt.Rows.Add("", "", "", "", "", "", "", "Total", sumStockOpname.ToString("N2", CultureInfo.InvariantCulture), sumStorageBalance.ToString("N2", CultureInfo.InvariantCulture), sumDifference.ToString("N2", CultureInfo.InvariantCulture));
             }
             else
             {

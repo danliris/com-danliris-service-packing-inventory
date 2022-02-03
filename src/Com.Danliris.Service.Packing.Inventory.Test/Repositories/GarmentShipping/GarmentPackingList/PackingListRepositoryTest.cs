@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var repo = new GarmentPackingListRepository(dbContext, serviceProvider);
 
             var items = new HashSet<GarmentPackingListItemModel> {
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1)
@@ -39,17 +39,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     },1)
                 }),
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1)
                     },1)
                 })
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> {
-                new GarmentPackingListMeasurementModel(1, 1, 1, 1),
-                new GarmentPackingListMeasurementModel(1, 1, 1, 1)
+                new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a"),
+                new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a")
             };
-            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "");
+            var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false);
 
             await repo.InsertAsync(oldModel);
 

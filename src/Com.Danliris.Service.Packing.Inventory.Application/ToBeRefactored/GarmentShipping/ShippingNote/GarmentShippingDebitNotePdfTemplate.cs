@@ -177,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //});
             Phrase phraseSign = new Phrase();
 
-            phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToString("MMMM dd, yyyy") + "\n\n\n\n", normal_font));
+            phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "\n\n\n\n", normal_font));
             Chunk chunkSignName = new Chunk("A M U M P U N I", normal_font);
             chunkSignName.SetUnderline(1, -1);
             phraseSign.Add(chunkSignName);

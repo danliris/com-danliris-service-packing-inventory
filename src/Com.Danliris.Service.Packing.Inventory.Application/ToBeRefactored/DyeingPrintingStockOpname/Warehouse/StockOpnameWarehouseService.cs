@@ -24,6 +24,8 @@ using System.Data;
 using System.ComponentModel.DataAnnotations;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductPacking;
+using OfficeOpenXml.Style;
+using System.Collections.ObjectModel;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -39,6 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IIdentityProvider _identityProvider;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _outputProductionOrderRepository;
         private readonly IServiceProvider _serviceProvider;
+        public List<BarcodeInfoViewModel> _barcodes;
+        //public ObservableCollection<BarcodeInfo> BarcodeList { get; set; }
 
         public StockOpnameWarehouseService(IServiceProvider serviceProvider)
         {
@@ -483,7 +487,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 LastModifiedAgent = model.LastModifiedAgent,
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
-                WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Select(s => new StockOpnameWarehouseProductionOrderViewModel()
+                WarehousesProductionOrders = model.DyeingPrintingStockOpnameProductionOrders.Where( x => !x.IsDeleted).Select(s => new StockOpnameWarehouseProductionOrderViewModel()
                 {
                     Active = s.Active,
                     LastModifiedUtc = s.LastModifiedUtc,
@@ -592,63 +596,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 throw new ServiceValidationException(validationContext, errorResult);
             }
 
+            var packingCodeAndIds = _outputProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode)).Select(entity => new { entity.Id, entity.ProductPackingCode }).ToList();
+
 
 
             var stockOpnameForms = new List<DyeingPrintingProductPackingViewModel>();
             foreach (var packingCode in packingCodes)
             {
-                var packing = _outputProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode.Contains(packingCode)).Select(s => new DyeingPrintingProductPackingViewModel()
+                var output = packingCodeAndIds.Where(entity => entity.ProductPackingCode.Contains(packingCode)).FirstOrDefault();
+                var packing = (DyeingPrintingProductPackingViewModel)null;
+                if (output != null)
                 {
-                    Color = s.Color,
-                    FabricPackingId = s.FabricPackingId,
-                    FabricSKUId = s.FabricSKUId,
-                    ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                    packing = _outputProductionOrderRepository.ReadAll().Where(entity => output.Id == entity.Id).Select(s => new DyeingPrintingProductPackingViewModel()
                     {
-                        Id = s.ProductionOrderId,
-                        No = s.ProductionOrderNo,
-                        OrderQuantity = s.ProductionOrderOrderQuantity,
-                        Type = s.ProductionOrderType
-                    },
-                    HasPrintingProductPacking = s.HasPrintingProductPacking,
-                    HasPrintingProductSKU = s.HasPrintingProductSKU,
-                    Id = s.Id,
-                    Material = new Application.CommonViewModelObjectProperties.Material()
-                    {
-                        Id = s.MaterialId,
-                        Name = s.MaterialName
-                    },
-                    MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
-                    {
-                        Name = s.MaterialConstructionName,
-                        Id = s.MaterialConstructionId
-                    },
-                    MaterialWidth = s.MaterialWidth,
-                    Motif = s.Motif,
-                    ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
-                    ProductPackingId = s.ProductPackingId,
-                    ProductSKUCode = s.ProductSKUCode,
-                    ProductSKUId = s.ProductSKUId,
-                    UomUnit = s.UomUnit,
-                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
-                    {
-                        Id = s.YarnMaterialId,
-                        Name = s.YarnMaterialName
-                    },
-                    Quantity = s.PackagingQty,
-                    ProductPackingLength = s.PackagingLength,
-                    ProductPackingType = s.PackagingUnit,
-                    Grade = s.Grade,
-                    Unit = s.Unit,
-                    Buyer = s.Buyer,
-                    ProcessType = new ProcessType()
-                    {
-                        Id = s.ProcessTypeId,
-                        Name = s.ProcessTypeName
-                    },
-                    BuyerId = s.BuyerId,
-                    PackingInstruction = s.PackingInstruction,
-                    Construction = s.Construction
-                }).FirstOrDefault();
+                        Color = s.Color,
+                        FabricPackingId = s.FabricPackingId,
+                        FabricSKUId = s.FabricSKUId,
+                        ProductionOrder = new Application.CommonViewModelObjectProperties.ProductionOrder()
+                        {
+                            Id = s.ProductionOrderId,
+                            No = s.ProductionOrderNo,
+                            OrderQuantity = s.ProductionOrderOrderQuantity,
+                            Type = s.ProductionOrderType
+                        },
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        HasPrintingProductSKU = s.HasPrintingProductSKU,
+                        Id = s.Id,
+                        Material = new Application.CommonViewModelObjectProperties.Material()
+                        {
+                            Id = s.MaterialId,
+                            Name = s.MaterialName
+                        },
+                        MaterialConstruction = new Application.CommonViewModelObjectProperties.MaterialConstruction()
+                        {
+                            Name = s.MaterialConstructionName,
+                            Id = s.MaterialConstructionId
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        Motif = s.Motif,
+                        ProductPackingCodes = s.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                        PackagingLength = s.PackagingLength,
+                        ProductPackingId = s.ProductPackingId,
+                        ProductSKUCode = s.ProductSKUCode,
+                        ProductSKUId = s.ProductSKUId,
+                        UomUnit = s.UomUnit,
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        Quantity = s.PackagingQty,
+                        ProductPackingLength = s.PackagingLength,
+                        ProductPackingType = s.PackagingUnit,
+                        Grade = s.Grade,
+                        Unit = s.Unit,
+                        Buyer = s.Buyer,
+                        ProcessType = new ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        BuyerId = s.BuyerId,
+                        PackingInstruction = s.PackingInstruction,
+                        Construction = s.Construction
+                    }).FirstOrDefault();
+                }
 
                 if (packing == null)
                 {
@@ -691,6 +703,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         },
                         Quantity = s.PackagingQty,
                         ProductPackingLength = s.PackagingLength,
+                        PackagingLength = s.PackagingLength,
                         ProductPackingType = s.PackagingUnit,
                         Grade = s.Grade,
                         Unit = s.Unit,
@@ -712,12 +725,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
 
             stockOpnameForms = stockOpnameForms.Distinct().ToList();
+            //var 
+            var forms = stockOpnameForms
+                .GroupBy(element => new
+                {
+                    element.ProductionOrder.No,
+                    element.ProductSKUCode,
+                    element.PackagingLength
+                })
+                .Select(element => new
+                {
+                    OrderNo = element.Key.No,
+                    SKUCode = element.Key.ProductSKUCode,
+                    PackingLength = element.Key.PackagingLength,
+                    Id = element.FirstOrDefault().Id
+                })
+                .ToList();
+
             var result = 0;
-            if (stockOpnameForms.Count > 0)
+
+            if (forms.Count > 0)
             {
                 var items = new List<StockOpnameWarehouseProductionOrderViewModel>();
-                foreach (var stockOpnameForm in stockOpnameForms)
+
+                foreach (var itemForm in forms)
                 {
+                    var stockOpnameForm = stockOpnameForms.FirstOrDefault(element => element.Id == itemForm.Id);
                     var scannedPackingCodes = packingCodes.Where(element => stockOpnameForm.ProductPackingCodes.Contains(element)).ToList();
                     var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
                     var productIds = await _productPackingService.GetByCode(string.Join(',', scannedPackingCodes));
@@ -798,7 +831,91 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 };
 
                 result = await CreateStockOpnameV2(createForm);
+
             }
+
+            //if (stockOpnameForms.Count > 0)
+            //{
+            //    foreach (var stockOpnameForm in stockOpnameForms)
+            //    {
+            //        var scannedPackingCodes = packingCodes.Where(element => stockOpnameForm.ProductPackingCodes.Contains(element)).ToList();
+            //        var scannedQuantity = stockOpnameForm.ProductPackingCodes.Where(element => packingCodes.Contains(element)).Count();
+            //        var item = new StockOpnameWarehouseProductionOrderViewModel()
+            //        {
+            //            Balance = stockOpnameForm.Balance,
+            //            BuyerId = stockOpnameForm.BuyerId,
+            //            DocumentNo = stockOpnameForm.DocumentNo,
+            //            MaterialWidth = stockOpnameForm.MaterialWidth,
+            //            PackingInstruction = stockOpnameForm.PackingInstruction,
+            //            ProductionOrder = new ProductionOrder()
+            //            {
+            //                Code = stockOpnameForm.ProductionOrder.Code,
+            //                Id = stockOpnameForm.ProductionOrder.Id,
+            //                No = stockOpnameForm.ProductionOrder.No,
+            //                OrderQuantity = stockOpnameForm.ProductionOrder.OrderQuantity,
+            //                Type = stockOpnameForm.ProductionOrder.Type
+            //            },
+            //            Construction = stockOpnameForm.Construction,
+            //            Unit = stockOpnameForm.Unit,
+            //            Buyer = stockOpnameForm.Buyer,
+            //            Color = stockOpnameForm.Color,
+            //            Motif = stockOpnameForm.Motif,
+            //            Grade = stockOpnameForm.Grade,
+            //            PackagingQty = scannedQuantity,
+            //            PackagingUnit = stockOpnameForm.ProductPackingType,
+            //            Uom = new UnitOfMeasurement()
+            //            {
+            //                Unit = stockOpnameForm.UomUnit
+            //            },
+            //            UomUnit = stockOpnameForm.UomUnit,
+            //            PackagingLength = stockOpnameForm.PackagingLength,
+            //            MaterialConstruction = new MaterialConstruction()
+            //            {
+            //                Code = stockOpnameForm.MaterialConstruction.Code,
+            //                Id = stockOpnameForm.MaterialConstruction.Id,
+            //                Name = stockOpnameForm.MaterialConstruction.Name
+            //            },
+            //            ProcessType = new ProcessType()
+            //            {
+            //                Id = stockOpnameForm.ProcessType.Id,
+            //                Name = stockOpnameForm.ProcessType.Name
+            //            },
+            //            Material = new Material()
+            //            {
+            //                Code = stockOpnameForm.Material.Code,
+            //                Name = stockOpnameForm.Material.Name,
+            //                Id = stockOpnameForm.Material.Id
+            //            },
+            //            YarnMaterial = new YarnMaterial()
+            //            {
+            //                Id = stockOpnameForm.YarnMaterial.Id,
+            //                Name = stockOpnameForm.YarnMaterial.Name
+            //            },
+            //            IsStockOpname = true,
+            //            PackingCodes = string.Join(',', scannedPackingCodes),
+            //            ProductSKUId = stockOpnameForm.ProductSKUId,
+            //            FabricSKUId = stockOpnameForm.FabricSKUId,
+            //            ProductSKUCode = stockOpnameForm.ProductSKUCode,
+            //            ProductPackingId = stockOpnameForm.ProductPackingId,
+            //            FabricPackingId = stockOpnameForm.FabricPackingId,
+            //            ProductPackingCodes = stockOpnameForm.ProductPackingCodes,
+            //            HasPrintingProductSKU = stockOpnameForm.HasPrintingProductSKU
+
+            //        };
+
+            //        items.Add(item);
+            //    }
+
+            //    var createForm = new StockOpnameWarehouseViewModel()
+            //    {
+            //        Type = "STOCK OPNAME",
+            //        Date = DateTimeOffset.UtcNow,
+            //        WarehousesProductionOrders = items,
+            //        IsStockOpname = true
+            //    };
+
+            //    //result = await CreateStockOpnameV2(createForm);
+            //}
 
             return result;
         }
@@ -1108,5 +1225,291 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return stream;
         }
 
+        
+
+        public List<BarcodeInfoViewModel> GetMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
+        {
+            var query = _stockOpnameProductionOrderRepository.ReadAll().Where(x => x.IsStockOpname == true);
+
+            //var query = _stockOpnameProductionOrderRepository.GetDbSet().Where(x => x.IsStockOpname == true);
+
+            if (!string.IsNullOrEmpty(documentNo))
+            {
+                query = query.Where(s => s.DocumentNo.Contains(documentNo));
+            }
+
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                query = query.Where(s => s.ProductPackingCode.Contains(barcode));
+            }
+
+            if (!string.IsNullOrEmpty(grade))
+            {
+                query = query.Where(s => s.Grade == grade);
+            }
+            if (productionOrderId != 0)
+            {
+                query = query.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+            if (!string.IsNullOrEmpty(userFilter))
+            {
+                query = query.Where(s => s.CreatedBy.Contains(userFilter));
+            }
+
+
+            //var barcodeList = query.Select(x => new NewBarcodeInfo()
+            //{
+            //    productionOrderNo = x.ProductionOrderNo,
+            //    grade = x.Grade,
+            //    productPackingCodes = x.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+            //    PackagingQty = x.PackagingQty,
+            //    PackagingLength = x.PackagingLength,
+            //    Balance = x.Balance,
+            //    DocumentNo = x.DocumentNo,
+            //    CreatedBy = x.CreatedBy
+
+            //}).OrderBy(x => x.CreatedUtc);
+
+            _barcodes = new List<BarcodeInfoViewModel>();
+            var result = query.Select(x => new StockOpnameWarehouseProductionOrderViewModel()
+            {
+                ProductionOrderNo = x.ProductionOrderNo,
+                Grade = x.Grade,
+                ProductPackingCodes = x.ProductPackingCode.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                PackagingQty = x.PackagingQty,
+                PackagingLength = x.PackagingLength,
+                Balance = x.Balance,
+                DocumentNo = x.DocumentNo,
+                CreatedBy = x.CreatedBy
+
+            }).OrderBy(x => x.DocumentNo).ToList();
+
+
+            //foreach (var data in result) {
+
+            //    foreach (var packingCode in data.ProductPackingCodes) {
+            //        var barcodeInfo = new BarcodeInfo()
+            //        {
+
+            //            OrderNo = data.ProductionOrderNo,
+            //            PackingCode = packingCode,
+            //            PackingLength = data.PackagingLength,
+            //            Balance = data.Balance,
+            //            CreatedBy = data.CreatedBy,
+
+            //            UOMSKU = data.UomUnit,
+            //            DocumentNo = data.DocumentNo,
+            //            Grade = data.Grade
+            //        };
+            //        _barcodes.Add(barcodeInfo);
+            //    }
+            //}
+
+            foreach (var data in result)
+            {
+
+                foreach (var packingCode in data.ProductPackingCodes)
+                {
+                    var barcodeInfo = new BarcodeInfoViewModel()
+                    {
+
+                        OrderNo = data.ProductionOrderNo,
+                        PackingCode = packingCode,
+                        PackingLength = data.PackagingLength,
+                        Balance = data.Balance,
+                        CreatedBy = data.CreatedBy,
+                        PackagingQty = 1,
+
+                        UOMSKU = data.UomUnit,
+                        DocumentNo = data.DocumentNo,
+                        Grade = data.Grade
+                    };
+                    _barcodes.Add(barcodeInfo);
+                }
+
+
+            }
+
+
+
+           
+
+
+
+
+            return _barcodes ;
+        }
+
+        public MemoryStream GenerateExcelMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter)
+        {
+
+            var query = GetMonitoringScan(productionOrderId, barcode, documentNo, grade, userFilter);
+
+            var indexNumber = 1;
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO.", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "BARCODE", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY PER ROLL", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "JALUR", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "USER", DataType = typeof(string) });
+
+            decimal qtyRoll = 0;
+            double qtyBalance = 0;
+            if (query.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", 0, 0, 0, "", "");
+            }
+            else
+            {
+                
+                foreach (var item in query)
+                {
+                    //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                    //qtyRoll += item.PackagingQty;
+                    qtyBalance += item.Balance;
+                    dt.Rows.Add(indexNumber,
+                                item.OrderNo,
+                                item.PackingCode ,
+                                item.PackagingQty,
+                               item.PackingLength,
+                                item.Balance,
+                                item.DocumentNo,
+                                item.CreatedBy
+                                );
+                    indexNumber++;
+                }
+            }
+
+            ExcelPackage package = new ExcelPackage();
+            #region Header
+            var sheet = package.Workbook.Worksheets.Add("Bon Keluar Aval");
+
+            //sheet.Cells[1, 1].Value = "TANGGAL";
+            //sheet.Cells[1, 2].Value = model.Date.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
+
+            //sheet.Cells[2, 1].Value = "NO. BON";
+            //sheet.Cells[2, 2].Value = model.BonNo;
+            //sheet.Cells[2, 2, 2, 3].Merge = true;
+
+            var row = 3;
+            var merge = 4;
+
+            sheet.Cells[row, 1].Value = "NO.";
+            sheet.Cells[row, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 1].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 1, merge, 1].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 1, merge, 1].Merge = true;
+
+            sheet.Cells[row, 2].Value = "NO.SPP";
+            sheet.Cells[row, 2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 2].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 2, merge, 2].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 2, merge, 2].Merge = true;
+
+            sheet.Cells[row, 3].Value = "BARCODE";
+            sheet.Cells[row, 3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 3].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 3, merge, 3].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 3, merge, 3].Merge = true;
+
+            sheet.Cells[row, 4].Value = "QTY ROLL";
+            sheet.Cells[row, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 4].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 4, merge, 4].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 4, merge, 4].Merge = true;
+
+            sheet.Cells[row, 5].Value = "QTY PER ROLL";
+            sheet.Cells[row, 5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 5].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 5, merge, 5].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 5, merge, 5].Merge = true;
+
+            sheet.Cells[row, 6].Value = "QUANTITY";
+            sheet.Cells[row, 6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 6].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 6, merge, 6].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 6, merge, 6].Merge = true;
+
+            sheet.Cells[row, 7].Value = "JALUR";
+            sheet.Cells[row, 7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 7].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 7, merge, 7].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 7, merge, 7].Merge = true;
+
+            sheet.Cells[row, 8].Value = "USER";
+            sheet.Cells[row, 8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            sheet.Cells[row, 8].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            sheet.Cells[row, 8, merge, 8].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            sheet.Cells[row, 8, merge, 8].Merge = true;
+            #endregion
+
+            //var a = query.Count();
+            
+            var a = query.Count();
+            sheet.Cells[$"A{5 + a}"].Value = "T O T A L  . . . . . . . . . . . . . . .";
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Merge = true;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.Font.Bold = true;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            sheet.Cells[$"A{5 + a}:C{6 + a}"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            sheet.Cells[$"D{5 + a}"].Value = qtyRoll;
+            sheet.Cells[$"F{5 + a}"].Value = qtyBalance;
+            //sheet.Cells[$"K{6 + a}"].Value = CorrQtyTotal;
+            //sheet.Cells[$"M{6 + a}"].Value = ExpendQtyTotal;
+            //sheet.Cells[$"O{6 + a}"].Value = EndingQtyTotal;
+
+            int tableRowStart = 5;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(dt, false, OfficeOpenXml.Table.TableStyles.Light8);
+            sheet.Cells[tableRowStart, tableColStart].AutoFitColumns();
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
+        }
+
+
+        public class BarcodeInfoViewModel
+        {
+            public string PackingCode { get; set; }
+            public string MaterialName { get; set; }
+            public string MaterialConstructionName { get; set; }
+            public string YarnMaterialName { get; set; }
+            public double PackingLength { get; set; }
+            public string PackingType { get; set; }
+            public string Color { get; set; }
+            public string OrderNo { get; set; }
+            public string UOMSKU { get; set; }
+            public string DocumentNo { get; set; }
+            public string Grade { get; set; }
+            public double Balance { get; set; }
+            public string CreatedBy { get; set; }
+            public decimal PackagingQty { get; set; }
+        }
+
+        public class NewBarcodeInfo
+        {
+            public NewBarcodeInfo()
+            {
+                productPackingCodes = new List<string>();
+            }
+
+            public List<string> productPackingCodes { get; set; }
+
+            public double productPackingLength { get; set; }
+            public string productPackingType { get; set; }
+            public string color { get; set; }
+            public string uomUnit { get; set; }
+            public string productionOrderNo { get; set; }
+            public string documentNo { get; set; }
+            public string grade { get; set; }
+
+        }
     }
 }

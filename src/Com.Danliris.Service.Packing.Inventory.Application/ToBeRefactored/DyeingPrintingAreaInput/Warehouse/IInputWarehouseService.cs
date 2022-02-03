@@ -15,12 +15,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         Task<int> Create(InputWarehouseCreateViewModel viewModel);
         Task<InputWarehouseDetailViewModel> ReadById(int id);
+        Task<InputWarehouseDetailViewModel> ReadByIdBon(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         List<OutputPreWarehouseViewModel> GetOutputPreWarehouseProductionOrders();
         OutputPreWarehouseItemListViewModel GetOutputPreWarehouseProductionOrdersByCode(string packingCode);
         Task<int> Reject(RejectedInputWarehouseViewModel viewModel);
         Task<int> Delete(int bonId);
         Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel);
-        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
+        MemoryStream GenerateExcelAllBarcode(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
     }
 }

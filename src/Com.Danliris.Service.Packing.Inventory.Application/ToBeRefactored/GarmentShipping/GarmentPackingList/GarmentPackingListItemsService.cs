@@ -104,6 +104,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
                 IsCostStructured = model.IsCostStructured,
+                IsShipping = model.IsShipping,
+                IsSampleDelivered = model.IsSampleDelivered,
+                IsSampleExpenditureGood = model.IsSampleExpenditureGood,
                 Items = model.Items.Where(i => i.CreatedBy == _identityProvider.Username).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,
@@ -154,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     OrderNo = i.OrderNo,
                     Description = i.Description,
                     DescriptionMd = i.DescriptionMd,
+                    Remarks = i.Remarks,
 
                     Details = i.Details.Select(d => new GarmentPackingListDetailViewModel
                     {
@@ -218,7 +222,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 NettWeight = model.NettWeight,
                 NetNetWeight = model.NetNetWeight,
                 TotalCartons = model.TotalCartons,
-                Measurements = model.Measurements.Select(m => new GarmentPackingListMeasurementViewModel
+                Measurements = model.Measurements.Where(i => i.CreatedBy == _identityProvider.Username).Select(m => new GarmentPackingListMeasurementViewModel
                 {
                     Active = m.Active,
                     Id = m.Id,
@@ -288,7 +292,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             modelToUpdate.SetSectionId(model.SectionId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSectionCode(model.SectionCode, _identityProvider.Username, UserAgent);
-            
+
+            var measurements = modelToUpdate.Items
+                .SelectMany(i => i.Details.Select(d => new { d.Index, d.Carton1, d.Carton2, d.Length, d.Width, d.Height, d.CartonQuantity, d.CreatedBy }))
+                .GroupBy(m => new { m.Length, m.Width, m.Height, m.CreatedBy }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Distinct().Sum(d => d.CartonQuantity), k.CreatedBy));
 
             foreach (var itemToUpdate in modelToUpdate.Items.Where(i => i.CreatedBy == _identityProvider.Username))
             {
@@ -318,6 +325,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     itemToUpdate.SetOrderNo(item.OrderNo, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescription(item.Description, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetDescriptionMd(item.DescriptionMd, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetRemarks(item.Remarks, _identityProvider.Username, UserAgent);
 
                     foreach (var detailToUpdate in itemToUpdate.Details)
                     {
@@ -365,6 +373,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }
                         else
                         {
+                            /*var measurement = model.Measurements.FirstOrDefault(m => m.Length == detailToUpdate.Length && m.Width == detailToUpdate.Width && m.Height == detailToUpdate.Height);
+                            var measurementDB = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == detailToUpdate.Length && m.Width == detailToUpdate.Width && m.Height == detailToUpdate.Height);
+                            foreach(var measurementDb in modelToUpdate.Measurements)
+                            {
+                                
+                            }
+                            if (measurement == null)
+                            {
+                                var sumQty = measurementDB.CartonsQuantity - detailToUpdate.CartonQuantity;
+                                if (sumQty == 0)
+                                {
+                                    measurementDB.FlagForDelete(_identityProvider.Username, UserAgent);
+                                }
+                                else
+                                {
+                                    measurementDB.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
+                                }
+                            }*/
                             detailToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
                         }
                     }
@@ -383,7 +409,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
                 else
                 {
+                    var items = modelToUpdate.Items.FirstOrDefault(x => x.Id == itemToUpdate.Id);
+                    foreach (var detail in items.Details)
+                    {
+                        var measurement = model.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height && m.CreatedBy == _identityProvider.Username);
+                        var measurementDB = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height && m.CreatedBy == _identityProvider.Username);
+                        if (measurement == null)
+                        {
+                            measurementDB.FlagForDelete(_identityProvider.Username, UserAgent);
+                            // harusnya udah kehapus
+                        }
+                        var detailToDelete = items.Details.FirstOrDefault(d => d.Id == detail.Id);
+                        if (detailToDelete != null)
+                        {
+                            detailToDelete.FlagForDelete(_identityProvider.Username, UserAgent);
+                        }
+                    }
+                    
+
                     itemToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                    
                 }
 
             }
@@ -403,43 +448,92 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 modelToUpdate.Items.Add(item);
             }
 
-            var measurements = modelToUpdate.Items
-                .SelectMany(i => i.Details.Select(d => new { d.Carton1, d.Carton2, d.Length, d.Width, d.Height, d.CartonQuantity, d.Index }))
-                .GroupBy(m => new { m.Length, m.Width, m.Height }, (k, g) => new GarmentPackingListMeasurementModel(k.Length, k.Width, k.Height, g.Distinct().Sum(d => d.CartonQuantity)));
+            
 
-            foreach (var measurementToUpdate in modelToUpdate.Measurements)
+            foreach (var measurementToUpdate in modelToUpdate.Measurements.Where(m => m.CreatedBy == _identityProvider.Username))
             {
-                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
+                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
+                var measurementDB = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
                 if (measurement != null)
                 {
-                    measurementToUpdate.SetCartonsQuantity(measurement.CartonsQuantity, _identityProvider.Username, UserAgent);
-                }
-                else
+                    double diffQty = 0;
+                    double sumQty = 0;
+                    if (measurementDB.CartonsQuantity > measurement.CartonsQuantity)
+                    {
+                        diffQty = measurementDB.CartonsQuantity - measurement.CartonsQuantity;
+                        sumQty = measurementDB.CartonsQuantity - diffQty;
+                    }
+                    else
+                    {
+                        diffQty = measurement.CartonsQuantity - measurementDB.CartonsQuantity;
+                        sumQty = measurement.CartonsQuantity - diffQty;
+                    }
+                    measurementToUpdate.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
+                } else
                 {
-                    measurementToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                    if(measurementDB != null)
+                    {
+                        double diffQty = 0;
+                        double sumQty = 0;
+                        if (measurementDB.CartonsQuantity > measurementToUpdate.CartonsQuantity)
+                        {
+                            diffQty = measurementDB.CartonsQuantity - measurementToUpdate.CartonsQuantity;
+                            sumQty = measurementToUpdate.CartonsQuantity + diffQty;
+                        }
+                        else
+                        {
+                            diffQty = measurementToUpdate.CartonsQuantity - measurementDB.CartonsQuantity;
+                            sumQty = measurementToUpdate.CartonsQuantity - diffQty;
+                        }
+                        measurementToUpdate.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
+                        // disini
+                    } else
+                    {
+                        measurementToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                    }
+                    
                 }
+                /*  else
+                  {
+                      measurementToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                  }*/
             }
 
-            foreach (var measurement in measurements)
+            foreach (var measurement in measurements.Where(m => m.CreatedBy == _identityProvider.Username))
             {
-                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
+                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height && m.CreatedBy == _identityProvider.Username);
                 if (oldMeasurement == null)
                 {
                     measurement.FlagForCreate(_identityProvider.Username, UserAgent);
                     modelToUpdate.Measurements.Add(measurement);
-                }
+                } /*else
+                {
+                    double diffQty = 0;
+                    double sumQty = 0;
+                    if (oldMeasurement.CartonsQuantity > measurement.CartonsQuantity)
+                    {
+                        diffQty = oldMeasurement.CartonsQuantity - measurement.CartonsQuantity;
+                        sumQty = oldMeasurement.CartonsQuantity - diffQty;
+                    }
+                    else
+                    {
+                        diffQty = measurement.CartonsQuantity - oldMeasurement.CartonsQuantity;
+                        sumQty = oldMeasurement.CartonsQuantity + diffQty;
+                    }
+                    oldMeasurement.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
+                }*/
             }
 
             var itemsUpdate = modelToUpdate.Items.Where(i => i.IsDeleted == false).OrderBy(o => o.ComodityDescription);
 
             var totalCartons = itemsUpdate
-                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, d.CartonQuantity }))
+                .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Index, d.Carton1, d.Carton2, d.CartonQuantity }))
                 .Distinct().Sum(d => d.CartonQuantity);
             modelToUpdate.SetTotalCartons(totalCartons, _identityProvider.Username, UserAgent);
 
             var totalGw = itemsUpdate
                 .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Index, d.Carton1, d.Carton2, totalGrossWeight = d.CartonQuantity * d.GrossWeight }))
-                .GroupBy(g => new { g.Index, g.Carton1, g.Carton2}, (key,value) => value.First().totalGrossWeight).Sum();
+                .GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().totalGrossWeight).Sum();
 
             modelToUpdate.SetGrossWeight(totalGw, _identityProvider.Username, UserAgent);
 

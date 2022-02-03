@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public double AVG_GW { get; set; }
         public double AVG_NW { get; set; }
+        public string Remarks { get; set; }
 
         public ICollection<GarmentDraftPackingListDetailViewModel> Details { get; set; }
 

@@ -926,6 +926,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
         }
 
         [Fact]
+        public async Task Should_Success_ReadByIdBon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var productionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object);
+
+            var result = await service.ReadByIdBon(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public void Should_Success_ReadPreShipping()
         {
             var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
@@ -1512,7 +1532,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), "", 7);
 
             Assert.NotNull(result);
         }
@@ -1532,7 +1552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), null, 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), null, null, 7);
 
             Assert.NotNull(result);
         }
@@ -1552,7 +1572,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel(null, Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(null, Model.Date.AddDays(1), null, 7);
 
             Assert.NotNull(result);
         }
@@ -1572,7 +1592,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel(null, null, 7);
+            var result = service.GenerateExcel(null, null,null, 7);
 
             Assert.NotNull(result);
         }
@@ -1591,7 +1611,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
             var service = GetService(serviceProvider);
-            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), 7);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), null, 7);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GenerateExcelBon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaInputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var productionOrderRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outputSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingAreaInputModel>() { Model }.AsQueryable());
+
+            var serviceProvider = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object;
+            var service = GetService(serviceProvider);
+            var result = service.GenerateExcel(Model.Date.AddDays(-1), Model.Date.AddDays(1), "BON", 7);
 
             Assert.NotNull(result);
         }

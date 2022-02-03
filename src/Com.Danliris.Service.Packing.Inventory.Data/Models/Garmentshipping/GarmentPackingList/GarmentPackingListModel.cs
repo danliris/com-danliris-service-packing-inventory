@@ -85,6 +85,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public GarmentPackingListStatusEnum Status { get; private set; }
         public ICollection<GarmentPackingListStatusActivityModel> StatusActivities { get; private set; }
+        public bool IsShipping { get; private set; }
+        public bool IsSampleDelivered { get; private set; }
+        public bool IsSampleExpenditureGood { get; private set; }
 
         public GarmentPackingListModel()
         {
@@ -93,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description, bool isCostStructured, string otherCommodity)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description, bool isCostStructured, string otherCommodity, bool isShipping, bool isSampleDelivered, bool isSampleExpenditureGood)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -141,6 +144,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ShippingStaffName = shippingStaffName;
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
             Description = description;
+            IsShipping = isShipping;
+            IsSampleDelivered = isSampleDelivered;
+            IsSampleExpenditureGood = isSampleExpenditureGood;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
@@ -517,6 +523,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (IsCostStructured != isCostStructured)
             {
                 IsCostStructured = isCostStructured;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsShipping(bool isShipping, string userName, string userAgent)
+        {
+            if (IsShipping != isShipping)
+            {
+                IsShipping = isShipping;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsSampleDelivered(bool isSampleDelivered, string userName, string userAgent)
+        {
+            if (IsSampleDelivered != isSampleDelivered)
+            {
+                IsSampleDelivered = isSampleDelivered;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsSampleExpenditureGood(bool isSampleExpenditureGood, string userName, string userAgent)
+        {
+            if (IsSampleExpenditureGood != isSampleExpenditureGood)
+            {
+                IsSampleExpenditureGood = isSampleExpenditureGood;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
