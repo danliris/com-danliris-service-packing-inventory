@@ -105,6 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 IsPosted = model.IsPosted,
                 IsCostStructured = model.IsCostStructured,
                 IsShipping = model.IsShipping,
+                IsSampleDelivered = model.IsSampleDelivered,
+                IsSampleExpenditureGood = model.IsSampleExpenditureGood,
                 Items = model.Items.Where(i => i.CreatedBy == _identityProvider.Username).Select(i => new GarmentPackingListItemViewModel
                 {
                     Active = i.Active,

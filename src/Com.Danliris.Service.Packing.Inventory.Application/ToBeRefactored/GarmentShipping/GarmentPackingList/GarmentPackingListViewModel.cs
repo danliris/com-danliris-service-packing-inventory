@@ -86,6 +86,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public ICollection<GarmentPackingListStatusActivityViewModel> StatusActivities { get; set; }
 
         public bool IsShipping { get; set; }
+        public bool IsSampleDelivered { get; set; }
+        public bool IsSampleExpenditureGood { get; set; }
 
         public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

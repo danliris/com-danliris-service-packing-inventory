@@ -574,5 +574,39 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+
+        [HttpPut("setIsGarmentSampleExpenditureGood")]
+        public async Task<IActionResult> SetIsGarmentSampleExpenditureGood([FromBody] GarmentPackingListShippingViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetSampleExpenditureGood(viewModel.InvoiceNo, viewModel.IsSampleExpenditureGood);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpPut("delivered")]
+        public async Task<IActionResult> DeliveredSample([FromBody] List<int> ids)
+        {
+            try
+            {
+                VerifyUser();
+                await _service.SetSampleDelivered(ids);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }
