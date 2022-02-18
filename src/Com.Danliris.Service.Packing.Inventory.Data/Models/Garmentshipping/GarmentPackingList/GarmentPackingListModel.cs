@@ -41,10 +41,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string FabricComposition { get; private set; }
 
         public string RemarkMd { get; private set; }
+		public string SampleRemarkMd { get; private set; }
 
-        public ICollection<GarmentPackingListItemModel> Items { get; private set; }
-
-
+		public ICollection<GarmentPackingListItemModel> Items { get; private set; }
+		
         public int ShippingStaffId { get; private set; }
         public string ShippingStaffName { get; private set; }
 
@@ -96,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             StatusActivities = new HashSet<GarmentPackingListStatusActivityModel>();
         }
 
-        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description, bool isCostStructured, string otherCommodity, bool isShipping, bool isSampleDelivered, bool isSampleExpenditureGood)
+        public GarmentPackingListModel(string invoiceNo, string packingListType, string invoiceType, int sectionId, string sectionCode, DateTimeOffset date, string paymentTerm, string lCNo, DateTimeOffset lCDate, string issuedBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string destination, string finalDestination, string shipmentMode, DateTimeOffset truckingDate, DateTimeOffset truckingEstimationDate, DateTimeOffset exportEstimationDate, bool omzet, bool accounting, string fabricCountryOrigin, string fabricComposition, string remarkMd, ICollection<GarmentPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons, ICollection<GarmentPackingListMeasurementModel> measurements, string sayUnit, string shippingMark, string sideMark, string remark, string shippingMarkImagePath, string sideMarkImagePath, string remarkImagePath, bool isUsed, bool isPosted, int shippingStaffId, string shippingStaffName, GarmentPackingListStatusEnum status, string description, bool isCostStructured, string otherCommodity, bool isShipping, bool isSampleDelivered, bool isSampleExpenditureGood, string sampleRemarkMd)
         {
             InvoiceNo = invoiceNo;
             PackingListType = packingListType;
@@ -147,6 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             IsShipping = isShipping;
             IsSampleDelivered = isSampleDelivered;
             IsSampleExpenditureGood = isSampleExpenditureGood;
+			SampleRemarkMd = sampleRemarkMd;
         }
 
         public void SetPackingListType(string packingListType, string userName, string userAgent)
