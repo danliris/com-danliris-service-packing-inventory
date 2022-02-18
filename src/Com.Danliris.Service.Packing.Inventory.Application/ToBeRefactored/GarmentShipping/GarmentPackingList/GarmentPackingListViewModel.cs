@@ -41,7 +41,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public string RemarkMd { get; set; }
 
-        public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
+		public string SampleRemarkMd { get; set; }
+
+
+		public ICollection<GarmentPackingListItemViewModel> Items { get; set; }
 
         public string Description { get; set; }
 
