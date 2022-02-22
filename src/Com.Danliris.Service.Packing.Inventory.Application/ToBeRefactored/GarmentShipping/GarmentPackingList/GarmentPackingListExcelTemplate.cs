@@ -216,7 +216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"B{afterIndex}:B{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"B{afterIndex}:B{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
 
-                sheet.Cells[$"C{afterIndex}"].Value = "ART. NO.";
+                sheet.Cells[$"C{afterIndex}"].Value = "STYLE";
                 sheet.Cells[$"C{afterIndex}:C{afterIndex + 1}"].Merge = true;
                 sheet.Cells[$"C{afterIndex}:C{afterIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
                 sheet.Cells[$"C{afterIndex}:C{afterIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -310,7 +310,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Cells[$"A{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     sheet.Cells[$"B{valueIndex}"].Value = detail.Colour;
                     sheet.Cells[$"B{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                    sheet.Cells[$"C{valueIndex}"].Value = item.Article;
+                    sheet.Cells[$"C{valueIndex}"].Value = detail.Style;
                     sheet.Cells[$"C{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     sheet.Cells[$"D{valueIndex}"].Value = item.OrderNo;
                     sheet.Cells[$"D{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -451,7 +451,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"{colQty}{grandTotalIndex}"].Value = grandTotalResult;
             sheet.Cells[$"{colQty}{grandTotalIndex}:{colNnw}{grandTotalIndex}"].Merge = true;
 
-            var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
+            var comodities = viewModel.Items.Select(s => s.Comodity.Id>0? s.Comodity.Name.ToUpper():"FABRIC").Distinct();
             var spellingWordIndex = grandTotalIndex + 2;
             sheet.Cells[$"A{spellingWordIndex}:{colNnw}{spellingWordIndex}"].Merge = true;
             sheet.Cells[$"A{spellingWordIndex}"].Value = $"{totalCtns} {viewModel.SayUnit} [ {NumberToTextEN.toWords(totalCtns).Trim().ToUpper()} {viewModel.SayUnit} OF {string.Join(" AND ", comodities)}]";
