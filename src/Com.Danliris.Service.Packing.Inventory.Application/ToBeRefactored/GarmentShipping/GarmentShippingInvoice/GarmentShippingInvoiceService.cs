@@ -297,7 +297,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
 
-            DateTime date = new DateTime(year, month, 1);
+            DateTime date = new DateTime(year, month + 1, 1);
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id

@@ -70,6 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+
             var model1 = new GarmentPackingListModel("DL/219999", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "")
             {
                 Id = 1
@@ -220,7 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     },
             };
 
-            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+        var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
                 .Returns(model.AsQueryable());
@@ -228,7 +229,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(model1.AsQueryable());
-
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
                 .Returns(items.AsQueryable());
@@ -266,7 +266,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "usd" } }))
                 });
