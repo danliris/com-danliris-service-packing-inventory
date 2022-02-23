@@ -261,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+
             }
         }
         private DyeingPrintingAreaInputModel InputModelExcel
@@ -306,8 +306,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType,s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+
             }
         }
 
@@ -354,7 +354,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+
             }
         }
 
@@ -411,7 +411,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                 s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
                                                                 s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth
-, s.DateIn,s.DateOut, s.MaterialOrigin)).ToList());
+, s.DateIn, s.DateOut, s.MaterialOrigin)).ToList());
             }
         }
 
@@ -712,7 +712,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.HasOutputDocument, s.Remark, "zimmer", s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                         s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
                         s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.MaterialOrigin)).ToList());
-                    
+
             }
         }
 
@@ -725,7 +725,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.HasOutputDocument, s.Remark, "", s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                         s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
                         s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.MaterialOrigin)).ToList());
-                    
+
             }
         }
 
@@ -738,7 +738,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.HasOutputDocument, s.Remark, "zimmer", s.Grade, s.Status, s.InputQuantity, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                         s.MaterialConstruction.Name, s.MaterialWidth, s.PackagingQty, s.PackagingUnit, s.PackagingType, s.DeliveryOrderSalesId, s.DeliveryOrderSalesNo, s.AvalType,
                         s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.MaterialOrigin)).ToList());
-                    
+
             }
         }
         [Fact]
@@ -768,8 +768,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                 s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                 s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn,s.DateOut, s.MaterialOrigin)).ToList());
-                                                                                                             
+                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn, s.DateOut, s.MaterialOrigin)).ToList());
+
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -823,7 +823,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -892,8 +892,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                 s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                 s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn,s.DateOut, s.MaterialOrigin)).ToList());
-                                                                                                             
+                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn, s.DateOut, s.MaterialOrigin)).ToList());
+
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -947,7 +947,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -1017,8 +1017,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.Grade, s.Status, s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id,
                                                                 s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                                                                 s.PackagingQty, s.PackagingType, s.PackagingUnit, 1, s.DeliveryOrderSalesNo, "", s.ProcessType.Id,
-                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn,s.DateOut, s.MaterialOrigin)).ToList());
-                                                                                                             
+                                                                s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.Qty, s.FinishWidth, s.DateIn, s.DateOut, s.MaterialOrigin)).ToList());
+
             tes.Id = 1;
             foreach (var i in tes.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -1072,7 +1072,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                                                                 s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
-                    
+
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
             {
@@ -2147,7 +2147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputProductionOrderRepoMock.Object,
                                                         areaReferenceMock.Object).Object);
 
-            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1),"", 7);
+            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1), "", 7);
 
             Assert.NotNull(result);
         }
@@ -2177,7 +2177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         outputProductionOrderRepoMock.Object,
                                                         areaReferenceMock.Object).Object);
 
-            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), null,null, 7);
+            var result = service.GenerateExcelAll(InputModelExcel.Date.AddDays(-1), null, null, 7);
 
             Assert.NotNull(result);
         }
@@ -2277,6 +2277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2287,7 +2288,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(InputModelExcel.Date.AddDays(-1), InputModelExcel.Date.AddDays(1), 7);
 
@@ -2303,6 +2304,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2313,7 +2315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(InputModelExcel.Date.AddDays(-1), null, 7);
 
@@ -2329,6 +2331,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
             var outputRepoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
             var outputProductionOrderRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var areaReferenceRepoMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
 
             inputRepoMock.Setup(s => s.ReadAll())
                 .Returns(new List<DyeingPrintingAreaInputModel> { InputModelExcel }.AsQueryable());
@@ -2339,7 +2342,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         movementRepoMock.Object,
                                                         summaryRepoMock.Object,
                                                         outputRepoMock.Object,
-                                                        outputProductionOrderRepoMock.Object).Object);
+                                                        outputProductionOrderRepoMock.Object, areaReferenceRepoMock.Object).Object);
 
             var result = service.GenerateExcelAllBarcode(null, InputModelExcel.Date.AddDays(1), 7);
 
