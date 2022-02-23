@@ -37,6 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             {
                 return new GarmentPackingListViewModel
                 {
+					InvoiceNo="invoiceno",
                     Items = new List<GarmentPackingListItemViewModel>
                     {
                         new GarmentPackingListItemViewModel
@@ -202,13 +203,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task Update_Success()
         {
             var repoMock = new Mock<IGarmentPackingListRepository>();
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentPackingListModel>()))
+		 
+			repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentPackingListModel>()))
                 .ReturnsAsync(1);
             var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+			var itemsInvoice = new HashSet<GarmentShippingInvoiceItemModel> { new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1) };
+			var adjustmentsInvoice = new HashSet<GarmentShippingInvoiceAdjustmentModel> { new GarmentShippingInvoiceAdjustmentModel(1, "fee", 100, 1) };
+			var units = new HashSet<GarmentShippingInvoiceUnitModel> { new GarmentShippingInvoiceUnitModel(1, "fee", 1, 1) };
 
-            var service = GetService(serviceProviderMock.Object);
+			var modelInvoice = new GarmentShippingInvoiceModel(1, ViewModel.InvoiceNo, DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", itemsInvoice, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, adjustmentsInvoice, 100000, "aa", "aa", units);
 
-            var result = await service.Update(1, ViewModel);
+			var repoInvoiceMock = new Mock<IGarmentShippingInvoiceRepository>();
+			repoInvoiceMock.Setup(s => s.ReadAll())
+				.Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
+		 
+			serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
+			  .Returns(repoInvoiceMock.Object);
+
+			var service = GetService(serviceProviderMock.Object);
+			
+
+			var result = await service.Update(1, ViewModel);
 
             Assert.NotEqual(0, result);
         }

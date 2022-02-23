@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
@@ -83,7 +84,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 FabricCountryOrigin = model.FabricCountryOrigin,
                 FabricComposition = model.FabricComposition,
                 RemarkMd = model.RemarkMd,
-                IsUsed = model.IsUsed,
+				SampleRemarkMd = model.SampleRemarkMd,
+				IsUsed = model.IsUsed,
                 IsPosted = model.IsPosted,
                 IsCostStructured = model.IsCostStructured,
                 IsShipping = model.IsShipping,
@@ -502,8 +504,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
-
-            foreach (var item in garmentPackingListModel.Items)
+			var invoice = _invoiceRepository.ReadAll();
+			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
+								  where a.InvoiceNo == garmentPackingListModel.InvoiceNo
+								  select a).FirstOrDefault();
+			if (shippingInvoice != null)
+			{
+				shippingInvoice.InvoiceDate = garmentPackingListModel.Date;
+			}
+			foreach (var item in garmentPackingListModel.Items)
             {
                 foreach (var detail in item.Details)
                 {
@@ -516,11 +525,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
 
             garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
-
-            return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
+			var updateInvoice = await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
+			 
+			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
         }
 
-        public virtual async Task<MemoryStreamResult> ReadPdfFilterCartonMD(int id)
+		public virtual async Task<int> Unpost(int id, GarmentPackingListViewModel viewModel)
+		{
+			GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
+			garmentPackingListModel.SetIsSampleDelivered(false, _identityProvider.Username, UserAgent);
+			
+			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
+		}
+
+		public virtual async Task<MemoryStreamResult> ReadPdfFilterCartonMD(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
             var offset = 7;
@@ -686,8 +704,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             await _packingListRepository.SaveChanges();
         }
+		public async Task SetUnpostDelivered(int id)
+		{
+			var model = _packingListRepository.Query.Single(m => m.Id == id);
+			model.SetIsSampleDelivered(false, _identityProvider.Username, UserAgent);
+			model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
-        public async Task SetApproveMd(int id, GarmentPackingListViewModel viewModel)
+			await _packingListRepository.SaveChanges();
+		}
+
+
+		public async Task SetApproveMd(int id, GarmentPackingListViewModel viewModel)
         {
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 

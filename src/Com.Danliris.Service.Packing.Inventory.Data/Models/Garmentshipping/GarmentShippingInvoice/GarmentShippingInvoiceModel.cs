@@ -401,5 +401,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(username, uSER_AGENT);
             }
         }
-    }
+		public void SetInvoiceDate(DateTimeOffset invoiceDate, string username, string uSER_AGENT)
+		{
+			if (this.InvoiceDate != invoiceDate)
+			{
+				this.InvoiceDate = invoiceDate;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+	}
 }
