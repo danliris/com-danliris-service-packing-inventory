@@ -26,7 +26,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<GarmentPackingListViewModel> ReadByInvoiceNo(string no);
         Task SetPost(List<int> ids);
         Task SetUnpost(int id);
-        Task SetApproveMd(int id, GarmentPackingListViewModel viewModel);
+		Task SetUnpostDelivered(int id);
+		Task SetApproveMd(int id, GarmentPackingListViewModel viewModel);
         Task SetApproveShipping(int id, GarmentPackingListViewModel viewModel);
         Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null);
         Task<MemoryStreamResult> ReadExcelById(int id);
