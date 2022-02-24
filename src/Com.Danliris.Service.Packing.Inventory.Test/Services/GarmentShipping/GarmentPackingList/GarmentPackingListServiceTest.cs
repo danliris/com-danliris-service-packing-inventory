@@ -221,8 +221,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 			  .Returns(repoInvoiceMock.Object);
 
 			var service = GetService(serviceProviderMock.Object);
-			
-
+			 
 			var result = await service.Update(1, ViewModel);
 
             Assert.NotEqual(0, result);
@@ -1247,5 +1246,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             await service.SetSampleDelivered(ids);
         }
-    }
+		 
+	}
 }
