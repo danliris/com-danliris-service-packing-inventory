@@ -129,10 +129,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public DyeingPrintingAreaOutputModel DyeingPrintingAreaOutput { get; set; }
         public DateTimeOffset DateIn { get; private set; }
         public DateTimeOffset DateOut { get; private set; }
+        public bool IsAfterStockOpname { get; private set; }
 
         public DyeingPrintingAreaOutputProductionOrderModel()
         {
             //DyeingPrintingAreaOutputAvalItems = new HashSet<DyeingPrintingAreaOutputAvalItemModel>();
+            IsAfterStockOpname = true;
         }
 
         /// <summary>

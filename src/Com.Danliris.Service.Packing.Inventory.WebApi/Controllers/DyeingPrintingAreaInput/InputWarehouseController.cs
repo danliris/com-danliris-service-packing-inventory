@@ -264,7 +264,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(timezone);
-                var Result = _service.GenerateExcelAll(dateFrom, dateTo, type, clientTimeZoneOffset);
+                System.IO.MemoryStream Result  ;
+
+                if (type == "LIST BARCODE")
+                {
+                    Result = _service.GenerateExcelAllBarcode(dateFrom, dateTo, clientTimeZoneOffset);
+                }
+                else {
+                    Result = _service.GenerateExcelAll(dateFrom, dateTo, type, clientTimeZoneOffset);
+                }
                 string filename = "Penerimaan Gudang Jadi Dyeing/Printing.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);

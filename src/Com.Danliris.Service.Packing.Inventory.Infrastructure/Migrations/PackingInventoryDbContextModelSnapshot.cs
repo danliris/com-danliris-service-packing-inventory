@@ -483,6 +483,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.HasIndex("DyeingPrintingAreaInputId");
 
+                    b.HasIndex("ProcessTypeName");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionOrderNo");
+
                     b.ToTable("DyeingPrintingAreaInputProductionOrders");
                 });
 
@@ -781,6 +787,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("InventoryType");
 
+                    b.Property<bool>("IsAfterStockOpname");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent")
@@ -896,6 +904,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DyeingPrintingAreaOutputId");
+
+                    b.HasIndex("ProcessTypeName");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("ProductionOrderNo");
 
                     b.ToTable("DyeingPrintingAreaOutputProductionOrders");
                 });
@@ -2612,6 +2626,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(500);
 
                     b.Property<string>("RemarkMd")
+                        .HasMaxLength(2000);
+
+                    b.Property<string>("SampleRemarkMd")
                         .HasMaxLength(2000);
 
                     b.Property<string>("SayUnit")

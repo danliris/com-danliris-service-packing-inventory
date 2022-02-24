@@ -44,8 +44,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join b in queryItem on a.Id equals b.LocalSalesNoteId
                         join c in querylcl on a.Id equals c.LocalSalesNoteId into dd
                         from CL in dd.DefaultIfEmpty()
+                        where a.TransactionTypeCode != "SML" && a.TransactionTypeCode != "LMS"
 
-                            //group new { Amt = Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) } by new { a.NoteNo, a.Date, a.BuyerCode, a.BuyerName, a.UseVat } into G
+                        //group new { Amt = Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) } by new { a.NoteNo, a.Date, a.BuyerCode, a.BuyerName, a.UseVat } into G
 
                         select new GarmentLocalSalesOmzetViewModel
                         {

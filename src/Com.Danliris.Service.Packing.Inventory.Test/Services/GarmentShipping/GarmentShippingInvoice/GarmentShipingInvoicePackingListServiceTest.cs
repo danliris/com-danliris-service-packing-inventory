@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 Id = 1
             };
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "")
             {
                 Id = 1
             };
@@ -82,10 +82,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         //        Id = 1
         //    };
 
-        //    var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now.Date.AddMonths(-1), "", "", DateTimeOffset.Now.Date.AddMonths(-1), "", 1, "B10", "", "", "", "", DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "")
-        //    {
-        //        Id = 1
-        //    };
+
+            //var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now.Date.AddMonths(-1), "", "", DateTimeOffset.Now.Date.AddMonths(-1), "", 1, "B10", "", "", "", "", DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false,false,false,"")
+            //{
+            //    Id = 1
+            //};
+
 
 
         //    var repoMock1 = new Mock<IGarmentShippingInvoiceRepository>();
@@ -114,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 Id = 1
             };
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "")
             {
                 Id = 1
             };
@@ -146,7 +148,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 Id = 1
             };
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now.Date.AddMonths(-1), "", "", DateTimeOffset.Now.Date.AddMonths(-1), "", 1, "B10", "", "", "", "", DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false)
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now.Date.AddMonths(-1), "", "", DateTimeOffset.Now.Date.AddMonths(-1), "", 1, "B10", "", "", "", "", DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), DateTimeOffset.Now.Date.AddMonths(-1), true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "")
             {
                 Id = 1
             };
