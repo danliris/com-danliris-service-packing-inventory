@@ -554,5 +554,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
                 this.FlagForUpdate(userName, userAgent);
             }
         }
-    }
+
+		public void SetSampleRemarkMd(string remark, string userName, string userAgent)
+		{
+			if (SampleRemarkMd != remark)
+			{
+				SampleRemarkMd = remark;
+				this.FlagForUpdate(userName, userAgent);
+			}
+		}
+	}
 }
