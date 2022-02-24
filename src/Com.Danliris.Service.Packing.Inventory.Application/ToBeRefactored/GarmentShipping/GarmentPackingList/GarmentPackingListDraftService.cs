@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -48,8 +49,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             GarmentPackingListModel model = MapToModel(viewModel);
             GarmentPackingListModel modelToUpdate;
-
-            if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+			var invoice = _invoiceRepository.ReadAll();
+			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
+														   where a.InvoiceNo == model.InvoiceNo
+														   select a).FirstOrDefault();
+			if (shippingInvoice != null)
+			{
+				shippingInvoice.ShippingStaffId = model.ShippingStaffId;
+				shippingInvoice.ShippingStaff = model.ShippingStaffName;
+			}
+			if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
             {
                 modelToUpdate = _packingListRepository.Query
                     .Include(i => i.Items)
@@ -102,8 +111,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
-
-            return await _packingListRepository.SaveChanges();
+			var updateInvoice = await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
+			return await _packingListRepository.SaveChanges();
         }
 
         public override async Task<MemoryStreamResult> ReadPdfById(int id)
