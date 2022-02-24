@@ -505,7 +505,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Phrase = new Phrase(grandTotalResult, normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
-            var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
+            var comodities = viewModel.Items.Select(s => s.Comodity.Id > 0? s.Comodity.Name.ToUpper() : "FABRIC").Distinct();
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.NO_BORDER,
