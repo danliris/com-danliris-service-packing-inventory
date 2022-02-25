@@ -10,16 +10,16 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzet
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzetUnPaid
 {
-    public class GarmentLocalSalesOmzetService : IGarmentLocalSalesOmzetService
+    public class GarmentLocalSalesOmzetUnPaidService : IGarmentLocalSalesOmzetUnPaidService
     {
         private readonly IGarmentShippingLocalSalesNoteRepository repository;
         private readonly IGarmentShippingLocalSalesNoteItemRepository itemrepository;
         private readonly IGarmentLocalCoverLetterRepository lclrepository;
         private readonly IIdentityProvider _identityProvider;
 
-        public GarmentLocalSalesOmzetService(IServiceProvider serviceProvider)
+        public GarmentLocalSalesOmzetUnPaidService(IServiceProvider serviceProvider)
         {
             repository = serviceProvider.GetService<IGarmentShippingLocalSalesNoteRepository>();
             itemrepository = serviceProvider.GetService<IGarmentShippingLocalSalesNoteItemRepository>();
@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-        public IQueryable<GarmentLocalSalesOmzetViewModel> GetData(DateTime? dateFrom, DateTime? dateTo, int offset)
+        public IQueryable<GarmentLocalSalesOmzetUnPaidViewModel> GetData(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var query = repository.ReadAll();
             var queryItem = itemrepository.ReadAll();
@@ -44,11 +44,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         join b in queryItem on a.Id equals b.LocalSalesNoteId
                         join c in querylcl on a.Id equals c.LocalSalesNoteId into dd
                         from CL in dd.DefaultIfEmpty()
-                        where a.TransactionTypeCode != "SML" && a.TransactionTypeCode != "LMS"
-
-                        //group new { Amt = Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) } by new { a.NoteNo, a.Date, a.BuyerCode, a.BuyerName, a.UseVat } into G
-
-                        select new GarmentLocalSalesOmzetViewModel
+                        where a.TransactionTypeCode == "SML" || a.TransactionTypeCode == "LMS"
+                        
+                        select new GarmentLocalSalesOmzetUnPaidViewModel
                         {
                             LSNo = a.NoteNo,
                             LSDate = a.Date,
@@ -71,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return newQ;
         }
 
-        public List<GarmentLocalSalesOmzetViewModel> GetReportData(DateTime? dateFrom, DateTime? dateTo, int offset)
+        public List<GarmentLocalSalesOmzetUnPaidViewModel> GetReportData(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var Query = GetData(dateFrom, dateTo, offset);
             Query = Query.OrderBy(b => b.LSNo);
@@ -106,32 +104,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (Query.ToArray().Count() == 0)
                 result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
-            //{
-            //    int index = 0;
-            //    foreach (var d in Query)
-            //    {
-            //        index++;
 
-            //        string GLSDate = d.LSDate == new DateTime(1970, 1, 1) ? "-" : d.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-            //        string AmntDPP = string.Format("{0:N2}", d.DPP);
-            //        string AmntPPN = string.Format("{0:N2}", d.PPN);
-            //        string AmntTOT = string.Format("{0:N2}", d.Total);
-
-            //        result.Rows.Add(index, d.LSNo, GLSDate, d.BuyerCode, d.BuyerName, d.UseVat, AmntDPP, AmntPPN, AmntTOT);
-            //    }
-            //}
             {
-                Dictionary<string, List<GarmentLocalSalesOmzetViewModel>> dataByLSNo = new Dictionary<string, List<GarmentLocalSalesOmzetViewModel>>();
+                Dictionary<string, List<GarmentLocalSalesOmzetUnPaidViewModel>> dataByLSNo = new Dictionary<string, List<GarmentLocalSalesOmzetUnPaidViewModel>>();
                 Dictionary<string, double> subTotalQty = new Dictionary<string, double>();
                 Dictionary<string, decimal> subTotalDPP = new Dictionary<string, decimal>();
                 Dictionary<string, decimal> subTotalPPN = new Dictionary<string, decimal>();
                 Dictionary<string, decimal> subTotalAmt = new Dictionary<string, decimal>();
 
-                foreach (GarmentLocalSalesOmzetViewModel item in Query.ToList())
+                foreach (GarmentLocalSalesOmzetUnPaidViewModel item in Query.ToList())
                 {
                     string LSNumber = item.LSNo;
-                    if (!dataByLSNo.ContainsKey(LSNumber)) dataByLSNo.Add(LSNumber, new List<GarmentLocalSalesOmzetViewModel> { });
-                    dataByLSNo[LSNumber].Add(new GarmentLocalSalesOmzetViewModel
+                    if (!dataByLSNo.ContainsKey(LSNumber)) dataByLSNo.Add(LSNumber, new List<GarmentLocalSalesOmzetUnPaidViewModel> { });
+                    dataByLSNo[LSNumber].Add(new GarmentLocalSalesOmzetUnPaidViewModel
                     {
                         LSNo = item.LSNo,
                         LSDate = item.LSDate,
@@ -187,11 +172,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 int rowPosition = 1;
 
-                foreach (KeyValuePair<string, List<GarmentLocalSalesOmzetViewModel>> LSNumber in dataByLSNo)
+                foreach (KeyValuePair<string, List<GarmentLocalSalesOmzetUnPaidViewModel>> LSNumber in dataByLSNo)
                 {
                     string NoteNo = "";
                     int index = 0;
-                    foreach (GarmentLocalSalesOmzetViewModel item in LSNumber.Value)
+                    foreach (GarmentLocalSalesOmzetUnPaidViewModel item in LSNumber.Value)
                     {
                         index++;
 

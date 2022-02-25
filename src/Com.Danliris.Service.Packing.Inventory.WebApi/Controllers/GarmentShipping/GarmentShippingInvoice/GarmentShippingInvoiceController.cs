@@ -220,6 +220,63 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("whpdf/{Id}/{type}")]
+        public async Task<IActionResult> GetWHPDF([FromRoute] int Id, [FromRoute] string type)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+
+            try
+            {
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
+
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
+                    BankAccount bank = _service.GetBank(model.BankAccountId);
+                    GarmentPackingListViewModel pl = await _packingListService.ReadById(model.PackingListId);
+                    if (type == "fob")
+                    {
+                        var PdfTemplate = new GarmentShippingInvoiceWithHeaderPdfTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.InvoiceNo + "-Invoice" + ".pdf"
+                        };
+                    }
+                    else
+                    {
+                        var PdfTemplate = new GarmentShippingInvoiceCMTWithHeaderPdfTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
+                        };
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet("exportSalesDebtor")]
         public IActionResult GetExportSalesDebtor(int month, int year)
         {
