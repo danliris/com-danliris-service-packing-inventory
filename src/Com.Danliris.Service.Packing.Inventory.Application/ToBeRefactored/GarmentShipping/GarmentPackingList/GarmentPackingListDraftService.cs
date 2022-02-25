@@ -57,6 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			{
 				shippingInvoice.ShippingStaffId = model.ShippingStaffId;
 				shippingInvoice.ShippingStaff = model.ShippingStaffName;
+			    await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
 			}
 			if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
             {
@@ -111,7 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
-			var updateInvoice = await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
+			
 			return await _packingListRepository.SaveChanges();
         }
 
