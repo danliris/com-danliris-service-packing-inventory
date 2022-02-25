@@ -149,6 +149,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetStatus(model.Status, _identityProvider.Username, UserAgent);
+            if(modelToUpdate.IsShipping == false)
+            {
+                modelToUpdate.SetIsShipping(model.IsShipping, _identityProvider.Username, UserAgent);
+            }
+
+            modelToUpdate.SetIsSampleDelivered(model.IsSampleDelivered, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsSampleExpenditureGood(model.IsSampleExpenditureGood, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {

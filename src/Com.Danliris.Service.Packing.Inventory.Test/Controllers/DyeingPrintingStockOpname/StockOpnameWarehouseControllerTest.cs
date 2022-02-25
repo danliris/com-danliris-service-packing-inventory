@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
@@ -16,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse.StockOpnameWarehouseService;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrintingStockOpname
 {
@@ -116,6 +118,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
                             QtyOrder = 10
                         }
                     }
+                };
+            }
+        }
+
+        private BarcodeInfoViewModel ViewModel
+        {
+            get
+            {
+                return new BarcodeInfoViewModel
+                {
+                    PackingCode = "a",
+                    MaterialName = "a",
+                    MaterialConstructionName =  "a",
+                    YarnMaterialName = "a",
+                    PackingLength = 1,
+                    PackingType = "a",
+                    Color = "a",
+                    OrderNo = "P001",
+                    UOMSKU = "mtr",
+                    DocumentNo = "a",
+                    Grade = "a",
+                    Balance = 1,
+                    CreatedBy = "dev2",
+                    PackagingQty = 1
                 };
             }
         }
@@ -624,5 +650,98 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Success_GetScanView()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GetMonitoringScan( It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new List<BarcodeInfoViewModel>() { ViewModel });
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_GetScanView()
+        {
+            //Arrange
+            var dataUtil = viewModel;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(),It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            //var response = controller.GetListBon();
+
+            var response = controller.GetScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public void Should_Success_GetStockOpnameExcelViewScan()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetXlsScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Exception_GetStockOpnameExcelViewScan()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelMonitoringScan(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetXlsScanView(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
     }
 }

@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             if (isStockOpname)
             {
-                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode));
+                var query = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => !string.IsNullOrWhiteSpace(entity.ProductPackingCode) && !entity.IsDeleted);
                 List<string> SearchAttributes = new List<string>()
                 {
                     "ProductionOrderNo"
@@ -202,7 +202,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
-                var query = _outputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT);
+                var query = _outputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.DyeingPrintingAreaOutput.Type == DyeingPrintingArea.OUT && !s.IsDeleted);
                 List<string> SearchAttributes = new List<string>()
                 {
                     "ProductionOrderNo"

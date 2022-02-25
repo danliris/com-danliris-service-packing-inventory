@@ -43,13 +43,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         {
             //var queryTransform = _movementRepository.ReadAll()
             //    .Where(s => s.Area == area && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date && productionOrderIds.Contains(s.ProductionOrderId));
-            // var invType = inventoryType == "BARU" ? null : inventoryType;
+            // var invType = inventoryType == "BARU" ? null : inventoryType;c
 
             if (area == "GUDANG JADI")
             {
-                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
-                var queryTransform = _movementRepository.ReadAll()
-                .Where(s => s.Area == area && s.Type == "IN" && inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
+                //var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname || entity.IsAfterStockOpname).Select(entity => new { entity.Id, entity.ProcessTypeName}).ToList();
+                //var queryTransform = _movementRepository.ReadAll()
+                //.Where(s => s.Area == area && s.Type == "IN" && inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
+
+                var inputOrder = _inputSppRepository.ReadAll();
+                var movement = _movementRepository.ReadAll().Where(s => s.Area == area 
+                                                                        //&& s.Type == "IN" 
+                                                                        && s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date < dateFrom.Date);
+                var queryTransform = ( from a in movement
+                                       join b in inputOrder on a.DyeingPrintingAreaProductionOrderDocumentId equals b.Id into l
+                                       from b in l.DefaultIfEmpty()
+                                       where 
+                                       b.IsDeleted == false
+                                       && a.IsDeleted == false
+                                       && (b.IsFromStockOpname == true || b.IsAfterStockOpname == true)
+                                       select new
+                                       {
+                                           Unit = a.Unit,
+                                           PackingType = a.PackingType,
+                                           Construction = a.Construction,
+                                           Buyer = a.Buyer,
+                                           ProductionOrderId = a.ProductionOrderId,
+                                           ProductionOrderNo = a.ProductionOrderNo,
+                                           InventoryType = a.InventoryType,
+                                           Grade = a.Grade,
+                                           Remark = a.Remark,
+                                           Color  = a.Color,
+                                           Motif = a.Motif,
+                                           UomUnit = a.UomUnit,
+                                           Type = a.Type,
+                                           Balance = a.Balance,
+                                           ProcessTypeId = b.ProcessTypeId,
+                                           ProcessTypeName = b.ProcessTypeName
+
+                                       }
+
+
+
+                    );
 
                 if (!string.IsNullOrEmpty(unit))
                 {
@@ -101,6 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     NoSpp = d.First().ProductionOrderNo,
                     Satuan = d.First().UomUnit,
                     Unit = d.First().Unit,
+                    ProcessTypeName = d.First().ProcessTypeName,
                     InventoryType = d.Key.InventoryType,
                     Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
                         + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
@@ -318,13 +355,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
             if (area == "GUDANG JADI")
             {
-                var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname).Select(entity => entity.Id).ToList();
-                var queryTransform = _movementRepository.ReadAll()
-                       .Where(s => s.Area == area &&
-                            s.Type == "IN" &&
-                            inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
+                //var inputIds = _inputSppRepository.ReadAll().Where(entity => entity.IsFromStockOpname || entity.IsAfterStockOpname).Select(entity => entity.Id).ToList();
+                //var queryTransform = _movementRepository.ReadAll()
+                //       .Where(s => s.Area == area &&
+                //            //s.Type == "IN" &&
+                //            inputIds.Contains(s.DyeingPrintingAreaProductionOrderDocumentId) &&
+                //            startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
+                //            s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
+
+
+                var inputOrder = _inputSppRepository.ReadAll();
+                var movement = _movementRepository.ReadAll().Where(s => s.Area == area &&
+                            //s.Type == "IN" &&
                             startDate.Date <= s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date &&
                             s.Date.ToOffset(new TimeSpan(offset, 0, 0)).Date <= dateReport.Date);
+                var queryTransform = (from a in movement
+                                      join b in inputOrder on a.DyeingPrintingAreaProductionOrderDocumentId equals b.Id into l
+                                      from b in l.DefaultIfEmpty()
+                                      where
+                                      b.IsDeleted == false
+                                      && a.IsDeleted == false
+                                      && (b.IsFromStockOpname == true || b.IsAfterStockOpname == true)
+                                      select new
+                                      {
+                                          Unit = a.Unit,
+                                          PackingType = a.PackingType,
+                                          Construction = a.Construction,
+                                          Buyer = a.Buyer,
+                                          ProductionOrderId = a.ProductionOrderId,
+                                          ProductionOrderNo = a.ProductionOrderNo,
+                                          InventoryType = a.InventoryType,
+                                          Grade = a.Grade,
+                                          Remark = a.Remark,
+                                          Color = a.Color,
+                                          Motif = a.Motif,
+                                          UomUnit = a.UomUnit,
+                                          Type = a.Type,
+                                          Balance = a.Balance,
+                                          ProcessTypeId = b.ProcessTypeId,
+                                          ProcessTypeName = b.ProcessTypeName
+
+                                      }
+
+
+
+                    );
 
                 if (!string.IsNullOrEmpty(unit))
                 {
@@ -374,6 +449,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Jenis = d.Key.PackingType,
                     Ket = d.Key.Remark,
                     Motif = d.First().Motif,
+                    ProcessTypeName = d.First().ProcessTypeName,
                     Buyer = d.First().Buyer,
                     NoSpp = d.First().ProductionOrderNo,
                     Satuan = d.First().UomUnit,
@@ -671,6 +747,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Ket = e.Key.Ket,
                     Motif = e.First().Motif,
                     Buyer = e.First().Buyer,
+                    ProcessTypeName = e.First().ProcessTypeName,
+                    
                     Satuan = e.First().Satuan,
                     Unit = e.First().Unit,
                     InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
@@ -744,6 +822,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Jenis", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Proses", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Ket", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Awal", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(string) });
@@ -760,7 +839,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 {
                     foreach (var item in data)
                     {
-                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis,
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis, item.ProcessTypeName,
                             item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
                             item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
                     }

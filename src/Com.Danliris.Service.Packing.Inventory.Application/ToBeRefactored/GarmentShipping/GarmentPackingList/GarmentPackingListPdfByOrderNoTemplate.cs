@@ -136,7 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 30);
+            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 170, 60);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -505,7 +505,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 Phrase = new Phrase(grandTotalResult, normal_font)
             });
             tableGrandTotal.AddCell(cellHeaderLine);
-            var comodities = viewModel.Items.Select(s => s.Comodity.Name.ToUpper()).Distinct();
+            var comodities = viewModel.Items.Select(s => s.Comodity.Id > 0? s.Comodity.Name.ToUpper() : "FABRIC").Distinct();
             tableGrandTotal.AddCell(new PdfPCell()
             {
                 Border = Rectangle.NO_BORDER,
@@ -902,8 +902,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region PRINTED
 
-            var printY = marginBottom - 10;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Waktu Cetak : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), marginLeft, printY, 0);
+            var printY = marginBottom - 40;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Prited on : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), width - marginRight, printY, 0);
 
             #endregion
 

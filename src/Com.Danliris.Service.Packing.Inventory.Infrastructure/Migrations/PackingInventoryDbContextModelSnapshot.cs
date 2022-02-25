@@ -2096,6 +2096,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("RONo");
 
+                    b.Property<string>("Remarks");
+
                     b.Property<string>("SCNo");
 
                     b.Property<string>("SectionCode");
@@ -2317,6 +2319,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("RONo")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("RoType");
+
                     b.Property<string>("SCNo")
                         .HasMaxLength(50);
 
@@ -2458,6 +2464,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("IsPosted");
 
+                    b.Property<bool>("IsSampleDelivered");
+
+                    b.Property<bool>("IsSampleExpenditureGood");
+
+                    b.Property<bool>("IsShipping");
+
                     b.Property<bool>("IsUsed");
 
                     b.Property<string>("IssuedBy")
@@ -2562,7 +2574,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Remark");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status");
 
                     b.HasKey("Id");
 
