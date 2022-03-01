@@ -64,6 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetPaymentTerm("Updated " + data.PaymentTerm, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetShippingStaff(data.ShippingStaffId + 1, "Updated" + data.ShippingStaffName, data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetSampleRemarkMd(data.SampleRemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
+			data.SetPackingListType(data.PackingListType, data.LastModifiedBy, data.LastModifiedAgent);
 			foreach (var item in data.Items)
             {
                 item.SetRONo("Updated " + item.RONo, item.LastModifiedBy, item.LastModifiedAgent);
