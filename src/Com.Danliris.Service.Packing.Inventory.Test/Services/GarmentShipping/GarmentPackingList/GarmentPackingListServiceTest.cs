@@ -1246,6 +1246,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             await service.SetSampleDelivered(ids);
         }
-		 
+
+		[Fact]
+		public async Task Set_UnPostSuccess()
+		{
+			var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
+			repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
+				.ReturnsAsync(1);
+
+			var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
+			var service = GetService(serviceProviderMock.Object);
+			await service.Unpost(ViewModel.Id,ViewModel);
+		}
+
 	}
 }
