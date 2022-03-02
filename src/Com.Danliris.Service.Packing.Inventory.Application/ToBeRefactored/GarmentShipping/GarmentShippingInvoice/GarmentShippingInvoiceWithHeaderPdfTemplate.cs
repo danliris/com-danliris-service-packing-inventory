@@ -17,12 +17,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             const int MARGIN = 20;
 
-            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-      
+            Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+
             Document document = new Document(PageSize.A4, MARGIN, MARGIN, 90, 80);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
@@ -33,8 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LC
             PdfPTable tableLC = new PdfPTable(3);
-            tableLC.SetWidths(new float[] { 2f, 0.1f, 6f });
-                       
+            tableLC.SetWidths(new float[] { 2f, 0.1f, 6f });        
             if (pl.PaymentTerm == "LC")
             {
                 PdfPCell cellLCContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -79,13 +78,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Body Table
 
             PdfPTable bodyTable = new PdfPTable(8);
-            float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.6f, 0.7f, 1f, 1.3f };
+            //float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.6f, 0.7f, 1f, 1.3f };
+            float[] bodyTableWidths = new float[] { 1.9f, 1.9f, 1.8f, 1.8f, 0.5f, 0.6f, 1f, 1.1f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
             #region Set Body Table Header
             PdfPCell bodyTableHeader = new PdfPCell();// { FixedHeight = 30 };
-       
             bodyTableHeader.Phrase = new Phrase("DESCRIPTION", normal_font);
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
@@ -110,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableHeader.HorizontalAlignment = Element.ALIGN_CENTER;
             bodyTableHeader.VerticalAlignment = Element.ALIGN_CENTER;
             bodyTable.AddCell(bodyTableHeader);
-            
+
             #endregion
 
             #region Set Body Table Value
@@ -624,10 +623,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfContentByte cb = writer.DirectContent;
             cb.BeginText();
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font big_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 16, Font.BOLD);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font big_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14, Font.BOLD);
             BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7, Font.UNDERLINE);
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
@@ -646,7 +645,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             imageDL.SetAbsolutePosition(marginLeft, height - imageDL.ScaledHeight - marginTop + 60);
             cb.AddImage(imageDL, inlineImage: true);
-      
+
             #endregion
 
             #region ADDRESS
@@ -674,7 +673,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 "Tel. : (+62-271) 740888, 714400",
                 "Fax. : (+62-271) 740777, 735222",
                 "PO BOX 166 Solo, 57100",
-                "Website : www.danliris.com",               
+                "Website : www.danliris.com",
             };
             for (int i = 0; i < branchOffices.Length; i++)
             {
@@ -682,7 +681,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             #endregion
-      
+
             #region LOGOISO
 
             byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
@@ -726,10 +725,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellDetailContentCenter2 = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase( "                                                       INVOICE", big_font));
+            cellHeaderContentLeft.AddElement(new Phrase("                                                               INVOICE", big_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                                Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "                                                                                                      Page  : " + (writer.PageNumber), normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.Colspan = 3;
             tabledetailOrders.AddCell(cellHeaderContentLeft);
@@ -892,6 +891,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContentStart.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentStart.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentStart.AddElement(new Phrase("\n", normal_font));
+            cellHeaderContentStart.AddElement(new Phrase("\n", normal_font));
+            cellHeaderContentStart.AddElement(new Phrase("\n", normal_font));
 
             tableStart.AddCell(cellHeaderContentStart);
             tableStart.SpacingAfter = 50f;
@@ -903,8 +904,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var signX = document.RightMargin + 500;
             var signY = printY + 20;
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY, 0);
-            cb.MoveTo(signX - 55, signY - 2);
-            cb.LineTo(signX + 55, signY - 2);
+            cb.MoveTo(signX - 60, signY - 2);
+            cb.LineTo(signX + 45, signY - 2);
             cb.Stroke();
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 10, 0);
 
@@ -915,14 +916,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var printY1 = document.BottomMargin - 30;
             var signX1 = document.LeftMargin + 20;
             var signY1 = printY1 + 20;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The shippers accept no responsibility for the arrival of goods at destination or for loss or damage in transit after goods were shipped in good order and condition.", document.LeftMargin, 50, 0);          
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The  goods  supplied  under  this  invoice  remain  our  property  until  the  invoice  has been credited into  one or our Bank account  mentioned above in full and", document.LeftMargin, 40, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "without restriction.", document.LeftMargin, 30, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "______________________________________________________________________________________________________________________________", document.LeftMargin, 20, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The shippers accept no responsibility for the arrival of goods at destination or for loss or damage in transit after goods were shipped in good order and condition.", document.LeftMargin, 40, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The  goods  supplied  under  this  invoice  remain  our  property  until  the  invoice  has been credited into  one or our Bank account  mentioned above in full and without restriction.", document.LeftMargin, 30, 0);
+            //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "without restriction.", document.LeftMargin, 30, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "______________________________________________________________________________________________________________________________________________", document.LeftMargin, 20, 0);
 
             #endregion
 
             cb.EndText();
         }
-    }    
+    }
 }
