@@ -525,8 +525,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
 
             garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
-		
-			 
+
 			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
         }
 
