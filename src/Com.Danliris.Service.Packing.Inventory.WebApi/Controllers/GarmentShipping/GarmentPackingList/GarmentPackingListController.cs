@@ -280,7 +280,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
-        [HttpDelete("{id}")]
+		
+
+		[HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
@@ -330,8 +332,23 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+		[HttpPut("unpostDelivered/{id}")]
+		public async Task<IActionResult> SetUnpostDelivered([FromRoute] int id)
+		{
+			try
+			{
+				VerifyUser();
+				await _service.SetUnpostDelivered(id);
 
-        [HttpPut("cancel/{id}")]
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+
+		}
+		[HttpPut("cancel/{id}")]
         public async Task<IActionResult> SetCancel([FromRoute] int id, [FromBody] string reason)
         {
             try
