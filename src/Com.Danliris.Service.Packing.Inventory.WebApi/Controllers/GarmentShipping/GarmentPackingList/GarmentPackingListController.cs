@@ -498,8 +498,39 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+		[HttpPut("approve-to-md/{id}")]
+		[HttpPut("revise-to-md/{id}")]
+		public async Task<IActionResult> SetRevisedToMd([FromRoute] int id, [FromBody] string reason)
+		{
+			try
+			{
+				VerifyUser();
 
-        [HttpPut("reject-shipping-unit/{id}")]
+				if (string.IsNullOrWhiteSpace(reason) || string.IsNullOrEmpty(reason))
+				{
+					var Result = new
+					{
+						error = "Alasan harus diisi.",
+						apiVersion = "1.0.0",
+						statusCode = HttpStatusCode.BadRequest,
+						message = "Data does not pass validation"
+					};
+
+					return new BadRequestObjectResult(Result);
+				}
+
+				await _service.SetStatus(id, GarmentPackingListStatusEnum.REVISED_TO_MD, reason);
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+
+		}
+
+		[HttpPut("reject-shipping-unit/{id}")]
         public async Task<IActionResult> SetRejectShippingToUnit([FromRoute] int id, [FromBody] string reason)
         {
             try
