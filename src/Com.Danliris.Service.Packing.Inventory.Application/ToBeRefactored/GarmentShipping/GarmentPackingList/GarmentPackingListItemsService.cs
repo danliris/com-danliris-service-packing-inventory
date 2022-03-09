@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Description = i.Description,
                     DescriptionMd = i.DescriptionMd,
                     Remarks = i.Remarks,
-
+                    RoType=i.RoType,
                     Details = i.Details.Select(d => new GarmentPackingListDetailViewModel
                     {
                         Active = d.Active,
