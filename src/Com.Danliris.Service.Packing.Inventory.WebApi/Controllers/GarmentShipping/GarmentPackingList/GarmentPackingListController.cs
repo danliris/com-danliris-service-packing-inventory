@@ -498,7 +498,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
-		[HttpPut("approve-to-md/{id}")]
+		 
 		[HttpPut("revise-to-md/{id}")]
 		public async Task<IActionResult> SetRevisedToMd([FromRoute] int id, [FromBody] string reason)
 		{
