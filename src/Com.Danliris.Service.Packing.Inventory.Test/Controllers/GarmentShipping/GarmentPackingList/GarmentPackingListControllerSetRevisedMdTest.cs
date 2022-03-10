@@ -77,5 +77,72 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
-    }
+
+		[Fact]
+		public async Task Set_RevisedToMd_Success()
+		{
+			var serviceMock = new Mock<IGarmentPackingListService>();
+			serviceMock
+				.Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+				.Verifiable();
+			var service = serviceMock.Object;
+
+			var validateServiceMock = new Mock<IValidateService>();
+			var validateService = validateServiceMock.Object;
+
+			var identityProviderMock = new Mock<IIdentityProvider>();
+			var identityProvider = identityProviderMock.Object;
+
+			var controller = GetController(service, identityProvider, validateService);
+
+			var response = await controller.SetRevisedToMd(It.IsAny<int>(), "Alasan");
+
+			Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+		}
+
+		[Fact]
+		public async Task Set_RevisedToMd_Exception_BadRequest()
+		{
+			var serviceMock = new Mock<IGarmentPackingListService>();
+			serviceMock
+				.Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+				.ThrowsAsync(new Exception());
+			var service = serviceMock.Object;
+
+			var validateServiceMock = new Mock<IValidateService>();
+			var validateService = validateServiceMock.Object;
+
+			var identityProviderMock = new Mock<IIdentityProvider>();
+			var identityProvider = identityProviderMock.Object;
+
+			var controller = GetController(service, identityProvider, validateService);
+
+			var response = await controller.SetRevisedToMd(It.IsAny<int>(), It.IsAny<string>());
+
+			Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+		}
+
+		[Fact]
+		public async Task Set_RevisedToMd_Exception_InternalServerError()
+		{
+			var serviceMock = new Mock<IGarmentPackingListService>();
+			serviceMock
+				.Setup(s => s.SetStatus(It.IsAny<int>(), It.IsAny<GarmentPackingListStatusEnum>(), It.IsAny<string>()))
+				.ThrowsAsync(new Exception());
+			var service = serviceMock.Object;
+
+			var validateServiceMock = new Mock<IValidateService>();
+			var validateService = validateServiceMock.Object;
+
+			var identityProviderMock = new Mock<IIdentityProvider>();
+			var identityProvider = identityProviderMock.Object;
+
+			var controller = GetController(service, identityProvider, validateService);
+
+			var response = await controller.SetRevisedToMd(It.IsAny<int>(), "Alasan");
+
+			Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+		}
+
+	}
 }
