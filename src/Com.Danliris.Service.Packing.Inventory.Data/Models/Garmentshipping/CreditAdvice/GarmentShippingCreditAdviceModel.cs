@@ -121,6 +121,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             Remark = remark;
         }
 
+        public void SetInvoiceId(int invoiceId, string userName, string userAgent)
+        {
+            if (InvoiceId != invoiceId)
+            {
+                InvoiceId = invoiceId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetReceiptNo(string receiptNo, string userName, string userAgent)
         {
             if (ReceiptNo != receiptNo)
