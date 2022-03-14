@@ -31,16 +31,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             writer.PageEvent = new GarmentCoverLetterPdfTemplatePageEvent();
             document.Open();
 
-            PdfPTable tableTitle = new PdfPTable(3);
+            PdfPTable tableTitle = new PdfPTable(1);
             tableTitle.WidthPercentage = 100;
-            tableTitle.SetWidths(new float[] { 2f, 2f, 2f });
+            tableTitle.SetWidths(new float[] { 6f });
             PdfPCell cellTitle = new PdfPCell() { MinimumHeight = 15, Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
             //cellTitle.Phrase = new Phrase("Ref No. : FM-00-SP-24-008", header_font);
             //tableTitle.AddCell(cellTitle);
             cellTitle.Phrase = new Phrase("SURAT PENGANTAR", header_font_bold);
             tableTitle.AddCell(cellTitle);
-            cellTitle.Phrase = new Phrase(viewModel.invoiceNo, header_font);
+            cellTitle.Phrase = new Phrase(viewModel.invoiceNo, header_font_bold);
             tableTitle.AddCell(cellTitle);
 
             tableTitle.SpacingAfter = 10;
@@ -423,10 +423,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 string[] headOffices = {
                 "Head Office : JL. MERAPI NO. 23 ",
-                "Banaran, Grogol, Sukoharjo 57193",
-                "Central Java, Indonesia",
-                "TELP.: (+62 271) 740888, 714400" ,
-                "FAX. : (+62 271) 735222, 740777" ,
+                "Banaran, Grogol, Sukoharjo 57193, Central Java, Indonesia",
+                "TELP.: (+62 271) 740888, 714400",
+                "FAX. : (+62 271) 735222, 740777",
                 "PO BOX 166 Solo, 57100",
                 "Website : www.danliris.com",
             };
@@ -441,15 +440,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
                 Image imageIso = Image.GetInstance(imageByteIso);
-                if (imageIso.Width > 80)
+                if (imageIso.Width > 100)
                 {
                     float percentage = 0.0f;
-                    percentage = 80 / imageIso.Width;
+                    percentage = 100 / imageIso.Width;
                     imageIso.ScalePercent(percentage * 100);
                 }
                 imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight - 30, branchOfficeY);
                 cb.AddImage(imageIso, inlineImage: true);
                 //cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight-30, headOfficeY, 0);
+
+                #endregion
+
+                #region LINE
+
+                cb.MoveTo(marginLeft, height - marginTop + 35);
+                cb.LineTo(width - marginRight, height - marginTop + 35);
+                cb.Stroke();
+
+                cb.MoveTo(marginLeft, height - marginTop + 32);
+                cb.LineTo(width - marginRight, height - marginTop + 32);
+                cb.Stroke();
 
                 #endregion
 
