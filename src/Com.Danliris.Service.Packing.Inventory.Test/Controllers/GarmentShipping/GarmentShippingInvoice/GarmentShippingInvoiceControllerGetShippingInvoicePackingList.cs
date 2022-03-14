@@ -221,5 +221,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var response = controller.GetPLForDebtorCard(1, 1, "aa");
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
-    }
+	}
 }

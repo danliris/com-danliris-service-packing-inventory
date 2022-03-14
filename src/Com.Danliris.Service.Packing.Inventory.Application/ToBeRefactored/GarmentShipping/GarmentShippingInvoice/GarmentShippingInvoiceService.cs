@@ -243,23 +243,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return viewModel;
         }
-        public ShippingPackingListViewModel ReadShippingPackingListById(int id)
-        {
-            var queryInv = _repository.ReadAll();
+       
+		public ShippingPackingListViewModel ReadShippingPackingListById(int id)
+		{
+			var queryInv = _repository.ReadAll();
+		 
+			var query = (from a in queryInv
+						where  a.PackingListId == id
+						select new ShippingPackingListViewModel
+						{
+							 
+							InvoiceId = a.Id
+						}).FirstOrDefault();
 
-            var query = (from a in queryInv
-                         where a.PackingListId == id
-                         select new ShippingPackingListViewModel
-                         {
-
-                             InvoiceId = a.Id
-                         }).FirstOrDefault();
-
-            return query;
-        }
-        public async Task<int> Update(int id, GarmentShippingInvoiceViewModel viewModel)
-        {
-            GarmentShippingInvoiceModel garmentPackingListModel = MapToModel(viewModel);
+			return query;
+		}
+		public async Task<int> Update(int id, GarmentShippingInvoiceViewModel viewModel)
+		{
+			GarmentShippingInvoiceModel garmentPackingListModel = MapToModel(viewModel);
 
             return await _repository.UpdateAsync(id, garmentPackingListModel);
         }
