@@ -14,6 +14,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset? date { get; set; }
         public double amount { get; set; }
         public double amountToBePaid { get; set; }
+        public double amountPaid { get; set; }
+        public double balanceamount { get; set; }
         public string paymentTerm { get; set; }
         public string receiptNo { get; set; }
 
@@ -70,6 +72,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (date == null || date == DateTimeOffset.MinValue)
             {
                 yield return new ValidationResult("Tanggal tidak boleh kosong", new List<string> { "date" });
+            }
+
+            if (amountPaid <= 0)
+            {
+                yield return new ValidationResult("Amount Paid tidak boleh <= 0", new List<string> { "amountPaid" });
             }
 
             if (string.IsNullOrEmpty(paymentTerm))

@@ -7,10 +7,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentCreditAdviceMonitoringViewModel
     {
+        public int CAId { get; set; }
         public string InvoiceNo { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
         public double Amount { get; set; }
         public double ToBePaid { get; set; }
+        public double PaidAmount { get; set; }
+        public double BalanceAmount { get; set; }
         public double NettNego { get; set; }
         public string PaymentTerm { get; set; }
         public string BuyerName { get; set; }
