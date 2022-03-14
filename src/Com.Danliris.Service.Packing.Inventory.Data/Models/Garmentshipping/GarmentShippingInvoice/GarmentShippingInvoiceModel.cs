@@ -40,7 +40,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string Remark { get; set; }
         public decimal TotalAmount { get; set; }
 		public decimal AmountToBePaid { get; set; }
-		public string CPrice { get; set; }
+        public decimal AmountCA { get; set; }
+        public string CPrice { get; set; }
 		public string Memo { get; set; }
 		public bool IsUsed { get; set; }
 		public string BL { get; set; }
@@ -62,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         }
 
-		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, string Remark, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount, string consigneeAddress, string deliverTo, ICollection<GarmentShippingInvoiceUnitModel> GarmentShippingInvoiceUnit)
+		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, string Remark, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, decimal AmountCA, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount, string consigneeAddress, string deliverTo, ICollection<GarmentShippingInvoiceUnitModel> GarmentShippingInvoiceUnit)
 		{
 			this.PackingListId = PackingListId;
 			this.InvoiceNo = InvoiceNo;
@@ -94,7 +95,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			this.Description = Description;
 			this.Remark = Remark;
 			this.AmountToBePaid = AmountToBePaid;
-			this.CPrice = CPrice;
+            this.AmountCA = AmountCA;
+            this.CPrice = CPrice;
 			 
 			this.Memo = Memo;
 			this.IsUsed = IsUsed;
@@ -214,7 +216,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			}
 		}
 
-		public void SetTotalAmount(decimal totalAmount, string username, string uSER_AGENT)
+        public void SetAmountCA(decimal amountCA, string username, string uSER_AGENT)
+        {
+            if (this.AmountCA != amountCA)
+            {
+                this.AmountCA = amountCA;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetTotalAmount(decimal totalAmount, string username, string uSER_AGENT)
 		{
 			if (this.TotalAmount != totalAmount)
 			{
