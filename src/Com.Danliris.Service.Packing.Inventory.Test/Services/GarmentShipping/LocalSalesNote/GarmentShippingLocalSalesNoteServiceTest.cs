@@ -114,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "",false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", new List<GarmentShippingLocalSalesNoteItemModel>());
+            var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", new List<GarmentShippingLocalSalesNoteItemModel>());
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -130,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", items);
             var item = new GarmentShippingLocalSalesNoteItemModel();
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -175,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Success_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -191,7 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void ReadShippingLocalSalesNoteListNow_Success()
         {
-            var model1 = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "A99", "", 1, "", "", "", "", 1, "", "", true, "", true, true,true,"","", DateTimeOffset.Now, DateTimeOffset.Now, true,true,"" ,new List<GarmentShippingLocalSalesNoteItemModel>())
+            var model1 = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.MinValue, 1, "A99", "", 1, "", "", "", "", 1, "", "", true, "", true, true, true, "", "", DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", new List<GarmentShippingLocalSalesNoteItemModel>())
             {
                 Id = 1
             };
@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Null_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -239,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.ReadSalesNoteForFinance("now", model.Date.Month,model.Date.Year,model.BuyerCode);
+            var result = service.ReadSalesNoteForFinance("now", model.Date.Month, model.Date.Year, model.BuyerCode);
 
             Assert.NotEmpty(result.ToList());
 
@@ -248,10 +248,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             if (model.Date.Month == 12)
             {
                 month = 1;
-                year = model.Date.Year+1;
+                year = model.Date.Year + 1;
             }
-            else {
-                month = model.Date.Month+1;
+            else
+            {
+                month = model.Date.Month + 1;
                 year = model.Date.Year;
             }
 
@@ -260,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result2.ToList());
         }
-        
+
         [Fact]
         public async Task ApproveShipping_Success()
         {

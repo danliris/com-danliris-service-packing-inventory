@@ -214,7 +214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			var query = _repository.ReadAll();
 			List<string> SearchAttributes = new List<string>()
 			{
-				"InvoiceNo","From","To","BuyerAgentName"
+				"InvoiceNo","From","To","BuyerAgentName" 
 			};
 			query = QueryHelper<GarmentShippingInvoiceModel>.Search(query, SearchAttributes, keyword);
 
@@ -242,7 +242,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			return viewModel;
 		}
+		public ShippingPackingListViewModel ReadShippingPackingListById(int id)
+		{
+			var queryInv = _repository.ReadAll();
+		 
+			var query = (from a in queryInv
+						where  a.PackingListId == id
+						select new ShippingPackingListViewModel
+						{
+							 
+							InvoiceId = a.Id
+						}).FirstOrDefault();
 
+			return query;
+		}
 		public async Task<int> Update(int id, GarmentShippingInvoiceViewModel viewModel)
 		{
 			GarmentShippingInvoiceModel garmentPackingListModel = MapToModel(viewModel);
@@ -298,7 +311,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();
 
-            DateTime date = new DateTime(year, month, 1);
+            DateTime date = new DateTime(year, month + 1, 1);
             var query = from a in queryInv
                         join b in queryPL
                         on a.PackingListId equals b.Id

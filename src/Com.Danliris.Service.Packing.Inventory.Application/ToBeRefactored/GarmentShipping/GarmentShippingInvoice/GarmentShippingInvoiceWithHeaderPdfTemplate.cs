@@ -33,7 +33,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LC
             PdfPTable tableLC = new PdfPTable(3);
+
             tableLC.SetWidths(new float[] { 2f, 0.1f, 6f });
+
             if (pl.PaymentTerm == "LC")
             {
                 PdfPCell cellLCContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };

@@ -986,11 +986,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var item in model.SppList.OrderBy(s => s.ProductionOrderNo))
                     {
                         var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                       
-                        dt.Rows.Add(item.BonNo, 
-                                     item.DeliveryOrderSalesNo, 
-                                     item.ProductionOrderNo, 
-                                     dateIn, 
+
+                        dt.Rows.Add(item.BonNo,
+                                     item.DeliveryOrderSalesNo,
+                                     item.ProductionOrderNo,
+                                     dateIn,
                                      item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                      item.Construction,
                                      item.MaterialOrigin,
