@@ -130,7 +130,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 			modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetCPrice(model.CPrice, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetAmountToBePaid(model.AmountToBePaid, _identityProvider.Username, USER_AGENT);
-			modelToUpdate.SetMemo(model.Memo, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetAmountCA(model.AmountCA, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetMemo(model.Memo, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetTotalAmount(model.TotalAmount, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetConsigneeAddress(model.ConsigneeAddress, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetDeliverTo(model.DeliverTo, _identityProvider.Username, USER_AGENT);
