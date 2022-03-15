@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 
             builder
                 .Property(s => s.Article)
-                .HasMaxLength(100);
+                .HasMaxLength(1000);
 
             builder
                 .Property(s => s.OrderNo)
