@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private const string UserAgent = "Repository";
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
+        private readonly DbSet<GarmentShippingInvoiceModel> _garmentshippingInvoiceDbSet;
         private readonly DbSet<GarmentShippingCreditAdviceModel> _dbSet;
 
         public GarmentShippingCreditAdviceRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingCreditAdviceModel>();
+            _garmentshippingInvoiceDbSet = dbContext.Set<GarmentShippingInvoiceModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -34,6 +37,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public Task<int> InsertAsync(GarmentShippingCreditAdviceModel model)
         {
+            var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
+            invoice.SetAmountCA(invoice.AmountCA + (decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
+
             model.FlagForCreate(_identityProvider.Username, UserAgent);
             _dbSet.Add(model);
 
@@ -60,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSRNo(model.SRNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetNegoDate(model.NegoDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetPaymentDate(model.PaymentDate, _identityProvider.Username, UserAgent);
-            modelToUpdate .SetReceiptNo(model.ReceiptNo, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetReceiptNo(model.ReceiptNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCondition(model.Condition, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankComission(model.BankComission, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDiscrepancyFee(model.DiscrepancyFee, _identityProvider.Username, UserAgent);
@@ -86,6 +92,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetAccountsReceivablePolicyValue(model.AccountsReceivablePolicyValue, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDocumentSendDate(model.DocumentSendDate, _identityProvider.Username, UserAgent);
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetAmountPaid(model.AmountPaid, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBalanceAmount(model.BalanceAmount, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetInvoiceId(model.InvoiceId, _identityProvider.Username, UserAgent);
 
             return await _dbContext.SaveChangesAsync();
         }
