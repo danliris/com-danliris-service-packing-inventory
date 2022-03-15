@@ -12,6 +12,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         public DateTimeOffset Date { get; private set; }
         public double Amount { get; private set; }
         public double AmountToBePaid { get; private set; }
+        public double AmountPaid { get; private set; }
+        public double BalanceAmount { get; private set; }
         public string PaymentTerm { get; private set; }
         public string ReceiptNo { get; private set; }
 
@@ -66,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, double amountPaid, double balanceAmount, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -74,6 +76,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             Date = date;
             Amount = amount;
             AmountToBePaid = amountToBePaid;
+            AmountPaid = amountPaid;
+            BalanceAmount = balanceAmount;
             PaymentTerm = paymentTerm;
             ReceiptNo = receiptNo;
             LCNo = lCNo;
@@ -115,6 +119,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             AccountsReceivablePolicyValue = accountsReceivablePolicyValue;
             DocumentSendDate = documentSendDate;
             Remark = remark;
+        }
+
+        public void SetInvoiceId(int invoiceId, string userName, string userAgent)
+        {
+            if (InvoiceId != invoiceId)
+            {
+                InvoiceId = invoiceId;
+                this.FlagForUpdate(userName, userAgent);
+            }
         }
 
         public void SetReceiptNo(string receiptNo, string userName, string userAgent)
@@ -388,6 +401,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             if (Remark != remark)
             {
                 Remark = remark;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAmountPaid(double amountPaid, string userName, string userAgent)
+        {
+            if (AmountPaid != amountPaid)
+            {
+                AmountPaid = amountPaid;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBalanceAmount(double balanceAmount, string userName, string userAgent)
+        {
+            if (BalanceAmount != balanceAmount)
+            {
+                BalanceAmount = balanceAmount;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
