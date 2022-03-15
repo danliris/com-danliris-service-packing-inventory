@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                          select new GarmentCreditAdviceMonitoringViewModel
                         {
+                            CAId = a.Id,
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = a.Date,
                             PaymentDate = a.PaymentDate,
@@ -57,6 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             PaymentTerm = a.PaymentTerm,
                             Amount = a.Amount,
                             ToBePaid = a.AmountToBePaid,
+                            PaidAmount = a.AmountPaid,
+                            BalanceAmount = a.BalanceAmount,
                             NettNego = a.NettNego + a.BankCharges + a.OtherCharge + a.BankComission + a.DiscrepancyFee + a.CreditInterest,
                             BuyerName = a.BuyerName,
                             BuyerAddress = a.BuyerAddress,
@@ -81,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public List<GarmentCreditAdviceMonitoringViewModel> GetReportData(string buyerAgent, string invoiceNo, string paymentTerm, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
             var Query = GetData(buyerAgent, invoiceNo, paymentTerm, dateFrom, dateTo, offset);
-            Query = Query.OrderBy(w => w.InvoiceNo);
+            Query = Query.OrderBy(w => w.InvoiceNo).ThenBy(w => w.CAId);
             return Query.ToList();
         }
 
@@ -102,6 +105,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Bank Name", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Amount", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Amount To Be Paid", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Paid Amount", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Balance Amount", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nett Nego | TT", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Bank Charges | TT", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Other Charges | TT", DataType = typeof(string) });
@@ -116,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Bank Charges | LC", DataType = typeof(string) });
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
             {
                 Dictionary<string, List<GarmentCreditAdviceMonitoringViewModel>> dataByBrand = new Dictionary<string, List<GarmentCreditAdviceMonitoringViewModel>>();
@@ -141,6 +146,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         PaymentTerm = item.PaymentTerm,
                         Amount = item.Amount,
                         ToBePaid = item.ToBePaid,
+                        PaidAmount = item.PaidAmount,
+                        BalanceAmount = item.BalanceAmount,
                         BuyerName = item.BuyerName,
                         BuyerAddress = item.BuyerAddress,
                         BankName = item.BankName,
@@ -200,6 +207,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         string AmtFOB = string.Format("{0:N2}", item.Amount);
                         string AmtPaid = string.Format("{0:N2}", item.ToBePaid);
+                        string PaidAmt = string.Format("{0:N2}", item.PaidAmount);
+                        string BlncAmt = string.Format("{0:N2}", item.BalanceAmount);
 
                         string NettTT = string.Format("{0:N2}", item.Amount);
                         string BChrgTT = string.Format("{0:N2}", item.ToBePaid);
@@ -212,14 +221,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         string BChrgLC = string.Format("{0:N2}", item.ToBePaid);
 
                         result.Rows.Add(index, item.InvoiceNo, InvDate, PayDate, DocDate, item.PaymentTerm, item.BuyerName, item.BuyerAddress, item.BankName, 
-                                        AmtFOB, AmtPaid, NettTT, BChrgTT, OChrgTT, item.LCNo, item.SRNo, SRDate, CommLC, FeeLC, NettLC, IntLC, BChrgLC);
+                                        AmtFOB, AmtPaid, PaidAmt, BlncAmt, NettTT, BChrgTT, OChrgTT, item.LCNo, item.SRNo, SRDate, CommLC, FeeLC, NettLC, IntLC, BChrgLC);
 
                         rowPosition += 1;
                         BrandCode = item.InvoiceNo;
                     }
 
-                    result.Rows.Add("", "", "INVOICE NO :", BrandCode, "", "AMOUNT :", Math.Round(subTotalAMT[BuyerBrand.Key], 2), "", "AMOUNT TO BE PAID :", Math.Round(subTotalTBP[BuyerBrand.Key], 2), "", "PAID AMOUNT :", Math.Round(subTotalNett[BuyerBrand.Key], 2), "", "OUTSTANDING AMOUNT :", Math.Round(outStanding[BuyerBrand.Key], 2), "", "", "");
-                  
+                    result.Rows.Add("", "", "INVOICE NO :", BrandCode, "", "", "AMOUNT :", Math.Round(subTotalAMT[BuyerBrand.Key], 2), "", "", "AMOUNT TO BE PAID :", Math.Round(subTotalTBP[BuyerBrand.Key], 2), "", "", "PAID AMOUNT :", Math.Round(subTotalNett[BuyerBrand.Key], 2), "", "", "OUTSTANDING AMOUNT :", Math.Round(outStanding[BuyerBrand.Key], 2), "");
+
                     rowPosition += 1;
                 }
             }          
