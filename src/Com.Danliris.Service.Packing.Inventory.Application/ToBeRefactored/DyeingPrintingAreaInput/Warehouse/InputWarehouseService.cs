@@ -359,7 +359,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var model = _inputRepository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
                                                    .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                        s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(viewModel.Date.AddHours(7).ToString("dd/MM/YYYY")) &&
+                                                                        s.Date.AddHours(7).ToString("dd/MM/yyyy") == viewModel.Date.AddHours(7).ToString("dd/MM/yyyy") &&
                                                                         s.Shift == viewModel.Shift &&
                                                                         s.Group == viewModel.Group);
 
