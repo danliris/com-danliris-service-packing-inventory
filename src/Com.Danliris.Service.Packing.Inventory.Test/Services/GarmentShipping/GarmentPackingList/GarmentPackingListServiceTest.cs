@@ -218,7 +218,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 			var repoInvoiceMock = new Mock<IGarmentShippingInvoiceRepository>();
 			repoInvoiceMock.Setup(s => s.ReadAll())
 				.Returns(new List<GarmentShippingInvoiceModel>() { modelInvoice }.AsQueryable());
-		 
+			repoInvoiceMock.Setup(s => s.ReadByIdAsync(modelInvoice.Id))
+				 .ReturnsAsync(modelInvoice);
+
 			serviceProviderMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
 			  .Returns(repoInvoiceMock.Object);
 

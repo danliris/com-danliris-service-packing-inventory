@@ -507,14 +507,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
             GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
-			var invoice = _invoiceRepository.ReadAll();
+			var invoice =    _invoiceRepository.ReadAll();
 			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
 								  where a.InvoiceNo == garmentPackingListModel.InvoiceNo
 								  select a).FirstOrDefault();
-			if (shippingInvoice != null)
+			var invoiceItem =await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
+			GarmentShippingInvoiceModel shippingInvoiceItem = invoiceItem;
+
+			if (shippingInvoiceItem != null)
 			{
-				shippingInvoice.InvoiceDate = garmentPackingListModel.Date;
-				await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
+
+				shippingInvoiceItem.InvoiceDate = garmentPackingListModel.Date;
+
+				await _invoiceRepository.UpdateAsync(shippingInvoiceItem.Id, shippingInvoiceItem);
 			}
 			foreach (var item in garmentPackingListModel.Items)
             {
