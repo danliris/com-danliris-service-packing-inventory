@@ -22,17 +22,17 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 	public class GarmentShippingInvoiceController : ControllerBase
 	{
 		private readonly IGarmentShippingInvoiceService _service;
-        private readonly IGarmentPackingListService _packingListService;
-        private readonly IIdentityProvider _identityProvider;
+		private readonly IGarmentPackingListService _packingListService;
+		private readonly IIdentityProvider _identityProvider;
 		private readonly IValidateService _validateService;
 		public GarmentShippingInvoiceController(IGarmentShippingInvoiceService service, IGarmentPackingListService packingListService, IIdentityProvider identityProvider, IValidateService validateService)
 		{
 			_service = service;
 			_identityProvider = identityProvider;
 			_validateService = validateService;
-            _packingListService = packingListService;
+			_packingListService = packingListService;
 
-        }
+		}
 
 		protected void VerifyUser()
 		{
@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 					info
 				});
 
-			
+
 			}
 			catch (Exception ex)
 			{
@@ -165,187 +165,205 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
 		}
 
-        [HttpGet("pdf/{Id}/{type}")]
-        public async Task<IActionResult> GetPDF([FromRoute] int Id, [FromRoute] string type)
-        {
-            if (!ModelState.IsValid)
-            {
-                var exception = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(exception);
-            }
+		[HttpGet("pdf/{Id}/{type}")]
+		public async Task<IActionResult> GetPDF([FromRoute] int Id, [FromRoute] string type)
+		{
+			if (!ModelState.IsValid)
+			{
+				var exception = new
+				{
+					error = ResultFormatter.FormatErrorMessage(ModelState)
+				};
+				return new BadRequestObjectResult(exception);
+			}
 
-            try
-            {
-                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
-                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var model = await _service.ReadById(Id);
+			try
+			{
+				var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+				int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+				var model = await _service.ReadById(Id);
 
-                if (model == null)
-                {
-                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
-                }
-                else
-                {
-                    Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
-                    BankAccount bank = _service.GetBank(model.BankAccountId);
-                    GarmentPackingListViewModel pl =await _packingListService.ReadById(model.PackingListId);
-                    if (type == "fob")
-                    {
-                        var PdfTemplate = new GarmentShippingInvoicePdfTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+				if (model == null)
+				{
+					return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+				}
+				else
+				{
+					Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
+					BankAccount bank = _service.GetBank(model.BankAccountId);
+					GarmentPackingListViewModel pl = await _packingListService.ReadById(model.PackingListId);
+					if (type == "fob")
+					{
+						var PdfTemplate = new GarmentShippingInvoicePdfTemplate();
+						MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
 
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.InvoiceNo+"-Invoice" + ".pdf"
-                        };
-                    }
-                    else
-                    {
-                        var PdfTemplate = new GarmentShippingInvoiceCMTPdfTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+						return new FileStreamResult(stream, "application/pdf")
+						{
+							FileDownloadName = model.InvoiceNo + "-Invoice" + ".pdf"
+						};
+					}
+					else
+					{
+						var PdfTemplate = new GarmentShippingInvoiceCMTPdfTemplate();
+						MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
 
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
-                        };
-                    }
+						return new FileStreamResult(stream, "application/pdf")
+						{
+							FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
+						};
+					}
 
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+				}
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
 
-        [HttpGet("whpdf/{Id}/{type}")]
-        public async Task<IActionResult> GetWHPDF([FromRoute] int Id, [FromRoute] string type)
-        {
-            if (!ModelState.IsValid)
-            {
-                var exception = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(exception);
-            }
+		[HttpGet("whpdf/{Id}/{type}")]
+		public async Task<IActionResult> GetWHPDF([FromRoute] int Id, [FromRoute] string type)
+		{
+			if (!ModelState.IsValid)
+			{
+				var exception = new
+				{
+					error = ResultFormatter.FormatErrorMessage(ModelState)
+				};
+				return new BadRequestObjectResult(exception);
+			}
 
-            try
-            {
-                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
-                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var model = await _service.ReadById(Id);
+			try
+			{
+				var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+				int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+				var model = await _service.ReadById(Id);
 
-                if (model == null)
-                {
-                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
-                }
-                else
-                {
-                    Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
-                    BankAccount bank = _service.GetBank(model.BankAccountId);
-                    GarmentPackingListViewModel pl = await _packingListService.ReadById(model.PackingListId);
-                    if (type == "fob")
-                    {
-                        var PdfTemplate = new GarmentShippingInvoiceWithHeaderPdfTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+				if (model == null)
+				{
+					return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+				}
+				else
+				{
+					Buyer buyer = _service.GetBuyer(model.BuyerAgent.Id);
+					BankAccount bank = _service.GetBank(model.BankAccountId);
+					GarmentPackingListViewModel pl = await _packingListService.ReadById(model.PackingListId);
+					if (type == "fob")
+					{
+						var PdfTemplate = new GarmentShippingInvoiceWithHeaderPdfTemplate();
+						MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
 
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.InvoiceNo + "-Invoice" + ".pdf"
-                        };
-                    }
-                    else
-                    {
-                        var PdfTemplate = new GarmentShippingInvoiceCMTWithHeaderPdfTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
+						return new FileStreamResult(stream, "application/pdf")
+						{
+							FileDownloadName = model.InvoiceNo + "-Invoice" + ".pdf"
+						};
+					}
+					else
+					{
+						var PdfTemplate = new GarmentShippingInvoiceCMTWithHeaderPdfTemplate();
+						MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, buyer, bank, pl, timeoffsset);
 
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
-                        };
-                    }
+						return new FileStreamResult(stream, "application/pdf")
+						{
+							FileDownloadName = model.InvoiceNo + "-CMT" + ".pdf"
+						};
+					}
 
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+				}
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
 
-        [HttpGet("exportSalesDebtor")]
-        public IActionResult GetExportSalesDebtor(int month, int year)
-        {
-            try
-            {
-                var data = _service.ReadShippingPackingList(month, year);
+		[HttpGet("exportSalesDebtor")]
+		public IActionResult GetExportSalesDebtor(int month, int year)
+		{
+			try
+			{
+				var data = _service.ReadShippingPackingList(month, year);
 
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-        [HttpGet("exportSalesDebtorNow")]
-        public IActionResult GetExportSalesDebtorNow(int month, int year)
-        {
-            try
-            {
-                var data = _service.ReadShippingPackingListNow(month, year);
+				return Ok(new
+				{
+					data
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+		[HttpGet("exportSalesDebtorNow")]
+		public IActionResult GetExportSalesDebtorNow(int month, int year)
+		{
+			try
+			{
+				var data = _service.ReadShippingPackingListNow(month, year);
 
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+				return Ok(new
+				{
+					data
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
 
-        [HttpGet("packing-list-for-debtor-card")]
-        public IActionResult GetPLForDebtorCard(int month, int year, string buyer)
-        {
-            try
-            {
-                var data = _service.ReadShippingPackingListForDebtorCard(month, year, buyer);
+		[HttpGet("packing-list-for-debtor-card")]
+		public IActionResult GetPLForDebtorCard(int month, int year, string buyer)
+		{
+			try
+			{
+				var data = _service.ReadShippingPackingListForDebtorCard(month, year, buyer);
 
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+				return Ok(new
+				{
+					data
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
 
-        [HttpGet("packing-list-for-debtor-card-now")]
-        public IActionResult GetPLForDebtorCardNow(int month, int year, string buyer)
-        {
-            try
-            {
-                var data = _service.ReadShippingPackingListForDebtorCardNow(month, year, buyer);
+		[HttpGet("packing-list-for-debtor-card-now")]
+		public IActionResult GetPLForDebtorCardNow(int month, int year, string buyer)
+		{
+			try
+			{
+				var data = _service.ReadShippingPackingListForDebtorCardNow(month, year, buyer);
 
-                return Ok(new
-                {
-                    data
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-    }
+				return Ok(new
+				{
+					data
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+
+		[HttpGet("packingListById/{id}")]
+		public IActionResult GetShippingInvoiceByPLId([FromRoute] int id)
+		{
+			try
+			{
+				ShippingPackingListViewModel data = _service.ReadShippingPackingListById(id);
+
+				return Ok(new
+				{
+					data
+				});
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+	}
 }
