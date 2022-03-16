@@ -938,57 +938,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             table.AddCell(cellDetail);
 
             table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + tabledetailOrders.TotalHeight+10, writer.DirectContent);
-<<<<<<< Updated upstream
+ 
             #endregion
 
             #region SIGNATURE
             var printY = document.BottomMargin - 100;
             var signX = document.RightMargin + 500;
             var signY = printY + 20;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY+5, 0);
             cb.MoveTo(signX - 60, signY - 2);
             cb.LineTo(signX + 45, signY - 2);
             cb.Stroke();
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 10, 0);
+			
+			cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 15, 0);
 
             #endregion
 
             cb.EndText();
-=======
-			#endregion
-
-			#region SIGNATURE
-			PdfPTable tableSign = new PdfPTable(3);
-			tableSign.WidthPercentage = 100;
-			tableSign.SetWidths(new float[] { 1f, 1f, 1f });
-
-			PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
-
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("\n\n\n\n", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-
-
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("( MRS. ADRIYANA DAMAYANTI )", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
-			tableSign.AddCell(cellBodySignNoBorder);
-			cellBodySignNoBorder.Phrase = new Phrase("AUTHORIZED SIGNATURE", normal_font_underlined);
-			tableSign.AddCell(cellBodySignNoBorder);
-			#endregion
-
-			cb.EndText();
->>>>>>> Stashed changes
+  
+ 
         }
     }
 }
