@@ -784,7 +784,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.Colspan = 3;
             tabledetailOrders.AddCell(cellHeaderContentLeft);
@@ -938,6 +938,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             table.AddCell(cellDetail);
 
             table.WriteSelectedRows(0, -1, document.LeftMargin, height - marginTop + tabledetailOrders.TotalHeight+10, writer.DirectContent);
+<<<<<<< Updated upstream
             #endregion
 
             #region SIGNATURE
@@ -953,6 +954,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             cb.EndText();
+=======
+			#endregion
+
+			#region SIGNATURE
+			PdfPTable tableSign = new PdfPTable(3);
+			tableSign.WidthPercentage = 100;
+			tableSign.SetWidths(new float[] { 1f, 1f, 1f });
+
+			PdfPCell cellBodySignNoBorder = new PdfPCell() { Border = Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("\n\n\n\n", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+
+
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("( MRS. ADRIYANA DAMAYANTI )", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
+			tableSign.AddCell(cellBodySignNoBorder);
+			cellBodySignNoBorder.Phrase = new Phrase("AUTHORIZED SIGNATURE", normal_font_underlined);
+			tableSign.AddCell(cellBodySignNoBorder);
+			#endregion
+
+			cb.EndText();
+>>>>>>> Stashed changes
         }
     }
 }
