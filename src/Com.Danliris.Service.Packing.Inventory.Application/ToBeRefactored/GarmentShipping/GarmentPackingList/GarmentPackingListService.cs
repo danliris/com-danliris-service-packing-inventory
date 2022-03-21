@@ -511,8 +511,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
 								  where a.InvoiceNo == garmentPackingListModel.InvoiceNo
 								  select a).FirstOrDefault();
-			if (shippingInvoice != null)
+			if (shippingInvoiceItem != null)
 			{
+				shippingInvoice.InvoiceDate = garmentPackingListModel.Date;
+				await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
 				var invoiceItem = await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
 				GarmentShippingInvoiceModel shippingInvoiceItem = invoiceItem;
 
