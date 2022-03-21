@@ -538,10 +538,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
-
-
-
-
 			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
         }
 
