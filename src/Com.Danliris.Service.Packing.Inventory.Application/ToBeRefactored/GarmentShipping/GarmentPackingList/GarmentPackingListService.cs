@@ -512,6 +512,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			{
 				shippingInvoice.InvoiceDate = garmentPackingListModel.Date;
 				await _invoiceRepository.UpdateAsync(shippingInvoice.Id, shippingInvoice);
+				var invoiceItem = await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
+				GarmentShippingInvoiceModel shippingInvoiceItem = invoiceItem;
+
+				if (shippingInvoiceItem != null)
+				{
+
+					shippingInvoiceItem.InvoiceDate = garmentPackingListModel.Date;
+
+					await _invoiceRepository.UpdateAsync(shippingInvoiceItem.Id, shippingInvoiceItem);
+				}
 			}
 			foreach (var item in garmentPackingListModel.Items)
             {
