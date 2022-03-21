@@ -511,15 +511,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
 								  where a.InvoiceNo == garmentPackingListModel.InvoiceNo
 								  select a).FirstOrDefault();
-			var invoiceItem =await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
-			GarmentShippingInvoiceModel shippingInvoiceItem = invoiceItem;
-
-			if (shippingInvoiceItem != null)
+			if (shippingInvoice != null)
 			{
+				var invoiceItem = await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
+				GarmentShippingInvoiceModel shippingInvoiceItem = invoiceItem;
 
-				shippingInvoiceItem.InvoiceDate = garmentPackingListModel.Date;
+				if (shippingInvoiceItem != null)
+				{
 
-				await _invoiceRepository.UpdateAsync(shippingInvoiceItem.Id, shippingInvoiceItem);
+					shippingInvoiceItem.InvoiceDate = garmentPackingListModel.Date;
+
+					await _invoiceRepository.UpdateAsync(shippingInvoiceItem.Id, shippingInvoiceItem);
+				}
 			}
 			foreach (var item in garmentPackingListModel.Items)
             {
