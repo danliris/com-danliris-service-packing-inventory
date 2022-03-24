@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Amount = item.Amount,
                         ToBePaid = item.ToBePaid,
                         PaidAmount = item.PaidAmount,
-                        BalanceAmount = item.BalanceAmount,
+                        BalanceAmount = item.BalanceAmount, 
                         BuyerName = item.BuyerName,
                         BuyerAddress = item.BuyerAddress,
                         BankName = item.BankName,

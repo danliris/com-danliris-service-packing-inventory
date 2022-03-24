@@ -829,7 +829,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellHeaderContentLeft.AddElement(new Phrase("                                                  COMMERCIAL INVOICE", big_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.Colspan = 3;
             tabledetailOrders.AddCell(cellHeaderContentLeft);
@@ -1008,7 +1008,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cb.MoveTo(signX - 60, signY - 2);
             cb.LineTo(signX + 45, signY - 2);
             cb.Stroke();
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 10, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 15, 0);
 
             #endregion
 

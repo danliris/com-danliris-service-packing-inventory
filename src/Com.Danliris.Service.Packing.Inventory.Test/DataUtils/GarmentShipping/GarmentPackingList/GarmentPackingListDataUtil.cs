@@ -56,6 +56,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             {
                 measurements.Add(new GarmentPackingListMeasurementModel(measurement.Length, measurement.Width, measurement.Height, measurement.CartonsQuantity, measurement.CreatedBy) { Id = measurement.Id });
             }
+
+
+
+
             var model = new GarmentPackingListModel(om.InvoiceNo, om.PackingListType, om.InvoiceType, om.SectionId, om.SectionCode, om.Date, om.PaymentTerm, om.LCNo, om.LCDate, om.IssuedBy, om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.Destination, om.FinalDestination, om.ShipmentMode, om.TruckingDate, om.TruckingEstimationDate, om.ExportEstimationDate, om.Omzet, om.Accounting, om.FabricCountryOrigin, om.FabricComposition, om.RemarkMd, items, om.GrossWeight, om.NettWeight, om.NetNetWeight, om.TotalCartons, measurements, om.SayUnit, om.ShippingMark, om.SideMark, om.Remark, om.ShippingMarkImagePath, om.SideMarkImagePath, om.RemarkImagePath, om.IsUsed, om.IsPosted, om.ShippingStaffId, om.ShippingStaffName, om.Status, om.Description, om.IsCostStructured, om.OtherCommodity, om.IsShipping, om.IsSampleDelivered, om.IsSampleExpenditureGood,om.SampleRemarkMd) { Id = om.Id };
 
             return model;
