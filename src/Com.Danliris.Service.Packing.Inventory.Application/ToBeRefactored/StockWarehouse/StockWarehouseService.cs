@@ -542,36 +542,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 var startDate = new DateTime(dateReport.Year, dateReport.Month, 1);
                 var dataSearchDate = GetDataByDateStockOpname(startDate, dateReport, "GUDANG JADI", offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
                 var productionOrderIds = dataSearchDate.Select(e => e.ProductionOrderId);
-                var dataAwal = GetAwalDataStockOpname(startDate, "GUDANG JADI", productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
+                //var dataAwal = GetAwalDataStockOpname(startDate, "GUDANG JADI", productionOrderIds, offset, unit, packingType, construction, buyer, productionOrderId, inventoryType);
 
-                var joinData2 = dataSearchDate.Concat(dataAwal);
-                var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
-                {
-                    ProductionOrderId = e.Key.ProductionOrderId,
-                    NoSpp = e.First().NoSpp,
-                    Color = e.First().Color,
-                    Construction = e.First().Construction,
-                    Grade = e.Key.Grade,
-                    Jenis = e.Key.Jenis,
-                    Ket = e.Key.Ket,
-                    Motif = e.First().Motif,
-                    Buyer = e.First().Buyer,
-                    Satuan = e.First().Satuan,
-                    Unit = e.First().Unit,
-                    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
-                    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
-                    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
-                    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
-                    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
-                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
-                         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
-                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
-                         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
-                });
+                //var joinData2 = dataSearchDate.Concat(dataAwal);
+                //var tempResult = joinData2.GroupBy(d => new { d.ProductionOrderId, d.Grade, d.Jenis, d.Ket, d.InventoryType }).Select(e => new ReportStockWarehouseViewModel()
+                //{
+                //    ProductionOrderId = e.Key.ProductionOrderId,
+                //    NoSpp = e.First().NoSpp,
+                //    Color = e.First().Color,
+                //    Construction = e.First().Construction,
+                //    Grade = e.Key.Grade,
+                //    Jenis = e.Key.Jenis,
+                //    Ket = e.Key.Ket,
+                //    Motif = e.First().Motif,
+                //    Buyer = e.First().Buyer,
+                //    Satuan = e.First().Satuan,
+                //    Unit = e.First().Unit,
+                //    InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                //    Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
+                //    Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
+                //    Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                //         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                //         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4),
+                //    Akhir = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0)
+                //         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0)
+                //         - (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
+                //         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_IN).Quantity) : 0)
+                //         + (e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.ADJ_OUT).Quantity) : 0), 4)
+                //});
 
-                var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
+                //var dpWarehouseResult = tempResult.Where(s => s.Awal != 0 || s.Masuk != 0 || s.Keluar != 0 || s.Akhir != 0).OrderBy(s => s.NoSpp).ThenBy(s => s.Construction).ToList();
 
                 var stockOpnameIds = _stockOpnameRepository.ReadAll().Where(entity => entity.Date < dateReport.AddDays(1)).Select(entity => entity.Id).ToList();
                 var stockOpnameQuery = _stockOpnameItemRepository.ReadAll().Where(entity => entity.IsStockOpname && stockOpnameIds.Contains(entity.DyeingPrintingStockOpnameId));
@@ -622,14 +622,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 var productionOrders = new List<ProductionOrderGroup>();
 
-                foreach (var item in dpWarehouseResult)
-                {
-                    productionOrders.Add(new ProductionOrderGroup()
-                    {
-                        ProductionOrderId = item.ProductionOrderId,
-                        Grade = item.Grade
-                    });
-                };
+                //foreach (var item in dpWarehouseResult)
+                //{
+                //    productionOrders.Add(new ProductionOrderGroup()
+                //    {
+                //        ProductionOrderId = item.ProductionOrderId,
+                //        Grade = item.Grade
+                //    });
+                //};
 
                 foreach (var item in stockOpnameTempResult)
                 {
@@ -649,24 +649,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 foreach (var item in productionOrders)
                 {
-                    var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+                    //var dpWarehouse = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
 
                     var stockOpnamesResult = stockOpnameTempResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
 
                     if (stockOpnamesResult.Count != 0)
                     {
-                        var StorageBalance = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
+                        //var StorageBalance = dpWarehouseResult.Where(element => element.ProductionOrderId == item.ProductionOrderId && element.Grade == item.Grade).ToList();
 
-                        var gudangJadiBalance = (decimal)0;
-                        if (dpWarehouse != null)
-                        {
-                            gudangJadiBalance = StorageBalance.Sum(element => element.Akhir);
-                        }
+                        //var gudangJadiBalance = (decimal)0;
+                        //if (dpWarehouse != null)
+                        //{
+                        //    gudangJadiBalance = StorageBalance.Sum(element => element.Akhir);
+                        //}
 
                         foreach (var stock in stockOpnamesResult)
                         {
-                            var JenisdpWarehouse = dpWarehouse.Where(element => element.ProductionOrderId == stock.ProductionOrderId && element.Grade == stock.Grade).FirstOrDefault();
-
+                            //var JenisdpWarehouse = dpWarehouse.Where(element => element.ProductionOrderId == stock.ProductionOrderId && element.Grade == stock.Grade).FirstOrDefault();
+                            var gudangJadiBalance = stock.Quantity;
                             result.Add(new ReportStockWarehouseViewModel()
                             {
                                 NoSpp = stock.NoSpp,
@@ -676,7 +676,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                                 Buyer = stock.Buyer,
                                 Color = stock.Color,
                                 Grade = stock.Grade,
-                                Jenis = JenisdpWarehouse == null ? stock.Jenis : JenisdpWarehouse.Jenis,
+                                //Jenis = JenisdpWarehouse == null ? stock.Jenis : JenisdpWarehouse.Jenis,
                                 StockOpname = stock.Quantity,
                                 StorageBalance = gudangJadiBalance,
                                 Difference = gudangJadiBalance - stock.Quantity
@@ -685,23 +685,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     }
                     else
                     {
-                        foreach (var stock in dpWarehouse)
-                        {
-                            result.Add(new ReportStockWarehouseViewModel()
-                            {
-                                NoSpp = stock.NoSpp,
-                                Construction = stock.Construction,
-                                Unit = stock.Unit,
-                                Motif = stock.Motif,
-                                Buyer = stock.Buyer,
-                                Color = stock.Color,
-                                Grade = stock.Grade,
-                                Jenis = stock.Jenis,
-                                StockOpname = stock.StockOpname,
-                                StorageBalance = stock.Akhir,
-                                Difference = stock.Akhir - stock.StockOpname
-                            });
-                        }
+                        //foreach (var stock in dpWarehouse)
+                        //{
+                        //    result.Add(new ReportStockWarehouseViewModel()
+                        //    {
+                        //        NoSpp = stock.NoSpp,
+                        //        Construction = stock.Construction,
+                        //        Unit = stock.Unit,
+                        //        Motif = stock.Motif,
+                        //        Buyer = stock.Buyer,
+                        //        Color = stock.Color,
+                        //        Grade = stock.Grade,
+                        //        Jenis = stock.Jenis,
+                        //        StockOpname = stock.StockOpname,
+                        //        StorageBalance = stock.Akhir,
+                        //        Difference = stock.Akhir - stock.StockOpname
+                        //    });
+                        //}
                     }
                 }
 

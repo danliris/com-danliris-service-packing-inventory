@@ -500,17 +500,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
         }
 
-        public virtual async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
-        {
-            viewModel.ShippingMarkImagePath = await UploadImage(viewModel.ShippingMarkImageFile, viewModel.Id, viewModel.ShippingMarkImagePath, viewModel.CreatedUtc);
-            viewModel.SideMarkImagePath = await UploadImage(viewModel.SideMarkImageFile, viewModel.Id, viewModel.SideMarkImagePath, viewModel.CreatedUtc);
-            viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
+		public virtual async Task<int> Update(int id, GarmentPackingListViewModel viewModel)
+		{
+			viewModel.ShippingMarkImagePath = await UploadImage(viewModel.ShippingMarkImageFile, viewModel.Id, viewModel.ShippingMarkImagePath, viewModel.CreatedUtc);
+			viewModel.SideMarkImagePath = await UploadImage(viewModel.SideMarkImageFile, viewModel.Id, viewModel.SideMarkImagePath, viewModel.CreatedUtc);
+			viewModel.RemarkImagePath = await UploadImage(viewModel.RemarkImageFile, viewModel.Id, viewModel.RemarkImagePath, viewModel.CreatedUtc);
 
-            GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
-			var invoice =    _invoiceRepository.ReadAll();
-			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
-								  where a.InvoiceNo == garmentPackingListModel.InvoiceNo
-								  select a).FirstOrDefault();
+			GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
+			var invoice = _invoiceRepository.ReadAll();
+			
+      GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
+														   where a.InvoiceNo == garmentPackingListModel.InvoiceNo
+														   select a).FirstOrDefault();
 			if (shippingInvoice != null)
 			{
 				var invoiceItem = await _invoiceRepository.ReadByIdAsync(shippingInvoice.Id);
@@ -525,21 +526,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 				}
 			}
 			foreach (var item in garmentPackingListModel.Items)
-            {
-                foreach (var detail in item.Details)
-                {
-                    detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
-                }
-            }
+			{
+				foreach (var detail in item.Details)
+				{
+					detail.SetNetNetWeight(detail.NetNetWeight == 0 ? 0.9 * detail.NetWeight : detail.NetNetWeight, _identityProvider.Username, UserAgent);
+				}
+			}
 
-            var totalNnw = garmentPackingListModel.Items
-                            .SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
-                            .GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
+			var totalNnw = garmentPackingListModel.Items
+							.SelectMany(i => i.Details.Where(d => d.IsDeleted == false).Select(d => new { d.Carton1, d.Carton2, totalNetNetWeight = d.CartonQuantity * d.NetNetWeight }))
+							.GroupBy(g => new { g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
 
-            garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
+			garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
 			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
-        }
+		}
 
 		public virtual async Task<int> Unpost(int id, GarmentPackingListViewModel viewModel)
 		{

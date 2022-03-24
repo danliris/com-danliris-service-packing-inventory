@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string expenditureNo { get; set; }
         public string dispositionNo { get; set; }
         public bool useVat { get; set; }
+        public Vat vat { get; set; }
         public string remark { get; set; }
         public bool isUsed { get; set; }
         public string paymentType { get; set; }
@@ -54,6 +55,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (buyer == null || buyer.Id == 0)
             {
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
+            }
+
+            if (vat == null || vat.id == 0)
+            {
+                yield return new ValidationResult("PPN tidak boleh kosong", new List<string> { "vat" });
             }
 
             if (paymentType=="TEMPO" && tempo <= 0)

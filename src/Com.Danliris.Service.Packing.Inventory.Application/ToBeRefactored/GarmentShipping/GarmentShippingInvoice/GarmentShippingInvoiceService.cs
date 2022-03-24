@@ -44,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 LastModifiedBy = model.LastModifiedBy,
                 LastModifiedUtc = model.LastModifiedUtc,
                 PackingListId = model.PackingListId,
+
                 InvoiceNo = model.InvoiceNo,
                 InvoiceDate = model.InvoiceDate,
                 From = model.From,
@@ -99,6 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     AdjustmentValue = i.AdjustmentValue,
                     Id = i.Id,
                     GarmentShippingInvoiceId = i.GarmentShippingInvoiceId,
+
                     AdditionalChargesId = i.AdditionalChargesId
                 }).ToList(),
                 Items = model.Items.Select(i => new GarmentShippingInvoiceItemViewModel

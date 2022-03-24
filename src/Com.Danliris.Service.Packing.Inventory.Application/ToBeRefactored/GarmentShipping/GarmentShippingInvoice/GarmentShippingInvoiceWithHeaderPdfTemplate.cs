@@ -633,7 +633,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
 
-            cb.SetFontAndSize(bf, 8);
+            cb.SetFontAndSize(bf, 7);
 
             #region LOGODL
 
@@ -665,7 +665,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 percentage = 100 / image1.Width;
                 image1.ScalePercent(percentage * 100);
             }
-            image1.SetAbsolutePosition(marginLeft + 80, height - image1.ScaledHeight - marginTop + 120);
+            image1.SetAbsolutePosition(marginLeft + 80, height - image1.ScaledHeight - marginTop + 75);
             cb.AddImage(image1, inlineImage: true);
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Head Office : Jl. Merapi No. 23", marginLeft + 80, branchOfficeY, 0);
@@ -727,7 +727,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellDetailContentCenter2 = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("                                                    COMERCIAL INVOICE", big_font));
+            cellHeaderContentLeft.AddElement(new Phrase("                                                  COMMERCIAL INVOICE", big_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                                Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                                                                      Page  : " + (writer.PageNumber), normal_font));

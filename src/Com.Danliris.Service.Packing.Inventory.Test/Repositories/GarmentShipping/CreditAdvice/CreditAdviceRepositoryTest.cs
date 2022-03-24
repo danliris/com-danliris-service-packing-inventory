@@ -197,6 +197,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetRemark("model.Remark", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetAmountPaid(model.AmountPaid, data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetBalanceAmount(model.BalanceAmount, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetInvoiceId(model.InvoiceId, data.LastModifiedBy, data.LastModifiedAgent);
 
             var result = await repoCreditAdvice2.UpdateAsync(modelToUpdate.Id, modelToUpdate);
 

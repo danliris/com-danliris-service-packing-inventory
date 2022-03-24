@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public int Tempo { get; set; }
         public string DispositionNo { get; set; }
         public bool UseVat { get; set; }
+        public int VatId { get; private set; }
+        public int VatRate { get; private set; }        
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public bool IsApproveShipping { get; set; }
@@ -43,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             SalesContractNo = salesContractNo;
             LocalSalesContractId = localSalesContractId;
@@ -62,6 +64,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             ExpenditureNo = expenditureNo;
             DispositionNo = dispositionNo;
             UseVat = useVat;
+            VatId = vatId;
+            VatRate = vatRate;
             Remark = remark;
             IsUsed = isUsed;
             IsApproveShipping = isApproveShipping;

@@ -51,6 +51,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     code = model.TransactionTypeCode,
                     name = model.TransactionTypeName
                 },
+                vat = new Vat
+                {
+                    id = model.VatId,
+                    rate = model.VatRate,
+                },
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
@@ -130,7 +135,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, vm.expenditureNo, vm.dispositionNo, vm.useVat, vm.remark, vm.isUsed,vm.isApproveShipping,vm.isApproveFinance,vm.approveShippingBy,vm.approveFinanceBy,vm.approveShippingDate,vm.approveFinanceDate, vm.isRejectedShipping,vm.isRejectedFinance,vm.rejectedReason, items) { Id = vm.Id };
+            vm.vat = vm.vat ?? new Vat();
+            return new GarmentShippingLocalSalesNoteModel(vm.salesContractNo, vm.localSalesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, vm.expenditureNo, vm.dispositionNo, vm.useVat, vm.vat.id, vm.vat.rate, vm.remark, vm.isUsed,vm.isApproveShipping,vm.isApproveFinance,vm.approveShippingBy,vm.approveFinanceBy,vm.approveShippingDate,vm.approveFinanceDate, vm.isRejectedShipping,vm.isRejectedFinance,vm.rejectedReason, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteViewModel vm)

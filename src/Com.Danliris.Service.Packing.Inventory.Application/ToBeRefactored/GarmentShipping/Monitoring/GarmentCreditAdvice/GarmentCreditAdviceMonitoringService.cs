@@ -227,8 +227,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         BrandCode = item.InvoiceNo;
                     }
 
-                    result.Rows.Add("", "",  "INVOICE NO :", BrandCode, "", "", "AMOUNT :", Math.Round(subTotalAMT[BuyerBrand.Key], 2), "", "", "AMOUNT TO BE PAID :", Math.Round(subTotalTBP[BuyerBrand.Key], 2), "", "", "PAID AMOUNT :", Math.Round(subTotalNett[BuyerBrand.Key], 2), "", "", "OUTSTANDING AMOUNT :", Math.Round(outStanding[BuyerBrand.Key], 2), "");
-                  
+                    result.Rows.Add("", "", "INVOICE NO :", BrandCode, "", "", "AMOUNT :", Math.Round(subTotalAMT[BuyerBrand.Key], 2), "", "", "AMOUNT TO BE PAID :", Math.Round(subTotalTBP[BuyerBrand.Key], 2), "", "", "PAID AMOUNT :", Math.Round(subTotalNett[BuyerBrand.Key], 2), "", "", "OUTSTANDING AMOUNT :", Math.Round(outStanding[BuyerBrand.Key], 2), "");
+
                     rowPosition += 1;
                 }
             }          

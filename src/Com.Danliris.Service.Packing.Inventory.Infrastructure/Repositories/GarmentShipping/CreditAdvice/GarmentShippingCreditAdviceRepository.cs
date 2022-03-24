@@ -94,6 +94,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
             modelToUpdate.SetAmountPaid(model.AmountPaid, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBalanceAmount(model.BalanceAmount, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetInvoiceId(model.InvoiceId, _identityProvider.Username, UserAgent);
 
             return await _dbContext.SaveChangesAsync();
         }
