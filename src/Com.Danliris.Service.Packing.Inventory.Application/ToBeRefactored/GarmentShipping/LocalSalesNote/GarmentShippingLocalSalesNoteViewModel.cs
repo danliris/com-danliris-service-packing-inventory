@@ -57,10 +57,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
             }
 
-            if (vat == null || vat.id == 0)
-            {
-                yield return new ValidationResult("PPN tidak boleh kosong", new List<string> { "vat" });
-            }
+            //if (vat == null || vat.id == 0)
+            //{
+            //    yield return new ValidationResult("PPN tidak boleh kosong", new List<string> { "vat" });
+            //}
 
             if (paymentType=="TEMPO" && tempo <= 0)
             {
