@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public TransactionType transactionType { get; set; }
         public Buyer buyer { get; set; }
         public bool isUseVat { get; set; }
+        public Vat vat { get; set; }
         public bool isUsed { get; set; }
         public string sellerName { get; set; }
         public string sellerNPWP { get; set; }

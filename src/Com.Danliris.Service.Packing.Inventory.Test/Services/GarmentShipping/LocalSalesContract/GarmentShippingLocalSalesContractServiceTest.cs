@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingLocalSalesContractModel("", DateTimeOffset.Now, 1, "", "", "", "", "", "", 1, "", "", "", "", true, 1, false, new List<GarmentShippingLocalSalesContractItemModel>());
+            var model = new GarmentShippingLocalSalesContractModel("", DateTimeOffset.Now, 1, "", "", "", "", "", "", 1, "", "", "", "", true, 1, 1 ,1, false, new List<GarmentShippingLocalSalesContractItemModel>());
 
             var repoMock = new Mock<IGarmentShippingLocalSalesContractRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -77,7 +77,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         public async Task ReadById_Success()
         {
             var items = new List<GarmentShippingLocalSalesContractItemModel>() { new GarmentShippingLocalSalesContractItemModel(1, "", "", 1, 1,1, "", 1) };
-            var model = new GarmentShippingLocalSalesContractModel("", DateTimeOffset.Now, 1, "", "", "", "", "", "", 1, "", "", "", "", true, 1, false, items);
+            var model = new GarmentShippingLocalSalesContractModel("", DateTimeOffset.Now, 1, "", "", "", "", "", "", 1, "", "", "", "", true, 1, 1, 1, false, items);
             var item = new GarmentShippingLocalSalesContractItemModel();
             var repoMock = new Mock<IGarmentShippingLocalSalesContractRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

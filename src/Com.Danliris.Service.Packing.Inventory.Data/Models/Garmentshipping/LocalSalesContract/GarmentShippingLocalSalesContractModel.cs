@@ -27,6 +27,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string BuyerNPWP { get; private set; }
 
         public bool IsUseVat { get; private set; }
+        public int VatId { get; private set; }
+        public int VatRate { get; private set; }
 
         public decimal SubTotal { get; private set; }
 
@@ -37,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         {
         }
 
-        public GarmentShippingLocalSalesContractModel(string salesContractNo, DateTimeOffset salesContractDate, int transactionTypeId, string transactionTypeCode, string transactionTypeName, string sellerName, string sellerPosition, string sellerAddress, string sellerNPWP, int buyerId, string buyerCode, string buyerName, string buyerAddress, string buyerNPWP, bool isUseVat, decimal subTotal, bool isUsed, ICollection<GarmentShippingLocalSalesContractItemModel> items)
+        public GarmentShippingLocalSalesContractModel(string salesContractNo, DateTimeOffset salesContractDate, int transactionTypeId, string transactionTypeCode, string transactionTypeName, string sellerName, string sellerPosition, string sellerAddress, string sellerNPWP, int buyerId, string buyerCode, string buyerName, string buyerAddress, string buyerNPWP, bool isUseVat, int vatId, int vatRate, decimal subTotal, bool isUsed, ICollection<GarmentShippingLocalSalesContractItemModel> items)
         {
             SalesContractNo = salesContractNo;
             SalesContractDate = salesContractDate;
@@ -54,6 +56,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             BuyerAddress = buyerAddress;
             BuyerNPWP = buyerNPWP;
             IsUseVat = isUseVat;
+            VatId = vatId;
+            VatRate = vatRate;
             SubTotal = subTotal;
             IsUsed = isUsed;
             Items = items;
@@ -145,6 +149,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (IsUseVat != isUseVat)
             {
                 IsUseVat = isUseVat;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetVatId(int vatId, string userName, string userAgent)
+        {
+            if (VatId != vatId)
+            {
+                VatId = vatId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetVatRate(int vatRate, string userName, string userAgent)
+        {
+            if (VatRate != vatRate)
+            {
+                VatRate = vatRate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

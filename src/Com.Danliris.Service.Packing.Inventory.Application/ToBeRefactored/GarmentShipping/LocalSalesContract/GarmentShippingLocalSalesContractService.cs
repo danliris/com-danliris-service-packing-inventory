@@ -59,6 +59,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Address=model.BuyerAddress
                 },
                 isUseVat = model.IsUseVat,
+                vat = new Vat
+                {
+                    id = model.VatId,
+                    rate = model.VatRate,
+                },
                 isUsed = model.IsUsed,
                 sellerAddress=model.SellerAddress,
                 sellerName=model.SellerName,
@@ -111,7 +116,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             vm.transactionType = vm.transactionType ?? new TransactionType();
             vm.buyer = vm.buyer ?? new Buyer();
-            return new GarmentShippingLocalSalesContractModel(GenerateNo(vm), vm.salesContractDate.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name,vm.sellerName, vm.sellerPosition,vm.sellerAddress,vm.sellerNPWP, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name,vm.buyer.Address, vm.buyer.npwp, vm.isUseVat,vm.subTotal, vm.isUsed, items) { Id = vm.Id };
+            vm.vat = vm.vat ?? new Vat();
+            return new GarmentShippingLocalSalesContractModel(GenerateNo(vm), vm.salesContractDate.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name,vm.sellerName, vm.sellerPosition,vm.sellerAddress,vm.sellerNPWP, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name,vm.buyer.Address, vm.buyer.npwp, vm.isUseVat, vm.vat.id, vm.vat.rate, vm.subTotal, vm.isUsed, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesContractViewModel vm)
