@@ -45,6 +45,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetSellerNPWP(model.SellerNPWP + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetSellerPosition(model.SellerPosition + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetSubTotal(model.SubTotal + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetVatId(model.VatId + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetVatRate(10, data.LastModifiedBy, data.LastModifiedAgent);
 
             foreach (var item in data.Items)
             {

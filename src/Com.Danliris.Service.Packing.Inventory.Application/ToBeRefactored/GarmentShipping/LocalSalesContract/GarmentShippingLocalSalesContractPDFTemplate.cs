@@ -182,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             double ppn = 0;
             if (viewModel.isUseVat)
             {
-                ppn = totalPrice * 0.1;
+                ppn = (totalPrice * viewModel.vat.rate) / 100;
             }
             double finalPrice = totalPrice + ppn;
 
@@ -194,7 +194,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRight.Colspan = 5;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRightNoBorder.Phrase = new Phrase("PPN 10%", normal_font);
+            cellBodyRightNoBorder.Phrase = new Phrase("PPN " + viewModel.vat.rate.ToString() + "%", normal_font);
             tableBody.AddCell(cellBodyRightNoBorder);
 
             cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);

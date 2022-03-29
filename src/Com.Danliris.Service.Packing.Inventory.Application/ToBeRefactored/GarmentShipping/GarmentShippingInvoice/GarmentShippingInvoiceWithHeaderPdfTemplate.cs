@@ -33,7 +33,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region LC
             PdfPTable tableLC = new PdfPTable(3);
+
             tableLC.SetWidths(new float[] { 2f, 0.1f, 6f });
+
             if (pl.PaymentTerm == "LC")
             {
                 PdfPCell cellLCContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -631,7 +633,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
 
-            cb.SetFontAndSize(bf, 8);
+            cb.SetFontAndSize(bf, 7);
 
             #region LOGODL
 
@@ -663,7 +665,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 percentage = 100 / image1.Width;
                 image1.ScalePercent(percentage * 100);
             }
-            image1.SetAbsolutePosition(marginLeft + 80, height - image1.ScaledHeight - marginTop + 120);
+            image1.SetAbsolutePosition(marginLeft + 80, height - image1.ScaledHeight - marginTop + 75);
             cb.AddImage(image1, inlineImage: true);
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Head Office : Jl. Merapi No. 23", marginLeft + 80, branchOfficeY, 0);
@@ -725,7 +727,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             PdfPCell cellDetailContentCenter2 = new PdfPCell() { Border = Rectangle.RIGHT_BORDER | Rectangle.BOTTOM_BORDER };
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
-            cellHeaderContentLeft.AddElement(new Phrase("                                                    COMERCIAL INVOICE", big_font));
+            cellHeaderContentLeft.AddElement(new Phrase("                                                  COMMERCIAL INVOICE", big_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                                Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                                                                      Page  : " + (writer.PageNumber), normal_font));
@@ -903,7 +905,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var printY = document.BottomMargin - 20;
             var signX = document.RightMargin + 500;
             var signY = printY + 20;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY + 5 , 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY + 5, 0);
             cb.MoveTo(signX - 60, signY - 2);
             cb.LineTo(signX + 45, signY - 2);
             cb.Stroke();

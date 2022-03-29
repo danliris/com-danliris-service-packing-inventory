@@ -85,6 +85,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetSellerNPWP(model.SellerNPWP, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSellerPosition(model.SellerPosition, _identityProvider.Username, UserAgent);
             modelToUpdate.SetSubTotal(model.SubTotal, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetVatId(model.VatId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetVatRate(model.VatRate, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
