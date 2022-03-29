@@ -80,7 +80,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     },
                     salesContractDate = DateTimeOffset.Now,
                     isUseVat = true,
-                    sellerAddress="sjkdha",
+                    vat = new Vat
+                    {
+                        id = 1,
+                        rate = 11
+                    },
+                    sellerAddress ="sjkdha",
                     sellerName="ddasd",
                     sellerNPWP="7987987",
                     sellerPosition="asdjhalshd",
