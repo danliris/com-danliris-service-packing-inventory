@@ -60,8 +60,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                                                Quantity = b.Quantity,
                                                                DPP = Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price),
                                                                UseVat = a.UseVat == true ? "YA" : "TIDAK",
-                                                               PPN = a.UseVat == false ? 0 : (Convert.ToDecimal(0.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)),
-                                                               Total = a.UseVat == false ? Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) : (Convert.ToDecimal(1.1) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)),
+                                                               PPN = ((a.UseVat == true && a.KaberType == "KABER") || a.UseVat) == false ? 0 : (Convert.ToDecimal(a.VatRate) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) / 100,
+                                                               Total = ((a.UseVat == true && a.KaberType == "KABER") || a.UseVat) == false ? Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) : ((100 + Convert.ToDecimal(a.VatRate)) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) / 100,
                                                            };            
             //LOCAL RETURN NOTE
             IQueryable<GarmentLocalSalesBookTempViewModel> d2 = from a in queryrtr
