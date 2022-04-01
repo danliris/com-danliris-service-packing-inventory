@@ -121,6 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         {
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
 
+          
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model }.AsQueryable());
@@ -156,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", details) };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel("", "", GarmentPackingListStatusEnum.CREATED.ToString(), ""));
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
@@ -258,6 +260,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a"), new GarmentPackingListMeasurementModel(2, 2, 2, 1, "a") };
             var model = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+          
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -325,6 +329,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "SM", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+          
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -391,6 +397,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 2, "SETS", 1, 1, 1, 1, 1, "", 1, "", "", "x", "ASD", "", "", "", details2) { Id = 3 } };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+          
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -458,6 +466,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+          
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -524,6 +534,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 2, "SETS", 1, 1, 1, 1, 1, "", 1, "", "", "x", "ASD", "", "", "", details2) { Id = 3 } };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+          
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -706,6 +718,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "LC", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
 
+          
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
@@ -875,6 +888,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListItemModel("a", "", 1, "", 1, "", "", "", 1, 2, "SETS", 1, 1, 1, 1, 1, "", 1, "", "", "x", "asd", "", "", "", details2) { Id = 3 } };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -942,6 +956,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             };
             var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
             var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
             foreach (var d in details)
             {
                 d.setPackingListItemId(1, "test", "test");
@@ -1247,19 +1262,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             var ids = models.Select(s => s.Id).ToList();
 
             await service.SetSampleDelivered(ids);
-        }
-
-		[Fact]
-		public async Task Set_UnPostSuccess()
-		{
-			var repoMock = GetRepositoryMock(new List<GarmentPackingListModel>());
-			repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentPackingListModel>()))
-				.ReturnsAsync(1);
-
-			var serviceProviderMock = GetServiceProviderWithIdentity(repoMock.Object);
-			var service = GetService(serviceProviderMock.Object);
-			await service.Unpost(ViewModel.Id,ViewModel);
-		}
-
+        } 
 	}
 }
