@@ -231,7 +231,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderType = item.First().ProductionOrderType,
                     ProductionOrderOrderQuantity = item.First().ProductionOrderOrderQuantity,
 
-                    ProductionOrderItems = item.GroupBy( r => new { r.ProductionOrderId, r.Grade}).Select(s => new ProductionOrderItemListDetailViewModel()
+                    ProductionOrderItems = item.GroupBy(r => new { r.ProductionOrderId, r.Grade }).Select(s => new ProductionOrderItemListDetailViewModel()
                     {
                         Active = s.First().Active,
                         CreatedAgent = s.First().CreatedAgent,
@@ -287,12 +287,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Remark = s.First().Remark,
                         Grade = s.Key.Grade,
                         Status = s.First().Status,
-                        Balance = s.Sum( d => d.Balance),
-                        InputQuantity = s.Sum( d=> d.InputQuantity),
-                        InputPackagingQty = s.Sum( d => d.InputPackagingQty),
+                        Balance = s.Sum(d => d.Balance),
+                        InputQuantity = s.Sum(d => d.InputQuantity),
+                        InputPackagingQty = s.Sum(d => d.InputPackagingQty),
                         PackingInstruction = s.First().PackingInstruction,
                         PackagingType = s.First().PackagingType,
-                        PackagingQty = s.Sum( d => d.PackagingQty),
+                        PackagingQty = s.Sum(d => d.PackagingQty),
                         PackagingUnit = s.First().PackagingUnit,
                         AvalALength = s.First().AvalALength,
                         AvalBLength = s.First().AvalBLength,
@@ -314,7 +314,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricPackingId = s.First().FabricPackingId,
                         ProductPackingCode = s.First().ProductPackingCode,
                         HasPrintingProductPacking = s.First().HasPrintingProductPacking,
-                        PreviousOutputPackagingQty = s.Sum( d => d.InputPackagingQty),
+                        PreviousOutputPackagingQty = s.Sum(d => d.InputPackagingQty),
 
                     }).Distinct(new PackingComparer()).ToList()
                 }).ToList()
@@ -357,11 +357,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             int result = 0;
 
-            var model = _inputRepository.GetDbSet().Include(s => s.DyeingPrintingAreaInputProductionOrders)
-                                                   .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
-                                                                        s.Date.AddHours(7).ToString("dd/MM/yyyy") == viewModel.Date.AddHours(7).ToString("dd/MM/yyyy") &&
-                                                                        s.Shift == viewModel.Shift &&
-                                                                        s.Group == viewModel.Group);
+            var model = _inputRepository.GetDbSet()
+                //.Include(s => s.DyeingPrintingAreaInputProductionOrders)
+                .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                s.Date.AddHours(7).ToString("dd/MM/yyyy") == viewModel.Date.AddHours(7).ToString("dd/MM/yyyy") &&
+                s.Shift == viewModel.Shift &&
+                s.Group == viewModel.Group);
 
             var dateData = viewModel.Date;
             var ids = _inputRepository.GetDbSet().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
@@ -1250,7 +1251,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo,  string type, int offSet)
+        public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet)
         {
             //var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == GUDANGJADI && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
             var warehouseData = _inputRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.GUDANGJADI);
@@ -1340,13 +1341,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Buyer = d.Buyer,
                         Warna = d.Warna,
                         Motif = d.Motif,
-                        
+
                         Jenis = d.Jenis,
                         Grade = d.Grade,
                         QtyPack = d.QtyPack,
                         Pack = d.Pack,
                         Qty = d.Qty,
-                        
+
                         SAT = d.SAT,
                         DateIn = d.DateIn,
                     })
@@ -1512,7 +1513,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     })
                 });
 
-            foreach (var data in modelAll.Select( x => x.SppList).SingleOrDefault())
+            foreach (var data in modelAll.Select(x => x.SppList).SingleOrDefault())
             {
 
                 foreach (var packingCode in data.ProductPackingCodes)
@@ -1521,7 +1522,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = data.BonNo,
                         OrderNo = data.ProductionOrderNo,
-                        Construction =data.Construction,
+                        Construction = data.Construction,
                         Unit = data.Unit,
                         Color = data.Color,
                         PackingCode = packingCode,
@@ -1565,25 +1566,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //else
             //{
 
-                foreach (var item in query)
-                {
-                    //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                    //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
-                    qtyRoll += item.PackagingQty;
-                    qtyBalance += item.PackingLength;
-                    dt.Rows.Add(indexNumber,
-                                item.BonNo,
-                                item.OrderNo,
-                                item.Construction,
-                                item.Unit,
-                                item.Color,
-                                item.PackagingQty,
-                                item.PackingLength,
-                                item.PackingCode,
-                                item.Grade
-                                );
-                    indexNumber++;
-                }
+            foreach (var item in query)
+            {
+                //var dataIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                //var dataOut = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateOut.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+                qtyRoll += item.PackagingQty;
+                qtyBalance += item.PackingLength;
+                dt.Rows.Add(indexNumber,
+                            item.BonNo,
+                            item.OrderNo,
+                            item.Construction,
+                            item.Unit,
+                            item.Color,
+                            item.PackagingQty,
+                            item.PackingLength,
+                            item.PackingCode,
+                            item.Grade
+                            );
+                indexNumber++;
+            }
             //}
 
             ExcelPackage package = new ExcelPackage();
