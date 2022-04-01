@@ -2,7 +2,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObje
 {
     public class Vat
     {
-        public int id { get; set; }
+       public int id { get; set; }
        public int rate { get; set; }    
     }
 }

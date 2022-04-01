@@ -26,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string DispositionNo { get; set; }
         public bool UseVat { get; set; }
         public int VatId { get; private set; }
-        public int VatRate { get; private set; }        
+        public int VatRate { get; private set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public bool IsApproveShipping { get; set; }
