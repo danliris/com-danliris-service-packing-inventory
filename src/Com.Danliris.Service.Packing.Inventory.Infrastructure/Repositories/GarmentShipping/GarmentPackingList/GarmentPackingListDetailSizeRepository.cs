@@ -58,7 +58,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public Task<int> UpdateAsync(int id, GarmentPackingListDetailSizeModel model)
         {
-            throw new NotImplementedException();
+            var modelToUpdate = _dbSet
+               .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetQuantity(model.Quantity, _identityProvider.Username, USER_AGENT);
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }
