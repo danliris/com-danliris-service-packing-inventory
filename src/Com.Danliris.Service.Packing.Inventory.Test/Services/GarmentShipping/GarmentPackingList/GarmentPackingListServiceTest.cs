@@ -150,6 +150,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public async Task ReadGetSampleDelivered_Success()
+        {
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", details)
+            };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+            var repoMock = new Mock<IGarmentPackingListRepository>();
+            repoMock.Setup(s => s.ReadByInvoiceNoAsync(It.IsAny<string>()))
+                .ReturnsAsync(model);
+
+            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+
+            var result = service.ReadSampleDelivered(1, 25, "{}", "{}", null, "{}");
+
+            Assert.NotNull(result);
+        }
+
+
+        [Fact]
         public async Task ReadById_Success()
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };

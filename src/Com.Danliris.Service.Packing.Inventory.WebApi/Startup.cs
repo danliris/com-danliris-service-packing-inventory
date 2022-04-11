@@ -218,6 +218,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingInvoiceRepository, GarmentShippingInvoiceRepository>();
             services.AddTransient<IGarmentShippingInstructionRepository, GarmentShippingInstructionRepository>();
             services.AddTransient<IGarmentPackingListRepository, GarmentPackingListRepository>();
+            services.AddTransient<IGarmentPackingListItemRepository, GarmentPackingListItemRepository>();
+            services.AddTransient<IGarmentPackingListDetailRepository, GarmentPackingListDetailRepository>();
+            services.AddTransient<IGarmentPackingListDetailSizeRepository, GarmentPackingListDetailSizeRepository>();
             services.AddTransient<IGarmentCoverLetterRepository, GarmentCoverLetterRepository>();
             services.AddTransient<IGarmentShippingNoteRepository, GarmentShippingNoteRepository>();
             services.AddTransient<IGarmentLetterOfCreditRepository, GarmentLetterOfCreditRepository>();
@@ -383,6 +386,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentDraftPackingListItemService, GarmentDraftPackingListItemService>();
             services.AddTransient<IGarmentLocalSalesOmzetUnPaidService, GarmentLocalSalesOmzetUnPaidService>();
+            services.AddTransient<IGarmentMonitoringDeliveredPackingListSample, GarmentMonitoringDeliveredPackingListSampleService>();
             #endregion
 
             // Register Provider

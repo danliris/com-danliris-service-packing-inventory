@@ -3,11 +3,14 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.GarmentPackingList
 {
     public class GarmentPackingListDataUtil : BaseDataUtil<GarmentPackingListRepository, GarmentPackingListModel>
     {
+        private readonly GarmentPackingListRepository Service;
+
         public GarmentPackingListDataUtil(GarmentPackingListRepository repository) : base(repository)
         {
         }
@@ -63,6 +66,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             var model = new GarmentPackingListModel(om.InvoiceNo, om.PackingListType, om.InvoiceType, om.SectionId, om.SectionCode, om.Date, om.PaymentTerm, om.LCNo, om.LCDate, om.IssuedBy, om.BuyerAgentId, om.BuyerAgentCode, om.BuyerAgentName, om.Destination, om.FinalDestination, om.ShipmentMode, om.TruckingDate, om.TruckingEstimationDate, om.ExportEstimationDate, om.Omzet, om.Accounting, om.FabricCountryOrigin, om.FabricComposition, om.RemarkMd, items, om.GrossWeight, om.NettWeight, om.NetNetWeight, om.TotalCartons, measurements, om.SayUnit, om.ShippingMark, om.SideMark, om.Remark, om.ShippingMarkImagePath, om.SideMarkImagePath, om.RemarkImagePath, om.IsUsed, om.IsPosted, om.ShippingStaffId, om.ShippingStaffName, om.Status, om.Description, om.IsCostStructured, om.OtherCommodity, om.IsShipping, om.IsSampleDelivered, om.IsSampleExpenditureGood,om.SampleRemarkMd) { Id = om.Id };
 
             return model;
+        }
+
+        public GarmentPackingListModel GetNewData()
+        {
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
+            var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1) };
+            var items = new HashSet<GarmentPackingListItemModel> { new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", details) };
+            var measurements = new HashSet<GarmentPackingListMeasurementModel> { new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a") };
+            var model = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
+
+            return model;
+        }
+
+        public async Task<GarmentPackingListModel> GetTestData()
+        {
+            GarmentPackingListModel model = GetNewData();
+            await Service.InsertAsync(model);
+            return await Service.ReadByIdAsync(model.Id);
         }
 
     }

@@ -15,6 +15,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword);
         ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword);
         ListResult<GarmentPackingListViewModel> ReadNotUsedCostStructure(int page, int size, string filter, string order, string keyword);
+        ReadResponse<dynamic> ReadSampleDelivered(int page, int size, string filter, string order, string keyword, string Select = "{}");
+        //ListResult<GarmentPackingListViewModel> ReadSampleDelivered(int page, int size, string filter, string order, string keyword, string Select = "{}");
         Task<int> Update(int id, GarmentPackingListViewModel viewModel);
         Task<int> Delete(int id);
         Task<MemoryStreamResult> ReadPdfById(int id);
