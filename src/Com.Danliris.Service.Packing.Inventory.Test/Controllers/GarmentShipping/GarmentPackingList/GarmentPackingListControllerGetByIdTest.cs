@@ -80,6 +80,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         }
 
         [Fact]
+        public async Task GetWHSectionDPdfById_Ok()
+        {
+            var serviceMock = new Mock<IGarmentPackingListService>();
+            serviceMock
+                .Setup(s => s.ReadWHSectionDPdfById(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
+            var response = await controller.GetWHBySectionDId(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
         public async Task GetPdfByOrderNo_Ok()
         {
             var serviceMock = new Mock<IGarmentPackingListService>();
@@ -119,6 +141,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             var controller = GetController(service, identityProvider, validateService);
             controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
             var response = await controller.GetByOrderNoWH(1);
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task GetWHSectionDPdfByOrderNo_Ok()
+        {
+            var serviceMock = new Mock<IGarmentPackingListService>();
+            serviceMock
+                .Setup(s => s.ReadWHSectionDPdfByOrderNo(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
+            var response = await controller.GetByOrderNoWHSectionD(1);
 
             Assert.NotNull(response);
         }

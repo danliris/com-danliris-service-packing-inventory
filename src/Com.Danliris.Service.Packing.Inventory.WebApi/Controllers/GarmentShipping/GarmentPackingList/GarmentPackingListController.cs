@@ -134,6 +134,40 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
         }
 
+        [HttpGet("{id}/wh-section-d")]
+        public async Task<IActionResult> GetWHBySectionDId([FromRoute] int id)
+        {
+            try
+            {
+                var accept = Request.Headers["Accept"];
+                if (accept == "application/pdf")
+                {
+                    VerifyUser();
+                    var result = await _service.ReadWHSectionDPdfById(id);
+
+                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                }
+                else if (accept == "application/xls")
+                {
+                    VerifyUser();
+                    var result = await _service.ReadExcelById(id);
+
+                    return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
+                }
+
+                var data = await _service.ReadById(id);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet("{id}/order-no")]
         public async Task<IActionResult> GetByOrderNo([FromRoute] int id)
         {
@@ -157,6 +191,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 VerifyUser();
                 var result = await _service.ReadWHPdfByOrderNo(id);
+
+                return File(result.Data.ToArray(), "application/pdf", result.FileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/order-no-wh-section-d")]
+        public async Task<IActionResult> GetByOrderNoWHSectionD([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.ReadWHSectionDPdfByOrderNo(id);
 
                 return File(result.Data.ToArray(), "application/pdf", result.FileName);
             }
