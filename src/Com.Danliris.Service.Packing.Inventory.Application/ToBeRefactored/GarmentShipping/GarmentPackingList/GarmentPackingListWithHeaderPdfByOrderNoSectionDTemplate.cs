@@ -749,87 +749,87 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
             int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
 
-            if (maxSizesCount > 11)
-            {
-                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 6);
+            //if (maxSizesCount > 11)
+            //{
+            //    cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 6);
 
-                #region LEFT
+            //    #region LEFT
 
-                var logoY = height - marginTop + 65;
+            //    var logoY = height - marginTop + 65;
 
-                byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_211_200_BW);
-                Image imageDL = Image.GetInstance(imageByteDL);
-                imageDL.ScaleAbsolute(60f, 60f);
-                var newColor = System.Drawing.Color.Red;
-                imageDL.SetAbsolutePosition(marginLeft, logoY);
-                cb.AddImage(imageDL, inlineImage: true);
+            //    byte[] imageByteDL = Convert.FromBase64String(Base64ImageStrings.LOGO_DANLIRIS_211_200_BW);
+            //    Image imageDL = Image.GetInstance(imageByteDL);
+            //    imageDL.ScaleAbsolute(60f, 60f);
+            //    var newColor = System.Drawing.Color.Red;
+            //    imageDL.SetAbsolutePosition(marginLeft, logoY);
+            //    cb.AddImage(imageDL, inlineImage: true);
 
-                #endregion
+            //    #endregion
 
-                #region CENTER
+            //    #region CENTER
 
-                var headOfficeX = marginLeft + 75;
-                var headOfficeY = height - marginTop + 105;
+            //    var headOfficeX = marginLeft + 75;
+            //    var headOfficeY = height - marginTop + 105;
 
-                byte[] imageByte = Convert.FromBase64String(Base64ImageStrings.LOGO_NAME);
-                Image image = Image.GetInstance(imageByte);
-                if (image.Width > 160)
-                {
-                    float percentage = 0.0f;
-                    percentage = 160 / image.Width;
-                    image.ScalePercent(percentage * 100);
-                }
-                image.SetAbsolutePosition(headOfficeX, headOfficeY);
-                cb.AddImage(image, inlineImage: true);
+            //    byte[] imageByte = Convert.FromBase64String(Base64ImageStrings.LOGO_NAME);
+            //    Image image = Image.GetInstance(imageByte);
+            //    if (image.Width > 160)
+            //    {
+            //        float percentage = 0.0f;
+            //        percentage = 160 / image.Width;
+            //        image.ScalePercent(percentage * 100);
+            //    }
+            //    image.SetAbsolutePosition(headOfficeX, headOfficeY);
+            //    cb.AddImage(image, inlineImage: true);
 
-                string[] headOffices = {
-                    "Head Office : Kelurahan Banaran, Kecamatan Grogol,",
-                    "Sukoharjo - Indonesia",
-                    "PO BOX 166 Solo 57100",
-                    "Telp. (62 271) 740888, 714400 (HUNTING)",
-                    "Fax. (62 271) 735222, 740777",
-                    "Website : www.danliris.com",
-                };
-                for (int i = 0; i < headOffices.Length; i++)
-                {
-                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, headOffices[i], headOfficeX, headOfficeY + 10 - image.ScaledHeight - (i * 6), 0);
-                }
+            //    string[] headOffices = {
+            //        "Head Office : Kelurahan Banaran, Kecamatan Grogol,",
+            //        "Sukoharjo - Indonesia",
+            //        "PO BOX 166 Solo 57100",
+            //        "Telp. (62 271) 740888, 714400 (HUNTING)",
+            //        "Fax. (62 271) 735222, 740777",
+            //        "Website : www.danliris.com",
+            //    };
+            //    for (int i = 0; i < headOffices.Length; i++)
+            //    {
+            //        cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, headOffices[i], headOfficeX, headOfficeY + 10 - image.ScaledHeight - (i * 6), 0);
+            //    }
 
-                #endregion
+            //    #endregion
 
-                #region RIGHT
+            //    #region RIGHT
 
-                byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
-                Image imageIso = Image.GetInstance(imageByteIso);
-                if (imageIso.Width > 80)
-                {
-                    float percentage = 0.0f;
-                    percentage = 80 / imageIso.Width;
-                    imageIso.ScalePercent(percentage * 100);
-                }
-                imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight, height - imageIso.ScaledHeight - marginTop + 120);
-                cb.AddImage(imageIso, inlineImage: true);
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight, height - imageIso.ScaledHeight - marginTop + 120 - 5, 0);
+            //    byte[] imageByteIso = Convert.FromBase64String(Base64ImageStrings.ISO);
+            //    Image imageIso = Image.GetInstance(imageByteIso);
+            //    if (imageIso.Width > 80)
+            //    {
+            //        float percentage = 0.0f;
+            //        percentage = 80 / imageIso.Width;
+            //        imageIso.ScalePercent(percentage * 100);
+            //    }
+            //    imageIso.SetAbsolutePosition(width - imageIso.ScaledWidth - marginRight, height - imageIso.ScaledHeight - marginTop + 120);
+            //    cb.AddImage(imageIso, inlineImage: true);
+            //    cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "CERTIFICATE ID09 / 01238", width - (imageIso.ScaledWidth / 2) - marginRight, height - imageIso.ScaledHeight - marginTop + 120 - 5, 0);
 
-                #endregion
+            //    #endregion
 
-                #region LINE
+            //    #region LINE
 
-                cb.MoveTo(marginLeft, height - marginTop + 50);
-                cb.LineTo(width - marginRight, height - marginTop + 50);
-                cb.Stroke();
+            //    cb.MoveTo(marginLeft, height - marginTop + 50);
+            //    cb.LineTo(width - marginRight, height - marginTop + 50);
+            //    cb.Stroke();
 
-                #endregion
+            //    #endregion
 
-                cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 16);
+            //    cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 16);
 
-                #region TITLE
+            //    #region TITLE
 
-                var titleY = height - marginTop + 30;
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "PACKING LIST", width / 2, titleY, 0);
+            //    var titleY = height - marginTop + 30;
+            //    cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "PACKING LIST", width / 2, titleY, 0);
 
-                #endregion
-            }
+            //    #endregion
+            //}
 
             cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
 
