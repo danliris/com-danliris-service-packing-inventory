@@ -893,7 +893,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 percentage = 100 / image11.Width;
                 image11.ScalePercent(percentage * 100);
             }
-            image11.SetAbsolutePosition(marginLeft + 80, height - image11.ScaledHeight - marginTop + 70);
+            image11.SetAbsolutePosition(marginLeft + 80, height - image11.ScaledHeight - marginTop + 75);
             cb.AddImage(image11, inlineImage: true);
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Head Office : Jl. Merapi No. 23", marginLeft + 80, branchOfficeY, 0);

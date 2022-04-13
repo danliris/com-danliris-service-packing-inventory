@@ -21,8 +21,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Delete(int id);
         Task<MemoryStreamResult> ReadPdfById(int id);
         Task<MemoryStreamResult> ReadWHPdfById(int id);
+        Task<MemoryStreamResult> ReadWHSectionDPdfById(int id);
         Task<MemoryStreamResult> ReadPdfByOrderNo(int id);
         Task<MemoryStreamResult> ReadWHPdfByOrderNo(int id);
+        Task<MemoryStreamResult> ReadWHSectionDPdfByOrderNo(int id);
         Task<MemoryStreamResult> ReadPdfFilterCarton(int id);
         Task<MemoryStreamResult> ReadPdfFilterCartonMD(int id);
         Task<GarmentPackingListViewModel> ReadByInvoiceNo(string no);
