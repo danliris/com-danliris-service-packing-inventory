@@ -726,7 +726,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var query = _outputProductionOrderRepository.ReadAll()
                                                         .OrderByDescending(s => s.LastModifiedUtc)
                                                         .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
-                                                                    !s.HasNextAreaDocument);
+                                                                    !s.HasNextAreaDocument && s.IsAfterStockOpname);
 
             //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
 
