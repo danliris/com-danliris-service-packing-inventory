@@ -355,7 +355,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private string DateTimeToString(DateTimeOffset dateTime)
         {
    
-            return dateTime.ToString("dd MMMM yyyy", new CultureInfo("id_ID"));
+            return dateTime.ToString("dd MMMM yyyy", new CultureInfo("id-ID"));
         }
 
     }
