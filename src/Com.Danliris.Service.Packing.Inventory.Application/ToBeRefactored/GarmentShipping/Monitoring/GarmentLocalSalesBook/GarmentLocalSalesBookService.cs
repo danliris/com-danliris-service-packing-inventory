@@ -438,7 +438,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     foreach (GarmentLocalSalesBookViewModel data in SupplName.Value)
                     {
                         index++;
-                        string LSDate = data.LSDate == new DateTime(1970, 1, 1) ? "-" : data.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string LSDate = data.LSDate == new DateTime(1970, 1, 1) ? "-" : data.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
                         result.Rows.Add(index, LSDate, data.LSNo, data.BuyerCode, data.BuyerName, Math.Round(data.NettAmount, 2), Math.Round(data.SalesAmount, 2), Math.Round(data.PPNAmount, 2), 
                                         Math.Round(data.Qty1, 2), Math.Round(data.Amount1, 2), Math.Round(data.Qty2, 2), Math.Round(data.Amount2, 2), Math.Round(data.Qty3, 2), Math.Round(data.Amount3, 2),

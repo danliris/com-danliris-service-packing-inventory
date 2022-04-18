@@ -132,11 +132,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     index++;
 
-                    string InvDate = d.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : d.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd-MM-yyyy", new CultureInfo("id-ID"));
-                    string SailDate = d.SailingDate == new DateTime(1970, 1, 1) ? "-" : d.SailingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd-MM-yyyy", new CultureInfo("id-ID"));
-                    string PEBDate = d.PEBDate == new DateTime(1970, 1, 1) ? "-" : d.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd-MM-yyyy", new CultureInfo("id-ID"));
-                    string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd-MM-yyyy", new CultureInfo("id-ID"));
-                    string DueDate = d.DueDate == new DateTime(1970, 1, 1) ? "-" : d.DueDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd-MM-yyyy", new CultureInfo("id-ID"));
+                    string InvDate = d.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : d.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string SailDate = d.SailingDate == new DateTime(1970, 1, 1) ? "-" : d.SailingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string PEBDate = d.PEBDate == new DateTime(1970, 1, 1) ? "-" : d.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string TruckDate = d.TruckingDate == new DateTime(1970, 1, 1) ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string DueDate = d.DueDate == new DateTime(1970, 1, 1) ? "-" : d.DueDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
                     string MtUang = "USD";
 
                     result.Rows.Add(index, d.InvoiceNo, InvDate, TruckDate, DueDate, d.PaymentTerm, d.LCNo, d.BuyerCode, d.BuyerName, d.RONo, d.SCNo, d.Destination, SailDate,

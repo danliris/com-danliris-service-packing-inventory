@@ -386,16 +386,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         index++;
 
-                        string InvDate = item.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : item.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string SailDate = item.SailingDate == new DateTime(1970, 1, 1) ? "-" : item.SailingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string PEBDate = item.PEBDate == DateTimeOffset.MinValue ? "-" : item.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string TruckDate = item.TruckingDate == DateTimeOffset.MinValue ? "-" : item.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string BookDate = item.BookingDate == new DateTime(1970, 1, 1) ? "-" : item.BookingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string ExFtyDate = item.ExpFactoryDate == new DateTime(1970, 1, 1) ? "-" : item.ExpFactoryDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string InvDate = item.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : item.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string SailDate = item.SailingDate == new DateTime(1970, 1, 1) ? "-" : item.SailingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string PEBDate = item.PEBDate == DateTimeOffset.MinValue ? "-" : item.PEBDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string TruckDate = item.TruckingDate == DateTimeOffset.MinValue ? "-" : item.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string BookDate = item.BookingDate == new DateTime(1970, 1, 1) ? "-" : item.BookingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string ExFtyDate = item.ExpFactoryDate == new DateTime(1970, 1, 1) ? "-" : item.ExpFactoryDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
-                        string DocDate = item.DocSendDate == new DateTime(1970, 1, 1) ? "-" : item.DocSendDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string DueDate = item.DueDate == new DateTime(1970, 1, 1) ? "-" : item.DueDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string PayDate = item.PaymentDate == new DateTime(1970, 1, 1) ? "-" : item.PaymentDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string DocDate = item.DocSendDate == new DateTime(1970, 1, 1) ? "-" : item.DocSendDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string DueDate = item.DueDate == new DateTime(1970, 1, 1) ? "-" : item.DueDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string PayDate = item.PaymentDate == new DateTime(1970, 1, 1) ? "-" : item.PaymentDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
                         string AmtFOB = string.Format("{0:N2}", item.Amount);
                         string AmtCMT = string.Format("{0:N2}", item.CMTAmount);
