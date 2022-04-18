@@ -156,7 +156,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         foreach (var detail in unit.Details)
                         {
                             index++;
-                            result.Rows.Add(index, d.BrandName, unit.UnitCode, detail.InvoiceNo, detail.TruckingDate.ToString("dd MMMM yyyy", new CultureInfo("id-ID")), detail.RO_Number, detail.ComodityName, detail.ComodityDesc, detail.Quantity, detail.UOMUnit, detail.Amount);
+                            result.Rows.Add(index, d.BrandName, unit.UnitCode, detail.InvoiceNo, detail.TruckingDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), detail.RO_Number, detail.ComodityName, detail.ComodityDesc, detail.Quantity, detail.UOMUnit, detail.Amount);
 
                             buyerLastMergedRowPosition = rowPosition++;
 

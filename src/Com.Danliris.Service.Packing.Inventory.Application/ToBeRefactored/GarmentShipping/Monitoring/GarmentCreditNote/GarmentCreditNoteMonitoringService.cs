@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     index++;
 
-                    string NoteDate = d.CNDate == new DateTime(1970, 1, 1) ? "-" : d.CNDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    string NoteDate = d.CNDate == new DateTime(1970, 1, 1) ? "-" : d.CNDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
                  
                     string Amnt = string.Format("{0:N2}", d.Amount);
                        
