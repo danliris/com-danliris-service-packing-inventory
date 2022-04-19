@@ -149,6 +149,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByBrand;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzetUnPaid;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -272,6 +273,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDebiturBalanceRepository, GarmentDebiturBalanceRepository>();
 
             services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
+            services.AddTransient<IRepository<StockOpnameReportItemModel>, StockOpnameReportItemRepository>(); 
+            services.AddTransient<IRepository<StockOpnameReportHeaderModel>, StockOpnameReportHeaderRepository>();
 
             #endregion
 
@@ -366,8 +369,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingGenerateDataService, GarmentShippingGenerateDataService>();
             services.AddTransient<IDyeingPrintingStockOpnameProductionOrderRepository, DyeingPrintingStockOpnameProductionOrderRepository>();
             //services.AddTransient<IGarmentInsuranceDispositionReportService, GarmentInsuranceDispositionReportService>();
-            //services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>();
-            //services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>();
+            //services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>(); services.AddTransient<IGarmentPaymentDispositionReportService, GarmentPaymentDispositionReportService>();
             //services.AddTransient<IGarmentPaymentDispositionRecapReportService, GarmentPaymentDispositionRecapReportService>();
 
             services.AddTransient<IGarmentLocalSalesOmzetService, GarmentLocalSalesOmzetService>();
