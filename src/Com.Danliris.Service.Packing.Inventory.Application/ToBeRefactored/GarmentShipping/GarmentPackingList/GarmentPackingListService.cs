@@ -5,10 +5,12 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilitie
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
@@ -23,20 +25,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private const string UserAgent = "GarmentPackingListService";
 
-        protected const string IMG_DIR = "GarmentPackingList";
-
-        protected readonly IGarmentPackingListRepository _packingListRepository;
+        protected const string IMG_DIR = "GarmentPackingList"; 
+		protected readonly IGarmentPackingListRepository _packingListRepository;
         protected readonly IGarmentShippingInvoiceRepository _invoiceRepository;
         protected readonly IIdentityProvider _identityProvider;
         protected readonly IAzureImageService _azureImageService;
+ 
 
-        public GarmentPackingListService(IServiceProvider serviceProvider)
+		public GarmentPackingListService(IServiceProvider serviceProvider)
         {
             _packingListRepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _azureImageService = serviceProvider.GetService<IAzureImageService>();
-        }
+			  
+		}
 
         protected GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
         {
@@ -419,7 +422,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
         }
+		public virtual ListResult<GarmentPackingListViewModel> ReadPLSample(int page, int size, string filter, string order, string keyword)
+		{
+			var query = _packingListRepository.ReadAll().Where(s=>s.IsSampleDelivered== true && (s.InvoiceType =="DS" || s.InvoiceType == "SM"));
 
+			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+			query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+			List<string> SearchAttributes = new List<string>()
+			{
+				"InvoiceNo", "InvoiceType", "PackingListType", "SectionCode", "Destination", "BuyerAgentName"
+			};
+			//query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+			if (keyword != null)
+			{
+				query = query.Where(q => q.Items.Any(i => i.RONo.Contains(keyword)) ||
+					q.InvoiceNo.Contains(keyword) ||
+					q.InvoiceType.Contains(keyword) ||
+					q.PackingListType.Contains(keyword) ||
+					q.SectionCode.Contains(keyword) ||
+					q.Destination.Contains(keyword) ||
+					q.BuyerAgentName.Contains(keyword));
+			}
+
+			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+			query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
+
+			var data = query
+				.Skip((page - 1) * size)
+				.Take(size)
+				.ToList()
+				.Select(model => MapToViewModel(model))
+				.ToList();
+
+			return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
+		}
+		
         public virtual async Task<GarmentPackingListViewModel> ReadById(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
@@ -846,5 +884,86 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             model.SetIsSampleExpenditureGood(isSampleExpenditureGood, _identityProvider.Username, UserAgent);
             await _packingListRepository.SaveChanges();
         }
-    }
+
+		public IQueryable<GarmentPLItemViewModel> ReadPLSampleRO(int page, int size, string filter, string order, string keyword)
+		{
+
+			var query = _packingListRepository.Query
+				.Include(i => i.Items)
+					.ThenInclude(i => i.Details)
+						.ThenInclude(i => i.Sizes)
+				.Include(i => i.Measurements).Where(s =>(  s.IsSampleDelivered == true && (s.InvoiceType == "DS" || s.InvoiceType == "SM")));
+			List<GarmentPLItemViewModel> listdata = new List<GarmentPLItemViewModel>();
+
+			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+			query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+			List<string> SearchAttributes = new List<string>()
+			{
+				"InvoiceNo",  
+			};
+			foreach (var item in query)
+			{
+				var a = item.Items;
+				foreach(var bb in item.Items.Where(s => s.RONo.Contains(keyword)))
+				{
+					GarmentPLItemViewModel data = new GarmentPLItemViewModel
+					{
+						RONo = bb.RONo,
+						Article= bb.Article,
+						Description= bb.Description,
+						ComodityId = bb.ComodityId,
+						ComodityCode = bb.ComodityCode,
+						ComodityName = bb.ComodityName
+
+					};
+					listdata.Add(data);
+				}
+			}
+			return listdata.Distinct().AsQueryable();
+		}
+		public IQueryable<GarmentPLDetailViewModel> ReadPLSampleStyle(  string roNo)
+		{
+
+			var query = _packingListRepository.Query
+				.Include(i => i.Items)
+					.ThenInclude(i => i.Details)
+						.ThenInclude(i => i.Sizes)
+				.Include(i => i.Measurements).Where(s => (s.IsSampleDelivered == true && (s.InvoiceType == "DS" || s.InvoiceType == "SM")));
+			List<GarmentPLDetailViewModel> listdata = new List<GarmentPLDetailViewModel>();
+
+			 
+			foreach (var item in query)
+			{
+				var a = item.Items;
+				foreach (var bb in item.Items.Where(s=>s.RONo == roNo))
+				{
+					var details = bb.Details;
+					foreach (var d in details)
+					{
+						GarmentPLDetailViewModel data = new GarmentPLDetailViewModel
+						{
+							Style = d.Style,
+							Colour = d.Colour,
+							Sizes = d.Sizes.Select(s => new GarmentPackingListDetailSizeViewModel
+							{
+								 
+								Size = new SizeViewModel
+								{
+									Id = s.SizeId,
+									Size = s.Size
+								},
+								Quantity = s.Quantity
+							}).ToList()
+
+						};
+						listdata.Add(data);
+
+					}
+				}
+			}
+			return listdata.AsQueryable();
+		}
+ 
+	}
 }
