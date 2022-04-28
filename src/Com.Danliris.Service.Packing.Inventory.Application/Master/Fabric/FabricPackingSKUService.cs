@@ -380,5 +380,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
             return result;
         }
-    }
+   }
 }
