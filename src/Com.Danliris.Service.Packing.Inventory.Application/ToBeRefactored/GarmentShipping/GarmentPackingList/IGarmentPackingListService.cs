@@ -13,7 +13,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<string> Create(GarmentPackingListViewModel viewModel);
         Task<GarmentPackingListViewModel> ReadById(int id);
         ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword);
-        ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword);
+		ListResult<GarmentPackingListViewModel> ReadPLSample(int page, int size, string filter, string order, string keyword);
+		IQueryable<GarmentPLItemViewModel> ReadPLSampleRO(int page, int size, string filter, string order, string keyword);
+		IQueryable<GarmentPLDetailViewModel> ReadPLSampleStyle(  string roNo);
+
+		ListResult<GarmentPackingListViewModel> ReadNotUsed(int page, int size, string filter, string order, string keyword);
         ListResult<GarmentPackingListViewModel> ReadNotUsedCostStructure(int page, int size, string filter, string order, string keyword);
         Task<int> Update(int id, GarmentPackingListViewModel viewModel);
         Task<int> Delete(int id);

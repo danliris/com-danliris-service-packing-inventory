@@ -65,8 +65,73 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             }
 
         }
+		[HttpGet("loaderSample")]
+		public IActionResult GetPLSample([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
+		{
+			try
+			{
+				var data = _service.ReadPLSample(page, size, filter, order, keyword);
+				var info = new Dictionary<string, object>
+					{
+						{ "count", data.Data.Count },
+						{ "total", data.Total },
+						{ "order", order },
+						{ "page", page },
+						{ "size", size }
+					};
 
-        [HttpGet("{id}")]
+				return Ok(new
+				{
+					data = data.Data,
+					info
+				});
+
+
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+		[HttpGet("loaderSampleRO")]
+		public IActionResult GetPLSampleRO([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
+		{
+			try
+			{
+				var data = _service.ReadPLSampleRO( page,  size,  filter,  order,  keyword);
+
+				return Ok(new
+				{
+					data = data
+				});
+
+
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+		[HttpGet("loaderSampleStyle/{roNo}")]
+		public IActionResult GetPLSampleStyle(string roNo)
+		{
+			try
+			{
+				var data = _service.ReadPLSampleStyle(roNo);
+
+				return Ok(new
+				{
+					data = data
+				});
+
+
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+		[HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             try
