@@ -301,6 +301,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Enum.TryParse(viewModel.Status, true, out GarmentPackingListStatusEnum status);
             GarmentPackingListModel garmentPackingListModel = new GarmentPackingListModel(viewModel.InvoiceNo, viewModel.PackingListType, viewModel.InvoiceType, viewModel.Section.Id, viewModel.Section.Code, viewModel.Date.GetValueOrDefault(), viewModel.PaymentTerm, viewModel.LCNo, viewModel.LCDate.GetValueOrDefault(), viewModel.IssuedBy, viewModel.BuyerAgent.Id, viewModel.BuyerAgent.Code, viewModel.BuyerAgent.Name, viewModel.Destination, viewModel.FinalDestination, viewModel.ShipmentMode, viewModel.TruckingDate.GetValueOrDefault(), viewModel.TruckingEstimationDate.GetValueOrDefault(), viewModel.ExportEstimationDate.GetValueOrDefault(), viewModel.Omzet, viewModel.Accounting, viewModel.FabricCountryOrigin, viewModel.FabricComposition, viewModel.RemarkMd, items, viewModel.GrossWeight, viewModel.NettWeight, viewModel.NetNetWeight, viewModel.TotalCartons, measurements, viewModel.SayUnit, viewModel.ShippingMark, viewModel.SideMark, viewModel.Remark, viewModel.ShippingMarkImagePath, viewModel.SideMarkImagePath, viewModel.RemarkImagePath, viewModel.IsUsed, viewModel.IsPosted, viewModel.ShippingStaff.id, viewModel.ShippingStaff.name, status, viewModel.Description, viewModel.IsCostStructured, viewModel.OtherCommodity, viewModel.IsShipping, viewModel.IsSampleDelivered, viewModel.IsSampleExpenditureGood,viewModel.SampleRemarkMd);
 
+
+
+
             return garmentPackingListModel;
         }
 
@@ -425,7 +428,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		public virtual ListResult<GarmentPackingListViewModel> ReadPLSample(int page, int size, string filter, string order, string keyword)
 		{
 			var query = _packingListRepository.ReadAll().Where(s=>s.IsSampleDelivered== true && (s.InvoiceType =="DS" || s.InvoiceType == "SM"));
-
+ 
 			Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
 			query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
 
@@ -447,7 +450,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
 			query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
-
+ 
 			var data = query
 				.Skip((page - 1) * size)
 				.Take(size)
@@ -570,7 +573,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 			var invoice = _invoiceRepository.ReadAll();
-			GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
+			
+      GarmentShippingInvoiceModel shippingInvoice = (from a in invoice
 														   where a.InvoiceNo == garmentPackingListModel.InvoiceNo
 														   select a).FirstOrDefault();
 			if (shippingInvoice != null)
