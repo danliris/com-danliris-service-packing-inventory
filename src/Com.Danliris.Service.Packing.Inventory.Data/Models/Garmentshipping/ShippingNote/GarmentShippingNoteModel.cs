@@ -47,6 +47,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             Items = items;
         }
 
+        public void SetBuyerId(int buyerId, string userName, string userAgent)
+        {
+            if (BuyerId != buyerId)
+            {
+                BuyerId = buyerId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerCode(string buyerCode, string userName, string userAgent)
+        {
+            if (BuyerCode != buyerCode)
+            {
+                BuyerCode = buyerCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerName(string buyerName, string userName, string userAgent)
+        {
+            if (BuyerName != buyerName)
+            {
+                BuyerName = buyerName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
         {
             if (Date != date)

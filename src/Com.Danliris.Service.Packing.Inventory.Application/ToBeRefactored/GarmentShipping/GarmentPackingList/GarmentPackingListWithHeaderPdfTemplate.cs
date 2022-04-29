@@ -136,7 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 90, 30);
+            Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 90, 60);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -449,7 +449,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 new PdfPCell(tableDetail);
                 tableDetail.ExtendLastRow = false;
-                tableDetail.KeepTogether = true;
+                //tableDetail.KeepTogether = true;
                 tableDetail.WidthPercentage = 95f;
                 tableDetail.SpacingAfter = 10f;
                 document.Add(tableDetail);
@@ -893,7 +893,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 percentage = 100 / image11.Width;
                 image11.ScalePercent(percentage * 100);
             }
-            image11.SetAbsolutePosition(marginLeft + 80, height - image11.ScaledHeight - marginTop + 70);
+            image11.SetAbsolutePosition(marginLeft + 80, height - image11.ScaledHeight - marginTop + 75);
             cb.AddImage(image11, inlineImage: true);
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Head Office : Jl. Merapi No. 23", marginLeft + 80, branchOfficeY, 0);
@@ -1002,7 +1002,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region PRINTED
 
-            var printY = marginBottom - 10;
+            var printY = marginBottom - 40;
             cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Printed on : " + DateTimeOffset.Now.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("dd MMMM yyyy H:mm:ss zzz"), width - marginRight, printY, 0);
 
             #endregion

@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingLocalReturnNoteModel GetModel()
         {
             var items = new HashSet<GarmentShippingLocalReturnNoteItemModel> { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
-            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, "", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", null), items);
+            var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1,"", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", null), items);
 
             return model;
         }

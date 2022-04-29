@@ -118,10 +118,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     index++;
 
-                    string LCDate = d.LCDate == new DateTime(1970, 1, 1) ? "-" : d.LCDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                    string EDate = d.ExpiredDate == new DateTime(1970, 1, 1) ? "-" : d.ExpiredDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                    string ShipDate = d.LatestShipment == DateTimeOffset.MinValue ? "-" : d.LatestShipment.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                    string TruckDate = d.TruckingDate == DateTimeOffset.MinValue ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    string LCDate = d.LCDate == new DateTime(1970, 1, 1) ? "-" : d.LCDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string EDate = d.ExpiredDate == new DateTime(1970, 1, 1) ? "-" : d.ExpiredDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string ShipDate = d.LatestShipment == DateTimeOffset.MinValue ? "-" : d.LatestShipment.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string TruckDate = d.TruckingDate == DateTimeOffset.MinValue ? "-" : d.TruckingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
                     
                     string Qty = string.Format("{0:N2}", d.Quantity);
                     string TBPaid = string.Format("{0:N2}", d.AmountToBePaid);

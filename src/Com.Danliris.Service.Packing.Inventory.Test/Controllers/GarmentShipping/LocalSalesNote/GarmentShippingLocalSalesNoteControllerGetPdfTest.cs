@@ -44,6 +44,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     },
                     date = DateTimeOffset.Now,
                     useVat = true,
+                    vat = new Vat
+                    {
+                        id = 1,
+                        rate = 11
+                    },
                     tempo = 6,
                     remark = "lsjhdalsdh",
                     items = new List<GarmentShippingLocalSalesNoteItemViewModel>()
@@ -86,6 +91,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     },
                     date = DateTimeOffset.Now,
                     useVat = false,
+                    vat = new Vat
+                    {
+                        id = 0,
+                        rate = 0
+                    },
                     tempo = 6,
                     remark = "lsjhdalsdh",
                     items = new List<GarmentShippingLocalSalesNoteItemViewModel>()
@@ -128,6 +138,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     },
                     date = DateTimeOffset.Now,
                     useVat = false,
+                    vat = new Vat
+                    {
+                        id = 0,
+                        rate = 0
+                    },
                     tempo = 6,
                     remark = "lsjhdalsdh",
                     items = new List<GarmentShippingLocalSalesNoteItemViewModel>()

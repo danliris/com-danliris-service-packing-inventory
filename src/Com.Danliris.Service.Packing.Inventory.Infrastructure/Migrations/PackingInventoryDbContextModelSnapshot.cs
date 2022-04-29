@@ -3722,6 +3722,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("TransactionTypeName")
                         .HasMaxLength(250);
 
+                    b.Property<int>("VatId");
+
+                    b.Property<int>("VatRate");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SalesContractNo")
@@ -4673,6 +4677,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(250);
 
                     b.Property<bool>("UseVat");
+
+                    b.Property<int>("VatId");
+
+                    b.Property<int>("VatRate");
 
                     b.HasKey("Id");
 
