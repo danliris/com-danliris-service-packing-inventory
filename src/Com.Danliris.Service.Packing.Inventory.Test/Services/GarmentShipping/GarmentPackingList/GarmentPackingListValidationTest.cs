@@ -28,8 +28,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
                     ShippingStaff = new ShippingStaff
                     {
-                        id = 1,
-                        name = "AAA"
+                        id = 0,
+                        name = null
                     },
                     Date = null,
                     LCNo = null,
