@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
     public interface IGarmentPackingListRepository : IRepository<GarmentPackingListModel>
     {
         Task<GarmentPackingListModel> ReadByInvoiceNoAsync(string no);
-        IQueryable<GarmentPackingListModel> Query { get; }
-        Task<int> SaveChanges();
+        IQueryable<GarmentPackingListModel> Query { get; } 
+		Task<int> SaveChanges();
     }
 }
