@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Master;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
@@ -81,12 +82,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
                 };
             }
         }
+
+        FabricPackingAutoCreateFormDto fabricPackingAutoCreate
+        {
+            get
+            {
+                return new FabricPackingAutoCreateFormDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUId =1,
+                    Length = 1,
+                    PackingType = "METER",
+                    Quantity = 1
+                };
+            }
+        }
         ProductSKUModel productSKUModel
         {
             get
             {
                 return new ProductSKUModel("CODE", "name", 1, 1, "description");
                
+            }
+        }
+
+        ProductPackingModel productPackingModel
+        {
+            get 
+            {
+                return new ProductPackingModel(1, 1, 1, "CODE0001", "CODE0001", "");
             }
         }
 
@@ -342,15 +366,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
         {
             //Setup
             PackingInventoryDbContext dbContext = GetDbContext(Entity);
+            var dataUtil = fabricProductSKUModel;
+            dbContext.FabricProductSKUs.Add(dataUtil);
+            dbContext.ProductPackings.Add(productPackingModel);
+            dbContext.ProductSKUs.Add(productSKUModel);
+            dbContext.IPUnitOfMeasurements.Add(unitOfMeasurementModel);
+
+            dbContext.SaveChanges();
 
             //act
             var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
-            var  form = new FabricPackingAutoCreateFormDto();
+            var  form = fabricPackingAutoCreate;
             FabricPackingIdCodeDto result = service.AutoCreatePacking(form);
 
             //assert
             Assert.NotNull(result);
         }
+
+        //[Fact]
+        //public void AutoCreatePacking_Return_Fail()
+        //{
+        //    //Setup
+        //    PackingInventoryDbContext dbContext = GetDbContext(Entity);
+
+
+        //    //act
+        //    var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
+        //    var form = new FabricPackingAutoCreateFormDto();
+        //    FabricPackingIdCodeDto result = service.AutoCreatePacking(form);
+        //    //assert
+        //    Assert.ThrowsAny<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.AutoCreatePacking(form));
+        //}
 
 
         [Fact]
