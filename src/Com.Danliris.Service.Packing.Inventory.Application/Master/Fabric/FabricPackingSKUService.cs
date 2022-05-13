@@ -298,6 +298,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         {
             var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
 
+            //if (fabric.ProductSKUId == 0)
+            //{
+            //    var errorResult = new List<ValidationResult>()
+            //        {
+            //            new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+            //        };
+            //    var validationContext = new ValidationContext( _serviceProvider, null);
+            //    throw new ServiceValidationException(validationContext, errorResult);
+            //}
+
             if (fabric != null)
             {
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
@@ -329,7 +339,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                 _dbContext.SaveChanges();
 
-                if (packingCodes.Count < 1)
+                if (packingCodes.Count < 1 )
                 {
                     var errorResult = new List<ValidationResult>()
                     {
@@ -343,7 +353,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             }
             else
             {
-                return new FabricPackingIdCodeDto();
+                var errorResult = new List<ValidationResult>()
+                    {
+                        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+                    };
+                var validationContext = new ValidationContext(form, _serviceProvider, null);
+                throw new ServiceValidationException(validationContext, errorResult);
             }
         }
 
