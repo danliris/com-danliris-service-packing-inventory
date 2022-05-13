@@ -383,20 +383,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
             Assert.NotNull(result);
         }
 
-        //[Fact]
-        //public void AutoCreatePacking_Return_Fail()
-        //{
-        //    //Setup
-        //    PackingInventoryDbContext dbContext = GetDbContext(Entity);
+        [Fact]
+        public void AutoCreatePacking_Return_Fail()
+        {
+            //Setup
+            PackingInventoryDbContext dbContext = GetDbContext(Entity);
 
 
-        //    //act
-        //    var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
-        //    var form = new FabricPackingAutoCreateFormDto();
-        //    FabricPackingIdCodeDto result = service.AutoCreatePacking(form);
-        //    //assert
-        //    Assert.ThrowsAny<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.AutoCreatePacking(form));
-        //}
+            //act
+            var service = GetService(GetServiceProvider(dbContext).Object, dbContext);
+            var form = new FabricPackingAutoCreateFormDto();
+            //FabricPackingIdCodeDto result = service.AutoCreatePacking(form);
+            //assert
+            Assert.ThrowsAny<Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities.ServiceValidationException>(() => service.AutoCreatePacking(form));
+        }
 
 
         [Fact]
