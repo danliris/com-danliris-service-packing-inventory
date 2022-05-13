@@ -339,15 +339,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                 _dbContext.SaveChanges();
 
-                if (packingCodes.Count < 1 )
-                {
-                    var errorResult = new List<ValidationResult>()
-                    {
-                        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
-                    };
-                    var validationContext = new ValidationContext(packingModel, _serviceProvider, null);
-                    throw new ServiceValidationException(validationContext, errorResult);
-                }
+                //if (packingCodes.Count < 1 )
+                //{
+                //    var errorResult = new List<ValidationResult>()
+                //    {
+                //        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+                //    };
+                //    var validationContext = new ValidationContext(packingModel, _serviceProvider, null);
+                //    throw new ServiceValidationException(validationContext, errorResult);
+                //}
 
                 return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
             }
