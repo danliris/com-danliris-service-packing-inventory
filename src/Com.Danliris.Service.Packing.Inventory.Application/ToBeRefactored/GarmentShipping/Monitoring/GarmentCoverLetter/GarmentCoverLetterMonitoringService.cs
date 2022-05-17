@@ -126,9 +126,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     index++;
 
-                    string CLDate = d.CLDate == new DateTime(1970, 1, 1) ? "-" : d.CLDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                    string EstDate = d.ExportDate == new DateTime(1970, 1, 1) ? "-" : d.ExportDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                    string BookDate = d.BookingDate == new DateTime(1970, 1, 1) ? "-" : d.BookingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    string CLDate = d.CLDate == new DateTime(1970, 1, 1) ? "-" : d.CLDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string EstDate = d.ExportDate == new DateTime(1970, 1, 1) ? "-" : d.ExportDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                    string BookDate = d.BookingDate == new DateTime(1970, 1, 1) ? "-" : d.BookingDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
                     string Agent = d.BuyerAgentCode + " -" + d.BuyerAgentName;
 
