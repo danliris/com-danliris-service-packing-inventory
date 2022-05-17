@@ -2254,7 +2254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<OutputPackagingProductionOrderGroupedViewModel> ReadSPPInPackingGroupBySPPGrade(int page, int size, string filter, string order, string keyword)
         {
-            var query = _inputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.Balance > 0);
+            var query = _inputProductionOrderRepository.ReadAll().Where(s => s.Area == DyeingPrintingArea.PACKING && s.Balance > 0 && s.IsAfterStockOpname);
 
 
             List<string> SearchAttributes = new List<string>()

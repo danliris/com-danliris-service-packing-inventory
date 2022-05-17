@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
@@ -472,6 +473,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new ListResult<GarmentPackingListViewModel>(data, page, size, query.Count());
         }
 
+        public ReadResponse<dynamic> ReadSampleDelivered(int page, int size, string filter, string order, string keyword, string Select = "{}")
+        {
+            var query = _packingListRepository.ReadAll().Where(s => s.IsSampleDelivered == true && s.Items.Any(i => i.RoType == "RO SAMPLE"));
+            List<string> SearchAttributes = new List<string>()
+                {
+                    "InvoiceNo"
+                };
+            query = QueryHelper<GarmentPackingListModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentPackingListModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentPackingListModel>.Order(query, OrderDictionary);
+
+            Dictionary<string, string> SelectDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(Select);
+            IQueryable  SelectedQuery = QueryHelper<GarmentPackingListModel>.ConfigureSelect(query, SelectDictionary);
+
+            var Data = SelectedQuery
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToDynamicList();
+
+            return new ReadResponse<dynamic>(Data, SelectedQuery.Count(), page, size );
+        }
+
         public ListResult<GarmentPackingListViewModel> ReadNotUsedCostStructure(int page, int size, string filter, string order, string keyword)
         {
             var query = _packingListRepository.ReadAll();
@@ -604,6 +631,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
         }
 
+        public virtual async Task<MemoryStreamResult> ReadWHSectionDPdfById(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListWithHeadeSectionDPdfTemplate(_identityProvider);
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob, cPrice);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+        }
+
         public virtual async Task<MemoryStreamResult> ReadPdfFilterCarton(int id)
         {
             var data = await _packingListRepository.ReadByIdAsync(id);
@@ -643,6 +688,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = await _packingListRepository.ReadByIdAsync(id);
 
             var PdfTemplate = new GarmentPackingListWithHeaderPdfByOrderNoTemplate(_identityProvider);
+            var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
+            var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
+
+            var viewModel = MapToViewModel(data);
+            viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel, fob, cPrice);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.InvoiceNo + ".pdf");
+        }
+
+        public virtual async Task<MemoryStreamResult> ReadWHSectionDPdfByOrderNo(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentPackingListWithHeaderPdfByOrderNoSectionDTemplate(_identityProvider);
+
             var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
             var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
 

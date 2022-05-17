@@ -203,8 +203,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         index++;
 
-                        string PayDate = item.PaymentDate == new DateTime(1970, 1, 1) ? "-" : item.PaymentDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string PlcDate = item.PolicyDate == new DateTime(1970, 1, 1) ? "-" : item.PolicyDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string PayDate = item.PaymentDate == new DateTime(1970, 1, 1) ? "-" : item.PaymentDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string PlcDate = item.PolicyDate == new DateTime(1970, 1, 1) ? "-" : item.PolicyDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
                         string AmtTotal = string.Format("{0:N2}", item.Amount);
                         string AmtPremi = string.Format("{0:N2}", item.PremiAmount);

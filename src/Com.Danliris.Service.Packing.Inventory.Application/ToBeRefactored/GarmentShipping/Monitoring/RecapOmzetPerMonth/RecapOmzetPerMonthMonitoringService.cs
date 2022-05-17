@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -148,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 foreach (var d in data)
                 {
-                    dt.Rows.Add(d.invoiceNo, DateTimeToString(d.truckingDate), d.buyerAgentName, d.buyerAgentCode, d.comodity, d.invoiceNo, DateTimeToString(d.invoiceDate), d.pebNo, DateTimeToString(d.pebDate), d.quantity + " " + d.uom, d.currency + " " + d.amount, d.rate, d.idrAmount);
+                    dt.Rows.Add(d.invoiceNo, d.truckingDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), d.buyerAgentName, d.buyerAgentCode, d.comodity, d.invoiceNo, d.invoiceDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), d.pebNo, d.pebDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), d.quantity + " " + d.uom, d.currency + " " + d.amount, d.rate, d.idrAmount);
                 }
             }
 
