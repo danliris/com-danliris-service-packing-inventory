@@ -25,6 +25,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                         Id = 0,
                         Code = null
                     },
+
+                    ShippingStaff = new ShippingStaff
+                    {
+                        id = 0,
+                        name = null
+                    },
                     Date = null,
                     LCNo = null,
                     IssuedBy = null,
