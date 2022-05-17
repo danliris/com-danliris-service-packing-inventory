@@ -195,7 +195,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         index++;
 
-                        string LSDate = item.LSDate == new DateTime(1970, 1, 1) ? "-" : item.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string LSDate = item.LSDate == new DateTime(1970, 1, 1) ? "-" : item.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
                         string QtyOrder = string.Format("{0:N2}", item.Quantity);
                         string DPP = string.Format("{0:N2}", item.DPP);
                         string PPN = string.Format("{0:N2}", item.PPN);

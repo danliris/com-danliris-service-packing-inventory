@@ -188,8 +188,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         index++;
 
-                        string RcpDate = item.RecapDate == new DateTime(1970, 1, 1) ? "-" : item.RecapDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
-                        string InvDate = item.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : item.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                        string RcpDate = item.RecapDate == new DateTime(1970, 1, 1) ? "-" : item.RecapDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string InvDate = item.InvoiceDate == new DateTime(1970, 1, 1) ? "-" : item.InvoiceDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
                         string BillAmt = string.Format("{0:N2}", item.BillValue);
                         string FeeAmt = string.Format("{0:N2}", item.ServiceValue);

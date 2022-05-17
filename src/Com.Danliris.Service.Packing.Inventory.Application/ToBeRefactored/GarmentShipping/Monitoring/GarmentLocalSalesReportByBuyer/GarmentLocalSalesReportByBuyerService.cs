@@ -158,7 +158,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         foreach (var detail in lsnumber.Details)
                         {
                             index++;
-                            result.Rows.Add(index, d.BuyerName, lsnumber.NoteNo, detail.LSDate.ToString("dd MMMM yyyy", new CultureInfo("id-ID")), detail.LSType, detail.DispoNo, detail.Remark, detail.Tempo, detail.UseVat, detail.ProductCode, detail.ProductName, detail.Quantity, detail.UOMUnit, detail.Price, detail.Amount);
+                            result.Rows.Add(index, d.BuyerName, lsnumber.NoteNo, detail.LSDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), detail.LSType, detail.DispoNo, detail.Remark, detail.Tempo, detail.UseVat, detail.ProductCode, detail.ProductName, detail.Quantity, detail.UOMUnit, detail.Price, detail.Amount);
 
                             buyerLastMergedRowPosition = rowPosition++;
 

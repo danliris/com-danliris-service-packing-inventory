@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.PackingList
@@ -97,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 foreach (var d in data)
                 {
-                    dt.Rows.Add(d.invoiceNo, DateTimeToString(d.date), $"{d.buyerAgentCode} - {d.buyerAgentName}", d.sectionCode, DateTimeToString(d.truckingDate), DateTimeToString(d.exportEstimationDate), d.destination, d.lcNo, d.issuedBy, d.grossWeight, d.nettWeight, d.totalCarton);
+                    dt.Rows.Add(d.invoiceNo, d.date.ToString("MM/dd/yyyy", new CultureInfo("us-US")), $"{d.buyerAgentCode} - {d.buyerAgentName}", d.sectionCode, d.truckingDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), d.exportEstimationDate.ToString("MM/dd/yyyy", new CultureInfo("us-US")), d.destination, d.lcNo, d.issuedBy, d.grossWeight, d.nettWeight, d.totalCarton);
                 }
             }
 
