@@ -231,10 +231,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
@@ -289,10 +289,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfFilterCarton_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { 
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
@@ -354,10 +354,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfFilterCartoMD_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
@@ -419,10 +419,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfFilterCarton_Success_NoImage()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { 
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
                 };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> { 
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), 
@@ -481,10 +481,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfFilterCartonMD_Success_NoImage()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
                 };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
@@ -543,10 +543,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_NoImage()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
@@ -601,11 +601,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadPdfById_Big_Sizes_Success()
         {
-            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
+            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1, 1) };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { };
             for (int i = 2; i < 22; i++)
             {
-                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", i * 100));
+                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", 2, i * 100));
             }
 
             var details = new HashSet<GarmentPackingListDetailModel> {
@@ -668,11 +668,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadPdfFilterCarton_Big_Sizes_Success()
         {
-            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
+            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1, 1) };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { };
             for (int i = 2; i < 22; i++)
             {
-                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", i * 100));
+                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", 2, i * 100));
             }
 
             var details = new HashSet<GarmentPackingListDetailModel> {
@@ -734,11 +734,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadPdfFilterCartonMD_Big_Sizes_Success()
         {
-            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1) };
+            var sizesA = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "A", 1, 1) };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> { };
             for (int i = 2; i < 22; i++)
             {
-                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", i * 100));
+                sizesB.Add(new GarmentPackingListDetailSizeModel(i, "B", 2, i * 100));
             }
 
             var details = new HashSet<GarmentPackingListDetailModel> {
@@ -801,10 +801,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadXlsById_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
@@ -860,10 +860,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadXlsById_Success_NoImage()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
@@ -919,10 +919,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadXlsByIdByCarton_Success()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
@@ -984,10 +984,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadXlsByIdByCarton_Success_NoImage()
         {
             var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
                 };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1),
+                new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1),
@@ -1046,10 +1046,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 		public async Task ReadWHPdfByOrderNo_Success()
 		{
 			 var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-				new GarmentPackingListDetailSizeModel(1, "A", 1)
+				new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
 			};
 			var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-				new GarmentPackingListDetailSizeModel(1, "A", 1),
+				new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
 			};
 			var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
 			var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
@@ -1107,10 +1107,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 		public async Task ReadWHPdfById_Success()
 		{
 			var sizesA = new HashSet<GarmentPackingListDetailSizeModel> {
-				new GarmentPackingListDetailSizeModel(1, "A", 1)
+				new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
 			};
 			var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-				new GarmentPackingListDetailSizeModel(1, "A", 1),
+				new GarmentPackingListDetailSizeModel(1, "A", 1, 1),
 			};
 			var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
 			var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };
