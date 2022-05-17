@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     foreach (var size in detail.Sizes)
                     {
-                        sizesMax[size.Size.Id] = size.Size.Size;
+                        sizesMax[size.Size.SizeIdx] = size.Size.Size;
                     }
                 }
                 if (sizesMax.Count > 11)
@@ -272,7 +272,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     foreach (var size in detail.Sizes)
                     {
-                        sizes[size.Size.Id] = size.Size.Size;
+                        sizes[size.Size.SizeIdx] = size.Size.Size;
                     }
                 }
 
@@ -320,7 +320,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
-                    var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
+                    var size = sizes.OrderBy(a => a.Key).ElementAtOrDefault(i);
                     cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk(size.Key == 0 ? "" : size.Value, normal_font, 0.5f));
                     cellBorderBottomRight.Rowspan = 1;
                     tableDetail.AddCell(cellBorderBottomRight);
@@ -355,11 +355,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     tableDetail.AddCell(cellBorderBottomRight);
                     for (int i = 0; i < SIZES_COUNT; i++)
                     {
-                        var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
+                        var size = sizes.OrderBy(a => a.Key).ElementAtOrDefault(i);
                         double quantity = 0;
                         if (size.Key != 0)
                         {
-                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity);
+                            quantity = detail.Sizes.Where(w => w.Size.SizeIdx == size.Key).Sum(s => s.Quantity);
                         }
 
                         if (sizeSumQty.ContainsKey(size.Key))
@@ -412,7 +412,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableDetail.AddCell(cellBorderBottomRight);
                 for (int i = 0; i < SIZES_COUNT; i++)
                 {
-                    var size = sizes.OrderBy(a => a.Value).ElementAtOrDefault(i);
+                    var size = sizes.OrderBy(a => a.Key).ElementAtOrDefault(i);
                     double quantity = 0;
                     if (size.Key != 0)
                     {

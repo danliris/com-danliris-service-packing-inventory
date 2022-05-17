@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1) };
+            var sizes = new HashSet<GarmentPackingListDetailSizeModel> { new GarmentPackingListDetailSizeModel(1, "", 1, 1) };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes,1) };
             var items = new HashSet<GarmentPackingListItemModel> { 
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", details) 
@@ -164,8 +164,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task Update_Success()
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 1 },
-                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
+                new GarmentPackingListDetailSizeModel(1, "", 1, 1){ Id = 1 },
+                new GarmentPackingListDetailSizeModel(1, "", 1, 1){ Id = 2 },
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 10, 20, 30, 1, 1, 1, sizes, 1){ Id = 1 },
@@ -239,8 +239,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task Update_ZeroNetNetWeight_Success()
         {
             var sizes = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 1 },
-                new GarmentPackingListDetailSizeModel(1, "", 1){ Id = 2 },
+                new GarmentPackingListDetailSizeModel(1, "", 1, 1){ Id = 1 },
+                new GarmentPackingListDetailSizeModel(1, "", 1, 1){ Id = 2 },
             };
             var details = new HashSet<GarmentPackingListDetailModel> {
                 new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 3, 0, sizes, 1){Id = 0},

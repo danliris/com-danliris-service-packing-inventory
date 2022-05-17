@@ -210,7 +210,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Size = new SizeViewModel
                             {
                                 Id = s.SizeId,
-                                Size = s.Size
+                                Size = s.Size,
+                                SizeIdx = s.SizeIdx,
                             },
                             Quantity = s.Quantity
                         }).ToList()
@@ -357,6 +358,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                 {
                                     sizeToUpdate.SetSizeId(size.SizeId, _identityProvider.Username, UserAgent);
                                     sizeToUpdate.SetSize(size.Size, _identityProvider.Username, UserAgent);
+                                    sizeToUpdate.SetSizeIdx(size.SizeIdx, _identityProvider.Username, UserAgent);
                                     sizeToUpdate.SetQuantity(size.Quantity, _identityProvider.Username, UserAgent);
                                 }
                                 else

@@ -98,7 +98,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                             Size = new SizeViewModel
                                             {
                                                 Id = 0,
-                                                Size = null
+                                                Size = null,
+                                                SizeIdx = 0
                                             },
                                             Quantity = 0
                                         }

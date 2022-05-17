@@ -32,16 +32,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var items = new HashSet<GarmentPackingListItemModel> {
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
-                        new GarmentPackingListDetailSizeModel(1, "", 1),
-                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                        new GarmentPackingListDetailSizeModel(1, "", 1, 1),
+                        new GarmentPackingListDetailSizeModel(1, "", 1, 1)
                     },1),
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
-                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                        new GarmentPackingListDetailSizeModel(1, "", 1, 1)
                     },1)
                 }),
                 new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
-                        new GarmentPackingListDetailSizeModel(1, "", 1)
+                        new GarmentPackingListDetailSizeModel(1, "", 1, 1)
                     },1)
                 })
             };
@@ -114,6 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     {
                         size.SetSizeId(1 + size.SizeId, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetSize(1 + size.Size, size.LastModifiedBy, size.LastModifiedAgent);
+                        size.SetSizeIdx(1 + size.SizeIdx, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetQuantity(1 + size.Quantity, size.LastModifiedBy, size.LastModifiedAgent);
 
                         if (item.Id == 2 || detail.Id == 2 || size.Id == 2)
