@@ -16,6 +16,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<OutputInspectionMaterialViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         MemoryStream GenerateExcel(OutputInspectionMaterialViewModel viewModel);
+        
+        
+        
+        
+        
         MemoryStream GenerateExcel(OutputInspectionMaterialViewModel viewModel,int timeZoneOffset);
         List<InputInspectionMaterialProductionOrderViewModel> GetInputInspectionMaterialProductionOrders(long productionOrderId);
         ListResult<InputInspectionMaterialProductionOrderViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
