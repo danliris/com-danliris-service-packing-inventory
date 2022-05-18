@@ -13,6 +13,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Delete(int id);
         Task<int> Update(int id, OutputInspectionMaterialViewModel viewModel);
         Task<int> Create(OutputInspectionMaterialViewModel viewModel);
+        
+        
+        
+        
+        
         Task<OutputInspectionMaterialViewModel> ReadById(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         MemoryStream GenerateExcel(OutputInspectionMaterialViewModel viewModel);
