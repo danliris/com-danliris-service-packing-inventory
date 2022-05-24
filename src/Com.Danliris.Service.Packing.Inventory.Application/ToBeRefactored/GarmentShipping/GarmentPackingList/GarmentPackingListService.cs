@@ -197,7 +197,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Size = new SizeViewModel
                             {
                                 Id = s.SizeId,
-                                Size = s.Size
+                                Size = s.Size,
+                                SizeIdx = s.SizeIdx,
                             },
                             Quantity = s.Quantity
                         }).ToList()
@@ -270,7 +271,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     var sizes = (d.Sizes ?? new List<GarmentPackingListDetailSizeViewModel>()).Select(s =>
                     {
                         s.Size = s.Size ?? new SizeViewModel();
-                        return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Quantity) { Id = s.Id };
+                        return new GarmentPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Size.SizeIdx, s.Quantity) { Id = s.Id };
                     }).ToList();
 
                     return new GarmentPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes, d.Index) { Id = d.Id };
