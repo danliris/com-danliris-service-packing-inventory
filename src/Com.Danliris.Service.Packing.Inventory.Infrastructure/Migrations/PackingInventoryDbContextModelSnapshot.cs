@@ -2353,8 +2353,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<int>("SizeId");
 
-                    b.Property<int>("SizeIdx");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PackingListDetailId");
