@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public Task<int> InsertAsync(GarmentShippingCreditAdviceModel model)
         {
             var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
-            invoice.SetAmountCA(invoice.AmountCA + (decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
+            invoice.SetAmountCA(invoice.AmountCA+(decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
 
             model.FlagForCreate(_identityProvider.Username, UserAgent);
             _dbSet.Add(model);
