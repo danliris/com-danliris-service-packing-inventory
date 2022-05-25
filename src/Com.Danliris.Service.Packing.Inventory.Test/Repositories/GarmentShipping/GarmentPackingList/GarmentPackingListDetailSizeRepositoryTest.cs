@@ -34,6 +34,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var data = await repo.ReadByIdAsync(model.Id);
 
             data.SetQuantity(data.Quantity + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetSizeIdx(data.SizeIdx + 1, data.LastModifiedBy, data.LastModifiedAgent);
 
 
             var result = await repo.UpdateAsync(data.Id, data);

@@ -62,6 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetQuantity(model.Quantity, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetSizeIdx(model.SizeIdx, _identityProvider.Username, USER_AGENT);
 
             return _dbContext.SaveChangesAsync();
         }
