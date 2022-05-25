@@ -239,7 +239,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.ReadSalesNoteForFinance("now", model.Date.Month,model.Date.Year,model.BuyerCode);
+            var result = service.ReadSalesNoteForFinance("now", model.Date.Month, model.Date.Year, model.BuyerCode);
 
             Assert.NotEmpty(result.ToList());
 
@@ -248,10 +248,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             if (model.Date.Month == 12)
             {
                 month = 1;
-                year = model.Date.Year+1;
+                year = model.Date.Year + 1;
             }
-            else {
-                month = model.Date.Month+1;
+            else
+            {
+                month = model.Date.Month + 1;
                 year = model.Date.Year;
             }
 
@@ -260,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotEmpty(result2.ToList());
         }
-        
+
         [Fact]
         public async Task ApproveShipping_Success()
         {
