@@ -865,7 +865,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
             };
             var sizesB = new HashSet<GarmentPackingListDetailSizeModel> {
-                new GarmentPackingListDetailSizeModel(1, "A", 1, 1)
+                new GarmentPackingListDetailSizeModel(1, "A", 2, 1)
             };
             var details = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1), new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1), new GarmentPackingListDetailModel(2, 5, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesB, 1) };
             var details1 = new HashSet<GarmentPackingListDetailModel> { new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizesA, 1) };

@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                                             {
                                                 Id = 0,
                                                 Size = null,
-                                                SizeIdx = 0
+                                                SizeIdx = 0,
                                             },
                                             Quantity = 0
                                         }
