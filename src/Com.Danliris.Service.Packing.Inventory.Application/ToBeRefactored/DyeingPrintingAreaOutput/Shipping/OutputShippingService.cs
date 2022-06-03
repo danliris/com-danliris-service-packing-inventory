@@ -1015,7 +1015,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                             No = d.DeliveryOrderSalesNo,
                                             Name = d.DestinationBuyerName
                                         },
-                                        Qty = d.Balance,
+                                        Qty = Math.Round(d.Balance,2),
                                         PackingInstruction = d.PackingInstruction,
                                         PackingLength = d.PackagingLength,
                                         ProductSKUId = d.ProductSKUId,
@@ -2122,7 +2122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = d.DeliveryOrderSalesId,
                     No = d.DeliveryOrderSalesNo
                 },
-                Qty = d.Balance,
+                Qty = Math.Round(d.Balance, 2),
                 PackingInstruction = d.PackingInstruction,
                 PackingLength = d.PackagingLength,
                 ProductSKUId = d.ProductSKUId,

@@ -156,6 +156,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                     Count++;
                                     DetailErrors += "PackagingQty: 'Qty Packing Terima Harus Lebih dari 0!',";
                                 }
+                                if (detail1.PackagingQty > 30)
+                                {
+                                    Count++;
+                                    yield return new ValidationResult("Jumlah Barcode Tidak Boleh Lebih dari 30!", new List<string> { "WarehousesProductionOrder" });
+                                    //DetailErrors += "PackagingQty: 'Jumlah Barcode Tidak Boleh Lebih dari 30!',";
+                                }
                                 else
                                 {
                                     //if (detail1.PackagingQty > detail.PreviousQtyPacking)
