@@ -58,18 +58,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentShippingInsuranceDispositionModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet.AsNoTracking().Where(x => x.IsDeleted == false);
         }
 
         public IQueryable<GarmentShippingInsuranceDispositionItemModel> ReadItemAll()
         {
-            return _dbSetItem.AsNoTracking();
+            return _dbSetItem.AsNoTracking().Where(x => x.IsDeleted == false);
         }
 
         public Task<GarmentShippingInsuranceDispositionModel> ReadByIdAsync(int id)
         {
-            return _dbSet
-                .Include(i => i.Items)
+            return _dbSet.Where(x => x.IsDeleted == false)
+                .Include(i => i.Items).Where(x => x.IsDeleted == false)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
