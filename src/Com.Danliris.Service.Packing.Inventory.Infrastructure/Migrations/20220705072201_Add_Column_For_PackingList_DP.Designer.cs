@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220705072201_Add_Column_For_PackingList_DP")]
+    partial class Add_Column_For_PackingList_DP
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,8 +345,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("DeliveryOrderSalesNo")
                         .HasMaxLength(128);
-
-                    b.Property<string>("DeliveryOrderSalesType");
 
                     b.Property<string>("DestinationBuyerName");
 
@@ -763,8 +763,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("DeliveryOrderSalesNo")
                         .HasMaxLength(128);
-
-                    b.Property<string>("DeliveryOrderSalesType");
 
                     b.Property<string>("Description")
                         .HasMaxLength(4096);
