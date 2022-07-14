@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentDetailOmzetByUnitReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetAnnualByUnitReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
@@ -19,7 +19,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.Monitoring
 {
-    public class GarmentDetailOmzetByUnitReportServiceTest
+    public class GarmentOmzetByUnitAnnualReportServiceTest
     {
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository, IGarmentPackingListRepository plrepository, IGarmentShippingInvoiceItemRepository repositoryItem)
         {
@@ -39,9 +39,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             return spMock;
         }
 
-        protected GarmentDetailOmzetByUnitReportService GetService(IServiceProvider serviceProvider)
+        protected GarmentOmzetAnnualByUnitReportService GetService(IServiceProvider serviceProvider)
         {
-            return new GarmentDetailOmzetByUnitReportService(serviceProvider);
+            return new GarmentOmzetAnnualByUnitReportService(serviceProvider);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
-
+ 
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
@@ -93,13 +93,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
                 });
 
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() { 
+               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+               {
+                   Content = new StringContent(JsonConvert.SerializeObject(new
+                   {
+                       data = new List<GarmentExpenditureGood> {
+                       new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
                         Buyer = new Buyer2
@@ -121,8 +124,102 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",
                         TotalQuantity = 1250,
-                     } } }))
-                });
+                       },
+                        new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1B",
+                            Name = "CENTRAL 1B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2A",
+                            Name = "CENTRAL 2A"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2B",
+                            Name = "CENTRAL 2B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                          new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2C",
+                            Name = "CENTRAL 2C"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       }
+                       }
+                   }))
+               });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
       
@@ -131,7 +228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(spMock.Object);
 
-            var result = service.GetReportData(null, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GetReportData(DateTimeOffset.Now.Date.Year, 0);
 
             Assert.NotEmpty(result.Data);
         }
@@ -165,6 +262,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
@@ -182,7 +280,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
                 });
 
            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
@@ -190,7 +288,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                {
                    Content = new StringContent(JsonConvert.SerializeObject(new
                    {
-                       data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() {
+                       data = new List<GarmentExpenditureGood> { 
+                       new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
                         Buyer = new Buyer2
@@ -212,7 +311,100 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",
                         TotalQuantity = 1250,
-                     } }
+                       },
+                        new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1B",
+                            Name = "CENTRAL 1B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2A",
+                            Name = "CENTRAL 2A"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2B",
+                            Name = "CENTRAL 2B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                          new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2C",
+                            Name = "CENTRAL 2C"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       }
+                       }
                    }))
                });
 
@@ -221,7 +413,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(httpMock.Object);
             var service = GetService(spMock.Object);
 
-            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GenerateExcel(DateTimeOffset.Now.Date.Year, 0);
 
             Assert.NotNull(result);
         }
@@ -332,7 +524,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(httpMock.Object);
             var service = GetService(spMock.Object);
 
-            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GenerateExcel(DateTime.MaxValue.Year, 0);
 
             Assert.NotNull(result);
         }
