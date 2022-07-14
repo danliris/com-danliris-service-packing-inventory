@@ -58,6 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public long DeliveryOrderReturId { get; set; }
 
         public string DeliveryOrderReturNo { get; set; }
+        public string DeliveryOrderSalesType { get; private set; }
 
         public string PackagingUnit { get; set; }
         public string PackagingType { get; set; }
@@ -456,13 +457,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="yarnMaterialName"></param>
         /// <param name="inventoryType"></param>
         /// <param name="materialOrigin"></param>
+        /// <param name="deliveryOrderSalesType"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, string packingInstruction, string cartNo, string buyer, string construction,
             string unit, string color, string motif, string uomUnit, double balance, bool hasOutputDocument, string packagingUnit, string packagingType, decimal packagingQty, string grade,
             double productionOrderOrderQuantity, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, string remark, double balanceRemains,
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
-            bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty, string finishWidth, DateTimeOffset dataIn, string inventoryType, string materialOrigin, string productPackingCodeRemains) : this()
+            bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty, string finishWidth, DateTimeOffset dataIn, string inventoryType, string materialOrigin, string productPackingCodeToCreate)
 
         {
             ProductionOrderId = productionOrderId;
@@ -510,7 +512,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             ProductPackingId = productPackingId;
             FabricPackingId = fabricPackingId;
-            ProductPackingCode = productPackingCode;
+            //ProductPackingCode = productPackingCode;
             HasPrintingProductPacking = hasPrintingProductPacking;
 
             PackagingLength = packingLength;
@@ -520,9 +522,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DateIn = dataIn;
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
-            ProductPackingCodeRemains = productPackingCodeRemains;
-
-            IsAfterStockOpname = true;
+            ProductPackingCode = productPackingCodeToCreate;
         }
 
         /// <summary>
@@ -969,12 +969,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="destinationBuyerName"></param>
         /// <param name="inventoryType"></param>
         /// <param name="materialOrigin"></param>
+        /// <param name="deliveryOrderSalesType"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long deliveryOrderSalesId, string deliveryOrderSalesNo, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string buyer, string construction,
             string packingType, string color, string motif, string grade, decimal qtyPacking, string packingUnit, double qty, string uomUnit, bool hasOutputDocument, double balanceRemains,
             string unit, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth,
             string cartNo, string remark, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode,
             bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty,
-            long deliveryOrderReturId, string deliveryOrderReturNo, string finishWidth, DateTimeOffset dateIn, string destinationBuyerName, string inventoryType, string materialOrigin) : this()
+            long deliveryOrderReturId, string deliveryOrderReturNo, string finishWidth, DateTimeOffset dateIn, string destinationBuyerName, string inventoryType, string materialOrigin, string deliveryOrderSalesType) : this()
 
         {
             ProductionOrderId = productionOrderId;
@@ -1039,6 +1040,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationBuyerName = destinationBuyerName;
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
         }
 
         /// <summary>
