@@ -278,6 +278,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
+        public void SetPackingListRemark(string newPackingListRemark, string user, string agent)
+        {
+            if (newPackingListRemark != PackingListRemark)
+            {
+                PackingListRemark = newPackingListRemark;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetType(string newType, string user, string agent)
         {
             if (newType != Type)
