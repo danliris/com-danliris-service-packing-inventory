@@ -97,9 +97,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 });
 
             httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() { 
+               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+               {
+                   Content = new StringContent(JsonConvert.SerializeObject(new
+                   {
+                       data = new List<GarmentExpenditureGood> {
+                       new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
                         Buyer = new Buyer2
@@ -121,8 +124,102 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",
                         TotalQuantity = 1250,
-                     } } }))
-                });
+                       },
+                        new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1B",
+                            Name = "CENTRAL 1B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2A",
+                            Name = "CENTRAL 2A"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2B",
+                            Name = "CENTRAL 2B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                          new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2C",
+                            Name = "CENTRAL 2C"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       }
+                       }
+                   }))
+               });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
       
@@ -191,7 +288,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                {
                    Content = new StringContent(JsonConvert.SerializeObject(new
                    {
-                       data = new List<GarmentExpenditureGood> { new GarmentExpenditureGood() {
+                       data = new List<GarmentExpenditureGood> { 
+                       new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
                         Buyer = new Buyer2
@@ -213,7 +311,100 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                         ExpenditureGoodNo = "EGEC10210001",
                         Article = "ART 125214",
                         TotalQuantity = 1250,
-                     } }
+                       },
+                        new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C1B",
+                            Name = "CENTRAL 1B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2A",
+                            Name = "CENTRAL 2A"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                       new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2B",
+                            Name = "CENTRAL 2B"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       },
+                          new GarmentExpenditureGood() {
+                        Id = "111",
+                        RONo = "2120001",
+                        Buyer = new Buyer2
+                        {
+                            Code = "Buyer1",
+                            Name = "Buyer Coba 1"
+                        },
+                        Comodity = new GarmentComodity
+                        {
+                            Code = "MS",
+                            Name = "MEN SHIRT"
+                        },
+                        Unit = new UnitDepartment
+                        {
+                            Code = "C2C",
+                            Name = "CENTRAL 2C"
+                        },
+                        Invoice = "DL/210001",
+                        ExpenditureGoodNo = "EGEC10210001",
+                        Article = "ART 125214",
+                        TotalQuantity = 1250,
+                       }
+                       }
                    }))
                });
 

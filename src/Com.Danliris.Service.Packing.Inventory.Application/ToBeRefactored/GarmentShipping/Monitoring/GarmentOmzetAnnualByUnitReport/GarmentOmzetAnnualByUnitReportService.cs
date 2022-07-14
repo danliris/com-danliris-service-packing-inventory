@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                      TruckingDate = c.TruckingDate,
                                      RONumber = b.RONo,
                                      Amount = b.Amount,
-
+                                     Rate = 0,
                                  }).Distinct().ToList();
             //                 
             var Query1 = (from a in expendGood
@@ -90,6 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                               UnitName = a.Unit.Name.TrimEnd(),
                               CurrencyCode = "USD",
                               Amount = bb == null ? 0 : bb.Amount,
+                              Rate = 0,
                           }).Distinct().ToList();
             //
             var Query = (from a in Query1
@@ -107,6 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              RONumber = a.RONumber,
                              CurrencyCode = "USD",
                              Amount = a.Amount,
+                             Rate = 0,
                          }).Distinct().ToList();
             //
             var currencyFilters = Query
