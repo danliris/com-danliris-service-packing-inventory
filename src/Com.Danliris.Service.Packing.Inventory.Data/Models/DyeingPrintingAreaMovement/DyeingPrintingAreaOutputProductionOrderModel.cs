@@ -1274,6 +1274,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
+        public void SetPackingListBaleNo(string newPackingListBaleNo, string user, string agent)
+        {
+            if (newPackingListBaleNo != PackingListBaleNo)
+            {
+                PackingListBaleNo = newPackingListBaleNo;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingListGross(decimal newPackingListGross, string user, string agent)
+        {
+            if (newPackingListGross != PackingListGross)
+            {
+                PackingListGross = newPackingListGross;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingListNet(decimal newPackingListNet, string user, string agent)
+        {
+            if (newPackingListNet != PackingListNet)
+            {
+                PackingListNet = newPackingListNet;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         public void SetGrade(string newGrade, string user, string agent)
         {
             if (newGrade != Grade)
