@@ -30,6 +30,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         public string AdjItemCategory { get; private set; }
 
+        public string PackingListNo { get; private set; }
+        public string PackingType { get; private set; }
+        public string PackingListRemark { get; private set; }
+        public string PackingListAuthorized { get; private set; }
+
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
         public DyeingPrintingAreaOutputModel()
@@ -137,8 +142,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         /// <param name="type"></param>
         /// <param name="shippingCode"></param>
+        /// <param name="packingListNo"></param>
+        /// <param name="packingType"></param>
+        /// <param name="packingListRemark"></param>
+        /// <param name="packingListAuthorized"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, string packingListNo, string packingType, string packingListRemark, string packingListAuthorized, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -155,7 +164,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             HasSalesInvoice = hasSalesInvoice;
             ShippingCode = shippingCode;
+            PackingListNo = packingListNo;
+            PackingType = packingType;
+            PackingListRemark = packingListRemark;
+            PackingListAuthorized = packingListAuthorized;
         }
+
+        ///// <summary>
+        ///// Area Shipping To Buyer
+        ///// </summary>
+        ///// <param name="date"></param>
+        ///// <param name="area"></param>
+        ///// <param name="shift"></param>
+        ///// <param name="bonNo"></param>
+        ///// <param name="hasNextAreaDocument"></param>
+        ///// <param name="destinationArea"></param>
+        ///// <param name="group"></param>
+        ///// <param name="deliveryOrderId"></param>
+        ///// <param name="deliveryOrderNo"></param>
+        ///// <param name="hasSalesInvoice"></param>
+        ///// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
+        ///// <param name="type"></param>
+        ///// <param name="shippingCode"></param>
+        ///// <param name="packingListNo"></param>
+        ///// <param name="packingType"></param>
+        ///// <param name="packingListRemark"></param>
+        ///// <param name="packingListAuthorized"></param>
+        //public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
+        //    string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, string packingListNo, string packingType, string packingListRemark, string packingListAuthorized,  ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+        //{
+        //    Date = date;
+        //    Area = area;
+        //    Shift = shift;
+        //    BonNo = bonNo;
+        //    Group = group;
+        //    Type = type;
+        //    HasNextAreaDocument = hasNextAreaDocument;
+        //    DestinationArea = destinationArea;
+        //    DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
+
+        //    DeliveryOrderSalesId = deliveryOrderId;
+        //    DeliveryOrderSalesNo = deliveryOrderNo;
+
+        //    HasSalesInvoice = hasSalesInvoice;
+        //    ShippingCode = shippingCode;
+        //    PackingListNo = packingListNo;
+        //    PackingType = packingType;
+        //    PackingListRemark = packingListRemark;
+        //    PackingListAuthorized = packingListAuthorized;
+        //}
 
 
         public void SetArea(string newArea, string user, string agent)
@@ -217,6 +274,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newGroup != Group)
             {
                 Group = newGroup;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingListRemark(string newPackingListRemark, string user, string agent)
+        {
+            if (newPackingListRemark != PackingListRemark)
+            {
+                PackingListRemark = newPackingListRemark;
                 this.FlagForUpdate(user, agent);
             }
         }

@@ -49,6 +49,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a"),
                 new GarmentPackingListMeasurementModel(1, 1, 1, 1, "a")
             };
+
+
+
+
             var oldModel = new GarmentPackingListModel("", "", "", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", "", "", items, 1, 1, 1, 1, measurements, "", "", "", "", "", "", "", false, false, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "");
 
             await repo.InsertAsync(oldModel);
@@ -63,8 +67,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetRemarkMd("Updated " + data.RemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetPaymentTerm("Updated " + data.PaymentTerm, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetShippingStaff(data.ShippingStaffId + 1, "Updated" + data.ShippingStaffName, data.LastModifiedBy, data.LastModifiedAgent);
-			data.SetSampleRemarkMd("data.SampleRemarkMd", data.LastModifiedBy, data.LastModifiedAgent);
-			data.SetPackingListType(data.PackingListType, data.LastModifiedBy, data.LastModifiedAgent);
+   			    data.SetSampleRemarkMd(data.SampleRemarkMd, data.LastModifiedBy, data.LastModifiedAgent);
+
 			foreach (var item in data.Items)
             {
                 item.SetRONo("Updated " + item.RONo, item.LastModifiedBy, item.LastModifiedAgent);
@@ -110,6 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     {
                         size.SetSizeId(1 + size.SizeId, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetSize(1 + size.Size, size.LastModifiedBy, size.LastModifiedAgent);
+                        size.SetSizeIdx(1 + size.SizeIdx, size.LastModifiedBy, size.LastModifiedAgent);
                         size.SetQuantity(1 + size.Quantity, size.LastModifiedBy, size.LastModifiedAgent);
 
                         if (item.Id == 2 || detail.Id == 2 || size.Id == 2)
