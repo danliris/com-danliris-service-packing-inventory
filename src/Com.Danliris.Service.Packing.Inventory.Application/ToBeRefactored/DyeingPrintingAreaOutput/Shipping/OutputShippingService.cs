@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Shipping;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping
 {
@@ -26,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _productionOrderRepository;
+        protected readonly IIdentityProvider _identityProvider;
 
 
         public OutputShippingService(IServiceProvider serviceProvider)
@@ -35,6 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _summaryRepository = serviceProvider.GetService<IDyeingPrintingAreaSummaryRepository>();
             _inputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _productionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         private async Task<OutputShippingViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -447,6 +450,139 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         }
                     }
                 }
+            }
+            return vm;
+        }
+
+        protected OutputShippingViewModel MapToViewModelPackingList(DyeingPrintingAreaOutputModel model)
+        {
+            var vm = new OutputShippingViewModel();
+            if (model.Type == null || model.Type == DyeingPrintingArea.OUT)
+            {
+                vm = new OutputShippingViewModel()
+                {
+                    ShippingCode = model.ShippingCode,
+                    Active = model.Active,
+                    Id = model.Id,
+                    Area = model.Area,
+                    BonNo = model.BonNo,
+                    CreatedAgent = model.CreatedAgent,
+                    CreatedBy = model.CreatedBy,
+                    CreatedUtc = model.CreatedUtc,
+                    Type = DyeingPrintingArea.OUT,
+                    Date = model.Date,
+                    DeletedAgent = model.DeletedAgent,
+                    DeletedBy = model.DeletedBy,
+                    DeletedUtc = model.DeletedUtc,
+                    IsDeleted = model.IsDeleted,
+                    LastModifiedAgent = model.LastModifiedAgent,
+                    LastModifiedBy = model.LastModifiedBy,
+                    LastModifiedUtc = model.LastModifiedUtc,
+                    Shift = model.Shift,
+                    HasSalesInvoice = model.HasSalesInvoice,
+                    DestinationArea = model.DestinationArea,
+                    HasNextAreaDocument = model.HasNextAreaDocument,
+                    Group = model.Group,
+
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = model.DeliveryOrderSalesId,
+                        No = model.DeliveryOrderSalesNo
+                    },
+                    PackingListNo = model.PackingListNo,
+                    PackingType = model.PackingType,
+                    PackingListRemark = model.PackingListRemark,
+                    PackingListAuthorized = model.PackingListAuthorized,
+                    ShippingProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputShippingProductionOrderViewModel()
+                    {
+                        Active = s.Active,
+                        LastModifiedUtc = s.LastModifiedUtc,
+                        Buyer = s.Buyer,
+                        BuyerId = s.BuyerId,
+                        CartNo = s.CartNo,
+                        Color = s.Color,
+                        Construction = s.Construction,
+                        CreatedAgent = s.CreatedAgent,
+                        CreatedBy = s.CreatedBy,
+                        CreatedUtc = s.CreatedUtc,
+                        DeletedAgent = s.DeletedAgent,
+                        DeletedBy = s.DeletedBy,
+                        DeletedUtc = s.DeletedUtc,
+                        Grade = s.Grade,
+                        Remark = s.Remark,
+                        Id = s.Id,
+                        IsDeleted = s.IsDeleted,
+                        LastModifiedAgent = s.LastModifiedAgent,
+                        LastModifiedBy = s.LastModifiedBy,
+                        Packing = s.PackagingUnit,
+                        QtyPacking = s.PackagingQty,
+                        PackingType = s.PackagingType,
+                        HasNextAreaDocument = s.HasNextAreaDocument,
+                        Motif = s.Motif,
+                        ProductionOrder = new ProductionOrder()
+                        {
+                            Id = s.ProductionOrderId,
+                            No = s.ProductionOrderNo,
+                            Type = s.ProductionOrderType,
+                            OrderQuantity = s.ProductionOrderOrderQuantity
+                        },
+                        DeliveryOrder = new DeliveryOrderSales()
+                        {
+                            Id = s.DeliveryOrderSalesId,
+                            No = s.DeliveryOrderSalesNo,
+                            Name = s.DestinationBuyerName
+                        },
+                        MaterialWidth = s.MaterialWidth,
+                        MaterialOrigin = s.MaterialOrigin,
+                        FinishWidth = s.FinishWidth,
+                        Material = new Material()
+                        {
+                            Id = s.MaterialId,
+                            Name = s.MaterialName
+                        },
+                        MaterialConstruction = new MaterialConstruction()
+                        {
+                            Name = s.MaterialConstructionName,
+                            Id = s.MaterialConstructionId
+                        },
+                        YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                        {
+                            Id = s.YarnMaterialId,
+                            Name = s.YarnMaterialName
+                        },
+                        ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                        {
+                            Id = s.ProcessTypeId,
+                            Name = s.ProcessTypeName
+                        },
+                        Unit = s.Unit,
+                        UomUnit = s.UomUnit,
+                        DeliveryNote = s.DeliveryNote,
+                        Qty = s.Balance,
+                        ShippingGrade = s.ShippingGrade,
+                        ShippingRemark = s.ShippingRemark,
+                        Weight = s.Weight,
+                        DyeingPrintingAreaInputProductionOrderId = s.DyeingPrintingAreaInputProductionOrderId,
+                        HasSalesInvoice = s.HasSalesInvoice,
+                        PackingLength = s.PackagingLength,
+                        ProductSKUId = s.ProductSKUId,
+                        FabricSKUId = s.FabricSKUId,
+                        ProductSKUCode = s.ProductSKUCode,
+                        HasPrintingProductSKU = s.HasPrintingProductSKU,
+                        ProductPackingId = s.ProductPackingId,
+                        FabricPackingId = s.FabricPackingId,
+                        ProductPackingCode = s.ProductPackingCode,
+                        HasPrintingProductPacking = s.HasPrintingProductPacking,
+                        BalanceRemains = s.Balance,
+                        DateIn = s.DateIn,
+                        DateOut = s.DateOut,
+                        PackingListBaleNo = s.PackingListBaleNo,
+                        PackingListGross = s.PackingListGross,
+                        PackingListNet = s.PackingListNet,
+                        DeliveryOrderSalesType = s.DeliveryOrderSalesType
+
+                    }).ToList()
+                };
             }
             return vm;
         }
@@ -2229,7 +2365,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return data.ToList();
         }
+        public virtual async Task<MemoryStreamResult> ReadPdfPackingListById(int id)
+        {
+            var data = await _repository.ReadByIdAsync(id);
 
+            var PdfTemplate = new OutputShippingPackingListPdfTemplate(_identityProvider);
+            //var fob = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice == "FOB" || s.CPrice == "FCA" ? s.From : s.To).FirstOrDefault();
+            //var cPrice = _invoiceRepository.ReadAll().Where(w => w.PackingListId == data.Id).Select(s => s.CPrice).FirstOrDefault();
+
+            var viewModel = MapToViewModelPackingList(data);
+            //viewModel.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.ShippingMarkImagePath);
+            //viewModel.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.SideMarkImagePath);
+            //viewModel.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, viewModel.RemarkImagePath);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Packing List " + data.PackingListNo + ".pdf");
+        }
         public MemoryStream GenerateExcel(OutputShippingViewModel viewModel)
         {
             throw new NotImplementedException();
