@@ -277,6 +277,66 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, Result);
             }
         }
+        [HttpGet("pdf/packinglist/{id}")]
+        public async Task<IActionResult> GetPdfPackingListById([FromRoute] int id)
+        {
+            try
+            {
+                var accept = Request.Headers["Accept"];
+                //if (accept == "application/pdf")
+                //{
+                    VerifyUser();
+                    var result = await _service.ReadPdfPackingListById(id);
+
+                    return File(result.Data.ToArray(), "application/pdf", result.FileName);
+                //}
+                //else if (accept == "application/xls")
+                //{
+                //    VerifyUser();
+                //    var result = await _service.ReadExcelById(id);
+
+                //    return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
+                //}
+
+                //var data = await _service.ReadById(id);
+
+                //return Ok(new
+                //{
+                //    data
+                //});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        //[HttpGet("pdf/packinglist/{id}")]
+        //public async Task<IActionResult> GetPdfPackingListById([FromRoute] int id, [FromHeader(Name = "x-timezone-offset")] string timezone)
+        //{
+        //    try
+        //    {
+        //        var model = new OutputShippingViewModel();
+        //        model = await _service.ReadByIdBon(id);
+        //        int timeoffsset = Convert.ToInt32(timezone);
+        //        //var pdfTemplate = new OutputShippingPackingListPdfTemplate(model, IIdentityProvider);
+        //        //var stream = pdfTemplate.GeneratePdfTemplate();
+        //        return new FileStreamResult(stream, "application/pdf")
+        //        {
+        //            FileDownloadName = string.Format("{0}.pdf", model.PackingListNo)
+        //        };
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        var Result = new
+        //        {
+        //            apiVersion = "1.0.0",
+        //            statusCode = HttpStatusCode.InternalServerError,
+        //            message = e.Message
+        //        };
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, Result);
+        //    }
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
