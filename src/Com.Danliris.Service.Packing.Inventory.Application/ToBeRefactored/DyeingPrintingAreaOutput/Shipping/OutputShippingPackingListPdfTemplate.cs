@@ -399,14 +399,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             PdfPCell cellRemarkLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
 
-            
 
-            cellMeasurement.Phrase = new Phrase("LC NUMBER", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(":", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(" BY T.T", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
+            if (viewModel.ShippingProductionOrders.First().DeliveryOrderSalesType != "Lokal")
+            {
+                cellMeasurement.Phrase = new Phrase("LC NUMBER", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+                cellMeasurement.Phrase = new Phrase(":", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+                cellMeasurement.Phrase = new Phrase(" BY T.T", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+            }
 
             cellMeasurement.Phrase = new Phrase("Issued By", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
