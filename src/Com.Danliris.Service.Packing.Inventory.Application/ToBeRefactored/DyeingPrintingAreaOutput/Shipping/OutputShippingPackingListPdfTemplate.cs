@@ -24,14 +24,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var newItems = viewModel.ShippingProductionOrders.
                 GroupBy(x => new { x.PackingListBaleNo }).
-                Select( x => new { 
+                Select(x => new {
                     PackingListBaleNo = x.Key.PackingListBaleNo,
-                    Balance = x.Sum( s => s.Qty),
-                    PackingQty = x.Sum( s => s.QtyPacking),
-                    PackingListNet = x.Sum(s=> s.PackingListNet),
-                    PackingListGross = x.Sum( s => s.PackingListGross)
-                
-                }) ;
+                    Balance = x.Sum(s => s.Qty),
+                    PackingQty = x.Sum(s => s.QtyPacking),
+                    PackingListNet = x.Sum(s => s.PackingListNet),
+                    PackingListGross = x.Sum(s => s.PackingListGross)
+
+                });
 
             //foreach (var itemA in viewModel.ShippingProductionOrders.GroupBy( x => new { x.PackingListBaleNo })) 
             //{
@@ -44,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
             Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
-            Document document = new Document( PageSize.A4, 20, 20, 170, 60);
+            Document document = new Document(PageSize.A4, 20, 20, 170, 60);
             MemoryStream stream = new MemoryStream();
             PdfWriter writer = PdfWriter.GetInstance(document, stream);
 
@@ -55,159 +55,344 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
 
-
-            foreach (var itemA in newItems) {
-                PdfPTable tableDetail = new PdfPTable(6);
-                var width = new List<float> { 1f, 1f, 1f, 1f};
-                for (int i = 0; i < 2; i++) width.Add(1f);
-               // width.AddRange(new List<float> { 1f});
-
-                PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
-                tableDetail.AddCell(cellDetailLine);
-                tableDetail.AddCell(cellDetailLine);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("CARTON NO.", normal_font, 0.75f));
-                cellBorderBottomRight.Rowspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("COLOUR", normal_font, 0.75f));
-                //cellBorderBottomRight.Rowspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("ROLL", normal_font, 0.75f));
-                //cellBorderBottomRight.Rowspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("Quantity In Meters", normal_font, 0.75f));
-                //cellBorderBottomRight.Rowspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("WEIGHT IN KGS", normal_font, 0.75f));
-                cellBorderBottomRight.Colspan = 2;
-                cellBorderBottomRight.Rowspan = 1;
-                tableDetail.AddCell(cellBorderBottomRight);
-               
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NET", normal_font, 0.75f));
-                cellBorderBottomRight.Rowspan = 1;
-                cellBorderBottomRight.Colspan = 1;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GROSS", normal_font, 0.75f));
-                cellBorderBottomRight.Rowspan = 1;
-                cellBorderBottomRight.Colspan = 1;
-                tableDetail.AddCell(cellBorderBottomRight);
-
-                //cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("CTNS", normal_font, 0.75f));
-                //cellBorderBottomRight.Colspan = 1;
-                //cellBorderBottomRight.Rowspan = 2;
-                //tableDetail.AddCell(cellBorderBottomRight);
-                foreach (var detail in viewModel.ShippingProductionOrders.Where( x => x.PackingListBaleNo == itemA.PackingListBaleNo)) 
+            #region Cartoon/Bale
+            if (viewModel.PackingType == "CARTON/BALE")
+            {
+                foreach (var itemA in newItems)
                 {
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListBaleNo}", normal_font, 0.75f));
+                    PdfPTable tableDetail = new PdfPTable(6);
+                    var width = new List<float> { 1f, 1f, 1f, 1f };
+                    for (int i = 0; i < 2; i++) width.Add(1f);
+                    // width.AddRange(new List<float> { 1f});
+
+                    PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
+                    tableDetail.AddCell(cellDetailLine);
+                    tableDetail.AddCell(cellDetailLine);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("CARTON NO.", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 2;
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Color}", normal_font, 0.75f));
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("COLOUR", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.QtyPacking}", normal_font, 0.75f));
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("ROLL", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Qty}", normal_font, 0.75f));
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("Quantity In Meters", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListNet}", normal_font, 0.75f));
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("WEIGHT IN KGS", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 2;
+                    cellBorderBottomRight.Rowspan = 1;
                     tableDetail.AddCell(cellBorderBottomRight);
-                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListGross}", normal_font, 0.75f));
+
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NET", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 1;
+                    cellBorderBottomRight.Colspan = 1;
                     tableDetail.AddCell(cellBorderBottomRight);
-                }
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SUBTOTAL", normal_font, 0.75f));
-                cellBorderBottomRight.Colspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingQty}", normal_font, 0.75f));
-                cellBorderBottomRight.Colspan = 1;
-                tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.Balance}", normal_font, 0.75f));
-                //cellBorderBottomRight.Colspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingListNet}", normal_font, 0.75f));
-                //cellBorderBottomRight.Colspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
-                cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingListGross}", normal_font, 0.75f));
-                //cellBorderBottomRight.Colspan = 2;
-                tableDetail.AddCell(cellBorderBottomRight);
 
-                new PdfPCell(tableDetail);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GROSS", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 1;
+                    cellBorderBottomRight.Colspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
 
-                tableDetail.ExtendLastRow = false;
-                tableDetail.WidthPercentage = 95f;
-                tableDetail.SpacingAfter = 10f;
+                    //cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("CTNS", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 1;
+                    //cellBorderBottomRight.Rowspan = 2;
+                    //tableDetail.AddCell(cellBorderBottomRight);
+                    foreach (var detail in viewModel.ShippingProductionOrders.Where(x => x.PackingListBaleNo == itemA.PackingListBaleNo))
+                    {
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListBaleNo}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Color}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.QtyPacking}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Qty}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListNet}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListGross}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                    }
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SUBTOTAL", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingQty}", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.Balance}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingListNet}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemA.PackingListGross}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
 
-                document.Add(tableDetail);
-            };
+                    new PdfPCell(tableDetail);
 
-            #region GrandTotal
-            var grandTotalPackingResult = (newItems.Sum(x => x.PackingQty)).ToString();
-            var grandTotalBalanceResult = (newItems.Sum(x => x.Balance)).ToString();
-            var grandTotalNetResult = (newItems.Sum(x => x.PackingListNet)).ToString();
-            var grandTotalGrossResult = (newItems.Sum(x => x.PackingListGross)).ToString();
-            PdfPTable tableGrandTotal = new PdfPTable(6);
-            tableGrandTotal.SetWidths(new float[] { 1f ,1f, 1f, 1f,1f,1f });
-            PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
+                    tableDetail.ExtendLastRow = false;
+                    tableDetail.WidthPercentage = 95f;
+                    tableDetail.SpacingAfter = 10f;
 
-            tableGrandTotal.AddCell(cellHeaderLine);
-            tableGrandTotal.AddCell(cellHeaderLine);
-            tableGrandTotal.AddCell(new PdfPCell()
-            {
-                Colspan = 2,
-                Border = Rectangle.BOTTOM_BORDER,
-                Padding = 4,
-                Phrase = new Phrase("GRAND TOTAL ...................", normal_font)
-            });
+                    document.Add(tableDetail);
+                };
 
-            tableGrandTotal.AddCell(new PdfPCell()
-            {
-                Colspan = 1,
-                Border = Rectangle.BOTTOM_BORDER,
-                Padding = 4,
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                Phrase = new Phrase(grandTotalPackingResult, normal_font)
-            });
+                #region GrandTotal
+                var grandTotalPackingResult = (newItems.Sum(x => x.PackingQty)).ToString();
+                var grandTotalBalanceResult = (newItems.Sum(x => x.Balance)).ToString();
+                var grandTotalNetResult = (newItems.Sum(x => x.PackingListNet)).ToString();
+                var grandTotalGrossResult = (newItems.Sum(x => x.PackingListGross)).ToString();
+                PdfPTable tableGrandTotal = new PdfPTable(6);
+                tableGrandTotal.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f, 1f });
+                PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
 
-            tableGrandTotal.AddCell(new PdfPCell()
-            {
-                //Colspan = ,
-                Border = Rectangle.BOTTOM_BORDER,
-                Padding = 4,
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                Phrase = new Phrase(grandTotalBalanceResult, normal_font)
-            });
+                tableGrandTotal.AddCell(cellHeaderLine);
+                tableGrandTotal.AddCell(cellHeaderLine);
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    Colspan = 2,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    Phrase = new Phrase("GRAND TOTAL ...................", normal_font)
+                });
 
-            tableGrandTotal.AddCell(new PdfPCell()
-            {
-                //Colspan = ,
-                Border = Rectangle.BOTTOM_BORDER,
-                Padding = 4,
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                Phrase = new Phrase(grandTotalNetResult, normal_font)
-            });
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    Colspan = 1,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalPackingResult, normal_font)
+                });
 
-            tableGrandTotal.AddCell(new PdfPCell()
-            {
-                //Colspan = ,
-                Border = Rectangle.BOTTOM_BORDER,
-                Padding = 4,
-                HorizontalAlignment = Element.ALIGN_CENTER,
-                Phrase = new Phrase(grandTotalGrossResult, normal_font)
-            });
-            tableGrandTotal.AddCell(cellHeaderLine);
-            new PdfPCell(tableGrandTotal);
-            tableGrandTotal.ExtendLastRow = false;
-            tableGrandTotal.WidthPercentage = 95f;
-            tableGrandTotal.SpacingAfter = 5f;
-            document.Add(tableGrandTotal);
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalBalanceResult, normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalNetResult, normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalGrossResult, normal_font)
+                });
+                tableGrandTotal.AddCell(cellHeaderLine);
+                new PdfPCell(tableGrandTotal);
+                tableGrandTotal.ExtendLastRow = false;
+                tableGrandTotal.WidthPercentage = 95f;
+                tableGrandTotal.SpacingAfter = 5f;
+                document.Add(tableGrandTotal);
+                #endregion
+            }
             #endregion
+            else
+            {
+                var newitemsB = viewModel.ShippingProductionOrders.GroupBy(x => new { x.Color }).Select(x => new
+                {
+                    PackingListBaleNo = x.FirstOrDefault().PackingListBaleNo,
+                    Balance = x.Sum( s => s.Qty),
+                    PackingQty = x.Sum( s => s.QtyPacking),
+                    PackingListNet = x.Sum(s => s.PackingListNet),
+                    PackingListGross = x.Sum( s => s.PackingListGross),
+                    Color = x.Key.Color
 
+                });
+                foreach (var itemB in newitemsB)
+                {
+                    #region Item
+
+                    PdfPTable tableItem = new PdfPTable(3);
+                    tableItem.SetWidths(new float[] { 2f, 0.2f, 10f });
+                    PdfPCell cellItemContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+                    cellItemContent.Phrase = new Phrase("COLOUR", normal_font);
+                    tableItem.AddCell(cellItemContent);
+                    cellItemContent.Phrase = new Phrase(" : ", normal_font);
+                    tableItem.AddCell(cellItemContent);
+                    cellItemContent.Phrase = new Phrase("  " + itemB.Color, normal_font);
+                    tableItem.AddCell(cellItemContent);
+
+                    new PdfPCell(tableItem);
+                    tableItem.ExtendLastRow = false;
+                    document.Add(tableItem);
+
+                    #endregion
+                    PdfPTable tableDetail = new PdfPTable(6);
+                    var width = new List<float> { 1f, 1f, 1f, 1f };
+                    for (int i = 0; i < 2; i++) width.Add(1f);
+                    // width.AddRange(new List<float> { 1f});
+
+                    PdfPCell cellDetailLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
+                    tableDetail.AddCell(cellDetailLine);
+                    tableDetail.AddCell(cellDetailLine);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NO ROLL", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("COLOUR", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("ROLL", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("Quantity In Meters", normal_font, 0.75f));
+                    //cellBorderBottomRight.Rowspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("WEIGHT IN KGS", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 2;
+                    cellBorderBottomRight.Rowspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("NET", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 1;
+                    cellBorderBottomRight.Colspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("GROSS", normal_font, 0.75f));
+                    cellBorderBottomRight.Rowspan = 1;
+                    cellBorderBottomRight.Colspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    //cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("CTNS", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 1;
+                    //cellBorderBottomRight.Rowspan = 2;
+                    //tableDetail.AddCell(cellBorderBottomRight);
+                    int no = 1;
+                    foreach (var detail in viewModel.ShippingProductionOrders.Where( x => x.Color == itemB.Color))
+                    {
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{no++}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Color}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.QtyPacking}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Qty}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListNet}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.PackingListGross}", normal_font, 0.75f));
+                        tableDetail.AddCell(cellBorderBottomRight);
+                    }
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk("SUBTOTAL", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemB.PackingQty}", normal_font, 0.75f));
+                    cellBorderBottomRight.Colspan = 1;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemB.Balance}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemB.PackingListNet}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+                    cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{itemB.PackingListGross}", normal_font, 0.75f));
+                    //cellBorderBottomRight.Colspan = 2;
+                    tableDetail.AddCell(cellBorderBottomRight);
+
+                    new PdfPCell(tableDetail);
+
+                    tableDetail.ExtendLastRow = false;
+                    tableDetail.WidthPercentage = 95f;
+                    tableDetail.SpacingAfter = 10f;
+
+                    document.Add(tableDetail);
+                }
+
+                #region GrandTotal
+                var grandTotalPackingResult = (newItems.Sum(x => x.PackingQty)).ToString();
+                var grandTotalBalanceResult = (newItems.Sum(x => x.Balance)).ToString();
+                var grandTotalNetResult = (newItems.Sum(x => x.PackingListNet)).ToString();
+                var grandTotalGrossResult = (newItems.Sum(x => x.PackingListGross)).ToString();
+                PdfPTable tableGrandTotal = new PdfPTable(6);
+                tableGrandTotal.SetWidths(new float[] { 1f, 1f, 1f, 1f, 1f, 1f });
+                PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 6, Padding = 0.5f, Phrase = new Phrase("") };
+
+                tableGrandTotal.AddCell(cellHeaderLine);
+                tableGrandTotal.AddCell(cellHeaderLine);
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    Colspan = 2,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    Phrase = new Phrase("GRAND TOTAL ...................", normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    Colspan = 1,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalPackingResult, normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalBalanceResult, normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalNetResult, normal_font)
+                });
+
+                tableGrandTotal.AddCell(new PdfPCell()
+                {
+                    //Colspan = ,
+                    Border = Rectangle.BOTTOM_BORDER,
+                    Padding = 4,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    Phrase = new Phrase(grandTotalGrossResult, normal_font)
+                });
+                tableGrandTotal.AddCell(cellHeaderLine);
+                new PdfPCell(tableGrandTotal);
+                tableGrandTotal.ExtendLastRow = false;
+                tableGrandTotal.WidthPercentage = 95f;
+                tableGrandTotal.SpacingAfter = 5f;
+                document.Add(tableGrandTotal);
+                #endregion
+
+            }
             #region Remark
 
-            
-            var Buyer = viewModel.ShippingProductionOrders.First().Buyer;
+
+            var Buyer = viewModel.ShippingProductionOrders.First().DestinationBuyerName;
             PdfPTable tableMeasurement = new PdfPTable(3);
             tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 12f });
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER };
@@ -475,7 +660,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Invoice No. : " + newItems.DeliveryNote, marginLeft, infoY, 0);
             cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "Date : " + viewModel.Date.ToOffset(new TimeSpan(identityProvider.TimezoneOffset, 0, 0)).ToString("MMM dd, yyyy."), width / 2, infoY, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Page : " + writer.PageNumber +" of " , width - marginRight, infoY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Page : " + writer.PageNumber, width - marginRight, infoY, 0);
 
             #endregion
 

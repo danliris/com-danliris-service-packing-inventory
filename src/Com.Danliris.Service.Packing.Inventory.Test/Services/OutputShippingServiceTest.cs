@@ -3,6 +3,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonVi
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Shipping;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using Moq;
 using System;
@@ -127,7 +128,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Unit = "s",
                             UomUnit = "d",
                             DeliveryOrderSalesType = "Lokal",
-                            DeliveryOrderSalesNo = "no"
+                            DeliveryOrderSalesNo = "no",
+                            PackingListBaleNo = "1",
+                            PackingListGross = 1,
+                            PackingListNet = 1
 
                             
 
@@ -322,6 +326,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth,  s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
                     
+            }
+        }
+
+        private DyeingPrintingAreaOutputModel ModelLP
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
+                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, "CARTON/BALE", ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModel.ShippingProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
+                        s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                        s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, "Ekspor", s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+
             }
         }
 
@@ -2029,6 +2047,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.NotEmpty(result);
         }
 
+        [Fact]
+        public async Task Should_Success_ReadPdfPackingListById_LoosePacking()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Model);
+
+            //serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            //   .Returns(new IdentityProvider
+            //   {
+            //       TimezoneOffset = 7,
+            //       Token = "INITOKEN",
+            //       Username = "UserTest"
+            //   });
+            var serviceMock = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object);
+            serviceMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+               .Returns(new IdentityProvider
+               {
+                   TimezoneOffset = 7,
+                   Token = "INITOKEN",
+                   Username = "UserTest"
+               });
+
+            var service = GetService(serviceMock.Object);
+
+            
+
+            var result = await service.ReadPdfPackingListById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Should_Success_ReadPdfPackingListById_Cartoon()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(ModelLP);
+
+            //serviceProviderMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+            //   .Returns(new IdentityProvider
+            //   {
+            //       TimezoneOffset = 7,
+            //       Token = "INITOKEN",
+            //       Username = "UserTest"
+            //   });
+            var serviceMock = GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object);
+            serviceMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
+               .Returns(new IdentityProvider
+               {
+                   TimezoneOffset = 7,
+                   Token = "INITOKEN",
+                   Username = "UserTest"
+               });
+
+            var service = GetService(serviceMock.Object);
+
+
+
+            var result = await service.ReadPdfPackingListById(1);
+
+            Assert.NotNull(result);
+        }
         //[Fact]
         //public void Should_Success_GetInputTransitProductionOrders_SPP_All()
         //{
