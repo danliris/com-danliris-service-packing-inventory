@@ -219,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackingListGross = x.Sum( s => s.PackingListGross),
                     Color = x.Key.Color
 
-                });
+                }).OrderBy( x => x.Color);
                 foreach (var itemB in newitemsB)
                 {
                     #region Item
@@ -285,10 +285,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //cellBorderBottomRight.Colspan = 1;
                     //cellBorderBottomRight.Rowspan = 2;
                     //tableDetail.AddCell(cellBorderBottomRight);
-                    int no = 1;
-                    foreach (var detail in viewModel.ShippingProductionOrders.Where( x => x.Color == itemB.Color))
+                   
+                    var itemC = viewModel.ShippingProductionOrders.Select(x => new OutputShippingProductionOrderViewModel
                     {
-                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{no++}", normal_font, 0.75f));
+                        No = 0,
+                        Color = x.Color,
+                        QtyPacking = x.QtyPacking,
+                        Qty = x.Qty,
+                        PackingListNet = x.PackingListNet,
+                        PackingListGross = x.PackingListGross
+
+                    }).OrderBy( x => x.Color);
+                    var newDetails = new List<OutputShippingProductionOrderViewModel>();
+                    int no = 1;
+                    foreach (var i in itemC)
+                    {
+                        i.No = no++;
+                        newDetails.Add(i);
+                    }
+
+
+                    foreach (var detail in newDetails.Where( x => x.Color == itemB.Color).OrderBy( s=> s.Color))
+                    {
+                        cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.No}", normal_font, 0.75f));
                         tableDetail.AddCell(cellBorderBottomRight);
                         cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.Color}", normal_font, 0.75f));
                         tableDetail.AddCell(cellBorderBottomRight);
@@ -408,16 +427,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 tableMeasurement.AddCell(cellMeasurement);
                 cellMeasurement.Phrase = new Phrase(" BY T.T", normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
+
+                cellMeasurement.Phrase = new Phrase("Issued By", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+                cellMeasurement.Phrase = new Phrase(":", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
+                cellMeasurement.Phrase = new Phrase("-", normal_font);
+                tableMeasurement.AddCell(cellMeasurement);
             }
 
-            cellMeasurement.Phrase = new Phrase("Issued By", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(":", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase("-", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
+            
 
-            cellMeasurement.Phrase = new Phrase("Shipping Marks", normal_font);
+            cellMeasurement.Phrase = new Phrase("Description", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
@@ -453,7 +474,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 cellBodySignNoBorder.Phrase = new Phrase("Penerima", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
-                cellBodySignNoBorder.Phrase = new Phrase("Shipping", normal_font);
+                cellBodySignNoBorder.Phrase = new Phrase("Marketing", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
                 cellBodySignNoBorder.Phrase = new Phrase("Kepala Gudang", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
@@ -465,9 +486,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 cellBodySignNoBorder.Phrase = new Phrase("\n\n\n\n", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
 
-                cellBodySignNoBorder.Phrase = new Phrase("(................)", normal_font);
+                cellBodySignNoBorder.Phrase = new Phrase("( ........................... )", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
-                cellBodySignNoBorder.Phrase = new Phrase("( Rendi )", normal_font);
+                cellBodySignNoBorder.Phrase = new Phrase("( ........................... )", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
                 cellBodySignNoBorder.Phrase = new Phrase($"( Adi Chriscahyo )", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
@@ -649,7 +670,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             #region REF
 
             var refY = height - marginTop + 25;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "Ref. No. : FM-00-SP-24-005", width - marginRight, refY, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_RIGHT, "FM-PJ-00-03-011", width - marginRight, refY, 0);
 
             #endregion
 
