@@ -70,5 +70,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public decimal PackingListGross { get;  set; }
         public string DeliveryOrderSalesType { get;  set; }
         public string DeliveryOrderSalesNo { get;  set; }
+        public string DestinationBuyerName { get; set; }
     }
 }
