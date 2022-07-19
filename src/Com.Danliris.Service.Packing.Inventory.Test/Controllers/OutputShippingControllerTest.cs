@@ -1017,5 +1017,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public async Task GetPdfById_Ok()
+        {
+            var serviceMock = new Mock<IOutputShippingService>();
+            serviceMock
+                .Setup(s => s.ReadPdfPackingListById(It.IsAny<int>()))
+                .ReturnsAsync(new MemoryStreamResult(new MemoryStream(), "FileName.pdf"));
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/pdf";
+            var response = await controller.GetPdfPackingListById(1);
+
+            Assert.NotNull(response);
+        }
+
     }
 }
