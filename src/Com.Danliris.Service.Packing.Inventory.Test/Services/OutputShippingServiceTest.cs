@@ -367,6 +367,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             }
         }
 
+        private DyeingPrintingAreaOutputModel ModelUpdatePJ
+        {
+            get
+            {
+                return new DyeingPrintingAreaOutputModel(ViewModelPJ.Date, ViewModelPJ.Area, ViewModelPJ.Shift, ViewModelPJ.BonNo, ViewModelPJ.HasNextAreaDocument, ViewModelPJ.DestinationArea,
+                   ViewModelPJ.Group, ViewModelPJ.DeliveryOrder.Id, ViewModelPJ.DeliveryOrder.No, ViewModelPJ.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized,
+                   ViewModelPJ.PackingListLCNumber + "new", ViewModelPJ.PackingListIssuedBy + "new", ViewModelPJ.PackingListDescription + "new", true,
+                   ViewModelPJ.ShippingProductionOrders.Select(s =>
+                    new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
+                        s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
+                        s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+
+            }
+        }
+
         private DyeingPrintingAreaOutputModel ModelAdj
         {
             get
@@ -1389,6 +1405,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             Assert.Equal(date, index.Date);
             Assert.Null(index.DestinationArea);
             Assert.False(index.HasNextAreaDocument);
+            Assert.False(index.UpdateBySales);
             Assert.Null(index.Shift);
             Assert.Null(index.Type);
             Assert.Empty(index.ShippingProductionOrders);
@@ -1649,13 +1666,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
             var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
             var model = Model;
+            var modelPJ = ModelUpdatePJ;
 
             var vm = ViewModel;
             vm.Shift = vm.Shift + "new";
-            vm.PackingListLCNumber = vm.PackingListLCNumber + "new";
-            vm.PackingListIssuedBy = vm.PackingListIssuedBy + "new";
-            vm.PackingListDescription = vm.PackingListDescription + "new";
-            vm.UpdateBySales = true;
+            //modelPJ.PackingListLCNumber = modelPJ.PackingListLCNumber + "new";
+            //modelPJ.PackingListIssuedBy = vm.PackingListIssuedBy + "new";
+            //vm.PackingListDescription = vm.PackingListDescription + "new";
+            //vm.UpdateBySales = true;
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
@@ -1664,6 +1682,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
                  .ReturnsAsync(1);
+            model.SetPackingLCNumber(vm.PackingListLCNumber + "new", "", "");
+            model.SetPackingIssuedBy(vm.PackingListIssuedBy + "new", "", "");
+            model.SetPackingDescription(vm.PackingListDescription + "new", "", "");
+            model.SetPackingListRemark(vm.PackingListRemark + "new", "", "");
+            model.SetPackingUpdateBySales(true, "", "");
 
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
