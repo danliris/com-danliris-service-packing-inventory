@@ -66,6 +66,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     PackingListAuthorized = "a",
                     PackingListRemark ="a",
                     PackingType = "a",
+                    PackingListLCNumber = "a",
+                    PackingListIssuedBy = "a",
+                    PackingListDescription = "a",
+                    UpdateBySales = false,
                     ShippingProductionOrders = new List<OutputShippingProductionOrderViewModel>()
                     {
                         new OutputShippingProductionOrderViewModel()
@@ -1619,6 +1623,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var vm = ViewModel;
             vm.Shift = vm.Shift + "new";
+
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+            repoMock.Setup(s => s.UpdateShippingArea(It.IsAny<int>(), It.IsAny<DyeingPrintingAreaOutputModel>(), It.IsAny<DyeingPrintingAreaOutputModel>()))
+                .ReturnsAsync(1);
+
+            movementRepoMock.Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingAreaMovementModel>()))
+                 .ReturnsAsync(1);
+
+
+            var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
+
+            var result = await service.Update(1, vm);
+
+            Assert.NotEqual(0, result);
+        }
+
+        [Fact]
+        public async Task Should_Success_UpdateBySales()
+        {
+            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+            var movementRepoMock = new Mock<IDyeingPrintingAreaMovementRepository>();
+            var summaryRepoMock = new Mock<IDyeingPrintingAreaSummaryRepository>();
+            var sppRepoMock = new Mock<IDyeingPrintingAreaInputProductionOrderRepository>();
+            var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            var model = Model;
+
+            var vm = ViewModel;
+            vm.Shift = vm.Shift + "new";
+            vm.PackingListLCNumber = vm.PackingListLCNumber + "new";
+            vm.PackingListIssuedBy = vm.PackingListIssuedBy + "new";
+            vm.PackingListDescription = vm.PackingListDescription + "new";
+            vm.UpdateBySales = true;
 
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(model);
