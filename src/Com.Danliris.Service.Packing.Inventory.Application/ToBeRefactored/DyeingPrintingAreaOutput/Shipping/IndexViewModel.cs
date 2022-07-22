@@ -24,6 +24,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public DeliveryOrderSales DeliveryOrder { get; set; }
         public bool HasSalesInvoice { get; set; }
+
+        public bool UpdateBySales { get; set; }
         public ICollection<OutputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
     }
 }

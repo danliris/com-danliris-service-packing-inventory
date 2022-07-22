@@ -79,6 +79,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackingType = model.PackingType,
                     PackingListRemark = model.PackingListRemark,
                     PackingListAuthorized =model.PackingListAuthorized,
+                    PackingListLCNumber = model.PackingListLCNumber,
+                    PackingListIssuedBy = model.PackingListIssuedBy,
+                    PackingListDescription = model.PackingListDescription,
+                    UpdateBySales = model.UpdateBySales,
                     ShippingProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputShippingProductionOrderViewModel()
                     {
                         Active = s.Active,
@@ -496,6 +500,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     PackingType = model.PackingType,
                     PackingListRemark = model.PackingListRemark,
                     PackingListAuthorized = model.PackingListAuthorized,
+                    PackingListLCNumber = model.PackingListLCNumber,
+                    PackingListIssuedBy = model.PackingListIssuedBy,
+                    PackingListDescription = model.PackingListDescription,
+                    UpdateBySales = model.UpdateBySales,
                     ShippingProductionOrders = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new OutputShippingProductionOrderViewModel()
                     {
                         Active = s.Active,
@@ -723,6 +731,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 viewModel.PackingType,
                                 viewModel.PackingListRemark,
                                 viewModel.PackingListAuthorized,
+                                viewModel.PackingListLCNumber,
+                                viewModel.PackingListIssuedBy,
+                                viewModel.PackingListDescription,
+                                viewModel.UpdateBySales,
                                viewModel.ShippingProductionOrders.Select(s =>
                            new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                                s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
@@ -742,6 +754,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 viewModel.PackingType,
                                 viewModel.PackingListRemark,
                                 viewModel.PackingListAuthorized,
+                                viewModel.PackingListLCNumber,
+                        viewModel.PackingListIssuedBy,
+                        viewModel.PackingListDescription,
+                        viewModel.UpdateBySales,
                                 viewModel.ShippingProductionOrders.Select(s =>
                             new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                                 s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
@@ -789,6 +805,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.PackingType,
                         viewModel.PackingListRemark,
                         viewModel.PackingListAuthorized,
+                        viewModel.PackingListLCNumber,
+                        viewModel.PackingListIssuedBy,
+                        viewModel.PackingListDescription,
+                        viewModel.UpdateBySales,
                         viewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                         s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight,
@@ -958,6 +978,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.PackingType,
                         viewModel.PackingListRemark,
                         viewModel.PackingListAuthorized,
+                        viewModel.PackingListLCNumber,
+                        viewModel.PackingListIssuedBy,
+                        viewModel.PackingListDescription,
+                        viewModel.UpdateBySales,
                         viewModel.ShippingProductionOrders.Select(s =>
                      new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, "", true, 0, "", s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction,
                          s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, "", s.Balance, s.DyeingPrintingAreaInputProductionOrderId, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, false, "", "", 0,
@@ -1061,6 +1085,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     No = s.DeliveryOrderSalesNo
                 },
                 HasNextAreaDocument = s.HasNextAreaDocument,
+                UpdateBySales = s.UpdateBySales,
                 ShippingProductionOrders = s.DyeingPrintingAreaOutputProductionOrders.Select(d => new OutputShippingProductionOrderViewModel()
                 {
                     Balance = d.Balance,
@@ -1533,6 +1558,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         viewModel.PackingType,
                         viewModel.PackingListRemark,
                         viewModel.PackingListAuthorized,
+                        viewModel.PackingListLCNumber,
+                        viewModel.PackingListIssuedBy,
+                        viewModel.PackingListDescription,
+                        viewModel.UpdateBySales,
                         viewModel.ShippingProductionOrders.Select(s =>
                         new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, s.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id,
                             s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote,
