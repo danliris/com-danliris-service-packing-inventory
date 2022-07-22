@@ -34,6 +34,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackingType { get; private set; }
         public string PackingListRemark { get; private set; }
         public string PackingListAuthorized { get; private set; }
+        public string PackingListLCNumber { get; private set; }
+        public string PackingListIssuedBy { get; private set; }
+        public string PackingListDescription { get; private set; }
+        public bool UpdateBySales { get; private set; }
+        
+
 
         public ICollection<DyeingPrintingAreaOutputProductionOrderModel> DyeingPrintingAreaOutputProductionOrders { get; set; }
 
@@ -146,8 +152,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="packingType"></param>
         /// <param name="packingListRemark"></param>
         /// <param name="packingListAuthorized"></param>
+        /// <param name="packingListLCNumber"></param>
+        /// <param name="packingListIssuedBy"></param>
+        /// <param name="packingListDescription"></param>
+        /// <param name="updateBySales"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, string packingListNo, string packingType, string packingListRemark, string packingListAuthorized, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
+            string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, string packingListNo, string packingType, string packingListRemark,
+            string packingListAuthorized, string packingListLCNumber, string packingListIssuedBy, string packingListDescription, bool updateBySales,
+             ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -168,6 +180,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackingType = packingType;
             PackingListRemark = packingListRemark;
             PackingListAuthorized = packingListAuthorized;
+            PackingListLCNumber = packingListLCNumber;
+            PackingListIssuedBy = packingListIssuedBy;
+            PackingListDescription = packingListDescription;
+            UpdateBySales = updateBySales;
         }
 
         ///// <summary>
@@ -325,6 +341,41 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newAdjItemCategory != AdjItemCategory)
             {
                 AdjItemCategory = newAdjItemCategory;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+        public void SetPackingLCNumber(string newPackingListLCNumber, string user, string agent)
+        {
+            if (newPackingListLCNumber != PackingListLCNumber)
+            {
+                PackingListLCNumber = newPackingListLCNumber;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingIssuedBy(string newPackingListIssuedBy, string user, string agent)
+        {
+            if (newPackingListIssuedBy != PackingListIssuedBy)
+            {
+                PackingListIssuedBy = newPackingListIssuedBy;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingDescription(string newPackingListDescription, string user, string agent)
+        {
+            if (newPackingListDescription != PackingListDescription)
+            {
+                PackingListDescription = newPackingListDescription;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackingUpdateBySales(bool newUpdateBySales, string user, string agent)
+        {
+            if (newUpdateBySales != UpdateBySales)
+            {
+                UpdateBySales = newUpdateBySales;
                 this.FlagForUpdate(user, agent);
             }
         }

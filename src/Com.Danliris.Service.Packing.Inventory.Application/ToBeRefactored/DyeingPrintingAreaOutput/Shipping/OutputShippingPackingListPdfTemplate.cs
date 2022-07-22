@@ -54,6 +54,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             PdfPCell cellBorderBottomRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.RIGHT_BORDER | Rectangle.LEFT_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
             PdfPCell cellBorderBottom = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, HorizontalAlignment = Element.ALIGN_CENTER };
+            
+           
+            PdfPTable tableDescription = new PdfPTable(3);
+            tableDescription.SetWidths(new float[] { 2f, 0.2f, 12f });
+            PdfPCell cellDesscription = new PdfPCell() { Border = Rectangle.NO_BORDER };
+
+            cellDesscription.Phrase = new Phrase("DESCRIPTION ", normal_font);
+            tableDescription.AddCell(cellDesscription);
+            cellDesscription.Phrase = new Phrase(":", normal_font);
+            tableDescription.AddCell(cellDesscription);
+            cellDesscription.Phrase = new Phrase("" + viewModel.ShippingProductionOrders.First().DestinationBuyerName, normal_font);
+            tableDescription.AddCell(cellDesscription);
+
+            cellDesscription.Phrase = new Phrase("", normal_font);
+            tableDescription.AddCell(cellDesscription);
+            cellDesscription.Phrase = new Phrase("", normal_font);
+            tableDescription.AddCell(cellDesscription);
+            cellDesscription.Phrase = new Phrase("" + viewModel.PackingListDescription, normal_font);
+            tableDescription.AddCell(cellDesscription);
+
+            new PdfPCell(tableDescription);
+            tableDescription.ExtendLastRow = false;
+            document.Add(tableDescription);
 
             #region Cartoon/Bale
             if (viewModel.PackingType == "CARTON/BALE")
@@ -225,12 +248,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     #region Item
 
                     PdfPTable tableItem = new PdfPTable(3);
-                    tableItem.SetWidths(new float[] { 2f, 0.2f, 10f });
+                    tableItem.SetWidths(new float[] { 2f, 0.2f, 12f });
                     PdfPCell cellItemContent = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
                     cellItemContent.Phrase = new Phrase("COLOUR", normal_font);
                     tableItem.AddCell(cellItemContent);
-                    cellItemContent.Phrase = new Phrase(" : ", normal_font);
+                    cellItemContent.Phrase = new Phrase(":", normal_font);
                     tableItem.AddCell(cellItemContent);
                     cellItemContent.Phrase = new Phrase("  " + itemB.Color, normal_font);
                     tableItem.AddCell(cellItemContent);
@@ -425,14 +448,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 tableMeasurement.AddCell(cellMeasurement);
                 cellMeasurement.Phrase = new Phrase(":", normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
-                cellMeasurement.Phrase = new Phrase(" BY T.T", normal_font);
+                cellMeasurement.Phrase = new Phrase(" " + viewModel.PackingListLCNumber, normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
 
                 cellMeasurement.Phrase = new Phrase("Issued By", normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
                 cellMeasurement.Phrase = new Phrase(":", normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
-                cellMeasurement.Phrase = new Phrase("-", normal_font);
+                cellMeasurement.Phrase = new Phrase(" " + viewModel.PackingListIssuedBy, normal_font);
                 tableMeasurement.AddCell(cellMeasurement);
             }
 
@@ -442,15 +465,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase(Buyer, normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-
-            cellMeasurement.Phrase = new Phrase("", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
-            cellMeasurement.Phrase = new Phrase("", normal_font);
-            tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(viewModel.PackingListRemark, normal_font);
             tableMeasurement.AddCell(cellMeasurement);
+
+            //cellMeasurement.Phrase = new Phrase("", normal_font);
+            //tableMeasurement.AddCell(cellMeasurement);
+            //cellMeasurement.Phrase = new Phrase("", normal_font);
+            //tableMeasurement.AddCell(cellMeasurement);
+            //cellMeasurement.Phrase = new Phrase(viewModel.PackingListRemark, normal_font);
+            //tableMeasurement.AddCell(cellMeasurement);
 
             tableMeasurement.AddCell(cellRemarkLine);
             tableMeasurement.AddCell(cellRemarkLine);
