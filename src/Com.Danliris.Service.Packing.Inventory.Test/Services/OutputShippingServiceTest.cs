@@ -320,7 +320,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModel.ShippingProductionOrders.Select(s =>
+                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized,
+                   ViewModel.PackingListLCNumber, ViewModel.PackingListIssuedBy, ViewModel.PackingListDescription, ViewModel.UpdateBySales,
+                   ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
@@ -334,7 +336,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, "CARTON/BALE", ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModel.ShippingProductionOrders.Select(s =>
+                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, "CARTON/BALE", ViewModel.PackingListRemark, ViewModel.PackingListAuthorized,
+                   ViewModel.PackingListLCNumber, ViewModel.PackingListIssuedBy, ViewModel.PackingListDescription, ViewModel.UpdateBySales,
+                   ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
@@ -348,7 +352,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModelPJ.Date, ViewModelPJ.Area, ViewModelPJ.Shift, ViewModelPJ.BonNo, ViewModelPJ.HasNextAreaDocument, ViewModelPJ.DestinationArea,
-                   ViewModelPJ.Group, ViewModelPJ.DeliveryOrder.Id, ViewModelPJ.DeliveryOrder.No, ViewModelPJ.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModelPJ.ShippingProductionOrders.Select(s =>
+                   ViewModelPJ.Group, ViewModelPJ.DeliveryOrder.Id, ViewModelPJ.DeliveryOrder.No, ViewModelPJ.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized,
+                   ViewModelPJ.PackingListLCNumber, ViewModelPJ.PackingListIssuedBy, ViewModelPJ.PackingListDescription, ViewModelPJ.UpdateBySales,
+                   ViewModelPJ.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
@@ -376,7 +382,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                  ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModel.ShippingCode, new List<DyeingPrintingAreaOutputProductionOrderModel>());
+                  ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.PackingListNo, ViewModel.PackingType, ViewModel.PackingListRemark, ViewModel.PackingListAuthorized, ViewModel.ShippingCode,
+                  ViewModel.PackingListLCNumber, ViewModel.PackingListIssuedBy, ViewModel.PackingListDescription, ViewModel.UpdateBySales,
+                  new List<DyeingPrintingAreaOutputProductionOrderModel>());
             }
         }
 
@@ -859,12 +867,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
             var model2 = new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, ViewModel.HasNextAreaDocument, ViewModel.DestinationArea,
-                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, 
+                   ViewModel.Group, ViewModel.DeliveryOrder.Id, ViewModel.DeliveryOrder.No, ViewModel.HasSalesInvoice, ViewModel.Type, ViewModel.ShippingCode,
                    ViewModel.PackingListNo,
                    ViewModel.PackingType,
                    ViewModel.PackingListRemark,
                    ViewModel.PackingListAuthorized,
-                   ViewModel.ShippingCode, ViewModel.ShippingProductionOrders.Select(s =>
+                   ViewModel.PackingListLCNumber, ViewModel.PackingListIssuedBy, ViewModel.PackingListDescription, ViewModel.UpdateBySales,
+                   ViewModel.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
@@ -1009,6 +1018,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                        vm2.PackingType,
                        vm2.PackingListRemark,
                        vm2.PackingListAuthorized,
+                       ViewModel.PackingListLCNumber, ViewModel.PackingListIssuedBy, ViewModel.PackingListDescription, ViewModel.UpdateBySales,
                        vm2.ShippingProductionOrders.Select(s =>
                         new DyeingPrintingAreaOutputProductionOrderModel(vm2.Area, vm2.DestinationArea, vm2.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                             s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
