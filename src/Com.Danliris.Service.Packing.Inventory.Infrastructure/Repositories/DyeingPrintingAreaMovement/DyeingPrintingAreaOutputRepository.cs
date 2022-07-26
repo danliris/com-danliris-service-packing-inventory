@@ -612,6 +612,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListRemark(model.PackingListRemark, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingLCNumber(model.PackingListLCNumber, _identityProvider.Username, UserAgent);
+            if (model.DestinationArea == DyeingPrintingArea.BUYER)
+            {
+                dbModel.SetPackingIssuedBy(model.PackingListIssuedBy, _identityProvider.Username, UserAgent);
+                dbModel.SetPackingDescription(model.PackingListDescription, _identityProvider.Username, UserAgent);
+                dbModel.SetPackingUpdateBySales(true, _identityProvider.Username, UserAgent);
+            }
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
@@ -667,6 +675,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                     item.SetWeight(localItem.Weight, _identityProvider.Username, UserAgent);
                     item.SetDeliveryNote(localItem.DeliveryNote, _identityProvider.Username, UserAgent);
                     item.SetRemark(localItem.Remark, _identityProvider.Username, UserAgent);
+                    item.SetPackingListBaleNo(localItem.PackingListBaleNo, _identityProvider.Username, UserAgent);
+                    item.SetPackingListGross(localItem.PackingListGross, _identityProvider.Username, UserAgent);
+                    item.SetPackingListNet(localItem.PackingListNet, _identityProvider.Username, UserAgent);
+                    
                 }
             }
 

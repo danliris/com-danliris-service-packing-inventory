@@ -29,6 +29,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Group { get; set; }
         public bool HasSalesInvoice { get; set; }
         public DeliveryOrderSales DeliveryOrder { get; set; }
+        public string PackingListNo { get; set; }
+        public string PackingType { get;  set; }
+        public string PackingListRemark { get;  set; }
+        public string PackingListAuthorized { get;  set; }
+        public string PackingListLCNumber { get; set; }
+        public string PackingListIssuedBy { get;  set; }
+        public string PackingListDescription { get;  set; }
+        public bool UpdateBySales { get;  set; }
         public ICollection<OutputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

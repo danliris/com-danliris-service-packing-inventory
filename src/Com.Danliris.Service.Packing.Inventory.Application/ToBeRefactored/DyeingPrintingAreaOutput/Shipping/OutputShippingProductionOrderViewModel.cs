@@ -65,5 +65,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset DateOut { get; set; }
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set; }
+        public string PackingListBaleNo { get;  set; }
+        public decimal PackingListNet { get;  set; }
+        public decimal PackingListGross { get;  set; }
+        public string DeliveryOrderSalesType { get;  set; }
+        public string DeliveryOrderSalesNo { get;  set; }
+        public string DestinationBuyerName { get; set; }
+        public int No { get; set; }
     }
 }
