@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             ComodityDesc = c.ComodityDesc,
                             UnitCode = c.UnitCode,
                             UOMUnit = c.UomUnit,
-                            Amount = c.Amount, 
+                            Amount = c.CMTPrice > 0 ? Convert.ToDecimal(c.Quantity) * c.CMTPrice : c.Amount,
                             Quantity = c.Quantity,
                         }).OrderBy(o => o.SectionCode).ThenBy(o => o.BuyerName).ThenBy(o => o.TruckingDate).ThenBy(o => o.InvoiceNo);              
 
