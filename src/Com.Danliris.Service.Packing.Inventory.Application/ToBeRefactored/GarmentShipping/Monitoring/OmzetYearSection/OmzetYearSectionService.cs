@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 section = invoice.SectionCode,
                 items = invoice.Items.Select(i => new JoinedDataItem
                 {
-                    amount = i.Amount
+                    amount = i.CMTPrice > 0 ? Convert.ToDecimal(i.Quantity) * i.CMTPrice : i.Amount
                 }).ToList()
             }).ToList();
 

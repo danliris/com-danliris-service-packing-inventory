@@ -110,13 +110,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                     .Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
                                     .ToList();
 
-            var currencies = GetCurrecncies(currencyFilters).Result;
+            var currencies = GetCurrencies(currencyFilters).Result;
 
             decimal rate;
 
             foreach (var data in newQ)
             {
-                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
                 //rate = 0;
                 data.Rate = rate;
                 data.FOBIdr = rate * data.FOB;
@@ -257,11 +257,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             package.SaveAs(stream);
             return stream;
         }
-
-
-        async Task<List<GarmentCurrency>> GetCurrecncies(List<CurrencyFilter> filters)
+        
+        async Task<List<GarmentCurrency>> GetCurrencies(List<CurrencyFilter> filters)
         {
-            string uri = "master/garment-currencies/by-code-before-date";
+            string uri = "master/garment-detail-currencies/single-by-code-date-peb";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
             var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));

@@ -19,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double Quantity { get; set; }
         public string UOMUnit { get; set; }
         public string CurrencyCode { get; set; }
-        public double Rate { get; set; }
+        public decimal Rate { get; set; }
         public decimal Amount { get; set; }
         public decimal AmountIDR { get; set; }
     }
