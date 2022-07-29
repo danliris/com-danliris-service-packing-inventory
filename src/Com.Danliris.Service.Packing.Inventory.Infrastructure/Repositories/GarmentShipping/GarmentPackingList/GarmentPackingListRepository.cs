@@ -85,7 +85,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentPackingListModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet
+				.Include(i => i.Items)
+					.ThenInclude(i => i.Details)
+						.ThenInclude(i => i.Sizes)
+				.Include(i => i.Measurements)
+				.Include(i => i.StatusActivities).AsNoTracking();
         }
 
         public Task<GarmentPackingListModel> ReadByIdAsync(int id)
@@ -313,7 +318,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentPackingListModel> Query => _dbSet.AsQueryable();
 
-        public Task<int> SaveChanges()
+	 
+		public Task<int> SaveChanges()
         {
             return _dbContext.SaveChangesAsync();
         }

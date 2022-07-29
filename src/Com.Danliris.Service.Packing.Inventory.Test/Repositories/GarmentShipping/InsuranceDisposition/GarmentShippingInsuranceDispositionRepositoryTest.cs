@@ -47,6 +47,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 item.SetCurrencyRate(item.CurrencyRate + 1, data.LastModifiedBy, data.LastModifiedAgent);
                 item.SetPolicyDate(item.PolicyDate.AddDays(2), data.LastModifiedBy, data.LastModifiedAgent);
                 item.SetPolicyNo(item.PolicyNo + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetAmount2A(item.Amount2A + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetAmount2B(item.Amount2B + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetAmount2C(item.Amount2C + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetAmount1A(item.Amount1A + 1, data.LastModifiedBy, data.LastModifiedAgent);
+                item.SetAmount1B(item.Amount1B + 1, data.LastModifiedBy, data.LastModifiedAgent);
             }
 
 
