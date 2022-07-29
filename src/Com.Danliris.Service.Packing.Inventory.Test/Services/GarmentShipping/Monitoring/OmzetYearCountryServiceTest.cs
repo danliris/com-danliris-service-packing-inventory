@@ -55,7 +55,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 {
                     Id = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
+                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 2)
                 {
                     Id = 1
                 }
@@ -102,7 +102,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 {
                     Id = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
+                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 2)
                 {
                     Id = 1
                 }
