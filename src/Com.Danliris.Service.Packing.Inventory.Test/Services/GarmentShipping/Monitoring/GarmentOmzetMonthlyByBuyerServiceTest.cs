@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },

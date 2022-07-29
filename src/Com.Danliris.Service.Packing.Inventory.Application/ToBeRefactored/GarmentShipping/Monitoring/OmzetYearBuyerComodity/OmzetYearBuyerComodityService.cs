@@ -39,24 +39,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var packinglistquery = shippingpackinglistRepository.ReadAll()
                                    .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
 
-            var newQ = (from a in packinglistquery
-                        join b in invoicequery on a.Id equals b.PackingListId
-                        join c in invoiceitemquery on b.Id equals c.GarmentShippingInvoiceId
-                      
-                        group new { Qty = c.Quantity,  Amt = c.Amount, Uom = c.UomUnit } by new
-                        {
-                            a.BuyerAgentName,
-                            c.ComodityName,
-                        } into G
+            var newQ = from a in packinglistquery
+                       join b in invoicequery on a.Id equals b.PackingListId
+                       join c in invoiceitemquery on b.Id equals c.GarmentShippingInvoiceId
+
+                       select new OmzetYearBuyerComodityTempViewModel
+                       {
+                           buyerName = a.BuyerAgentName,
+                           comodityName = c.ComodityName,
+                           quantity = c.Quantity,
+                           uomunit = c.UomUnit,
+                           amount = c.CMTPrice > 0 ? Convert.ToDecimal(c.Quantity) * c.CMTPrice : c.Amount,
+                       };
+            //        
+            var Query = from data in newQ
+                        group data by new { data.buyerName, data.comodityName } into groupData
                         select new OmzetYearBuyerComodityViewModel
                         {
-                            buyerName = G.Key.BuyerAgentName,
-                            comodityName = G.Key.ComodityName,
-                            pcsQuantity = G.Where(i => i.Uom == "PCS").Sum(i => i.Qty),
-                            setsQuantity = G.Where(i => i.Uom == "SETS").Sum(i => i.Qty),
-                            amount = G.Sum(i => i.Amt),
-                        });
-            return newQ;
+                            buyerName = groupData.Key.buyerName,
+                            comodityName = groupData.Key.comodityName,
+                            pcsQuantity = groupData.Where(i =>  i.uomunit == "PCS").Sum(i => i.quantity),
+                            setsQuantity = groupData.Where(i => i.uomunit == "SETS").Sum(i => i.quantity),
+                            amount = Math.Round(groupData.Sum(s => s.amount), 2),
+                        };
+            return Query.AsQueryable();
         }
         
         public List<OmzetYearBuyerComodityViewModel> GetReportData(int year)
