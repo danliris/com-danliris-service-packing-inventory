@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
@@ -90,10 +90,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
@@ -150,9 +150,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadAll())
                 .Returns(items.AsQueryable());
 
-
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -187,7 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     {
                        GarmentShippingInvoiceId = 2
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 2
                     },
@@ -234,10 +233,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 .Returns(items.AsQueryable());
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "USD" } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
@@ -265,10 +264,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
 
             var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new GarmentDetailCurrency() { code = "usd" } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
                 });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);

@@ -95,22 +95,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             }).ToList();
 
-            //var currencyFilters = newQ
-            //                        .GroupBy(o => new { o.PEBDate, o.CurrencyCode })
-            //                        .Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
-            //                        .ToList();
-            //var currencies = GetCurrecncies(currencyFilters).Result;
+            var currencyFilters = Query
+                           .GroupBy(o => new { o.PEBDate, o.CurrencyCode })
+                           .Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
+                           .ToList();
 
-            double rate;
+            var currencies = GetCurrencies(currencyFilters).Result;
 
-            foreach (var data in newQ)
+            decimal rate;
+
+            foreach (var data in Query)
             {
-                ///rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
-                var Read1 = GetCurrencies(data.CurrencyCode, data.PEBDate.DateTime.AddDays(1)).Result;
-                //rate = currencies.Where(q => q.code == data.CurrencyCode && q.date <= data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault();
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
 
-                data.Rate = Read1.rate;
-                data.AmountIDR = (decimal)Read1.rate * data.Amount;
+                data.Rate = rate;
+                data.AmountIDR = rate * data.Amount;
             }
 
             return newQ;
@@ -271,23 +270,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         }
 
 
-        async Task<GarmentDetailCurrency> GetCurrencies(string code, DateTime date)
+        //async Task<GarmentDetailCurrency> GetCurrencies(string code, DateTime date)
+        //{
+        //    string uri = "master/garment-detail-currencies/single-by-code-date";
+        //    IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+
+        //    var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
+        //    var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{uri}?code={code}&stringDate={date.ToString()}").Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var content = response.Content.ReadAsStringAsync().Result;
+        //        Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+        //        GarmentDetailCurrency viewModel = JsonConvert.DeserializeObject<GarmentDetailCurrency>(result.GetValueOrDefault("data").ToString());
+        //        return viewModel;
+        //    }
+        //    else
+        //    {
+        //        return new GarmentDetailCurrency();
+        //    }
+        //}
+
+        async Task<List<GarmentDetailCurrency>> GetCurrencies(List<CurrencyFilter> filters)
         {
-            string uri = "master/garment-detail-currencies/single-by-code-date";
+            string uri = "master/garment-detail-currencies/single-by-code-date-peb";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            // var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
-            var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{uri}?code={code}&stringDate={date.ToString()}").Result;
+            var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
-                GarmentDetailCurrency viewModel = JsonConvert.DeserializeObject<GarmentDetailCurrency>(result.GetValueOrDefault("data").ToString());
+                List<GarmentDetailCurrency> viewModel = JsonConvert.DeserializeObject<List<GarmentDetailCurrency>>(result.GetValueOrDefault("data").ToString());
                 return viewModel;
             }
             else
             {
-                return new GarmentDetailCurrency();
+                return new List<GarmentDetailCurrency>();
             }
         }
 
