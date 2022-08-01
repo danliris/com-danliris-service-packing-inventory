@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     quantity = i.Quantity,
                     uom = i.UomUnit,
-                    amount = i.CMTPrice > 0 ? Convert.ToDecimal(i.Quantity) * i.CMTPrice : i.Amount
+                    amount = i.Amount
                 }).ToList()
             }).ToList();
 
