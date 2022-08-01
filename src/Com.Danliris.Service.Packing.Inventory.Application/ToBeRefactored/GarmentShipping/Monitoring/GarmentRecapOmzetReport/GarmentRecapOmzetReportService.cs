@@ -275,7 +275,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         //    string uri = "master/garment-detail-currencies/single-by-code-date";
         //    IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-        //    // var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
+        //    var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
         //    var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{uri}?code={code}&stringDate={date.ToString()}").Result;
         //    if (response.IsSuccessStatusCode)
         //    {
@@ -290,7 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         //    }
         //}
 
-        async Task<List<GarmentCurrency>> GetCurrencies(List<CurrencyFilter> filters)
+        async Task<List<GarmentDetailCurrency>> GetCurrencies(List<CurrencyFilter> filters)
         {
             string uri = "master/garment-detail-currencies/single-by-code-date-peb";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
@@ -300,12 +300,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
-                List<GarmentCurrency> viewModel = JsonConvert.DeserializeObject<List<GarmentCurrency>>(result.GetValueOrDefault("data").ToString());
+                List<GarmentDetailCurrency> viewModel = JsonConvert.DeserializeObject<List<GarmentDetailCurrency>>(result.GetValueOrDefault("data").ToString());
                 return viewModel;
             }
             else
             {
-                return new List<GarmentCurrency>();
+                return new List<GarmentDetailCurrency>();
             }
         }
 
