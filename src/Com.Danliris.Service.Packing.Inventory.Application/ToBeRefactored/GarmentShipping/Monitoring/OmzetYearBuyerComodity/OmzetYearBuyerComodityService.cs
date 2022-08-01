@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                            comodityName = c.ComodityName,
                            quantity = c.Quantity,
                            uomunit = c.UomUnit,
-                           amount = c.CMTPrice > 0 ? Convert.ToDecimal(c.Quantity) * c.CMTPrice : c.Amount,
+                           amount = c.Amount,
                        };
             //        
             var Query = from data in newQ

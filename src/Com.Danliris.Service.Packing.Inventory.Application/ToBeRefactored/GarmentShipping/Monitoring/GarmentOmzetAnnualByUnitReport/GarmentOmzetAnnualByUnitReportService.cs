@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                      PEBDate = a.PEBDate,
                                      TruckingDate = c.TruckingDate,
                                      RONumber = b.RONo,
-                                     Amount = b.CMTPrice > 0 ? Convert.ToDecimal(b.Quantity) * b.CMTPrice : b.Amount,
+                                     Amount = b.Amount,
                                      Rate = 0,
                                  }).Distinct().ToList();
             //                 

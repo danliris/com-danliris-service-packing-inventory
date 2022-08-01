@@ -119,7 +119,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                          Quantity = b.UomUnit.Substring(0, 3) == "SET" || b.UomUnit.Substring(0, 3) == "PAC" ? b.Quantity * 2 : b.Quantity,
                                          UOMUnit = b.UomUnit,
                                          CurrencyCode = b.CurrencyCode,
-                                         Amount = b.CMTPrice > 0 ? Convert.ToDecimal(b.Quantity) * b.CMTPrice : b.Amount,
+                                         Amount = b.Amount,
                                      }).Distinct().ToList();
 
             var Query2 = (from c in sampleExpendGood
