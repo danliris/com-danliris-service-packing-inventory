@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //
             var CombineData = Query1.Union(Query2).ToList();
             // Final Query Omzet
-            var Query = (from a in Query1
+            var Query = (from a in CombineData
                          join b in queryInv on a.InvoiceNo equals b.InvoiceNo
                          join c in queryPL on b.PackingListId equals c.Id
                          select new GarmentDetailOmzetByUnitReportViewModel
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.AmountIDR = rate * data.Amount;
             }
    
-            return Query.OrderBy(w => w.UnitCode).ThenBy(w => w.PEBDate).ThenBy(w => w.InvoiceNo).ToList();
+            return Query.Distinct().OrderBy(w => w.UnitCode).ThenBy(w => w.PEBDate).ThenBy(w => w.InvoiceNo).ToList();
 
         }
 
