@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentDraftPackingListItemModel GetModel()
         {
-            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(1, "", 1) };
+            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(1, "", 1, 1) };
             var details = new HashSet<GarmentDraftPackingListDetailModel> { new GarmentDraftPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1) };
             var model = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", 1, "", "", details, "");
 
@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentDraftPackingListItemModel GetEmptyModel()
         {
-            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(0, null, 0) };
+            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(0, null, 0, 0) };
             var details = new HashSet<GarmentDraftPackingListDetailModel> { new GarmentDraftPackingListDetailModel(0, 0, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, sizes, 1) };
             var model = new GarmentDraftPackingListItemModel(null, null, 0, null, 0, null, null, null, 0, 0, null, 0, 0, 0, 0, 0, null, 0, null, null, null, null, null, 0, null, null, details, null);
 
@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
                 var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel>();
                 foreach (var s in d.Sizes)
                 {
-                    sizes.Add(new GarmentDraftPackingListDetailSizeModel(s.SizeId, s.Size, s.Quantity) { Id = s.Id });
+                    sizes.Add(new GarmentDraftPackingListDetailSizeModel(s.SizeId, s.Size, s.SizeIdx, s.Quantity) { Id = s.Id });
                 }
                 details.Add(new GarmentDraftPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.Colour, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes, d.Index) { Id = d.Id });
             }

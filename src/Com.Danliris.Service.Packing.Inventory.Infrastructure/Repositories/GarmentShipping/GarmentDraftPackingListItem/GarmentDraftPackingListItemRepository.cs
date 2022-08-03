@@ -141,6 +141,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                         {
                             sizeToUpdate.SetSizeId(size.SizeId, _identityProvider.Username, UserAgent);
                             sizeToUpdate.SetSize(size.Size, _identityProvider.Username, UserAgent);
+                            sizeToUpdate.SetSizeIdx(size.SizeIdx, _identityProvider.Username, UserAgent);
                             sizeToUpdate.SetQuantity(size.Quantity, _identityProvider.Username, UserAgent);
                         }
                         else
