@@ -29,11 +29,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             var details = new HashSet<GarmentDraftPackingListDetailModel> {
                     new GarmentDraftPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentDraftPackingListDetailSizeModel> {
-                        new GarmentDraftPackingListDetailSizeModel(1, "", 1),
-                        new GarmentDraftPackingListDetailSizeModel(1, "", 1)
+                        new GarmentDraftPackingListDetailSizeModel(1, "", 1, 1),
+                        new GarmentDraftPackingListDetailSizeModel(1, "", 1, 1)
                     },1),
                     new GarmentDraftPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentDraftPackingListDetailSizeModel> {
-                        new GarmentDraftPackingListDetailSizeModel(1, "", 1)
+                        new GarmentDraftPackingListDetailSizeModel(1, "", 1, 1)
                     },1)
             };
             
@@ -90,6 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 {
                     size.SetSizeId(1 + size.SizeId, size.LastModifiedBy, size.LastModifiedAgent);
                     size.SetSize(1 + size.Size, size.LastModifiedBy, size.LastModifiedAgent);
+                    size.SetSizeIdx(1 + size.SizeIdx, size.LastModifiedBy, size.LastModifiedAgent);
                     size.SetQuantity(1 + size.Quantity, size.LastModifiedBy, size.LastModifiedAgent);
 
                     if (item.Id == 2 || detail.Id == 2 || size.Id == 2)
