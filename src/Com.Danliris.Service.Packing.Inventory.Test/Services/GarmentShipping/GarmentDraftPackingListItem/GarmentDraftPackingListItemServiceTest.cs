@@ -165,7 +165,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(1, "", 1) };
+            var sizes = new HashSet<GarmentDraftPackingListDetailSizeModel> { new GarmentDraftPackingListDetailSizeModel(1, "", 1, 1) };
             var details = new HashSet<GarmentDraftPackingListDetailModel> { new GarmentDraftPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, sizes, 1) };
             var model = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", 1, "", "", details, "");
 

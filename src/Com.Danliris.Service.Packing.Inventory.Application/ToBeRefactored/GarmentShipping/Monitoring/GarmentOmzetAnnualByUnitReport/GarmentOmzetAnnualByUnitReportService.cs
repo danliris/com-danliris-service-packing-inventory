@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                      PEBDate = a.PEBDate,
                                      TruckingDate = c.TruckingDate,
                                      RONumber = b.RONo,
-                                     Amount = b.CMTPrice > 0 ? Convert.ToDecimal(b.Quantity) * b.CMTPrice : b.Amount,
+                                     Amount = b.Amount,
                                      Rate = 0,
                                  }).Distinct().ToList();
             //                 
@@ -128,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.AmountIDR = rate * data.Amount;
             }
             //
-            var QueryOmzet1 = (from a in Query where a.UnitCode == "C1A"
+            var QueryOmzet1 = (from a in Query.Distinct() where a.UnitCode == "C1A"
 
                                select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
                                .GroupBy(x => new { x.Month, x.MonthName, x.UnitName }, (key, group) => new AnnualOmzetByUnitViewModel
@@ -147,7 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Amount5IDR = 0,
                        }).OrderBy(i => i.Month);
             //
-            var QueryOmzet2 = (from a in Query
+            var QueryOmzet2 = (from a in Query.Distinct()
                                where a.UnitCode == "C1B"
 
                                select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
@@ -167,7 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Amount5IDR = 0,
                                }).OrderBy(i => i.Month);
             //
-            var QueryOmzet3 = (from a in Query
+            var QueryOmzet3 = (from a in Query.Distinct()
                                where a.UnitCode == "C2A"
 
                                select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
@@ -187,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Amount5IDR = 0,
                                }).OrderBy(i => i.Month);
             //
-            var QueryOmzet4 = (from a in Query
+            var QueryOmzet4 = (from a in Query.Distinct()
                                where a.UnitCode == "C2B"
 
                                select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
@@ -207,8 +207,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Amount5IDR = 0,
                                }).OrderBy(i => i.Month);
             //
-            var QueryOmzet5 = (from a in Query
-                              where a.UnitCode == "C2C"
+            var QueryOmzet5 = (from a in Query.Distinct()
+                               where a.UnitCode == "C2C"
 
                               select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
                                .GroupBy(x => new { x.Month, x.MonthName, x.UnitName }, (key, group) => new AnnualOmzetByUnitViewModel
