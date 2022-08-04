@@ -57,7 +57,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 foreach (var item in Items)
                 {
                     DetailErrors += "{";
-                    DetailErrors += "WarehouseList : [ ";
+                    DetailErrors += "WarehouseList : [";
                     foreach (var detail in item)
                     {
                         DetailErrors += "{";

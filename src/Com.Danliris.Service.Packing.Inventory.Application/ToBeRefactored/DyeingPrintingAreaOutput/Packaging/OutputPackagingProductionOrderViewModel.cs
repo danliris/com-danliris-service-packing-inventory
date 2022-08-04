@@ -57,5 +57,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset DateIn { get; set; }
         public DateTimeOffset DateOut { get; set; }
         public string MaterialOrigin { get; set; }
+        public string ProductPackingCodeCreated { get; internal set; }
     }
 }
