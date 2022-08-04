@@ -150,7 +150,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    Phrase = new Phrase("KETERANGAN   : " + viewModel.description, normal_font)
             //});
             string amountToText = "";
+            string amountToText1 = "";
             amountToText = CurrencyToText.ToWords(Convert.ToDecimal(viewModel.totalAmount));
+
+            string AmtTotal = string.Format("{0:N2}", viewModel.totalAmount);
+            amountToText1 = CurrencyToText1.ToWords(AmtTotal);
+
             if (viewModel.items.FirstOrDefault().currency.Code == "USD")
             {
                 tableItems.AddCell(new PdfPCell
@@ -158,7 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Colspan = 2,
                     PaddingBottom = 10f,
                     Border = Rectangle.NO_BORDER,
-                    Phrase = new Phrase("SAY : US DOLLARS " + amountToText.ToUpper() + " ONLY ///", normal_font)
+                    Phrase = new Phrase("SAY : US DOLLARS " + amountToText.ToUpper() + " " + amountToText1.ToUpper() + " ONLY ///", normal_font)
                     //Phrase = new Phrase("SAY : US DOLLARS " + NumberToTextEN.toWords(viewModel.totalAmount).Trim().ToUpper() + " ONLY ///", normal_font)
                 });
             }

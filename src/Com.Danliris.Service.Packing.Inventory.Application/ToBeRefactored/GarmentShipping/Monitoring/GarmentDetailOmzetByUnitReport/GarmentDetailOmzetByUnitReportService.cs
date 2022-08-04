@@ -99,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                               ArticleStyle = a.Article.TrimEnd(),
                               QuantityInPCS = a.TotalQuantity,
                           }).Distinct().ToList();
-
+            
             //
             var sampleExpendGood = GetSampleExpenditureGood(DateFrom, DateTo, unit, offset);
             var RO1s = sampleExpendGood.Select(x => x.RONo).ToArray();
@@ -182,8 +182,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.Rate = rate;
                 data.AmountIDR = rate * data.Amount;
             }
-   
-            return Query.Distinct().OrderBy(w => w.UnitCode).ThenBy(w => w.PEBDate).ThenBy(w => w.InvoiceNo).ToList();
+            //
+            // Query Grouping >> Distinct
+
+            var NewQuery1 = (from a in Query
+                             group new { } by new 
+                             { a.Urutan, a.InvoiceNo, a.RONumber, a.BuyerAgentName, a.ArticleStyle,
+                               a.ComodityName, a.UnitCode, a.PEBDate, a.TruckingDate, a.Quantity,
+                               a.UOMUnit, a.CurrencyCode, a.Rate, a.Amount, a.QuantityInPCS, a.AmountIDR
+                             } into G
+
+                             select new GarmentDetailOmzetByUnitReportViewModel
+                             {
+                                 Urutan = G.Key.Urutan,
+                                 InvoiceNo = G.Key.InvoiceNo,
+                                 PEBDate = G.Key.PEBDate,
+                                 TruckingDate = G.Key.TruckingDate,
+                                 BuyerAgentName = G.Key.BuyerAgentName,
+                                 ComodityName = G.Key.ComodityName,
+                                 UnitCode = G.Key.UnitCode,
+                                 RONumber = G.Key.RONumber,
+                                 Quantity = G.Key.Quantity,
+                                 UOMUnit = G.Key.UOMUnit,
+                                 CurrencyCode = G.Key.CurrencyCode,
+                                 Amount = G.Key.Amount,
+                                 ArticleStyle = G.Key.ArticleStyle,
+                                 QuantityInPCS = G.Key.QuantityInPCS,
+                                 Rate = G.Key.Rate,
+                                 AmountIDR = G.Key.AmountIDR,
+                             });
+
+            return NewQuery1.Distinct().OrderBy(w => w.UnitCode).ThenBy(w => w.TruckingDate).ThenBy(w => w.BuyerAgentName).ThenBy(w => w.InvoiceNo).ThenBy(w => w.RONumber).ToList();
 
         }
 
