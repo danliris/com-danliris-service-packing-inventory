@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities
 {
-    public static class CurrencyToText
+    public static class CurrencyToText1
     {
-        public static string ToWords(this decimal value)
+        public static string ToWords(this string value)
         {
             string decimals = "";
-            string input = Math.Round(value, 2).ToString();
+            string input = value;    //Math.Round(value, 2).ToString();
 
             if (input.Contains(","))
             {
@@ -17,23 +17,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
                 decimals = input.Substring(input.IndexOf(",") + 1);
                 // remove decimal part from input
                 input = input.Remove(input.IndexOf(","));
-            } else if(input.Contains("."))
-            {
-                var a = input.IndexOf(".");
-                decimals = input.Substring(input.IndexOf(".") + 1);
-                // remove decimal part from input
-                input = input.Remove(input.IndexOf("."));
             }
+            //else if(input.Contains("."))
+            //{
+            //    var a = input.IndexOf(".");
+            //    decimals = input.Substring(input.IndexOf(".") + 1);
+            //    // remove decimal part from input
+            //    input = input.Remove(input.IndexOf("."));
+            //}
 
             // Convert input into words. save it into strWords
-            string strWords = GetWords(input);
+            // string strWords = GetWords(input);
+            string strWords = "";
 
+            if (decimals.Length > 0 && decimals != "00")
+            {
+                // if there is any decimal part convert it to words and add it to strWords.
+                strWords += " and Cents " + GetWords(decimals);
+            }
 
-            //if (decimals.Length > 0)
-            //{
-            //    // if there is any decimal part convert it to words and add it to strWords.
-            //    strWords += " and Cents " + GetWords(decimals);
-            //}
+            if (decimals.Length > 0 && decimals == "00")
+            {
+                // if there is any decimal part convert it to words and add it to strWords.
+                strWords += "";
+            }
 
             return strWords;
         }
