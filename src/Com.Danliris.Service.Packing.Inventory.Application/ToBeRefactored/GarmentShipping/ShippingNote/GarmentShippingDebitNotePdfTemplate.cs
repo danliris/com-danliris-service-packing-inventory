@@ -181,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    Border = Rectangle.NO_BORDER,
             //    PaddingRight = 10f,
             //    Phrase = new Phrase("Please TT the above payment to our correspondence bank as follow :", normal_font)
-            //});
+            //});  
             Phrase phraseSign = new Phrase();
 
             phraseSign.Add(new Chunk("S.E. & O\n" + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("en-EN")) + "\n\n\n\n", normal_font));
