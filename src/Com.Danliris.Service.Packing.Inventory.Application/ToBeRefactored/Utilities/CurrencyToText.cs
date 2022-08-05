@@ -8,19 +8,36 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
     {
         public static string ToWords(this decimal value)
         {
+            string dcmls = "";
             string decimals = "";
             string input = Math.Round(value, 2).ToString();
 
             if (input.Contains(","))
             {
                 var a = input.IndexOf(",");
-                decimals = input.Substring(input.IndexOf(",") + 1);
+                dcmls = input.Substring(input.IndexOf(",") + 1);
+                if (dcmls.Length == 1)
+                {
+                    decimals = dcmls + "0";
+                }
+                else
+                {
+                    decimals = input.Substring(input.IndexOf(",") + 1);
+                }
                 // remove decimal part from input
                 input = input.Remove(input.IndexOf(","));
             } else if(input.Contains("."))
             {
                 var a = input.IndexOf(".");
-                decimals = input.Substring(input.IndexOf(".") + 1);
+                dcmls = input.Substring(input.IndexOf(".") + 1);
+                if (dcmls.Length == 1)
+                {
+                    decimals = dcmls + "0";
+                }
+                else
+                {
+                    decimals = input.Substring(input.IndexOf(".") + 1);
+                }
                 // remove decimal part from input
                 input = input.Remove(input.IndexOf("."));
             }
