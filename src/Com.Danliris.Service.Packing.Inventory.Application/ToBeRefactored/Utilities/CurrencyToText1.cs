@@ -90,12 +90,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 
             string word = "";
 
-            if (no > 99 && no < 1000)
-            {
-                int i = no / 100;
-                word = word + Ones[i - 1] + " Hundred ";
-                no = no % 100;
-            }
+            //if (no > 99 && no < 1000)
+            //{
+            //    int i = no / 100;
+            //    word = word + Ones[i - 1] + " Hundred ";
+            //    no = no % 100;
+            //}
 
             if (no > 19 && no < 100)
             {
