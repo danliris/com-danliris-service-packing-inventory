@@ -179,6 +179,62 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         }
 
         [Fact]
+        public async Task ReadPdfById_Success_USD2()
+        {
+            var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.18) };
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.18, items);
+
+            var repoMock = new Mock<IGarmentShippingNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.GetAsync(It.Is<string>(i => i.Contains("master/garment-buyers"))))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new Buyer() }))
+                });
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task ReadPdfById_Success_USD3()
+        {
+            var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.74) };
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.74, items);
+
+            var repoMock = new Mock<IGarmentShippingNoteRepository>();
+            repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(model);
+
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.GetAsync(It.Is<string>(i => i.Contains("master/garment-buyers"))))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new Buyer() }))
+                });
+
+            var spMock = GetServiceProvider(repoMock.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = await service.ReadPdfById(1);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task ReadPdfById_Success_IDR()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 1, "IDR", 1) };
