@@ -153,8 +153,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadPdfById_Success_USD1()
         {
-            var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.50) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.50, items);
+            var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.5) };
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.5, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
