@@ -46,11 +46,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
             string strWords = GetWords(input);
 
 
-            //if (decimals.Length > 0)
-            //{
-            //    // if there is any decimal part convert it to words and add it to strWords.
-            //    strWords += " and Cents " + GetWords(decimals);
-            //}
+            if (decimals.Length > 0)
+            {
+                // if there is any decimal part convert it to words and add it to strWords.
+                strWords += " and Cents " + GetWords(decimals);
+            }
 
             return strWords;
         }
