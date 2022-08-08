@@ -550,11 +550,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (totalPaid < 0)
             {
                 totalPaid = totalPaid * -1;
-                amountToText = "MINUS " + NumberToTextEN.toWords((double)totalPaid);
+                amountToText = "MINUS " + CurrencyToText.ToWords(totalPaid);
             }
             else
             {
-                amountToText = NumberToTextEN.toWords((double)totalPaid);
+                amountToText = CurrencyToText.ToWords(totalPaid);
             }
             calculationCellLeft.Phrase = new Phrase($"SAY : US DOLLARS {amountToText.ToUpper()} ONLY ///", normal_font);
             calculationCellLeft.Colspan = 4;
