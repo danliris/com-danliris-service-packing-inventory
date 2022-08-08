@@ -552,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=350,
+                            AdjustmentValue=-1300,
                             AdjustmentDescription="AA",
 
                         }
