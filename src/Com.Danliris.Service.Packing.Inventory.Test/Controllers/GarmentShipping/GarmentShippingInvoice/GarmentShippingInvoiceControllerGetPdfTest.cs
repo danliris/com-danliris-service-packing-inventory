@@ -46,9 +46,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=1002,
-                            Amount=(decimal)12222.01,
-                            Price=1332,
+                            Quantity=102,
+                            Amount=(decimal)1326.25,
+                            Price=13,
                             RONo="roNo",
                             CMTPrice=0,
                             Uom= new UnitOfMeasurement
@@ -60,10 +60,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10021,
-                            Amount=(decimal)1222.01,
-                            Price=1332,
-                            CMTPrice=129,
+                            Quantity=120,
+                            Amount=(decimal)1440.34,
+                            Price=12,
+                            CMTPrice=(decimal)12.15,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10021,
+                            Quantity=110,
                             Amount=0,
                             Price=0,
                             CMTPrice=0,
@@ -90,7 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=650,
                             AdjustmentDescription="AA",
 
                         }
@@ -129,9 +129,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         {
                             ComodityDesc="aad",
                             Quantity=10,
-                            Amount=99999999999,
+                            Amount=(decimal)1250.70,
                             Price=1332,
-                            CMTPrice=1,
+                            CMTPrice=(decimal)11.35,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=650,
                             AdjustmentDescription="AA",
 
                         }
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         {
                             ComodityDesc="aa",
                             Quantity=1002,
-                            Amount=(decimal)12222.01,
+                            Amount=(decimal)1222.40,
                             Price=1332,
                             RONo="roNo",
                             CMTPrice=0,
@@ -197,9 +197,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         {
                             ComodityDesc="aad",
                             Quantity=10021,
-                            Amount=(decimal)1222.01,
+                            Amount=(decimal)1150.30,
                             Price=1332,
-                            CMTPrice=129,
+                            CMTPrice=(decimal)12.25,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -226,7 +226,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=650,
                             AdjustmentDescription="AA",
 
                         }
@@ -264,10 +264,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10,
-                            Amount=99999999999,
-                            Price=1332,
-                            CMTPrice=1,
+                            Quantity=100,
+                            Amount=(decimal)1200.55,
+                            Price=12,
+                            CMTPrice=(decimal)7.85,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -280,7 +280,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=350,
                             AdjustmentDescription="AA",
 
                         }
@@ -318,9 +318,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=1002,
-                            Amount=(decimal)12222.01,
-                            Price=1332,
+                            Quantity=102,
+                            Amount=(decimal)1326.35,
+                            Price=13,
                             RONo="roNo",
                             CMTPrice=0,
                             Uom= new UnitOfMeasurement
@@ -332,9 +332,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10021,
-                            Amount=(decimal)1222.01,
-                            Price=1332,
+                            Quantity=105,
+                            Amount=(decimal)1260.48,
+                            Price=12,
                             CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
@@ -362,7 +362,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=650,
                             AdjustmentDescription="AA",
 
                         }
@@ -400,10 +400,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10,
-                            Amount=99999999999,
-                            Price=1332,
-                            CMTPrice=1,
+                            Quantity=102,
+                            Amount=(decimal)1236.52,
+                            Price=13,
+                            CMTPrice=(decimal)8.48,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -454,9 +454,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=1002,
-                            Amount=(decimal)12222.01,
-                            Price=1332,
+                            Quantity=102,
+                            Amount=(decimal)1236.52,
+                            Price=13,
                             RONo="roNo",
                             CMTPrice=0,
                             Uom= new UnitOfMeasurement
@@ -468,9 +468,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10021,
-                            Amount=(decimal)1222.01,
-                            Price=1332,
+                            Quantity=120,
+                            Amount=(decimal)1560.48,
+                            Price=13,
                             CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
@@ -498,7 +498,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=-3000,
                             AdjustmentDescription="AA",
 
                         }
@@ -536,10 +536,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10,
-                            Amount=99999999999,
-                            Price=1332,
-                            CMTPrice=1,
+                            Quantity=105,
+                            Amount=(decimal)1260.58,
+                            Price=12,
+                            CMTPrice=(decimal)7.54,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
@@ -552,7 +552,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                     {
                         new GarmentShippingInvoiceAdjustmentViewModel
                         {
-                            AdjustmentValue=1000,
+                            AdjustmentValue=-1300,
                             AdjustmentDescription="AA",
 
                         }
@@ -590,9 +590,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=1002,
-                            Amount=(decimal)12222.01,
-                            Price=1332,
+                            Quantity=102,
+                            Amount=(decimal)1236.59,
+                            Price=13,
                             RONo="roNo",
                             CMTPrice=0,
                             Uom= new UnitOfMeasurement
@@ -604,9 +604,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=10021,
-                            Amount=(decimal)1222.01,
-                            Price=1332,
+                            Quantity=120,
+                            Amount=(decimal)1440.28,
+                            Price=12,
                             CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
