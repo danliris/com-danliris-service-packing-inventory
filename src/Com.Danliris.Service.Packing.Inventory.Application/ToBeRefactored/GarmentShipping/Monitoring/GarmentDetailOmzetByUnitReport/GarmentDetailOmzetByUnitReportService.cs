@@ -25,7 +25,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentShippingInvoiceRepository repository;
         private readonly IGarmentShippingInvoiceItemRepository itemrepository;
         private readonly IGarmentPackingListRepository plrepository;
-        private readonly IGarmentPackingListItemRepository itemplrepository;
         private readonly IServiceProvider _serviceProvider;
         private readonly IIdentityProvider _identityProvider;
 
@@ -35,7 +34,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             itemrepository = serviceProvider.GetService<IGarmentShippingInvoiceItemRepository>();
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
-            itemplrepository = serviceProvider.GetService<IGarmentPackingListItemRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
@@ -43,9 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var queryInv = repository.ReadAll();
             var quaryInvItem = itemrepository.ReadAll();
-            var queryPL = plrepository.ReadAll();
-            var queryPLItem = itemplrepository.ReadAll();
-
+            var queryPL = plrepository.ReadAll();   
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
@@ -171,8 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var Query = (from a in queryPL 
                           join b in queryInv on a.Id equals b.PackingListId
-                          join c in quaryInvItem on b.Id equals c.GarmentShippingInvoiceId
-                          join d in queryPLItem on c.PackingListItemId equals d.Id 
+                          join c in quaryInvItem on b.Id equals c.GarmentShippingInvoiceId                          
                           where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false 
                                 && b.PEBDate != DateTimeOffset.MinValue
    
@@ -181,7 +176,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              a.InvoiceNo,
                              c.RONo,
                              a.BuyerAgentName,
-                             d.Article,
                              c.ComodityName,
                              c.UnitCode,
                              b.PEBDate,
@@ -201,7 +195,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              RONumber = G.Key.RONo,
                              UOMUnit = G.Key.UomUnit,
                              CurrencyCode = G.Key.CurrencyCode,
-                             ArticleStyle = G.Key.Article,
                              QuantityInPCS = Math.Round(G.Sum(m => m.Qty), 2),
                              Amount = Math.Round(G.Sum(m => m.Amt), 2),
                          }).ToList();
@@ -252,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "BUYER", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "ITEM", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "R/O", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "STYLE   ORD/ART NO", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "STYLE   ORD/ART NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "QUANTITY", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(decimal) });
@@ -266,7 +259,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (Query.ToArray().Count() == 0)
             {
 
-                result.Rows.Add("", "", "", "", "", "", "", "", "", 0, "", 0, "", 0, 0);
+                result.Rows.Add("", "", "", "", "", "", "", "", 0, "", 0, "", 0, 0);
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -311,7 +304,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string Rate = string.Format("{0:N2}", d.Rate);
                     string AmtIDR = string.Format("{0:N2}", d.AmountIDR);
 
-                    result.Rows.Add(index, d.UnitCode, d.InvoiceNo, TruckDate, PEBDate, d.BuyerAgentName, d.ComodityName, d.RONumber, d.ArticleStyle, d.QuantityInPCS, d.UOMUnit, d.Amount, d.CurrencyCode, d.Rate, d.AmountIDR);
+                    result.Rows.Add(index, d.UnitCode, d.InvoiceNo, TruckDate, PEBDate, d.BuyerAgentName, d.ComodityName, d.RONumber, d.QuantityInPCS, d.UOMUnit, d.Amount, d.CurrencyCode, d.Rate, d.AmountIDR);
                 }
 
                 //string TotQty = string.Format("{0:N2}", Query.Sum(x => x.QuantityInPCS));
@@ -322,7 +315,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 decimal TotUSD = Query.Sum(x => x.Amount);
                 decimal TotIDR = Query.Sum(x => x.AmountIDR);
 
-                result.Rows.Add("", "", "", "", " T  O  T  A  L  : ", "", "", "", "", TotQty, "", TotUSD, "", 0, TotIDR);
+                result.Rows.Add("", "", "", "", " T  O  T  A  L  : ", "", "", "", TotQty, "", TotUSD, "", 0, TotIDR);
                 bool styling = true;
 
                 foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
