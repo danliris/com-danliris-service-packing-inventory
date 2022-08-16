@@ -31,8 +31,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     newDetails.Add(detail);
                 }
             }
-            newDetails = newDetails.OrderBy(a => a.Index).ToList();
-
+            //newDetails = newDetails.OrderBy(a => a.Index).ToList();
+            newDetails = newDetails.OrderBy(a => a.Index).ThenBy(o => o.Carton1).ThenBy(o => o.Carton2).ToList();
             foreach (var d in newDetails)
             {
                 if (newItems.Count == 0)
