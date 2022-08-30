@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
@@ -295,7 +296,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellRightBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n0}", item.Quantity), body_font);
+                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity), body_font);
                 bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
                 bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
                 bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
@@ -344,7 +345,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.Colspan = 4;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            var val1 = total.Select(x => String.Format("{0:n0}", x.Value));
+            var val1 = total.Select(x => String.Format("{0:n2}", x.Value));
             var result1 = String.Join("\n", val1);
 
             var key1 = total.Select(x => String.Format("{0}", x.Key));
