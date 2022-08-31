@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aa",
-                            Quantity=102,
+                            Quantity=102.75,
                             Amount=(decimal)1326.25,
                             Price=13,
                             RONo="roNo",
@@ -54,13 +54,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Uom= new UnitOfMeasurement
                             {
                                 Id=1,
-                                Unit="aa"
+                                Unit="MTR"
                             },
                         },
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=120,
+                            Quantity=120.40,
                             Amount=(decimal)1440.34,
                             Price=12,
                             CMTPrice=(decimal)12.15,
@@ -68,21 +68,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Uom= new UnitOfMeasurement
                             {
                                 Id=2,
-                                Unit="abaa"
+                                Unit="YDS"
                             }
                         },
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=110,
+                            Quantity=110.65,
                             Amount=0,
                             Price=0,
                             CMTPrice=0,
                             RONo="roNo1",
                             Uom= new UnitOfMeasurement
                             {
-                                Id=2,
-                                Unit="abaa"
+                                Id=3,
+                                Unit="YARD"
                             }
                         }
                     },
@@ -264,7 +264,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                         new GarmentShippingInvoiceItemViewModel
                         {
                             ComodityDesc="aad",
-                            Quantity=100,
+                            Quantity=100.50,
                             Amount=(decimal)1200.55,
                             Price=12,
                             CMTPrice=(decimal)7.85,
@@ -272,9 +272,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
                             Uom= new UnitOfMeasurement
                             {
                                 Id=2,
-                                Unit="abaa"
+                                Unit="MTR"
                             }
-                        }
+                        },
+                        new GarmentShippingInvoiceItemViewModel
+                        {
+                            ComodityDesc="aad",
+                            Quantity=100.18,
+                            Amount=(decimal)1200.55,
+                            Price=12,
+                            CMTPrice=(decimal)7.85,
+                            RONo="roNo1",
+                            Uom= new UnitOfMeasurement
+                            {
+                                Id=2,
+                                Unit="YDS"
+                            }
+                        },
+                        new GarmentShippingInvoiceItemViewModel
+                        {
+                            ComodityDesc="aad",
+                            Quantity=100.65,
+                            Amount=(decimal)1200.55,
+                            Price=12,
+                            CMTPrice=(decimal)7.85,
+                            RONo="roNo1",
+                            Uom= new UnitOfMeasurement
+                            {
+                                Id=2,
+                                Unit="YARD"
+                            }
+                        },
                     },
                     GarmentShippingInvoiceAdjustments = new List<GarmentShippingInvoiceAdjustmentViewModel>()
                     {
