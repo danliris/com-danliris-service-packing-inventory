@@ -285,6 +285,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             modelToUpdate.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDeliveryOrderSales(model.DeliveryOrderSalesId, model.DeliveryOrderSalesNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetHasSalesInvoice(model.HasSalesInvoice, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
             foreach (var item in modelToUpdate.DyeingPrintingAreaOutputProductionOrders)
             {
                 var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
@@ -388,6 +389,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
@@ -457,6 +459,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
@@ -545,6 +548,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
@@ -614,6 +618,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             dbModel.SetPackingListRemark(model.PackingListRemark, _identityProvider.Username, UserAgent);
             dbModel.SetPackingLCNumber(model.PackingListLCNumber, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
             if (model.DestinationArea == DyeingPrintingArea.BUYER)
             {
                 dbModel.SetPackingIssuedBy(model.PackingListIssuedBy, _identityProvider.Username, UserAgent);
@@ -693,7 +698,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
-
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
             {
                 var localItem = model.DyeingPrintingAreaOutputProductionOrders.FirstOrDefault(s => s.Id == item.Id);
@@ -819,6 +824,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
@@ -959,6 +965,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetDate(model.Date, _identityProvider.Username, UserAgent);
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
             {
@@ -1018,6 +1025,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetShift(model.Shift, _identityProvider.Username, UserAgent);
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             //dbModel.SetDeliveryOrderAval(model.DeliveryOrderAvalId, model.DeliveryOrderAvalNo, _identityProvider.Username, UserAgent);
+            dbModel.SetPackingListAuthorized(model.PackingListAuthorized, _identityProvider.Username, UserAgent);
 
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders.Where(s => !s.HasNextAreaDocument))
             {
