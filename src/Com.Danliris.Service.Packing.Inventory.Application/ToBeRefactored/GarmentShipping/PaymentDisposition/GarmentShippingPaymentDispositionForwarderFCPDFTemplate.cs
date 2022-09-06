@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             Paragraph title1 = new Paragraph("DISPOSISI BIAYA SHIPMENT", normal_font_underlined);
             Paragraph no = new Paragraph(viewModel.dispositionNo, normal_font);
-            Paragraph fwd = new Paragraph($"Invoice {viewModel.forwarder.name} No. {viewModel.invoiceNumber} Tgl. " +
+            Paragraph fwd = new Paragraph($"Invoice  {viewModel.forwarder.name}   No. : {viewModel.invoiceNumber}   Tanggal  : " +
                 $"{viewModel.invoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
 
             document.Add(title);
