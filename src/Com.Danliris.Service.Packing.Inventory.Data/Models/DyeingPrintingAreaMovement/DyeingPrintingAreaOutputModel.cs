@@ -380,6 +380,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             }
         }
 
+        public void SetPackingListAuthorized(string newPackingListAuthorized, string user, string agent)
+        {
+            if (newPackingListAuthorized != PackingListAuthorized)
+            {
+                PackingListAuthorized = newPackingListAuthorized;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
         //public void SetDeliveryOrderAval(long deliveryOrderAvalId, string deliveryOrderAvalNo, string user, string agent)
         //{
         //    if (deliveryOrderAvalId != DeliveryOrderAvalId)
