@@ -88,7 +88,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(viewModel.invoiceNumber, normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase($"{viewModel.invoiceNumber}  Tanggal  : " +
+                                                  $"{viewModel.invoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID"))}", normal_font);
             cellLeftNoBorder1.Colspan = 5;
             tableBody.AddCell(cellLeftNoBorder1);
 
