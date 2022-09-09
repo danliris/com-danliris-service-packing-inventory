@@ -41,7 +41,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 new GarmentShippingPaymentDispositionUnitChargeModel(1, "",1,1),
                 new GarmentShippingPaymentDispositionUnitChargeModel(1, "",1,1)
             };
-            var oldModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units);
+            var payments = new HashSet<GarmentShippingPaymentDispositionPaymentDetailModel> {
+                new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "",1),
+                new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "",2),
+            };
+            var oldModel = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units, payments);
 
             await repo.InsertAsync(oldModel);
 
@@ -124,6 +128,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                 if (bill.Id == 2)
                 {
                     bill.Id = 0;
+                }
+            }
+
+            foreach (var payment in data.PaymentDetails)
+            {
+                payment.SetPaymentDate(payment.PaymentDate, payment.LastModifiedBy, payment.LastModifiedAgent);
+                payment.SetPaymentDescription(1 + payment.PaymentDescription, payment.LastModifiedBy, payment.LastModifiedAgent);
+                payment.SetAmount(1 + payment.Amount, payment.LastModifiedBy, payment.LastModifiedAgent);
+
+                if (payment.Id == 2)
+                {
+                    payment.Id = 0;
                 }
             }
 

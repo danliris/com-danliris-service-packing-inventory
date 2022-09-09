@@ -35,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .Include(i => i.BillDetails)
                 .Include(i => i.InvoiceDetails)
                 .Include(i => i.UnitCharges)
+                .Include(i => i.PaymentDetails)
                 .FirstOrDefault(s => s.Id == id);
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
@@ -52,6 +53,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var invoice in model.InvoiceDetails)
             {
                 invoice.FlagForDelete(_identityProvider.Username, UserAgent);
+            }
+
+            foreach (var payment in model.PaymentDetails)
+            {
+                payment.FlagForDelete(_identityProvider.Username, UserAgent);
             }
 
             return _dbContext.SaveChangesAsync();
@@ -74,6 +80,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             foreach (var invoice in model.InvoiceDetails)
             {
                 invoice.FlagForCreate(_identityProvider.Username, UserAgent);
+            }
+
+            foreach (var payment in model.PaymentDetails)
+            {
+                payment.FlagForCreate(_identityProvider.Username, UserAgent);
             }
 
             _dbSet.Add(model);
@@ -101,6 +112,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .Include(i => i.BillDetails)
                 .Include(i => i.InvoiceDetails)
                 .Include(i => i.UnitCharges)
+                .Include(i => i.PaymentDetails)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -110,6 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 .Include(i => i.BillDetails)
                 .Include(i => i.InvoiceDetails)
                 .Include(i => i.UnitCharges)
+                .Include(i => i.PaymentDetails)
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetAccNo(model.AccNo, _identityProvider.Username, UserAgent);
@@ -219,6 +232,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             {
                 modelToUpdate.InvoiceDetails.Add(invoice);
             }
+
+            //
+            foreach (var paymentToUpdate in modelToUpdate.PaymentDetails)
+            {
+                var payment = model.PaymentDetails.FirstOrDefault(i => i.Id == paymentToUpdate.Id);
+                if (payment != null)
+                {
+                    paymentToUpdate.SetPaymentDate(payment.PaymentDate, _identityProvider.Username, UserAgent);
+                    paymentToUpdate.SetPaymentDescription(payment.PaymentDescription, _identityProvider.Username, UserAgent);
+                    paymentToUpdate.SetAmount(payment.Amount, _identityProvider.Username, UserAgent);
+                }
+                else
+                {
+                    paymentToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
+                }
+
+            }
+
+            foreach (var payment in model.PaymentDetails.Where(w => w.Id == 0))
+            {
+                modelToUpdate.PaymentDetails.Add(payment);
+            }
+
 
             return _dbContext.SaveChangesAsync();
         }

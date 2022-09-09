@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public ICollection<GarmentShippingPaymentDispositionInvoiceDetailViewModel> invoiceDetails { get; set; }
         public ICollection<GarmentShippingPaymentDispositionBillDetailViewModel> billDetails { get; set; }
         public ICollection<GarmentShippingPaymentDispositionUnitChargeViewModel> unitCharges { get; set; }
-
+        public ICollection<GarmentShippingPaymentDispositionPaymentDetailViewModel> paymentDetails { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

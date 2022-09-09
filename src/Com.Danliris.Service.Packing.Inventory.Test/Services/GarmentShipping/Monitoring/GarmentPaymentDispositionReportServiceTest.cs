@@ -85,7 +85,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          },
                 };
 
-            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units)
+            var payments = new List<GarmentShippingPaymentDispositionPaymentDetailModel>
+                {
+                     new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 6000)
+                         {
+                           PaymentDispositionId = 1
+                         },
+                     new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 4000)
+                         {
+                           PaymentDispositionId = 1
+                         },
+                };
+
+            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units, payments)
             {
                 Id = 1
             };
@@ -158,7 +170,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          },
                 };
 
-            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units)
+            var payments = new List<GarmentShippingPaymentDispositionPaymentDetailModel>
+                {
+                     new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 6000)
+                         {
+                           PaymentDispositionId = 1
+                         },
+                     new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 4000)
+                         {
+                           PaymentDispositionId = 1
+                         },
+                };
+
+            var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units, payments)
             {
                 Id = 1
             };
