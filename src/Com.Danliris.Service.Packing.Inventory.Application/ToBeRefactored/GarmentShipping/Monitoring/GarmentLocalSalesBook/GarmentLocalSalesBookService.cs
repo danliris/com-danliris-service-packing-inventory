@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
@@ -19,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentShippingLocalSalesNoteItemRepository itemrepository;
         private readonly IGarmentShippingLocalReturnNoteRepository rtrrepository;               
         private readonly IGarmentShippingLocalPriceCuttingNoteRepository cutrepository;
+        private readonly IGarmentLocalCoverLetterRepository clrepository;
         private readonly IIdentityProvider _identityProvider;
 
         public GarmentLocalSalesBookService(IServiceProvider serviceProvider)
@@ -27,17 +29,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             itemrepository = serviceProvider.GetService<IGarmentShippingLocalSalesNoteItemRepository>();
             rtrrepository = serviceProvider.GetService<IGarmentShippingLocalReturnNoteRepository>();
             cutrepository = serviceProvider.GetService<IGarmentShippingLocalPriceCuttingNoteRepository>();
+            clrepository = serviceProvider.GetService<IGarmentLocalCoverLetterRepository>();
 
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
         public IQueryable<GarmentLocalSalesBookViewModel> GetDataQuery(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var query = repository.ReadAll();
+           var query = repository.ReadAll();
            var queryItem = itemrepository.ReadAll();
            var queryrtr = rtrrepository.ReadItemAll();
            var querycut = cutrepository.ReadItemAll();
-      
+           var querycl = clrepository.ReadAll();
+
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
             
@@ -48,11 +52,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //  LOCAL SALES NOTE
             IQueryable<GarmentLocalSalesBookTempViewModel> d1 = from a in query
                                                                 join b in queryItem on a.Id equals b.LocalSalesNoteId
+                                                                join c in querycl on a.Id equals c.LocalSalesNoteId
 
-                                                           select new GarmentLocalSalesBookTempViewModel
+                                                                select new GarmentLocalSalesBookTempViewModel
                                                            {
                                                                LSNo = a.NoteNo,
                                                                LSDate = a.Date,
+                                                               CLDate = c.Date,
                                                                BuyerCode = a.BuyerCode,
                                                                BuyerName = a.BuyerName,
                                                                TransactionCode = a.TransactionTypeCode,
@@ -67,11 +73,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             IQueryable<GarmentLocalSalesBookTempViewModel> d2 = from a in queryrtr
                                                                 join b in queryItem on a.SalesNoteItemId equals b.Id
                                                                 join c in query on b.LocalSalesNoteId equals c.Id
+                                                                join d in querycl on c.Id equals d.LocalSalesNoteId                                                            
 
-                                                           select new GarmentLocalSalesBookTempViewModel
+                                                                select new GarmentLocalSalesBookTempViewModel
                                                            {
                                                                LSNo = c.NoteNo,
                                                                LSDate = c.Date,
+                                                               CLDate = d.Date,
                                                                BuyerCode = c.BuyerCode,
                                                                BuyerName = c.BuyerName,
                                                                TransactionCode = c.TransactionTypeCode,
@@ -86,11 +94,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             IQueryable<GarmentLocalSalesBookTempViewModel> d3 = from a in querycut
                                                                 join b in query on a.SalesNoteId equals b.Id
                                                                 join c in queryItem on b.Id equals c.LocalSalesNoteId
+                                                                join d in querycl on c.Id equals d.LocalSalesNoteId
 
-                                                            select new GarmentLocalSalesBookTempViewModel
+                                                                select new GarmentLocalSalesBookTempViewModel
                                                             {
                                                                 LSNo = b.NoteNo,
                                                                 LSDate = b.Date,
+                                                                CLDate = d.Date,
                                                                 BuyerCode = b.BuyerCode,
                                                                 BuyerName = b.BuyerName,
                                                                 TransactionCode = b.TransactionTypeCode,
@@ -106,11 +116,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<GarmentLocalSalesBookTempViewModel> CombineData = d1.Union(d2).Union(d3).ToList();
 
             var Query = from data in CombineData
-                        group data by new { data.TransactionCode, data.LSNo, data.LSDate, data.BuyerCode, data.BuyerName, data.TransactionType } into groupData
+                        group data by new { data.TransactionCode, data.LSNo, data.LSDate, data.CLDate, data.BuyerCode, data.BuyerName, data.TransactionType } into groupData
                         select new GarmentLocalSalesBookViewModel
                         {
                             LSNo = groupData.Key.LSNo,
                             LSDate = groupData.Key.LSDate,
+                            CLDate = groupData.Key.CLDate,
                             BuyerCode = groupData.Key.BuyerCode,
                             BuyerName = groupData.Key.BuyerName,
                             TransactionCode = groupData.Key.TransactionCode,
@@ -136,6 +147,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Tanggal Nota", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Tanggal SP", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "No Nota", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Kode Buyer", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Nama Buyer", DataType = typeof(string) });
@@ -156,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<(string, Enum, Enum)> mergeCells = new List<(string, Enum, Enum)>() { };
 
             if (Data.Item2 == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
             {
                 Dictionary<string, List<GarmentLocalSalesBookViewModel>> dataBySupplier = new Dictionary<string, List<GarmentLocalSalesBookViewModel>>();
@@ -314,6 +326,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                         LSDate = data.LSDate,
                         LSNo = data.LSNo,
+                        CLDate = data.CLDate,
                         TransactionCode = data.TransactionCode,
                         TransactionType = data.TransactionType,
                         BuyerCode = data.BuyerCode,
@@ -439,15 +452,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         index++;
                         string LSDate = data.LSDate == new DateTime(1970, 1, 1) ? "-" : data.LSDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
+                        string CLDate = data.CLDate == new DateTime(1970, 1, 1) ? "-" : data.CLDate.ToOffset(new TimeSpan(offset, 0, 0)).ToString("MM/dd/yyyy", new CultureInfo("us-US"));
 
-                        result.Rows.Add(index, LSDate, data.LSNo, data.BuyerCode, data.BuyerName, Math.Round(data.NettAmount, 2), Math.Round(data.SalesAmount, 2), Math.Round(data.PPNAmount, 2), 
+                        result.Rows.Add(index, LSDate, CLDate, data.LSNo, data.BuyerCode, data.BuyerName, Math.Round(data.NettAmount, 2), Math.Round(data.SalesAmount, 2), Math.Round(data.PPNAmount, 2), 
                                         Math.Round(data.Qty1, 2), Math.Round(data.Amount1, 2), Math.Round(data.Qty2, 2), Math.Round(data.Amount2, 2), Math.Round(data.Qty3, 2), Math.Round(data.Amount3, 2),
                                         Math.Round(data.Qty4, 2), Math.Round(data.Amount4, 2), Math.Round(data.Qty5, 2), Math.Round(data.Amount5, 2));
                         rowPosition += 1;
                         splCode = data.TransactionType;
                     }
 
-                    result.Rows.Add("", "", "SUB TOTAL", splCode, ":", Math.Round(subTotalNetSales[SupplName.Key], 2), 
+                    result.Rows.Add("", "", "", "SUB TOTAL", splCode, ":", Math.Round(subTotalNetSales[SupplName.Key], 2), 
                                     Math.Round(subTotalSales[SupplName.Key], 2), Math.Round(subTotalPPN[SupplName.Key], 2), 
                                     Math.Round(subTotalQtyBJ[SupplName.Key], 2), Math.Round(subTotalAmtBJ[SupplName.Key], 2),
                                     Math.Round(subTotalQtyAVL[SupplName.Key], 2), Math.Round(subTotalAmtAVL[SupplName.Key], 2),
@@ -474,12 +488,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 }
 
-                result.Rows.Add("TOTAL", "PENJUALAN", "RETUR", "POTONGAN", ":", Math.Round(TotalNetSales, 2), Math.Round(TotalSales, 2), Math.Round(TotalPPN, 2),
+                result.Rows.Add("", "TOTAL", "PENJUALAN", "RETUR", "POTONGAN", ":", Math.Round(TotalNetSales, 2), Math.Round(TotalSales, 2), Math.Round(TotalPPN, 2),
                                 Math.Round(TotalQtyBJ, 2), Math.Round(TotalAmtBJ, 2), Math.Round(TotalQtyAVL, 2), Math.Round(TotalAmtAVL, 2),
                                 Math.Round(TotalQtyJS, 2), Math.Round(TotalAmtJS, 2), Math.Round(TotalQtySBJ, 2), Math.Round(TotalAmtSBJ, 2),
                                 Math.Round(TotalQtySMR, 2), Math.Round(TotalAmtSMR, 2));
 
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 
                 rowPosition += 1;
                 mergeCells.Add(($"A{rowPosition}:D{rowPosition}", OfficeOpenXml.Style.ExcelHorizontalAlignment.Right, OfficeOpenXml.Style.ExcelVerticalAlignment.Bottom));

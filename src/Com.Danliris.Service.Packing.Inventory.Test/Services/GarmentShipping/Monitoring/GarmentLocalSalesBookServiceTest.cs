@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesBook;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalReturnNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalPriceCuttingNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote; 
@@ -17,7 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 {
     public class GarmentLocalSalesBookServiceTest
     {
-        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingLocalSalesNoteRepository repository, IGarmentShippingLocalSalesNoteItemRepository itemrepository, IGarmentShippingLocalReturnNoteRepository rtrrepository, IGarmentShippingLocalPriceCuttingNoteRepository cutrepository)
+        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingLocalSalesNoteRepository repository, IGarmentShippingLocalSalesNoteItemRepository itemrepository, IGarmentShippingLocalReturnNoteRepository rtrrepository, IGarmentShippingLocalPriceCuttingNoteRepository cutrepository, IGarmentLocalCoverLetterRepository clrepository)
         {
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingLocalSalesNoteRepository)))
@@ -31,6 +33,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingLocalPriceCuttingNoteRepository)))
                 .Returns(cutrepository);
+
+            spMock.Setup(s => s.GetService(typeof(IGarmentLocalCoverLetterRepository)))
+                .Returns(clrepository);
 
             spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider());
@@ -77,6 +82,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -92,8 +102,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock3 = new Mock<IGarmentShippingLocalPriceCuttingNoteRepository>();
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
-            
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GetReportData(DateTime.MinValue, DateTime.Now, 0);
 
@@ -134,6 +148,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -150,7 +169,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -191,6 +214,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -207,7 +235,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -248,6 +280,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -264,7 +301,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -305,6 +346,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -321,7 +367,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -362,6 +412,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -378,7 +433,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -419,6 +478,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
+            var model4 = new GarmentShippingLocalCoverLetterModel(1, "", "", DateTimeOffset.Now, 1, "", "", "", "", "", DateTimeOffset.Now, "", "", "", 1, "")
+            {
+                Id = 1
+            };
+
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingLocalSalesNoteModel>() { model }.AsQueryable());
@@ -435,7 +499,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>() { model3 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>() { model4 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(DateTime.MinValue, DateTime.Now, 7);
 
@@ -461,7 +529,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock3.Setup(s => s.ReadItemAll())
                 .Returns(new List<GarmentShippingLocalPriceCuttingNoteItemModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object).Object);
+            var repoMock4 = new Mock<IGarmentLocalCoverLetterRepository>();
+            repoMock4.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingLocalCoverLetterModel>().AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object, repoMock3.Object, repoMock4.Object).Object);
 
             var result = service.GenerateExcel(null, null, 0);
 
