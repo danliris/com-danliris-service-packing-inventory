@@ -186,6 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingPaymentDispositionBillDetailModel> GarmentShippingPaymentDispositionBillDetails { get; set; }
         public DbSet<GarmentShippingPaymentDispositionInvoiceDetailModel> GarmentShippingPaymentDispositionInvoiceDetails { get; set; }
         public DbSet<GarmentShippingPaymentDispositionUnitChargeModel> GarmentShippingPaymentDispositionUnitCharges { get; set; }
+        public DbSet<GarmentShippingPaymentDispositionPaymentDetailModel> GarmentShippingPaymentDispositionPaymentDetails { get; set; }
 
         public DbSet<GarmentShippingPaymentDispositionRecapModel> GarmentShippingPaymentDispositionRecaps { get; set; }
         public DbSet<GarmentShippingPaymentDispositionRecapItemModel> GarmentShippingPaymentDispositionRecapItems { get; set; }
@@ -276,6 +277,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionBillDetailConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionInvoiceDetailConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionUnitChargeConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionPaymentDetailConfig());
 
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());

@@ -160,10 +160,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     IsDeleted = i.IsDeleted,
                     LastModifiedAgent = i.LastModifiedAgent,
                     LastModifiedBy = i.LastModifiedBy,
-                    LastModifiedUtc = i.LastModifiedUtc,
-
+                    LastModifiedUtc = i.LastModifiedUtc,                    
                     amount = i.Amount,
                     billDescription = i.BillDescription
+
+                }).ToList(),
+                paymentDetails = (model.PaymentDetails ?? new List<GarmentShippingPaymentDispositionPaymentDetailModel>()).Select(i => new GarmentShippingPaymentDispositionPaymentDetailViewModel
+                {
+                    Active = i.Active,
+                    Id = i.Id,
+                    CreatedAgent = i.CreatedAgent,
+                    CreatedBy = i.CreatedBy,
+                    CreatedUtc = i.CreatedUtc,
+                    DeletedAgent = i.DeletedAgent,
+                    DeletedBy = i.DeletedBy,
+                    DeletedUtc = i.DeletedUtc,
+                    IsDeleted = i.IsDeleted,
+                    LastModifiedAgent = i.LastModifiedAgent,
+                    LastModifiedBy = i.LastModifiedBy,
+                    LastModifiedUtc = i.LastModifiedUtc,
+
+                    paymentDate = i.PaymentDate,
+                    amount = i.Amount,
+                    paymentDescription = i.PaymentDescription
 
                 }).ToList()
             };
@@ -192,6 +211,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 return new GarmentShippingPaymentDispositionInvoiceDetailModel(i.invoiceNo,i.invoiceId,i.quantity, i.amount,i.volume,i.grossWeight,i.chargeableWeight,i.totalCarton) { Id = i.Id };
             }).ToList();
 
+            var payments = (vm.paymentDetails ?? new List<GarmentShippingPaymentDispositionPaymentDetailViewModel>()).Select(i =>
+            {
+                return new GarmentShippingPaymentDispositionPaymentDetailModel(i.paymentDate, i.paymentDescription, i.amount) { Id = i.Id };
+            }).ToList();
+
             vm.forwarder = vm.forwarder ?? new Forwarder();
             vm.buyerAgent = vm.buyerAgent ?? new BuyerAgent();
             vm.emkl = vm.emkl ?? new EMKL();
@@ -201,7 +225,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 vm.buyerAgent.Id, vm.buyerAgent.Code, vm.buyerAgent.Name, vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
                 vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
                 vm.invoiceTaxNumber, vm.billValue, vm.vatValue, vm.incomeTax.id, vm.incomeTax.name, (decimal)vm.incomeTax.rate, vm.IncomeTaxValue,
-                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate.GetValueOrDefault(), vm.flightVessel, vm.destination, vm.remark, invoices, bills, units)
+                vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate.GetValueOrDefault(), vm.flightVessel, vm.destination, vm.remark, invoices, bills, units, payments)
             { Id = vm.Id };
         }
 
