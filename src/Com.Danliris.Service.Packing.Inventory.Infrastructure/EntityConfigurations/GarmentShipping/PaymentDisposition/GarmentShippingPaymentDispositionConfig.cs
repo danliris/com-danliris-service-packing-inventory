@@ -132,6 +132,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .HasMany(s => s.InvoiceDetails)
                .WithOne()
                .HasForeignKey(a => a.PaymentDispositionId);
+
+            builder
+              .HasMany(s => s.PaymentDetails)
+              .WithOne()
+              .HasForeignKey(a => a.PaymentDispositionId);
         }
     }
 }

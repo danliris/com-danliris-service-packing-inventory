@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public string LSNo { get; set; }
         public DateTimeOffset LSDate { get; set; }
+        public DateTimeOffset CLDate { get; set; }
         public string BuyerCode { get; set; }
         public string BuyerName { get; set; }
         public decimal QtyTotal { get; set; }
@@ -32,6 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public string LSNo { get; set; }
         public DateTimeOffset LSDate { get; set; }
+        public DateTimeOffset CLDate { get; set; }
         public string BuyerCode { get; set; }
         public string BuyerName { get; set; }
         public string TransactionCode { get; set; }
