@@ -73,6 +73,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     code = model.ForwarderCode,
                     id = model.ForwarderId
                 },
+                warehouse = new WareHouse
+                {
+                    Name = model.WareHouseName,
+                    Code = model.WareHouseCode,
+                    Id = model.WareHouseId
+                },
                 freightBy = model.FreightBy,
                 freightDate = model.FreightDate,
                 freightNo = model.FreightNo,
@@ -220,10 +226,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             vm.buyerAgent = vm.buyerAgent ?? new BuyerAgent();
             vm.emkl = vm.emkl ?? new EMKL();
             vm.courier = vm.courier ?? new Courier();
+            vm.warehouse = vm.warehouse ?? new WareHouse();
             vm.incomeTax = vm.incomeTax ?? new IncomeTax();
             return new GarmentShippingPaymentDispositionModel(GenerateNo(vm), vm.paymentType, vm.paymentMethod, vm.paidAt, vm.sendBy,
                 vm.buyerAgent.Id, vm.buyerAgent.Code, vm.buyerAgent.Name, vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
-                vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
+                vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.warehouse.Id, vm.warehouse.Code, vm.warehouse.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
                 vm.invoiceTaxNumber, vm.billValue, vm.vatValue, vm.incomeTax.id, vm.incomeTax.name, (decimal)vm.incomeTax.rate, vm.IncomeTaxValue,
                 vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate.GetValueOrDefault(), vm.flightVessel, vm.destination, vm.remark, invoices, bills, units, payments)
             { Id = vm.Id };
@@ -255,6 +262,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             else if(vm.paymentType == "COURIER")
             {
                 prefix = $"DL/COUR/{year}/";
+            }
+            else if (vm.paymentType == "PERGUDANGAN")
+            {
+                prefix = $"DL/WRHS/{year}/";
             }
             else
             {
@@ -290,7 +301,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<string> SearchAttributes = new List<string>()
             {
                 "DispositionNo", "BuyerAgentCode", "BuyerAgentName", "PaymentType","ForwarderName","ForwarderCode","EMKLName",
-                "EMKLCode","CourierName","CourierCode"
+                "EMKLCode","CourierName","CourierCode","WareHouseName","WareHouseCode"
             };
             query = QueryHelper<GarmentShippingPaymentDispositionModel>.Search(query, SearchAttributes, keyword);
 

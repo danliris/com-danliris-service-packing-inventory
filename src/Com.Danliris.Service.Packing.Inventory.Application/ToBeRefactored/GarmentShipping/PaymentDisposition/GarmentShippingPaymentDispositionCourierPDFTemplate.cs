@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableBody);
 
-            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " rupiah";
+            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " Rupiah";
 
             Paragraph trbilang = new Paragraph($"[ Terbilang : {terbilang} ]\n", normal_font);
             document.Add(trbilang);

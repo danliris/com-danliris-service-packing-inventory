@@ -155,6 +155,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetTotalBill(model.TotalBill, _identityProvider.Username, UserAgent);
             modelToUpdate.SetEMKLCode(model.EMKLCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetEMKLName(model.EMKLName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetWareHouseId(model.WareHouseId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetWareHouseCode(model.WareHouseCode, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetWareHouseName(model.WareHouseName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetEMKLId(model.EMKLId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCourierCode(model.CourierCode, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCourierId(model.CourierId, _identityProvider.Username, UserAgent);

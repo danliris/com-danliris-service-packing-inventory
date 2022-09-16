@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Forwarder forwarder { get;  set; }
         public Courier courier { get;  set; }
         public EMKL emkl { get;  set; }
+        public WareHouse warehouse { get; set; }
 
 
         public string address { get;  set; }
@@ -94,6 +95,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     yield return new ValidationResult("EMKL tidak boleh kosong", new List<string> { "emkl" });
                 }
             }
+            if (paymentType == "PERGUDANGAN")
+            {
+                if (warehouse == null || warehouse.Id == 0)
+                {
+                    yield return new ValidationResult("Gudang tidak boleh kosong", new List<string> { "warehouse" });
+                }
+            }
             if (paymentType == "COURIER")
             {
                 if (courier == null || courier.Id == 0)
@@ -141,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     yield return new ValidationResult(JsonConvert.SerializeObject(errorBills), new List<string> { "bills" });
                 }
             }
-            if (paymentType=="EMKL" || paymentType == "FORWARDER")
+            if (paymentType=="EMKL" || paymentType == "FORWARDER" || paymentType == "PERGUDANGAN")
             {
                 if (invoiceDetails == null || invoiceDetails.Count == 0)
                 {

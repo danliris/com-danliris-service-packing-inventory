@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition
 {
-    public class GarmentShippingPaymentDispositionEMKLPDFTemplate
+    public class GarmentShippingPaymentDispositionWareHousePDFTemplate
     {
         public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionViewModel viewModel, List<GarmentShippingInvoiceViewModel> invoices, int timeoffset)
         {
@@ -33,7 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region header
 
-            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN EMKL\n\n\n", header_font_bold);
+            Paragraph title = new Paragraph("LAMPIRAN DISPOSISI PEMBAYARAN PERGUDANGAN\n\n\n", header_font_bold);
             title.Alignment = Element.ALIGN_CENTER;
 
             Paragraph title1 = new Paragraph("DISPOSISI BIAYA SHIPMENT", normal_font_underlined);
@@ -68,6 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             decimal invTotalQty = viewModel.invoiceDetails.Sum(a => a.quantity);
             decimal totalCtns = viewModel.invoiceDetails.Sum(a => a.totalCarton);
+            //decimal totalCBM = viewModel.invoiceDetails.Sum(a => a.chargeableWeight);
 
             PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 80;
@@ -96,11 +97,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeftNoBorder1.Phrase = new Phrase(viewModel.sendBy, normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
-            cellLeftNoBorder.Phrase = new Phrase("EMKL", normal_font);
+            cellLeftNoBorder.Phrase = new Phrase("GUDANG", normal_font);
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(viewModel.emkl.Name, normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase(viewModel.warehouse.Name, normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Material", normal_font);
@@ -135,7 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} PCS / {string.Format("{0:n2}", totalCtns)} CTNS =      CBM", normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} PCS / {string.Format("{0:n2}", totalCtns)} CTNS =    CBM", normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Biaya", normal_font);
@@ -252,7 +253,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableBody);
 
-            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " rupiah";
+            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " Rupiah";
 
             Paragraph trbilang = new Paragraph($"[ Terbilang : {terbilang} ]\n\n", normal_font);
             document.Add(trbilang);
