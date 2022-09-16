@@ -195,15 +195,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 tableUnit.AddCell(cellLeftBottomBorder);
                 cellRightNoLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", invoice.amount), normal_font);
                 tableUnit.AddCell(cellRightNoLeftBorder);
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.quantity) + " pcs", normal_font);
+                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.quantity) + " PCS", normal_font);
                 tableUnit.AddCell(cellRight);
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.volume) + " cbm", normal_font);
+                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.volume) + " CBM", normal_font);
                 tableUnit.AddCell(cellRight);
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.grossWeight) + " kgs", normal_font);
+                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.grossWeight) + " KGS", normal_font);
                 tableUnit.AddCell(cellRight);
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.chargeableWeight) + " kgs", normal_font);
+                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.chargeableWeight) + " KGS", normal_font);
                 tableUnit.AddCell(cellRight);
-                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.totalCarton) + " ctns", normal_font);
+                cellRight.Phrase = new Phrase(string.Format("{0:n2}", invoice.totalCarton) + " CTNS", normal_font);
                 tableUnit.AddCell(cellRight);
             }
 
@@ -328,7 +328,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             document.Add(tableBill);
             #endregion
 
-            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " rupiah";
+            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " Rupiah";
 
             Paragraph trbilang = new Paragraph($"[ Terbilang : {terbilang} ]\n\n", normal_font);
             document.Add(trbilang);

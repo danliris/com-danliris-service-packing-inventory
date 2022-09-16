@@ -32,6 +32,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public string EMKLCode { get; private set; }
         public string EMKLName { get; private set; }
 
+        public int WareHouseId { get; private set; }
+        public string WareHouseCode { get; private set; }
+        public string WareHouseName { get; private set; }
+
         public string Address { get; private set; }
         public string NPWP { get; private set; }
 
@@ -66,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public ICollection<GarmentShippingPaymentDispositionUnitChargeModel> UnitCharges { get; set; }
         public ICollection<GarmentShippingPaymentDispositionPaymentDetailModel> PaymentDetails { get; set; }
 
-        public GarmentShippingPaymentDispositionModel(string dispositionNo, string paymentType, string paymentMethod, string paidAt, string sendBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string paymentTerm, int forwarderId, string forwarderCode, string forwarderName, int courierId, string courierCode, string courierName, int eMKLId, string eMKLCode, string eMKLName, string address, string nPWP, string invoiceNumber, DateTimeOffset invoiceDate, string invoiceTaxNumber, decimal billValue, decimal vatValue, int incomeTaxId, string incomeTaxName, decimal incomeTaxRate, decimal incomeTaxValue, decimal totalBill, DateTimeOffset paymentDate, string bank, string accNo, bool isFreightCharged, string freightBy, string freightNo, DateTimeOffset freightDate, string flightVessel, string destination, string remark, ICollection<GarmentShippingPaymentDispositionInvoiceDetailModel> invoiceDetails, ICollection<GarmentShippingPaymentDispositionBillDetailModel> billDetails, ICollection<GarmentShippingPaymentDispositionUnitChargeModel> unitCharges, ICollection<GarmentShippingPaymentDispositionPaymentDetailModel> paymentDetails)
+        public GarmentShippingPaymentDispositionModel(string dispositionNo, string paymentType, string paymentMethod, string paidAt, string sendBy, int buyerAgentId, string buyerAgentCode, string buyerAgentName, string paymentTerm, int forwarderId, string forwarderCode, string forwarderName, int courierId, string courierCode, string courierName, int eMKLId, string eMKLCode, string eMKLName, int wareHouseId, string wareHouseCode, string wareHouseName, string address, string nPWP, string invoiceNumber, DateTimeOffset invoiceDate, string invoiceTaxNumber, decimal billValue, decimal vatValue, int incomeTaxId, string incomeTaxName, decimal incomeTaxRate, decimal incomeTaxValue, decimal totalBill, DateTimeOffset paymentDate, string bank, string accNo, bool isFreightCharged, string freightBy, string freightNo, DateTimeOffset freightDate, string flightVessel, string destination, string remark, ICollection<GarmentShippingPaymentDispositionInvoiceDetailModel> invoiceDetails, ICollection<GarmentShippingPaymentDispositionBillDetailModel> billDetails, ICollection<GarmentShippingPaymentDispositionUnitChargeModel> unitCharges, ICollection<GarmentShippingPaymentDispositionPaymentDetailModel> paymentDetails)
         {
             DispositionNo = dispositionNo;
             PaymentType = paymentType;
@@ -86,6 +90,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
             EMKLId = eMKLId;
             EMKLCode = eMKLCode;
             EMKLName = eMKLName;
+            WareHouseId = wareHouseId;
+            WareHouseCode = wareHouseCode;
+            WareHouseName = wareHouseName;
             Address = address;
             NPWP = nPWP;
             InvoiceNumber = invoiceNumber;
@@ -220,6 +227,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
             if (EMKLCode != emklCode)
             {
                 EMKLCode = emklCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetWareHouseId(int wareHouseId, string userName, string userAgent)
+        {
+            if (WareHouseId != wareHouseId)
+            {
+                WareHouseId = wareHouseId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetWareHouseCode(string wareHouseCode, string userName, string userAgent)
+        {
+            if (EMKLCode != wareHouseCode)
+            {
+                EMKLCode = wareHouseCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetWareHouseName(string wareHouseName, string userName, string userAgent)
+        {
+            if (WareHouseName != wareHouseName)
+            {
+                WareHouseName = wareHouseName;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

@@ -140,7 +140,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} pcs / {string.Format("{0:n2}", totalCtns)} ctns =  {string.Format("{0:n2}", totalcbm)} cbm", normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} PCS / {string.Format("{0:n2}", totalCtns)} CTNS =  {string.Format("{0:n2}", totalcbm)} CBM", normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Biaya", normal_font);
@@ -257,7 +257,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Add(tableBody);
 
-            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " rupiah";
+            var terbilang = NumberToTextIDN.terbilang((double)viewModel.totalBill) + " Rupiah";
 
             Paragraph trbilang = new Paragraph($"[ Terbilang : {terbilang} ]\n\n", normal_font);
             document.Add(trbilang);
