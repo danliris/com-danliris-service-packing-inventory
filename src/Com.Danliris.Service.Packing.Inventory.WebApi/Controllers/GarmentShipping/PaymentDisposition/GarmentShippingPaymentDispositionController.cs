@@ -233,6 +233,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                             FileDownloadName = model.dispositionNo + ".pdf"
                         };
                     }
+                    else if (model.paymentType == "PERGUDANGAN")
+                    {
+                        var PdfTemplate = new GarmentShippingPaymentDispositionWareHousePDFTemplate();
+                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+
+                        return new FileStreamResult(stream, "application/pdf")
+                        {
+                            FileDownloadName = model.dispositionNo + ".pdf"
+                        };
+                    }
                     else
                     {
                         var PdfTemplate = new GarmentShippingPaymentDispositionCourierPDFTemplate();

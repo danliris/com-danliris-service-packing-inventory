@@ -58,6 +58,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
 
             var result3 = viewModel3.Validate(null);
             Assert.NotEmpty(result3.ToList());
+
+            GarmentShippingPaymentDispositionViewModel viewModel4 = new GarmentShippingPaymentDispositionViewModel
+            {
+                paymentType = "PERGUDANGAN",
+                warehouse = new WareHouse { Id = 0 },
+                buyerAgent = new BuyerAgent { Id = 0 },
+                incomeTax = new IncomeTax { id = 0 }
+
+            };
+
+            var result4 = viewModel4.Validate(null);
+            Assert.NotEmpty(result.ToList());
         }
 
         [Fact]
@@ -107,6 +119,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
 
             var result3 = viewModel.Validate(null);
             Assert.NotEmpty(result3.ToList());
+
+            viewModel.paymentType = "PERGUDANGAN";
+            viewModel.billDetails = new List<GarmentShippingPaymentDispositionBillDetailViewModel>
+            {
+                new GarmentShippingPaymentDispositionBillDetailViewModel()
+            };
+            viewModel.invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>
+            {
+                new GarmentShippingPaymentDispositionInvoiceDetailViewModel()
+            };
+
+            var result4 = viewModel.Validate(null);
+            Assert.NotEmpty(result4.ToList());
         }
 
         [Fact]
