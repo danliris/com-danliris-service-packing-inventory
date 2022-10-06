@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteViewModel viewModel, GarmentLocalCoverLetterViewModel cl, Buyer buyer, int timeoffset)
         {
-            const int MARGIN = 20;
+            const int MARGIN = 15;
 
             Font header_font_bold_big = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
             Font header_font_bold = FontFactory.GetFont(BaseFont.COURIER_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
@@ -181,7 +181,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
             double finalPrice = totalPrice + ppn;
 
-            cellBodyRight.Phrase = new Phrase("Dasar Pengenaan Pajak...............Rp.", normal_font);
+            cellBodyRight.Phrase = new Phrase("Dasar Pengenaan Pajak.............. Rp.", normal_font);
             cellBodyRight.Border = Rectangle.NO_BORDER;
             cellBodyRight.Colspan = 6;
             tableBody.AddCell(cellBodyRight);
@@ -190,14 +190,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRightNoBorder.Border = Rectangle.NO_BORDER;
             tableBody.AddCell(cellBodyRightNoBorder);
 
-            cellBodyRight.Phrase = new Phrase("PPN = " + viewModel.vat.rate.ToString() + "% X Dasar Pengenaan Pajak...Rp.", normal_font);
+            cellBodyRight.Phrase = new Phrase("PPN = " + viewModel.vat.rate.ToString() + "% X Dasar Pengenaan Pajak.. Rp.", normal_font);
             tableBody.AddCell(cellBodyRight);
 
             cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);
             cellBodyRightNoBorder.Border = Rectangle.BOTTOM_BORDER;
             tableBody.AddCell(cellBodyRightNoBorder);
 
-            cellBodyRight.Phrase = new Phrase("Jumlah..............................Rp.", normal_font);
+            cellBodyRight.Phrase = new Phrase("Jumlah............................. Rp.", normal_font);
             tableBody.AddCell(cellBodyRight);
 
             cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", finalPrice), normal_font);
@@ -205,7 +205,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellBodyRightNoBorder);
 
 
-            tableBody.SpacingAfter = 10;
+            tableBody.SpacingAfter = 5;
             document.Add(tableBody);
             #endregion
 
@@ -271,13 +271,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
             tableFooter1.AddCell(cellFooterContent21);
 
-            tableFooter1.SpacingAfter = 4;
+            tableFooter1.SpacingAfter = 2;
             document.Add(tableFooter1);
             #endregion
 
             document.Add(new Paragraph("HARAP TRANSFER PEMBAYARAN DIATAS KEPADA BANK KORESPONDEN KAMI SEBAGAI BERIKUT :", normal_font));
-            document.Add(new Paragraph("MAYBANK INDONESIA - CABANG SLAMET RIYADI", normal_font));
-            document.Add(new Paragraph("ACC NO. : 2105010887  A/N : PT. DAN LIRIS", normal_font));
+            //document.Add(new Paragraph("MAYBANK INDONESIA - CABANG SLAMET RIYADI", normal_font));
+            //document.Add(new Paragraph("ACC NO. : 2105010887  A/N : PT. DAN LIRIS", normal_font));
+            document.Add(new Paragraph(viewModel.bank.bankName, normal_font));
+            document.Add(new Paragraph("ACC NO. : "+ viewModel.bank.AccountNumber + "  A/N : PT. DAN LIRIS", normal_font));
             document.Add(new Paragraph(" ", normal_font));
 
             #region sign
@@ -408,7 +410,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable tableTitle = new PdfPTable(6);
             tableTitle.WidthPercentage = 100;
-            tableTitle.SetWidths(new float[] { 1.5f, 2f, 1.5f, 2f, 1.5f, 1f });
+            tableTitle.SetWidths(new float[] { 1.3f, 2f, 1.3f, 2f, 1.3f, 2f });
 
             PdfPCell cellFooterContent1x = new PdfPCell() { Border = Rectangle.NO_BORDER };
             PdfPCell cellFooterContent2x = new PdfPCell() { Border = Rectangle.NO_BORDER };

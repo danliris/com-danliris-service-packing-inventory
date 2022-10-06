@@ -38,6 +38,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public bool IsRejectedFinance{ get; set; }
         public bool IsRejectedShipping { get; set; }
         public string RejectedReason { get; set; }
+        public int BankId { get; private set; }
+        public string BankName { get; private set; }
+        public string AccountNumber { get; private set; }
 
         public ICollection<GarmentShippingLocalSalesNoteItemModel> Items { get; private set; }
 
@@ -45,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, int bankId, string bankName, string accountNumber, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             SalesContractNo = salesContractNo;
             LocalSalesContractId = localSalesContractId;
@@ -77,6 +80,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             IsRejectedFinance = isRejectedFinance;
             IsRejectedShipping = isRejectedShipping;
             RejectedReason = rejectedReason;
+            BankId = bankId;
+            BankName = bankName;
+            AccountNumber = accountNumber;
             Items = items;
         }
 
