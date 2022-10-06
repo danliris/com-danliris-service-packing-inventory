@@ -461,7 +461,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             
 
-            cellMeasurement.Phrase = new Phrase("Description", normal_font);
+            cellMeasurement.Phrase = new Phrase("Shippingmark", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
             cellMeasurement.Phrase = new Phrase(":", normal_font);
             tableMeasurement.AddCell(cellMeasurement);
@@ -529,7 +529,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 tableSign.AddCell(cellBodySignNoBorder);
                 cellBodySignNoBorder.Phrase = new Phrase("", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
-                cellBodySignNoBorder.Phrase = new Phrase("\n\n\n\n", normal_font);
+                cellBodySignNoBorder.Phrase = new Phrase("\n\n\n\n\n\n\n", normal_font);
                 tableSign.AddCell(cellBodySignNoBorder);
 
 
