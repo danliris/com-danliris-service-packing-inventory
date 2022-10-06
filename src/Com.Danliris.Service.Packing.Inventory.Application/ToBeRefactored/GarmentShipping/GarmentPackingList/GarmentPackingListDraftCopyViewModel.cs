@@ -64,14 +64,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItem["RONo"] = "RONo tidak boleh kosong";
                         errorItemsCount++;
                     }
-                    else
-                    {
-                        if (isSectionDiff)
-                        {
-                            errorItem["Section"] = "Section harus sama semua";
-                            errorItemsCount++;
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (isSectionDiff)
+                    //    {
+                    //        errorItem["Section"] = "Section harus sama semua";
+                    //        errorItemsCount++;
+                    //    }
+                    //}
 
                     
                     if (string.IsNullOrWhiteSpace(item. OrderNo))

@@ -118,11 +118,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             errorItemsCount++;
                         }
 
-                        if (isSectionDiff)
-                        {
-                            errorItem["Section"] = "Section harus sama semua";
-                            errorItemsCount++;
-                        }
+                        //if (isSectionDiff)
+                        //{
+                        //    errorItem["Section"] = "Section harus sama semua";
+                        //    errorItemsCount++;
+                        //}
                     }
 
                     if (string.IsNullOrWhiteSpace(item.OrderNo))

@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
@@ -295,12 +296,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 bodyTableCellRightBorder.Colspan = 1;
                 bodyTable.AddCell(bodyTableCellRightBorder);
 
-                bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n0}", item.Quantity), body_font);
-                bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
-                bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
-                bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
-                bodyTable.AddCell(bodyTableCellLeftBorder);
-
+                if (item.Uom.Unit.Substring(0, 2) == "MT" || item.Uom.Unit.Substring(0, 2) == "YA" || item.Uom.Unit.Substring(0, 2) == "YD")
+                {
+                    bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n2}", item.Quantity), body_font);
+                    bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+                    bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
+                    bodyTable.AddCell(bodyTableCellLeftBorder);
+                }
+                else
+                {
+                    bodyTableCellLeftBorder.Phrase = new Phrase(string.Format("{0:n0}", item.Quantity), body_font);
+                    bodyTableCellLeftBorder.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    bodyTableCellLeftBorder.VerticalAlignment = Element.ALIGN_CENTER;
+                    bodyTableCellLeftBorder.BorderColorRight = BaseColor.White;
+                    bodyTable.AddCell(bodyTableCellLeftBorder);
+                }
                 bodyTableCellRightBorder.Phrase = new Phrase(item.Uom.Unit, body_font);
                 bodyTableCellRightBorder.HorizontalAlignment = Element.ALIGN_LEFT;
                 bodyTableCellRightBorder.VerticalAlignment = Element.ALIGN_CENTER;
@@ -344,19 +355,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             bodyTableCellFooter.Colspan = 4;
             bodyTable.AddCell(bodyTableCellFooter);
 
-            var val1 = total.Select(x => String.Format("{0:n0}", x.Value));
-            var result1 = String.Join("\n", val1);
+            //var val1 = total.Select(x => String.Format("{0:n2}", x.Value));
+            //var result1 = String.Join("\n", val1);
 
             var key1 = total.Select(x => String.Format("{0}", x.Key));
             var result2 = String.Join("\n", key1);
 
-            bodyTableCellFooter.Phrase = new Phrase($"{result1}", body_font);
-            bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
-            bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
-            bodyTableCellFooter.Colspan = 1;
-            bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
-            bodyTable.AddCell(bodyTableCellFooter);
-
+            //bodyTableCellFooter.Phrase = new Phrase($"{result1}", body_font);
+            //bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
+            //bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
+            //bodyTableCellFooter.Colspan = 1;
+            //bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
+            //bodyTable.AddCell(bodyTableCellFooter);
+            if (result2.Substring(0, 2) == "MT" || result2.Substring(0, 2) == "YA" || result2.Substring(0, 2) == "YD")
+            {
+                var val1 = total.Select(x => String.Format("{0:n2}", x.Value));
+                var result1 = String.Join("\n", val1);
+                bodyTableCellFooter.Phrase = new Phrase($"{result1}", body_font);
+                bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
+                bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
+                bodyTableCellFooter.Colspan = 1;
+                bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
+                bodyTable.AddCell(bodyTableCellFooter);
+            }
+            else
+            {
+                var val1 = total.Select(x => String.Format("{0:n0}", x.Value));
+                var result1 = String.Join("\n", val1);
+                bodyTableCellFooter.Phrase = new Phrase($"{result1}", body_font);
+                bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
+                bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
+                bodyTableCellFooter.Colspan = 1;
+                bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
+                bodyTable.AddCell(bodyTableCellFooter);
+            }
 
             bodyTableCellFooter.Phrase = new Phrase(result2, body_font);
             bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_LEFT;
