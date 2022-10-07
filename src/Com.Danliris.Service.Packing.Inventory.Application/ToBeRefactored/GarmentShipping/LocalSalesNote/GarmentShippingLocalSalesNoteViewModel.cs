@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset? date { get; set; }
         public TransactionType transactionType { get; set; }
         public Buyer buyer { get; set; }
+        public BankAccount bank { get; set; }
         public int tempo { get; set; }
         public string expenditureNo { get; set; }
         public string dispositionNo { get; set; }
@@ -55,6 +56,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (buyer == null || buyer.Id == 0)
             {
                 yield return new ValidationResult("Buyer tidak boleh kosong", new List<string> { "buyer" });
+            }
+
+            if (bank == null || bank.id == 0)
+            {
+                yield return new ValidationResult("Bank tidak boleh kosong", new List<string> { "bank" });
             }
 
             //if (vat == null || vat.id == 0)
