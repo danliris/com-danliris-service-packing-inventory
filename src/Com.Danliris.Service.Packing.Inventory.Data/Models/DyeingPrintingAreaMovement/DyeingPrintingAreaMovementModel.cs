@@ -40,6 +40,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set; }
 
+        #region
+        public int? ProductTextileId { get; set; }
+        public string ProductTextileCode { get; set; }
+        public string ProductTextileName { get; set; }
+        #endregion
+
         public DyeingPrintingAreaMovementModel()
         {
 
@@ -138,10 +144,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
 
         public DyeingPrintingAreaMovementModel(DateTimeOffset date,  string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType)
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName)
         {
             Date = date;
             MaterialOrigin = materialOrigin;
@@ -161,6 +170,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             Balance = balance;
             DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
             ProductionOrderType = productionOrderType;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
             
         }
 
@@ -185,12 +197,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         /// <param name="grade"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade) : this(date, materialOrigin, area, type,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName, string grade) : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
-                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, productTextileId,  productTextileCode,  productTextileName)
         {
             Grade = grade;
         }
@@ -216,13 +231,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         /// <param name="grade"></param>
         /// <param name="remark"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin,  string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark) : this(date, materialOrigin, area, type,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName, string grade, string remark) : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
-                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade)
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, productTextileId, productTextileCode, productTextileName, grade)
         {
             Remark = remark;
         }
@@ -248,16 +266,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         /// <param name="grade"></param>
         /// <param name="remark"></param>
         /// <param name="packingType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName, string grade, string remark, string packingType,
             decimal qtyPacking, string packingUnit, double packingLength)
             : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
-                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType,  productTextileId, productTextileCode, productTextileName, grade, remark)
         {
             PackingType = packingType;
             PackagingQty = qtyPacking;
@@ -286,14 +308,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         /// <param name="avalQuantity"></param>
         /// <param name="avalWeightQuantity"></param>
         /// <param name="avalType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, double avalQuantity, double avalWeightQuantity, string avalType) :
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName, double avalQuantity, double avalWeightQuantity, string avalType) :
             this(date, materialOrigin, area, type, dyeingPrintingAreaDocumentId,
-                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId, productionOrderType)
+                dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance, dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, productTextileId, productTextileCode, productTextileName)
         {
             AvalQuantity = avalQuantity;
             AvalWeightQuantity = avalWeightQuantity;
@@ -376,17 +402,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="balance"></param>
         /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
         /// <param name="productionOrderType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         /// <param name="grade"></param>
         /// <param name="remark"></param>
         /// <param name="packingType"></param>
         /// <param name="inventoryType"></param>
         public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
             long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
-            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, string grade, string remark, string packingType,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int? productTextileId, string productTextileCode, string productTextileName,
+            string grade, string remark, string packingType,
             decimal qtyPacking, string packingUnit, double packingLength, string inventoryType)
             : this(date, materialOrigin, area, type,
                 dyeingPrintingAreaDocumentId, dyeingPrintingAreaDocumentBonNo, productionOrderId, productionOrderNo, cartNo, buyer, construction, unit, color, motif, uomUnit, balance,
-                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, grade, remark)
+                dyeingPrintingAreaProductionOrderDocumentId, productionOrderType, productTextileId, productTextileCode, productTextileName, grade, remark)
         {
             PackingType = packingType;
             PackagingQty = qtyPacking;

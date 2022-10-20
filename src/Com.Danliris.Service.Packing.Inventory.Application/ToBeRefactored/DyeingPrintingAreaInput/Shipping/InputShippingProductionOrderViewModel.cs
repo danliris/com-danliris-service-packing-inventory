@@ -14,6 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public ProductionOrder ProductionOrder { get; set; }
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
+        public ProductTextile ProductTextile { get; set; }
         public string MaterialWidth { get; set; }
         public string FinishWidth { get; set; }
         public ProcessType ProcessType { get; set; }
