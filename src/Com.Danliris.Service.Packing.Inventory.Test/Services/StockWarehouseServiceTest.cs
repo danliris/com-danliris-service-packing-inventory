@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type",1,"unit",1,"Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", 1, "a", "a", "gr", "rem", "type",1,"unit",1,"Lama");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -218,7 +218,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", 1, "a", "a", "gr", "rem", "type",  1, "unit", 1, "Lama");
             }
         }
 
@@ -227,7 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow, "DL", "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -236,7 +236,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "DL", "PACKING", "OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Keluar), 1, "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -245,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "DL", "PACKING", "IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -254,7 +254,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "DL", "PACKING", "ADJ IN", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1,  "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
@@ -263,7 +263,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             get
             {
                 return new DyeingPrintingAreaMovementModel(DateTimeOffset.UtcNow.AddMonths(-1), "DL", "PACKING", "ADJ OUT", 1, "no", 1, "no", "car", "uu", "cos", "unit", "coo", "motif",
-                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", "gr", "rem", "type", 1, "unit", 1, "Lama");
+                     "unit", Convert.ToDouble(ViewModel1.Masuk), 1, "type", 1, "a", "a", "gr", "rem", "type", 1, "unit", 1, "Lama");
             }
         }
 
