@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Packaging
 {
-    public class InputPackagingProductionOrdersViewModel :BaseViewModel
+    public class InputPackagingProductionOrdersViewModel : BaseViewModel
     {
         public DeliveryOrderSales DeliveryOrder { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MaterialConstruction MaterialConstruction { get; set; }
         public ProcessType ProcessType { get; set; }
         public YarnMaterial YarnMaterial { get; set; }
+        public ProductTextile ProductTextile { get; set; }
         public string MaterialWidth { get; set; }
         public string FinishWidth { get; set; }
         public string CartNo { get; set; }

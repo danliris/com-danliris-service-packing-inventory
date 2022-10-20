@@ -115,6 +115,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public double PackagingQuantityBalance { get; private set; }
         public double PackagingQuantity { get; private set; }
 
+        #region
+        public int? ProductTextileId { get; set; }
+        public string ProductTextileCode { get; set; }
+        public string ProductTextileName { get; set; }
+        #endregion
         public DyeingPrintingAreaInputProductionOrderModel()
         {
             IsAfterStockOpname = true;
@@ -151,10 +156,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="yarnMaterialId"></param>
         /// <param name="yarnMaterialName"></param>
         /// <param name="materialOrigin"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         public DyeingPrintingAreaInputProductionOrderModel(string area, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity,
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
-            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin) : this()
+            string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin,
+            int? productTextileId, string productTextileCode, string productTextileName ) : this()
 
         {
             ProductionOrderId = productionOrderId;
@@ -195,6 +204,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
             DateIn = dateIn;
             MaterialOrigin = materialOrigin;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
         }
 
         /// <summary>

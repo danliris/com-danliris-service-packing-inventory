@@ -123,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += await _productionOrderRepository.InsertAsync(item);
 
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                    item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, item.Id, item.ProductionOrderType, item.Grade);
+                    item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.InputQuantity, item.Id, item.ProductionOrderType, item.ProductTextileId, item.ProductTextileCode, item.ProductTextileName,item.Grade);
 
                 result += await _movementRepository.InsertAsync(movementModel);
 
@@ -674,20 +674,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         if (item.Key == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date,itemModel.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, detail.ProductionOrder.Type);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                         else if (item.Key == DyeingPrintingArea.TRANSIT)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, itemModel.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, detail.ProductionOrder.Type, null, detail.Remark);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name, null, detail.Remark);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                         else if (item.Key == DyeingPrintingArea.GUDANGJADI || item.Key == DyeingPrintingArea.SHIPPING)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, itemModel.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
                                 detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, itemModel.Id, 
-                                detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
+                                detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
 
@@ -713,20 +713,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         if (item.Key == DyeingPrintingArea.INSPECTIONMATERIAL)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, detail.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, detail.ProductionOrder.Type);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                         else if (item.Key == DyeingPrintingArea.TRANSIT)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, detail.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
-                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, detail.ProductionOrder.Type, null, detail.Remark);
+                                detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name, null, detail.Remark);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
                         else if (item.Key == DyeingPrintingArea.GUDANGJADI || item.Key == DyeingPrintingArea.SHIPPING)
                         {
                             movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, detail.MaterialOrigin, item.Key, DyeingPrintingArea.IN, model.Id, model.BonNo, detail.ProductionOrder.Id, detail.ProductionOrder.No,
                                 detail.CartNo, detail.Buyer, detail.Construction, detail.Unit, detail.Color, detail.Motif, detail.UomUnit, detail.InputQuantity, modelItem.Id, 
-                                detail.ProductionOrder.Type, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
+                                detail.ProductionOrder.Type, detail.ProductTextile.Id, detail.ProductTextile.Code, detail.ProductTextile.Name, detail.Grade, null, detail.PackingType, detail.InputQtyPacking, detail.PackingUnit, detail.PackingLength);
                             result += await _movementRepository.InsertAsync(movementModel);
                         }
 
@@ -778,7 +778,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     foreach (var item in modelBon.DyeingPrintingAreaInputProductionOrders)
                     {
                         var movementModel = new DyeingPrintingAreaMovementModel(modelBon.Date, item.MaterialOrigin, modelBon.Area, DyeingPrintingArea.IN, modelBon.Id, modelBon.BonNo, item.ProductionOrderId, item.ProductionOrderNo,
-                                item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.Grade);
+                                item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, item.Balance * -1, item.Id, item.ProductionOrderType, item.ProductTextileId, item.ProductTextileCode, item.ProductTextileName, item.Grade);
                         result += await _movementRepository.InsertAsync(movementModel);
                     }
 
@@ -839,7 +839,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += await _productionOrderRepository.DeleteAsync(spp.Id);
 
                     var movementModel = new DyeingPrintingAreaMovementModel(bon.Date, spp.MaterialOrigin, bon.Area, DyeingPrintingArea.IN, bon.Id, bon.BonNo, spp.ProductionOrderId, spp.ProductionOrderNo,
-                                spp.CartNo, spp.Buyer, spp.Construction, spp.Unit, spp.Color, spp.Motif, spp.UomUnit, spp.Balance * -1, spp.Id, spp.ProductionOrderType, spp.Grade);
+                                spp.CartNo, spp.Buyer, spp.Construction, spp.Unit, spp.Color, spp.Motif, spp.UomUnit, spp.Balance * -1, spp.Id, spp.ProductionOrderType, spp.ProductTextileId, spp.ProductTextileCode, spp.ProductTextileName, spp.Grade);
                     result += await _movementRepository.InsertAsync(movementModel);
 
                 }

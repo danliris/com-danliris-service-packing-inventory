@@ -103,6 +103,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
 
         #endregion
 
+        #region
+        public int? ProductTextileId { get; set; }
+        public string ProductTextileCode { get; set; }
+        public string ProductTextileName { get; set; }
+        #endregion
+
 
         /// <summary>
         /// ID SPP Input
@@ -166,11 +172,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="yarnMaterialId"></param>
         /// <param name="yarnMaterialName"></param>
         /// <param name="materialOrigin"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
 
         public DyeingPrintingAreaOutputProductionOrderModel(string area, string destinationArea, bool hasNextAreaDocument, long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderQuantity, string packingInstruction, string cartNo, string buyer, string construction,
                     string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
                     int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string productionMachine, string adjDocumentNo,
-                    int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, string finishWidth,DateTimeOffset dateIn, DateTimeOffset dateOut, string materialOrigin) : this()
+                    int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, string finishWidth,DateTimeOffset dateIn, DateTimeOffset dateOut, string materialOrigin, 
+                    int? productTextileId, string productTextileCode, string productTextileName) : this()
                    
         {
             ProductionOrderId = productionOrderId;
@@ -225,6 +235,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DateIn = dateIn;
             DateOut = dateOut;
             MaterialOrigin = materialOrigin;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
         }
 
         /// <summary>
