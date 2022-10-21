@@ -960,7 +960,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             outputRepoMock.Setup(s => s.ReadAll())
                  .Returns(new List<DyeingPrintingAreaOutputModel>() { new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "GUDANG JADI","pagi","no",false,
                     "SHIPPING","A","OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>(){
-                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","zimmer","sd","sd",1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a",DateTimeOffset.Now,DateTimeOffset.Now, "a")
+                        new DyeingPrintingAreaOutputProductionOrderModel("PACKING","SHIPPING", false, 1,"no","t",1,"1","1","sd","cs","sd","as","sd","asd","asd","zimmer","sd","sd",1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a",DateTimeOffset.Now,DateTimeOffset.Now, "a", 1, "a", "a")
 
                     }) }.AsQueryable());
 
@@ -1004,7 +1004,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             outputSPPRepoMock.Setup(s => s.ReadAll()).Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG JADI", "SHIPPING", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "remark","zimmer", "a", "a", 1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now, "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("GUDANG JADI", "SHIPPING", false, 1, "a", "e", 1,"rr", "1", "as", "test", "unit", "color", "motif", "mtr", "remark","zimmer", "a", "a", 1, 1,1,1,"a",1,"a","1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now, "a", 1, "a", "a")
 
             }.AsQueryable());
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, outputRepoMock.Object, productionOrderRepoMock.Object, outputSPPRepoMock.Object).Object);

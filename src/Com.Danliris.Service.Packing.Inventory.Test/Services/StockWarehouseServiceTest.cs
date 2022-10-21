@@ -99,7 +99,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             Unit = "s",
                             UomUnit = "d",
                             QtyOrder = 123,
-                            ProductionOrderNo ="sd"
+                            ProductionOrderNo ="sd",
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "Code",
+                                Name = "Name"
+                            }
                         }
                     },
                 };
@@ -114,7 +120,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaInputProductionOrderModel(ViewModelIM.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                         s.Unit, s.Color, s.Motif, s.UomUnit, s.Balance, s.HasOutputDocument, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, s.BuyerId, s.Id, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                         s.MaterialConstruction.Name, s.MaterialWidth, 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
-                        s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.FinishWidth, s.DateIn, s.MaterialOrigin)).ToList());
+                        s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.FinishWidth, s.DateIn, s.MaterialOrigin,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
             }
         }
@@ -125,7 +132,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 return new DyeingPrintingAreaOutputModel(ViewModel.Date, ViewModel.Area, ViewModel.Shift, ViewModel.BonNo, false, "PACKING", ViewModel.Group, "OUT", ViewModel.PackagingProductionOrders.Select(s =>
                       new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, "PACKING", false, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                           s.Unit, s.Color, s.Motif, s.UomUnit, s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, 1, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
-                          s.MaterialWidth, "", 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.MaterialOrigin)).ToList());
+                          s.MaterialWidth, "", 0, "", s.PackingType, 0, "", "", s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, 1, 1, "a", false, 1, 1, "a", false, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.MaterialOrigin,
+                          s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
             }
         }
@@ -189,6 +197,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             MaterialWidth = "1",
                             Unit = "s",
                             UomUnit = "d",
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            {
+                                Id = 1,
+                                Code = "Code",
+                                Name = "Name"
+                            }
                         }
                     }
                 };
