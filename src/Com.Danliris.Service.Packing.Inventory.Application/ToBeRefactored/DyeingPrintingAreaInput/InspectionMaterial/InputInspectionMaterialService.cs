@@ -115,6 +115,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = s.ProductionOrderOrderQuantity,
                         Type = s.ProductionOrderType
                     },
+
+                    ProductTextile= new ProductTextile() { 
+                        Id = s.ProductTextileId,
+                        Name = s.ProductTextileName,
+                        Code = s.ProductTextileCode
+                    },
                     Unit = s.Unit,
                     UomUnit = s.UomUnit
                 }).ToList()

@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.InspectionMaterial;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
@@ -95,7 +96,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             },
                             Unit = "s",
                             UomUnit = "d",
-                            InputQuantity = 1
+                            InputQuantity = 1,
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Name = "a",
+                                Code = "Code"
+                            }
                         }
                     }
                 };
