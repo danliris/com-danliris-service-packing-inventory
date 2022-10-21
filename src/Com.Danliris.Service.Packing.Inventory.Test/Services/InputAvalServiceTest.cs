@@ -470,7 +470,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                                                             "a",
                                                                                                             1,
                                                                                                             "a",
-                                                                                                            "1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now, "a")
+                                                                                                            "1","",1,"a","a",1,"a","a",1,"a",1,"a", 1, 1, "a", false, 1, 1, "a", false,1,"a", DateTimeOffset.Now,DateTimeOffset.Now, "a", 1, "a", "a")
 
                      })
                  }.AsQueryable());
