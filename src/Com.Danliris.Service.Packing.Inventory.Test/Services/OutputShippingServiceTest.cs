@@ -135,7 +135,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             DeliveryOrderSalesNo = "no",
                             PackingListBaleNo = "1",
                             PackingListGross = 1,
-                            PackingListNet = 1
+                            PackingListNet = 1,
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "Name"
+                            }
 
                             
 
@@ -225,7 +231,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 OrderQuantity = 100
                             },
                             Unit = "s",
-                            UomUnit = "d"
+                            UomUnit = "d",
+                            ProductTextile = new ProductTextile()
+                            {
+                                Id = 1,
+                                Code = "a",
+                                Name = "Name"
+                            }
+
                         }
                     }
                 };
@@ -311,6 +324,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 No = "sd",
                                 OrderQuantity = 100
                             },
+                            ProductTextile = new ProductTextile()
+                            {
+                                Id = 1,
+                                Code = "a",
+                                Name = "Name"
+                            },
+
                             Unit = "s",
                             UomUnit = "d"
                         }
@@ -1026,7 +1046,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 OrderQuantity = 100
                             },
                             Unit = "s",
-                            UomUnit = "d"
+                            UomUnit = "d",
+                            ProductTextile = new ProductTextile()
+                            {
+                                Id = 1,
+                                Code = "a",
+                                Name = "Name"
+                            }
+
                         }
                     }
             };

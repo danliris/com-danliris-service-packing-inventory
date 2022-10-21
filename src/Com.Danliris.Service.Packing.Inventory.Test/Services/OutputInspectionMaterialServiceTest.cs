@@ -117,6 +117,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
                                 }
                             },
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            {
+                                Id = 1,
+                                Name = "a",
+                                Code = "Code"
+                            },
                             BuyerId = 1,
                             InputId = 1,
                         },
@@ -173,6 +179,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                     Remark = "re",
                                     AvalType = "type"
                                 }
+                            },
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            { 
+                                Id = 1,
+                                Name = "a",
+                                Code = "Code"
                             },
                             BuyerId = 1,
                             InputId = 1,
@@ -288,6 +300,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
                                 }
                             },
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            {
+                                Id = 1,
+                                Name = "a",
+                                Code = "Code"
+                            },
                             BuyerId = 1,
                             InputId = 1,
                         },
@@ -345,6 +363,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                     Remark = "re",
                                     AvalType = "type"
                                 }
+                            },
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            {
+                                Id = 1,
+                                Name = "a",
+                                Code = "Code"
                             },
                             BuyerId = 1,
                             InputId = 1,
