@@ -22,6 +22,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Newtonsoft.Json.Linq;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Microsoft.EntityFrameworkCore;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging
 {
@@ -148,6 +149,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = s.MaterialConstructionId,
                             Name = s.MaterialConstructionName
                         },
+                        ProductTextile = new ProductTextile()
+                        { 
+                            Id = s.ProductTextileId,
+                            Code = s.ProductTextileCode,
+                            Name = s.ProductTextileName
+                        },
                         Unit = s.Unit,
                         UomUnit = s.UomUnit,
                         PackagingQTY = s.PackagingQty,
@@ -214,6 +221,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Id = s.MaterialConstructionId,
                             Name = s.MaterialConstructionName
+                        },
+                        ProductTextile = new ProductTextile()
+                        {
+                            Id = s.ProductTextileId,
+                            Code = s.ProductTextileCode,
+                            Name = s.ProductTextileName
                         },
                         Unit = s.Unit,
                         AtQty = s.PackagingLength,
@@ -329,6 +342,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             Id = s.MaterialConstructionId,
                             Name = s.MaterialConstructionName
+                        },
+                        ProductTextile = new ProductTextile()
+                        {
+                            Id = s.ProductTextileId,
+                            Code = s.ProductTextileCode,
+                            Name = s.ProductTextileName
                         },
                         Unit = s.Unit,
                         UomUnit = s.UomUnit,
@@ -907,7 +926,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, 0, item.BuyerId, prevPacking,
                         item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false,
-                        item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin);
+                        item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
 
                     productionOrder.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
                     productionOrder.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
@@ -954,7 +973,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.PackagingType, item.PackagingQTY, item.PackagingUnit, item.QtyOrder, item.Keterangan, 0, 0, item.BuyerId, prevPacking,
                         item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name,
                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false,
-                        item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin);
+                        item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
 
                     modelItem.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
                     modelItem.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
@@ -1303,6 +1322,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         d.NextAreaInputStatus,
                         SAT = d.UomUnit,
                         DateOut = d.DateOut,
+                        ProductTextileName = d.ProductTextileName,
                     })
                 });
 
@@ -1331,6 +1351,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         NextAreaInputStatus = d.First().NextAreaInputStatus,
                         SAT = d.First().SAT,
                         DateOut = d.First().DateOut,
+                        ProductTextileName = d.First().ProductTextileName,
                     })
                 });
 
@@ -1361,6 +1382,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         NextAreaInputStatus = d.NextAreaInputStatus,
                         SAT = d.SAT,
                         DateOut = d.DateOut,
+                        ProductTextileName = d.ProductTextileName,
                     })
                 });
 
@@ -1406,6 +1428,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
+                {"ProductTextileName", "NAMA BARANG" },
                 {"MaterialOrigin", "ASAL MATERIAL" },
                 {"Unit","UNIT"},
                 {"Buyer","BUYER"},
@@ -2340,6 +2363,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             No = e.First().ProductionOrderNo,
                             Type = e.First().ProductionOrderType,
                             OrderQuantity = e.First().ProductionOrderOrderQuantity
+                        },
+                        ProductTextile = new ProductTextile()
+                        { 
+                            Id = e.First().ProductTextileId,
+                            Code = e.First().ProductTextileCode,
+                            Name = e.First().ProductTextileName
                         },
                         Unit = e.First().Unit,
                         //DyeingPrintingAreaInputProductionOrderId = s.Id,

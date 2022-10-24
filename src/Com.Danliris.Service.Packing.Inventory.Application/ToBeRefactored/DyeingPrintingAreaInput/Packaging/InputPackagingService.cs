@@ -50,7 +50,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.QtyOrder, s.Grade, s.InputQuantity, s.BuyerId, s.Id, s.Remark, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                          s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin)).ToList());
+                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin,
+                         s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                      
 
                 result = await _repository.InsertAsync(model);
@@ -68,7 +69,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.PackingInstruction, s.CartNo, s.Buyer, s.Construction,
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.QtyOrder, s.Grade, prevBon.Id, s.InputQuantity, s.BuyerId, s.Id, s.Remark, s.ProductionMachine, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                          s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin)).ToList());
+                         s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id,
+                         s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                      
                 model.Id = prevBon.Id;
 
@@ -200,6 +202,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = d.YarnMaterialId,
                         Name = d.YarnMaterialName
                     },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    { 
+                        Id = d.ProductTextileId,
+                        Code = d.ProductTextileCode,
+                        Name = d.ProductTextileName
+                    },
                     Grade = d.Grade,
                     Id = d.Id,
                     Unit = d.Unit,
@@ -305,6 +313,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = s.ProcessTypeId,
                     Name = s.ProcessTypeName
+                },
+                ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                {
+                    Id = s.ProductTextileId,
+                    Code = s.ProductTextileCode,
+                    Name = s.ProductTextileName
                 },
                 Unit = s.Unit,
                 UomUnit = s.UomUnit,
@@ -425,6 +439,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         Id = s.YarnMaterialId,
                         Name = s.YarnMaterialName
+                    },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    { 
+                        Id = s.ProductTextileId,
+                        Code = s.ProductTextileCode,
+                        Name = s.ProductTextileName
                     },
                     Unit = s.Unit,
                     UomUnit = s.UomUnit,
@@ -614,6 +634,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = s.ProcessTypeId,
                     Name = s.ProcessTypeName
+                },
+                ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                { 
+                    Id = s.ProductTextileId,
+                    Code = s.ProductTextileCode,
+                    Name = s.ProductTextileName
                 },
                 Remark = s.Remark,
                 ProductionOrderNo = s.ProductionOrderNo,
@@ -890,7 +916,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                           QtyTerima = d.InputQuantity,
                           SAT = d.UomUnit,
                           DateIn = d.DateIn,
-                          DateOut = d.DateOut
+                          DateOut = d.DateOut,
+                          ProductTextileName = d.ProductTextileName
                       })
                   });
 
@@ -911,6 +938,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"NoKreta","NO KRETA" },
                 {"Material","MATERIAL"},
                 {"MaterialOrigin","ASAL MATERIAL"},
+                {"ProductTextileName","NAMA BARANG"},
                 {"Unit","UNIT"},
                 {"Buyer","BUYER"},
                 {"Warna","WARNA"},
