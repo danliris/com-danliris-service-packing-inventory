@@ -540,7 +540,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              viewModel.Date,
                                                              s.InventoryType,
                                                              s.MaterialOrigin,
-                                                             s.PackingCodeToCreate
+                                                             s.PackingCodeToCreate,
+                                                             s.ProductTextile.Id,
+                                                             s.ProductTextile.Code,
+                                                             s.ProductTextile.Name
                                                              ))
                                                          .ToList());
 
@@ -665,7 +668,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.Date,
                     productionOrder.InventoryType,
                     productionOrder.MaterialOrigin,
-                    productionOrder.PackingCodeToCreate
+                    productionOrder.PackingCodeToCreate,
+                    productionOrder.ProductTextile.Id,
+                    productionOrder.ProductTextile.Code,
+                    productionOrder.ProductTextile.Name
                     )
 
                 {
@@ -775,6 +781,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = p.YarnMaterialId,
                         Name = p.YarnMaterialName
                     },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    { 
+                        Id = p.ProductTextileId,
+                        Code = p.ProductTextileCode,
+                        Name = p.ProductTextileName
+                    },
+                    
                     CartNo = p.CartNo,
                     Buyer = p.Buyer,
                     BuyerId = p.BuyerId,
@@ -1289,7 +1302,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         NoSPP = d.ProductionOrderNo,
                         QtyOrder = d.ProductionOrderOrderQuantity,
                         Material = d.Construction,
+                        ProductTextileName = d.ProductTextileName,
                         MaterialOrigin = d.MaterialOrigin,
+                        
                         Unit = d.Unit,
                         Buyer = d.Buyer,
                         Warna = d.Color,
@@ -1315,6 +1330,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         NoSPP = d.Key.NoSPP,
                         QtyOrder = d.First().QtyOrder,
                         Material = d.First().Material,
+                        ProductTextileName = d.First().ProductTextileName,
                         MaterialOrigin = d.First().MaterialOrigin,
                         Unit = d.First().Unit,
                         Buyer = d.First().Buyer,
@@ -1342,6 +1358,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         NoSPP = d.NoSPP,
                         QtyOrder = d.QtyOrder,
                         Material = d.Material,
+                        ProductTextileName = d.ProductTextileName,
                         MaterialOrigin = d.MaterialOrigin,
                         Unit = d.Unit,
                         Buyer = d.Buyer,
@@ -1377,6 +1394,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"DateIn","Tanggal Masuk" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
+                {"ProductTextileName","NAMA BARANG"},
                 {"MaterialOrigin", "ASAL MATERIAL" },
                 {"Unit","UNIT"},
                 {"Buyer","BUYER"},
@@ -1503,6 +1521,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         BonNo = s.BonNo,
                         ProductionOrderNo = d.ProductionOrderNo,
                         Construction = d.Construction,
+                        ProductTextileName = d.ProductTextileName,
                         Unit = d.Unit,
                         Color = d.Color,
                         Motif = d.Motif,
@@ -1529,6 +1548,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         BonNo = data.BonNo,
                         OrderNo = data.ProductionOrderNo,
                         Construction = data.Construction,
+                        ProductTextileName = data.ProductTextileName,
                         Unit = data.Unit,
                         Color = data.Color,
                         PackingCode = packingCode,
@@ -1556,6 +1576,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "BON NO", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "NO. SPP", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "KONSTRUKSI", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "NAMA BARANG", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "UNIT", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "COLOR", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY PACKING", DataType = typeof(double) });
@@ -1582,6 +1603,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.BonNo,
                             item.OrderNo,
                             item.Construction,
+                            item.ProductTextileName,
                             item.Unit,
                             item.Color,
                             item.PackagingQty,
@@ -1917,6 +1939,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public string BonNo { get; set; }
         public string Construction { get; set; }
+        public string ProductTextileName { get; set; }
         public string Unit { get; set; }
         public string PackingCode { get; set; }
         public double PackingLength { get; set; }
