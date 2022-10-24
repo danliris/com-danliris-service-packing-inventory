@@ -273,7 +273,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             }
         }
@@ -319,7 +320,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             }
         }
@@ -366,7 +368,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             }
         }
@@ -856,7 +859,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
@@ -981,7 +985,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
@@ -1107,7 +1112,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                                 s.ProcessType.Name,
                                                                 s.YarnMaterial.Id,
                                                                 s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode)).ToList());
+                                                                s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.InputQuantity, s.InputPackagingQty, s.FinishWidth, s.DateIn, s.InventoryType, s.MaterialOrigin, s.ProductPackingCode,
+                                                                s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             testinput.Id = 1;
             foreach (var j in testinput.DyeingPrintingAreaInputProductionOrders)
