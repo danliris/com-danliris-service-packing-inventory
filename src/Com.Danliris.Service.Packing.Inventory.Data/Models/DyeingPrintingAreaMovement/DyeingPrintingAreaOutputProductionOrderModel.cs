@@ -1098,12 +1098,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="inventoryType"></param>
         /// <param name="materialOrigin"></param>
         /// <param name="deliveryOrderSalesType"></param>
+        /// <param name="productTextileId"></param>
+        /// <param name="productTextileCode"></param>
+        /// <param name="productTextileName"></param>
         public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
             string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity,
             string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area,
             string destinationArea, int dyeingPrintingAreaInputProductionOrderId, int buyerId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, string adjDocumentNo, int processTypeId, string processTypeName,
-            int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut, string destinationBuyerName, string inventoryType, string materialOrigin, string deliveryOrderSalesType) : this()
+            int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut, string destinationBuyerName, string inventoryType, string materialOrigin, string deliveryOrderSalesType,
+            int? productTextileId, string productTextileCode, string productTextileName) : this()
              
         {
             ProductionOrderId = productionOrderId;
@@ -1165,6 +1169,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
             DeliveryOrderSalesType = deliveryOrderSalesType;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
         }
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)

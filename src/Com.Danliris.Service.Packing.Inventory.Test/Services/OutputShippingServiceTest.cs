@@ -1376,7 +1376,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             var outSPPRepoMock = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
             var vm = ViewModel;
 
-            var input = new DyeingPrintingAreaInputProductionOrderModel("SHIPPING", 1, "NO", 1, "no", "tue", 1, "buyer", "c", "c", "c", "c", "c", 1, "c", 1, "c", false, 1, "unit", 1, 1, 1, "n", 1, "m", "1", "1", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, 1, "a", "a", DateTimeOffset.Now, "a","LAMA", "a", "a");
+            var input = new DyeingPrintingAreaInputProductionOrderModel("SHIPPING", 1, "NO", 1, "no", "tue", 1, "buyer", "c", "c", "c", "c", "c", 1, "c", 1, "c", false, 1, "unit", 1, 1, 1, "n", 1, "m", "1", "1", "1", 1, "a", 1, "a", 1, 1, "a", false, 1, 1, "a", false, 1, 1, 1, 1, "a", "a", DateTimeOffset.Now, "a","LAMA", "a", "a", 1, "a", "a");
             input.Id = 1;
             sppRepoMock.Setup(x => x.ReadAll()).Returns(new List<DyeingPrintingAreaInputProductionOrderModel>()
             {
