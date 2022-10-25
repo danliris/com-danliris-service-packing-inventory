@@ -551,7 +551,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             InventoryType = inventoryType;
             MaterialOrigin = materialOrigin;
             ProductPackingCode = productPackingCodeToCreate;
+            
             IsAfterStockOpname = true;
+
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
