@@ -132,6 +132,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = s.YarnMaterialId,
                         Name = s.YarnMaterialName
                     },
+                    ProductTextile = new ProductTextile()
+                    { 
+                        Id = s.ProductTextileId,
+                        Code = s.ProductTextileCode,
+                        Name = s.ProductTextileName
+                    },
                     Unit = s.Unit,
                     UomUnit = s.UomUnit,
                     ProductSKUId = s.ProductSKUId,
@@ -304,7 +310,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.PackingType, s.Color, s.Motif, s.Grade, s.InputQtyPacking, s.Packing, s.InputQuantity, s.UomUnit, false, s.InputQuantity, s.Unit,
                          s.BuyerId, s.Id, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark, s.ProcessType.Id, s.ProcessType.Name,
                          s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId,
-                         s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, viewModel.Date, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrderSalesType)).ToList());
+                         s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, viewModel.Date, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrderSalesType,
+                         s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                      
 
                 result = await _repository.InsertAsync(model);
@@ -344,7 +351,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.CartNo, item.Remark,
                         item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode,
                         item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.PackingLength, item.InputQuantity,
-                        item.InputQtyPacking, item.DeliveryOrderRetur.Id, item.DeliveryOrderRetur.No, item.FinishWidth, viewModel.Date, item.DeliveryOrder.Name, item.InventoryType, item.MaterialOrigin, item.DeliveryOrderSalesType);
+                        item.InputQtyPacking, item.DeliveryOrderRetur.Id, item.DeliveryOrderRetur.No, item.FinishWidth, viewModel.Date, item.DeliveryOrder.Name, item.InventoryType, item.MaterialOrigin, item.DeliveryOrderSalesType,
+                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
                         
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -670,6 +678,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.YarnMaterialId,
                     Name = s.YarnMaterialName
                 },
+                ProductTextile = new ProductTextile()
+                { 
+                    Id = s.ProductTextileId,
+                    Code = s.ProductTextileCode,
+                    Name = s.ProductTextileName
+                },
                 Buyer = s.Buyer,
                 BuyerId = s.BuyerId,
                 Construction = s.Construction,
@@ -816,7 +830,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.ProductionOrder.OrderQuantity, s.Buyer, s.Construction, s.PackingType, s.Color, s.Motif, s.Grade, s.InputQtyPacking, s.Packing, s.InputQuantity, s.UomUnit, s.HasOutputDocument,
                          s.InputQuantity, s.Unit, s.BuyerId, s.DyeingPrintingAreaInputProductionOrderId, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.CartNo, s.Remark,
                          s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU,
-                         s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, s.DateIn, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrderSalesType)
+                         s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputQtyPacking, s.DeliveryOrderRetur.Id, s.DeliveryOrderRetur.No, s.FinishWidth, s.DateIn, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrderSalesType,
+                         s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)
 
                      {
                          Id = s.Id
@@ -878,6 +893,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     d.DateIn,
                     d.ProductionOrderOrderQuantity,
                     d.Construction,
+                    d.ProductTextileName,
                     d.MaterialOrigin,
                     d.Unit,
                     d.Buyer,
@@ -906,6 +922,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         d.First().DateIn,
                         d.First().ProductionOrderOrderQuantity,
                         d.First().Construction,
+                        d.First().ProductTextileName,
                         d.First().MaterialOrigin,
                         d.First().Unit,
                         d.First().Buyer,
@@ -935,6 +952,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         d.DateIn,
                         d.ProductionOrderOrderQuantity,
                         d.Construction,
+                        d.ProductTextileName,
                         d.MaterialOrigin,
                         d.Unit,
                         d.Buyer,
@@ -964,6 +982,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             //dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Asal Material", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
@@ -978,7 +997,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query1.Count() == 0)
             {
-                dt.Rows.Add("", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -995,6 +1014,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                      dateIn,
                                      item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
                                      item.Construction,
+                                     item.ProductTextileName,
                                      item.MaterialOrigin,
                                      item.Unit, 
                                      item.Buyer,
