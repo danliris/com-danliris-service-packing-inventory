@@ -26,5 +26,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public decimal StockOpname { get; internal set; }
         public decimal StorageBalance { get; internal set; }
         public decimal Difference { get; internal set; }
+        public string ProductTextileName { get; internal set; }
     }
 }
