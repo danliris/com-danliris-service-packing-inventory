@@ -350,7 +350,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth,  s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth,  s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
             }
         }
@@ -366,7 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, "Ekspor", s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, "Ekspor", s.PackingListBaleNo, s.PackingListNet, s.PackingListGross, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             }
         }
@@ -382,7 +382,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
             }
         }
@@ -398,7 +399,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
             }
         }
@@ -412,7 +414,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModelAdj.Area, ViewModelAdj.DestinationArea, ViewModelAdj.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Balance, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.FinishWidth, s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Qty, s.FinishWidth, s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
             }
         }
@@ -917,7 +920,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
 
             var model = Model;
@@ -1070,7 +1074,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                         new DyeingPrintingAreaOutputProductionOrderModel(vm2.Area, vm2.DestinationArea, vm2.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                             s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                             s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                            s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross)).ToList());
+                            s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn, s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                            s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
 
 
 
@@ -1393,7 +1398,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModel.Area, ViewModel1.DestinationArea, ViewModel.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, 1 , s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                         s.MaterialWidth, s.CartNo, s.Remark, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
-                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth,  s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross )
+                        s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth,  s.DateIn,s.DateOut, s.DeliveryOrder.Name, s.InventoryType, s.MaterialOrigin, s.DeliveryOrder.Type, s.PackingListBaleNo, s.PackingListNet, s.PackingListGross,
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)
                 }.AsQueryable());
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object, outSPPRepoMock.Object).Object);
 

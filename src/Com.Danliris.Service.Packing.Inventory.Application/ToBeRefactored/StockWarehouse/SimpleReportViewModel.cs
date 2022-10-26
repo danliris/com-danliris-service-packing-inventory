@@ -21,5 +21,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
         public double Quantity { get; set; }
         public string ProcessTypeName { get; set; }
         public string InventoryType { get; set; }
+        public string ProductTextileName { get; set; }
     }
 }
