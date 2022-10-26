@@ -116,6 +116,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         OrderQuantity = d.ProductionOrderOrderQuantity,
                         Type = d.ProductionOrderType
                     },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    { 
+                        Id = d.ProductTextileId,
+                        Code = d.ProductTextileCode,
+                        Name = d.ProductTextileName
+                    },
                     Quantity = d.Balance,
                     InputQuantity = d.InputQuantity,
                     Unit = d.Unit,
@@ -151,7 +157,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.InputQuantity,
                      false, d.Id, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth, d.Machine, d.ProcessType.Id, d.ProcessType.Name,
-                     d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth)).ToList());
+                     d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth,
+                     d.ProductTextile.Id, d.ProductTextile.Code, d.ProductTextile.Name)).ToList());
 
                 result = await _repository.InsertAsync(model);
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, viewModel.Area, DyeingPrintingArea.TRANSFORM, model.Id, model.BonNo, model.TotalAvalQuantity, model.TotalAvalWeight, model.AvalType);
@@ -172,7 +179,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var modelItem = new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, item.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type,
                         item.ProductionOrder.OrderQuantity, item.CartNo, item.Construction, item.Unit, item.Buyer, item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit,
                         item.InputQuantity, false, item.Id, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name,
-                        item.MaterialWidth, item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity, item.FinishWidth);
+                        item.MaterialWidth, item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity, item.FinishWidth,
+                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
 
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -244,6 +252,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = s.YarnMaterialId,
                     Name = s.YarnMaterialName
+                },
+                ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                { 
+                    Id = s.ProductTextileId,
+                    Code = s.ProductTextileCode,
+                    Name = s.ProductTextileName
                 },
                 Buyer = s.Buyer,
                 BuyerId = s.BuyerId,
@@ -324,7 +338,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     viewModel.AvalTransformationProductionOrders.Select(d => new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, d.BonNo, d.ProductionOrder.Id, d.ProductionOrder.No,
                     d.ProductionOrder.Type, d.ProductionOrder.OrderQuantity, d.CartNo, d.Construction, d.Unit, d.Buyer, d.BuyerId, d.Color, d.Motif, d.AvalType, d.UomUnit, d.InputQuantity,
                     d.HasOutputDocument, d.DyeingPrintingAreaInputProductionOrderId, d.Material.Id, d.Material.Name, d.MaterialConstruction.Id, d.MaterialConstruction.Name, d.MaterialWidth,
-                    d.Machine, d.ProcessType.Id, d.ProcessType.Name, d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth)
+                    d.Machine, d.ProcessType.Id, d.ProcessType.Name, d.YarnMaterial.Id, d.YarnMaterial.Name, d.ProductSKUId, d.FabricSKUId, d.ProductSKUCode, d.HasPrintingProductSKU, d.ProductPackingId, d.FabricPackingId, d.ProductPackingCode, d.HasPrintingProductPacking, d.InputQuantity, d.FinishWidth,
+                    d.ProductTextile.Id, d.ProductTextile.Code, d.ProductTextile.Name)
                     {
                         Id = d.Id
                     }).ToList());
