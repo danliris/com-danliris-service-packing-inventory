@@ -99,6 +99,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Id = s.YarnMaterialId,
                         Name = s.YarnMaterialName
                     },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    { 
+                        Id = s.ProductTextileId,
+                        Code = s.ProductTextileCode,
+                        Name = s.ProductTextileName
+                    },
                     Id = s.Id,
                     AvalType = s.AvalType,
                     AvalCartNo = s.AvalCartNo,
@@ -258,7 +264,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                                                                                             s.InputQuantity,
                                                                                                                                             s.InputPackagingQty,
                                                                                                                                             viewModel.Date,
-                                                                                                                                            s.FinishWidth))
+                                                                                                                                            s.FinishWidth,
+                                                                                                                                            s.ProductTextile.Id,
+                                                                                                                                            s.ProductTextile.Code,
+                                                                                                                                            s.ProductTextile.Name))
 
                                                                                .ToList());
                 result = await _inputRepository.InsertAsync(model);
@@ -321,7 +330,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.InputQuantity,
                                                                 s.InputPackagingQty,
                                                                 s.FinishWidth,
-                                                                viewModel.Date)).ToList());
+                                                                viewModel.Date,
+                                                                s.ProductTextile.Id,
+                                                                s.ProductTextile.Code,
+                                                                s.ProductTextile.Name)).ToList());
             }
 
             //Create New Row in Input and ProductionOrdersInput in Each Repository 
@@ -664,6 +676,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                            Id = d.YarnMaterialId,
                                                                            Name = d.YarnMaterialName
                                                                        },
+                                                                       ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                                                                       { 
+                                                                           Id = d.ProductTextileId,
+                                                                           Name = d.ProductTextileName,
+                                                                           Code = d.ProductTextileCode
+                                                                       },
                                                                        Machine = d.Machine,
                                                                        BuyerId = d.BuyerId,
                                                                        CartNo = d.CartNo,
@@ -982,6 +1000,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No. Kereta", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
@@ -992,7 +1011,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (query.Count() == 0)
             {
-                dt.Rows.Add("",  "", "", "", "", "", "", "", "", "", "", "");
+                dt.Rows.Add("",  "", "", "", "", "", "", "", "", "", "", "", "");
             }
             else
             {
@@ -1004,7 +1023,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
                        
                         dt.Rows.Add(model.BonNo, item.ProductionOrderNo, dateIn, item.ProductionOrderOrderQuantity.ToString("N2", CultureInfo.InvariantCulture),
-                            item.CartNo, item.Construction, item.Unit, item.Buyer, item.Color, item.Motif, item.AvalType, item.UomUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture));
+                            item.CartNo, item.Construction, item.ProductTextileName, item.Unit, item.Buyer, item.Color, item.Motif, item.AvalType, item.UomUnit, item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture));
                     }
                 }
             }

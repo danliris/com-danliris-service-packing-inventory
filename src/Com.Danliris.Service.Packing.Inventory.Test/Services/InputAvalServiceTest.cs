@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaInput.Aval;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
@@ -137,6 +138,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "name"
                             },
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "a"
+                            }
                         }
                     },
                     DyeingPrintingMovementIds = new List<InputAvalDyeingPrintingAreaMovementIdsViewModel>()
@@ -168,9 +175,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
                                                         s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                                                         s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
-                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth))
-                                                        
-                                                                           .ToList());
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth,
+                                                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
             }
         }
         private DyeingPrintingAreaInputModel ModelPC
@@ -186,9 +192,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
                                                         s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                                                         s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
-                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth))
-                                                        
-                                                                           .ToList());
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth,
+                                                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
             }
         }
         private DyeingPrintingAreaInputModel ModelDelete
@@ -204,9 +209,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         s.AvalQuantity, s.AvalQuantityKg, s.HasOutputDocument, s.ProductionOrder.Id, s.ProductionOrder.No, s.CartNo, s.BuyerId, s.Buyer, s.Construction,
                                                         s.Unit, s.Color, s.Motif, s.Remark, s.Grade, s.Status, s.Balance, s.PackingInstruction, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                                                         s.PackagingType, s.PackagingQty, s.PackagingUnit, s.DyeingPrintingAreaOutputProductionOrderId, s.Machine, s.Material.Id, s.Material.Name,
-                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth))
-                                                        
-                                                                           .ToList());
+                                                        s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.InputQuantity, s.InputPackagingQty,s.DateIn, s.FinishWidth,
+                                                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                 foreach (var t in data.DyeingPrintingAreaInputProductionOrders)
                 {
                     t.SetHasOutputDocument(false, "unittest", "unittest");
