@@ -614,6 +614,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "s"
                 };
+                item.ProductTextile = new ProductTextile()
+                {
+                    Id = 1,
+                    Code = "a",
+                    Name = "a"
+                };
                 item.PrevSppInJson = "[]";
 
             }
@@ -983,6 +989,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                     Id = 1,
                     Name = "s"
                 };
+                item.ProductTextile = new ProductTextile()
+                {
+                    Id = 1,
+                    Name = "a",
+                    Code = "a"
+                };
                 item.PrevSppInJson = "[]";
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
@@ -1089,6 +1101,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 {
                     Id = 1,
                     Name = "s"
+                };
+                item.ProductTextile = new ProductTextile()
+                {
+                    Id = 1,
+                    Name = "a",
+                    Code = "a"
                 };
             }
             var objectInputSppPrev = JsonConvert.DeserializeObject<List<DyeingPrintingAreaInputProductionOrderModel>>(testinputPrevSPp);
