@@ -160,6 +160,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "s"
                             },
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "a"
+                            },
                             Unit = "s",
                             UomUnit = "d",
                             ProductSKUId = 1,
@@ -233,6 +239,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             {
                                 Id = 1,
                                 Name = "s"
+                            },
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "a"
                             },
                             Unit = "s",
                             UomUnit = "d",

@@ -855,7 +855,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 if (data.Count() == 0)
                 {
-                    dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
+                    dt.Rows.Add("", "", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
                 }
                 else
                 {
@@ -925,7 +925,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 if (data.Count() == 0)
                 {
-                    dt.Rows.Add("", "", "","","", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                    dt.Rows.Add("", "","","", "", "", "", "", "", "", 0, 0, 0, 0, "");
                 }
                 else
                 {
