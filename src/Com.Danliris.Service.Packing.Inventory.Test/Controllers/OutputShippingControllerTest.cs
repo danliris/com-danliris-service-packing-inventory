@@ -114,6 +114,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
                                 Type = "sd",
                                 No = "sd"
                             },
+                            ProductTextile = new ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "a"
+                            },
                             Unit = "s",
                             UomUnit = "d"
                         }

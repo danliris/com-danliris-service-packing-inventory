@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly PdfPTable NettoSection;
         private readonly PdfPTable SignatureSection;
 
-        List<string> bodyTableColumns = new List<string> { "No", "KONSTRUKSI", "MOTIF", "KET", "GRADE 1", "GRADE 2", "NO SP", "WARNA", "QTY PACKING", "PACKING", "YARD", "METER", "KG" };
+        List<string> bodyTableColumns = new List<string> { "No", "KONSTRUKSI", "NAMA BARANG", "MOTIF", "KET", "GRADE 1", "GRADE 2", "NO SP", "WARNA", "QTY PACKING", "PACKING", "YARD", "METER", "KG" };
         List<string> groupTableColumns = new List<string> { "No", "KONSTRUKSI", "METER" };
 
         public OutputShippingPdfTemplate(OutputShippingViewModel model, int timeoffset)
@@ -359,7 +359,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 WidthPercentage = 100
             };
-            float[] widths = new float[] { 1f, 3f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f };
+            float[] widths = new float[] { 1f, 3f, 3f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f };
             table.SetWidths(widths);
             PdfPCell cellHeader = new PdfPCell()
             {
@@ -396,6 +396,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 table.AddCell(cellRight);
 
                 cellHeader.Phrase = new Phrase(detail.Construction, TEXT_FONT);
+                table.AddCell(cellHeader);
+
+                cellHeader.Phrase = new Phrase(detail.ProductTextile.Name, TEXT_FONT);
                 table.AddCell(cellHeader);
 
                 cellHeader.Phrase = new Phrase(detail.Motif, TEXT_FONT);
