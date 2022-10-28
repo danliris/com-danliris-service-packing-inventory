@@ -427,6 +427,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = s.First().ProcessTypeId,
                             Name = s.First().ProcessTypeName
                         },
+                        ProductTextile = new ProductTextile()
+                        { 
+                            Id = s.First().ProductTextileId,
+                            Code = s.First().ProductTextileCode,
+                            Name = s.First().ProductTextileName
+                        },
                         Unit = s.First().Unit,
                         UomUnit = s.First().UomUnit,
                         DeliveryNote = s.First().DeliveryNote,
