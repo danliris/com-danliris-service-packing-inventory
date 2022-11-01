@@ -80,6 +80,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
             modelToUpdate.SetReceiptNo(model.ReceiptNo, _identityProvider.Username, UserAgent);
 
+            modelToUpdate.SetBankId(model.BankId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBankName(model.BankName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBankCurrencyCode(model.BankCurrencyCode, _identityProvider.Username, UserAgent);
+
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
                 var item = model.Items.FirstOrDefault(m => m.Id == itemToUpdate.Id);
