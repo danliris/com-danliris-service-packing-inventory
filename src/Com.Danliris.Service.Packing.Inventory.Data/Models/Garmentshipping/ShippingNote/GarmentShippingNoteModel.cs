@@ -118,5 +118,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
+        public void SetBankId(int bankId, string userName, string userAgent)
+        {
+            if (BankId != bankId)
+            {
+                BankId = bankId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBankName(string bankName, string userName, string userAgent)
+        {
+            if (BankName != bankName)
+            {
+                BankName = bankName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBankCurrencyCode(string bankCurrencyCode, string userName, string userAgent)
+        {
+            if (BankCurrencyCode != bankCurrencyCode)
+            {
+                BankCurrencyCode = bankCurrencyCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
     }
 }
