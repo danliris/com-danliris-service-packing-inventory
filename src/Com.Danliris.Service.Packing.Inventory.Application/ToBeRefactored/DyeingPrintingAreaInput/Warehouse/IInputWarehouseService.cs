@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
         MemoryStream GenerateExcelAllBarcode(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
         string GetValidationMessage(string packingCode);
+        ListResult<OutputPreWarehouseItemListViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
+        List<OutputPreWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
 
     }
 }
