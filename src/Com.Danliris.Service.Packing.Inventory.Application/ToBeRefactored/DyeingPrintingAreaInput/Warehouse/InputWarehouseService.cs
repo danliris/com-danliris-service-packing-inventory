@@ -855,7 +855,116 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return data.ToList();
         }
 
-        //Reject - Generate Bon No
+        public List<OutputPreWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId)
+        {
+            var query = _outputProductionOrderRepository.ReadAll()
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+                                                                    !s.HasNextAreaDocument && s.IsAfterStockOpname && s.ProductionOrderId == productionOrderId);
+
+            //var groupedProductionOrders = query.GroupBy(s => s.ProductionOrderId);
+
+            var data = query.GroupBy(o => new { o.ProductionOrderId, o.ProductionOrderNo, o.ProductionOrderOrderQuantity, o.ProductionOrderType }).Select(s => new OutputPreWarehouseViewModel()
+            {
+                ProductionOrderId = s.Key.ProductionOrderId,
+                ProductionOrderNo = s.Key.ProductionOrderNo,
+                ProductionOrderOrderQuantity = s.Key.ProductionOrderOrderQuantity,
+                ProductionOrderType = s.Key.ProductionOrderType,
+                ProductionOrderItems = s.Select(p => new OutputPreWarehouseItemListViewModel()
+                {
+
+                    Id = p.Id,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.Key.ProductionOrderId,
+                        No = s.Key.ProductionOrderNo,
+                        Type = s.Key.ProductionOrderType,
+                        OrderQuantity = s.Key.ProductionOrderOrderQuantity
+                    },
+                    MaterialWidth = p.MaterialWidth,
+                    MaterialOrigin = p.MaterialOrigin,
+                    FinishWidth = p.FinishWidth,
+                    MaterialConstruction = new MaterialConstruction()
+                    {
+                        Id = p.MaterialConstructionId,
+                        Name = p.MaterialConstructionName
+                    },
+                    MaterialProduct = new Material()
+                    {
+                        Id = p.MaterialId,
+                        Name = p.MaterialName
+                    },
+                    ProcessType = new CommonViewModelObjectProperties.ProcessType()
+                    {
+                        Id = p.ProcessTypeId,
+                        Name = p.ProcessTypeName
+                    },
+                    YarnMaterial = new CommonViewModelObjectProperties.YarnMaterial()
+                    {
+                        Id = p.YarnMaterialId,
+                        Name = p.YarnMaterialName
+                    },
+                    ProductTextile = new CommonViewModelObjectProperties.ProductTextile()
+                    {
+                        Id = p.ProductTextileId,
+                        Code = p.ProductTextileCode,
+                        Name = p.ProductTextileName
+                    },
+
+                    CartNo = p.CartNo,
+                    Buyer = p.Buyer,
+                    BuyerId = p.BuyerId,
+                    Construction = p.Construction,
+                    Unit = p.Unit,
+                    Color = p.Color,
+                    Motif = p.Motif,
+                    UomUnit = p.UomUnit,
+                    Remark = p.Remark,
+                    OutputId = p.DyeingPrintingAreaOutputId,
+                    Grade = p.Grade,
+                    Status = p.Status,
+                    Balance = p.Balance,
+                    InputQuantity = p.Balance,
+                    PackingInstruction = p.PackingInstruction,
+                    PackagingType = p.PackagingType,
+                    PackagingQty = (decimal)p.PackagingQuantityBalance,
+                    InputPackagingQty = (decimal)p.PackagingQuantityBalance,
+                    PackagingUnit = p.PackagingUnit,
+                    AvalALength = p.AvalALength,
+                    AvalBLength = p.AvalBLength,
+                    AvalConnectionLength = p.AvalConnectionLength,
+                    DeliveryOrderSalesId = p.DeliveryOrderSalesId,
+                    DeliveryOrderSalesNo = p.DeliveryOrderSalesNo,
+                    AvalType = p.AvalType,
+                    AvalCartNo = p.AvalCartNo,
+                    AvalQuantityKg = p.AvalQuantityKg,
+                    Description = p.Description,
+                    DeliveryNote = p.DeliveryNote,
+                    Area = p.Area,
+                    DestinationArea = p.DestinationArea,
+                    HasNextAreaDocument = p.HasNextAreaDocument,
+                    DyeingPrintingAreaInputProductionOrderId = p.DyeingPrintingAreaInputProductionOrderId,
+                    Qty = p.PackagingLength,
+                    ProductSKUId = p.ProductSKUId,
+                    FabricSKUId = p.FabricSKUId,
+                    ProductSKUCode = p.ProductSKUCode,
+                    HasPrintingProductSKU = p.HasPrintingProductSKU,
+                    ProductPackingId = p.ProductPackingId,
+                    FabricPackingId = p.FabricPackingId,
+                    ProductPackingCode = p.ProductPackingCode,
+                    ProductPackingCodeCreated = p.ProductPackingCodeCreated,
+                    HasPrintingProductPacking = p.HasPrintingProductPacking,
+                    PreviousOutputPackagingQty = p.PackagingQty,
+                    PrevSppInJson = p.PrevSppInJson,
+                    InventoryType = p.InventoryType
+                }).ToList()
+
+            });
+
+            return data.ToList();
+        }
+
+            //Reject - Generate Bon No
         private string GenerateBonNoReject(int totalPreviousData, DateTimeOffset date, string area)
         {
             if (area == DyeingPrintingArea.PACKING)
@@ -1817,6 +1926,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
         }
+
     }
 
     public class PackingComparer : IEqualityComparer<ProductionOrderItemListDetailViewModel>
