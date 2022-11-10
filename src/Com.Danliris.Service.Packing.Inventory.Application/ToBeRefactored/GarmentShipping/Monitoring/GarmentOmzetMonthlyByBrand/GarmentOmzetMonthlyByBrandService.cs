@@ -49,12 +49,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             queryPL = queryPL.Where(w => w.Omzet == true);
-            queryPL = queryPL.Where(w => w.IsUsed == true);
+            queryPL = queryPL.Where(w => w.Accounting == true);
+            //queryPL = queryPL.Where(w => w.IsUsed == true);
 
             var newQ = (from a in queryPL
                         join b in query on a.Id equals b.PackingListId
                         join c in queryitem on b.Id equals c.GarmentShippingInvoiceId
-      
+                        where b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
+                              && b.PEBDate != DateTimeOffset.MinValue
+
                         select new GarmentOmzetMonthlyByBrandListViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
