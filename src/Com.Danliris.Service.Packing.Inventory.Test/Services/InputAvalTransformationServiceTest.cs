@@ -107,6 +107,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                 Id = 1,
                                 Name = "name"
                             },
+                            ProductTextile = new Application.ToBeRefactored.CommonViewModelObjectProperties.ProductTextile()
+                            { 
+                                Id = 1,
+                                Code = "a",
+                                Name = "a"
+                            },
                             MaterialWidth = "1",
                             Unit = "s",
                             UomUnit = "d",
@@ -134,7 +140,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                      item.BuyerId, item.Color, item.Motif, item.AvalType, item.UomUnit, item.Quantity, item.HasOutputDocument,
                      item.DyeingPrintingAreaInputProductionOrderId, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                      item.Machine, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode,
-                    item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity, item.FinishWidth)).ToList());
+                    item.HasPrintingProductSKU, item.ProductPackingId, item.FabricPackingId, item.ProductPackingCode, item.HasPrintingProductPacking, item.InputQuantity, item.FinishWidth,
+                    item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)).ToList());
             }
         }
 

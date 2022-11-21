@@ -79,7 +79,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                                            Type = a.Type,
                                            Balance = a.Balance,
                                            ProcessTypeId = b.ProcessTypeId,
-                                           ProcessTypeName = b.ProcessTypeName
+                                           ProcessTypeName = b.ProcessTypeName,
+                                           ProductTextileCode = a.ProductTextileCode,
+                                           ProductTextileName = a.ProductTextileName
 
                                        }
 
@@ -140,7 +142,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     ProcessTypeName = d.First().ProcessTypeName,
                     InventoryType = d.Key.InventoryType,
                     Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
-                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance),
+                    ProductTextileName = d.First().ProductTextileName,
+                    ProductTextileCode = d.First().ProductTextileCode
 
                 });
 
@@ -203,7 +207,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Unit = d.First().Unit,
                     InventoryType = d.Key.InventoryType,
                     Quantity = d.Where(e => e.Type == DyeingPrintingArea.IN).Sum(e => e.Balance) - d.Where(e => e.Type == DyeingPrintingArea.OUT).Sum(e => e.Balance)
-                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance)
+                        + d.Where(e => e.Type == DyeingPrintingArea.ADJ_IN || e.Type == DyeingPrintingArea.ADJ_OUT).Sum(e => e.Balance),
+                    ProductTextileName = d.First().ProductTextileName,
+                    ProductTextileCode = d.First().ProductTextileCode
 
                 });
 
@@ -342,7 +348,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                 Satuan = d.First().UomUnit,
                 Unit = d.First().Unit,
                 InventoryType = d.Key.InventoryType,
-                Quantity = d.Sum(e => e.Balance)
+                Quantity = d.Sum(e => e.Balance),
+                ProductTextileName = d.First().ProductTextileName
             });
 
             return result;
@@ -393,7 +400,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                                           Type = a.Type,
                                           Balance = a.Balance,
                                           ProcessTypeId = b.ProcessTypeId,
-                                          ProcessTypeName = b.ProcessTypeName
+                                          ProcessTypeName = b.ProcessTypeName,
+                                          ProductTextileCode = b.ProductTextileCode,
+                                          ProductTextileName = b.ProductTextileName
 
                                       }
 
@@ -455,7 +464,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Satuan = d.First().UomUnit,
                     Unit = d.First().Unit,
                     InventoryType = d.Key.InventoryType,
-                    Quantity = d.Sum(e => e.Balance)
+                    Quantity = d.Sum(e => e.Balance),
+                    ProductTextileName = d.First().ProductTextileName,
+                    ProductTextileCode = d.First().ProductTextileCode
                 });
 
                 return result;
@@ -520,7 +531,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Satuan = d.First().UomUnit,
                     Unit = d.First().Unit,
                     InventoryType = d.Key.InventoryType,
-                    Quantity = d.Sum(e => e.Balance)
+                    Quantity = d.Sum(e => e.Balance),
+                    ProductTextileName = d.First().ProductTextileName,
+                    ProductTextileCode = d.First().ProductTextileCode
                 });
 
                 return result;
@@ -612,7 +625,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                         NoSpp = d.First().ProductionOrderNo,
                         Satuan = d.First().UomUnit,
                         Unit = d.First().Unit,
-                        Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength)
+                        Quantity = d.Sum(e => e.PackagingQty * (decimal)e.PackagingLength),
                     }).ToList();
 
                 var productionOrders = new List<ProductionOrderGroup>();
@@ -748,7 +761,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Motif = e.First().Motif,
                     Buyer = e.First().Buyer,
                     ProcessTypeName = e.First().ProcessTypeName,
-                    
+                    ProductTextileName = e.First().ProductTextileName,
+                    ProductTextileCode = e.First().ProductTextileCode,
                     Satuan = e.First().Satuan,
                     Unit = e.First().Unit,
                     InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
@@ -788,6 +802,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
                     Satuan = e.First().Satuan,
                     Unit = e.First().Unit,
                     InventoryType = e.First().InventoryType == null ? "BARU" : e.First().InventoryType,
+                    ProductTextileName = e.First().ProductTextileName,
+                    ProductTextileCode = e.First().ProductTextileCode,
                     Awal = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.AWAL).Quantity) : 0, 4),
                     Masuk = decimal.Round(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.IN).Quantity) : 0, 4),
                     Keluar = decimal.Round((e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT) != null ? Convert.ToDecimal(e.FirstOrDefault(d => d.Type == DyeingPrintingArea.OUT).Quantity) : 0)
@@ -817,6 +833,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             {
                 dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
@@ -833,13 +851,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 if (data.Count() == 0)
                 {
-                    dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
+                    dt.Rows.Add("", "", "", "","", "", "", "", "", "", "", 0, 0, 0, 0, "", "");
                 }
                 else
                 {
                     foreach (var item in data)
                     {
-                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis, item.ProcessTypeName,
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.ProductTextileCode, item.ProductTextileName, item.Unit, item.Motif, item.Color, item.Grade, item.Jenis, item.ProcessTypeName,
                             item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
                             item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan, item.InventoryType);
                     }
@@ -887,6 +905,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
             {
                 dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Kode Barang", DataType = typeof(string) });
+                dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
                 dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
@@ -902,13 +922,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Stoc
 
                 if (data.Count() == 0)
                 {
-                    dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
+                    dt.Rows.Add("", "","", "", "", "", "", "", "", "", "", 0, 0, 0, 0, "");
                 }
                 else
                 {
                     foreach (var item in data)
                     {
-                        dt.Rows.Add(item.NoSpp, item.Construction, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
+                        dt.Rows.Add(item.NoSpp, item.Construction, item.ProductTextileCode, item.ProductTextileName, item.Unit, item.Motif, item.Buyer, item.Color, item.Grade, item.Jenis,
                             item.Ket, item.Awal.ToString("N2", CultureInfo.InvariantCulture), item.Masuk.ToString("N2", CultureInfo.InvariantCulture), item.Keluar.ToString("N2", CultureInfo.InvariantCulture),
                             item.Akhir.ToString("N2", CultureInfo.InvariantCulture), item.Satuan);
                     }
