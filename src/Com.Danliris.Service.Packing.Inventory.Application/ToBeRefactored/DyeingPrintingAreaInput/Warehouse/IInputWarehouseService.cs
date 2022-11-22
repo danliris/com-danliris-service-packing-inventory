@@ -24,5 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Update(int bonId, InputWarehouseCreateViewModel viewModel);
         MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
         MemoryStream GenerateExcelAllBarcode(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet);
+        ListResult<OutputPreWarehouseItemListViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
+        List<OutputPreWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
     }
 }
