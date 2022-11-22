@@ -541,7 +541,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              s.InventoryType,
                                                              s.MaterialOrigin,
 
-                                                             s.ProductPackingCode
+                                                             s.ProductPackingCode,
 
                                                              s.ProductTextile.Id,
                                                              s.ProductTextile.Code,
@@ -674,7 +674,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     productionOrder.InventoryType,
                     productionOrder.MaterialOrigin,
 
-                    productionOrder.ProductPackingCode
+                    productionOrder.ProductPackingCode,
 
                     productionOrder.ProductTextile.Id,
                     productionOrder.ProductTextile.Code,
@@ -702,7 +702,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, productionOrder.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, dyeingPrintingAreaInputId, bonNo, productionOrder.ProductionOrder.Id,
                     productionOrder.ProductionOrder.No, productionOrder.CartNo, productionOrder.Buyer, productionOrder.Construction, productionOrder.Unit, productionOrder.Color,
-                    productionOrder.Motif, productionOrder.UomUnit, inputQuantity, productionOrderModel.Id, productionOrder.ProductionOrder.Type, productionOrder.Grade,
+                    productionOrder.Motif, productionOrder.UomUnit, inputQuantity, productionOrderModel.Id, productionOrder.ProductionOrder.Type, productionOrder.ProductTextile.Id, productionOrder.ProductTextile.Code, productionOrder.ProductTextile.Name, productionOrder.Grade, 
                     null, productionOrder.PackagingType, productionOrder.InputPackagingQty, productionOrder.PackagingUnit, productionOrder.Qty, productionOrder.InventoryType);
 
                 //Insert to Movement Repository
@@ -952,7 +952,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = p.ProductPackingId,
                     FabricPackingId = p.FabricPackingId,
                     ProductPackingCode = p.ProductPackingCode,
-                    ProductPackingCodeCreated = p.ProductPackingCodeCreated,
                     HasPrintingProductPacking = p.HasPrintingProductPacking,
                     PreviousOutputPackagingQty = p.PackagingQty,
                     PrevSppInJson = p.PrevSppInJson,
@@ -1926,8 +1925,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return query.FirstOrDefault(entity => entity.ProductPackingCode.Contains(packingCode));
         }
+        public ListResult<OutputPreWarehouseItemListViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _outputProductionOrderRepository.ReadAll()
+                                                        .OrderByDescending(s => s.LastModifiedUtc)
+                                                        .Where(s => s.DestinationArea == DyeingPrintingArea.GUDANGJADI &&
+                                                                    s.Balance > 0 && !s.HasNextAreaDocument && s.IsAfterStockOpname);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "ProductionOrderNo"
+            };
+
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
+            var data = query
+                .GroupBy(d => d.ProductionOrderId)
+                .Select(s => s.First())
+                .Skip((page - 1) * size).Take(size)
+                .OrderBy(s => s.ProductionOrderNo)
+                .Select(s => new OutputPreWarehouseItemListViewModel()
+                {
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        OrderQuantity = s.ProductionOrderOrderQuantity,
+                        Type = s.ProductionOrderType
+
+                    }
+                });
+
+            return new ListResult<OutputPreWarehouseItemListViewModel>(data.ToList(), page, size, query.Count());
+        }
 
     }
+
+
 
     public class PackingComparer : IEqualityComparer<ProductionOrderItemListDetailViewModel>
     {
