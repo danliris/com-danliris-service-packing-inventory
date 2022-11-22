@@ -480,6 +480,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cellRight.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellRight);
 
+            cellRight.Phrase = new Phrase("", TEXT_FONT);
+            table.AddCell(cellRight);
+
             cellRight.Phrase = new Phrase(quantityTotal == 0 ? "" : quantityTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
