@@ -81,5 +81,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Ins
                 this.FlagForUpdate(username, uSER_AGENT);
             }
         }
+
+        public void SetAmount1A(decimal amount1A, string username, string uSER_AGENT)
+        {
+            if (Amount1A != amount1A)
+            {
+                Amount1A = amount1A;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetAmount1B(decimal amount1B, string username, string uSER_AGENT)
+        {
+            if (Amount1B != amount1B)
+            {
+                Amount1B = amount1B;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetAmount2A(decimal amount2A, string username, string uSER_AGENT)
+        {
+            if (Amount2A != amount2A)
+            {
+                Amount2A = amount2A;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetAmount2B(decimal amount2B, string username, string uSER_AGENT)
+        {
+            if (Amount2B != amount2B)
+            {
+                Amount2B = amount2B;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+
+        public void SetAmount2C(decimal amount2C, string username, string uSER_AGENT)
+        {
+            if (Amount2C != amount2C)
+            {
+                Amount2C = amount2C;
+                this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
     }
 }
