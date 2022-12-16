@@ -73,6 +73,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             CurrencyCode = c.CurrencyCode,
                             Amount = c.Amount,
                             Omzet = "Y",
+                            Rate = 0,
+                            AmountIDR = 0,
                         }).ToList();
 
             var newQ = Query.GroupBy(s => new { s.InvoiceNo, s.ComodityName, s.UOMUnit }).Select(d => new GarmentRecapOmzetReportViewModel()
@@ -92,6 +94,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 CurrencyCode = d.FirstOrDefault().CurrencyCode,
                 Omzet = d.FirstOrDefault().Omzet,
                 Amount = d.Sum(x => x.Amount),
+                Rate = 0,
+                AmountIDR = 0,
 
             }).ToList();
 
@@ -112,7 +116,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.AmountIDR = rate * data.Amount;
             }
 
-            return newQ;
+            //return newQ;
+
+            var newQ1 = Query.GroupBy(s => new { s.InvoiceNo, s.ComodityName, s.UOMUnit }).Select(d => new GarmentRecapOmzetReportViewModel()
+            {
+
+                TruckingDate = d.FirstOrDefault().TruckingDate,
+                BuyerAgentCode = d.FirstOrDefault().BuyerAgentCode,
+                BuyerAgentName = d.FirstOrDefault().BuyerAgentName,
+                Destination = d.FirstOrDefault().Destination,
+                ComodityName = d.Key.ComodityName,
+                InvoiceNo = d.Key.InvoiceNo,
+                InvoiceDate = d.FirstOrDefault().InvoiceDate,
+                PEBNo = d.FirstOrDefault().PEBNo,
+                PEBDate = d.FirstOrDefault().PEBDate,
+                Quantity = d.Sum(x => x.Quantity),
+                UOMUnit = d.Key.UOMUnit,
+                CurrencyCode = d.FirstOrDefault().CurrencyCode,
+                Rate = d.FirstOrDefault().Rate,
+                Omzet = d.FirstOrDefault().Omzet,
+                Amount = d.Sum(x => x.Amount),
+                AmountIDR = d.Sum(x => x.AmountIDR),
+            }).ToList();
+
+            return newQ1;
         }
 
         public ListResult<GarmentRecapOmzetReportViewModel> GetReportData(DateTime? dateFrom, DateTime? dateTo, int offset)
