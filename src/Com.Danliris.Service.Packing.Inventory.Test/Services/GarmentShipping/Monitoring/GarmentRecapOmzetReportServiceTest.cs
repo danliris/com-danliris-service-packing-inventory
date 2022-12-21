@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                        GarmentShippingInvoiceId = 1
                     },
             };
-     
+
             var model = new GarmentShippingInvoiceModel(1, "DL/219999", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "123456", DateTimeOffset.Now,
                                                         "", DateTimeOffset.Now, "", "", items, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
@@ -74,7 +74,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
-            
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
@@ -99,7 +99,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
             spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
                 .Returns(httpMock.Object);
-      
+
             var service = GetService(spMock.Object);
 
             var result = service.GetReportData(DateTime.MinValue, DateTime.MaxValue, 0);

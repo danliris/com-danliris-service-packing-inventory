@@ -60,6 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int ProductPackingId { get; set; }
         public int FabricPackingId { get; set; }
         public string ProductPackingCode { get; set; }
+        public string PackingCodeToCreate { get; set; }
         public bool HasPrintingProductPacking { get; set; }
 
         public decimal PreviousOutputPackagingQty { get; set; }

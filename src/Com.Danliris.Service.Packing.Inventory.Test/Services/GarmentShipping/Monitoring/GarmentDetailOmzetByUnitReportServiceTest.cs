@@ -164,7 +164,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             {
                 Id = 1
             };
-
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())

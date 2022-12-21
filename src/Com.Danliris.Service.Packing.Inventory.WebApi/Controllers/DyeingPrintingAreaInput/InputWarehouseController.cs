@@ -203,9 +203,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             {
 
                 var data = _service.GetOutputPreWarehouseProductionOrdersByCode(packingCode);
+                var message = "";
+                if (data == null)
+                    message = _service.GetValidationMessage(packingCode);
                 return Ok(new
                 {
-                    data
+                    data,
+                    message
                 });
             }
             catch (Exception ex)

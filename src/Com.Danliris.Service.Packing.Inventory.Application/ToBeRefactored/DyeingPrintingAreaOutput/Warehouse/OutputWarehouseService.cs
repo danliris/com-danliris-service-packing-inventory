@@ -384,6 +384,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var ids = _inputRepository.GetDbSet().Where(s => s.Area != null && s.Area == DyeingPrintingArea.GUDANGJADI).Select(x => x.Id).ToList();
             var errorResult = new List<ValidationResult>();
 
+            //foreach (var item in viewModel.WarehousesProductionOrders)
+            //{
+            //    if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
+            //    {
+            //        var splitedCode = item.ProductPackingCode.Split(",");
+            //        foreach (var code in splitedCode)
+            //        {
+            //            var latestDataOnOut = _outputProductionOrderRepository.GetDbSet()
+            //                    .OrderByDescending(o => o.CreatedUtc)
+            //                    .FirstOrDefault(x =>
+            //                        x.ProductPackingCode.Contains(code)
+            //                    );
+
+            //            if (latestDataOnOut != null)
+            //            {
+            //                var latestDataOnIn = _inputProductionOrderRepository.GetDbSet()
+            //                    .OrderByDescending(o => o.CreatedUtc).FirstOrDefault(x =>
+            //                    x.Area == DyeingPrintingArea.GUDANGJADI &&
+            //                    x.ProductPackingCode.Contains(code) &&
+            //                    x.CreatedUtc > latestDataOnOut.CreatedUtc
+            //                );
+
+            //                if (latestDataOnIn == null)
+            //                {
+            //                    errorResult.Add(new ValidationResult("Kode " + code + " sudah keluar", new List<string> { "Kode" }));
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
             foreach (var item in viewModel.WarehousesProductionOrders)
             {
                 if (!string.IsNullOrWhiteSpace(item.ProductPackingCode))
@@ -408,7 +439,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             if (latestDataOnIn == null)
                             {
-                                errorResult.Add(new ValidationResult("Kode " + code + " belum masuk", new List<string> { "Kode" }));
+                                errorResult.Add(new ValidationResult("Kode " + code + " sudah keluar ke " + latestDataOnOut.DestinationArea, new List<string> { "Kode" }));
                             }
                         }
                     }

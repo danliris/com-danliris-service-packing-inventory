@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             dataCreditAdvice.SetInvoiceId(data.Id, "test", "unitTest");
             var result = await repoCreditAdvice.InsertAsync(dataCreditAdvice);
             var resultdelete = await repoCreditAdvice.DeleteAsync(dataCreditAdvice.Id);
-            Assert.NotEqual(0, resultdelete);
+            Assert.NotEqual(0, resultdelete);            
         }
 
         [Fact]

@@ -336,6 +336,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //}
 
             #endregion
+
+            if (ShippingStaff == null || ShippingStaff.id == 0)
+            {
+                yield return new ValidationResult("Shipping Staff tidak boleh kosong", new List<string> { "ShippingStaff" });
+            }
         }
     }
 }
