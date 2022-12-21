@@ -13,14 +13,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
 
         public override GarmentShippingInvoiceItemModel GetModel()
         {
-             var model = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 1);
+             var model = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C10", 1, 1);
 
             return model;
         }
 
         public override GarmentShippingInvoiceItemModel GetEmptyModel()
         {
-            var model = new GarmentShippingInvoiceItemModel(null, null, 0, null, 0, 0, null, null, null, null, null, null, 0, null, 0, 0, 0, null, 0, null, 0, 0);
+            var model = new GarmentShippingInvoiceItemModel(null, null, 0, null, 0, 0, null, null, null, null, null, null, null, 0, null, 0, 0, 0, null, 0, null, 0, 0);
      
             return model;
         }

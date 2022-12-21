@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             var repo = new GarmentPackingListRepository(dbContext, serviceProvider);
 
             var items = new HashSet<GarmentPackingListItemModel> {
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1, 1),
                         new GarmentPackingListDetailSizeModel(1, "", 1, 1)
@@ -39,7 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                         new GarmentPackingListDetailSizeModel(1, "", 1, 1)
                     },1)
                 }),
-                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
+                new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "", new HashSet<GarmentPackingListDetailModel> {
                     new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, new HashSet<GarmentPackingListDetailSizeModel> {
                         new GarmentPackingListDetailSizeModel(1, "", 1, 1)
                     },1)

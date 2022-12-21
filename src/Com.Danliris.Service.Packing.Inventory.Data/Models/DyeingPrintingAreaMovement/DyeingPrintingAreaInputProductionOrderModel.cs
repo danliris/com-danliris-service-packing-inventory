@@ -491,6 +491,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
+
             bool hasPrintingProductPacking, double packingLength, double inputQuantity, decimal inputPackagingQty, string finishWidth, DateTimeOffset dataIn, string inventoryType, string materialOrigin, string productPackingCodeToCreate,
             int? productTextileId, string productTextileCode, string productTextileName)
 

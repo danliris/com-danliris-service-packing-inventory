@@ -21,6 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
         public string ComodityCode { get; private set; }
         public string ComodityName { get; private set; }
         public string ComodityDescription { get; private set; }
+        public string MarketingName { get; private set; }
 
         public double Quantity { get; private set; }
 
@@ -51,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentDraftPackingListDetailModel>();
         }
 
-        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, int buyerId, string buyerCode, string sectionCode, ICollection<GarmentDraftPackingListDetailModel> details, string remarks)
+        public GarmentDraftPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, string marketingName, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, int buyerId, string buyerCode, string sectionCode, ICollection<GarmentDraftPackingListDetailModel> details, string remarks)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -61,6 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ComodityCode = comodityCode;
             ComodityName = comodityName;
             ComodityDescription = comodityDescription;
+            MarketingName = marketingName;
             Quantity = quantity;
             UomId = uomId;
             UomUnit = uomUnit;
@@ -169,6 +171,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (ComodityDescription != comodityDescription)
             {
                 ComodityDescription = comodityDescription; this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetMarketingName(string marketingName, string userName, string userAgent)
+        {
+            if (MarketingName != marketingName)
+            {
+                MarketingName = marketingName; this.FlagForUpdate(userName, userAgent);
             }
         }
 

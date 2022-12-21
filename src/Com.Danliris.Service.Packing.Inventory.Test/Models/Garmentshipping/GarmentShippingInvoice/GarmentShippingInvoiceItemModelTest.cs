@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Models.Garmentshipping.Gar
         [Fact]
         public void should_Success_Instantiate()
         {
-            GarmentShippingInvoiceItemModel model = new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1);
+            GarmentShippingInvoiceItemModel model = new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1);
             Assert.Equal(1, model.PackingListItemId);
             Assert.NotNull(model);
         }

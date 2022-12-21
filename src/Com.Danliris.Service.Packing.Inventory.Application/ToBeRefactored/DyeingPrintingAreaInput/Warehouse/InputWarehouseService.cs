@@ -540,6 +540,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                              viewModel.Date,
                                                              s.InventoryType,
                                                              s.MaterialOrigin,
+
                                                              s.PackingCodeToCreate,
                                                              s.ProductTextile.Id,
                                                              s.ProductTextile.Code,
@@ -592,6 +593,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrder.No, item.CartNo,
                     item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, (double)item.InputPackagingQty * item.Qty, itemModel.Id, item.ProductionOrder.Type, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name,item.Grade, null,
                     item.PackagingType, item.PackingCodeToCreate.Split(',').Count(), item.PackagingUnit, item.Qty, item.InventoryType);
+
+                    // item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, (double)item.InputPackagingQty * item.Qty, itemModel.Id, item.ProductionOrder.Type, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name,item.Grade, null,
+                    // item.PackagingType, item.PackingCodeToCreate.Split(',').Count(), item.PackagingUnit, item.Qty, item.InventoryType);
+
 
 
                 //Insert to Movement Repository
@@ -692,8 +697,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //Insert to Input Production Order Repository
                 result += await _inputProductionOrderRepository.InsertAsync(productionOrderModel);
 
-
-
                 if (productionOrder.Area == DyeingPrintingArea.PACKING)
                 {
                     var outputData = await _outputProductionOrderRepository.ReadByIdAsync(productionOrder.Id);
@@ -709,6 +712,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 if (inputQuantity == productionOrder.InputQuantity)
                     result += await _outputProductionOrderRepository.UpdateFromInputNextAreaFlagAsync(productionOrder.Id, true, DyeingPrintingArea.TERIMA);
 
+
                 //Mapping to DyeingPrintingAreaMovementModel
                 var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, productionOrder.MaterialOrigin, viewModel.Area, DyeingPrintingArea.IN, dyeingPrintingAreaInputId, bonNo, productionOrder.ProductionOrder.Id,
                     productionOrder.ProductionOrder.No, productionOrder.CartNo, productionOrder.Buyer, productionOrder.Construction, productionOrder.Unit, productionOrder.Color,
@@ -717,7 +721,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 //Insert to Movement Repository
                 result += await _movementRepository.InsertAsync(movementModel);
-
                 //result += await _inputProductionOrderRepository.UpdateFromNextAreaInputAsync(productionOrder.DyeingPrintingAreaInputProductionOrderId, productionOrder.InputQuantity, productionOrder.InputPackagingQty);
             }
 
@@ -2067,7 +2070,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return new ListResult<OutputPreWarehouseItemListViewModel>(data.ToList(), page, size, query.Count());
         }
+
     }
+
+
 
     public class PackingComparer : IEqualityComparer<ProductionOrderItemListDetailViewModel>
     {

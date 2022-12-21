@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             modelToUpdate.SetCMTPrice(model.CMTPrice, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetComodityDesc(model.ComodityDesc, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetMarketingName(model.MarketingName, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetPrice(model.Price, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetUomId(model.UomId, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, USER_AGENT);

@@ -96,6 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetCurrencyRate(item.CurrencyRate, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPolicyDate(item.PolicyDate, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPolicyNo(item.PolicyNo, _identityProvider.Username, UserAgent);
+
                     itemToUpdate.SetAmount2A(item.Amount2A, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAmount2B(item.Amount2B, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAmount2C(item.Amount2C, _identityProvider.Username, UserAgent);

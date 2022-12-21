@@ -27,6 +27,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         string GetValidationMessage(string packingCode);
         ListResult<OutputPreWarehouseItemListViewModel> GetDistinctProductionOrder(int page, int size, string filter, string order, string keyword);
         List<OutputPreWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
-
     }
 }

@@ -63,7 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var model2 = new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1);
 
-            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
+            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var model2 = new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1);
 
-            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
+            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -148,7 +148,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var model2 = new GarmentPackingListDetailModel(1, 1, "", "", 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1);
 
-            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
+            var model3 = new GarmentPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", "", "RO SAMPLE", null);
 
             var repoMock = new Mock<IGarmentPackingListRepository>();
             repoMock.Setup(s => s.ReadAll())
