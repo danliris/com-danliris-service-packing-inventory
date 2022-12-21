@@ -78,6 +78,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DyeingPrintingAreaReferenceModel> DyeingPrintingAreaReferences { get; set; }
         public DbSet<DyeingPrintingAreaMovementModel> DyeingPrintingAreaMovements { get; set; }
         public DbSet<DyeingPrintingAreaSummaryModel> DyeingPrintingAreaSummaries { get; set; }
+        public DbSet<StockOpnameReportHeaderModel> StockOpnameReportHeaders { get; set; }
+        public DbSet<StockOpnameReportItemModel> StockOpnameReportItems { get; set; }
 
         public DbSet<DyeingPrintingStockOpnameProductionOrderModel> DyeingPrintingStockOpnameProductionOrders { get; set; }
         public DbSet<DyeingPrintingStockOpnameModel> DyeingPrintingStockOpnames { get; set; }

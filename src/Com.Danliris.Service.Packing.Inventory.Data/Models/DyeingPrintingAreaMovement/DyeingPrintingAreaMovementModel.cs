@@ -422,6 +422,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingQty = qtyPacking;
             PackagingUnit = packingUnit;
             PackagingLength = packingLength;
+            Balance = (double)qtyPacking * packingLength;
             InventoryType = inventoryType;
         }
 
