@@ -162,7 +162,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 				
 				item.SetPrice(1039, item.LastModifiedBy, item.LastModifiedAgent);
 				item.SetComodityDesc("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
-                item.SetDesc2("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetMarketingName("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
+				item.SetDesc2("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetDesc3("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetDesc4("hahhahah", item.LastModifiedBy, item.LastModifiedAgent);
                 item.SetCMTPrice(56000, item.LastModifiedBy, item.LastModifiedAgent);
