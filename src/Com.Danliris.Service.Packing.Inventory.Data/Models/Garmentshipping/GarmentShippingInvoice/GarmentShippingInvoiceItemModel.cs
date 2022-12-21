@@ -17,7 +17,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public string ComodityCode { get; set; }
 		public string ComodityName { get; set; }
 		public string ComodityDesc { get; set; }
-        public string Desc2 { get; set; }
+		public string MarketingName { get; set; }
+		public string Desc2 { get; set; }
         public string Desc3 { get; set; }
         public string Desc4 { get; set; }
         public int UomId { get; set; }
@@ -31,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public decimal CMTPrice { get; set; }
         public int PackingListItemId { get; set; }
 
-        public GarmentShippingInvoiceItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice, int packingListItemId)
+        public GarmentShippingInvoiceItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string marketingName, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice, int packingListItemId)
         {
             this.Id = Id;
             RONo = rONo;
@@ -43,6 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             ComodityCode = comodityCode;
             ComodityName = comodityName;
             ComodityDesc = comodityDesc;
+			MarketingName = marketingName;
             Desc2 = desc2;
             Desc3 = desc3;
             Desc4 = desc4;
@@ -103,7 +105,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			}
 		}
 
-        public void SetDesc2(string desc2, string username, string uSER_AGENT)
+		public void SetMarketingName(string marketingName, string username, string uSER_AGENT)
+		{
+			if (this.MarketingName != marketingName)
+			{
+				this.MarketingName = marketingName;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+
+		public void SetDesc2(string desc2, string username, string uSER_AGENT)
         {
             if (this.Desc2 != desc2)
             {

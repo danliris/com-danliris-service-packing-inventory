@@ -43,15 +43,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MS", "TES COMODITY 1", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MS", "TES COMODITY 1", "", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LB", "TES COMODITY 2", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LB", "TES COMODITY 2", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "GB", "TES COMODITY 3", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "GB", "TES COMODITY 3", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -97,15 +97,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MS", "TES COMODITY 1", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MS", "TES COMODITY 1", "", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LB", "TES COMODITY 2", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LB", "TES COMODITY 2", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "GB", "TES COMODITY 3", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "GB", "TES COMODITY 3", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },

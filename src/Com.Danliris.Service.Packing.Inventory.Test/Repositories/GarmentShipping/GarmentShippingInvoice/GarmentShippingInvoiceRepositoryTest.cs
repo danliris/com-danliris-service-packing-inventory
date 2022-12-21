@@ -156,7 +156,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             data.SetConsigneeAddress("updated", data.LastModifiedBy, data.LastModifiedAgent);
             data.SetDeliverTo("updated", data.LastModifiedBy, data.LastModifiedAgent);
 			data.SetInvoiceDate(DateTime.Now.AddDays(8), data.LastModifiedBy, data.LastModifiedAgent);
-			data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1));
+			data.Items.Add(new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 1, 1, "comocode", "comoname", "comodesc", "marketing", "comodesc", "comodesc", "comodesc", 1, "pcs", 10, 10, 100, "usd", 1, "unitcode", 3, 1));
 			foreach (var item in data.Items)
 			{
 				

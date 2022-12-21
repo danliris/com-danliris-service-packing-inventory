@@ -50,15 +50,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
             {
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
@@ -112,15 +112,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
             {
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
@@ -170,23 +170,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
             {
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "MENS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "LADIES BLOUSE", "", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 1
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                     {
                        GarmentShippingInvoiceId = 2
                     },
-                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                 new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "BOYS SHIRT", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                     {
                        GarmentShippingInvoiceId = 2
                     },

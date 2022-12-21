@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
                     },1)
             };
             
-            var oldModel = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", 1, "", "", details, "");
+            var oldModel = new GarmentDraftPackingListItemModel("", "", 1, "", 1, "", "", "", "", 1, 1, "", 1, 1, 1, 1, 1, "", 1, "", "", "", "", "", 1, "", "", details, "");
 
             await repo.InsertAsync(oldModel);
 
