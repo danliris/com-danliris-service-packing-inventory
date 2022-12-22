@@ -133,6 +133,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Name = i.ComodityName
                     },
                     ComodityDesc = i.ComodityDesc,
+                    MarketingName = i.MarketingName,
                     Desc2 = i.Desc2,
                     Desc3 = i.Desc3,
                     Desc4 = i.Desc4,

@@ -51,6 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             item.SetComodityCode("Updated " + item.ComodityCode, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetComodityName("Updated " + item.ComodityName, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetComodityDescription("Updated " + item.ComodityDescription, item.LastModifiedBy, item.LastModifiedAgent);
+            item.SetMarketingName("Updated " + item.MarketingName, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetQuantity(1 + item.Quantity, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetUomId(1 + item.UomId, item.LastModifiedBy, item.LastModifiedAgent);
             item.SetUomUnit("Updated " + item.UomUnit, item.LastModifiedBy, item.LastModifiedAgent);
