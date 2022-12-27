@@ -33,8 +33,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var invoicequery = shippingInvoiceRepository.ReadAll();
 
-            var packinglistquery = shippingpackinglistRepository.ReadAll()
-                                   .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+            var packinglistquery = shippingpackinglistRepository.ReadAll();
+
+            packinglistquery = packinglistquery.Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+
+            packinglistquery = packinglistquery.Where(w => w.Omzet == true);
 
             var joinedData = invoicequery.Join(packinglistquery, i => i.PackingListId, p => p.Id, (invoice, packinglist) => new JoinedData
             {
@@ -60,6 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 country = g.Key,
                 pcsQuantity = g.Where(i => i.uomunit == "PCS").Sum(i => i.qty),
                 setsQuantity = g.Where(i => i.uomunit == "SETS").Sum(i => i.qty),
+                packsQuantity = g.Where(i => i.uomunit == "PACKS").Sum(i => i.qty),
                 amount = g.Sum(i => i.amnt)
             });
 
@@ -96,19 +100,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             dt.Columns.Add(new DataColumn() { ColumnName = "N E G A R A", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY - PCS", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY - SETS", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY - PACKS", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "%", DataType = typeof(double) });
 
             if (data.Items.Count() == 0)
             {
-                dt.Rows.Add(null, null, null, null, null, null);
+                dt.Rows.Add(null, null, null, null, null, null, null);
             }
             else
             {
                 int i = 0;
                 foreach (var d in data.Items)
                 {
-                    dt.Rows.Add(++i, d.country, d.pcsQuantity, d.setsQuantity, d.amount, d.percentage);
+                    dt.Rows.Add(++i, d.country, d.pcsQuantity, d.setsQuantity, d.packsQuantity, d.amount, d.percentage);
                 }
             }
 
