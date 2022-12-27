@@ -63,35 +63,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var invo = expendGood.Select(x => x.Invoice).ToArray();
 
             //
-            var Queryshipping = (from a in queryInv
+            var Query1 = (from a in queryInv
                                  join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
                                  join c in queryPL on a.PackingListId equals c.Id
-                                 where ROs.Contains(b.RONo) && invo.Contains(a.InvoiceNo)
+                                 //where ROs.Contains(b.RONo) && invo.Contains(a.InvoiceNo)
+
                                  select new GarmentDetailOmzetByUnitReportViewModel
                                  {
                                      InvoiceNo = a.InvoiceNo,
                                      PEBDate = a.PEBDate,
                                      TruckingDate = c.TruckingDate,
                                      RONumber = b.RONo,
+                                     UnitCode = b.UnitCode,
+                                     UnitName = "",
+                                     CurrencyCode = "USD",
                                      Amount = b.Amount,
                                      Rate = 0,
                                  }).Distinct().ToList();
             //                 
-            var Query1 = (from a in expendGood
-                          join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
-                          from bb in omzets.DefaultIfEmpty()
-                          select new GarmentDetailOmzetByUnitReportViewModel
-                          {
-                              InvoiceNo = a.Invoice.TrimEnd(),
-                              PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
-                              TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
-                              RONumber = a.RONo.TrimEnd(),
-                              UnitCode = a.Unit.Code,
-                              UnitName = a.Unit.Name.TrimEnd(),
-                              CurrencyCode = "USD",
-                              Amount = bb == null ? 0 : bb.Amount,
-                              Rate = 0,
-                          }).Distinct().ToList();
+            //var Query1 = (from a in expendGood
+            //              join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
+            //              from bb in omzets.DefaultIfEmpty()
+            //              select new GarmentDetailOmzetByUnitReportViewModel
+            //              {
+            //                  InvoiceNo = a.Invoice.TrimEnd(),
+            //                  PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
+            //                  TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
+            //                  RONumber = a.RONo.TrimEnd(),
+            //                  UnitCode = a.Unit.Code,
+            //                  UnitName = a.Unit.Name.TrimEnd(),
+            //                  CurrencyCode = "USD",
+            //                  Amount = bb == null ? 0 : bb.Amount,
+            //                  Rate = 0,
+            //              }).Distinct().ToList();
             //
             var Query = (from a in Query1
                          join b in queryInv on a.InvoiceNo equals b.InvoiceNo

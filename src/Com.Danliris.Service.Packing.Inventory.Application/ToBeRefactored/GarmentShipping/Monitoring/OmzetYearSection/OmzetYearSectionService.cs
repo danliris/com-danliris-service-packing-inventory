@@ -41,8 +41,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var invoiceQuery = shippingInvoiceRepository.ReadAll();
 
-            var packingListQuery = packingListRepository.ReadAll()
-                .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+            var packingListQuery = packingListRepository.ReadAll();
+
+            packingListQuery = packingListQuery.Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+
+            packingListQuery = packingListQuery.Where(w => w.Omzet == true);
 
             var joinedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
             {

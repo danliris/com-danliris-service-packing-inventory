@@ -31,12 +31,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var invoiceQuery = shippingInvoiceRepository.ReadAll();
 
-            var packingListQuery = packingListRepository.ReadAll()
-                .Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+            var packingListQuery = packingListRepository.ReadAll();
+
+            packingListQuery = packingListQuery.Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
+
+            packingListQuery = packingListQuery.Where(w => w.Omzet == true);
+
+            //packingListQuery = packingListQuery.Where(w => w.Omzet == true);
+            //packingListQuery = packingListQuery.Where(w => w.Accounting == true);
 
             var joinedData = invoiceQuery.Join(packingListQuery, i => i.PackingListId, p => p.Id, (invoice, packingList) => new JoinedData
             {
-                buyer = invoice.BuyerAgentCode,
+                buyer = invoice.BuyerAgentCode + " - " + invoice.BuyerAgentName,
                 items = invoice.Items.Select(i => new JoinedDataItem
                 {
                     uom = i.UomUnit,
@@ -63,6 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 buyer = g.Key,
                 pcsQuantity = g.SelectMany(s => s.items.Where(i => i.uom == "PCS")).Sum(i => i.quantity),
                 setsQuantity = g.SelectMany(s => s.items.Where(i => i.uom == "SETS")).Sum(i => i.quantity),
+                packsQuantity = g.SelectMany(s => s.items.Where(i => i.uom == "PACKS")).Sum(i => i.quantity),
                 amount = g.SelectMany(s => s.items).Sum(i => i.amount)
             });
 
@@ -99,23 +106,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             dt.Columns.Add(new DataColumn() { ColumnName = "B U Y E R", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY - PCS", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "QTY - SETS", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY - PACKS", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "%", DataType = typeof(double) });
 
             if (data.Items.Count() == 0)
             {
-                dt.Rows.Add(null, null, null, null, null, null);
+                dt.Rows.Add(null, null, null, null, null, null, null); ;
             }
             else
             {
                 int i = 0;
                 foreach (var d in data.Items)
                 {
-                    dt.Rows.Add(++i, d.buyer, d.pcsQuantity, d.setsQuantity, d.amount, d.percentage);
+                    dt.Rows.Add(++i, d.buyer, d.pcsQuantity, d.setsQuantity, d.packsQuantity, d.amount, d.percentage);
                 }
             }
 
-            dt.Rows.Add(null, "J U M L A H", null, null, data.totalAmount, 100);
+            dt.Rows.Add(null, "J U M L A H", null, null, null, data.totalAmount, 100);
 
             var excel = Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "OmzetPerBuyer") }, false);
             var filename = $"Report Omzet Per Buyer {year}.xlsx";

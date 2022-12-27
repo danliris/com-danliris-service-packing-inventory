@@ -151,6 +151,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentLocalSalesOmzetUnPaid;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetAnnualByUnitReport;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByMarketing;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearMarketing;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -389,6 +391,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalSalesOmzetUnPaidService, GarmentLocalSalesOmzetUnPaidService>();
             services.AddTransient<IGarmentMonitoringDeliveredPackingListSample, GarmentMonitoringDeliveredPackingListSampleService>();
             services.AddTransient<IGarmentOmzetAnnualByUnitReportService, GarmentOmzetAnnualByUnitReportService>();
+
+            services.AddTransient<IGarmentOmzetMonthlyByMarketingService, GarmentOmzetMonthlyByMarketingService>();
+            services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
+     
             #endregion
 
             // Register Provider
@@ -510,15 +516,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 app.UseHsts();
             }
 
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
-                context.Database.SetCommandTimeout(1000);
-                context.Database.Migrate();
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
+            //    context.Database.SetCommandTimeout(1000);
+            //    context.Database.Migrate();
 
-                //var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
-                //bus.RegisterOnMessageHandlerAndReceiveMessages();
-            }
+            //    //var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
+            //    //bus.RegisterOnMessageHandlerAndReceiveMessages();
+            //}
 
             app.UseCors(PACKING_INVENTORY_POLICY);
 
