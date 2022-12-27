@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearBuyerComodity;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearMarketing;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
@@ -18,9 +19,9 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShipping.Monitoring
 {
-    public class OmzetYearBuyerComodityMonitoringControllerTest
+    public class OmzetYearMarketingControllerTest
     {
-        protected OmzetYearBuyerComodityController GetController(IOmzetYearBuyerComodityService service, IIdentityProvider identityProvider)
+        protected OmzetYearMarketingController GetController(IOmzetYearMarketingService service, IIdentityProvider identityProvider)
         {
             var claimPrincipal = new Mock<ClaimsPrincipal>();
             var claims = new Claim[]
@@ -29,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
             };
             claimPrincipal.Setup(claim => claim.Claims).Returns(claims);
 
-            var controller = new OmzetYearBuyerComodityController(service, identityProvider)
+            var controller = new OmzetYearMarketingController(service, identityProvider)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -55,10 +56,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public void GetReportData_Ok()
         {
-            var serviceMock = new Mock<IOmzetYearBuyerComodityService>();
+            var serviceMock = new Mock<IOmzetYearMarketingService>();
             serviceMock
                 .Setup(s => s.GetReportData(It.IsAny<int>()))
-                .Returns(new List<OmzetYearBuyerComodityViewModel>());
+                .Returns(new List<OmzetYearMarketingViewModel>());
 
             var service = serviceMock.Object;
 
@@ -74,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public void Get_Exception_InternalServerError()
         {
-            var serviceMock = new Mock<IOmzetYearBuyerComodityService>();
+            var serviceMock = new Mock<IOmzetYearMarketingService>();
             serviceMock
                 .Setup(s => s.GetReportData(It.IsAny<int>()))
                 .Throws(new Exception());
@@ -92,7 +93,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         [Fact]
         public void GetGenerateExcel_Success()
         {
-            var serviceMock = new Mock<IOmzetYearBuyerComodityService>();
+            var serviceMock = new Mock<IOmzetYearMarketingService>();
             serviceMock
                 .Setup(s => s.GenerateExcel(It.IsAny<int>()))
                 .Returns(new MemoryStream());
@@ -114,7 +115,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
         public void GetXls_Throws_InternalServerError()
         {
             //Setup
-            var serviceMock = new Mock<IOmzetYearBuyerComodityService>();
+            var serviceMock = new Mock<IOmzetYearMarketingService>();
             serviceMock
                 .Setup(s => s.GenerateExcel(It.IsAny<int>()))
                 .Throws(new Exception());

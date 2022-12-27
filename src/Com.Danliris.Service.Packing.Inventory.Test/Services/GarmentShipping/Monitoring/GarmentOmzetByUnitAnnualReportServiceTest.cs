@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                             {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PACKS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                               {
                            GarmentShippingInvoiceId = 1
                          },
