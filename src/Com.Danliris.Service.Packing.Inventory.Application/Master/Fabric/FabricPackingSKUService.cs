@@ -326,7 +326,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 var limit = (i - 1) + form.Quantity;
                 for (; i <= limit; i++)
                 {
-                    var code = productSKU.Code + i.ToString().PadLeft(4, '0');
+                    var code = productSKU.Code + i.ToString().PadLeft(5, '0');
                     var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
                     packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
                     _unitOfWork.ProductPackings.Insert(packingModel);
