@@ -43,15 +43,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingLocalSalesNoteItemModel>
                 {
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
@@ -88,15 +88,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingLocalSalesNoteItemModel>
                 {
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
@@ -133,15 +133,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingLocalSalesNoteItemModel>
                 {
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
@@ -178,15 +178,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingLocalSalesNoteItemModel>
                 {
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 2, "UOM2", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },
-                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "")
+                     new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "UOM1", 1, 1, 1, "", "")
                          {
                            LocalSalesNoteId = 1
                          },

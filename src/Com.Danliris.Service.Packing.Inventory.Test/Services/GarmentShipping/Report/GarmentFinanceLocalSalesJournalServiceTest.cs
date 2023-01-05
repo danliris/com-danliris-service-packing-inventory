@@ -36,7 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
         [Fact]
         public void GetReportData_Success_LJS()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") { LocalSalesNoteId = 1 };
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "", "") { LocalSalesNoteId = 1 };
             var items = new List<GarmentShippingLocalSalesNoteItemModel>() { item };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LJS", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items) { Id = 1 };
             
@@ -61,7 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
         [Fact]
         public void GetReportData_Success_LBJ()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") { LocalSalesNoteId = 1 };
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "", "") { LocalSalesNoteId = 1 };
             var items = new List<GarmentShippingLocalSalesNoteItemModel>() { item };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBJ", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items) { Id = 1 };
 
@@ -86,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
         [Fact]
         public void GetReportData_Success_LBM()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") { LocalSalesNoteId = 1 };
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "", "") { LocalSalesNoteId = 1 };
             var items = new List<GarmentShippingLocalSalesNoteItemModel>() { item };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LBM", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items) { Id = 1 };
 
@@ -111,7 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
         [Fact]
         public void GenerateExcel_Success()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "") { LocalSalesNoteId = 1 };
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "", "", 1, 1, "", 1, 1, 1, "", "") { LocalSalesNoteId = 1 };
             var items = new List<GarmentShippingLocalSalesNoteItemModel>() { item };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "LJS", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items) { Id = 1 };
 

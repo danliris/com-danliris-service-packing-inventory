@@ -130,7 +130,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
             var item = new GarmentShippingLocalSalesNoteItemModel();
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -175,7 +175,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Success_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1,"", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -211,7 +211,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Should_Null_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "") };
+            var items = new List<GarmentShippingLocalSalesNoteItemModel>() { new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", "") };
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
 
             var repoMock = new Mock<IGarmentShippingLocalSalesNoteRepository>();
@@ -228,7 +228,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void ReadForFinance_Success()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "code", "name", 1, 1, "uom", 1, 1, 1, "uom");
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "code", "name", 1, 1, "uom", 1, 1, 1, "uom", "");
             var items = new List<GarmentShippingLocalSalesNoteItemModel>();
             items.Add(item);
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
@@ -320,7 +320,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void ReadLocalDebtor_Success()
         {
-            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "code", "name", 1, 1, "uom", 1, 1, 1, "uom");
+            var item = new GarmentShippingLocalSalesNoteItemModel(1, 1, "code", "name", 1, 1, "uom", 1, 1, 1, "uom", "");
             var items = new List<GarmentShippingLocalSalesNoteItemModel>();
             items.Add(item);
             var model = new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", false, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);

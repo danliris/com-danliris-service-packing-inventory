@@ -135,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
@@ -167,7 +167,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public void Should_Success_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public void Should_Null_Get_BuyerViewModel()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public void ReadItemsReturnQuantity_Success()
         {
-            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, ""), 1) };
+            var items = new List<GarmentShippingLocalReturnNoteItemModel>() { new GarmentShippingLocalReturnNoteItemModel(1, new GarmentShippingLocalSalesNoteItemModel(1,1, "", "", 1, 1, "", 1, 1, 1, "", ""), 1) };
             var model = new GarmentShippingLocalReturnNoteModel("", 1, DateTimeOffset.Now, "", new GarmentShippingLocalSalesNoteModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", 1, "", "", "", "", 1, "", "", true, 1, 1, "", true, false, false, null, null, DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", null), items);
 
             var repoMock = new Mock<IGarmentShippingLocalReturnNoteRepository>();
