@@ -76,7 +76,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.L
         [Fact]
         public async Task ReadById_Success()
         {
-            var items = new List<GarmentShippingLocalSalesContractItemModel>() { new GarmentShippingLocalSalesContractItemModel(1, "", "", 1, 1,1, "", 1) };
+            var items = new List<GarmentShippingLocalSalesContractItemModel>() { new GarmentShippingLocalSalesContractItemModel(1, "", "", 1, 1,1, "", 1, 1, "","","") };
             var model = new GarmentShippingLocalSalesContractModel("", DateTimeOffset.Now, 1, "", "", "", "", "", "", 1, "", "", "", "", true, 1, 1, 1, false, items);
             var item = new GarmentShippingLocalSalesContractItemModel();
             var repoMock = new Mock<IGarmentShippingLocalSalesContractRepository>();

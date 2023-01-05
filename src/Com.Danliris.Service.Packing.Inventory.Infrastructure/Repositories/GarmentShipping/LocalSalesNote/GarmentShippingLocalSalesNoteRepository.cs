@@ -120,6 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetPackageUomUnit(item.PackageUomUnit, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPackageUomId(item.UomId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPackageQuantity(item.PackageQuantity, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetRemark(item.Remark, _identityProvider.Username, UserAgent);
 
                 }
                 else

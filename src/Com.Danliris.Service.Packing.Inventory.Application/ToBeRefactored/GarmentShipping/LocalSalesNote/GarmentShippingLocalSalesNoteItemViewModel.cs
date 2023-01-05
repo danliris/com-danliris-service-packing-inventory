@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public UnitOfMeasurement packageUom { get; set; }
 
         public double remQty { get; set; }
+        public string remark { get; set; }
     }
 }
