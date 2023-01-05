@@ -97,6 +97,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.UomId,
                         Unit = i.UomUnit
                     },
+                    comodity = new Comodity
+                    { 
+                        Id = i.ComodityId,
+                        Code = i.ComodityCode,
+                        Name = i.ComodityName
+                    },
+                    remark = i.Remark,
                     price = i.Price,
                     remainingQuantity=i.RemainingQuantity
                 }).ToList()
@@ -111,7 +118,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 i.product = i.product ?? new ProductViewModel();
                 i.uom = i.uom ?? new UnitOfMeasurement();
-                return new GarmentShippingLocalSalesContractItemModel(i.product.id, i.product.code, i.product.name, i.quantity,i.remainingQuantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price) { Id = i.Id };
+                i.comodity = i.comodity ?? new Comodity();
+                return new GarmentShippingLocalSalesContractItemModel(i.product.id, i.product.code, i.product.name, i.quantity,i.remainingQuantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price, i.comodity.Id, i.comodity.Code, i.comodity.Name, i.remark) { Id = i.Id };
             }).ToList();
 
             vm.transactionType = vm.transactionType ?? new TransactionType();

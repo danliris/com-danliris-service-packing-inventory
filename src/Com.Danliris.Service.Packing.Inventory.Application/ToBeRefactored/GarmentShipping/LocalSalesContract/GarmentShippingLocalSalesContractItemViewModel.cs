@@ -13,5 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double remainingQuantity { get; set; }
         public UnitOfMeasurement uom { get; set; }
         public double price { get; set; }
+        public Comodity comodity { get; set; }
+        public string remark { get; set; }
     }
 }

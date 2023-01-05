@@ -20,8 +20,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
         public string UomUnit { get; private set; }
 
         public double Price { get; private set; }
+        public int ComodityId { get; private set; }
+        public string ComodityCode { get; private set; }
+        public string ComodityName { get; private set; }
+        public string Remark { get; private set; }
 
-        public GarmentShippingLocalSalesContractItemModel(int productId, string productCode, string productName, double quantity, double remainingQuantity, int uomId, string uomUnit, double price)
+        public GarmentShippingLocalSalesContractItemModel(int productId, string productCode, string productName, double quantity, double remainingQuantity, int uomId, string uomUnit, double price, int comodityId, string comodityCode, string comodityName, string remark)
         {
             ProductId = productId;
             ProductCode = productCode;
@@ -31,6 +35,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             UomUnit = uomUnit;
             Price = price;
             RemainingQuantity = remainingQuantity;
+            ComodityId = comodityId;
+            ComodityCode = comodityCode;
+            ComodityName = comodityName;
+            Remark = remark;
+            
         }
 
         public GarmentShippingLocalSalesContractItemModel()
@@ -104,6 +113,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             if (Price != price)
             {
                 Price = price;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetComodityId(int comodityId, string userName, string userAgent)
+        {
+            if (ComodityId != comodityId)
+            {
+                ComodityId = comodityId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetComodityCode(string comodityCode, string userName, string userAgent)
+        {
+            if (ComodityCode != comodityCode)
+            {
+                ComodityCode = comodityCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetComodityName(string comodityName, string userName, string userAgent)
+        {
+            if (ComodityName != comodityName)
+            {
+                ComodityName = comodityName;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

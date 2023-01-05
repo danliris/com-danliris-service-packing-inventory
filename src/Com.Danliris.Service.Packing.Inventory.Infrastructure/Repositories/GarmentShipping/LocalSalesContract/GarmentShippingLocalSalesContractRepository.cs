@@ -101,6 +101,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetPrice(item.Price, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetRemainingQuantity(item.RemainingQuantity, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetComodityId(item.ComodityId, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetComodityCode(item.ComodityCode, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetComodityName(item.ComodityName, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetRemark(item.Remark, _identityProvider.Username, UserAgent);
+
                 }
                 else
                 {

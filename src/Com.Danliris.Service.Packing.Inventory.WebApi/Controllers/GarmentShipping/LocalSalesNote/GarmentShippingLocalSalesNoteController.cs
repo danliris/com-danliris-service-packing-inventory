@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 _validateService.Validate(viewModel);
                 var result = await _service.Create(viewModel);
 
-                return Created("/", result);
+                 return Created("/", result);
             }
             catch (ServiceValidationException ex)
             {
