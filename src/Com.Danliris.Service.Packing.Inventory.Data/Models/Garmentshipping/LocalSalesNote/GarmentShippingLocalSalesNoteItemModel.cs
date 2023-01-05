@@ -21,11 +21,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
 
         public int PackageUomId { get; private set; }
         public string PackageUomUnit { get; private set; }
+        public string Remark { get; private set; }
+
         public GarmentShippingLocalSalesNoteItemModel()
         {
         }
 
-        public GarmentShippingLocalSalesNoteItemModel(int localSalesContractItemId, int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price, double packageQuantity, int packageUomId, string packageUomUnit)
+        public GarmentShippingLocalSalesNoteItemModel(int localSalesContractItemId, int productId, string productCode, string productName, double quantity, int uomId, string uomUnit, double price, double packageQuantity, int packageUomId, string packageUomUnit, string remark)
         {
             LocalSalesContractItemId = localSalesContractItemId;
             ProductId = productId;
@@ -38,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             PackageQuantity = packageQuantity;
             PackageUomId = packageUomId;
             PackageUomUnit = packageUomUnit;
+            Remark = remark;
         }
 
         public void SetProductId(int productId, string userName, string userAgent)
@@ -126,6 +129,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (PackageUomUnit != packageUomUnit)
             {
                 PackageUomUnit = packageUomUnit;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetRemark(string remark, string userName, string userAgent)
+        {
+            if (Remark != remark)
+            {
+                Remark = remark;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
