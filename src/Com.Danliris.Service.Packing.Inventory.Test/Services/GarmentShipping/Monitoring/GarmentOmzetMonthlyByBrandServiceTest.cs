@@ -43,15 +43,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", "", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -68,7 +68,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false,"")
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "B10", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", false, "", false, false, false, "")
             {
                 Id = 1
             };
@@ -98,27 +98,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", 1, "uom1", 1, 1, 1, "", 1, "unitcode", 1, 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", "", 1, "uom1", 1, 1, 1, "", 1, "unitcode", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "BRAND 1", 1, 1, "", "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", 1, "Uom1", 1, 1, 1, "", 1, "unitcode", 1, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", "", 1, "Uom1", 1, 1, 1, "", 1, "unitcode", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", 1, "Uom1", 1, 1, 1, "", 1, "unitcode", 1, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", "", 1, "Uom1", 1, 1, 1, "", 1, "unitcode", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 0, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 2, "BRAND 2", 1, 1, "", "", "", "", "", "", "", 2, "Uom2", 1, 1, 1, "", 1, "unitcode", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },

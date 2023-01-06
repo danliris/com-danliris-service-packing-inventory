@@ -85,7 +85,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentPackingListModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet
+                .Include(i => i.Items)
+                    .ThenInclude(i => i.Details)
+                        .ThenInclude(i => i.Sizes)
+                .Include(i => i.Measurements)
+                .Include(i => i.StatusActivities).AsNoTracking();
         }
 
         public Task<GarmentPackingListModel> ReadByIdAsync(int id)
@@ -172,6 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetComodityCode(item.ComodityCode, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetComodityName(item.ComodityName, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetComodityDescription(item.ComodityDescription, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetMarketingName(item.MarketingName, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetQuantity(item.Quantity, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUomId(item.UomId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, UserAgent);

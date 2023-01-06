@@ -51,15 +51,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -112,15 +112,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
+                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },

@@ -15,7 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public Comodity Comodity { get; set; }
         public string ComodityDescription { get; set; }
-
+        public string MarketingName { get; set; }
         public double Quantity { get; set; }
 
         public UnitOfMeasurement Uom { get; set; }

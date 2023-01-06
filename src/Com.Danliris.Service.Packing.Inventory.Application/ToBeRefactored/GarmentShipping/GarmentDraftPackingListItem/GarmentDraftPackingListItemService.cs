@@ -61,6 +61,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Name = model.ComodityName
                 },
                 ComodityDescription = model.ComodityDescription,
+                MarketingName = model.MarketingName,
                 Quantity = model.Quantity,
                 Uom = new UnitOfMeasurement
                 {
@@ -176,7 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Comodity = viewModel.Comodity ?? new Comodity();
             viewModel.Buyer = viewModel.Buyer ?? new Buyer();
             viewModel.Section = viewModel.Section ?? new Section();
-            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Section.Code, details, viewModel.Remarks);
+            GarmentDraftPackingListItemModel GarmentDraftPackingListItemModel = new GarmentDraftPackingListItemModel(viewModel.RONo, viewModel.SCNo, viewModel.BuyerBrand.Id, viewModel.BuyerBrand.Name, viewModel.Comodity.Id, viewModel.Comodity.Code, viewModel.Comodity.Name, viewModel.ComodityDescription, viewModel.MarketingName, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.PriceRO, viewModel.Price, viewModel.PriceFOB, viewModel.PriceCMT, viewModel.Amount, viewModel.Valas, viewModel.Unit.Id, viewModel.Unit.Code, viewModel.Article, viewModel.OrderNo, viewModel.Description, viewModel.DescriptionMd, viewModel.Buyer.Id, viewModel.Buyer.Code, viewModel.Section.Code, details, viewModel.Remarks);
            
             return GarmentDraftPackingListItemModel;
         }

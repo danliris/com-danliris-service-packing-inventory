@@ -35,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
 
             data.SetCMTPrice(data.CMTPrice + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetComodityDesc(data.ComodityDesc + 1, data.LastModifiedBy, data.LastModifiedAgent);
+            data.SetMarketingName(data.MarketingName + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetPrice(data.Price +1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetUomId(data.UomId + 1, data.LastModifiedBy, data.LastModifiedAgent);
             data.SetUomUnit(data.UomUnit + 1, data.LastModifiedBy, data.LastModifiedAgent);

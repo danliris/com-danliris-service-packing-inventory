@@ -130,7 +130,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 						Name = i.ComodityName
 					},
 					ComodityDesc = i.ComodityDesc,
-                    Desc2=i.Desc2,
+					MarketingName = i.MarketingName,
+					Desc2 =i.Desc2,
                     Desc3=i.Desc3,
                     Desc4=i.Desc4,
 					Uom = new UnitOfMeasurement
@@ -177,7 +178,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 				i.Uom = i.Uom ?? new UnitOfMeasurement();
 				i.Unit = i.Unit ?? new Unit();
 				i.Comodity = i.Comodity ?? new Comodity();
-				return new GarmentShippingInvoiceItemModel( i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Quantity, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDesc,i.Desc2,i.Desc3, i.Desc4, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.Price, i.PriceRO, i.Amount, i.CurrencyCode, i.Unit.Id, i.Unit.Code, i.CMTPrice, i.PackingListItemId) {
+				return new GarmentShippingInvoiceItemModel( i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Quantity, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDesc, i.MarketingName, i.Desc2,i.Desc3, i.Desc4, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.Price, i.PriceRO, i.Amount, i.CurrencyCode, i.Unit.Id, i.Unit.Code, i.CMTPrice, i.PackingListItemId) {
 					Id = i.Id
 				};
 
@@ -242,6 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			return viewModel;
 		}
+
 		public ShippingPackingListViewModel ReadShippingPackingListById(int id)
 		{
 			var queryInv = _repository.ReadAll();
@@ -256,6 +258,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			return query;
 		}
+
 		public async Task<int> Update(int id, GarmentShippingInvoiceViewModel viewModel)
 		{
 			GarmentShippingInvoiceModel garmentPackingListModel = MapToModel(viewModel);

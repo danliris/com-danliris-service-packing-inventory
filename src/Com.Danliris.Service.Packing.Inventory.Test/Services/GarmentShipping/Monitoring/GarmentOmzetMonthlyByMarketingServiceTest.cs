@@ -1,5 +1,4 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByUnit;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
@@ -10,10 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByMarketing;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.Monitoring
 {
-    public class GarmentOmetMonthlyByUnitServiceTest
+    public class GarmentOmetMonthlyByMarketingServiceTest
     {
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository, IGarmentShippingInvoiceItemRepository itemRepository, IGarmentPackingListRepository plRepository)
         {
@@ -33,63 +33,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             return spMock;
         }
 
-        protected GarmentOmzetMonthlyByUnitService GetService(IServiceProvider serviceProvider)
+        protected GarmentOmzetMonthlyByMarketingService GetService(IServiceProvider serviceProvider)
         {
-            return new GarmentOmzetMonthlyByUnitService(serviceProvider);
+            return new GarmentOmzetMonthlyByMarketingService(serviceProvider);
         }
 
         [Fact]
         public void GetReportData_Success()
         {
-            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                 "", DateTimeOffset.Now, "", "", null, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
-            {
-                Id = 1
-            };
-            var model1 = new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "", 1, 1, 1, "", 1, "C10", 1, 1)
-            {
-                GarmentShippingInvoiceId = 1
-            };
-
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", true, "", true, true, true, "")
-            {
-                Id = 1
-            };
-
-            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
-
-            var repoMock1 = new Mock<IGarmentShippingInvoiceItemRepository>();
-
-            repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>() { model1 }.AsQueryable());
-
-            var repoMock2 = new Mock<IGarmentPackingListRepository>();
-            repoMock2.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentPackingListModel>() { model2 }.AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
-
-            var result = service.GetReportData(model1.UnitCode, DateTime.MinValue, DateTime.Now, 0);
-
-            Assert.NotEmpty(result.ToList());
-        }
-
-        [Fact]
-        public void GenerateExcel_Success()
-        {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing1", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing1", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "C10", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "B10", 1, 3)
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing2", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "B10", 0, 3)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing2", "comodesc", "comodesc", "comodesc", 2, "PACKS", 1, 1, 1, "", 1, "B10", 0, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -100,13 +66,72 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     Id = 1
                 }
             };
-            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
+            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "124", DateTimeOffset.Now,
                                                 "", DateTimeOffset.Now, "", "", items, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", invoiceUnitModels)
             {
                 Id = 1
             };
 
-            var model2 = new GarmentPackingListModel("", "", "DL", 1, "", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", true, "", true, true, true, "")
+
+			var model2 = new GarmentPackingListModel("", "", "DL", 1, "A", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", true, "", true, true, true, "")
+            {
+                Id = 1
+            };
+
+            var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
+            repoMock.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
+
+            var repoMock1 = new Mock<IGarmentShippingInvoiceItemRepository>();
+            repoMock1.Setup(s => s.ReadAll())
+                .Returns(items.AsQueryable());
+
+            var repoMock2 = new Mock<IGarmentPackingListRepository>();
+            repoMock2.Setup(s => s.ReadAll())
+                .Returns(new List<GarmentPackingListModel>() { model2 }.AsQueryable());
+
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
+
+            var result = service.GetReportData(model2.SectionCode, DateTime.MinValue, DateTime.Now, 0);
+
+            Assert.NotEmpty(result.ToList());
+        }
+
+        [Fact]
+        public void GenerateExcel_Success()
+        {
+            var items = new List<GarmentShippingInvoiceItemModel>
+                {
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing1", "comodesc", "comodesc", "comodesc", 1, "uom1", 1, 1, 1, "", 1, "C10", 1, 1)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing1", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "C10", 1, 2)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing2", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "marketing2", "comodesc", "comodesc", "comodesc", 2, "Uom2", 1, 1, 1, "", 1, "B10", 0, 3)
+                         {
+                           GarmentShippingInvoiceId = 1
+                         },
+                };
+            var invoiceUnitModels = new HashSet<GarmentShippingInvoiceUnitModel> {
+                new GarmentShippingInvoiceUnitModel(1,"unitcode", 3,1)
+                {
+                    Id = 1
+                }
+            };
+            var model = new GarmentShippingInvoiceModel(1, "", DateTimeOffset.Now, "", "", 1, "A99", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "123", DateTimeOffset.Now,
+                                                "", DateTimeOffset.Now, "", "", items, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", invoiceUnitModels)
+            {
+                Id = 1
+            };
+
+            var model2 = new GarmentPackingListModel("", "", "DL", 1, "A", DateTimeOffset.Now, "", "", DateTimeOffset.Now, "", 1, "", "", "", "", "", DateTimeOffset.Now, DateTimeOffset.Now, DateTimeOffset.Now, true, true, "", "", "", null, 1, 1, 1, 1, null, "", "", "", "", "", "", "", true, true, 1, "", GarmentPackingListStatusEnum.CREATED, "", true, "", true, true, true, "")
             {
                 Id = 1
             };
