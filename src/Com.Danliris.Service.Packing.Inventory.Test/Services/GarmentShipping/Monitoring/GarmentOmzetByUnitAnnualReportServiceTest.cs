@@ -29,7 +29,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
                .Returns(plrepository);
-           
+
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceItemRepository)))
                 .Returns(repositoryItem);
 
@@ -50,15 +50,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C1A", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 21, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 21, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C1B", 1, 1)
                             {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PACKS", 1, 1, 1, "USD", 1, "C2A", 0, 1)
+                              {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PACKS", 1, 1, 1, "USD", 1, "C2B", 0, 1)
+                              {
+                           GarmentShippingInvoiceId = 1
+                         },
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PACKS", 1, 1, 1, "USD", 1, "C2C", 0, 1)
                               {
                            GarmentShippingInvoiceId = 1
                          },
@@ -75,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                 Id = 1
             };
 
- 
+
             var repoMock = new Mock<IGarmentShippingInvoiceRepository>();
 
             repoMock.Setup(s => s.ReadAll())
@@ -88,7 +96,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
                 .Returns(items.AsQueryable());
-          
+
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -222,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
-      
+
             spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
                 .Returns(httpMock.Object);
 
@@ -238,15 +246,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         {
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 21, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 21, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
                             {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
                               {
                            GarmentShippingInvoiceId = 1
                          },
@@ -275,7 +283,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
             repoMock3.Setup(s => s.ReadAll())
                 .Returns(items.AsQueryable());
-          
+
             var httpMock = new Mock<IHttpClientService>();
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -283,12 +291,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
                 });
 
-           httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
-               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-               {
-                   Content = new StringContent(JsonConvert.SerializeObject(new
-                   {
-                       data = new List<GarmentExpenditureGood> { 
+            httpMock.Setup(s => s.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        data = new List<GarmentExpenditureGood> {
                        new GarmentExpenditureGood() {
                         Id = "111",
                         RONo = "2120001",
@@ -404,9 +412,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                         Article = "ART 125214",
                         TotalQuantity = 1250,
                        }
-                       }
-                   }))
-               });
+                        }
+                    }))
+                });
 
             var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock3.Object);
             spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
@@ -443,15 +451,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "", 12, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2130001", "", 1, "", 21, 1, "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2130001", "", 1, "", 21, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "", 1, "C10", 1, 1)
                             {
                            GarmentShippingInvoiceId = 1
                          },
-                     new GarmentShippingInvoiceItemModel("2140001", "", 1, "", 31, 2, "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
+                     new GarmentShippingInvoiceItemModel("2140001", "", 1, "", 31, 2, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "", 1, "C10", 1, 1)
                               {
                            GarmentShippingInvoiceId = 1
                          },

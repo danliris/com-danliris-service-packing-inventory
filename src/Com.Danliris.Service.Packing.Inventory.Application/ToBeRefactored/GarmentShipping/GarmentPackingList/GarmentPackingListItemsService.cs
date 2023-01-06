@@ -136,6 +136,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Name = i.ComodityName
                     },
                     ComodityDescription = i.ComodityDescription,
+                    MarketingName = i.MarketingName,
                     Quantity = i.Quantity,
                     Uom = new UnitOfMeasurement
                     {
@@ -158,7 +159,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     Description = i.Description,
                     DescriptionMd = i.DescriptionMd,
                     Remarks = i.Remarks,
-                    RoType=i.RoType,
+                    RoType = i.RoType,
                     Details = i.Details.Select(d => new GarmentPackingListDetailViewModel
                     {
                         Active = d.Active,
@@ -311,6 +312,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     itemToUpdate.SetComodityCode(item.ComodityCode, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetComodityName(item.ComodityName, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetComodityDescription(item.ComodityDescription, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetMarketingName(item.MarketingName, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetQuantity(item.Quantity, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUomId(item.UomId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetUomUnit(item.UomUnit, _identityProvider.Username, UserAgent);
@@ -416,21 +418,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         var measurement = model.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height && m.CreatedBy == _identityProvider.Username);
                         var measurementDB = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == detail.Length && m.Width == detail.Width && m.Height == detail.Height && m.CreatedBy == _identityProvider.Username);
-                        if (measurement == null)
-                        {
-                            measurementDB.FlagForDelete(_identityProvider.Username, UserAgent);
-                            // harusnya udah kehapus
-                        }
+                        //if (measurement == null)
+                        //{
+                        //    measurementDB.FlagForDelete(_identityProvider.Username, UserAgent);
+                        //    // harusnya udah kehapus
+                        //}
                         var detailToDelete = items.Details.FirstOrDefault(d => d.Id == detail.Id);
                         if (detailToDelete != null)
                         {
                             detailToDelete.FlagForDelete(_identityProvider.Username, UserAgent);
                         }
                     }
-                    
+
 
                     itemToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
-                    
+
                 }
 
             }
@@ -450,12 +452,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 modelToUpdate.Items.Add(item);
             }
 
-            
 
-            foreach (var measurementToUpdate in modelToUpdate.Measurements.Where(m => m.CreatedBy == _identityProvider.Username))
+
+            //foreach (var measurementToUpdate in modelToUpdate.Measurements.Where(m => m.CreatedBy == _identityProvider.Username))
+            foreach (var measurementToUpdate in modelToUpdate.Measurements)
             {
-                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
-                var measurementDB = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
+                //var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
+                //var measurementDB = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height && m.CreatedBy == _identityProvider.Username);
+                var measurement = model.Measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
+                var measurementDB = measurements.FirstOrDefault(m => m.Length == measurementToUpdate.Length && m.Width == measurementToUpdate.Width && m.Height == measurementToUpdate.Height);
                 if (measurement != null)
                 {
                     double diffQty = 0;
@@ -471,9 +476,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         sumQty = measurement.CartonsQuantity - diffQty;
                     }
                     measurementToUpdate.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
-                } else
+                }
+                else
                 {
-                    if(measurementDB != null)
+                    if (measurementDB != null)
                     {
                         double diffQty = 0;
                         double sumQty = 0;
@@ -489,11 +495,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         }
                         measurementToUpdate.SetCartonsQuantity(sumQty, _identityProvider.Username, UserAgent);
                         // disini
-                    } else
+                    }
+                    else
                     {
                         measurementToUpdate.FlagForDelete(_identityProvider.Username, UserAgent);
                     }
-                    
+
                 }
                 /*  else
                   {
@@ -501,9 +508,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                   }*/
             }
 
-            foreach (var measurement in measurements.Where(m => m.CreatedBy == _identityProvider.Username))
+            //foreach (var measurement in measurements.Where(m => m.CreatedBy == _identityProvider.Username))
+            foreach (var measurement in measurements)
             {
-                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height && m.CreatedBy == _identityProvider.Username);
+                //    var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height && m.CreatedBy == _identityProvider.Username);
+                var oldMeasurement = modelToUpdate.Measurements.FirstOrDefault(m => m.Length == measurement.Length && m.Width == measurement.Width && m.Height == measurement.Height);
                 if (oldMeasurement == null)
                 {
                     measurement.FlagForCreate(_identityProvider.Username, UserAgent);

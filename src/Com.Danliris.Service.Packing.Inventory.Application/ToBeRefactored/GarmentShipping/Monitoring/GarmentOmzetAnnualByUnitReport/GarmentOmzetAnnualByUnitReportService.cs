@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetAnnualByUnitReport
-{ 
+{
     public class GarmentOmzetAnnualByUnitReportService : IGarmentOmzetAnnualByUnitReportService
     {
         private readonly IServiceProvider _serviceProvider;
@@ -63,35 +63,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var invo = expendGood.Select(x => x.Invoice).ToArray();
 
             //
-            var Queryshipping = (from a in queryInv
-                                 join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
-                                 join c in queryPL on a.PackingListId equals c.Id
-                                 where ROs.Contains(b.RONo) && invo.Contains(a.InvoiceNo)
-                                 select new GarmentDetailOmzetByUnitReportViewModel
-                                 {
-                                     InvoiceNo = a.InvoiceNo,
-                                     PEBDate = a.PEBDate,
-                                     TruckingDate = c.TruckingDate,
-                                     RONumber = b.RONo,
-                                     Amount = b.Amount,
-                                     Rate = 0,
-                                 }).Distinct().ToList();
-            //                 
-            var Query1 = (from a in expendGood
-                          join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
-                          from bb in omzets.DefaultIfEmpty()
+            var Query1 = (from a in queryInv
+                          join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
+                          join c in queryPL on a.PackingListId equals c.Id
+                          //where ROs.Contains(b.RONo) && invo.Contains(a.InvoiceNo)
+
                           select new GarmentDetailOmzetByUnitReportViewModel
                           {
-                              InvoiceNo = a.Invoice.TrimEnd(),
-                              PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
-                              TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
-                              RONumber = a.RONo.TrimEnd(),
-                              UnitCode = a.Unit.Code,
-                              UnitName = a.Unit.Name.TrimEnd(),
+                              InvoiceNo = a.InvoiceNo,
+                              PEBDate = a.PEBDate,
+                              TruckingDate = c.TruckingDate,
+                              RONumber = b.RONo,
+                              UnitCode = b.UnitCode,
+                              UnitName = "",
                               CurrencyCode = "USD",
-                              Amount = bb == null ? 0 : bb.Amount,
+                              Amount = b.Amount,
                               Rate = 0,
                           }).Distinct().ToList();
+            //                 
+            //var Query1 = (from a in expendGood
+            //              join b in Queryshipping on new { invoice = a.Invoice.Trim(), rono = a.RONo.Trim() } equals new { invoice = b.InvoiceNo.Trim(), rono = b.RONumber.Trim() } into omzets
+            //              from bb in omzets.DefaultIfEmpty()
+            //              select new GarmentDetailOmzetByUnitReportViewModel
+            //              {
+            //                  InvoiceNo = a.Invoice.TrimEnd(),
+            //                  PEBDate = bb == null ? DateTimeOffset.MinValue : bb.PEBDate,
+            //                  TruckingDate = bb == null ? DateTimeOffset.MinValue : bb.TruckingDate,
+            //                  RONumber = a.RONo.TrimEnd(),
+            //                  UnitCode = a.Unit.Code,
+            //                  UnitName = a.Unit.Name.TrimEnd(),
+            //                  CurrencyCode = "USD",
+            //                  Amount = bb == null ? 0 : bb.Amount,
+            //                  Rate = 0,
+            //              }).Distinct().ToList();
             //
             var Query = (from a in Query1
                          join b in queryInv on a.InvoiceNo equals b.InvoiceNo
@@ -128,7 +132,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.AmountIDR = rate * data.Amount;
             }
             //
-            var QueryOmzet1 = (from a in Query.Distinct() where a.UnitCode == "C1A"
+            var QueryOmzet1 = (from a in Query.Distinct()
+                               where a.UnitCode == "C1A"
 
                                select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
                                .GroupBy(x => new { x.Month, x.MonthName, x.UnitName }, (key, group) => new AnnualOmzetByUnitViewModel
@@ -145,7 +150,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Amount4IDR = 0,
                                    Amount5 = 0,
                                    Amount5IDR = 0,
-                       }).OrderBy(i => i.Month);
+                               }).OrderBy(i => i.Month);
             //
             var QueryOmzet2 = (from a in Query.Distinct()
                                where a.UnitCode == "C1B"
@@ -210,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var QueryOmzet5 = (from a in Query.Distinct()
                                where a.UnitCode == "C2C"
 
-                              select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
+                               select new { a.Month, a.MonthName, a.UnitName, a.Amount, a.AmountIDR })
                                .GroupBy(x => new { x.Month, x.MonthName, x.UnitName }, (key, group) => new AnnualOmzetByUnitViewModel
                                {
                                    Month = key.Month,
@@ -232,24 +237,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //
 
             var QueryAnnualOmzet = (from a in QueryOmzet
-                               
+
                                     select new { a.Month, a.MonthName, a.Amount1, a.Amount1IDR, a.Amount2, a.Amount2IDR, a.Amount3, a.Amount3IDR, a.Amount4, a.Amount4IDR, a.Amount5, a.Amount5IDR })
                                     .GroupBy(x => new { x.Month, x.MonthName }, (key, group) => new AnnualOmzetByUnitViewModel
                                     {
-                                       Month = key.Month,
-                                       MonthName = key.MonthName,
-                                       Amount1 = group.Sum(x => x.Amount1),
-                                       Amount1IDR = group.Sum(x => x.Amount1IDR),
-                                       Amount2 = group.Sum(x => x.Amount2),
-                                       Amount2IDR = group.Sum(x => x.Amount2IDR),
-                                       Amount3 = group.Sum(x => x.Amount3),
-                                       Amount3IDR = group.Sum(x => x.Amount3IDR),
-                                       Amount4 = group.Sum(x => x.Amount4),
-                                       Amount4IDR = group.Sum(x => x.Amount4IDR),
-                                       Amount5 = group.Sum(x => x.Amount5),
-                                       Amount5IDR = group.Sum(x => x.Amount5IDR),
+                                        Month = key.Month,
+                                        MonthName = key.MonthName,
+                                        Amount1 = group.Sum(x => x.Amount1),
+                                        Amount1IDR = group.Sum(x => x.Amount1IDR),
+                                        Amount2 = group.Sum(x => x.Amount2),
+                                        Amount2IDR = group.Sum(x => x.Amount2IDR),
+                                        Amount3 = group.Sum(x => x.Amount3),
+                                        Amount3IDR = group.Sum(x => x.Amount3IDR),
+                                        Amount4 = group.Sum(x => x.Amount4),
+                                        Amount4IDR = group.Sum(x => x.Amount4IDR),
+                                        Amount5 = group.Sum(x => x.Amount5),
+                                        Amount5IDR = group.Sum(x => x.Amount5IDR),
                                     }).OrderBy(i => i.Month).ToList();
-            
+
             return QueryAnnualOmzet.OrderBy(x => x.Month).ToList();
         }
         public ListResult<AnnualOmzetByUnitViewModel> GetReportData(int year, int offset)
@@ -317,7 +322,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 foreach (var d in Query)
                 {
                     index++;
-                    
+
                     result.Rows.Add(d.MonthName, d.Amount1, d.Amount1IDR, d.Amount2, d.Amount2IDR, d.Amount3, d.Amount3IDR, d.Amount4, d.Amount4IDR, d.Amount5, d.Amount5IDR);
                 }
 

@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                      new GarmentShippingPaymentDispositionBillDetailModel("", 4000)
                          {
                            PaymentDispositionId = 1
-                         },       
+                         },
                 };
 
             var invoices = new List<GarmentShippingPaymentDispositionInvoiceDetailModel>
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             };
 
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.ReadAll())               
+            repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingPaymentDispositionModel>() { model }.AsQueryable());
 
             repoMock.Setup(s => s.ReadUnitAll())
@@ -206,7 +206,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
         [Fact]
         public void GenerateExcel_Empty_Success()
-        {           
+        {
             var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
