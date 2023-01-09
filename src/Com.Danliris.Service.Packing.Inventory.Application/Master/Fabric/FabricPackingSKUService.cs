@@ -311,13 +311,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             if (fabric != null)
             {
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Code).FirstOrDefault();
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Id).FirstOrDefault();
 
                 var i = 1;
                 if (latestProductPacking != null)
                 {
-                    var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
-                    i = int.Parse(rollNumber) + 1;
+                    if (latestProductPacking.Code.Count() == 12)
+                    {
+                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
+                        i = int.Parse(rollNumber) + 1;
+                    }
+                    else
+                    {
+                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
+                        i = int.Parse(rollNumber) + 1;
+                    }
+
                 }
 
                 var packingModel = new ProductPackingModel();
