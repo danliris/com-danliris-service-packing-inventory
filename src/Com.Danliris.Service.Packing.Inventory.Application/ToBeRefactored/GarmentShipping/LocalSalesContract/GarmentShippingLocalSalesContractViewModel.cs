@@ -75,11 +75,37 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Dictionary<string, object> errorItem = new Dictionary<string, object>();
 
-                    if (item.product == null || item.product.id == 0)
+                    //if ( (item.product == null || item.product.id == 0) )
+                    //{
+                    //    errorItem["product"] = "Barang  tidak boleh kosong, harus";
+                    //    errorItemsCount++;
+                    //}
+
+                    if ((item.product == null || item.product.id == 0) && (item.comodity == null || item.comodity.Id == 0))
                     {
-                        errorItem["product"] = "Barang tidak boleh kosong";
+                        errorItem["product"] = " Harus Isi salah satu, Barang atau Comodity";
+                        //errorItem["comodity"] = "Barang  tidak boleh kosong, harus";
+                        errorItemsCount++;
+                        errorItem["comodity"] = "Harus Isi salah satu, Barang atau Comodity";
                         errorItemsCount++;
                     }
+
+                    if (item.product != null && item.comodity != null )
+                    {
+                        errorItem["product"] = "Isi salah satu, Barang atau Comodity";
+                        //errorItem["comodity"] = "Barang  tidak boleh kosong, harus";
+                        errorItemsCount++;
+                        errorItem["comodity"] = "Isi salah satu, Barang atau Comodity";
+                        errorItemsCount++;
+                    }
+
+
+                    //if ((item.product == null || item.product.id == 0) && (item.comodity == null || item.comodity.Id == 0))
+                    //{
+                    //    //errorItem["product"] = "Barang  tidak boleh kosong, harus";
+                    //    errorItem["comodity"] = "comodity  tidak boleh kosong, harus";
+                    //    errorItemsCount++;
+                    //}
 
                     if (item.quantity <= 0)
                     {
