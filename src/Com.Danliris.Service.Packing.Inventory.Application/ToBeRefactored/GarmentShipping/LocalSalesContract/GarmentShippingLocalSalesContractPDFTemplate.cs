@@ -128,9 +128,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region bodyTable
             document.Add(new Paragraph("Adapun kami, selaku Pihak Pertama (I) dan Pihak Kedua (II) akan melakukan kerjasama dengan ketentuan-ketentuan sebagai berikut : \n",normal_font));
-            PdfPTable tableBody = new PdfPTable(6);
+            PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1f, 6f, 2f, 1.5f, 2f, 2.5f });
+            tableBody.SetWidths(new float[] { 1f, 6f, 2f, 2f, 1.5f, 2f, 2.5f });
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyLeftNoBorder = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -141,6 +141,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Jenis Barang", normal_font);
+            tableBody.AddCell(cellBodyCenter);
+
+            cellBodyCenter.Phrase = new Phrase("Keterangan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Jumlah", normal_font);
@@ -162,7 +165,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyCenter.Phrase = new Phrase(index.ToString(), normal_font);
                 tableBody.AddCell(cellBodyCenter);
 
-                cellBodyLeft.Phrase = new Phrase(item.product.name, normal_font);
+                if (item.product.name == null)
+                {
+                    cellBodyLeft.Phrase = new Phrase(item.comodity.Name, normal_font);
+                    tableBody.AddCell(cellBodyLeft);
+                }
+                else {
+                    cellBodyLeft.Phrase = new Phrase(item.product.name, normal_font);
+                    tableBody.AddCell(cellBodyLeft);
+                }
+
+                cellBodyLeft.Phrase = new Phrase(item.remark, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
