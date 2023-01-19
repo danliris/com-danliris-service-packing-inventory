@@ -221,6 +221,54 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 			}
 		}
 
+		[HttpGet("xls/{Id}/{type}")]
+		public async Task<IActionResult> GetXLS([FromRoute] int Id, [FromRoute] string type)
+		{
+			if (!ModelState.IsValid)
+			{
+				var exception = new
+				{
+					error = ResultFormatter.FormatErrorMessage(ModelState)
+				};
+				return new BadRequestObjectResult(exception);
+			}
+
+			try
+			{
+				var indexAcceptXls = Request.Headers["Accept"].ToList().IndexOf("application/xls");
+				int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+				var model = await _service.ReadById(Id);
+
+				if (model == null)
+				{
+					return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+				}
+				else
+				{
+					if (type == "fob")
+					{
+						VerifyUser();
+						var result = await _service.ReadInvoiceExcelById(model.Id);
+
+						return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
+					}
+					else
+					{
+						{
+							VerifyUser();
+							var result = await _service.ReadInvoiceCMTExcelById(model.Id);
+
+							return File(result.Data.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.FileName);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+
 		[HttpGet("whpdf/{Id}/{type}")]
 		public async Task<IActionResult> GetWHPDF([FromRoute] int Id, [FromRoute] string type)
 		{
