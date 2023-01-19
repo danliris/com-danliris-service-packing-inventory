@@ -19,7 +19,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Delete(int id);
         Buyer GetBuyer(int id);
         BankAccount GetBank(int id);
-        IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCard(int month, int year, string buyer);
+		Task<MemoryStreamResult> ReadInvoiceExcelById(int id);
+		Task<MemoryStreamResult> ReadInvoiceCMTExcelById(int id);
+		IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCard(int month, int year, string buyer);
         IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCardNow(int month, int year, string buyer);
 		ShippingPackingListViewModel ReadShippingPackingListById(int packingListId);
 	}

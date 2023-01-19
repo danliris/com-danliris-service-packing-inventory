@@ -430,7 +430,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     Border = Rectangle.BOTTOM_BORDER,
                     Colspan = SIZES_COUNT + 11,
-                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}           - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs           - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs", normal_font)
+                    Phrase = new Phrase($"      - Sub Ctns = {subCtns}          - Sub G.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.GrossWeight * a.CartonQuantity))} Kgs          - Sub N.W. = {String.Format("{0:0.00}", item.Details.Sum(a => a.NetWeight * a.CartonQuantity))} Kgs          - Sub M.S.R. = {String.Format("{0:0.00}", item.Details.Sum(a => a.Length * a.Width * a.Height * a.CartonQuantity / 1000000))} CBM", normal_font)
                 });
 
                 new PdfPCell(tableDetail);

@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
@@ -16,16 +18,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
 	public class GarmentShippingInvoiceService : IGarmentShippingInvoiceService
 	{
+		protected const string IMG_DIR = "GarmentPackingList";
 		private readonly IGarmentShippingInvoiceRepository _repository;
         private readonly IServiceProvider serviceProvider;
         private readonly IGarmentPackingListRepository plrepository;
+		protected readonly IAzureImageService _azureImageService;
+		private readonly IGarmentPackingListService _packingListService;
+		protected readonly IIdentityProvider _identityProvider;
 
-        public GarmentShippingInvoiceService(IServiceProvider serviceProvider)
+		public GarmentShippingInvoiceService(IServiceProvider serviceProvider)
 		{
 			_repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
-            this.serviceProvider = serviceProvider;
-
+			_azureImageService = serviceProvider.GetService<IAzureImageService>();
+			_identityProvider = serviceProvider.GetService<IIdentityProvider>();
+			_packingListService = serviceProvider.GetService<IGarmentPackingListService>();
+			this.serviceProvider = serviceProvider;
         }
 		private GarmentShippingInvoiceViewModel MapToViewModel(GarmentShippingInvoiceModel model)
 		{
@@ -309,7 +317,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
         }
 
-        public IQueryable<ShippingPackingListViewModel> ReadShippingPackingList(int month, int year)
+		//
+		public virtual async Task<MemoryStreamResult> ReadInvoiceExcelById(int id)
+		{
+			var datainv = await _repository.ReadByIdAsync(id);
+			var datapl = await plrepository.ReadByIdAsync(datainv.PackingListId);
+
+			var ExcelTemplate = new GarmentShippingInvoiceExcelTemplate(_identityProvider);
+
+			var viewModel = MapToViewModel(datainv);
+			var pl = _packingListService.MapToViewModel(datapl);
+
+			Buyer buyer = GetBuyer(datainv.BuyerAgentId);
+			BankAccount bank = GetBank(datainv.BankAccountId);
+
+			pl.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.ShippingMarkImagePath);
+			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
+			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+
+			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
+		}
+
+		public virtual async Task<MemoryStreamResult> ReadInvoiceCMTExcelById(int id)
+		{
+			var datainv = await _repository.ReadByIdAsync(id);
+			var datapl = await plrepository.ReadByIdAsync(datainv.PackingListId);
+
+			var ExcelTemplate = new GarmentShippingInvoiceCMTExcelTemplate(_identityProvider);
+
+			var viewModel = MapToViewModel(datainv);
+			var pl = _packingListService.MapToViewModel(datapl);
+
+			Buyer buyer = GetBuyer(datainv.BuyerAgentId);
+			BankAccount bank = GetBank(datainv.BankAccountId);
+
+			pl.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.ShippingMarkImagePath);
+			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
+			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+
+			return new MemoryStreamResult(stream, "Invoice CMT " + datainv.InvoiceNo + ".xls");
+		}
+
+		public IQueryable<ShippingPackingListViewModel> ReadShippingPackingList(int month, int year)
         {
             var queryInv = _repository.ReadAll();
             var queryPL = plrepository.ReadAll();

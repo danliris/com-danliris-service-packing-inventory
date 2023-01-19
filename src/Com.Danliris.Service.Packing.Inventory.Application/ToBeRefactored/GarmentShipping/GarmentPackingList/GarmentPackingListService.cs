@@ -38,7 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _azureImageService = serviceProvider.GetService<IAzureImageService>();
         }
 
-        protected GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
+        public GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
         {
             var vm = new GarmentPackingListViewModel()
             {

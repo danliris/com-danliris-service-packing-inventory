@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public interface IGarmentPackingListService
     {
+        GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model);
         Task<string> Create(GarmentPackingListViewModel viewModel);
         Task<GarmentPackingListViewModel> ReadById(int id);
         ListResult<GarmentPackingListViewModel> Read(int page, int size, string filter, string order, string keyword);
