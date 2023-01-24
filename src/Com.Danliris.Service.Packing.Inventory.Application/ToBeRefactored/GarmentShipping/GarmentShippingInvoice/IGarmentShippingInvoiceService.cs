@@ -20,7 +20,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Buyer GetBuyer(int id);
         BankAccount GetBank(int id);
 		Task<MemoryStreamResult> ReadInvoiceExcelById(int id);
+		Task<MemoryStreamResult> ReadInvoiceWithHeaderExcelById(int id);
 		Task<MemoryStreamResult> ReadInvoiceCMTExcelById(int id);
+		Task<MemoryStreamResult> ReadInvoiceCMTWithHeaderExcelById(int id);
 		IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCard(int month, int year, string buyer);
         IQueryable<ShippingPackingListViewModel> ReadShippingPackingListForDebtorCardNow(int month, int year, string buyer);
 		ShippingPackingListViewModel ReadShippingPackingListById(int packingListId);

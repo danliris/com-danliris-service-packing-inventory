@@ -340,6 +340,50 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
 		}
 
+		public virtual async Task<MemoryStreamResult> ReadInvoiceWithHeaderExcelById(int id)
+		{
+			var datainv = await _repository.ReadByIdAsync(id);
+			var datapl = await plrepository.ReadByIdAsync(datainv.PackingListId);
+
+			var ExcelTemplate = new GarmentShippingInvoiceWithHeaderExcelTemplate(_identityProvider);
+
+			var viewModel = MapToViewModel(datainv);
+			var pl = _packingListService.MapToViewModel(datapl);
+
+			Buyer buyer = GetBuyer(datainv.BuyerAgentId);
+			BankAccount bank = GetBank(datainv.BankAccountId);
+
+			pl.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.ShippingMarkImagePath);
+			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
+			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+
+			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
+		}
+
+		public virtual async Task<MemoryStreamResult> ReadInvoiceCMTWithHeaderExcelById(int id)
+		{
+			var datainv = await _repository.ReadByIdAsync(id);
+			var datapl = await plrepository.ReadByIdAsync(datainv.PackingListId);
+
+			var ExcelTemplate = new GarmentShippingInvoiceCMTWithHeaderExcelTemplate(_identityProvider);
+
+			var viewModel = MapToViewModel(datainv);
+			var pl = _packingListService.MapToViewModel(datapl);
+
+			Buyer buyer = GetBuyer(datainv.BuyerAgentId);
+			BankAccount bank = GetBank(datainv.BankAccountId);
+
+			pl.ShippingMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.ShippingMarkImagePath);
+			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
+			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+
+			return new MemoryStreamResult(stream, "Invoice CMT" + datainv.InvoiceNo + ".xls");
+		}
+
 		public virtual async Task<MemoryStreamResult> ReadInvoiceCMTExcelById(int id)
 		{
 			var datainv = await _repository.ReadByIdAsync(id);
