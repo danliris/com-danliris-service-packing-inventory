@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            sheet.Cells[$"A11:H11"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
+            sheet.Cells[$"A11:J11"].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Double;
 
             var InvIndex = 13;
             ///
@@ -116,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"A{InvIndex}"].Value = "COMMERCIAL INVOICE";
             sheet.Cells[$"A{InvIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[$"A{InvIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
-            sheet.Cells[$"A{InvIndex}:H{InvIndex}"].Merge = true;
+            sheet.Cells[$"A{InvIndex}:J{InvIndex}"].Merge = true;
             ///       
             sheet.Row(15).Height = 20;
             sheet.Cells["A15"].Value = "INVOICE NO. : " + viewModel.InvoiceNo;
@@ -321,7 +321,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"B22"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                 sheet.Cells[$"B22"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
 
-                index = 13;
+                index = 23;
             }
 
             //
