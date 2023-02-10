@@ -220,7 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
 
-                    var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
+                    var skuData = _fabricPackingSKUService.AutoCreateSKUSO(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = item.Grade,
                         ProcessType = item.ProcessType.Name,
@@ -238,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Width = item.MaterialWidth
                     });
 
-                    var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                    var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
                     {
                         FabricSKUId = skuData.FabricSKUId,
                         PackingType = modelItem.PackagingUnit,
@@ -246,7 +246,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Length = modelItem.PackagingLength
                     });
 
-                    var packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                    //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                    var packingCodes = packingData.ProductPackingCode;
                     modelItem.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, UserAgent);
                     result += await _stockOpnameProductionOrderRepository.InsertAsync(modelItem);
 
@@ -1472,6 +1473,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             package.SaveAs(stream);
 
             return stream;
+        }
+
+        public List<StockOpnameWarehouseProductionOrderViewModel> getDatabyCode(string itemData)
+        {
+            var stockOpnameQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == itemData);
+
+            var result = stockOpnameQuery.GroupBy(d => new { d.ProductPackingCode }).Select(e => new StockOpnameWarehouseProductionOrderViewModel()
+            {
+               
+                ProductPackingCode = e.Key.ProductPackingCode,
+                ProductionOrderNo = e.First().ProductionOrderNo,
+                Balance = e.Sum(s => s.Balance),
+                PackagingQty = e.Sum(s=> s.PackagingQty),
+                PackagingLength = e.First().PackagingLength,
+                Grade = e.First().Grade,
+                UomUnit = e.First().UomUnit,
+                Material = new Material { 
+                    Id = e.First().MaterialId,
+                    Name = e.First().MaterialName
+                },
+                FabricSKUId = e.First().FabricSKUId,
+                ProductSKUId = e.First().ProductSKUId,
+                ProductSKUCode = e.First().ProductSKUCode,
+                ProductPackingId = e.First().ProductPackingId,
+                Color = e.First().Color,
+                Construction = e.First().Construction,
+                ProcessTypeId = e.First().ProcessTypeId,
+                ProcessTypeName = e.First().ProcessTypeName,
+                PackagingType = e.First().PackagingType,
+                PackagingUnit = e.First().PackagingUnit,
+                Unit = e.First().Unit,
+                FabricPackingId = e.First().FabricPackingId,
+                
+
+
+                
+            }).ToList();
+
+            return result;
+
+
         }
 
 
