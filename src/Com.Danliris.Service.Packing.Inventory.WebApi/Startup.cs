@@ -153,6 +153,11 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByMarketing;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearMarketing;
 
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.SalesExport;
+
+
+
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
     public class Startup
@@ -276,6 +281,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
 
+
+            services.AddTransient<IGarmentShippingExportSalesContractRepository, GarmentShippingExportSalesContractRepository>();
+            services.AddTransient<IGarmentExportCoverLetterRepository, GarmentExportCoverLetterRepository>();
+            services.AddTransient<IGarmentShippingLeftOverExportSalesDORepository, GarmentShippingLeftOverExportSalesDORepository>();
+            services.AddTransient<IGarmentShippingExportSalesNoteRepository, GarmentShippingExportSalesNoteRepository>();
+            services.AddTransient<IGarmentShippingExportSalesNoteItemRepository, GarmentShippingExportSalesNoteItemRepository>();
             #endregion
 
             #region Service
@@ -316,7 +327,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingCreditAdviceService, GarmentShippingCreditAdviceService>();
             services.AddTransient<IGarmentShippingLocalSalesNoteService, GarmentShippingLocalSalesNoteService>();
 
-            services.AddTransient<IGarmentShippingExportSalesDOService, GarmentShippingExportSalesDOService>();
+            services.AddTransient<Application.ToBeRefactored.GarmentShipping.ExportSalesDO.IGarmentShippingExportSalesDOService, Application.ToBeRefactored.GarmentShipping.ExportSalesDO.GarmentShippingExportSalesDOService>();
             services.AddTransient<IGarmentShippingLocalSalesDOService, GarmentShippingLocalSalesDOService>();
             services.AddTransient<IGarmentLocalCoverLetterService, GarmentLocalCoverLetterService>();
 
@@ -393,6 +404,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentOmzetMonthlyByMarketingService, GarmentOmzetMonthlyByMarketingService>();
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
 
+            services.AddTransient<IGarmentShippingExportSalesContractService, GarmentShippingExportSalesContractService>();
+            services.AddTransient<IGarmentExportCoverLetterService, GarmentExportCoverLetterService>();
+            services.AddTransient<Application.ToBeRefactored.GarmentShipping.SalesExport.IGarmentShippingExportSalesDOService, Application.ToBeRefactored.GarmentShipping.SalesExport.GarmentShippingExportSalesDOService>();
+            services.AddTransient<IGarmentShippingExportSalesNoteService, GarmentShippingExportSalesNoteService>();
             #endregion
 
             // Register Provider
@@ -516,9 +531,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
-                context.Database.SetCommandTimeout(1000);
-                context.Database.Migrate();
+                //var context = serviceScope.ServiceProvider.GetService<PackingInventoryDbContext>();
+                //context.Database.SetCommandTimeout(1000);
+                //context.Database.Migrate();
 
                 //var bus = serviceScope.ServiceProvider.GetService<IAzureServiceBusConsumer<ProductSKUInventoryMovementModel>>();
                 //bus.RegisterOnMessageHandlerAndReceiveMessages();
