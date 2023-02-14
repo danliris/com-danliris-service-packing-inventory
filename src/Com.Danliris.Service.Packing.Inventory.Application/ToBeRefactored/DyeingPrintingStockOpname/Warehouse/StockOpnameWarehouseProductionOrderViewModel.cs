@@ -70,7 +70,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public IEnumerable<string> ProductPackingCodes { get; set; }
         public string ProductPackingCode { get; set; }
         public bool HasPrintingProductSKU { get; set; }
-        public string Track { get; set; }
-        public string Rack { get; set; }
+        public int TrackId { get; set; }
+        public string TrackType { get; set; }
+        public string TrackName { get; set; }
     }
 }
