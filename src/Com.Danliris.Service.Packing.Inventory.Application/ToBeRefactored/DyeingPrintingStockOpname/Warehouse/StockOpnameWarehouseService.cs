@@ -134,7 +134,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.Unit,
                                                                 s.UomUnit,
                                                                 false,
-                                                                null
+                                                                null,
+                                                                s.TrackId,
+                                                                s.TrackType,
+                                                                s.TrackName
                                                                 )).ToList(), false);
 
 
@@ -215,7 +218,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.Unit,
                                                                 item.UomUnit,
                                                                 false,
-                                                                null
+                                                                null,
+                                                                item.TrackId,
+                                                                item.TrackType,
+                                                                item.TrackName
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -388,7 +394,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.Unit,
                 s.UomUnit,
                 false,
-                null)
+                null,
+                s.TrackId,
+                s.TrackType,
+                s.TrackName)
                 {
                     Id = s.Id
                 }).ToList(), false);
