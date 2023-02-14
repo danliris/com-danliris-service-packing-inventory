@@ -145,7 +145,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 foreach (var item in model.DyeingPrintingStockOpnameProductionOrders)
                 {
-                    var skuData = _fabricPackingSKUService.AutoCreateSKU(new FabricSKUAutoCreateFormDto()
+                    var skuData = _fabricPackingSKUService.AutoCreateSKUSO(new FabricSKUAutoCreateFormDto()
                     {
                         Grade = item.Grade,
                         ProcessType = item.ProcessTypeName,
@@ -163,7 +163,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Width = item.MaterialWidth
                     });
 
-                    var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                    var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
                     {
                         FabricSKUId = skuData.FabricSKUId,
                         PackingType = item.PackagingUnit,
@@ -171,7 +171,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Length = item.PackagingLength
                     });
 
-                    var packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                    //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
+                    var packingCodes = packingData.ProductPackingCode;
                     item.SetPackingCode(skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false, _identityProvider.Username, UserAgent);
                 }
 
