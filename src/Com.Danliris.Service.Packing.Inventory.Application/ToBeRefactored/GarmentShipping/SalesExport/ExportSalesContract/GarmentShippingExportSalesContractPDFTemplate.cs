@@ -152,10 +152,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyCenter.Phrase = new Phrase("Satuan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            cellBodyCenter.Phrase = new Phrase("Harga Satuan \nRp", normal_font);
+            cellBodyCenter.Phrase = new Phrase("Harga Satuan \nUS$", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            cellBodyCenter.Phrase = new Phrase("Harga Total \nRp", normal_font);
+            cellBodyCenter.Phrase = new Phrase("Harga Total \nUS$", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
             var index = 0;
@@ -192,14 +192,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
 
             double totalPrice = viewModel.items.Sum(a => a.quantity * a.price);
-            double ppn = 0;
-            if (viewModel.isUseVat)
-            {
-                ppn = (totalPrice * viewModel.vat.rate) / 100;
-            }
-            double finalPrice = totalPrice + ppn;
+            //double ppn = 0;
+            //if (viewModel.isUseVat)
+            //{
+            //    ppn = (totalPrice * viewModel.vat.rate) / 100;
+            //}
+            //double finalPrice = totalPrice + ppn;
 
-            cellBodyRightNoBorder.Phrase = new Phrase("Sub Total", normal_font_bold);
+            cellBodyRightNoBorder.Phrase = new Phrase("TOTAL", normal_font_bold);
             cellBodyRightNoBorder.Colspan = 5;
             tableBody.AddCell(cellBodyRightNoBorder);
 
@@ -207,17 +207,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyRight.Colspan = 5;
             tableBody.AddCell(cellBodyRight);
 
-            cellBodyRightNoBorder.Phrase = new Phrase("PPN " + viewModel.vat.rate.ToString() + "%", normal_font);
-            tableBody.AddCell(cellBodyRightNoBorder);
+            //cellBodyRightNoBorder.Phrase = new Phrase("PPN " + viewModel.vat.rate.ToString() + "%", normal_font);
+            //tableBody.AddCell(cellBodyRightNoBorder);
 
-            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);
-            tableBody.AddCell(cellBodyRight);
+            //cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);
+            //tableBody.AddCell(cellBodyRight);
 
-            cellBodyRightNoBorder.Phrase = new Phrase("TOTAL", normal_font);
-            tableBody.AddCell(cellBodyRightNoBorder);
+            //cellBodyRightNoBorder.Phrase = new Phrase("TOTAL", normal_font);
+            //tableBody.AddCell(cellBodyRightNoBorder);
 
-            cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", finalPrice), normal_font);
-            tableBody.AddCell(cellBodyRight);
+            //cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", finalPrice), normal_font);
+            //tableBody.AddCell(cellBodyRight);
 
 
             tableBody.SpacingAfter = 10;
