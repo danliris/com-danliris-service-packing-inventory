@@ -403,7 +403,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 .OrderByDescending(o => o.CreatedUtc).FirstOrDefault(x =>
                                 x.Area == DyeingPrintingArea.GUDANGJADI &&
                                 x.ProductPackingCode.Contains(code) &&
-                                x.CreatedUtc > latestDataOnOut.CreatedUtc
+                                x.ProductPackingCodeRemains.Contains(code)
+                                //x.CreatedUtc >= latestDataOnOut.CreatedUtc
                             );
 
                             if (latestDataOnIn == null)
