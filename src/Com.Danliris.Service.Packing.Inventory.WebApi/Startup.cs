@@ -276,8 +276,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDebiturBalanceRepository, GarmentDebiturBalanceRepository>();
 
             services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
+
             services.AddTransient<IRepository<StockOpnameReportItemModel>, StockOpnameReportItemRepository>(); 
             services.AddTransient<IRepository<StockOpnameReportHeaderModel>, StockOpnameReportHeaderRepository>();
+
+            services.AddTransient<IDyeingPrintingStockOpnameMutationRepository, DyeingPrintingStockOpnameMutationRepository>();
+            services.AddTransient<IDyeingPrintingStockOpnameMutationItemRepository, DyeingPrintingStockOpnameMutationItemRepository>();
+
 
             #endregion
 
@@ -394,7 +399,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentOmzetMonthlyByMarketingService, GarmentOmzetMonthlyByMarketingService>();
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
-     
+
+            services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
+
             #endregion
 
             // Register Provider
