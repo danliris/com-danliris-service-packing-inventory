@@ -36,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string UserAgent = "packing-inventory-service";
         private readonly IDyeingPrintingStockOpnameRepository _stockOpnameRepository;
         private readonly IDyeingPrintingStockOpnameProductionOrderRepository _stockOpnameProductionOrderRepository;
+        private readonly IDyeingPrintingStockOpnameMutationItemRepository _stockOpnameMutationItemsRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
         private readonly IProductPackingService _productPackingService;
         private readonly IIdentityProvider _identityProvider;
@@ -48,6 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             _stockOpnameRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameRepository>();
             _stockOpnameProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            _stockOpnameMutationItemsRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameMutationItemRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _productPackingService = serviceProvider.GetService<IProductPackingService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
@@ -1489,36 +1491,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var stockOpnameQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(entity => entity.ProductPackingCode == itemData);
 
-            var result = stockOpnameQuery.GroupBy(d => new { d.ProductPackingCode }).Select(e => new StockOpnameWarehouseProductionOrderViewModel()
+            var stockOpnameMutationQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(entity => entity.ProductPackingCode == itemData);
+            var resultOpname = stockOpnameQuery.GroupBy(d => new { d.ProductPackingCode }).Select(e => new StockOpnameWarehouseProductionOrderViewModel()
             {
-               
+
+                Balance = e.Sum(s => s.Balance),
+                Color = e.First().Color,
+                Construction = e.First().Construction,
+                Grade = e.First().Grade,
+                Motif = e.First().Motif,
+                PackagingQty = e.Sum(s => s.PackagingQty),
+                PackagingLength = e.First().PackagingLength,
+                PackagingType = e.First().PackagingType,
+                PackagingUnit = e.First().PackagingUnit,
+                ProductionOrder = new ProductionOrder
+                {
+                    Id = e.First().ProductionOrderId,
+                    No = e.First().ProductionOrderNo,
+                    Type = e.First().ProductionOrderType,
+                    OrderQuantity = e.First().ProductionOrderOrderQuantity
+                },
+                ProcessTypeId = e.First().ProcessTypeId,
+                ProcessTypeName = e.First().ProcessTypeName,
+                Unit = e.First().Unit,
+                UomUnit = e.First().UomUnit,
+                ProductSKUId = e.First().ProductSKUId,
+                FabricSKUId = e.First().FabricSKUId,
+                ProductSKUCode = e.First().ProductSKUCode,
+                ProductPackingId = e.First().ProductPackingId,
+                FabricPackingId = e.First().FabricPackingId,
                 ProductPackingCode = e.Key.ProductPackingCode,
                 ProductionOrderNo = e.First().ProductionOrderNo,
-                Balance = e.Sum(s => s.Balance),
-                PackagingQty = e.Sum(s=> s.PackagingQty),
-                PackagingLength = e.First().PackagingLength,
-                Grade = e.First().Grade,
-                UomUnit = e.First().UomUnit,
                 Material = new Material { 
                     Id = e.First().MaterialId,
                     Name = e.First().MaterialName
                 },
-                FabricSKUId = e.First().FabricSKUId,
-                ProductSKUId = e.First().ProductSKUId,
-                ProductSKUCode = e.First().ProductSKUCode,
-                ProductPackingId = e.First().ProductPackingId,
+             
+            }).ToList();
+
+            var resultMutation = stockOpnameMutationQuery.GroupBy(d => new { d.ProductPackingCode }).Select(e => new StockOpnameWarehouseProductionOrderViewModel()
+            {
+
+                //Balance = 0,
+                //Color = "",
+                //Construction = "",
+                //Grade = "",
+                //Motif = "",
+                PackagingQty = e.Sum(s => s.PackagingQty)*-1,
+                //PackagingLength = "",
+                //PackagingType = e.First().PackagingType,
+                //PackagingUnit = e.First().PackagingUnit,
+                //ProductionOrder = new ProductionOrder
+                //{
+                //    Id = e.First().ProductionOrderId,
+                //    No = e.First().ProductionOrderNo,
+                //    Type = e.First().ProductionOrderType,
+                //    OrderQuantity = e.First().ProductionOrderOrderQuantity
+                //},
+                //ProcessTypeId = e.First().ProcessTypeId,
+                //ProcessTypeName = e.First().ProcessTypeName,
+                //Unit = e.First().Unit,
+                //UomUnit = e.First().UomUnit,
+                //ProductSKUId = e.First().ProductSKUId,
+                //FabricSKUId = e.First().FabricSKUId,
+                //ProductSKUCode = e.First().ProductSKUCode,
+                //ProductPackingId = e.First().ProductPackingId,
+                //FabricPackingId = e.First().FabricPackingId,
+                ProductPackingCode = e.Key.ProductPackingCode,
+                //ProductionOrderNo = e.First().ProductionOrderNo,
+                //Material = new Material
+                //{
+                //    Id = e.First().MaterialId,
+                //    Name = e.First().MaterialName
+                //},
+
+            }).ToList();
+            var joinResult = resultOpname.Union(resultMutation);
+
+            var result = joinResult.GroupBy(d => new { d.ProductPackingCode }).Select(e => new StockOpnameWarehouseProductionOrderViewModel()
+            {
+                Balance = e.Sum(s => s.Balance),
                 Color = e.First().Color,
                 Construction = e.First().Construction,
-                ProcessTypeId = e.First().ProcessTypeId,
-                ProcessTypeName = e.First().ProcessTypeName,
+                Grade = e.First().Grade,
+                Motif = e.First().Motif,
+                PackagingQty = e.Sum(s => s.PackagingQty),
+                PackagingLength = e.First().PackagingLength,
                 PackagingType = e.First().PackagingType,
                 PackagingUnit = e.First().PackagingUnit,
+                ProductionOrder = new ProductionOrder
+                {
+                    Id = e.First().ProductionOrder.Id,
+                    No = e.First().ProductionOrder.No,
+                    Type = e.First().ProductionOrder.Type,
+                    OrderQuantity = e.First().ProductionOrder.OrderQuantity
+                },
+                ProcessTypeId = e.First().ProcessTypeId,
+                ProcessTypeName = e.First().ProcessTypeName,
                 Unit = e.First().Unit,
+                UomUnit = e.First().UomUnit,
+                ProductSKUId = e.First().ProductSKUId,
+                FabricSKUId = e.First().FabricSKUId,
+                ProductSKUCode = e.First().ProductSKUCode,
+                ProductPackingId = e.First().ProductPackingId,
                 FabricPackingId = e.First().FabricPackingId,
-                
-
-
-                
+                ProductPackingCode = e.Key.ProductPackingCode,
+                ProductionOrderNo = e.First().ProductionOrderNo,
+                Material = new Material
+                {
+                    Id = e.First().Material.Id,
+                    Name = e.First().Material.Name
+                },
             }).ToList();
 
             return result;
