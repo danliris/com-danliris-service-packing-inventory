@@ -196,6 +196,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingCostStructureModel> GarmentShippingCostStructures { get; set; }
         public DbSet<GarmentShippingCostStructureItemModel> GarmentShippingCostStructureItems { get; set; }
         public DbSet<GarmentShippingCostStructureDetailModel> GarmentShippingCostStructureDetails { get; set; }
+        public DbSet<DyeingPrintingStockOpnameMutationModel> DyeingPrintingStockOpnameMutations { get; set; }
+        public DbSet<DyeingPrintingStockOpnameMutationItemModel> DyeingPrintingStockOpnameMutationItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -302,6 +304,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingAreaOutputProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingAreaSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingStockOpnameModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingStockOpnameProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingStockOpnameMutationModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingStockOpnameMutationItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
