@@ -1526,6 +1526,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = e.First().MaterialId,
                     Name = e.First().MaterialName
                 },
+                Track = new Track { 
+                    Id = e.First().TrackId,
+                    Type = e.First().TrackType,
+                    Name = e.First().TrackName
+                }
              
             }).ToList();
 
@@ -1558,6 +1563,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //ProductPackingId = e.First().ProductPackingId,
                 //FabricPackingId = e.First().FabricPackingId,
                 ProductPackingCode = e.Key.ProductPackingCode,
+                //Track = new Track { 
+                //    Id = 0,
+                //    Name = "",
+                //    Type = "",
+                //}
                 //ProductionOrderNo = e.First().ProductionOrderNo,
                 //Material = new Material
                 //{
@@ -1602,10 +1612,224 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = e.First().Material.Id,
                     Name = e.First().Material.Name
                 },
+                Track = new Track
+                {
+                    Id = e.First().Track.Id,
+                    Type = e.First().Track.Type,
+                    Name = e.First().Track.Name
+                }
             }).ToList();
 
             return result;
 
+
+        }
+
+        private IEnumerable<ReportSOViewModel> GetDataIN(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, string queryType, int offset)
+        {
+            IQueryable<DyeingPrintingStockOpnameProductionOrderModel> stockOpnameItemsQuery;
+
+            if (queryType == "Mutation")
+            {
+                stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+            }
+            else {
+                stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date < dateFrom.Date);
+            }
+            
+
+            if (productionOrderId != 0)
+            {
+                stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.ProductPackingCode.Contains(barcode));
+            }
+
+            if (track != 0)
+            {
+                stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.TrackId == track);
+            }
+
+            var result = stockOpnameItemsQuery.GroupBy( s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/}).Select( d => new ReportSOViewModel()
+            { 
+                ProductionOrderId = d.Key.ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.Key.ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.Key.PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                //TrackId = d.First().TrackId,
+                //TrackName = d.First().TrackName +"-"+ d.First().TrackType,
+                SaldoBegin = 0,
+                InQty = d.Sum( s => s.Balance),
+                OutQty = 0,
+                Total = d.Sum( s=> s.Balance),
+
+
+            });
+
+            return result;
+        }
+
+        private IEnumerable<ReportSOViewModel> GetDataOUT(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, string queryType, int offset)
+        {
+            IQueryable<DyeingPrintingStockOpnameMutationItemModel> stockOpnameMutationItemsQuery;
+
+            if (queryType == "Mutation")
+            {
+                stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+            }
+            else {
+                stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date < dateFrom.Date);
+            }
+            
+
+            if (productionOrderId != 0)
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.ProductPackingCode.Contains(barcode));
+            }
+
+            if (track != 0)
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.TrackId == track);
+            }
+
+            var result = stockOpnameMutationItemsQuery.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel()
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.Key.ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.Key.PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                //TrackId = d.Key.TrackId,
+                //TrackName = d.First().TrackName + " - " + d.First().TrackType,
+                SaldoBegin = 0,
+                InQty = 0,
+                OutQty = d.Sum(s => s.Balance),
+                Total = d.Sum(s => s.Balance) * -1,
+
+
+            });
+
+            return result;
+        }
+        private IEnumerable<ReportSOViewModel> GetDataBegin(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, string queryType, int offset)
+        {
+
+            var dataIN = GetDataIN(dateFrom, dateTo, productionOrderId, barcode, track, queryType, offset);
+            var dataOut = GetDataOUT(dateFrom, dateTo, productionOrderId, barcode, track, queryType, offset);
+
+            var queyJoin = dataIN.Concat(dataOut);
+
+            var result = queyJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel()
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.Key.ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.Key.PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                //TrackId = d.Key.TrackId,
+                //TrackName = d.First().TrackName,
+                SaldoBegin = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty),
+                InQty = 0,
+                OutQty = 0,
+                Total = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty),
+            });
+
+
+            return result;
+        }
+
+
+        public List<ReportSOViewModel> GetReportDataSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset )
+        {
+            var dataIN = GetDataIN(dateFrom, dateTo, productionOrderId, barcode, track, "Mutation", offset);
+            var dataOut = GetDataOUT(dateFrom, dateTo, productionOrderId, barcode, track, "Mutation", offset);
+            var dataBegin = GetDataBegin(dateFrom, dateTo, productionOrderId, barcode, track, "Begin", offset);
+
+            var queryJoin = dataIN.Concat(dataOut).Concat(dataBegin);
+
+            var result = queryJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel() 
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.Key.ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.Key.PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                //TrackId = d.Key.TrackId,
+                //TrackName = d.First().TrackName,
+                SaldoBegin = d.Sum(s => s.SaldoBegin),
+                InQty = d.Sum(s=> s.InQty),
+                OutQty = d.Sum(s => s.OutQty),
+                Total = d.Sum(s => s.Total),
+
+            }).ToList();
+
+            return result;
+        }
+
+        public MemoryStream GenerateExcel (DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset)
+        {
+            var data = GetReportDataSO(dateFrom, dateTo, productionOrderId, barcode, track, offset);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Awal", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Masuk", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
+            
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", 0, 0, 0, 0 );
+            }
+            else
+            {
+                double saldoBegin = 0;
+                double inQty = 0;
+                double outQty = 0;
+                double total = 0;
+                foreach (var item in data)
+                {
+                   // var sldbegin = item.SaldoBegin;
+                    //saldoBegin =+ item.SaldoBegin;
+                    dt.Rows.Add(item.ProductionOrderNo, item.Grade, item.Color, item.PackagingUnit, item.ProductPackingCode,
+                        item.SaldoBegin, item.InQty, item.OutQty, item.Total);
+                    
+                    saldoBegin += item.SaldoBegin;
+                    inQty += item.InQty;
+                    outQty += item.OutQty;
+                    total += item.Total;
+                }
+
+               dt.Rows.Add("", "", "", "", "", saldoBegin, inQty, outQty, total);
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
 
         }
 
