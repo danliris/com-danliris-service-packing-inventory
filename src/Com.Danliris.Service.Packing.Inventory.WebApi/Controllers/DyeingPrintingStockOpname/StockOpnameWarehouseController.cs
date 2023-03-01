@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
+using Com.DanLiris.Service.Purchasing.WebApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -287,6 +288,69 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;
 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("code")]
+        public IActionResult GetBarcode(string itemData)
+        {
+
+            string accept = Request.Headers["Accept"];
+            try
+            {
+
+                var data = _service.getDatabyCode(itemData);
+                //var model = mapper.Map<List<InventoryViewModel>>(data);
+
+                return Ok(new
+                {
+                    //apiVersion = ApiVersion,
+                    data = data,
+                    info = new { count = data.Count(), total = data.Count() },
+
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("report-so")]
+        public IActionResult Get([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] string barcode, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.GetReportDataSO(dateFrom, dateTo, productionOrderId, barcode, track, offset);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("report-so-xls")]
+        public IActionResult GetXls([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] string barcode, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcel(dateFrom, dateTo, productionOrderId, barcode, track, offset);
+                string filename = $"Stock {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
             }
             catch (Exception ex)
             {
