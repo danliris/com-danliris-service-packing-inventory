@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
+        public Track Track { get; set;  }
         public string PackagingType { get; set; }
         public string PackagingUnit { get; set; }
         public decimal PackagingQty { get; set; }
