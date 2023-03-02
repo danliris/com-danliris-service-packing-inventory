@@ -18,10 +18,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             const int MARGIN = 20;
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
             //Font body_bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
 
             Document document = new Document(PageSize.A4, MARGIN, MARGIN, 290, 150);
@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPTable bodyTable = new PdfPTable(8);
             //float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.6f, 0.7f, 1f, 1.3f };
-            float[] bodyTableWidths = new float[] { 1.9f, 1.9f, 1.8f, 1.8f, 0.5f, 0.6f, 1f, 1.1f };
+            float[] bodyTableWidths = new float[] { 1.8f, 1.8f, 1.8f, 1.8f, 0.5f, 0.6f, 1.3f, 1.3f };
             bodyTable.SetWidths(bodyTableWidths);
             bodyTable.WidthPercentage = 100;
 
@@ -652,7 +652,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase(pl.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
+            cellMeasurementDetail.Phrase = new Phrase(pl.Measurements.Sum(m => m.CartonsQuantity) + " CTNS =", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
@@ -770,14 +770,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfContentByte cb = writer.DirectContent;
             cb.BeginText();
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
             BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 7, Font.UNDERLINE);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9, Font.UNDERLINE);
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin - 10, marginTop = document.TopMargin, marginRight = document.RightMargin - 10;
 
-            cb.SetFontAndSize(bf, 8);
+            cb.SetFontAndSize(bf, 9);
 
 
             #region CENTER
@@ -786,13 +786,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var headOfficeY = height - marginTop + 190;
 
 
-            string[] headOffices = {
-                "                                                                                                                                               Ref. No. : FM-00-SP-24-006",
-            };
-            for (int i = 0; i < headOffices.Length; i++)
-            {
-                cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, headOffices[i], headOfficeX, headOfficeY, 0);
-            }
+            //string[] headOffices = {
+            //    "                                                                                                                                                    Ref. No. : FM-00-SP-24-006",
+            //};
+            //for (int i = 0; i < headOffices.Length; i++)
+            //{
+            //    cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, headOffices[i], headOfficeX, headOfficeY, 0);
+            //}
 
             #endregion
 
@@ -817,7 +817,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             PdfPCell cellHeaderContentLeft = new PdfPCell() { Border = Rectangle.NO_BORDER };
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                           Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                             Page  : " + (writer.PageNumber), normal_font));
+            cellHeaderContentLeft.AddElement(new Phrase("Invoice No.  :  " + viewModel.InvoiceNo + "                                                                       Date  :  " + viewModel.InvoiceDate.ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("MMM dd, yyyy.", new System.Globalization.CultureInfo("en-EN")) + "                                                       Page  : " + (writer.PageNumber), normal_font));
             cellHeaderContentLeft.AddElement(new Phrase("\n", normal_font));
             cellHeaderContentLeft.Colspan = 3;
             tabledetailOrders.AddCell(cellHeaderContentLeft);
@@ -829,7 +829,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
             PdfPTable tabledetailOrders2 = new PdfPTable(3);
-            tabledetailOrders2.SetWidths(new float[] { 1.5f, 0.2f, 1.5f });
+            tabledetailOrders2.SetWidths(new float[] { 1.7f, 0.2f, 1.3f });
 
             cellDetailContentLeft.Phrase = new Phrase("CO NO.", normal_font);
             cellDetailContentLeft.Colspan = 1;
@@ -976,14 +976,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region SIGNATURE
             var printY = document.BottomMargin - 100;
-            var signX = document.RightMargin + 500;
-            var signY = printY + 20;
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 500, signY+5, 0);
-            cb.MoveTo(signX - 60, signY - 2);
-            cb.LineTo(signX + 45, signY - 2);
+            var signX = document.RightMargin + 450;
+            var signY = printY + 30;
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "( MRS. ADRIYANA DAMAYANTI )", document.RightMargin + 450, signY+5, 0);
+            cb.MoveTo(signX - 65, signY - 2);
+            cb.LineTo(signX + 65, signY - 2);
             cb.Stroke();
 			
-			cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 15, 0);
+			cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 450, signY - 15, 0);
 
             #endregion
 
