@@ -131,10 +131,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             int SIZES_COUNT = sizesCount ? 20 : 11;
 
             Font header_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
-            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8, Font.UNDERLINE);
-            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
+            Font body_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
+            Font normal_font_underlined = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9, Font.UNDERLINE);
+            Font bold_font = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
 
             Document document = new Document(sizesCount ? PageSize.A4.Rotate() : PageSize.A4, 20, 20, 90, 60);
             MemoryStream stream = new MemoryStream();
@@ -445,7 +445,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region GrandTotal
 
             PdfPTable tableGrandTotal = new PdfPTable(2);
-            tableGrandTotal.SetWidths(new float[] { 18f + SIZES_COUNT * 1f, 3f });
+            tableGrandTotal.SetWidths(new float[] { 17f + SIZES_COUNT * 1f, 4f });
             PdfPCell cellHeaderLine = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER, Colspan = 2, Padding = 0.5f, Phrase = new Phrase("") };
 
             var grandTotalResult = string.Join(" / ", arrayGrandTotal.Select(x => x.Value + " " + x.Key).ToArray());
@@ -565,7 +565,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #region Measurement
 
             PdfPTable tableMeasurement = new PdfPTable(3);
-            tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 12f });
+            tableMeasurement.SetWidths(new float[] { 2f, 0.2f, 30.8f });
             PdfPCell cellMeasurement = new PdfPCell() { Border = Rectangle.NO_BORDER };
 
             cellMeasurement.Phrase = new Phrase("GROSS WEIGHT", normal_font);
@@ -620,7 +620,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             cellMeasurementDetail.Phrase = new Phrase("TOTAL", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
-            cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS .", normal_font);
+            cellMeasurementDetail.Phrase = new Phrase(viewModel.Measurements.Sum(m => m.CartonsQuantity) + " CTNS =", normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
             cellMeasurementDetail.Phrase = new Phrase(string.Format("{0:N2} CBM", totalCbm), normal_font);
             tableMeasurementDetail.AddCell(cellMeasurementDetail);
@@ -746,7 +746,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             float height = writer.PageSize.Height, width = writer.PageSize.Width;
             float marginLeft = document.LeftMargin, marginTop = document.TopMargin, marginRight = document.RightMargin, marginBottom = document.BottomMargin;
-            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 8);
+            Font normal_font = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 9);
             int maxSizesCount = viewModel.Items.Max(i => i.Details.Max(d => d.Sizes.GroupBy(g => g.Size.Id).Count()));
 
             if (maxSizesCount > 11)
@@ -928,7 +928,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             #region INFO
 
-            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 8);
+            cb.SetFontAndSize(BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED), 9);
 
             var infoY = height - marginTop - 70;
 
@@ -970,7 +970,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var signX1 = document.LeftMargin + 20;
             var signY1 = printY1 + 20;
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The shippers accept no responsibility for the arrival of goods at destination or for loss or damage in transit after goods were shipped in good order and condition.", document.LeftMargin, 50, 0);
-            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The  goods  supplied  under  this  invoice  remain  our  property  until  the  invoice  has been credited into  one or our Bank account  mentioned above in full and", document.LeftMargin, 40, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "The goods supplied under this invoice remain our property until the invoice has been credited into one or our Bank account mentioned above in full and", document.LeftMargin, 40, 0);
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "without restriction.", document.LeftMargin, 30, 0);
             cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "______________________________________________________________________________________________________________________________", document.LeftMargin, 20, 0);
 
