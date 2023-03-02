@@ -569,7 +569,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductionOrderNo = s.ProductionOrderNo,
                     QtyOrder = s.ProductionOrderOrderQuantity,
                     DocumentNo = s.DocumentNo,
-                    Quantity = s.PackagingLength
+                    Quantity = s.PackagingLength,
+                    Track = new Track() 
+                    { 
+                        Id = s.TrackId,
+                        Name = s.TrackName,
+                        Type = s.TrackType
+                    }
                 }).ToList()
             };
             //foreach (var item in vm.WarehousesProductionOrders)
