@@ -358,6 +358,59 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("monitoring-so")]
+        public IActionResult GetMonitoring([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.GetMonitoringSO(dateFrom, dateTo, productionOrderId, track, offset);
+                return Ok(new
+                {
+                    //apiVersion = ApiVersion,
+                    data = data,
+                    info = new { count = data.Count(), total = data.Count() },
+
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("monitoring-so-xls")]
+        public IActionResult GetMonitoringXls([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcelMonitoring(dateFrom, dateTo, productionOrderId, track, offset);
+                string filename = "";
+
+                if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
+                {
+                    filename = $"Monitoring Stock Opname .xlsx";
+                }
+                else
+                {
+                    filename = $"Monitoring Stock Opname {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                }
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
 
     }
 }

@@ -24,5 +24,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<StockOpnameWarehouseProductionOrderViewModel> getDatabyCode(string itemData);
         List<ReportSOViewModel> GetReportDataSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset);
         MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset);
+
+        List<ReportSOViewModel> GetMonitoringSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset);
+        MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset);
+
     }
 }
