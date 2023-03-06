@@ -21,6 +21,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double OutQty { get; set; }
         public double Total { get; set; }
 
+        public decimal PackagingQty { get; set; }
+        public double PackingLength { get; set; } 
+
+        public string BonNo { get; set; }
+        public DateTime DateIn { get; set; }
+
         
     }
 }
