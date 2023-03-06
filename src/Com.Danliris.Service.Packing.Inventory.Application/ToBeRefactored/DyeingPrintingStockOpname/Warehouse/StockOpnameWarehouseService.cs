@@ -1839,6 +1839,125 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
+        public List<ReportSOViewModel> GetMonitoringSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset)
+        {
+
+            IQueryable<DyeingPrintingStockOpnameModel> stockOpnameQuery;
+            IQueryable<DyeingPrintingStockOpnameProductionOrderModel> stockOpnameItemsQuery;
+            if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
+            {
+                stockOpnameQuery = _stockOpnameRepository.ReadAll();
+                stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll();
+            }
+            else
+            {
+                stockOpnameQuery = _stockOpnameRepository.ReadAll().Where(s =>
+                                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+                stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(s =>
+                                        s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+            }
+            
+            
+
+
+            if (productionOrderId != 0)
+            {
+                stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            if (track != 0)
+            {
+                stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.TrackId == track);
+            }
+
+            var query = (from a in stockOpnameQuery
+                         join b in stockOpnameItemsQuery on a.Id equals b.DyeingPrintingStockOpnameId
+                          select new ReportSOViewModel()
+                          {
+                              ProductionOrderId = b.ProductionOrderId,
+                              ProductionOrderNo = b.ProductionOrderNo,
+                              ProductPackingCode = b.ProductPackingCode,
+                              ProcessTypeName = b.ProcessTypeName,
+                              PackagingUnit = b.PackagingUnit,
+                              Grade = b.Grade,
+                              Color = b.Color,
+                              TrackId = b.TrackId,
+                              TrackName = b.TrackType +" - "+ b.TrackName,
+                              BonNo = a.BonNo,
+                              DateIn = a.CreatedUtc.AddHours(7),
+                              PackagingQty = b.PackagingQty,
+                              PackingLength = b.PackagingLength,
+                              InQty = (double)b.PackagingQty * b.PackagingLength
+                          }).ToList();
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.TrackId }).Select( d => new ReportSOViewModel() 
+            {
+                ProductionOrderId = d.First().ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.First().ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.First().PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                //TrackId = d.First().TrackId,
+                //TrackName = d.First().TrackName +"-"+ d.First().TrackType,
+                TrackName = d.First().TrackName,
+                BonNo = d.First().BonNo,
+                DateIn = d.First().DateIn,
+                PackagingQty = d.Sum( a => a.PackagingQty),
+                PackingLength = d.First().PackingLength,
+                InQty = d.Sum( a => a.InQty)
+            }).OrderBy(o => o.TrackId).ThenBy( o => o.ProductionOrderId).ToList();
+
+            return result;
+
+        }
+        public MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset)
+        {
+            var data = GetMonitoringSO(dateFrom, dateTo, productionOrderId, track, offset);
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
+            
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jalur/Rak", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jumlah Packing", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang/Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
+
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", 0, "", 0);
+            }
+            else
+            {
+                decimal packagingQty = 0;
+                double total = 0;
+                
+                foreach (var item in data)
+                {
+                    var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.AddHours(offset).Date.ToString("d");
+                    // var sldbegin = item.SaldoBegin;
+                    //saldoBegin =+ item.SaldoBegin;
+                    dt.Rows.Add(item.BonNo, item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.PackagingUnit,
+                        item.Grade, item.Color, item.TrackName, item.PackagingQty, item.PackingLength, item.InQty);
+
+                    packagingQty += item.PackagingQty;
+                    total += item.InQty;
+                }
+
+                dt.Rows.Add("", "", "", "", "", "", "", "", packagingQty, "", total);
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
+
+        }
+
 
         public class BarcodeInfoViewModel
         {
