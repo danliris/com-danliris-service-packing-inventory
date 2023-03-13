@@ -408,6 +408,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentExportCoverLetterService, GarmentExportCoverLetterService>();
             services.AddTransient<Application.ToBeRefactored.GarmentShipping.SalesExport.IGarmentShippingExportSalesDOService, Application.ToBeRefactored.GarmentShipping.SalesExport.GarmentShippingExportSalesDOService>();
             services.AddTransient<IGarmentShippingExportSalesNoteService, GarmentShippingExportSalesNoteService>();
+            services.AddTransient<IGarmentBuyerReceivablesReportService, GarmentBuyerReceivablesReportService>();
             #endregion
 
             // Register Provider
