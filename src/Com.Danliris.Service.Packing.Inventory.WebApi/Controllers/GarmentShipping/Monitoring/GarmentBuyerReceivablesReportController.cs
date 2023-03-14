@@ -27,6 +27,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             _identityProvider = identityProvider;
         }
 
+        protected void VerifyUser()
+        {
+            _identityProvider.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
+            _identityProvider.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
+            _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+        }
+
         [HttpGet]
         public IActionResult GetReport(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
         {
@@ -34,6 +41,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             string accept = Request.Headers["Accept"];
             try
             {
+                VerifyUser();
+
                 var data = _service.GetReportData(buyerAgent, invoiceNo, dateFrom, dateTo, offset);
 
                 return Ok(new
@@ -62,6 +71,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         {
             try
             {
+                VerifyUser();
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);

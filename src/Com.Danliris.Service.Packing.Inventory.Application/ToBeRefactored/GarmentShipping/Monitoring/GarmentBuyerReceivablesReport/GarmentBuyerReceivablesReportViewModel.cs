@@ -8,8 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         public string InvoiceNo { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
-        public string BuyerAgentName { get; set; }
-        public string BuyerBrandName { get; set; }
+        public string BuyerAgentName { get; set; }       
         public decimal ToBePaid { get; set; }
         public DateTimeOffset SailingDate { get; set; }
         public double PaymentDue { get; set; }
@@ -23,18 +22,5 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string BankDetail { get; set; }
         public string ReceiptNo { get; set; }
         public double OverDue { get; set; }
-    }
-
-    public class GarmentBuyerReceivablesReportTempViewModel
-    {
-        public int InvoiceId { get; set; }
-        public string InvoiceNo { get; set; }
-        public DateTimeOffset InvoiceDate { get; set; }
-        public string BuyerAgentName { get; set; }
-        public string BuyerBrandName { get; set; }
-        public decimal ToBePaid { get; set; }
-        public DateTimeOffset SailingDate { get; set; }
-        public double PaymentDue { get; set; }
-        public DateTimeOffset DueDate { get; set; }
     }
 }

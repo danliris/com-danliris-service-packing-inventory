@@ -4,6 +4,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
 using Microsoft.Extensions.DependencyInjection;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,16 +16,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentBuyerReceivablesReportService : IGarmentBuyerReceivablesReportService
     {
-        private readonly IGarmentShippingInvoiceRepository repository;
-        private readonly IGarmentShippingInvoiceItemRepository itemrepository;
+        private readonly IGarmentShippingInvoiceRepository repository;     
         private readonly IGarmentPackingListRepository plrepository;
         private readonly IGarmentShippingCreditAdviceRepository carepository;      
         private readonly IIdentityProvider _identityProvider;
 
         public GarmentBuyerReceivablesReportService(IServiceProvider serviceProvider)
         {
-            repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
-            itemrepository = serviceProvider.GetService<IGarmentShippingInvoiceItemRepository>();
+            repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();           
             plrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
             carepository = serviceProvider.GetService<IGarmentShippingCreditAdviceRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();            
@@ -32,8 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public IQueryable<GarmentBuyerReceivablesReportViewModel> GetData(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var queryInv = repository.ReadAll();
-            var queryItm = itemrepository.ReadAll();
+            var queryInv = repository.ReadAll();         
             var queryPL = plrepository.ReadAll();
             var queryCA = carepository.ReadAll();
 
@@ -58,34 +56,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var newQ = (from a in queryInv
                         join c in queryPL on a.PackingListId equals c.Id
-                        join b in queryItm on a.Id equals b.GarmentShippingInvoiceId
-                        where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false 
-                
-                        select new GarmentBuyerReceivablesReportTempViewModel
-                        {
-                            InvoiceId = a.Id,
-                            InvoiceNo = a.InvoiceNo,
-                            InvoiceDate = a.InvoiceDate,
-                            BuyerAgentName = a.BuyerAgentName,
-                            BuyerBrandName = b.BuyerBrandName,
-                            ToBePaid = a.AmountToBePaid,
-                            SailingDate = a.SailingDate,
-                            PaymentDue = a.PaymentDue,
-                            DueDate = a.SailingDate.AddDays(a.PaymentDue),
-                        }).Distinct();
-            
-            var newQuery = (from a in newQ
-                            join d in queryCA on a.InvoiceId equals d.InvoiceId into dd
-                            from CA in dd.DefaultIfEmpty()
-                            where CA.IsDeleted == false 
-
+                        join d in queryCA on a.Id equals d.InvoiceId into dd
+                        from CA in dd.DefaultIfEmpty()
+                        where a.IsDeleted == false && c.IsDeleted == false && CA.IsDeleted == false
+    
                         select new GarmentBuyerReceivablesReportViewModel
                         {
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = a.InvoiceDate,
-                            BuyerAgentName = a.BuyerAgentName,
-                            BuyerBrandName = a.BuyerBrandName,
-                            ToBePaid = a.ToBePaid,
+                            BuyerAgentName = a.BuyerAgentName,                            
+                            ToBePaid = a.AmountToBePaid,
                             SailingDate = a.SailingDate,
                             PaymentDue = a.PaymentDue,
                             DueDate = a.SailingDate.AddDays(a.PaymentDue),
@@ -94,12 +74,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             BankCharges = CA == null ? 0 : CA.BankCharges,
                             OtherCharges = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.OtherCharge : (CA.BankComission + CA.DiscrepancyFee + CA.CreditInterest),
                             ReceiptAmount = CA == null ? 0 : CA.AmountPaid - (CA.BankCharges + CA.OtherCharge),
-                            OutStandingAmount = CA == null ? Convert.ToDouble(a.ToBePaid) : CA.BalanceAmount,
+                            OutStandingAmount = CA == null ? Convert.ToDouble(a.AmountToBePaid) : CA.BalanceAmount,
                             BankDetail = CA == null ? "-" : CA.BankAccountName,
                             ReceiptNo = CA == null ? "-" : CA.ReceiptNo,
                             OverDue = CA == null ? 0 : (CA.PaymentDate.ToOffset(TimeSpan.FromHours(_identityProvider.TimezoneOffset)).Date - a.SailingDate.AddDays(a.PaymentDue).ToOffset(TimeSpan.FromHours(_identityProvider.TimezoneOffset)).Date).Days,
                         });
-            return newQuery;
+            return newQ;
         }
 
         public List<GarmentBuyerReceivablesReportViewModel> GetReportData(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
@@ -111,14 +91,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public MemoryStream GenerateExcel(string buyerAgent, string invoiceNo, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
+            DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
+            DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
             var Query = GetData(buyerAgent, invoiceNo, dateFrom, dateTo, offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO INVOICE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TGL INVOICE", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "BUYER BRAND", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });            
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT TO BE PAID (US$)", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "ETD DATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TEMPO", DataType = typeof(string) });
@@ -133,8 +114,44 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "RECEIPT NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "OVERDUE", DataType = typeof(string) });
 
+            ExcelPackage package = new ExcelPackage();
+
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+               {
+                     result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                     bool styling = true;
+
+                    foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
+                    {
+                        var sheet = package.Workbook.Worksheets.Add(item.Value);
+
+                    #region KopTable
+                    sheet.Cells[$"A1:Q1"].Value = "MONITORING SALDO PIUTANG BUYER";
+                    sheet.Cells[$"A1:Q1"].Merge = true;
+                    sheet.Cells[$"A1:Q1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A1:Q1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A1:Q1"].Style.Font.Bold = true;
+                    sheet.Cells[$"A3:Q3"].Value = string.Format("Periode Tanggal : {0} s/d {1}", DateFrom.ToString("dd-MM-yyyy", new CultureInfo("id-ID")), DateTo.ToString("dd-MM-yyyy", new CultureInfo("id-ID")));
+                    sheet.Cells[$"A3:Q3"].Merge = true;
+                    sheet.Cells[$"A3:Q3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A3:Q3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A3:Q3"].Style.Font.Bold = true;
+                    sheet.Cells[$"A4:Q4"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().BuyerAgentName));
+                    sheet.Cells[$"A4:Q4"].Merge = true;
+                    sheet.Cells[$"A4:Q4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A4:Q4"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A4:Q4"].Style.Font.Bold = true;
+                    sheet.Cells[$"A5:Q5"].Value = string.Format("Invoice No : {0}", string.IsNullOrWhiteSpace(invoiceNo) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().InvoiceNo));
+                    sheet.Cells[$"A5:Q5"].Merge = true;
+                    sheet.Cells[$"A5:Q5"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A5:Q5"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A5:Q5"].Style.Font.Bold = true;
+                    #endregion
+                    sheet.Cells["A7"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
+
+                    //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+                }
+            }
             else
             {
                 int index = 0;
@@ -154,11 +171,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string RcptAmt = string.Format("{0:N2}", d.ReceiptAmount);
                     string OutStdg = string.Format("{0:N2}", d.OutStandingAmount);
 
-                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, d.BuyerBrandName, TBPaid, SailDate, d.PaymentDue, JTDate, PayDate, AmtPaid, BCharges, OCharges, RcptAmt, OutStdg, d.BankDetail, d.ReceiptNo, d.OverDue);
+                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, TBPaid, SailDate, d.PaymentDue, JTDate, PayDate, AmtPaid, BCharges, OCharges, RcptAmt, OutStdg, d.BankDetail, d.ReceiptNo, d.OverDue);
+                }
+
+                bool styling = true;
+
+                foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
+                {
+                    var sheet = package.Workbook.Worksheets.Add(item.Value);
+
+                    #region KopTable
+                    sheet.Cells[$"A1:Q1"].Value = "MONITORING SALDO PIUTANG BUYER";
+                    sheet.Cells[$"A1:Q1"].Merge = true;
+                    sheet.Cells[$"A1:Q1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A1:Q1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A1:Q1"].Style.Font.Bold = true;
+                    sheet.Cells[$"A3:Q3"].Value = string.Format("Periode Tanggal : {0} s/d {1}", DateFrom.ToString("dd-MM-yyyy", new CultureInfo("id-ID")), DateTo.ToString("dd-MM-yyyy", new CultureInfo("id-ID")));
+                    sheet.Cells[$"A3:Q3"].Merge = true;
+                    sheet.Cells[$"A3:Q3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A3:Q3"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A3:Q3"].Style.Font.Bold = true;
+                    sheet.Cells[$"A4:Q4"].Value = string.Format("Buyer : {0}", string.IsNullOrWhiteSpace(buyerAgent) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().BuyerAgentName));
+                    sheet.Cells[$"A4:Q4"].Merge = true;
+                    sheet.Cells[$"A4:Q4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A4:Q4"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A4:Q4"].Style.Font.Bold = true;
+                    sheet.Cells[$"A5:Q5"].Value = string.Format("Invoice No : {0}", string.IsNullOrWhiteSpace(invoiceNo) ? "ALL" : (Query.Count() == 0 ? "-" : Query.FirstOrDefault().InvoiceNo));
+                    sheet.Cells[$"A5:Q5"].Merge = true;
+                    sheet.Cells[$"A5:Q5"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    sheet.Cells[$"A5:Q5"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                    sheet.Cells[$"A5:Q5"].Style.Font.Bold = true;
+                    #endregion
+                    sheet.Cells["A7"].LoadFromDataTable(item.Key, true, (styling == true) ? OfficeOpenXml.Table.TableStyles.Light16 : OfficeOpenXml.Table.TableStyles.None);
+
+                    //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                 }
             }
 
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+            return stream;
+
+            //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
     }
 }

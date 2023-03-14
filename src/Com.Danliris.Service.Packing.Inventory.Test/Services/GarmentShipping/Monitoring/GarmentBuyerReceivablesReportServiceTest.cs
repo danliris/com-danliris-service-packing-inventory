@@ -17,14 +17,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 {
     public class GarmentBuyerReceivablesReportServiceServiceTest
     {
-        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository, IGarmentShippingInvoiceItemRepository itemrepository, IGarmentPackingListRepository plrepository, IGarmentShippingCreditAdviceRepository carepository)
+        public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingInvoiceRepository repository, IGarmentPackingListRepository plrepository, IGarmentShippingCreditAdviceRepository carepository)
         {
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repository);
-
-            spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceItemRepository)))
-                .Returns(itemrepository);
 
             spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
                .Returns(plrepository);
@@ -46,24 +43,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GetReportData_Success()
         {
-            var items = new List<GarmentShippingInvoiceItemModel>
-                {
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 12, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
-                         {
-                           GarmentShippingInvoiceId = 1
-                         },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 21, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
-                            {
-                           GarmentShippingInvoiceId = 1
-                         },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 31, 2, "", "", "", "",  "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
-                              {
-                           GarmentShippingInvoiceId = 1
-                         },
-                };
-
             var model = new GarmentShippingInvoiceModel(1, "DL/229999", DateTimeOffset.Now, "", "", 1, "AGENT1", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", items, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
+                                                        "", DateTimeOffset.Now, "", "", null, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
                 Id = 1
             };
@@ -80,10 +61,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
 
-            var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
-            repoMock3.Setup(s => s.ReadAll())
-                .Returns(items.AsQueryable());
-
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
@@ -92,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock2.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingCreditAdviceModel>() { model2 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock3.Object, repoMock1.Object, repoMock2.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
 
             var result = service.GetReportData(model.BuyerAgentCode, model.InvoiceNo, DateTime.MinValue, DateTime.MaxValue, 0);
 
@@ -102,25 +79,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Success()
         {
-
-            var items = new List<GarmentShippingInvoiceItemModel>
-                {
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 12, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 1, 1)
-                         {
-                           GarmentShippingInvoiceId = 1
-                         },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 21, 1, "", "", "", "", "comodesc", "comodesc", "comodesc", 2, "SETS", 1, 1, 1, "USD", 1, "C10", 1, 1)
-                            {
-                           GarmentShippingInvoiceId = 1
-                         },
-                     new GarmentShippingInvoiceItemModel("2120001", "", 1, "BRAND1", 31, 2, "", "", "", "",  "comodesc", "comodesc", "comodesc", 1, "PCS", 1, 1, 1, "USD", 1, "C10", 0, 1)
-                              {
-                           GarmentShippingInvoiceId = 1
-                         },
-                };
-
             var model = new GarmentShippingInvoiceModel(1, "DL/229999", DateTimeOffset.Now, "", "", 1, "AGENT1", "", "", "", "", 1, "", "", DateTimeOffset.Now, "", 1, "", 1, "", 1, "", 1, "", DateTimeOffset.Now,
-                                                        "", DateTimeOffset.Now, "", "", items, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
+                                                        "", DateTimeOffset.Now, "", "", null, 1, 1, "", "", "", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 1, "", "", null)
             {
                 Id = 1
             };
@@ -137,10 +97,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>() { model }.AsQueryable());
 
-            var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
-            repoMock3.Setup(s => s.ReadAll())
-                .Returns(items.AsQueryable());
-
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
@@ -149,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock2.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingCreditAdviceModel>() { model2 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock3.Object, repoMock1.Object, repoMock2.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
 
             var result = service.GenerateExcel(model.BuyerAgentCode, model.InvoiceNo, DateTime.MinValue, DateTime.MaxValue, 7);
 
@@ -164,10 +120,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingInvoiceModel>().AsQueryable());
 
-            var repoMock3 = new Mock<IGarmentShippingInvoiceItemRepository>();
-            repoMock3.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInvoiceItemModel>().AsQueryable());
-
             var repoMock1 = new Mock<IGarmentPackingListRepository>();
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>().AsQueryable());
@@ -176,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock2.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingCreditAdviceModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock3.Object, repoMock1.Object, repoMock2.Object).Object);
+            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object, repoMock2.Object).Object);
 
             var result = service.GenerateExcel(null, null, null, null, 7);
 
