@@ -37,6 +37,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             return spMock;
         }
 
+        public Mock<IServiceProvider> GetServiceProvider1(IDyeingPrintingStockOpnameRepository stockOpnameRepo, IDyeingPrintingStockOpnameProductionOrderRepository stockOpnameProductionOrderRepo, IDyeingPrintingStockOpnameMutationRepository stockOpnameMutationRepo, IDyeingPrintingStockOpnameMutationItemRepository stockOpnameMutationItemRepo)
+        {
+            var spMock = new Mock<IServiceProvider>();
+            spMock
+                .Setup(s => s.GetService(typeof(IDyeingPrintingStockOpnameRepository)))
+                .Returns(stockOpnameRepo);
+
+            spMock
+                .Setup(s => s.GetService(typeof(IDyeingPrintingStockOpnameProductionOrderRepository)))
+                .Returns(stockOpnameProductionOrderRepo);
+
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingStockOpnameMutationRepository)))
+                .Returns(stockOpnameMutationRepo);
+
+            spMock.Setup(s => s.GetService(typeof(IDyeingPrintingStockOpnameMutationItemRepository)))
+                .Returns(stockOpnameMutationItemRepo);
+
+            return spMock;
+
+
+        }
+
         private StockOpnameWarehouseViewModel viewModel
         {
             get
@@ -133,7 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
         {
             get
             {
-                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", false, null,  1, "TrackType", "TrackName");
+                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", false, null,  1, "TrackType", "TrackName", "TrackBox");
 
                 var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
                 stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
@@ -146,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
         {
             get
             {
-                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", true, "productPackingCode", 1, "TrackType", "TrackName");
+                var stockOpnameProductionOrder = new DyeingPrintingStockOpnameProductionOrderModel(1, 1, "buyer", "color", "construction", "documentNo", "A", 1, "MaterialConstructionName", 1, "MaterialName", "MaterialWitdh", "Motif", "PackingInstruction", 1, 1, "PackagingType", "PackagingUnit", 1, "ProductionorederName", "productionOrderType", 1, 1, "ProcessTypeName", 1, "yarnMaterialName", "Remark", "Status", "Unit", "UomUnit", true, "productPackingCode", 1, "TrackType", "TrackName", "TrackBox");
 
                 var stockOpnameProductionOrders = new List<DyeingPrintingStockOpnameProductionOrderModel>();
                 stockOpnameProductionOrders.Add(stockOpnameProductionOrder);
@@ -511,6 +533,59 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
 
             var result = service.GenerateExcelMonitoringScan(1, "productPackingCode", "documentNo", "A", "dev");
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Should_Success_GetMonitoringSO()
+        {
+            //Arrange
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
+
+            var vm = model2.DyeingPrintingStockOpnameProductionOrders;
+
+            vm.FirstOrDefault().CreatedBy = "dev2";
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(vm.AsQueryable());
+
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            //Act
+            var result = service.GetMonitoringSO(DateTimeOffset.MinValue, DateTimeOffset.Now,1,1,7);
+
+            //Assert
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Empty_GenerateExcelMonitoringSO()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
+
+            var vm = model2.DyeingPrintingStockOpnameProductionOrders;
+
+            vm.FirstOrDefault().CreatedBy = "dev2";
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(vm.AsQueryable());
+
+            var service = GetService(GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object).Object);
+
+            var result = service.GenerateExcelMonitoring(DateTimeOffset.MinValue, DateTimeOffset.Now, 1, 1, 7);
 
             Assert.NotNull(result);
         }
