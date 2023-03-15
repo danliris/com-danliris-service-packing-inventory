@@ -139,7 +139,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 null,
                                                                 s.TrackId,
                                                                 s.TrackType,
-                                                                s.TrackName
+                                                                s.TrackName,
+                                                                s.TrackBox
+
                                                                 )).ToList(), false);
 
 
@@ -224,7 +226,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 null,
                                                                 item.TrackId,
                                                                 item.TrackType,
-                                                                item.TrackName
+                                                                item.TrackName,
+                                                                item.TrackBox
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -400,7 +403,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 null,
                 s.TrackId,
                 s.TrackType,
-                s.TrackName)
+                s.TrackName,
+                s.TrackBox )
                 {
                     Id = s.Id
                 }).ToList(), false);
@@ -574,7 +578,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     { 
                         Id = s.TrackId,
                         Name = s.TrackName,
-                        Type = s.TrackType
+                        Type = s.TrackType,
+                        Box = s.TrackBox
                     }
                 }).ToList()
             };
@@ -1535,7 +1540,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Track = new Track { 
                     Id = e.First().TrackId,
                     Type = e.First().TrackType,
-                    Name = e.First().TrackName
+                    Name = e.First().TrackName,
+                    Box = e.First().TrackBox
                 }
              
             }).ToList();
@@ -1622,7 +1628,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     Id = e.First().Track.Id,
                     Type = e.First().Track.Type,
-                    Name = e.First().Track.Name
+                    Name = e.First().Track.Name,
+                    Box = e.First().Track.Box
                 }
             }).ToList();
 

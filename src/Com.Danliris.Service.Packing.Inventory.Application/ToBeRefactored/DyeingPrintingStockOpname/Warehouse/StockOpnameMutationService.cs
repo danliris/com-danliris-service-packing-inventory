@@ -117,6 +117,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                             s.Track.Id,
                                                                             s.Track.Type,
                                                                             s.Track.Name,
+                                                                            s.Track.Box,
                                                                             s.ProductSKUId,
                                                                             s.FabricSKUId,
                                                                             s.ProductSKUCode,
@@ -156,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                             item.Track.Id,
                                                                             item.Track.Type,
                                                                             item.Track.Name,
+                                                                            item.Track.Box,
                                                                             item.ProductSKUId,
                                                                             item.FabricSKUId,
                                                                             item.ProductSKUCode,
@@ -291,7 +293,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     { 
                         Id = s.TrackId,
                         Name = s.TrackName,
-                        Type = s.TrackType
+                        Type = s.TrackType,
+                        Box = s.TrackBox
                     },
                     ProductSKUId = s.ProductSKUId,
                     FabricSKUId = s.FabricSKUId,
@@ -351,7 +354,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              Grade = b.Grade,
                              Color = b.Color,
                              TrackId = b.TrackId,
-                             TrackName = b.TrackType + " - " + b.TrackName,
+                             TrackName = b.TrackType + " - " + b.TrackName + " - " + b.TrackBox,
                              BonNo = a.BonNo,
                              DateIn = a.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
