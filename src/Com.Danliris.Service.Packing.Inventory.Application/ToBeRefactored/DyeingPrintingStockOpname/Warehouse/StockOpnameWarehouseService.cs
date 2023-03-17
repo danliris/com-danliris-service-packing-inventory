@@ -1679,6 +1679,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
+                BuyerName = d.First().Buyer,
+                
                 //TrackId = d.First().TrackId,
                 //TrackName = d.First().TrackName +"-"+ d.First().TrackType,
                 SaldoBegin = 0,
@@ -1733,6 +1735,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
+                
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackName + " - " + d.First().TrackType,
                 SaldoBegin = 0,
@@ -1764,6 +1767,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
+                BuyerName = d.First().BuyerName,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackName,
                 SaldoBegin = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty),
@@ -1796,6 +1800,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
+                BuyerName = d.First().BuyerName,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackName,
                 SaldoBegin = d.Sum(s => s.SaldoBegin),
@@ -1814,6 +1819,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
 
             dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
@@ -1829,7 +1835,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", 0, 0, 0, 0 );
+                dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0 );
             }
             else
             {
@@ -1841,7 +1847,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                    // var sldbegin = item.SaldoBegin;
                     //saldoBegin =+ item.SaldoBegin;
-                    dt.Rows.Add(item.ProductionOrderNo, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingUnit, item.ProductPackingCode,
+                    dt.Rows.Add(item.ProductionOrderNo, item.BuyerName, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingUnit, item.ProductPackingCode,
                         item.SaldoBegin, item.InQty, item.OutQty, item.Total);
                     
                     saldoBegin += item.SaldoBegin;
@@ -1850,7 +1856,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     total += item.Total;
                 }
 
-               dt.Rows.Add("", "", "", "", "", "", "", saldoBegin, inQty, outQty, total);
+               dt.Rows.Add("", "", "", "", "", "", "", "", saldoBegin, inQty, outQty, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
@@ -1864,13 +1870,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             IQueryable<DyeingPrintingStockOpnameProductionOrderModel> stockOpnameItemsQuery;
             if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
             {
-                stockOpnameQuery = _stockOpnameRepository.ReadAll();
+                //stockOpnameQuery = _stockOpnameRepository.ReadAll();
                 stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll();
             }
             else
             {
-                stockOpnameQuery = _stockOpnameRepository.ReadAll().Where(s =>
-                                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+                //stockOpnameQuery = _stockOpnameRepository.ReadAll().Where(s =>
+                //                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
                 stockOpnameItemsQuery = _stockOpnameProductionOrderRepository.ReadAll().Where(s =>
                                         s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
             }

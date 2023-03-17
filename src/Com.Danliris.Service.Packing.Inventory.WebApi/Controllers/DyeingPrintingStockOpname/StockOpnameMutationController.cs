@@ -146,11 +146,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
                 if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
                 {
-                    filename = $"Monitoring Stock Opname .xlsx";
+                    filename = $"Monitoring Stock Opname Keluar.xlsx";
                 }
                 else
                 {
-                    filename = $"Monitoring Stock Opname {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                    filename = $"Monitoring Stock Opname Keluar {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
                 }
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
