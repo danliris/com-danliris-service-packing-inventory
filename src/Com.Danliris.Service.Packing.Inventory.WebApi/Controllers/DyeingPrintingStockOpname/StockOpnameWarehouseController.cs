@@ -347,7 +347,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
                 var Result = _service.GenerateExcel(dateFrom, dateTo, productionOrderId, barcode, track, offset);
-                string filename = $"Stock {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                string filename = $"Laporan Stock Opname {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;
@@ -395,11 +395,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
                 if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
                 {
-                    filename = $"Monitoring Stock Opname .xlsx";
+                    filename = $"Monitoring Stock Opname Masuk .xlsx";
                 }
                 else
                 {
-                    filename = $"Monitoring Stock Opname {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                    filename = $"Monitoring Stock Opname Masuk {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
                 }
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
