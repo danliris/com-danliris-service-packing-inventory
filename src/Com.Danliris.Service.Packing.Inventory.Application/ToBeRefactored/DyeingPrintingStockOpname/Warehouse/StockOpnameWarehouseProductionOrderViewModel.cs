@@ -74,5 +74,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int TrackId { get; set; }
         public string TrackType { get; set; }
         public string TrackName { get; set; }
+        public string TrackBox { get; set; }
     }
 }
