@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public decimal PackagingQty { get; set; }
         public double PackingLength { get; set; } 
-
+        public string BuyerName { get; set; }
         public string BonNo { get; set; }
         public DateTime DateIn { get; set; }
         public string Construction { get; set; }

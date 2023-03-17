@@ -318,13 +318,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             IQueryable<DyeingPrintingStockOpnameMutationItemModel> stockOpnameMutationItemsQuery;
             if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
             {
-                stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll();
+                //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll();
                 stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll();
             }
             else
             {
-                stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll().Where(s =>
-                                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+                //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll().Where(s =>
+                //                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
                 stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
                                         s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
             }
