@@ -51,7 +51,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             queryInv = queryInv.Where(w => w.SailingDate.AddHours(offset).Date >= DateFrom.Date && w.SailingDate.AddHours(offset).Date <= DateTo.Date);
             
             queryPL = queryPL.Where(w => w.Omzet == true);
-            
+            queryPL = queryPL.Where(w => w.OtherCommodity != "NEGO23");
+
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
             var newQ = (from a in queryInv
