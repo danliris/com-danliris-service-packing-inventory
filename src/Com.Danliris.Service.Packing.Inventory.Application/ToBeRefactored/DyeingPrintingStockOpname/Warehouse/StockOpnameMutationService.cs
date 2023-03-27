@@ -62,6 +62,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int result = 0;
             if (viewModel.Type == "STOCK OPNAME")
             {
+
+                //var data = _stockOpnameMutationRepository.GetDbSet().AsNoTracking();
                 model = _stockOpnameMutationRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                             s.Date.AddHours(7).ToString("dd/MM/YYYY").Equals(date.AddHours(7).ToString("dd/MM/YYYY")) &&
                                                                                             s.Type == DyeingPrintingArea.SO
