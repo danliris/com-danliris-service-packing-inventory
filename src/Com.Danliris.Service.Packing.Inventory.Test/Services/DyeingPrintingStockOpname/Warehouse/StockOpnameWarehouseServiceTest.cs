@@ -164,6 +164,51 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             }
         }
+
+        private DyeingPrintingStockOpnameMutationModel modelMutation
+        {
+            get
+            {
+                var stockOpnameMutationItem = new DyeingPrintingStockOpnameMutationItemModel(
+                    1,
+                    "color",
+                    "construction",
+                    "grade",
+                    "motif",
+                    1,
+                    1,
+                    "packagingType",
+                    "packagingUnit",
+                    1,
+                    "productionOrderNo",
+                    "productionOrderType",
+                    1,
+                    1,
+                    "processType",
+                    "remark",
+                    "unit",
+                    "uomUnit",
+                    1,
+                    "trackType",
+                    "trackName",
+                    "trackBox",
+                    1,
+                    1,
+                    "productSKUCode",
+                    1,
+                    1,
+                    "productPackingCode",
+                    "typeOut"
+
+                    );
+
+                var stockOpnameMutationItems = new List<DyeingPrintingStockOpnameMutationItemModel>();
+                stockOpnameMutationItems.Add(stockOpnameMutationItem);
+
+                return new DyeingPrintingStockOpnameMutationModel(DyeingPrintingArea.GUDANGJADI, "BON_NO", DateTimeOffset.Now, DyeingPrintingArea.STOCK_OPNAME, stockOpnameMutationItems);
+
+            }
+        }
         private DyeingPrintingStockOpnameModel model2
         {
             get
@@ -195,13 +240,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
             var fabricPackingSKUServiceMock = new Mock<IFabricPackingSKUService>();
 
-            fabricPackingSKUServiceMock
-                .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
-                .Returns(new FabricSKUIdCodeDto());
+            //fabricPackingSKUServiceMock
+            //    .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
+            //    .Returns(new FabricSKUIdCodeDto());
 
-            fabricPackingSKUServiceMock
-                .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
-                .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+            fabricPackingSKUServiceMock.Setup(s => s.AutoCreateSKUSO(It.IsAny<FabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+
+            //fabricPackingSKUServiceMock
+            //    .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
+            //    .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+
+            fabricPackingSKUServiceMock.Setup(s => s.AutoCreatePackingSO(It.IsAny<FabricPackingAutoCreateFormDto>()))
+                .Returns(new FabricPackingIdCodeDto()
+                {
+                    FabricPackingId = 1,
+                    ProductPackingCode = "c",
+                    ProductPackingCodes = new List<string>() { "c" },
+                    ProductPackingId = 1,
+                   
+                });
 
             stockOpnameRepo
                 .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameModel>()))
@@ -243,25 +307,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
             var fabricPackingSKUServiceMock = new Mock<IFabricPackingSKUService>();
 
-            fabricPackingSKUServiceMock
-                .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
-                .Returns(new FabricSKUIdCodeDto());
+            //fabricPackingSKUServiceMock
+            //    .Setup(fabricService => fabricService.AutoCreateSKU(It.IsAny<FabricSKUAutoCreateFormDto>()))
+            //    .Returns(new FabricSKUIdCodeDto());
 
-            fabricPackingSKUServiceMock
-                .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
-                .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+            //fabricPackingSKUServiceMock
+            //    .Setup(fabricService => fabricService.AutoCreatePacking(It.IsAny<FabricPackingAutoCreateFormDto>()))
+            //    .Returns(new FabricPackingIdCodeDto() { ProductPackingCodes = new List<string>() });
+
+            fabricPackingSKUServiceMock.Setup(s => s.AutoCreateSKUSO(It.IsAny<FabricSKUAutoCreateFormDto>()))
+                .Returns(new FabricSKUIdCodeDto()
+                {
+                    FabricSKUId = 1,
+                    ProductSKUCode = "c",
+                    ProductSKUId = 1
+                });
+
+
+      
+            fabricPackingSKUServiceMock.Setup(s => s.AutoCreatePackingSO(It.IsAny<FabricPackingAutoCreateFormDto>()))
+                .Returns(new FabricPackingIdCodeDto()
+                {
+                    FabricPackingId = 1,
+                    ProductPackingCode = "c",
+                    ProductPackingCodes = new List<string>() { "c" },
+                    ProductPackingId = 1,
+
+                });
 
             stockOpnameRepo
                 .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameModel>()))
                 .ReturnsAsync(1);
-
+            stockOpnameProductionOrderRepo
+                .Setup(s => s.InsertAsync(It.IsAny<DyeingPrintingStockOpnameProductionOrderModel>()))
+                .ReturnsAsync(1);
             stockOpnameRepo
                 .Setup(s => s.GetDbSet())
-                .Returns(new List<DyeingPrintingStockOpnameModel>() { }.AsQueryable());
+                .Returns(new List<DyeingPrintingStockOpnameModel>() { model2}.AsQueryable());
 
-            stockOpnameRepo
-                .Setup(s => s.ReadAllIgnoreQueryFilter())
-                .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
+            //stockOpnameRepo
+            //    .Setup(s => s.ReadAllIgnoreQueryFilter())
+            //    .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
 
             var serviceProviderMock = GetServiceProvider(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object);
 
@@ -276,7 +362,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var service = GetService(serviceProviderMock.Object);
 
             //Act
-            await service.Create(viewModel);
+            //await service.Create(viewModel);
             var result = await service.Create(viewModel);
 
 
@@ -589,5 +675,107 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public void Should_Success_Get_ReportSO()
+        {
+            //Arrange
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            var stockOpnameMutationRepo = new Mock<IDyeingPrintingStockOpnameMutationRepository>();
+            var stockOpnameMutationItemRepo = new Mock<IDyeingPrintingStockOpnameMutationItemRepository>();
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
+
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(model.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+
+            stockOpnameMutationRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameMutationModel>() { modelMutation }.AsQueryable());
+
+            stockOpnameMutationItemRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(modelMutation.DyeingPrintingStockOpnameMutationItems.AsQueryable());
+
+            var service = GetService(GetServiceProvider1(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object, stockOpnameMutationRepo.Object, stockOpnameMutationItemRepo.Object).Object);
+
+            //Act
+            var result = service.GetReportDataSO(DateTimeOffset.MinValue, DateTimeOffset.MaxValue, 1, "", 1,7);
+
+            //Assert
+            Assert.NotEmpty(result);
+        }
+
+        [Fact]
+        public void Should_Succes_GenerateExcelReporyttSO()
+        {
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            var stockOpnameMutationRepo = new Mock<IDyeingPrintingStockOpnameMutationRepository>();
+            var stockOpnameMutationItemRepo = new Mock<IDyeingPrintingStockOpnameMutationItemRepository>();
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model }.AsQueryable());
+
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(model.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+
+            stockOpnameMutationRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameMutationModel>() { modelMutation }.AsQueryable());
+
+            stockOpnameMutationItemRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(modelMutation.DyeingPrintingStockOpnameMutationItems.AsQueryable());
+
+            var service = GetService(GetServiceProvider1(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object, stockOpnameMutationRepo.Object, stockOpnameMutationItemRepo.Object).Object);
+
+            var result = service.GenerateExcel(DateTimeOffset.MinValue, DateTimeOffset.MaxValue, 1, "", 1, 7);
+
+            Assert.NotNull(result);
+        }
+
+
+        [Fact]
+        public void Should_Success_Get_Data_by_Code()
+        {
+            //Arrange
+            var stockOpnameRepo = new Mock<IDyeingPrintingStockOpnameRepository>();
+            var stockOpnameProductionOrderRepo = new Mock<IDyeingPrintingStockOpnameProductionOrderRepository>();
+            var stockOpnameMutationRepo = new Mock<IDyeingPrintingStockOpnameMutationRepository>();
+            var stockOpnameMutationItemRepo = new Mock<IDyeingPrintingStockOpnameMutationItemRepository>();
+
+            stockOpnameRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameModel>() { model2 }.AsQueryable());
+
+            stockOpnameProductionOrderRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(model2.DyeingPrintingStockOpnameProductionOrders.AsQueryable());
+
+            stockOpnameMutationRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(new List<DyeingPrintingStockOpnameMutationModel>() { modelMutation }.AsQueryable());
+
+            stockOpnameMutationItemRepo
+                 .Setup(s => s.ReadAll())
+                 .Returns(modelMutation.DyeingPrintingStockOpnameMutationItems.AsQueryable());
+
+            var service = GetService(GetServiceProvider1(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object, stockOpnameMutationRepo.Object, stockOpnameMutationItemRepo.Object).Object);
+
+            //Act
+            var result = service.getDatabyCode("productPackingCode");
+
+            //Assert
+            Assert.NotEmpty(result);
+        }
+
+
     }
 }
