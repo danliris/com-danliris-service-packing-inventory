@@ -11,7 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
   public  interface IStockOpnameWarehouseService
     {
         Task<int> Create(StockOpnameWarehouseViewModel viewModel);
-        Task<int> Create(StockOpnameBarcodeFormDto form);
+        //Task<int> Create(StockOpnameBarcodeFormDto form);
         //List<StockOpnameWarehouseProductionOrderViewModel> GetMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter);
         List<BarcodeInfoViewModel> GetMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter);
         Task<StockOpnameWarehouseViewModel> ReadById(int id);

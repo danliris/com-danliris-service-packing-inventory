@@ -146,6 +146,81 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             }
         }
 
+        private StockOpnameWarehouseProductionOrderViewModel viewModelItem 
+        {
+            get
+            {
+                return new StockOpnameWarehouseProductionOrderViewModel
+                {
+                    Id = 1,
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Code = "SLD",
+                        Id = 62,
+                        Type = "SOLID",
+                        No = "F/2020/000"
+                    },
+                    PackingInstruction = "a",
+                    Construction = "a",
+                    Unit = "a",
+                    Buyer = "a",
+                    Color = "a",
+                    Motif = "a",
+                    UomUnit = "a",
+                    Remark = "a",
+                    Grade = "a",
+                    Status = "a",
+                    Balance = 50,
+                    PreviousBalance = 100,
+                    InputId = 2,
+                    ProductionOrderNo = "asd",
+                    Material = new Material()
+                    {
+                        Code = "Code",
+                        Name = "Name"
+                    },
+                    MtrLength = 10,
+                    YdsLength = 10,
+                    Quantity = 10,
+                    PackagingType = "s",
+                    PackagingUnit = "a",
+                    PackagingQty = 10,
+                    QtyOrder = 10
+                };
+            }
+        }
+
+        private ReportSOViewModel viewModelReportSO
+        {
+            get 
+            {
+                return new ReportSOViewModel
+                {
+                    ProductionOrderId = 1,
+                    ProductionOrderNo = "OrderNo",
+                    ProductPackingCode = "Code",
+                    ProcessTypeName = "ProcessType",
+                    PackagingUnit = "Roll",
+                    PackagingType = "type",
+                    Grade = "a",
+                    Color = "a",
+                    TrackId = 1,
+                    TrackName = "a",
+                    SaldoBegin = 1,
+                    InQty   = 1,
+                    OutQty = 1,
+                    Total = 1,
+                    PackagingQty = 1,
+                    PackingLength = 1,
+                    BuyerName = "buyer",
+                    BonNo = "boNo",
+                    DateIn = DateTime.MinValue,
+                    Construction = "a",
+                    Motif = "a"
+                };
+            }
+        }
+
         [Fact]
         public async Task Should_Success_Post()
         {
@@ -377,6 +452,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        
 
         [Fact]
         public void Should_Succes_GetListBon()
@@ -742,6 +819,267 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
+
+        [Fact]
+        public void Should_Success_Get_Report_SO()
+        {
+            //Arrange
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetReportDataSO(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new List<ReportSOViewModel>() { viewModelReportSO });
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_Get_Report_SO()
+        {
+            //Arrange
+            var dataUtil = viewModelReportSO;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetReportDataSO(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.Get(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_GetExcel_Report_SO()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetXls(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Exception_GetExcel_Report_SO()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetXls(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>());
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public void Should_Success_Get_Monitoring_SO()
+        {
+            //Arrange
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetMonitoringSO(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new List<ReportSOViewModel>() { viewModelReportSO });
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetMonitoring(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_Get_Monitoring_SO()
+        {
+            //Arrange
+            var dataUtil = viewModelReportSO;
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.GetMonitoringSO(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetMonitoring(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+
+        [Fact]
+        public void Should_Success_GetExcel__Monitoring_SO()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelMonitoring(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetMonitoringXls(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Success_GetExcel__Monitoring_SO_DateNotNull()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelMonitoring(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            DateTime dt2 = new DateTime(2015, 12, 31);
+            var response = controller.GetMonitoringXls(dt2, dt2, It.IsAny<int>(), It.IsAny<int>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void Should_Exception_GetExcel_Monitoring_SO()
+        {
+            //v
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock.Setup(s => s.GenerateExcelMonitoring(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+            //controller.ModelState.IsValid == false;
+            var response = controller.GetMonitoringXls(It.IsAny<DateTimeOffset>(), It.IsAny<DateTimeOffset>(), It.IsAny<int>(), It.IsAny<int>());
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Success_Get_Barcode()
+        {
+            //Arrange
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.getDatabyCode( It.IsAny<string>()))
+                .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { viewModelItem });
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetBarcode(It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Should_Exception_Get_Barcode()
+        {
+            //Arrange
+            var serviceMock = new Mock<IStockOpnameWarehouseService>();
+            serviceMock
+                .Setup(s => s.getDatabyCode(It.IsAny<string>()))
+                .Throws(new Exception());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+            var validateServiceMock = new Mock<IValidateService>();
+            var validateService = validateServiceMock.Object;
+
+            var controller = GetController(service, identityProvider, validateService);
+
+            //Act
+            var response = controller.GetBarcode(It.IsAny<string>());
+
+            //Assert
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
 
     }
 }
