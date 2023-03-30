@@ -41,12 +41,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var queryInv = repository.ReadAll();
             var quaryInvItem = itemrepository.ReadAll();
-            var queryPL = plrepository.ReadAll();   
+            var queryPL = plrepository.ReadAll();
+
+
+            if (!string.IsNullOrWhiteSpace(unit))
+            {
+                quaryInvItem = quaryInvItem.Where(w => w.UnitCode == unit);
+            }
 
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            var expendGood = GetExpenditureGood(DateFrom, DateTo, unit, offset);
+            //var expendGood = GetExpenditureGood(DateFrom, DateTo, unit, offset);
 
             //var ROs = expendGood.Select(x => x.RONo).ToArray();
             //var invo = expendGood.Select(x => x.Invoice).ToArray();
