@@ -251,7 +251,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase("PT. DAN LIRIS, JL. MERAPI NO. 23, KELURAHAN BANARAN, KECAMATAN GROGOL,\n" +
-                                         "SUKOHARJO 57193, INDONESIA.\n" +
+                                         "SUKOHARJO 57552, INDONESIA.\n" +
                                          "PHONE : 0271-714400  FAX : 0271-735222", normal_font);
             detailTable.AddCell(cellLeft);
 

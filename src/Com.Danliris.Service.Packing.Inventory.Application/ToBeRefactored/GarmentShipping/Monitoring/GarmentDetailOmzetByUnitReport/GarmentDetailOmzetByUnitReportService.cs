@@ -43,12 +43,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var quaryInvItem = itemrepository.ReadAll();
             var queryPL = plrepository.ReadAll();
 
-
-            if (!string.IsNullOrWhiteSpace(unit))
-            {
-                quaryInvItem = quaryInvItem.Where(w => w.UnitCode == unit);
-            }
-
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
@@ -174,7 +168,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var Query = (from a in queryPL 
                           join b in queryInv on a.Id equals b.PackingListId
                           join c in quaryInvItem on b.Id equals c.GarmentShippingInvoiceId                          
-                          where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false 
+                          where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false
+                                && c.UnitCode == (string.IsNullOrWhiteSpace(unit) ? c.UnitCode : unit)
                                 && b.PEBDate != DateTimeOffset.MinValue
    
                           group new { Qty = c.Quantity, Amt = c.Amount } by new
