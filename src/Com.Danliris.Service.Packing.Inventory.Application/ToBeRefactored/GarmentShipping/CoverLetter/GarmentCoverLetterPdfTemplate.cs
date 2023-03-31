@@ -423,7 +423,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 string[] headOffices = {
                 "Head Office : JL. MERAPI NO. 23 ",
-                "Banaran, Grogol, Sukoharjo 57193, Central Java, Indonesia",
+                "Banaran, Grogol, Sukoharjo 57552, Central Java, Indonesia",
                 "TELP.: (+62 271) 740888, 714400",
                 "FAX. : (+62 271) 735222, 740777",
                 "PO BOX 166 Solo, 57100",

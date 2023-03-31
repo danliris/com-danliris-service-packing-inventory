@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //cellHeaderContent1.AddElement(new Phrase("\n", normal_font));
             cellHeaderContent1.AddElement(new Phrase("PT. DAN LIRIS", header_font_bold_big));
             cellHeaderContent1.AddElement(new Phrase("Head Office : Jl. Merapi No 23", small_font));
-            cellHeaderContent1.AddElement(new Phrase("Banaran, Grogol, Sukoharjo, 57193", small_font));
+            cellHeaderContent1.AddElement(new Phrase("Banaran, Grogol, Sukoharjo, 57552", small_font));
             cellHeaderContent1.AddElement(new Phrase("Central Java, Indonesia", small_font));
             cellHeaderContent1.AddElement(new Phrase("Phone : (+62 271) 740888, 714400", small_font));
             cellHeaderContent1.AddElement(new Phrase("Fax : (+62 271) 740777, 735222", small_font));
