@@ -19,6 +19,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double SaldoBegin { get; set; }
         public double InQty { get; set; }
         public double OutQty { get; set; }
+        public double AdjOutQty { get; set; }
         public double Total { get; set; }
 
         public decimal PackagingQty { get; set; }
