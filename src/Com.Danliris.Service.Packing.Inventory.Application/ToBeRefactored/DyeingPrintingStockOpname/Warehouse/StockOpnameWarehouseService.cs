@@ -580,7 +580,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = s.TrackName,
                         Type = s.TrackType,
                         Box = s.TrackBox
-                    }
+                    },
+                    ProductPackingCode = s.ProductPackingCode
+                    
                 }).ToList()
             };
             //foreach (var item in vm.WarehousesProductionOrders)
@@ -1670,7 +1672,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.TrackId == track);
             }
 
-            var result = stockOpnameItemsQuery.GroupBy( s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/}).Select( d => new ReportSOViewModel()
+            var result = stockOpnameItemsQuery.GroupBy( s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, s.TrackId }).Select( d => new ReportSOViewModel()
             { 
                 ProductionOrderId = d.Key.ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1682,12 +1684,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
                 BuyerName = d.First().Buyer,
-                
-                //TrackId = d.First().TrackId,
-                //TrackName = d.First().TrackName +"-"+ d.First().TrackType,
+
+                TrackId = d.First().TrackId,
+                TrackName = d.First().TrackType +" - "+d.First().TrackName + " - " + d.First().TrackBox,
                 SaldoBegin = 0,
                 InQty = d.Sum( s => s.Balance),
                 OutQty = 0,
+                AdjOutQty = 0,
                 Total = d.Sum( s=> s.Balance),
 
 
@@ -1703,11 +1706,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (queryType == "Mutation")
             {
                 stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
-            s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+            s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date && s.TypeOut == DyeingPrintingArea.SO );
             }
             else {
                 stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
-            s.CreatedUtc.AddHours(7).Date < dateFrom.Date);
+            s.CreatedUtc.AddHours(7).Date < dateFrom.Date && s.TypeOut == DyeingPrintingArea.SO);
             }
             
 
@@ -1726,7 +1729,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.TrackId == track);
             }
 
-            var result = stockOpnameMutationItemsQuery.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel()
+            var result = stockOpnameMutationItemsQuery.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, s.TrackId }).Select(d => new ReportSOViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1737,12 +1740,69 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
-                
-                //TrackId = d.Key.TrackId,
-                //TrackName = d.First().TrackName + " - " + d.First().TrackType,
+
+                TrackId = d.Key.TrackId,
+                TrackName = d.First().TrackType + " - " + d.First().TrackName + " - " + d.First().TrackBox,
                 SaldoBegin = 0,
                 InQty = 0,
                 OutQty = d.Sum(s => s.Balance),
+                AdjOutQty = 0,
+                Total = d.Sum(s => s.Balance) * -1,
+
+
+            });
+
+            return result;
+        }
+        private IEnumerable<ReportSOViewModel> GetDataAdjOut(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, string queryType, int offset)
+        {
+            IQueryable<DyeingPrintingStockOpnameMutationItemModel> stockOpnameMutationItemsQuery;
+
+            if (queryType == "Mutation")
+            {
+                stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date && s.TypeOut == DyeingPrintingArea.ADJ_OUT);
+            }
+            else
+            {
+                stockOpnameMutationItemsQuery = _stockOpnameMutationItemsRepository.ReadAll().Where(s =>
+            s.CreatedUtc.AddHours(7).Date < dateFrom.Date && s.TypeOut == DyeingPrintingArea.ADJ_OUT);
+            }
+
+
+            if (productionOrderId != 0)
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
+            }
+
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.ProductPackingCode.Contains(barcode));
+            }
+
+            if (track != 0)
+            {
+                stockOpnameMutationItemsQuery = stockOpnameMutationItemsQuery.Where(s => s.TrackId == track);
+            }
+
+            var result = stockOpnameMutationItemsQuery.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, s.TrackId }).Select(d => new ReportSOViewModel()
+            {
+                ProductionOrderId = d.Key.ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.Key.ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.Key.PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                Construction = d.First().Construction,
+                Motif = d.First().Motif,
+
+                TrackId = d.Key.TrackId,
+                TrackName = d.First().TrackType + " - " + d.First().TrackName + " - " + d.First().TrackBox,
+                SaldoBegin = 0,
+                InQty = 0,
+                OutQty = 0,
+                AdjOutQty = d.Sum(s => s.Balance),
                 Total = d.Sum(s => s.Balance) * -1,
 
 
@@ -1755,10 +1815,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var dataIN = GetDataIN(dateFrom, dateTo, productionOrderId, barcode, track, queryType, offset);
             var dataOut = GetDataOUT(dateFrom, dateTo, productionOrderId, barcode, track, queryType, offset);
+            var dataAdjOut = GetDataAdjOut(dateFrom, dateTo, productionOrderId, barcode, track, queryType, offset);
 
-            var queyJoin = dataIN.Concat(dataOut);
+            var queyJoin = dataIN.Concat(dataOut).Concat(dataAdjOut);
 
-            var result = queyJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel()
+            var result = queyJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, s.TrackId }).Select(d => new ReportSOViewModel()
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1770,12 +1831,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
                 BuyerName = d.First().BuyerName,
-                //TrackId = d.Key.TrackId,
-                //TrackName = d.First().TrackName,
-                SaldoBegin = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty),
+                TrackId = d.Key.TrackId,
+                TrackName = d.First().TrackName,
+                SaldoBegin = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty) - d.Sum( s => s.AdjOutQty),
                 InQty = 0,
                 OutQty = 0,
-                Total = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty),
+                AdjOutQty=0,
+                Total = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty) - d.Sum(s => s.AdjOutQty),
             });
 
 
@@ -1787,11 +1849,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             var dataIN = GetDataIN(dateFrom, dateTo, productionOrderId, barcode, track, "Mutation", offset);
             var dataOut = GetDataOUT(dateFrom, dateTo, productionOrderId, barcode, track, "Mutation", offset);
+            var dataAdjOut = GetDataAdjOut(dateFrom, dateTo, productionOrderId, barcode, track, "Mutation", offset);
             var dataBegin = GetDataBegin(dateFrom, dateTo, productionOrderId, barcode, track, "Begin", offset);
 
-            var queryJoin = dataIN.Concat(dataOut).Concat(dataBegin);
 
-            var result = queryJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel() 
+            var queryJoin = dataIN.Concat(dataOut).Concat(dataAdjOut).Concat(dataBegin);
+
+            var result = queryJoin.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, s.TrackId }).Select(d => new ReportSOViewModel() 
             {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1803,11 +1867,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
                 BuyerName = d.First().BuyerName,
-                //TrackId = d.Key.TrackId,
-                //TrackName = d.First().TrackName,
+                TrackId = d.Key.TrackId,
+                TrackName = d.First().TrackName,
+                
                 SaldoBegin = d.Sum(s => s.SaldoBegin),
                 InQty = d.Sum(s=> s.InQty),
                 OutQty = d.Sum(s => s.OutQty),
+                AdjOutQty = d.Sum( s=> s.AdjOutQty),
                 Total = d.Sum(s => s.Total),
 
             }).ToList();
@@ -1829,36 +1895,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jalur/Rak", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Saldo Awal", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Masuk SO", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Adj Keluar", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
             
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", 0, 0, 0, 0 );
+                dt.Rows.Add("", "", "", "", "", "", "", "","", 0, 0, 0, 0, 0 );
             }
             else
             {
                 double saldoBegin = 0;
                 double inQty = 0;
                 double outQty = 0;
+                double adjOutQty = 0;
                 double total = 0;
                 foreach (var item in data)
                 {
                    // var sldbegin = item.SaldoBegin;
                     //saldoBegin =+ item.SaldoBegin;
                     dt.Rows.Add(item.ProductionOrderNo, item.BuyerName, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingUnit, item.ProductPackingCode,
-                        item.SaldoBegin, item.InQty, item.OutQty, item.Total);
+                        item.TrackName,item.SaldoBegin, item.InQty, item.OutQty, item.AdjOutQty, item.Total);
                     
                     saldoBegin += item.SaldoBegin;
                     inQty += item.InQty;
                     outQty += item.OutQty;
+                    adjOutQty += item.AdjOutQty;
                     total += item.Total;
                 }
 
-               dt.Rows.Add("", "", "", "", "", "", "", "", saldoBegin, inQty, outQty, total);
+               dt.Rows.Add("", "", "", "", "", "", "", "", "", saldoBegin, inQty, outQty, adjOutQty, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
