@@ -1876,7 +1876,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 AdjOutQty = d.Sum( s=> s.AdjOutQty),
                 Total = d.Sum(s => s.Total),
 
-            }).ToList();
+            }).Where(s => s.SaldoBegin != 0 || s.InQty != 0 || s.OutQty != 0 || s.Total != 0).ToList();
 
             return result;
         }
