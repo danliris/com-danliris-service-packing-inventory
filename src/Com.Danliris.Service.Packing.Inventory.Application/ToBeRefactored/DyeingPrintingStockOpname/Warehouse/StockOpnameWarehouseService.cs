@@ -140,7 +140,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.TrackId,
                                                                 s.TrackType,
                                                                 s.TrackName,
-                                                                s.TrackBox
+                                                                s.TrackBox,
+                                                                s.ProductionOrder.CreatedUtc
 
                                                                 )).ToList(), false);
 
@@ -227,7 +228,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackId,
                                                                 item.TrackType,
                                                                 item.TrackName,
-                                                                item.TrackBox
+                                                                item.TrackBox,
+                                                                item.ProductionOrder.CreatedUtc
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -247,7 +249,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         uomUnit = item.UomUnit,
                         motif = item.Motif,
                         color = item.Color,
-                        Width = item.MaterialWidth
+                        Width = item.MaterialWidth,
+                        CreatedUtcOrderNo = item.ProductionOrder.CreatedUtc
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
@@ -404,7 +407,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.TrackId,
                 s.TrackType,
                 s.TrackName,
-                s.TrackBox )
+                s.TrackBox,
+                s.ProductionOrder.CreatedUtc)
                 {
                     Id = s.Id
                 }).ToList(), false);
