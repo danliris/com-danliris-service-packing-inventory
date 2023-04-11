@@ -165,7 +165,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         uomUnit = item.UomUnit,
                         motif = item.Motif,
                         color = item.Color,
-                        Width = item.MaterialWidth
+                        Width = item.MaterialWidth,
+                        CreatedUtcOrderNo = item.CreatedUtcOrderNo
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
