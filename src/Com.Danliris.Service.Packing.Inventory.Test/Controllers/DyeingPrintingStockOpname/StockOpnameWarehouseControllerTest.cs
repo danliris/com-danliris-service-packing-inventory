@@ -1036,7 +1036,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //Arrange
             var serviceMock = new Mock<IStockOpnameWarehouseService>();
             serviceMock
-                .Setup(s => s.getDatabyCode( It.IsAny<string>()))
+                .Setup(s => s.getDatabyCode( It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { viewModelItem });
 
             var service = serviceMock.Object;
@@ -1049,7 +1049,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             var controller = GetController(service, identityProvider, validateService);
 
             //Act
-            var response = controller.GetBarcode(It.IsAny<string>());
+            var response = controller.GetBarcode(It.IsAny<string>(), It.IsAny<int>());
 
             //Assert
             Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
@@ -1061,7 +1061,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             //Arrange
             var serviceMock = new Mock<IStockOpnameWarehouseService>();
             serviceMock
-                .Setup(s => s.getDatabyCode(It.IsAny<string>()))
+                .Setup(s => s.getDatabyCode(It.IsAny<string>(), It.IsAny<int>()))
                 .Throws(new Exception());
 
             var service = serviceMock.Object;
@@ -1074,7 +1074,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             var controller = GetController(service, identityProvider, validateService);
 
             //Act
-            var response = controller.GetBarcode(It.IsAny<string>());
+            var response = controller.GetBarcode(It.IsAny<string>(), It.IsAny<int>());
 
             //Assert
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
