@@ -302,6 +302,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
 
+
+            services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
+
             #endregion
 
             #region Service

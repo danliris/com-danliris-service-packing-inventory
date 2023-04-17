@@ -210,9 +210,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingLeftOverExportSalesDOItemModel> GarmentShippingLeftOverExportSalesDOItems { get; set; }
         public DbSet<GarmentShippingExportSalesNoteModel> GarmentShippingExportSalesNotes { get; set; }
         public DbSet<GarmentShippingExportSalesNoteItemModel> GarmentShippingExportSalesNoteItems { get; set; }
-
         public DbSet<GarmentShippingDetailLocalSalesNoteModel> GarmentShippingDetailLocalSalesNotes { get; set; }
         public DbSet<GarmentShippingDetailLocalSalesNoteItemModel> GarmentShippingDetailLocalSalesNoteItems { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
