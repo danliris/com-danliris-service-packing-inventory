@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230413063314_add_table_dyeingPrintingStockOpnameSummary")]
+    partial class add_table_dyeingPrintingStockOpnameSummary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1402,10 +1404,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("Balance");
 
-                    b.Property<double>("BalanceEnd");
-
-                    b.Property<double>("BalanceRemains");
-
                     b.Property<string>("Buyer");
 
                     b.Property<int>("BuyerId");
@@ -1461,10 +1459,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double>("PackagingLength");
 
                     b.Property<decimal>("PackagingQty");
-
-                    b.Property<decimal>("PackagingQtyEnd");
-
-                    b.Property<decimal>("PackagingQtyRemains");
 
                     b.Property<string>("PackagingType");
 
