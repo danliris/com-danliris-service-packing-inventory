@@ -198,7 +198,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingCostStructureDetailModel> GarmentShippingCostStructureDetails { get; set; }
         public DbSet<DyeingPrintingStockOpnameMutationModel> DyeingPrintingStockOpnameMutations { get; set; }
         public DbSet<DyeingPrintingStockOpnameMutationItemModel> DyeingPrintingStockOpnameMutationItems { get; set; }
+        public DbSet<DyeingPrintingStockOpnameSummaryModel> DyeingPrintingStockOpnameSummaries { get; set; }
 
+        public DbSet<GarmentShippingExportCoverLetterModel> GarmentShippingExportCoverLetters { get; set; }
+        public DbSet<GarmentShippingExportSalesContractModel> GarmentShippingExportSalesContracts { get; set; }
+        public DbSet<GarmentShippingExportSalesContractItemModel> GarmentShippingExportSalesContractItems { get; set; }
+        public DbSet<GarmentShippingLeftOverExportSalesDOModel> GarmentShippingLeftOverExportSalesDOs { get; set; }
+        public DbSet<GarmentShippingLeftOverExportSalesDOItemModel> GarmentShippingLeftOverExportSalesDOItems { get; set; }
+        public DbSet<GarmentShippingExportSalesNoteModel> GarmentShippingExportSalesNotes { get; set; }
+        public DbSet<GarmentShippingExportSalesNoteItemModel> GarmentShippingExportSalesNoteItems { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -308,6 +317,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingStockOpnameProductionOrderModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingStockOpnameMutationModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingStockOpnameMutationItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DyeingPrintingStockOpnameSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);

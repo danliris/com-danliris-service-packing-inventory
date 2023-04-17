@@ -770,7 +770,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
             var service = GetService(GetServiceProvider1(stockOpnameRepo.Object, stockOpnameProductionOrderRepo.Object, stockOpnameMutationRepo.Object, stockOpnameMutationItemRepo.Object).Object);
 
             //Act
-            var result = service.getDatabyCode("productPackingCode");
+            var result = service.getDatabyCode("productPackingCode", 1);
 
             //Assert
             Assert.NotEmpty(result);

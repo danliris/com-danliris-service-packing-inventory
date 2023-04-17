@@ -21,12 +21,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Update(int id, StockOpnameWarehouseViewModel viewModel);
         Task<MemoryStream> GenerateExcelDocumentAsync(int id, int offSet);
         MemoryStream GenerateExcelMonitoringScan(long productionOrderId, string barcode, string documentNo, string grade, string userFilter);
-        List<StockOpnameWarehouseProductionOrderViewModel> getDatabyCode(string itemData);
+        List<StockOpnameWarehouseProductionOrderViewModel> getDatabyCode(string itemData, int trackId);
         List<ReportSOViewModel> GetReportDataSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset);
         MemoryStream GenerateExcel(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, string barcode, int track, int offset);
 
         List<ReportSOViewModel> GetMonitoringSO(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset);
         MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset);
+        List<StockOpnameWarehouseProductionOrderViewModel> getDatabyCodeSummary(string itemData, int trackId);
 
     }
 }
