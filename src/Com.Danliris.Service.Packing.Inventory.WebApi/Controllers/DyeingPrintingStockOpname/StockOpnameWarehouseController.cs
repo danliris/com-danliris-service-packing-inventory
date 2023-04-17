@@ -297,14 +297,15 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("code")]
-        public IActionResult GetBarcode(string itemData)
+        public IActionResult GetBarcode(string itemData, int trackId)
         {
 
             string accept = Request.Headers["Accept"];
             try
             {
 
-                var data = _service.getDatabyCode(itemData);
+                //var data = _service.getDatabyCode(itemData, trackId);
+                var data = _service.getDatabyCodeSummary(itemData, trackId);
                 //var model = mapper.Map<List<InventoryViewModel>>(data);
 
                 return Ok(new
