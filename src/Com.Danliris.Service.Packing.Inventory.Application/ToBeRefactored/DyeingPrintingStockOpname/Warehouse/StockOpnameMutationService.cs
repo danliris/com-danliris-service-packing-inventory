@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private const string UserAgent = "packing-inventory-service";
         private readonly IDyeingPrintingStockOpnameMutationRepository _stockOpnameMutationRepository;
         private readonly IDyeingPrintingStockOpnameMutationItemRepository _stockOpnameMutationItemsRepository;
+        private readonly IDyeingPrintingStockOpnameSummaryRepository _stockOpnameSummaryRepository;
         private readonly IFabricPackingSKUService _fabricPackingSKUService;
         private readonly IProductPackingService _productPackingService;
         private readonly IIdentityProvider _identityProvider;
@@ -35,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             _stockOpnameMutationRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameMutationRepository>();
             _stockOpnameMutationItemsRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameMutationItemRepository>();
+            _stockOpnameSummaryRepository = serviceProvider.GetService<IDyeingPrintingStockOpnameSummaryRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _productPackingService = serviceProvider.GetService<IProductPackingService>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
@@ -84,6 +86,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var typeOut = viewModel.Type == "STOCK OPNAME" ? "SO" : "ADJ OUT";
 
             viewModel.DyeingPrintingStockOpnameMutationItems = viewModel.DyeingPrintingStockOpnameMutationItems.ToList();
+
+            
 
             if (model == null) {
                 int totalCurentYearData = _stockOpnameMutationRepository.ReadAllIgnoreQueryFilter()
@@ -174,6 +178,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
 
 
+            }
+
+            foreach (var itemSum in viewModel.DyeingPrintingStockOpnameMutationItems)
+            {
+                var modelSummary = _stockOpnameSummaryRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.ProductPackingCode.Contains(itemSum.ProductPackingCode) && s.TrackId == itemSum.Track.Id && s.PackagingLength == itemSum.PackagingLength);
+                var balance = itemSum.PackagingLength * (double)itemSum.SendQuantity;
+                await _stockOpnameSummaryRepository.UpdateBalanceOut(modelSummary.Id, balance);
+                await _stockOpnameSummaryRepository.UpdateBalanceRemainsOut(modelSummary.Id, balance);
+                await _stockOpnameSummaryRepository.UpdatePackingQtyOut(modelSummary.Id, itemSum.SendQuantity);
+                await _stockOpnameSummaryRepository.UpdatePackingQtyRemainsOut(modelSummary.Id, itemSum.SendQuantity);
             }
             return result;
         }

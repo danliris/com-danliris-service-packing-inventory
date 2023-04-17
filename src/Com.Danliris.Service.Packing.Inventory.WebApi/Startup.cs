@@ -282,6 +282,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
             services.AddTransient<IDyeingPrintingStockOpnameMutationRepository, DyeingPrintingStockOpnameMutationRepository>();
             services.AddTransient<IDyeingPrintingStockOpnameMutationItemRepository, DyeingPrintingStockOpnameMutationItemRepository>();
+            
 
 
             services.AddTransient<IGarmentShippingExportSalesContractRepository, GarmentShippingExportSalesContractRepository>();
@@ -289,6 +290,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLeftOverExportSalesDORepository, GarmentShippingLeftOverExportSalesDORepository>();
             services.AddTransient<IGarmentShippingExportSalesNoteRepository, GarmentShippingExportSalesNoteRepository>();
             services.AddTransient<IGarmentShippingExportSalesNoteItemRepository, GarmentShippingExportSalesNoteItemRepository>();
+            services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
             #endregion
 
             #region Service
