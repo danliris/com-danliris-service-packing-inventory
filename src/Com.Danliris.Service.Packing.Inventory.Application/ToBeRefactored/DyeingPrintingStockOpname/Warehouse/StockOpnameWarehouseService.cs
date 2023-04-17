@@ -2024,7 +2024,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              Construction = b.Construction,
                              Motif = b.Motif,
                              TrackId = b.TrackId,
-                             TrackName = b.TrackType + " - " + b.TrackName,
+                             TrackName = b.TrackType + " - " + b.TrackName + " - " + b.TrackBox,
                              DateIn = b.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
                              PackingLength = b.PackagingLength,
