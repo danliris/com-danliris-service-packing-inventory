@@ -127,7 +127,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             #endregion
 
             #region bodyTable
-            document.Add(new Paragraph("Adapun kami, selaku Pihak Pertama (I) dan Pihak Kedua (II) akan melakukan kerjasama dengan ketentuan-ketentuan sebagai berikut : \n",normal_font));
+            document.Add(new Paragraph("Adapun kami, selaku Pihak Pertama (I) dan Pihak Kedua (II) akan melakukan kerjasama jual-beli dengan ketentuan-ketentuan sebagai berikut : \n",normal_font));
             PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 100;
             tableBody.SetWidths(new float[] { 1f, 6f, 2f, 2f, 1.5f, 2f, 2.5f });
