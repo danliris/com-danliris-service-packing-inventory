@@ -59,8 +59,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             var modelToUpdate = _dbSet.FirstOrDefault(s => s.Id == id);
 
-            //modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
-            //modelToUpdate.SetBuyer(model.BuyerId, model.Buyer, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBalance(model.Balance, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBalanceRemains(model.BalanceRemains, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackagingQty(model.PackagingQty, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackagingQtyRemains(model.PackagingQtyRemains, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSplitQuantity(model.SplitQuantity, _identityProvider.Username, UserAgent);
+            
             //modelToUpdate.SetCartNo(model.CartNo, _identityProvider.Username, UserAgent);
             //modelToUpdate.SetColor(model.Color, _identityProvider.Username, UserAgent);
             //modelToUpdate.SetConstruction(model.Construction, _identityProvider.Username, UserAgent);
@@ -206,6 +210,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             {
                 var newPackagingQtyRemains = modelToUpdate.PackagingQtyRemains - packagingQtyRemains;
                 modelToUpdate.SetPackagingQtyRemains(newPackagingQtyRemains, _identityProvider.Username, UserAgent);
+            }
+
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateSplitQuantity(int id, double splitQuantity)
+        {
+            var modelToUpdate = _dbSet.FirstOrDefault(entity => entity.Id == id);
+
+            if (modelToUpdate != null)
+            {
+                var newsplitQuantity = modelToUpdate.SplitQuantity + splitQuantity;
+                modelToUpdate.SetSplitQuantity(newsplitQuantity, _identityProvider.Username, UserAgent);
             }
 
             return _dbContext.SaveChangesAsync();
