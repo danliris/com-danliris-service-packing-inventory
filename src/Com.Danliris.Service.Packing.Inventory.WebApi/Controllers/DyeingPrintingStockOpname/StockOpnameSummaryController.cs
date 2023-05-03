@@ -121,5 +121,25 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
+        [HttpGet("download")]
+        public IActionResult GetXls([FromQuery] int productionOrderId, [FromQuery] string barcode, [FromQuery] int trackId)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcelMonitoring( productionOrderId, barcode, trackId);
+                string filename = $"Monitoring Jalur/Rak.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
     }
 }
