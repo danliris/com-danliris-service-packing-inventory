@@ -54,7 +54,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string TrackName { get; private set; }
         public string TrackBox { get; private set; }
 
+
         public double SplitQuantity { get; set; }
+
 
         #region Product SKU Packing
 
@@ -121,6 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
+
         // for update track
         public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
@@ -171,6 +174,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             CreatedUtcOrderNo = createdUtcOrderNo;
             SplitQuantity = splitQuantity;
         }
+
 
         public void SetBalance(double newBalance, string user, string agent)
         {
@@ -223,6 +227,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
                 this.FlagForUpdate(user, agent);
             }
         }
+
         public void SetSplitQuantity(double newSplitQuantity, string user, string agent)
         {
             if (newSplitQuantity != SplitQuantity)
@@ -231,5 +236,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
                 this.FlagForUpdate(user, agent);
             }
         }
+
     }
 }

@@ -21,6 +21,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         Task<int> UpdatePackingQtyRemainsOut(int id, decimal packagingQtyRemains);
         Task<int> UpdateBalanceRemainsOut(int id, double balanceRemains);
         Task<int> UpdateBalanceOut(int id, double balanceOut);
+
         Task<int> UpdateSplitQuantity(int id, double splitQuantity);
+
     }
 }
