@@ -1496,6 +1496,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("SplitQuantity");
 
+
                     b.Property<string>("Status");
 
                     b.Property<string>("TrackBox");
