@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Data;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingStockOpname.Warehouse
 {
@@ -44,7 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         {
             IQueryable<DyeingPrintingStockOpnameSummaryModel> stockOpnameSummaryQuery;
 
-            stockOpnameSummaryQuery = _stockOpnameSummaryRepository.ReadAll();
+            stockOpnameSummaryQuery = _stockOpnameSummaryRepository.ReadAll().Where( x => x.BalanceRemains > 0);
 
             if (productionOrderId != 0)
             {
@@ -435,6 +438,47 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 return result;
                
+        }
+
+        public MemoryStream GenerateExcelMonitoring(int productionOrderId, string barcode, int trackId)
+        {
+            var data = GetDataUpdateTrack(productionOrderId,  barcode,  trackId);
+            DataTable dt = new DataTable();
+
+            //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jalur/Rak", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Total", DataType = typeof(double) });
+
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "",  0, 0, 0);
+            }
+            else
+            {
+               
+
+                foreach (var item in data)
+                {
+                   
+                    dt.Rows.Add(item.ProductionOrderNo, item.ProductPackingCode, item.Construction, 
+                        item.Grade, item.PackagingUnit, item.Track, item.PackagingQty, item.PackagingLength, item.Balance);
+
+                    
+                }
+
+                
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring Rak/Jalur {0}", "MO")) }, true);
+
         }
     }
 }
