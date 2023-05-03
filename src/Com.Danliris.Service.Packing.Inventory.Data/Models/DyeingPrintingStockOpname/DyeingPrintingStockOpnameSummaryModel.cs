@@ -54,6 +54,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string TrackName { get; private set; }
         public string TrackBox { get; private set; }
 
+
+        public double SplitQuantity { get; set; }
+
+
         #region Product SKU Packing
 
         public int ProductSKUId { get; private set; }
@@ -119,6 +123,59 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
+
+        // for update track
+        public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
+            string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
+            long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, double splitQuantity)
+        {
+            Balance = balance;
+            BalanceRemains = balanceRemains;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            Color = color;
+            Construction = construction;
+            Grade = grade;
+            MaterialConstructionId = materialConstructionId;
+            MaterialConstructionName = materialConstructionName;
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialWidth = materialWidth;
+            Motif = motif;
+            PackingInstruction = packingInstruction;
+            PackagingQty = packagingQty;
+            PackagingQtyRemains = packagingQtyRemains;
+            PackagingLength = packagingLength;
+
+            PackagingType = packagingType;
+            PackagingUnit = packagingUnit;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            ProcessTypeId = processTypeId;
+            Remark = remark;
+            Status = status;
+            Unit = unit;
+            UomUnit = uomUnit;
+            FabricSKUId = fabricSKUId;
+            ProductSKUId = productSKUId;
+            ProductSKUCode = productSKUCode;
+            ProductPackingId = productPackingId;
+            ProductPackingCode = productPackingCode;
+            TrackId = trackId;
+            TrackType = trackType;
+            TrackName = trackName;
+            TrackBox = trackBox;
+            CreatedUtcOrderNo = createdUtcOrderNo;
+            SplitQuantity = splitQuantity;
+        }
+
+
         public void SetBalance(double newBalance, string user, string agent)
         {
             if (newBalance != Balance)
@@ -170,5 +227,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        public void SetSplitQuantity(double newSplitQuantity, string user, string agent)
+        {
+            if (newSplitQuantity != SplitQuantity)
+            {
+                SplitQuantity = newSplitQuantity;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
     }
 }

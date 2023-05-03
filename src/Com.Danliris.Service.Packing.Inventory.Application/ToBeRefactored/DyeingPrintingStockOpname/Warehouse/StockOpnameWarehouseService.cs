@@ -2291,6 +2291,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
+        
+
 
         public class BarcodeInfoViewModel
         {
