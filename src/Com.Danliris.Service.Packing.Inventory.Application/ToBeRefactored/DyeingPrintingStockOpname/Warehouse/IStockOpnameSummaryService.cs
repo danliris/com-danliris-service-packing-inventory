@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,5 +12,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         Task<StockOpnameWarehouseSummaryViewModel> ReadById(int id);
         Task<int> Update(int id, StockOpnameTrackViewModel viewModel);
+        MemoryStream GenerateExcelMonitoring(int productionOrderId, string barcode, int trackId);
     }
 }
