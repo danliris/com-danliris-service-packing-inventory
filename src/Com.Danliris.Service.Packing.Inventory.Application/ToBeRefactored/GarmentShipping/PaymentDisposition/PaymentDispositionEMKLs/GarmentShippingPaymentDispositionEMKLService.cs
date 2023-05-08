@@ -12,23 +12,23 @@ using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectPr
 using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
-namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition
+namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs
 {
-    public class GarmentShippingPaymentDispositionService : IGarmentShippingPaymentDispositionService
+    public class GarmentShippingPaymentDispositionEMKLService : IGarmentShippingPaymentEMKLDispositionService
     {
         private readonly IGarmentShippingPaymentDispositionRepository _repository;
         private readonly IServiceProvider serviceProvider;
 
-        public GarmentShippingPaymentDispositionService(IServiceProvider serviceProvider)
+        public GarmentShippingPaymentDispositionEMKLService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingPaymentDispositionRepository>();
 
             this.serviceProvider = serviceProvider;
         }
 
-        public GarmentShippingPaymentDispositionViewModel MapToViewModel(GarmentShippingPaymentDispositionModel model)
+        public GarmentShippingPaymentDispositionEMKLViewModel MapToViewModel(GarmentShippingPaymentDispositionModel model)
         {
-            GarmentShippingPaymentDispositionViewModel viewModel = new GarmentShippingPaymentDispositionViewModel
+            GarmentShippingPaymentDispositionEMKLViewModel viewModel = new GarmentShippingPaymentDispositionEMKLViewModel
             {
                 Active = model.Active,
                 Id = model.Id,
@@ -49,9 +49,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 paidAt = model.PaidAt,
                 buyerAgent = new BuyerAgent
                 {
-                    Name = model.BuyerAgentName,
-                    Id = model.BuyerAgentId,
-                    Code = model.BuyerAgentCode
+                    Name = "",
+                    Id = 0,
+                    Code = ""
                 },
                 bank = model.Bank,
                 billValue = model.BillValue,
@@ -128,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Code = i.UnitCode
                     }
                 }).ToList(),
-                invoiceDetails = (model.InvoiceDetails ?? new List<GarmentShippingPaymentDispositionInvoiceDetailModel>()).Select(i => new GarmentShippingPaymentDispositionInvoiceDetailViewModel
+                invoiceDetails = (model.InvoiceDetails ?? new List<GarmentShippingPaymentDispositionInvoiceDetailModel>()).Select(i => new GarmentShippingPaymentDispositionEMKLInvoiceDetailViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
@@ -151,7 +151,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     paymentDispositionId = i.PaymentDispositionId,
                     quantity = i.Quantity,
                     totalCarton = i.TotalCarton,
-                    volume = i.Volume
+                    volume = i.Volume,
+
+                    buyerAgent = new BuyerAgent
+                    {
+                        Name = i.BuyerAgentName,
+                        Id = i.BuyerAgentId.Value,
+                        Code = i.BuyerAgentCode
+                    },
+
                 }).ToList(),
                 billDetails = (model.BillDetails ?? new List<GarmentShippingPaymentDispositionBillDetailModel>()).Select(i => new GarmentShippingPaymentDispositionBillDetailViewModel
                 {
@@ -196,7 +204,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public GarmentShippingPaymentDispositionModel MapToModel(GarmentShippingPaymentDispositionViewModel vm)
+        public GarmentShippingPaymentDispositionModel MapToModel(GarmentShippingPaymentDispositionEMKLViewModel vm)
         {
             var bills = (vm.billDetails ?? new List<GarmentShippingPaymentDispositionBillDetailViewModel>()).Select(i =>
             {
@@ -212,9 +220,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 };
             }).ToList();
 
-            var invoices = (vm.invoiceDetails ?? new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()).Select(i =>
+            var invoices = (vm.invoiceDetails ?? new List<GarmentShippingPaymentDispositionEMKLInvoiceDetailViewModel>()).Select(i =>
             {
-                return new GarmentShippingPaymentDispositionInvoiceDetailModel(i.invoiceNo,i.invoiceId,i.quantity, i.amount,i.volume,i.grossWeight,i.chargeableWeight,i.totalCarton,0,"","") { Id = i.Id };
+                i.buyerAgent = i.buyerAgent ?? new BuyerAgent();
+                return new GarmentShippingPaymentDispositionInvoiceDetailModel(i.invoiceNo,i.invoiceId,i.quantity, i.amount,i.volume,i.grossWeight,i.chargeableWeight,i.totalCarton,i.buyerAgent.Id, i.buyerAgent.Name, i.buyerAgent.Code) { Id = i.Id };
             }).ToList();
 
             var payments = (vm.paymentDetails ?? new List<GarmentShippingPaymentDispositionPaymentDetailViewModel>()).Select(i =>
@@ -223,55 +232,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }).ToList();
 
             vm.forwarder = vm.forwarder ?? new Forwarder();
-            vm.buyerAgent = vm.buyerAgent ?? new BuyerAgent();
+            //vm.buyerAgent = vm.buyerAgent ?? new BuyerAgent();
             vm.emkl = vm.emkl ?? new EMKL();
             vm.courier = vm.courier ?? new Courier();
             vm.warehouse = vm.warehouse ?? new WareHouse();
             vm.incomeTax = vm.incomeTax ?? new IncomeTax();
             return new GarmentShippingPaymentDispositionModel(GenerateNo(vm), vm.paymentType, vm.paymentMethod, vm.paidAt, vm.sendBy,
-                vm.buyerAgent.Id, vm.buyerAgent.Code, vm.buyerAgent.Name, vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
+                0,"","", vm.paymentTerm, vm.forwarder.id, vm.forwarder.code, vm.forwarder.name,
                 vm.courier.Id, vm.courier.Code, vm.courier.Name, vm.emkl.Id, vm.emkl.Code, vm.emkl.Name, vm.warehouse.Id, vm.warehouse.Code, vm.warehouse.Name, vm.address, vm.npwp, vm.invoiceNumber, vm.invoiceDate,
                 vm.invoiceTaxNumber, vm.billValue, vm.vatValue, vm.incomeTax.id, vm.incomeTax.name, (decimal)vm.incomeTax.rate, vm.IncomeTaxValue,
                 vm.totalBill, vm.paymentDate, vm.bank, vm.accNo, vm.isFreightCharged, vm.freightBy, vm.freightNo, vm.freightDate.GetValueOrDefault(), vm.flightVessel, vm.destination, vm.remark, invoices, bills, units, payments)
             { Id = vm.Id };
         }
 
-        private string GenerateNo(GarmentShippingPaymentDispositionViewModel vm)
+        private string GenerateNo(GarmentShippingPaymentDispositionEMKLViewModel vm)
         {
             var year = DateTime.Now.ToString("yy");
 
-            var prefix = "";
-            if (vm.paymentType == "FORWARDER")
-            {
-                if (vm.isFreightCharged)
-                {
-                    if (vm.freightBy == "AIR")
-                    {
-                        prefix = $"DL/AF.EG/{vm.paidAt}/{year}/";
-                    }
-                    else
-                    {
-                        prefix = $"DL/OF.EG/{vm.paidAt}/{year}/";
-                    }
-                }
-                else
-                {
-                    prefix = $"DL/FRWD/{vm.paidAt}/{year}/";
-                }
-            }
-            else if(vm.paymentType == "COURIER")
-            {
-                prefix = $"DL/COUR/{year}/";
-            }
-            else if (vm.paymentType == "PERGUDANGAN")
-            {
-                prefix = $"DL/WRHS/{year}/";
-            }
-            else
-            {
-                prefix = $"DL/EMKL/{year}/";
-            }
-
+            var prefix = $"DL/EMKL/{year}/"; ;
+          
             var lastInvoiceNo = _repository.ReadAll().Where(w => w.DispositionNo.StartsWith(prefix))
                 .OrderByDescending(o => o.DispositionNo)
                 .Select(s => int.Parse(s.DispositionNo.Replace(prefix, "")))
@@ -281,7 +260,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return invoiceNo;
         }
 
-        public async Task<int> Create(GarmentShippingPaymentDispositionViewModel viewModel)
+        public async Task<int> Create(GarmentShippingPaymentDispositionEMKLViewModel viewModel)
         {
             var model = MapToModel(viewModel);
 
@@ -295,7 +274,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _repository.DeleteAsync(id);
         }
 
-        public ListResult<GarmentShippingPaymentDispositionViewModel> Read(int page, int size, string filter, string order, string keyword)
+        public ListResult<GarmentShippingPaymentDispositionEMKLViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
@@ -317,10 +296,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 .Select(model => MapToViewModel(model))
                 .ToList();
 
-            return new ListResult<GarmentShippingPaymentDispositionViewModel>(data, page, size, query.Count());
+            return new ListResult<GarmentShippingPaymentDispositionEMKLViewModel>(data, page, size, query.Count());
         }
 
-        public async Task<GarmentShippingPaymentDispositionViewModel> ReadById(int id)
+        public async Task<GarmentShippingPaymentDispositionEMKLViewModel> ReadById(int id)
         {
             var data = await _repository.ReadByIdAsync(id);
 
@@ -329,7 +308,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        public async Task<int> Update(int id, GarmentShippingPaymentDispositionViewModel viewModel)
+        public async Task<int> Update(int id, GarmentShippingPaymentDispositionEMKLViewModel viewModel)
         {
             var model = MapToModel(viewModel);
 

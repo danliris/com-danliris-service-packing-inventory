@@ -56,11 +56,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var invoices = new List<GarmentShippingPaymentDispositionInvoiceDetailModel>
                 {
-                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/1", 1, 1, 1, 1, 1, 1, 1)
+                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/1", 1, 1, 1, 1, 1, 1, 1,1,"","")
                          {
                            PaymentDispositionId = 1
                          },
-                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/2", 2, 1, 1, 1, 1, 1, 1)
+                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/2", 2, 1, 1, 1, 1, 1, 1,1,"","")
                          {
                            PaymentDispositionId = 1
                          },
@@ -153,11 +153,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var invoices = new List<GarmentShippingPaymentDispositionInvoiceDetailModel>
                 {
-                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/1", 1, 1, 1, 1, 1, 1, 1)
+                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/1", 1, 1, 1, 1, 1, 1, 1,1,"","")
                          {
                            PaymentDispositionId = 1
                          },
-                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/2", 2, 1, 1, 1, 1, 1, 1)
+                     new GarmentShippingPaymentDispositionInvoiceDetailModel("DL/2", 2, 1, 1, 1, 1, 1, 1,1,"","")
                          {
                            PaymentDispositionId = 1
                          },
