@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
         {
             get 
             {
-                return new ProductPackingModel(1, 1, 1, "CODE0001", "CODE0001", "");
+                return new ProductPackingModel(1, 1, 1, "CODE00001", "CODE00001", "");
             }
         }
 

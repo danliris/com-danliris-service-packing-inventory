@@ -222,7 +222,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     invoiceToUpdate.SetInvoiceNo(invoice.InvoiceNo, _identityProvider.Username, UserAgent);
                     invoiceToUpdate.SetTotalCarton(invoice.TotalCarton, _identityProvider.Username, UserAgent);
                     invoiceToUpdate.SetVolume(invoice.Volume, _identityProvider.Username, UserAgent);
-
+                    if(model.PaymentType == "EMKL")
+                    {
+                        invoiceToUpdate.SetBuyerAgentCode(invoice.BuyerAgentCode, _identityProvider.Username, UserAgent);
+                        invoiceToUpdate.SetBuyerAgentId(invoice.BuyerAgentId.Value, _identityProvider.Username, UserAgent);
+                        invoiceToUpdate.SetBuyerAgentName(invoice.BuyerAgentName, _identityProvider.Username, UserAgent);
+                    }
                 }
                 else
                 {
