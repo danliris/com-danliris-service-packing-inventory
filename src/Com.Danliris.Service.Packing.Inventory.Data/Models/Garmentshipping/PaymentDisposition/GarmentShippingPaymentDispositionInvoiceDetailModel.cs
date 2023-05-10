@@ -17,7 +17,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
         public decimal GrossWeight { get; set; }
         public decimal ChargeableWeight { get; set; }
         public decimal TotalCarton { get; set; }
-        public GarmentShippingPaymentDispositionInvoiceDetailModel(string invoiceNo, int invoiceId, decimal quantity, decimal amount, decimal volume, decimal grossWeight, decimal chargeableWeight, decimal totalCarton)
+
+        public int? BuyerAgentId { get; set; }
+        public string BuyerAgentCode { get; set; }
+        public string BuyerAgentName { get; set; }
+        public GarmentShippingPaymentDispositionInvoiceDetailModel(string invoiceNo, int invoiceId, decimal quantity, decimal amount, decimal volume, decimal grossWeight, decimal chargeableWeight, decimal totalCarton, int buyerAgentId, string buyerAgentCode, string buyerAgentName)
         {
             InvoiceNo = invoiceNo;
             InvoiceId = invoiceId;
@@ -27,6 +31,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
             GrossWeight = grossWeight;
             ChargeableWeight = chargeableWeight;
             TotalCarton = totalCarton;
+            BuyerAgentId = buyerAgentId;
+            BuyerAgentCode = buyerAgentCode;
+            BuyerAgentName = buyerAgentName;
         }
 
         public GarmentShippingPaymentDispositionInvoiceDetailModel()
@@ -96,6 +103,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Pay
             {
                 this.ChargeableWeight = ChargeableWeight;
                 this.FlagForUpdate(username, uSER_AGENT);
+            }
+        }
+        public void SetBuyerAgentId(int buyerAgentId, string userName, string userAgent)
+        {
+            if (BuyerAgentId != buyerAgentId)
+            {
+                BuyerAgentId = buyerAgentId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerAgentCode(string buyerAgentCode, string userName, string userAgent)
+        {
+            if (BuyerAgentCode != buyerAgentCode)
+            {
+                BuyerAgentCode = buyerAgentCode;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetBuyerAgentName(string buyerAgentName, string userName, string userAgent)
+        {
+            if (BuyerAgentName != buyerAgentName)
+            {
+                BuyerAgentName = buyerAgentName;
+                this.FlagForUpdate(userName, userAgent);
             }
         }
     }

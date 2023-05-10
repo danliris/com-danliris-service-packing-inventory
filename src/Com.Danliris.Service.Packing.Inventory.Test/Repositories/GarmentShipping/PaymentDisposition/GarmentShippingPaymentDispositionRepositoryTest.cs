@@ -33,8 +33,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             };
             var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel>
             {
-                new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1),
-                new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1)
+                new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1,1,"",""),
+                new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1,1,"","")
             };
             var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel>
             {

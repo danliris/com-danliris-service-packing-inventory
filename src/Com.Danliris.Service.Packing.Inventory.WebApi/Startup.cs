@@ -155,8 +155,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.SalesExport;
-
-
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -409,6 +408,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<Application.ToBeRefactored.GarmentShipping.SalesExport.IGarmentShippingExportSalesDOService, Application.ToBeRefactored.GarmentShipping.SalesExport.GarmentShippingExportSalesDOService>();
             services.AddTransient<IGarmentShippingExportSalesNoteService, GarmentShippingExportSalesNoteService>();
             services.AddTransient<IGarmentBuyerReceivablesReportService, GarmentBuyerReceivablesReportService>();
+            services.AddTransient<IGarmentShippingPaymentEMKLDispositionService, GarmentShippingPaymentDispositionEMKLService>();
             #endregion
 
             // Register Provider

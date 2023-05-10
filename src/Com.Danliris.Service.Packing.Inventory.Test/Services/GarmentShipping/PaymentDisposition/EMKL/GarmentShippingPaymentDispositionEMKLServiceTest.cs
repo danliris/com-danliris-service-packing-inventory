@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.PaymentDisposition;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.PaymentDisposition;
 using Moq;
@@ -12,7 +13,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.PaymentDisposition
 {
-    public class GarmentShippingPaymentDispositionServiceTest
+    public class GarmentShippingPaymentDispositionEMKLServiceTest
     {
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingPaymentDispositionRepository repository)
         {
@@ -24,24 +25,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             return spMock;
         }
 
-        protected GarmentShippingPaymentDispositionService GetService(IServiceProvider serviceProvider)
+        protected GarmentShippingPaymentDispositionEMKLService GetService(IServiceProvider serviceProvider)
         {
-            return new GarmentShippingPaymentDispositionService(serviceProvider);
+            return new GarmentShippingPaymentDispositionEMKLService(serviceProvider);
         }
 
-        protected GarmentShippingPaymentDispositionViewModel ViewModel
+        protected GarmentShippingPaymentDispositionEMKLViewModel ViewModel
         {
             get
             {
-                return new GarmentShippingPaymentDispositionViewModel
+                return new GarmentShippingPaymentDispositionEMKLViewModel
                 {
                     unitCharges = new List<GarmentShippingPaymentDispositionUnitChargeViewModel>()
                     {
                         new GarmentShippingPaymentDispositionUnitChargeViewModel()
                     },
-                    invoiceDetails = new List<GarmentShippingPaymentDispositionInvoiceDetailViewModel>()
+                    invoiceDetails = new List<GarmentShippingPaymentDispositionEMKLInvoiceDetailViewModel>()
                     {
-                        new GarmentShippingPaymentDispositionInvoiceDetailViewModel()
+                        new GarmentShippingPaymentDispositionEMKLInvoiceDetailViewModel()
                     },
                     billDetails= new List<GarmentShippingPaymentDispositionBillDetailViewModel>()
                     {
@@ -71,22 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             Assert.NotEqual(0, result);
         }
 
-        [Fact]
-        public async Task Create_Success_COURIER()
-        {
-            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-            var ViewModel = this.ViewModel;
-            ViewModel.paymentType = "COURIER";
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-        }
+      
 
         [Fact]
         public async Task Create_Success_EMKL()
@@ -103,89 +89,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.P
             var result = await service.Create(ViewModel);
 
             Assert.NotEqual(0, result);
-        }
-
-        [Fact]
-        public async Task Create_Success_WareHouse()
-        {
-            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-            var ViewModel = this.ViewModel;
-            ViewModel.paymentType = "PERGUDANGAN";
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-        }
-
-        [Fact]
-        public async Task Create_Success_FORWARDER()
-        {
-            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-            var ViewModel = this.ViewModel;
-            ViewModel.paymentType = "FORWARDER";
-
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-        }
-
-        [Fact]
-        public async Task Create_Success_FORWARDER_FC_AIR()
-        {
-            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-            var ViewModel = this.ViewModel;
-            ViewModel.paymentType = "FORWARDER";
-            ViewModel.isFreightCharged = true;
-            ViewModel.freightBy = "AIR";
-
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-
-            var result2 = await service.Create(ViewModel);
-            ViewModel.freightBy = "AIR";
-            Assert.NotEqual(0, result2);
-        }
-
-        [Fact]
-        public async Task Create_Success_FORWARDER_FC_OCEAN()
-        {
-            var repoMock = new Mock<IGarmentShippingPaymentDispositionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingPaymentDispositionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingPaymentDispositionModel>().AsQueryable());
-
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-            var ViewModel = this.ViewModel;
-            ViewModel.paymentType = "FORWARDER";
-            ViewModel.isFreightCharged = true;
-            ViewModel.freightBy = "OCEAN";
-
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-
-            var result2 = await service.Create(ViewModel);
-            ViewModel.freightBy = "AIR";
-            Assert.NotEqual(0, result2);
         }
 
         [Fact]

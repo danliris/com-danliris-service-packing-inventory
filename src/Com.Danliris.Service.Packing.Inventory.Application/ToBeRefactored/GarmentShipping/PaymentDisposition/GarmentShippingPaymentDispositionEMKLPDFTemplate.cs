@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -12,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingPaymentDispositionEMKLPDFTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionViewModel viewModel, List<GarmentShippingInvoiceViewModel> invoices, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionEMKLViewModel viewModel, List<GarmentShippingInvoiceViewModel> invoices, int timeoffset)
         {
             const int MARGIN = 20;
 

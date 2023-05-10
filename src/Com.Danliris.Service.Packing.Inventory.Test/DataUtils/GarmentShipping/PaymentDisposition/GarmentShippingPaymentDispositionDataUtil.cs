@@ -16,7 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         {
             var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel("",1) };
             var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(1, "",1,1) };
-            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1) };
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel("",1,1,1,1,1,1,1, 1, "", "") };
             var payments = new HashSet<GarmentShippingPaymentDispositionPaymentDetailModel> { new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 1) };
             var model = new GarmentShippingPaymentDispositionModel("", "", "", "", "", 1, "", "", "", 1, "", "", 1, "", "", 1, "", "", 1, "", "", "", "", "", DateTimeOffset.Now, "", 1, 1, 1, "", 1, 1, 1, DateTimeOffset.Now, "", "", true, "", "", DateTimeOffset.Now, "", "", "", invoices, bills, units, payments);
 
@@ -27,7 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         {
             var bills = new HashSet<GarmentShippingPaymentDispositionBillDetailModel> { new GarmentShippingPaymentDispositionBillDetailModel(null, 0) };
             var units = new HashSet<GarmentShippingPaymentDispositionUnitChargeModel> { new GarmentShippingPaymentDispositionUnitChargeModel(0, null, 0, 0) };
-            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel(null, 0, 0, 0, 0, 0, 0, 0) };
+            var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel> { new GarmentShippingPaymentDispositionInvoiceDetailModel(null, 0, 0, 0, 0, 0, 0, 0, 1, "", "") };
             var payments = new HashSet<GarmentShippingPaymentDispositionPaymentDetailModel> { new GarmentShippingPaymentDispositionPaymentDetailModel(DateTimeOffset.Now, "", 1) };
             var model = new GarmentShippingPaymentDispositionModel(null, null, null, null, null, 0, null, null, null, 0, null, null, 0, null, null, 0, null, null, 0, null, null, null, null, null, DateTimeOffset.MinValue, null, 0, 0, 0, null, 0, 0, 0, DateTimeOffset.MinValue, null, null, true, null, null, DateTimeOffset.MinValue, null,null,null, invoices, bills, units, payments);
 
@@ -50,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
             var invoices = new HashSet<GarmentShippingPaymentDispositionInvoiceDetailModel>();
             foreach (var y in om.InvoiceDetails)
             {
-                invoices.Add(new GarmentShippingPaymentDispositionInvoiceDetailModel(y.InvoiceNo,y.InvoiceId,y.Quantity,y.Amount,y.Volume,y.GrossWeight,y.ChargeableWeight,y.TotalCarton) { Id = y.Id });
+                invoices.Add(new GarmentShippingPaymentDispositionInvoiceDetailModel(y.InvoiceNo,y.InvoiceId,y.Quantity,y.Amount,y.Volume,y.GrossWeight,y.ChargeableWeight,y.TotalCarton,0,y.BuyerAgentCode,y.BuyerAgentName) { Id = y.Id });
             }
 
             var payments = new HashSet<GarmentShippingPaymentDispositionPaymentDetailModel>();

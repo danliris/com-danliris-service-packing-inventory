@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -13,20 +14,20 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.PaymentDisposition
+namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipping.PaymentDispositionEMKL
 {
     [Produces("application/json")]
-    [Route("v1/garment-shipping/payment-dispositions")]
+    [Route("v1/garment-shipping/payment-dispositions/EMKL")]
     [Authorize]
-    public class GarmentShippingPaymentDispositionController : ControllerBase
+    public class GarmentShippingPaymentDispositionEMKLController : ControllerBase
     {
-        private readonly IGarmentShippingPaymentDispositionService _service;
+        private readonly IGarmentShippingPaymentEMKLDispositionService _service;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
         private readonly IGarmentShippingInvoiceService _invoiceService;
         private readonly IGarmentPackingListService _packingListService;
 
-        public GarmentShippingPaymentDispositionController(IGarmentShippingPaymentDispositionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentShippingInvoiceService invoiceService, IGarmentPackingListService packingListService)
+        public GarmentShippingPaymentDispositionEMKLController(IGarmentShippingPaymentEMKLDispositionService service, IIdentityProvider identityProvider, IValidateService validateService, IGarmentShippingInvoiceService invoiceService, IGarmentPackingListService packingListService)
         {
             _service = service;
             _identityProvider = identityProvider;
@@ -43,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] GarmentShippingPaymentDispositionViewModel viewModel)
+        public async Task<IActionResult> Post([FromBody] GarmentShippingPaymentDispositionEMKLViewModel viewModel)
         {
             try
             {
@@ -119,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] GarmentShippingPaymentDispositionViewModel viewModel)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] GarmentShippingPaymentDispositionEMKLViewModel viewModel)
         {
             try
             {
@@ -194,66 +195,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     foreach (var invoiceItem in model.invoiceDetails)
                     {
                         GarmentShippingInvoiceViewModel invoice = await _invoiceService.ReadById(invoiceItem.invoiceId);
-                        GarmentPackingListViewModel pl = await _packingListService.ReadByInvoiceNo(invoiceItem.invoiceNo);
+                        //GarmentPackingListViewModel pl = await _packingListService.ReadByInvoiceNo(invoiceItem.invoiceNo);
                         invoices.Add(invoice);
-                        packingLists.Add(pl);
+                        //packingLists.Add(pl);
                     }
-                    if (model.paymentType == "FORWARDER")
+
+
+                    var PdfTemplate = new GarmentShippingPaymentDispositionEMKLPDFTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+
+                    return new FileStreamResult(stream, "application/pdf")
                     {
-                        if (model.isFreightCharged)
-                        {
-                            var PdfTemplate = new GarmentShippingPaymentDispositionForwarderFCPDFTemplate();
-                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices,  timeoffsset);
+                        FileDownloadName = model.dispositionNo + ".pdf"
+                    };
 
-                            return new FileStreamResult(stream, "application/pdf")
-                            {
-                                FileDownloadName = model.dispositionNo + ".pdf"
-                            };
 
-                        }
-                        else
-                        {
-                            var PdfTemplate = new GarmentShippingPaymentDispositionForwarderPDFTemplate();
-                            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, packingLists, timeoffsset);
 
-                            return new FileStreamResult(stream, "application/pdf")
-                            {
-                                FileDownloadName = model.dispositionNo + ".pdf"
-                            };
-
-                        }
-                    }
-                    //else if (model.paymentType == "EMKL")
-                    //{
-                    //    var PdfTemplate = new GarmentShippingPaymentDispositionEMKLPDFTemplate();
-                    //    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
-
-                    //    return new FileStreamResult(stream, "application/pdf")
-                    //    {
-                    //        FileDownloadName = model.dispositionNo + ".pdf"
-                    //    };
-                    //}
-                    else if (model.paymentType == "PERGUDANGAN")
-                    {
-                        var PdfTemplate = new GarmentShippingPaymentDispositionWareHousePDFTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
-
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.dispositionNo + ".pdf"
-                        };
-                    }
-                    else
-                    {
-                        var PdfTemplate = new GarmentShippingPaymentDispositionCourierPDFTemplate();
-                        MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, timeoffsset);
-
-                        return new FileStreamResult(stream, "application/pdf")
-                        {
-                            FileDownloadName = model.dispositionNo + ".pdf"
-                        };
-                    }
-                    
                 }
             }
             catch (Exception ex)
