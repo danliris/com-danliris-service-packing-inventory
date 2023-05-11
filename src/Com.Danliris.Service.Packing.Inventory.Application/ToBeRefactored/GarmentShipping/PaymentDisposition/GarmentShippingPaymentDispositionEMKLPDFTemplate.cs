@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using iTextSharp.text;
@@ -13,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public class GarmentShippingPaymentDispositionEMKLPDFTemplate
     {
-        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionEMKLViewModel viewModel, List<GarmentShippingInvoiceViewModel> invoices, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingPaymentDispositionEMKLViewModel viewModel, List<GarmentShippingInvoiceViewModel> invoices, List<GarmentPackingListViewModel> pl, int timeoffset)
         {
             const int MARGIN = 20;
 
@@ -50,6 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             List<string> inv = new List<string>();
             List<string> como = new List<string>();
+            
             foreach (var i in invoices)
             {
                 var dupInv = como.Find(a => a == i.InvoiceNo);
@@ -64,11 +66,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         como.Add(item.Comodity.Name);
                     }
+
+                    
                 }
             }
 
-            decimal invTotalQty = viewModel.invoiceDetails.Sum(a => a.quantity);
-            decimal totalCtns = viewModel.invoiceDetails.Sum(a => a.totalCarton);
+            List<string> buyer = new List<string>();
+            foreach (var s in viewModel.invoiceDetails)
+            {
+                var dupBuyer = buyer.Find(a => a == s.buyerAgent.Name);
+                if (string.IsNullOrEmpty(dupBuyer))
+                {
+                    buyer.Add(s.buyerAgent.Name);
+                }
+            }
+
+            List<CBMSourse> cbm = new List<CBMSourse>();
+            foreach (var a in pl)
+            {
+                double cmbS = 0;
+                foreach (var m in a.Measurements)
+                {
+                    cmbS += m.Length * m.Width * m.Height * m.CartonsQuantity / 1000000;
+                   
+                }
+                
+                cbm.Add(new CBMSourse { InvoiceNo=a.InvoiceNo,CBM= cmbS });   
+            }
+
+            var result = "";
+            double? totalCBM = 0;
+            foreach (var a in viewModel.invoiceDetails)
+            {
+                var matchcbm = cbm.FirstOrDefault(x => x.InvoiceNo == a.invoiceNo);
+                var qty = a.quantity + "pcs";
+                var ctn = a.totalCarton + "ct";
+                var cbmss = matchcbm?.CBM;
+                totalCBM += cbmss;
+
+                var aaaa = string.Format("{0}/{1}/{2:n2}", qty, ctn, cbmss);
+                result = string.IsNullOrWhiteSpace(result) ? aaaa : result + "+" + aaaa;
+
+            }
+            
+
+            //decimal invTotalQty = viewModel.invoiceDetails.Sum(a => a.quantity);
+            //decimal totalCtns = viewModel.invoiceDetails.Sum(a => a.totalCarton);
 
             PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 80;
@@ -108,14 +151,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(string.Join(", ", como), normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase(string.Join(" + ", como), normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Pembeli", normal_font);
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(viewModel.buyerAgent.Name, normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase(string.Join(" + ", buyer), normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("LC No", normal_font);
@@ -129,14 +172,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase(string.Join(", ", inv), normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase(string.Join(" + ", inv), normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Party", normal_font);
             tableBody.AddCell(cellLeftNoBorder);
             cellCenterNoBorder.Phrase = new Phrase(":", normal_font);
             tableBody.AddCell(cellCenterNoBorder);
-            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} PCS / {string.Format("{0:n2}", totalCtns)} CTNS =      CBM", normal_font);
+            //cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0:n2}", invTotalQty)} PCS / {string.Format("{0:n2}", totalCtns)} CTNS =      CBM", normal_font);
+            cellLeftNoBorder1.Phrase = new Phrase($"{string.Format("{0} = {1:n2} CBM",result,totalCBM)}", normal_font);
             tableBody.AddCell(cellLeftNoBorder1);
 
             cellLeftNoBorder.Phrase = new Phrase("Biaya", normal_font);
@@ -265,6 +309,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             stream.Position = 0;
 
             return stream;
+        }
+        //public class vmCBm
+        //{
+        //    public decimal Quantity { get; set; }
+        //    public decimal TotalCartoon { get; set; }
+        //    public double CBM { get; set; }
+        //}
+        public class CBMSourse
+        {
+            public string InvoiceNo { get; set; }
+ 
+            public double CBM { get; set; }
         }
     }
 }

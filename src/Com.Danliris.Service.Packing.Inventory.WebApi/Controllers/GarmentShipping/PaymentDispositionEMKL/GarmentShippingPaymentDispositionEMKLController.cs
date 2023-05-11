@@ -195,14 +195,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     foreach (var invoiceItem in model.invoiceDetails)
                     {
                         GarmentShippingInvoiceViewModel invoice = await _invoiceService.ReadById(invoiceItem.invoiceId);
-                        //GarmentPackingListViewModel pl = await _packingListService.ReadByInvoiceNo(invoiceItem.invoiceNo);
+                        GarmentPackingListViewModel pl = await _packingListService.ReadByInvoiceNo(invoiceItem.invoiceNo);
                         invoices.Add(invoice);
-                        //packingLists.Add(pl);
+                        packingLists.Add(pl);
                     }
 
 
                     var PdfTemplate = new GarmentShippingPaymentDispositionEMKLPDFTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, timeoffsset);
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, invoices, packingLists, timeoffsset);
 
                     return new FileStreamResult(stream, "application/pdf")
                     {
