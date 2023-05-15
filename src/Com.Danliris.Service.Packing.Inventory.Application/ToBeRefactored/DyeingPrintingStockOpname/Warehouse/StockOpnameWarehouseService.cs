@@ -1861,8 +1861,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             //    stockOpnameItemsQuery = stockOpnameItemsQuery.Where(s => s.TrackId == track);
             //}
 
-            var result = stockOpnameItemsQuery.GroupBy( s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select( d => new ReportSOViewModel()
-            { 
+            var result = stockOpnameItemsQuery.GroupBy(s => new { s.ProductionOrderId, s.ProductPackingCode, s.Grade, s.PackagingUnit, /*s.TrackId*/ }).Select(d => new ReportSOViewModel()
+            {
                 ProductionOrderId = d.Key.ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
                 ProductPackingCode = d.Key.ProductPackingCode,
@@ -1873,17 +1873,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
                 BuyerName = d.First().Buyer,
-
+                PackagingQty = d.Sum(s => s.PackagingQty),
                 //TrackId = d.First().TrackId,
                 //TrackName = d.First().TrackType +" - "+d.First().TrackName + " - " + d.First().TrackBox,
                 SaldoBegin = 0,
-                InQty = d.Sum( s => s.Balance),
+                InQty = d.Sum(s => s.Balance),
                 OutQty = 0,
                 AdjOutQty = 0,
-                Total = d.Sum( s=> s.Balance),
+                Total = d.Sum(s => s.Balance),
 
 
-            });
+            }); ;
 
             return result;
         }
@@ -1929,7 +1929,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
-
+                PackagingQty = d.Sum(s => s.PackagingQty) * -1,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackType + " - " + d.First().TrackName + " - " + d.First().TrackBox,
                 SaldoBegin = 0,
@@ -1985,7 +1985,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
-
+                PackagingQty = d.Sum(s => s.PackagingQty) * -1,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackType + " - " + d.First().TrackName + " - " + d.First().TrackBox,
                 SaldoBegin = 0,
@@ -2022,6 +2022,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 BuyerName = d.First().BuyerName,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackName,
+                PackagingQty = d.Sum(s => s.PackagingQty),
                 SaldoBegin = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty) - d.Sum( s => s.AdjOutQty),
                 InQty = 0,
                 OutQty = 0,
@@ -2058,6 +2059,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 BuyerName = d.First().BuyerName,
                 //TrackId = d.Key.TrackId,
                 //TrackName = d.First().TrackName,
+                PackagingQty = d.Sum( s => s.PackagingQty),
                 
                 SaldoBegin = d.Sum(s => s.SaldoBegin),
                 InQty = d.Sum(s=> s.InQty),
