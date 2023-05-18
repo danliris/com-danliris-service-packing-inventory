@@ -428,7 +428,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.InventorySKU
                .Setup(s => s.ProductSKUs.Get(It.IsAny<Expression<Func<ProductSKUModel, bool>>>(), It.IsAny<Func<IQueryable<ProductSKUModel>, IOrderedQueryable<ProductSKUModel>>>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                .Returns(new List<ProductSKUModel>()
                {
-                   new ProductSKUModel("code","name",0,0,"description")
+                   new ProductSKUModel("code","name",0,0,"description", true)
                });
 
             unitOfWorkMock

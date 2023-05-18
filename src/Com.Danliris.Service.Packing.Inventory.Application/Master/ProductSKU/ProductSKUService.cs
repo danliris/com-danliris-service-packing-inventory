@@ -58,7 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.ProductSKU
                 form.Name,
                 form.UOMId.GetValueOrDefault(),
                 form.CategoryId.GetValueOrDefault(),
-                form.Description
+                form.Description,
+                false
                 );
 
             return _productSKURepository.InsertAsync(model);
