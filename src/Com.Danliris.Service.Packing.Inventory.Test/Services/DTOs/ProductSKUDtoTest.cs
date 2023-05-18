@@ -12,7 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DTOs
         [Fact]
         public void Should_Success_Instantiate()
         {
-            ProductSKUDto dto = new ProductSKUDto(new ProductSKUModel("code", "name", 1, 1, "description") { LastModifiedUtc =DateTime.Now}, new UnitOfMeasurementModel("unit"), new CategoryModel("name","code"));
+            ProductSKUDto dto = new ProductSKUDto(new ProductSKUModel("code", "name", 1, 1, "description", true) { LastModifiedUtc =DateTime.Now}, new UnitOfMeasurementModel("unit"), new CategoryModel("name","code"));
             Assert.Equal("name", dto.Name);
             Assert.Equal("code", dto.Code);
             Assert.Equal("description", dto.Description);

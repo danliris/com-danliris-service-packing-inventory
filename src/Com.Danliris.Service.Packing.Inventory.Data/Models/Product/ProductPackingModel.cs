@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             Description = description;
         }
         //for SO
-        public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description, string packingType)
+        public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description, string packingType, bool afterStockOpname)
         {
             ProductSKUId = productSKUId;
             UOMId = uomId;
@@ -31,6 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             Name = name;
             Description = description;
             PackingType = packingType;
+            AfterStockOpname = afterStockOpname;
         }
 
         public int ProductSKUId { get; private set; }
@@ -44,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
 
         [MaxLength(64)]
         public string PackingType { get; private set; }
+        public bool AfterStockOpname { get; private set; }
 
         public void SetCode(string code)
         {
