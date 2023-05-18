@@ -101,7 +101,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.Fabric
         {
             get
             {
-                return new ProductSKUModel("CODE", "name", 1, 1, "description");
+                return new ProductSKUModel("CODE", "name", 1, 1, "description", true);
                
             }
         }

@@ -16,7 +16,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             string name,
             int uomId,
             int categoryId,
-            string description
+            string description,
+            bool afterStockOpname
             )
         {
             Code = code;
@@ -24,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             UOMId = uomId;
             CategoryId = categoryId;
             Description = description;
+            AfterStockOpname = afterStockOpname;
         }
 
         [MaxLength(64)]
@@ -33,6 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         public int UOMId { get; private set; }
         public int CategoryId { get; private set; }
         public string Description { get; private set; }
+        public bool AfterStockOpname { get; private set; }
 
         public void SetName(string name)
         {
