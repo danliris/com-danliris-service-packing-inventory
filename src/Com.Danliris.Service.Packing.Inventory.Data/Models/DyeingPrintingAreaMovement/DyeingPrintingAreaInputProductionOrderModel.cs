@@ -37,6 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackingInstruction { get; set; }
         public string ProductionOrderType { get; set; }
         public double ProductionOrderOrderQuantity { get; set; }
+        public DateTime CreatedUtcOrderNo { get; private set; }
 
         public string Remark { get; set; }
         public string Grade { get; set; }
@@ -163,7 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             string packingInstruction, string cartNo, string buyer, string construction, string unit, string color, string motif, string uomUnit, double balance, double balanceRemains,
             bool hasOutputDocument, int buyerId, int dyeingPrintingAreaOutputProductionOrderId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin,
-            int? productTextileId, string productTextileCode, string productTextileName ) : this()
+            int? productTextileId, string productTextileCode, string productTextileName, DateTime createdUtcOrderNo) : this()
 
         {
             ProductionOrderId = productionOrderId;
@@ -207,6 +208,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
         /// <summary>
