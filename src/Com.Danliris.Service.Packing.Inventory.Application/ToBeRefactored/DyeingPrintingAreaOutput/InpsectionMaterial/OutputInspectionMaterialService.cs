@@ -329,7 +329,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             uomUnit = item.UomUnit,
                             motif = item.Motif,
                             color = item.Color,
-                            Width = item.MaterialWidth
+                            Width = item.MaterialWidth,
+                            CreatedUtcOrderNo = item.ProductionOrder.CreatedUtc
                         });
 
                         
@@ -396,7 +397,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             uomUnit = item.UomUnit,
                             motif = item.Motif,
                             color = item.Color,
-                            Width = item.MaterialWidth
+                            Width = item.MaterialWidth,
+                            CreatedUtcOrderNo = item.ProductionOrder.CreatedUtc
                         });
 
                         var modelItem = new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, viewModel.DestinationArea, false, item.ProductionOrder.Id, item.ProductionOrder.No,
@@ -616,7 +618,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.ProductionOrderId,
                     No = s.ProductionOrderNo,
                     OrderQuantity = s.ProductionOrderOrderQuantity,
-                    Type = s.ProductionOrderType
+                    Type = s.ProductionOrderType,
+                    CreatedUtc = s.CreatedUtcOrderNo
                 },
                 MaterialWidth = s.MaterialWidth,
                 MaterialOrigin = s.MaterialOrigin,
