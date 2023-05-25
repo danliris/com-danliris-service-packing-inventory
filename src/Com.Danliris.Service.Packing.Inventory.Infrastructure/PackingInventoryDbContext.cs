@@ -63,6 +63,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport.ExportCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.SalesExport;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.DetailShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.DetailLocalSalesNote;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -205,6 +207,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingLeftOverExportSalesDOItemModel> GarmentShippingLeftOverExportSalesDOItems { get; set; }
         public DbSet<GarmentShippingExportSalesNoteModel> GarmentShippingExportSalesNotes { get; set; }
         public DbSet<GarmentShippingExportSalesNoteItemModel> GarmentShippingExportSalesNoteItems { get; set; }
+        public DbSet<GarmentShippingDetailLocalSalesNoteModel> GarmentShippingDetailLocalSalesNotes { get; set; }
+        public DbSet<GarmentShippingDetailLocalSalesNoteItemModel> GarmentShippingDetailLocalSalesNoteItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -292,7 +297,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingPaymentDispositionRecapItemConfig());
 
-
             modelBuilder.ApplyConfiguration(new GarmentExportCoverLetterConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingExportSalesContractConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingExportSalesContractItemConfig());
@@ -300,6 +304,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentShippingExportSalesDOItemConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingExportSalesNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingExportSalesNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingDetailLocalSalesNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingDetailLocalSalesNoteItemConfig());
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());

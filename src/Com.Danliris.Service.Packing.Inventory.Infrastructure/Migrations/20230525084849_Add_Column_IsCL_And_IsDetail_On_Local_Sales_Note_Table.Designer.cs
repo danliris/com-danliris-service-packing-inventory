@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525084849_Add_Column_IsCL_And_IsDetail_On_Local_Sales_Note_Table")]
+    partial class Add_Column_IsCL_And_IsDetail_On_Local_Sales_Note_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1129,6 +1131,142 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("DyeingPrintingStockOpnames");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameMutationItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("DyeingPrintingStockOpnameMutationId");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
+                    b.Property<string>("TypeOut");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DyeingPrintingStockOpnameMutationId");
+
+                    b.ToTable("DyeingPrintingStockOpnameMutationItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameMutationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("BonNo");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DyeingPrintingStockOpnameMutations");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameProductionOrderModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1154,6 +1292,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("CreatedBy");
 
                     b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
 
                     b.Property<string>("DeletedAgent");
 
@@ -1231,6 +1371,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Status");
 
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
                     b.Property<string>("Unit");
 
                     b.Property<string>("UomUnit");
@@ -1244,6 +1392,133 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasIndex("DyeingPrintingStockOpnameId");
 
                     b.ToTable("DyeingPrintingStockOpnameProductionOrders");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameSummaryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<double>("BalanceEnd");
+
+                    b.Property<double>("BalanceRemains");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("CartNo");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("DyeingPrintingStockOpnameId");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<decimal>("PackagingQtyEnd");
+
+                    b.Property<decimal>("PackagingQtyRemains");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<double>("SplitQuantity");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DyeingPrintingStockOpnameSummaries");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl.CriteriaModel", b =>
@@ -4128,12 +4403,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<string>("BuyerAgentCode");
-
-                    b.Property<int?>("BuyerAgentId");
-
-                    b.Property<string>("BuyerAgentName");
-
                     b.Property<decimal>("ChargeableWeight");
 
                     b.Property<string>("CreatedAgent")
@@ -6687,6 +6956,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<bool>("AfterStockOpname");
+
                     b.Property<string>("Code")
                         .HasMaxLength(64);
 
@@ -6717,6 +6988,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("PackingSize");
 
+                    b.Property<string>("PackingType")
+                        .HasMaxLength(64);
+
                     b.Property<int>("ProductSKUId");
 
                     b.Property<int>("UOMId");
@@ -6733,6 +7007,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<bool>("AfterStockOpname");
 
                     b.Property<int>("CategoryId");
 
@@ -6815,6 +7091,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<bool>("AfterStockOpname");
+
                     b.Property<string>("Code")
                         .HasMaxLength(64);
 
@@ -6863,6 +7141,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
+
+                    b.Property<bool>("AfterStockOpname");
 
                     b.Property<string>("Code")
                         .HasMaxLength(64);
@@ -7156,6 +7436,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement.DyeingPrintingAreaOutputModel", "DyeingPrintingAreaOutput")
                         .WithMany("DyeingPrintingAreaOutputProductionOrders")
                         .HasForeignKey("DyeingPrintingAreaOutputId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameMutationItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameMutationModel", "DyeingPrintingStockOpnameMutation")
+                        .WithMany("DyeingPrintingStockOpnameMutationItems")
+                        .HasForeignKey("DyeingPrintingStockOpnameMutationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

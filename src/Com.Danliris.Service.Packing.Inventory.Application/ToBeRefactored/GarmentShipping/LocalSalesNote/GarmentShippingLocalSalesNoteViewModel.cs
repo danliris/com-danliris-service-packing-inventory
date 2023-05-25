@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Vat vat { get; set; }
         public string remark { get; set; }
         public bool isUsed { get; set; }
+        public bool isCL { get; set; }
+        public bool isDetail { get; set; }
         public string paymentType { get; set; }
         public double Amount { get; set; }
         public bool isApproveShipping { get; set; }

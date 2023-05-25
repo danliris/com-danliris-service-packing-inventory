@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public IQueryable<GarmentShippingLocalSalesNoteModel> ReadAll()
         {
-            return _dbSet.AsNoTracking();
+            return _dbSet.Include(i => i.Items).AsNoTracking();
         }
 
         public Task<GarmentShippingLocalSalesNoteModel> ReadByIdAsync(int id)
