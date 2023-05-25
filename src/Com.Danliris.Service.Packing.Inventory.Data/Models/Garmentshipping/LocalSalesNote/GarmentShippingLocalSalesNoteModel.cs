@@ -29,6 +29,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public int VatRate { get; private set; }
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
+        public bool IsCL { get; set; }
+        public bool IsDetail { get; set; }
         public bool IsApproveShipping { get; set; }
         public bool IsApproveFinance { get; set; }
         public string ApproveShippingBy { get; set; }
@@ -48,7 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         {
         }
 
-        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, int bankId, string bankName, string accountNumber, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
+        public GarmentShippingLocalSalesNoteModel(string salesContractNo, int localSalesContractId, string paymentType, string noteNo, DateTimeOffset date, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP, string kaberType, int tempo, string expenditureNo, string dispositionNo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isCL, bool isDetail, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, int bankId, string bankName, string accountNumber, ICollection<GarmentShippingLocalSalesNoteItemModel> items)
         {
             SalesContractNo = salesContractNo;
             LocalSalesContractId = localSalesContractId;
@@ -71,6 +73,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             VatRate = vatRate;
             Remark = remark;
             IsUsed = isUsed;
+            IsCL = isCL;
+            IsDetail = isDetail; 
             IsApproveShipping = isApproveShipping;
             IsApproveFinance = isApproveFinance;
             ApproveShippingBy = approveShippingBy;
@@ -154,6 +158,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (IsUsed != isUsed)
             {
                 IsUsed = isUsed;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetIsCL(bool isCL, string userName, string userAgent)
+        {
+            if (IsCL != isCL)
+            {
+                IsCL = isCL;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsDetail(bool isDetail, string userName, string userAgent)
+        {
+            if (IsDetail != isDetail)
+            {
+                IsDetail = isDetail;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

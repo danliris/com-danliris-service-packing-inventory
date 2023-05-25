@@ -250,8 +250,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase("PT. DAN LIRIS, JL. MERAPI NO. 23, KELURAHAN BANARAN, KECAMATAN GROGOL,\n" +
-                                         "SUKOHARJO 57552, INDONESIA.\n" +
+            cellLeft.Phrase = new Phrase("PT. DAN LIRIS, JL. MERAPI NO. 23, BANARAN, GROGOL,\n" +
+                                         "SUKOHARJO 57552, CENTRAL JAVA, INDONESIA.\n" +
                                          "PHONE : 0271-714400  FAX : 0271-735222", normal_font);
             detailTable.AddCell(cellLeft);
 
@@ -267,7 +267,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            cellLeft.Phrase = new Phrase($"{viewModel.Notify}", normal_font);
+            //cellLeft.Phrase = new Phrase($"{viewModel.Notify}", normal_font);
+            cellLeft.Phrase = new Phrase("-", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("BILL OF LADING", normal_font);
@@ -391,7 +392,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 "                                                                                                                                                                      Ref. No. : FM-00-SP-24-004",
                 "P.T. DAN LIRIS",
                 "SPINNING - WEAVING - FINISHING - PRINTING - GARMENT",
-                "JL. MERAPI No. 23, KEL. BANARAN, KEC. GROGOL, SUKOHARJO - INDONESIA",
+                "JL. MERAPI NO. 23, BANARAN, GROGOL, SUKOHARJO 57552, CENTRAL JAVA, INDONESIA",
                 "PO. BOX 166 SOLO 57100",
                 "                                                                                                                                                                                        Page " + (writer.PageNumber),
                // " "

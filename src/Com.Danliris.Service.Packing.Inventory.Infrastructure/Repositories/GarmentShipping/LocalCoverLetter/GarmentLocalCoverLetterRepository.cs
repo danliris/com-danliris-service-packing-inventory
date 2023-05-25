@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,17 +16,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IIdentityProvider _identityProvider;
         private readonly DbSet<GarmentShippingLocalCoverLetterModel> _dbSet;
+        private readonly DbSet<GarmentShippingLocalSalesNoteModel> _salesNoteDbSet;
 
         public GarmentLocalCoverLetterRepository(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<GarmentShippingLocalCoverLetterModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _salesNoteDbSet = dbContext.Set<GarmentShippingLocalSalesNoteModel>();
         }
 
         public Task<int> DeleteAsync(int id)
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
+            var salesNote = _salesNoteDbSet.FirstOrDefault(a => a.Id == model.LocalSalesNoteId);
+            salesNote.SetIsCL(false, _identityProvider.Username, UserAgent);
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
@@ -35,6 +40,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         public Task<int> InsertAsync(GarmentShippingLocalCoverLetterModel model)
         {
             model.FlagForCreate(_identityProvider.Username, UserAgent);
+            var salesNote = _salesNoteDbSet.FirstOrDefault(a => a.Id == model.LocalSalesNoteId);
+            salesNote.SetIsCL(true, _identityProvider.Username, UserAgent);
+
             _dbSet.Add(model);
 
             return _dbContext.SaveChangesAsync();
