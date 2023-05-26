@@ -555,7 +555,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 {
                     var i = 1;
 
-
                     if (latestProductPackingSKU != null)
                     {
 
