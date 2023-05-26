@@ -584,7 +584,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                         _unitOfWork.Commit();
                         packingCodes.Add(code);
 
-                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true);
+                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true, form.Description);
                         _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                     }
 
