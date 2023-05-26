@@ -143,7 +143,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.TrackType,
                                                                 s.TrackName,
                                                                 s.TrackBox,
-                                                                s.ProductionOrder.CreatedUtc
+                                                                s.ProductionOrder.CreatedUtc,
+                                                                s.Description.Trim()
+                                                                
 
                                                                 )).ToList(), false);
 
@@ -176,7 +178,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricSKUId = skuData.FabricSKUId,
                         PackingType = item.PackagingUnit,
                         Quantity = (int)item.PackagingQty,
-                        Length = item.PackagingLength
+                        Length = item.PackagingLength,
+                        Description = item.Description
                     });
 
                     //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
@@ -229,7 +232,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackType,
                                                                 item.TrackName,
                                                                 item.TrackBox,
-                                                                item.CreatedUtcOrderNo
+                                                                item.CreatedUtcOrderNo,
+                                                                item.Description.Trim()
 
                                                                 );
 
@@ -298,7 +302,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackType,
                                                                 item.TrackName,
                                                                 item.TrackBox,
-                                                                item.ProductionOrder.CreatedUtc
+                                                                item.ProductionOrder.CreatedUtc,
+                                                                item.Description.Trim()
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -327,7 +332,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricSKUId = skuData.FabricSKUId,
                         PackingType = modelItem.PackagingUnit,
                         Quantity = (int)modelItem.PackagingQty,
-                        Length = modelItem.PackagingLength
+                        Length = modelItem.PackagingLength,
+                        Description = modelItem.Description
                     });
 
                     //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
@@ -381,7 +387,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackType,
                                                                 item.TrackName,
                                                                 item.TrackBox,
-                                                                item.ProductionOrder.CreatedUtc
+                                                                item.ProductionOrder.CreatedUtc,
+                                                                item.Description.Trim()
+                                                                
 
                                                                 );
 
@@ -538,7 +546,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.TrackType,
                 s.TrackName,
                 s.TrackBox,
-                s.ProductionOrder.CreatedUtc)
+                s.ProductionOrder.CreatedUtc,
+                s.Description)
                 {
                     Id = s.Id
                 }).ToList(), false);
@@ -715,7 +724,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Type = s.TrackType,
                         Box = s.TrackBox
                     },
-                    ProductPackingCode = s.ProductPackingCode
+                    ProductPackingCode = s.ProductPackingCode,
+                    Description = s.Description
                     
                 }).ToList()
             };
@@ -1822,7 +1832,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Type = e.TrackType,
                     Name = e.TrackName,
                     Box = e.TrackBox
-                }
+                },
+                Description = e.Description
 
             }).ToList();
 
@@ -1881,6 +1892,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 OutQty = 0,
                 AdjOutQty = 0,
                 Total = d.Sum(s => s.Balance),
+                Description = d.First().Description
 
 
             }); ;
@@ -1937,6 +1949,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 OutQty = d.Sum(s => s.Balance),
                 AdjOutQty = 0,
                 Total = d.Sum(s => s.Balance) * -1,
+                Description = d.First().Description
 
 
             });
@@ -1993,7 +2006,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 OutQty = 0,
                 AdjOutQty = d.Sum(s => s.Balance),
                 Total = d.Sum(s => s.Balance) * -1,
-
+                Description = d.First().Description
 
             });
 
@@ -2028,6 +2041,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 OutQty = 0,
                 AdjOutQty=0,
                 Total = d.Sum(s => s.InQty) - d.Sum(s => s.OutQty) - d.Sum(s => s.AdjOutQty),
+                Description = d.First().Description
             });
 
 
@@ -2066,6 +2080,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 OutQty = d.Sum(s => s.OutQty),
                 AdjOutQty = d.Sum( s=> s.AdjOutQty),
                 Total = d.Sum(s => s.Total),
+                Description = d.First().Description
 
             }).Where(s => s.SaldoBegin != 0 || s.InQty != 0 || s.OutQty != 0 || s.Total != 0).ToList();
 
@@ -2092,11 +2107,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Keluar", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Adj Keluar", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
             
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "",/*"",*/ 0, 0, 0, 0, 0 );
+                dt.Rows.Add("", "", "", "", "", "", "", "",/*"",*/ 0, 0, 0, 0, 0,"" );
             }
             else
             {
@@ -2110,7 +2126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                    // var sldbegin = item.SaldoBegin;
                     //saldoBegin =+ item.SaldoBegin;
                     dt.Rows.Add(item.ProductionOrderNo, item.BuyerName, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingUnit, item.ProductPackingCode,
-                        /*item.TrackName,*/item.SaldoBegin, item.InQty, item.OutQty, item.AdjOutQty, item.Total);
+                        /*item.TrackName,*/item.SaldoBegin, item.InQty, item.OutQty, item.AdjOutQty, item.Total, item.Description);
                     
                     saldoBegin += item.SaldoBegin;
                     inQty += item.InQty;
@@ -2216,7 +2232,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              DateIn = b.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
                              PackingLength = b.PackagingLength,
-                             InQty = (double)b.PackagingQty * b.PackagingLength
+                             InQty = (double)b.PackagingQty * b.PackagingLength,
+                             Description = b.Description.Trim()
                          }).ToList();
             var result = query.GroupBy(s => new { s.ProductPackingCode, s.TrackId }).Select(d => new ReportSOViewModel()
             {
@@ -2236,7 +2253,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DateIn = d.First().DateIn,
                 PackagingQty = d.Sum(a => a.PackagingQty),
                 PackingLength = d.First().PackingLength,
-                InQty = d.Sum(a => a.InQty)
+                InQty = d.Sum(a => a.InQty),
+                Description = d.First().Description
             }).OrderBy(o => o.TrackId).ThenBy(o => o.ProductionOrderId).ToList();
 
 
@@ -2261,11 +2279,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Pack", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Satuan", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Total", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
 
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, "", 0);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", 0, "", 0, "");
             }
             else
             {
@@ -2280,13 +2299,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     //dt.Rows.Add(item.BonNo, item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.PackagingUnit,
                     //    item.Grade, item.Color, item.TrackName, item.PackagingQty, item.PackingLength, item.InQty);
                     dt.Rows.Add(item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.Construction, item.Color, item.Motif,
-                        item.Grade, item.TrackName,  item.PackagingUnit, item.PackagingQty, item.PackingLength, item.InQty);
+                        item.Grade, item.TrackName,  item.PackagingUnit, item.PackagingQty, item.PackingLength, item.InQty, item.Description);
 
                     packagingQty += item.PackagingQty;
                     total += item.InQty;
                 }
 
-                dt.Rows.Add("", "", "", "", "", "", "", "", "", packagingQty, "", total);
+                dt.Rows.Add("", "", "", "", "", "", "", "", "", packagingQty, "", total,"");
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);

@@ -135,7 +135,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                     1,
                     1,
                     "productPackingCode",
-                    "typeOut"
+                    "typeOut",
+                    "Description"
 
                     );
 

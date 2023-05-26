@@ -25,6 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public double PackagingLength { get; set; }
         public string Construction { get; set; }
         public string Motif { get; set; }
+        public string Description { get; set; }
     }
 
 

@@ -36,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Unit { get; set; }
         public string UomUnit { get; set; }
         public string Remark { get; set; }
+        public string Description { get; set; }
         public double PreviousBalance { get; set; }
         public decimal PreviousQtyPacking { get; set; }
         public string ProductionOrderNo { get; set; }

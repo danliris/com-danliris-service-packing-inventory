@@ -70,6 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string ProductPackingCode { get; set; }
         
         public string TrackName { get; set; }
+        public string Description { get; set; }
         
     }
 }
