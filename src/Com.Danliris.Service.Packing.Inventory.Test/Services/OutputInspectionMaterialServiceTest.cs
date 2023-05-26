@@ -1067,7 +1067,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(Model);
 
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a", DateTime.Now));
 
 
             var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();
@@ -1094,7 +1094,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(ModelAdj);
 
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a", DateTime.Now));
 
 
 
@@ -1125,7 +1125,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                 .ReturnsAsync(model);
 
             sppRepoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a"));
+                .ReturnsAsync(new DyeingPrintingAreaInputProductionOrderModel(Model.Area, 1, "no", "type", 1, "ins", "cat", "buyer", "const", "uin", "col", "mot", "unit", 1, 0, true, 1, 0, 1, "name", 1, "name", "1", 1, "a", 1, "a", 1, "a",DateTimeOffset.Now, "a", 1, "a", "a", DateTime.Now));
 
 
             var areaReferenceMock = new Mock<IDyeingPrintingAreaReferenceRepository>();

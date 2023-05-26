@@ -45,5 +45,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTimeOffset DateOut { get; set; }
         public ProductTextile ProductTextile { get; set; }
 
+
     }
 }
