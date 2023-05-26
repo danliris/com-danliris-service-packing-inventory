@@ -49,5 +49,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string TypeOut { get;  set; }
 
         public decimal SendQuantity { get;  set; }
+        public string Description { get; set; }
     }
 }

@@ -130,7 +130,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                             s.ProductPackingId,
                                                                             s.FabricPackingId,
                                                                             s.ProductPackingCode,
-                                                                            typeOut
+                                                                            typeOut,
+                                                                            s.Description
                                                                             
                                                                             )).ToList());
                 result = await _stockOpnameMutationRepository.InsertAsync(model);
@@ -170,7 +171,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                             item.ProductPackingId,
                                                                             item.FabricPackingId,
                                                                             item.ProductPackingCode,
-                                                                            typeOut
+                                                                            typeOut,
+                                                                            item.Description
+                                                                            
                         );
 
                     modelItem.DyeingPrintingStockOpnameMutationId = model.Id;
@@ -319,7 +322,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     FabricPackingId = s.FabricPackingId,
                     ProductPackingCode = s.ProductPackingCode,
                     TypeOut = s.TypeOut,
-                    SendQuantity = s.PackagingQty
+                    SendQuantity = s.PackagingQty,
+                    Description = s.Description
+                    
                 }).ToList()    
             };
 
@@ -413,7 +418,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              DateIn = b.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
                              PackingLength = b.PackagingLength,
-                             InQty = (double)b.PackagingQty * b.PackagingLength
+                             InQty = (double)b.PackagingQty * b.PackagingLength,
+                             Description = b.Description.Trim()
                          }).ToList();
             var result = query.GroupBy(s => new { s.ProductPackingCode, s.TrackId }).Select(d => new ReportSOViewModel()
             {
@@ -433,7 +439,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DateIn = d.First().DateIn,
                 PackagingQty = d.Sum(a => a.PackagingQty),
                 PackingLength = d.First().PackingLength,
-                InQty = d.Sum(a => a.InQty)
+                InQty = d.Sum(a => a.InQty),
+                Description = d.First().Description
             }).OrderBy(o => o.TrackId).ThenBy(o => o.ProductionOrderId).ToList();
 
             return result;
