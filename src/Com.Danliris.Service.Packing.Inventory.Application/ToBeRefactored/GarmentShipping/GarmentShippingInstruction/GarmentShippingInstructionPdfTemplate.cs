@@ -267,8 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             detailTable.AddCell(cellLeft);
             cellLeft.Phrase = new Phrase(":", normal_font);
             detailTable.AddCell(cellLeft);
-            //cellLeft.Phrase = new Phrase($"{viewModel.Notify}", normal_font);
-            cellLeft.Phrase = new Phrase("-", normal_font);
+            cellLeft.Phrase = new Phrase($"{viewModel.Notify}", normal_font);
             detailTable.AddCell(cellLeft);
 
             cellLeft.Phrase = new Phrase("BILL OF LADING", normal_font);

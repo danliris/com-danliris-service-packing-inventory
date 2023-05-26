@@ -126,5 +126,45 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.NotNull(response);
         }
+
+        [Fact]
+        public void GetGenerateExcelDetail_Success()
+        {
+            var serviceMock = new Mock<IGarmentLocalSalesOmzetUnPaidService>();
+            serviceMock
+                .Setup(s => s.GenerateExcelDetail(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            var response = controller.GetXlsDetail(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetGenerateExcelDetail_Error()
+        {
+            var serviceMock = new Mock<IGarmentLocalSalesOmzetUnPaidService>();
+            serviceMock
+                .Setup(s => s.GenerateExcelDetail(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            var response = controller.GetXlsDetail(null, null);
+
+            Assert.NotNull(response);
+        }
     }
 }
