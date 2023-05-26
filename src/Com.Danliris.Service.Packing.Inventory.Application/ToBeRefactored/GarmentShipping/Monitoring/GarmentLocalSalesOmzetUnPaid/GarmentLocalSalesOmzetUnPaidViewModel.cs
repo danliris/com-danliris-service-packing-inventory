@@ -24,4 +24,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal PPN { get; set; }
         public decimal Total { get; set; }
     }
+
+    public class GarmentDetailLocalSalesOmzetUnPaidViewModel
+    {
+        public string LSNo { get; set; }
+        public DateTimeOffset LSDate { get; set; }
+        public DateTimeOffset DueDate { get; set; }
+        public string TransactionCode { get; set; }
+        public string TransactionName { get; set; }
+        public string BuyerCode { get; set; }
+        public string BuyerName { get; set; }
+        public string UnitCode { get; set; }
+        public string UnitName { get; set; }
+        public double Quantity { get; set; }
+        public string UomUnit { get; set; }
+        public string CurrencyCode { get; set; }
+        public double Amount { get; set; }
+        public int Tempo { get; set; }
+    }
 }
