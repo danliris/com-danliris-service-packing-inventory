@@ -7,5 +7,6 @@
         public int Quantity { get; set; }
         public string PackingType { get; set; }
         public double Length { get; set; }
+        public string Description { get; set; }
     }
 }

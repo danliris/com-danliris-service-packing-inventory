@@ -35,7 +35,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             int uomId,
             double packingSize,
             string packingType,
-            bool afterStockOpname
+            bool afterStockOpname,
+            string description
             )
         {
             Code = code;
@@ -46,6 +47,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             PackingSize = packingSize;
             PackingType = packingType;
             AfterStockOpname = afterStockOpname;
+            Description = description;
         }
 
         [MaxLength(64)]
@@ -58,5 +60,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
         [MaxLength(64)]
         public string PackingType { get; private set; }
         public bool AfterStockOpname { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
 
 
         public double SplitQuantity { get; set; }
+        public string Description { get; set; }
 
 
         #region Product SKU Packing
@@ -77,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo)
+             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, string description)
         {
             Balance = balance;
             BalanceRemains = balanceRemains;
@@ -96,7 +97,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             PackagingQty = packagingQty;
             PackagingQtyRemains = packagingQtyRemains;
             PackagingLength = packagingLength;
-
             PackagingType = packagingType;
             PackagingUnit = packagingUnit;
             ProductionOrderId = productionOrderId;
@@ -121,6 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             TrackName = trackName;
             TrackBox = trackBox;
             CreatedUtcOrderNo = createdUtcOrderNo;
+            Description = description;
         }
 
 
@@ -128,7 +129,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, double splitQuantity)
+             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, double splitQuantity, string description)
         {
             Balance = balance;
             BalanceRemains = balanceRemains;
@@ -147,7 +148,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             PackagingQty = packagingQty;
             PackagingQtyRemains = packagingQtyRemains;
             PackagingLength = packagingLength;
-
             PackagingType = packagingType;
             PackagingUnit = packagingUnit;
             ProductionOrderId = productionOrderId;
@@ -173,6 +173,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             TrackBox = trackBox;
             CreatedUtcOrderNo = createdUtcOrderNo;
             SplitQuantity = splitQuantity;
+            Description = description;
         }
 
 

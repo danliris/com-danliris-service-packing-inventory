@@ -555,12 +555,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 {
                     var i = 1;
 
+
                     if (latestProductPackingSKU != null)
                     {
 
 
-                        var rollNumber = latestProductPackingSKU.Code.Substring(latestProductPackingSKU.Code.Count() - 4);
-                        i = int.Parse(rollNumber) + 1;
+                         if (latestProductPacking.Code.Count() == 12)
+                         {
+                            var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
+                            i = int.Parse(rollNumber) + 1;
+                         }
+                         else
+                         {
+                            var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
+                            i = int.Parse(rollNumber) + 1;
+                         }
 
 
                     }
@@ -587,6 +596,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     packingCodes.Add(latestProductPacking.Code);
                     packingModel.Id = latestProductPacking.Id;
                     //packingModel.Code = latestProductPacking.Code;
+
                 }
 
                 //if (packingCodes.Count < 1 )
@@ -631,7 +641,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             {
 
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                var description = (form.Description.ToLower()).Replace(" ", "");
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "").Contains(description)).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType).OrderByDescending(entity => entity.Id).FirstOrDefault();
+
+                //var lower = latestProductPacking.Description.ToLower().Replace(" ", "");
                 var latestProductPackingSKU = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) ).OrderByDescending(entity => entity.Id).FirstOrDefault();
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
@@ -656,12 +670,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     {
                         var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                         var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "", form.PackingType, true);
+                        var descriptionIn = form.Description.Trim();
+                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, form.Description.Trim(), form.PackingType, true);
                         _unitOfWork.ProductPackings.Insert(packingModel);
                         _unitOfWork.Commit();
                         packingCodes.Add(code);
 
-                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true);
+                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true, form.Description.Trim());
                         _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                     }
 

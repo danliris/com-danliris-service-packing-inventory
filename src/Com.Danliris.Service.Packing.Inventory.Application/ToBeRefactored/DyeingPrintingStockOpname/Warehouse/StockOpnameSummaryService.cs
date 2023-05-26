@@ -84,6 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 PackagingQty = b.PackagingQtyRemains,
                 PackagingLength = b.PackagingLength,
                 Balance = b.BalanceRemains,
+                Description = b.Description
 
             }).ToList();
 
@@ -191,7 +192,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductSKUId = model.ProductSKUId,
                 ProductSKUCode = model.ProductSKUCode,
                 TrackName = model.TrackType + " - "+ model.TrackName +" - "+ model.TrackBox,
-                PackagingLength = model.PackagingLength
+                PackagingLength = model.PackagingLength,
+                Description = model.Description
+                
             };
 
             return vm;
@@ -264,7 +267,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Name,
                                                             viewModel.Items[i].Track.Box,
                                                             dbModel.CreatedUtcOrderNo,
-                                                            dbModel.SplitQuantity + viewModel.Items[i].PackingQtyDiff
+                                                            dbModel.SplitQuantity + viewModel.Items[i].PackingQtyDiff,
+                                                            dbModel.Description
 
                                                             );
 
@@ -372,7 +376,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Name,
                                                             viewModel.Items[i].Track.Box,
                                                             dbModel.CreatedUtcOrderNo,
-                                                            modelSummary.SplitQuantity 
+                                                            modelSummary.SplitQuantity,
+                                                            dbModel.Description
 
                                                             );
 
@@ -420,7 +425,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Type,
                                                             viewModel.Items[i].Track.Name,
                                                             viewModel.Items[i].Track.Box,
-                                                            dbModel.CreatedUtcOrderNo
+                                                            dbModel.CreatedUtcOrderNo,
+                                                            dbModel.Description
 
                                                             );
 
@@ -455,11 +461,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Satuan", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Total", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
 
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "",  0, 0, 0);
+                dt.Rows.Add("", "", "", "", "",  0, 0, 0, "");
             }
             else
             {
@@ -469,7 +476,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                    
                     dt.Rows.Add(item.ProductionOrderNo, item.ProductPackingCode, item.Construction, 
-                        item.Grade, item.PackagingUnit, item.Track, item.PackagingQty, item.PackagingLength, item.Balance);
+                        item.Grade, item.PackagingUnit, item.Track, item.PackagingQty, item.PackagingLength, item.Balance, item.Description);
 
                     
                 }

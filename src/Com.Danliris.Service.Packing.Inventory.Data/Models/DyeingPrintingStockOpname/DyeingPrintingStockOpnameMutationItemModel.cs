@@ -42,13 +42,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
 
         public string ProductPackingCode { get; private set; }
         public string TypeOut { get; private set; }
+        public string Description { get; set; }
 
         public DyeingPrintingStockOpnameMutationModel DyeingPrintingStockOpnameMutation { get; set; }
 
         public DyeingPrintingStockOpnameMutationItemModel(double balance,  string color, string construction,  string grade,  string motif,  
             decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,long productionOrderId, string productionOrderNo, 
             string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName,string remark, string unit, string uomUnit, int trackId, string trackType, string trackName, string trackBox, int productSKUId, int fabricSKUId, string productSKUCode, int productPackingId,
-            int fabricPackingId, string productPackingCode, string typeOut)
+            int fabricPackingId, string productPackingCode, string typeOut, string description)
         {
             Balance = balance;
             Color = color;
@@ -79,6 +80,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             FabricPackingId = fabricPackingId;
             ProductPackingCode = productPackingCode;
             TypeOut = typeOut;
+            Description = description;
         }
 
     }

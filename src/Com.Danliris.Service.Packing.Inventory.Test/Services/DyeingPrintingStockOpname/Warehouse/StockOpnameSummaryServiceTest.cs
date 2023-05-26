@@ -88,7 +88,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingSto
                     "trackType",
                     "trackName",
                     "trackBox",
-                    DateTime.Now
+                    DateTime.Now,
+                    "Description"
 
 
                     );
