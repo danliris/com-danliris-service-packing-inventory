@@ -633,7 +633,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
                 var description = (form.Description.ToLower()).Replace(" ", "");
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "").Contains(description)).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "").Contains(description)).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "") == description).OrderByDescending(entity => entity.Id).FirstOrDefault();
                 //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType).OrderByDescending(entity => entity.Id).FirstOrDefault();
 
                 //var lower = latestProductPacking.Description.ToLower().Replace(" ", "");
