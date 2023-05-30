@@ -63,8 +63,12 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport.ExportCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.SalesExport;
+
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.DetailShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.DetailLocalSalesNote;
+
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse;
+
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -86,6 +90,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<DyeingPrintingStockOpnameProductionOrderModel> DyeingPrintingStockOpnameProductionOrders { get; set; }
         public DbSet<DyeingPrintingStockOpnameModel> DyeingPrintingStockOpnames { get; set; }
+        public DbSet<DPWarehouseInputModel> DPWarehouseInputs { get; set; }
+        
+        public DbSet<DPWarehouseInputItemModel> DPWarehouseInputItems { get; set; }
+        public DbSet<DPWarehouseOutputModel> DPWarehouseOutputs { get; set; }
+        public DbSet<DPWarehouseOutputItemModel> DPWarehouseOutputItems { get; set; }
+        public DbSet<DPWarehouseMovementModel> DPWarehouseMovements { get; set; }
+        public DbSet<DPWarehouseSummaryModel> DPWarehouseSummaries { get; set; }
 
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
         public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
@@ -336,6 +347,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DyeingPrintingStockOpnameMutationModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingStockOpnameMutationItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DyeingPrintingStockOpnameSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseInputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseInputItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseOutputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseOutputItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPWarehouseSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);
