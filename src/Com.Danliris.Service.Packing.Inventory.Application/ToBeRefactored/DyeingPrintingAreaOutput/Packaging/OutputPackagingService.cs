@@ -892,7 +892,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricSKUId = item.FabricSKUId,
                         PackingType = item.PackagingUnit,
                         Quantity = (int)item.PackagingQTY,
-                        Length = item.PackingLength
+                        Length = item.PackingLength,
+                        Description = item.Keterangan
                     });
 
                     string packingCodes = string.Join(',', packingData.ProductPackingCodes);
