@@ -642,11 +642,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
                 var description = form.Description != null ? (form.Description.ToLower()).Replace(" ", "") : null;
                 //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "").Contains(description)).OrderByDescending(entity => entity.Id).FirstOrDefault();
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "") == description).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "") == description && entity.AfterStockOpname).OrderByDescending(entity => entity.Id).FirstOrDefault();
                 //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType).OrderByDescending(entity => entity.Id).FirstOrDefault();
 
                 //var lower = latestProductPacking.Description.ToLower().Replace(" ", "");
-                var latestProductPackingSKU = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) ).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                var latestProductPackingSKU = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.AfterStockOpname).OrderByDescending(entity => entity.Id).FirstOrDefault();
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
                 var packingCodes = new List<string>();
