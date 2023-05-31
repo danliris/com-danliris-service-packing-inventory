@@ -233,7 +233,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.CreatedUtcOrderNo,
-                                                                item.Description.Trim()
+                                                                item.Description == null ? null : item.Description.Trim()
 
                                                                 );
 
@@ -303,7 +303,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.ProductionOrder.CreatedUtc,
-                                                                item.Description.Trim()
+                                                                item.Description == null? null: item.Description.Trim()
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -388,8 +388,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.ProductionOrder.CreatedUtc,
-                                                                item.Description.Trim()
-                                                                
+                                                                item.Description == null ? null : item.Description.Trim()
+
 
                                                                 );
 

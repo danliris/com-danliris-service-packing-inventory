@@ -670,13 +670,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     {
                         var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                         var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                        var descriptionIn = form.Description.Trim();
-                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, form.Description.Trim(), form.PackingType, true);
+                        var descriptionIn = form.Description == null ? null : form.Description.Trim();
+                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, descriptionIn, form.PackingType, true);
                         _unitOfWork.ProductPackings.Insert(packingModel);
                         _unitOfWork.Commit();
                         packingCodes.Add(code);
 
-                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true, form.Description.Trim());
+                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true, descriptionIn);
                         _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                     }
 
