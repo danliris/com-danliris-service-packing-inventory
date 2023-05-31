@@ -283,6 +283,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentDebiturBalanceRepository, GarmentDebiturBalanceRepository>();
 
             services.AddTransient<IGarmentDraftPackingListItemRepository, GarmentDraftPackingListItemRepository>();
+            services.AddTransient<IDyeingPrintingStockOpnameMutationRepository, DyeingPrintingStockOpnameMutationRepository>();
+            services.AddTransient<IDyeingPrintingStockOpnameMutationItemRepository, DyeingPrintingStockOpnameMutationItemRepository>();
+            
 
 
             services.AddTransient<IGarmentShippingExportSalesContractRepository, GarmentShippingExportSalesContractRepository>();
@@ -291,10 +294,17 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingExportSalesNoteRepository, GarmentShippingExportSalesNoteRepository>();
             services.AddTransient<IGarmentShippingExportSalesNoteItemRepository, GarmentShippingExportSalesNoteItemRepository>();
 
+
             //services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
 
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteRepository, GarmentShippingDetailLocalSalesNoteRepository>();
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteItemRepository, GarmentShippingDetailLocalSalesNoteItemRepository>();
+
+            services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
+
+
+            services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
+
             #endregion
 
             #region Service
@@ -411,6 +421,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentOmzetMonthlyByMarketingService, GarmentOmzetMonthlyByMarketingService>();
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
+            services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
+            services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
 
             services.AddTransient<IGarmentShippingExportSalesContractService, GarmentShippingExportSalesContractService>();
             services.AddTransient<IGarmentExportCoverLetterService, GarmentExportCoverLetterService>();

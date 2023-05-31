@@ -100,7 +100,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.Inventory
                 };
                 var products = new List<ProductSKUModel>()
                 {
-                    new ProductSKUModel("code","name",0,0,"description")
+                    new ProductSKUModel("code","name",0,0,"description", true)
                 };
                 var uoms = new List<UnitOfMeasurementModel>()
                 {
