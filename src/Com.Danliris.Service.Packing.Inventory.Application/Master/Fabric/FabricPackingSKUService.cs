@@ -312,8 +312,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 processTypeId = 0;
             }
 
-            //var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
-            var yearCode = CodeConstructionHelper.GetYearCode(form.CreatedUtcOrderNo.Year);
+            var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
+            //var yearCode = CodeConstructionHelper.GetYearCode(form.CreatedUtcOrderNo.Year);
             code += yearCode;
 
             var sppNo = form.ProductionOrderNo.Substring(form.ProductionOrderNo.Length - 4);
@@ -335,7 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.UOM);
             var category = _dbContext.IPCategories.FirstOrDefault(entity => entity.Name == "FABRIC");
 
-            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Code == code && entity.AfterStockOpname);
+            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Code == code);
 
 
             var model = new ProductSKUModel();
@@ -344,13 +344,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
             {
                 if (fabric == null)
                 {
-                    model = new ProductSKUModel(code, code, uom.Id, category.Id, "", true);
+                    model = new ProductSKUModel(code, code, uom.Id, category.Id, "", false);
                     _unitOfWork.ProductSKUs.Insert(model);
                     _unitOfWork.Commit();
 
                     productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
                         form.materialId, form.materialName, form.materialConstructionId, form.materialConstructionName,
-                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, true);
+                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, false);
 
                     _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                     _unitOfWork.Commit();
@@ -530,7 +530,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
-            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId && entity.AfterStockOpname);
+            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId );
 
             //if (fabric.ProductSKUId == 0)
             //{
@@ -579,12 +579,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     {
                         var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                         var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "", form.PackingType, true);
+                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "", form.PackingType, false);
                         _unitOfWork.ProductPackings.Insert(packingModel);
                         _unitOfWork.Commit();
                         packingCodes.Add(code);
 
-                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, true, form.Description);
+                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false, form.Description);
                         _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                     }
 
