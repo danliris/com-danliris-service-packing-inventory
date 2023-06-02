@@ -154,6 +154,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovem
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentOmzetMonthlyByMarketing;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.OmzetYearMarketing;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.FabricQualityControlReport;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -402,7 +403,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
 
             services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
+
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
+            services.AddTransient<IFabricQualityControlReportService, FabricQualityControlReportService>();
 
             #endregion
 
