@@ -544,59 +544,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
             if (fabric != null)
             {
-
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
                 var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Id).FirstOrDefault();
-                var latestProductPackingSKU = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Id).FirstOrDefault();
+
+                var i = 1;
+                if (latestProductPacking != null)
+                {
+                    if (latestProductPacking.Code.Count() == 12)
+                    {
+                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
+                        i = int.Parse(rollNumber) + 1;
+                    }
+                    else
+                    {
+                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
+                        i = int.Parse(rollNumber) + 1;
+                    }
+
+                }
+
                 var packingModel = new ProductPackingModel();
                 var fabricPackingProduct = new FabricProductPackingModel();
                 var packingCodes = new List<string>();
-                if (latestProductPacking == null)
+                var limit = (i - 1) + form.Quantity;
+                for (; i <= limit; i++)
                 {
-                    var i = 1;
+                    var code = productSKU.Code + i.ToString().PadLeft(5, '0');
+                    var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
+                    packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
+                    _unitOfWork.ProductPackings.Insert(packingModel);
+                    _unitOfWork.Commit();
+                    packingCodes.Add(code);
 
-                    if (latestProductPackingSKU != null)
-                    {
-
-
-                         if (latestProductPacking.Code.Count() == 12)
-                         {
-                            var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
-                            i = int.Parse(rollNumber) + 1;
-                         }
-                         else
-                         {
-                            var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
-                            i = int.Parse(rollNumber) + 1;
-                         }
-
-
-                    }
-
-
-                    var limit = (i - 1) + 1;
-                    for (; i <= limit; i++)
-                    {
-                        var code = productSKU.Code + i.ToString().PadLeft(4, '0');
-                        var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "", form.PackingType, false);
-                        _unitOfWork.ProductPackings.Insert(packingModel);
-                        _unitOfWork.Commit();
-                        packingCodes.Add(code);
-
-                        fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false, form.Description);
-                        _dbContext.FabricProductPackings.Add(fabricPackingProduct);
-                    }
-
-                    _dbContext.SaveChanges();
+                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length);
+                    _dbContext.FabricProductPackings.Add(fabricPackingProduct);
                 }
-                else
-                {
-                    packingCodes.Add(latestProductPacking.Code);
-                    packingModel.Id = latestProductPacking.Id;
-                    //packingModel.Code = latestProductPacking.Code;
 
-                }
+                _dbContext.SaveChanges();
 
                 //if (packingCodes.Count < 1 )
                 //{
@@ -608,9 +592,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 //    throw new ServiceValidationException(validationContext, errorResult);
                 //}
 
-                //return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
-                return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingCodes.First(), ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
-
+                return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
             }
             else
             {
