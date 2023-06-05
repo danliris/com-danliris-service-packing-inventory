@@ -144,8 +144,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.TrackName,
                                                                 s.TrackBox,
                                                                 s.ProductionOrder.CreatedUtc,
-                                                                s.Description.Trim()
-                                                                
+                                                                s.Description == null ? null : s.Description.Trim()
+
 
                                                                 )).ToList(), false);
 
