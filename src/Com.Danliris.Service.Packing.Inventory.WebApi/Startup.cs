@@ -161,6 +161,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.DetailLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.DetailShippingLocalSalesNote;
 
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
+
+
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
     public class Startup
@@ -411,6 +415,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentOmzetMonthlyByMarketingService, GarmentOmzetMonthlyByMarketingService>();
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
+            services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
+            services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
+            services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
+            services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
 
             services.AddTransient<IGarmentShippingExportSalesContractService, GarmentShippingExportSalesContractService>();
             services.AddTransient<IGarmentExportCoverLetterService, GarmentExportCoverLetterService>();
