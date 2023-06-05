@@ -75,6 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 buyer = new Buyer
                 {
                     Id = model.BuyerId,
+                    Code = model.BuyerCode,
                     Name = model.BuyerName,
                     Address = model.BuyerAddress
                 },
@@ -82,7 +83,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     id = model.BankAccountId,
                     accountName = model.BankAccountName,
-                    bankAddress = model.BankAddress
+                    bankAddress = model.BankAddress,
+                    AccountNumber = model.BankAccountNo,
                 },
                 creditInterest = model.CreditInterest,
                 bankCharges = model.BankCharges,
@@ -105,7 +107,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount();
-            GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark);
+            GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.AccountNumber, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark);
 
             return await _repository.InsertAsync(model);
         }
@@ -180,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount();
-            GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark);
+            GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.AccountNumber, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark);
 
             return await _repository.UpdateAsync(id, model);
         }
