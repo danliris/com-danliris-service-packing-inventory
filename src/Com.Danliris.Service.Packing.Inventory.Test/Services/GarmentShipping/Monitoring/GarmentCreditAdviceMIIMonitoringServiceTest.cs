@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice4MII;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
@@ -14,7 +15,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.Monitoring
 {
-    public class GarmentCreditAdviceMonitoringServiceTest
+    public class GarmentCreditAdviceMIIMonitoringServiceTest
     {        
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingCreditAdviceRepository carepository)
         {
@@ -28,9 +29,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             return spMock;
         }
 
-        protected GarmentCreditAdviceMonitoringService GetService(IServiceProvider serviceProvider)
+        protected GarmentCreditAdviceMIIMonitoringService GetService(IServiceProvider serviceProvider)
         {
-            return new GarmentCreditAdviceMonitoringService(serviceProvider);
+            return new GarmentCreditAdviceMIIMonitoringService(serviceProvider);
         }
 
         [Fact]
@@ -44,7 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetReportData(model.BuyerName, null, null, DateTime.MinValue, DateTime.MaxValue, 0);
+            var result = service.GetReportData(DateTime.MinValue, DateTime.MaxValue, 0);
 
             Assert.NotEmpty(result.ToList());
         }

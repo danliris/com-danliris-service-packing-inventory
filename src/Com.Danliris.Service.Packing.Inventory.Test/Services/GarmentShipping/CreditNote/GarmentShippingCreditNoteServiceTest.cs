@@ -64,7 +64,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         [Fact]
         public void Read_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 0, null, null, 1, new List<GarmentShippingNoteItemModel>());
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 0, null, null, null, 1, new List<GarmentShippingNoteItemModel>());
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadAll())
@@ -81,7 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadById_Success()
         {
             var items = new List<GarmentShippingNoteItemModel>() { new GarmentShippingNoteItemModel("", 1, "", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 0, null, null, 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 0, null, null, null, 1, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_USD()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -154,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_USD1()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.50) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.50, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1.50, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -182,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_USD2()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.18) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.18, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1.18, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -210,7 +210,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_USD3()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 2, "USD", 1.74) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1.74, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "","", 1.74, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -238,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Success_IDR()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 1, "IDR", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))
@@ -266,7 +266,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
         public async Task ReadPdfById_Master_Null()
         {
             var items = new HashSet<GarmentShippingNoteItemModel> { new GarmentShippingNoteItemModel("", 1, "", 1) };
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", 1, items);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.CN, "", DateTimeOffset.Now, 1, "", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, items);
 
             var repoMock = new Mock<IGarmentShippingNoteRepository>();
             repoMock.Setup(s => s.ReadByIdAsync(It.IsAny<int>()))

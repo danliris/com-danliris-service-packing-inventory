@@ -101,7 +101,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var currencyFilters = Query
                            .GroupBy(o => new { o.PEBDate, o.CurrencyCode })
-                           .Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
+                           //.Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
+                           .Select(o => new CurrencyFilter { date = o.Key.PEBDate.AddHours(offset).Date, code = o.Key.CurrencyCode })
                            .ToList();
 
             var currencies = GetCurrencies(currencyFilters).Result;
@@ -110,7 +111,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             foreach (var data in Query)
             {
-                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+               // rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date.Date == data.PEBDate.AddHours(offset).Date).Select(s => s.rate).LastOrDefault());
 
                 data.Rate = rate;
                 data.AmountIDR = rate * data.Amount;

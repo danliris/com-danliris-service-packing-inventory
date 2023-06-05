@@ -126,5 +126,82 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.GarmentShippin
 
             Assert.NotNull(response);
         }
+        //
+        [Fact]
+        public void GetReportDataMII_Ok()
+        {
+            var serviceMock = new Mock<IGarmentDebitNoteMonitoringService>();
+            serviceMock
+                .Setup(s => s.GetReportDataMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new ListResult<GarmentDebitNoteMIIMonitoringViewModel>(new List<GarmentDebitNoteMIIMonitoringViewModel>() { new GarmentDebitNoteMIIMonitoringViewModel() }, 1, 1, 1));
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            var response = controller.GetReportMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
+
+            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void Get_Exception_MII_InternalServerError()
+        {
+            var serviceMock = new Mock<IGarmentDebitNoteMonitoringService>();
+            serviceMock
+                .Setup(s => s.GetReportDataMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Throws(new Exception());
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            var response = controller.GetReportMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>(), "{}");
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
+        }
+
+        [Fact]
+        public void GetGenerateExcelMII_Success()
+        {
+            var serviceMock = new Mock<IGarmentDebitNoteMonitoringService>();
+            serviceMock
+                .Setup(s => s.GenerateExcelMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            var response = controller.GetXlsMII(It.IsAny<DateTime>(), It.IsAny<DateTime>());
+
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public void GetGenerateExcelMII_Error()
+        {
+            var serviceMock = new Mock<IGarmentDebitNoteMonitoringService>();
+            serviceMock
+                .Setup(s => s.GenerateExcelMII(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Returns(new MemoryStream());
+
+            var service = serviceMock.Object;
+
+            var identityProviderMock = new Mock<IIdentityProvider>();
+            var identityProvider = identityProviderMock.Object;
+
+            var controller = GetController(service, identityProvider);
+            controller.ControllerContext.HttpContext.Request.Headers["Accept"] = "application/xls";
+            var response = controller.GetXlsMII(null, null);
+
+            Assert.NotNull(response);
+        }
     }
 }

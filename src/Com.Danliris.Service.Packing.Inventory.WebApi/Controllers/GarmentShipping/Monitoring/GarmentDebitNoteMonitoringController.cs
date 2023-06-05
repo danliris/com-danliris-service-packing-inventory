@@ -73,6 +73,54 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
-        }     
+        }
+        // MII
+        [HttpGet("mii")]
+        public IActionResult GetReportMII(DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
+        {
+            int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+            string accept = Request.Headers["Accept"];
+            try
+            {
+                var data = _service.GetReportDataMII(dateFrom, dateTo, offset);
+
+                return Ok(new
+                {
+                    apiVersion = ApiVersion,
+                    data = data,
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("mii/download")]
+        public IActionResult GetXlsMII(DateTime? dateFrom, DateTime? dateTo)
+        {
+            try
+            {
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
+                DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
+
+                var xls = _service.GenerateExcelMII(dateFrom, dateTo, offset);
+
+                string filename = String.Format("Monitoring Debit Note MII - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+
+                xlsInBytes = xls.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
