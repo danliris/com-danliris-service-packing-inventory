@@ -16,8 +16,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //public string motif { get; set; }
         //public string color { get; set; }
         //public string cartNo { get; set; }
-        public double inputQuantity { get; set; }
+        public double inputQuantitySolid { get; set; }
+        public double inputQuantityDyeing { get; set; }
+        public double inputQuantityPrinting { get; set; }
         //Laporan Penyerahan QC ke Gudang
-        public DateTimeOffset createdUtc { get; set; }
+        public DateTime createdUtc { get; set; }
     }
 }
