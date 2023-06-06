@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              BuyerCode = a.BuyerCode,
                              BuyerName = a.BuyerName,
                              BankName = a.BankName,
-                             AccountBankNo = a.BankAccountNo,
+                             AccountBankNo = a.BankAccountNo.Replace(".",""),
                              ReceiptNo = a.ReceiptNo == null ? "-" : a.ReceiptNo,
                              Amount = Convert.ToDecimal(a.TotalAmount),
                              CurrencyCode = a.BankCurrencyCode,
