@@ -7,7 +7,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 {
     public interface IQcToWarehouseReportService
     {
-        List<QcToWarehouseReportViewModel> GetReportData(string bonNo, string orderNo, DateTime startdate, DateTime finishdate, int offset);
-        MemoryStream GenerateExcel(string bonNo, string orderNo, DateTime startdate, DateTime finishdate, int offset);
+        List<QcToWarehouseReportViewModel> GetReportData( DateTime startdate, DateTime finishdate, int offset);
+        MemoryStream GenerateExcel( DateTime startdate, DateTime finishdate, int offset);
     }
 }
