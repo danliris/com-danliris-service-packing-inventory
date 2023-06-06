@@ -2098,6 +2098,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(double) });
             
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
@@ -2112,10 +2113,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", "",/*"",*/ 0, 0, 0, 0, 0,"" );
+                dt.Rows.Add("", "", "", "", "", "", 0,"", "",/*"",*/ 0, 0, 0, 0, 0,"" );
             }
             else
             {
+                double packagingQty = 0;
                 double saldoBegin = 0;
                 double inQty = 0;
                 double outQty = 0;
@@ -2125,9 +2127,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                    // var sldbegin = item.SaldoBegin;
                     //saldoBegin =+ item.SaldoBegin;
-                    dt.Rows.Add(item.ProductionOrderNo, item.BuyerName, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingUnit, item.ProductPackingCode,
+                    dt.Rows.Add(item.ProductionOrderNo, item.BuyerName, item.Construction, item.Color, item.Motif, item.Grade,item.PackagingQty, item.PackagingUnit, item.ProductPackingCode,
                         /*item.TrackName,*/item.SaldoBegin, item.InQty, item.OutQty, item.AdjOutQty, item.Total, item.Description);
-                    
+
+                    packagingQty += (double)item.PackagingQty;
                     saldoBegin += item.SaldoBegin;
                     inQty += item.InQty;
                     outQty += item.OutQty;
@@ -2135,7 +2138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     total += item.Total;
                 }
 
-               dt.Rows.Add("", "", "", "", "", "", "", "", /*"",*/ saldoBegin, inQty, outQty, adjOutQty, total);
+               dt.Rows.Add("", "", "", "", "", "", packagingQty, "", "", /*"",*/ saldoBegin, inQty, outQty, adjOutQty, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
