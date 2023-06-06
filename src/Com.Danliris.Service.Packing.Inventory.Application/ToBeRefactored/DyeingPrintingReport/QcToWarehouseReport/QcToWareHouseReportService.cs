@@ -21,25 +21,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _productionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             
         }
-        public MemoryStream GenerateExcel(string bonNo, string orderNo, DateTime startdate, DateTime finishdate,int offset)
+        public MemoryStream GenerateExcel( DateTime startdate, DateTime finishdate,int offset)
         {
-            var list = GetReportQuery(bonNo, orderNo, startdate, finishdate,offset);
+            var list = GetReportQuery( startdate, finishdate,offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
             result.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Nomor Order", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Konstruksi", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Warna yang Diminta", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Kereta", DataType = typeof(String) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Panjang", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Total White", DataType = typeof(String) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Total Dyeing", DataType = typeof(String) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Total Printing", DataType = typeof(String) });
+            
 
             if (list.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", 0); // to allow column name to be generated properly for empty data as template
+                result.Rows.Add("", "", "", "", ""); // to allow column name to be generated properly for empty data as template
             else
             {
                 int index = 0;
@@ -49,19 +44,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     string tgl = item.createdUtc == new DateTime(1970, 1, 1) ? "-" : item.createdUtc.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
 
                     result.Rows.Add(
-                           index, tgl,   item.orderType,   item.inputQuantity);
+                           index, tgl,   item.inputQuantitySolid,   item.inputQuantityDyeing, item.inputQuantityPrinting);
                 }
             }
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
 
-        public List<QcToWarehouseReportViewModel> GetReportData(string bonNo, string orderNo, DateTime startdate, DateTime finishdate, int offset)
+        public List<QcToWarehouseReportViewModel> GetReportData(DateTime startdate, DateTime finishdate, int offset)
         {
-            var Query = GetReportQuery(bonNo, orderNo, startdate, finishdate, offset);
+            var Query = GetReportQuery(startdate, finishdate, offset);
             return Query.ToList();
         }
 
-        private List<QcToWarehouseReportViewModel> GetReportQuery(string bonNo, string orderNo, DateTime startdate, DateTime finishdate, int offset)
+        private List<QcToWarehouseReportViewModel> GetReportQuery( DateTime startdate, DateTime finishdate, int offset)
         {
             var dateStart = startdate != DateTime.MinValue ? startdate.Date : DateTime.MinValue;
             var dateTo = finishdate != DateTime.MinValue ? finishdate.Date : DateTime.Now.Date;
@@ -70,20 +65,55 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         where a.Date.AddHours(offset).Date >= dateStart.Date && a.Date.AddHours(offset).Date <= dateTo.Date
                         && a.Area == "GUDANG JADI"
                         select a;
-            var joinQuery = from a in query
+            var joinQuerySolid = from a in query
                             join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
-                            where (b.ProductionOrderType == "solid" || b.ProductionOrderType == "dyeing")
+                            where (b.ProductionOrderType == "solid")
 
                             select new QcToWarehouseReportViewModel
                             {
-                                createdUtc = a.CreatedUtc,
-                                inputQuantity = b.InputQuantity,
+                                createdUtc = a.CreatedUtc.Date,
+                                inputQuantitySolid = b.InputQuantity,
+                                inputQuantityDyeing =0,
+                                inputQuantityPrinting = 0,
                                 orderType = b.ProductionOrderType
                             };
+            var joinQueryDyeing = from a in query
+                            join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
+                            where (b.ProductionOrderType == "Dyeing")
 
+                            select new QcToWarehouseReportViewModel
+                            {
+                                createdUtc = a.CreatedUtc.Date,
+                                inputQuantitySolid = 0,
+                                inputQuantityDyeing = b.InputQuantity,
+                                inputQuantityPrinting = 0,
+                                orderType = b.ProductionOrderType
+                            };
+            var joinQueryPrinting = from a in query
+                                  join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
+                                  where (b.ProductionOrderType == "Printing")
 
+                                  select new QcToWarehouseReportViewModel
+                                  {
+                                      createdUtc = a.CreatedUtc.Date,
+                                      inputQuantitySolid = 0,
+                                      inputQuantityDyeing = 0,
+                                      inputQuantityPrinting = b.InputQuantity,
+                                      orderType = b.ProductionOrderType
+                                  };
+            var result = joinQuerySolid.Concat(joinQueryDyeing).Concat(joinQueryPrinting).AsEnumerable();
+            var resultGroup = result.GroupBy(s => new { s.createdUtc }).Select(d => new QcToWarehouseReportViewModel()
+            {
+               createdUtc = d.Key.createdUtc,
+                inputQuantitySolid = d.Sum(e => e.inputQuantitySolid),
+                inputQuantityDyeing = d.Sum(e => e.inputQuantityDyeing),
+                inputQuantityPrinting = d.Sum(e => e.inputQuantityPrinting),
+                //orderType = d.Key.orderType,
+             
+            });
 
-            return joinQuery.OrderByDescending(a => a.createdUtc).ToList();
+            return resultGroup.ToList();
+           // return joinQuery.OrderByDescending(a => a.createdUtc).ToList();
         }
     }
 }

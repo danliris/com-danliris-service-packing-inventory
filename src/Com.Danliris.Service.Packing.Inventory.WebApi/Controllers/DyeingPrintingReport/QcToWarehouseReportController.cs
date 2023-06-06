@@ -27,13 +27,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet]
-        public IActionResult GetReport([FromQuery] string bonNo, [FromQuery] string orderNo, [FromQuery] DateTime startdate, [FromQuery] DateTime finishdate)
+        public IActionResult GetReport( [FromQuery] DateTime startdate, [FromQuery] DateTime finishdate)
         {
             int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
             string accept = Request.Headers["Accept"];
             try
             {
-                var data = _service.GetReportData(bonNo, orderNo, startdate,finishdate, offset);
+                var data = _service.GetReportData(startdate,finishdate, offset);
 
                 return Ok(new
                 {
@@ -50,16 +50,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("download")]
-        public IActionResult GetXls([FromQuery] string bonNo, [FromQuery] string orderNo, [FromQuery] DateTime startdate, [FromQuery] DateTime finishdate)
+        public IActionResult GetXls(  [FromQuery] DateTime startdate, [FromQuery] DateTime finishdate)
         {
             try
             {
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 
-                var xls = _service.GenerateExcel(bonNo, orderNo, startdate, finishdate, offset);
+                var xls = _service.GenerateExcel(startdate, finishdate, offset);
 
-                string filename = String.Format("Laporan Penyerahan Produksi - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+                string filename = String.Format("Laporan Penyerahan QC ke Gudang - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 
                 xlsInBytes = xls.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
